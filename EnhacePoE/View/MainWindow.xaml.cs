@@ -98,7 +98,7 @@ namespace EnhancePoE
             HotkeysManager.GetStashTabHotkey();
             AddAllHotkeys();
 
-            ni.Icon = Properties.Resources.MainIcon;
+            ni.Icon = Properties.Resources.treasureChest_removebg_preview;
             ni.Visible = true;
             ni.DoubleClick +=
                 delegate (object sender, EventArgs args)
@@ -112,8 +112,7 @@ namespace EnhancePoE
             this.menuItem = new System.Windows.Forms.MenuItem();
 
             // Initialize contextMenu1
-            this.contextMenu.MenuItems.AddRange(
-                        new System.Windows.Forms.MenuItem[] { this.menuItem });
+            this.contextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { this.menuItem });
 
             // Initialize menuItem1
             this.menuItem.Index = 0;

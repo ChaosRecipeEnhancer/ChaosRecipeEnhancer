@@ -63,9 +63,9 @@ namespace EnhancePoE.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon MainIcon {
+        internal static System.Drawing.Icon treasureChest_removebg_preview {
             get {
-                object obj = ResourceManager.GetObject("MainIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("treasureChest_removebg_preview", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
