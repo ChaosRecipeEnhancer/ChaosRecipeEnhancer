@@ -1,6 +1,4 @@
-# Enhance PoE
-
-A Chaos Recipe Tool
+# Enhance PoE - A Chaos Recipe Tool
 
 For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com.
 
