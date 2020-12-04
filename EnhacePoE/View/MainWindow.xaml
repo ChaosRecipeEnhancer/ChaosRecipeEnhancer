@@ -1,0 +1,540 @@
+﻿<Window x:Class="EnhancePoE.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EnhancePoE"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        
+        xmlns:properties="clr-namespace:EnhancePoE.Properties"
+        mc:Ignorable="d"
+        FontSize="14"
+        Title="Enhance PoE" FontFamily="Segoe UI Light"
+        SizeToContent="WidthAndHeight"
+        WindowStyle="SingleBorderWindow"
+        MouseDown="Window_MouseDown"
+        Left="{Binding Source={x:Static properties:Settings.Default}, Path=LeftMain, Mode=TwoWay}"
+        Top="{Binding Source={x:Static properties:Settings.Default}, Path=TopMain, Mode=TwoWay}"
+        >
+
+    <Border BorderBrush="DarkGray" BorderThickness="1">
+
+    
+
+    <Grid Name="MainGrid" Focusable="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="0*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Text="PoE Settings"
+            FontSize="36"
+            Margin="0,0,0,20"/>
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="2"
+            Text="Account Name:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The name of your account"
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="accountName"
+            Grid.Column="2"
+            Grid.Row="2"
+            Width="200"
+            
+            Margin="10,0,20,10"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=accName}"
+            />
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="3"
+            Text="Character Name:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The name of your specific character"
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="characterName"
+            Grid.Column="2"
+            Grid.Row="3"
+            Width="200"
+            Margin="10,0,20,10"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=charName}"
+            />
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="4"
+            Text="PoE Session Id:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The name of your account"
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="sessionId"
+            Grid.Column="2"
+            Grid.Row="4"
+            Width="200"
+            Margin="10,0,20,10"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=SessionId}"
+            />
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="6"
+            Text="Number of Sets:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="Number of sets you aim for. Standard (leave at 0) is 2 (or 4) Sets for 1 Tab (or Quad Tab)."
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="Sets"
+            Grid.Column="2"
+            Grid.Row="6"
+            Width="200"
+            Margin="10,0,20,10"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=Sets}"
+            />
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="7"
+            Text="Refreshrate (sec):"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The delay in seconds between checking your items in a stash tab."
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="RefreshRate"
+            Grid.Column="2"
+            Grid.Row="7"
+            Width="200"
+            Margin="10,0,20,10"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=RefreshRate}"
+            />
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="5"
+            Text="League:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The delay in seconds between checking your items in a stash tab."
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="League"
+            Grid.Column="2"
+            Grid.Row="5"
+            Width="200"
+            Margin="10,0,20,10"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=League}"
+            />
+
+
+
+        <TextBlock
+            Grid.Column="3"
+            Grid.Row="5"
+            Text="Minimize to Tray:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="Minimizes to Tray when closing the application."
+            Margin="0,0,0,10"/>
+
+        <CheckBox
+            x:Name="hideOnClose"
+            Grid.Column="4"
+            Grid.Row="5"
+            Margin="10,0,20,10"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=hideOnClose}"
+            />
+
+        <TextBlock
+            Grid.Column="3"
+            Grid.Row="6"
+            Text="Opacity Overlay:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The background opacity of the overlay from 0 (0%) to 1 (100%)."
+            Margin="0,0,0,10"/>
+
+        <Slider
+            x:Name="Opacity"
+            Width="200"
+            Grid.Column="4"
+            Grid.Row="6"
+            Margin="10,0,20,10"
+            VerticalAlignment="Center"
+            Minimum="0"
+            Maximum="1"
+            AutoToolTipPlacement="TopLeft"
+            IsMoveToPointEnabled="True"
+            AutoToolTipPrecision="2"
+            Value="{Binding Source={x:Static properties:Settings.Default}, Path=Opacity, Mode=TwoWay}"
+            />
+
+        <TextBlock
+            Grid.Column="3"
+            Grid.Row="7"
+            Text="Opacity StashTab Overlay:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The background opacity of the overlay from 0 (0%) to 1 (100%)."
+            Margin="0,0,0,10"/>
+
+        <Slider
+            x:Name="OpacityStashTab"
+            Grid.Column="4"
+            Grid.Row="7"
+            Width="200"
+            Margin="10,0,20,10"
+            VerticalAlignment="Center"
+            Minimum="0"
+            Maximum="1"
+            AutoToolTipPlacement="TopLeft"
+            IsMoveToPointEnabled="True"
+            AutoToolTipPrecision="2"
+            Value="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab, Mode=TwoWay}"
+            />
+
+        <Button
+            x:Name="SaveButton"
+            Click="SaveButton_Click"
+            Content="Save Settings"
+            Grid.Column="1"
+            Grid.Row="11"
+            Grid.ColumnSpan="2"
+            Margin="20, 20, 20, 10"
+            />
+
+        <Button
+            x:Name="RunButton"
+            Click="RunButton_Click"
+            Content="Run"
+            Grid.Column="5"
+            Grid.Row="11"
+            Grid.ColumnSpan="2"
+            Margin="20, 20, 20, 10"
+            />
+
+        <TextBlock
+            Grid.Column="3"
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Text="App Settings"
+            FontSize="36"
+            Margin="0,0,0,20"/>
+
+        <TextBlock
+            Grid.Column="3"
+            Grid.Row="2"
+            Text="Toggle Overlay:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The button to start/ stop the overlay. While stopped there will be no calls to the server. Apply Settings required."
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="CustomHotkeyToggle"
+            Width="200"
+            Margin="10,0,20,10"
+            Grid.Row="2"
+            Grid.Column="4"
+            IsReadOnly="True"
+            IsManipulationEnabled="False"
+            IsReadOnlyCaretVisible="False"
+            Focusable="False"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyToggle, TargetNullValue=&lt; not set &gt;}"
+            MouseDoubleClick="CustomHotkeyToggle_MouseDoubleClick"
+            />
+
+        <TextBlock
+            Grid.Column="3"
+            Grid.Row="3"
+            Text="Toggle Fetching:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="RefreshHotkey"
+            Width="200"
+            Margin="10,0,20,10"
+            Grid.Row="3"
+            Grid.Column="4"
+            IsReadOnly="True"
+            IsManipulationEnabled="False"
+            IsReadOnlyCaretVisible="False"
+            Focusable="False"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyRefresh, TargetNullValue=&lt; not set &gt;}"
+            MouseDoubleClick="RefreshHotkey_MouseDoubleClick"
+            />
+
+        <TextBlock
+            Grid.Column="3"
+            Grid.Row="4"
+            Text="Toggle StashTab:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="StashTabHotkey"
+            Width="200"
+            Margin="10,0,20,10"
+            Grid.Row="4"
+            Grid.Column="4"
+            IsReadOnly="True"
+            IsManipulationEnabled="False"
+            IsReadOnlyCaretVisible="False"
+            Focusable="False"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyStashTab, TargetNullValue=&lt; not set &gt;}"
+            MouseDoubleClick="StashTabHotkey_MouseDoubleClick"
+            />
+
+        <TextBlock
+            Grid.Column="5"
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Text="Overlay Settings"
+            FontSize="36"
+            Margin="0,0,0,20"/>
+
+        <TextBlock
+            Grid.Column="5"
+            Grid.Row="4"
+            Text="Boots Color:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            Margin="0,0,0,10"/>
+
+        <xctk:ColorPicker 
+            Grid.Column="6"
+            Grid.Row="4"
+            Width="200"
+            Margin="10,0,10,10"
+            Name="ColorBootsPicker" 
+            ColorMode="ColorCanvas"
+            SelectedColorChanged="ColorBootsPicker_SelectedColorChanged">
+        </xctk:ColorPicker>
+
+        <TextBlock
+            Grid.Column="5"
+            Grid.Row="3"
+            Text="Gloves Color:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            Margin="0,0,0,10"/>
+
+        <xctk:ColorPicker 
+            Grid.Column="6"
+            Grid.Row="3"
+            Width="200"
+            Margin="10,0,10,10"
+            Name="ColorGlovesPicker" 
+            ColorMode="ColorCanvas"
+            SelectedColorChanged="ColorGlovesPicker_SelectedColorChanged">
+        </xctk:ColorPicker>
+
+        <TextBlock
+            Grid.Column="5"
+            Grid.Row="5"
+            Text="Helmet Color:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            Margin="0,0,0,10"/>
+
+        <xctk:ColorPicker 
+            Grid.Column="6"
+            Grid.Row="5"
+            Width="200"
+            Margin="10,0,10,10"
+            Name="ColorHelmetPicker" 
+            ColorMode="ColorCanvas"
+            SelectedColorChanged="ColorHelmetPicker_SelectedColorChanged">
+        </xctk:ColorPicker>
+
+        <TextBlock
+            Grid.Column="5"
+            Grid.Row="6"
+            Text="Body Armour Color:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            Margin="0,0,0,10"/>
+
+        <xctk:ColorPicker 
+            Grid.Column="6"
+            Grid.Row="6"
+            Width="200"
+            Margin="10,0,10,10"
+            Name="ColorChestPicker" 
+            ColorMode="ColorCanvas"
+            SelectedColorChanged="ColorChestPicker_SelectedColorChanged">
+        </xctk:ColorPicker>
+
+        <TextBlock
+            Grid.Column="5"
+            Grid.Row="7"
+            Text="Weapons Color:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            Margin="0,0,0,10"/>
+
+        <xctk:ColorPicker 
+            Grid.Column="6"
+            Grid.Row="7"
+            Width="200"
+            Margin="10,0,10,10"
+            Name="ColorWeaponsPicker" 
+            ColorMode="ColorCanvas"
+            SelectedColorChanged="ColorWeaponsPicker_SelectedColorChanged">
+        </xctk:ColorPicker>
+
+        <TextBlock
+            Grid.Column="5"
+            Grid.Row="2"
+            Text="Jewellery Color:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            Margin="0,0,0,10"/>
+
+        <xctk:ColorPicker 
+            Grid.Column="6"
+            Grid.Row="2"
+            Width="200"
+            Margin="10,0,10,10"
+            Name="ColorJewelleryPicker" 
+            ColorMode="ColorCanvas"
+            SelectedColorChanged="ColorJewelleryPicker_SelectedColorChanged">
+        </xctk:ColorPicker>
+
+        <TextBlock
+            Grid.Column="5"
+            Grid.Row="8"
+            Text="Stashtab Color:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            Margin="0,0,0,10"/>
+
+        <xctk:ColorPicker 
+            Grid.Column="6"
+            Grid.Row="8"
+            Width="200"
+            Margin="10,0,10,10"
+            Name="ColorStashPicker" 
+            ColorMode="ColorCanvas"
+            SelectedColorChanged="ColorStashPicker_SelectedColorChanged">
+        </xctk:ColorPicker>
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="8"
+            Text="Lootfilter Location:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The name of your account"
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="LootfilterFileDialog"
+            Grid.Column="2"
+            Grid.Row="8"
+            Width="200"
+            MouseDoubleClick="LootfilterFileDialog_MouseDown"
+            Margin="10,0,20,10"
+            IsReadOnly="True"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterLocation, Mode=TwoWay}"
+            />
+
+        <TextBlock
+            Grid.Column="3"
+            Grid.Row="8"
+            Text="Lootfilter Manipulation:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="Minimizes to Tray when closing the application."
+            Margin="0,0,0,10"/>
+
+        <CheckBox
+            x:Name="LootfilterActiveCheckbox"
+            Grid.Column="4"
+            Grid.Row="8"
+            Margin="10,0,20,10"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterActive}"
+            />
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="9"
+            Grid.ColumnSpan="2"
+            Text="Tabs"
+            FontSize="36"
+            Margin="0,0,0,20"/>
+
+        <StackPanel
+            Grid.Row="10"
+            Grid.Column="1"
+            VerticalAlignment="Center">
+            <Button
+                    x:Name="AddItemButton"
+                    Margin="0,0,0,10"
+                    Content="Add"
+                    Command="{Binding AddTab}"
+                    Height="30" Width="80"
+                    VerticalAlignment="Top" />
+
+            <Button
+                    Content="Remove"
+                    Command="{Binding RemoveTab}"
+                    Height="30" Width="80"
+                    VerticalAlignment="Top" />
+        </StackPanel>
+
+        <TabControl
+            x:Name="TabsTab"
+            Grid.Column="2"
+            Grid.Row="10"
+            Grid.ColumnSpan="5"
+            Padding="10, 10, 10, 0"
+            TabStripPlacement="Top"
+            ItemsSource="{Binding StashTabItems, Mode=TwoWay}"
+            SelectedIndex="{Binding CurrentTab, Mode=TwoWay}"
+         >
+
+        </TabControl>
+
+
+
+
+    </Grid>
+    </Border>
+</Window>

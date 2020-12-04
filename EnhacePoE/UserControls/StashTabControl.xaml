@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="EnhancePoE.UserControls.StashTabControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EnhancePoE.UserControls"
+             mc:Ignorable="d" 
+             HorizontalAlignment="Left"
+             FontSize="14" Height="120" Width="450">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="1"
+            Width="200"
+            Text="Stash Tab Name:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The number of the observed stash tab from left to right. Starts at 0!"
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="stashTabName"
+            Grid.Column="2"
+            Grid.Row="1"
+            Width="200"
+            Margin="10,0,0,10"
+            Text="{Binding TabName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            />
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="2"
+            Width="200"
+            Text="Stash Tab Number:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The number of the observed stash tab from left to right. Starts at 0!"
+            Margin="0,0,0,10"/>
+
+        <TextBox
+            x:Name="stashTabNumber"
+            Grid.Column="2"
+            Grid.Row="2"
+            Width="200"
+            Margin="10,0,0,10"
+            Text="{Binding TabNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            />
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="3"
+            Width="200"
+            Text="Quad Stash Tab:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="Activate if you are using a quad stash tab. Has no effect if you specify number of sets."
+            />
+
+        <CheckBox
+            x:Name="quadStashTab"
+            Grid.Column="2"
+            Grid.Row="3"
+            Margin="10,0,0,10"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Quad, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            />
+    </Grid>
+</UserControl>

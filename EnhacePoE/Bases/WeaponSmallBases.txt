@@ -1,0 +1,65 @@
+﻿Driftwood Wand
+Goat's Horn
+Carved Wand
+Quartz Wand
+Spiraled Wand
+Assembler Wand
+Sage Wand
+Pagan Wand
+Faun's Horn
+Engraved Wand
+Crystal Wand
+Serpent Wand
+Congregator Wand
+Omen Wand
+Heathen Wand
+Demon's Horn
+Imbued Wand
+Opal Wand
+Tornado Wand
+Prophecy Wand
+Accumulator Wand
+Profane 
+Convoking Wand
+
+Glass Shank
+Skinning Knife
+Stiletto
+Flaying Knife
+Hollowpoint Dagger
+Prong Dagger
+Poignard
+Pressurised Dagger
+Trisula
+Gutting Knife
+Ambusher
+Pneumatic Dagger
+Sai
+
+Rusted Sword
+Copper Sword
+Sabre
+Broad Sword
+War Sword
+Ancient Sword
+Elegant Sword
+Fickle Spiritblade
+Dusk Blade
+Hook Sword
+Variscite Blade
+Cutlass
+Baselard
+Battle Sword
+Elder Sword
+Capricious Spiritblade
+Graceful Sword
+Grappler
+Gemstone Sword
+Corsair Sword
+Gladius
+Legion Sword
+Vaal Blade
+Anarchic Spiritblade
+Tiger Hook
+
+Infernal Blade
