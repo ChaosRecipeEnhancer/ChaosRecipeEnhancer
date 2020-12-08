@@ -248,13 +248,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MainIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\treasureChest-removebg-preview.ico" />
-    <None Include="Resources\coin-removebg-preview.ico" />
-    <None Include="Resources\coin-removebg-preview.png" />
-    <None Include="Resources\treasureChest-removebg-preview.png" />
     <Resource Include="Assets\boots.png" />
     <Resource Include="Assets\chest.png" />
     <Resource Include="Assets\gloves.png" />

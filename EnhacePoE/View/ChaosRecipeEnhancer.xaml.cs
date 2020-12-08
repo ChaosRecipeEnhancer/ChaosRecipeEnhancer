@@ -31,7 +31,7 @@ namespace EnhancePoE
         public static bool FetchingActive { get; set;} = false;
         private static System.Timers.Timer aTimer;
 
-        private static readonly double deactivatedOpacity = .3;
+        private static readonly double deactivatedOpacity = .1;
         private static readonly double activatedOpacity = 1;
 
         public static int FullSets { get; set; } = 0;
@@ -57,51 +57,39 @@ namespace EnhancePoE
             });
             currentData.CheckActives();
             SetOpacity();
-            //if (currentData.Items != null)
-            //{
-            //    currentData.CheckActives();
-            //    SetOpacity();
-            //}
-            //else
-            //{
-            //    Trace.WriteLine("fetching failed");
-            //}
+
         }
 
-        //private static void DoRepeat()
-        //{
-        //    Trace.WriteLine("repeating...");
-        //    fullSets += 1;
-        //}
 
         public void RunFetching()
         {
-            if (!isOpen)
+            if (MainWindow.SettingsComplete)
             {
-                return;
-            }
-            if (aTimer.Enabled)
-            {
-                aTimer.Enabled = false;
-                FetchingActive = false;
-                RefreshButton.Content = "Fetch";
-            }
-            else
-            {
-                GetFrequency();
-                FetchData();
-                //aTimer.Interval = 1000;
-                aTimer.Enabled = true;
-                FetchingActive = true;
-                RefreshButton.Content = "Stop";
+                if (!isOpen)
+                {
+                    return;
+                }
+                if (aTimer.Enabled)
+                {
+                    aTimer.Enabled = false;
+                    FetchingActive = false;
+                    RefreshButton.Content = "Fetch";
+                }
+                else
+                {
+                    GetFrequency();
+                    FetchData();
+                    //aTimer.Interval = 1000;
+                    aTimer.Enabled = true;
+                    FetchingActive = true;
+                    RefreshButton.Content = "Stop";
+                }
             }
         }
 
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            //ApiAdapter.GetData("https://jsonplaceholder.typicode.com/posts/1");
-            //FetchData();
             RunFetching();
         }
 
@@ -112,7 +100,6 @@ namespace EnhancePoE
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
-            //DoRepeat();
             FetchData();
         }
 
@@ -181,8 +168,9 @@ namespace EnhancePoE
 
         public new virtual void Show()
         {
-            isOpen = true;
 
+
+            isOpen = true;
             if (FetchingActive)
             {
                 aTimer.Enabled = true;
@@ -190,36 +178,12 @@ namespace EnhancePoE
             }
 
             ApiAdapter.GenerateUri();
-
-            //MainWindow win = (MainWindow)Application.Current.MainWindow;
-
-
-            //Trace.WriteLine(MainWindow.stashTabsModel.StashTabs.Count());
-
-            //Trace.WriteLine(stashTabsModel.Stashtabs.Count());
-
-            //Trace.WriteLine(Properties.Settings.Default.StashTabs.StashTabs.Count());
-
-            //TabItemViewModel test = Properties.Settings.Default.StashTabs;
-
-
-
-            //Trace.WriteLine(Properties.Settings.Default.StashTabsString);
-
-            //List<Uri> test = ApiAdapter.GenerateUri();
-
-            //foreach (Uri i in test)
-            //{
-            //    Trace.WriteLine(i.ToString());
-            //}
-
-
             base.Show();
+
         }
 
         private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
         {
-
             MainWindow.RunStashTabOverlay();
         }
 

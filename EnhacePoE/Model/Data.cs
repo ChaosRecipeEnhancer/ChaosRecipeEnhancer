@@ -117,7 +117,7 @@ namespace EnhancePoE
 
         public void CountTab()
         {
-
+            SetTargetAmount = 0;
             OverallGlovesAmount = 0;
             OverallHelmetAmount = 0;
             OverallBootsAmount = 0;
@@ -129,6 +129,7 @@ namespace EnhancePoE
 
             foreach(StashTab s in MainWindow.stashTabsModel.StashTabs)
             {
+                GetSetTargetAmount(s);
                 if(s.ItemList != null)
                 {
                     foreach (Item item in s.ItemList)
@@ -188,7 +189,7 @@ namespace EnhancePoE
             }
         }
 
-        public void GetSetTargetAmount()
+        public void GetSetTargetAmount(StashTab stash)
         {
             if(Properties.Settings.Default.Sets > 0)
             {
@@ -196,21 +197,18 @@ namespace EnhancePoE
             }
             else
             {
-                if (Properties.Settings.Default.quad)
+
+                if (stash.Quad)
                 {
-                    this.SetTargetAmount = 16;
+                    this.SetTargetAmount += 16;
                 }
                 else
                 {
-                    this.SetTargetAmount = 4;
+                    this.SetTargetAmount += 4;
                 }
             }
         }
 
-        public void GetOverallItemsAmount()
-        {
-
-        }
 
         public void GetSetAmount()
         {
@@ -333,9 +331,7 @@ namespace EnhancePoE
         public void CheckActives()
         {
             CountTab();
-            GetSetTargetAmount();
             GetSetAmount();
         }
-
     }
 }

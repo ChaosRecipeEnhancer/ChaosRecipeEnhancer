@@ -48,9 +48,8 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="0*"/>
-            <RowDefinition Height="20"/>
-        </Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
         <TextBlock
             Grid.Column="1"
@@ -68,7 +67,7 @@
             ToolTip="The name of your account"
             Margin="0,0,0,10"/>
 
-        <TextBox
+            <TextBox
             x:Name="accountName"
             Grid.Column="2"
             Grid.Row="2"
@@ -81,32 +80,15 @@
         <TextBlock
             Grid.Column="1"
             Grid.Row="3"
-            Text="Character Name:"
+            Text="PoE Session ID:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The name of your specific character"
-            Margin="0,0,0,10"/>
-
-        <TextBox
-            x:Name="characterName"
-            Grid.Column="2"
-            Grid.Row="3"
-            Width="200"
-            Margin="10,0,20,10"
-            Text="{Binding Source={x:Static properties:Settings.Default}, Path=charName}"
-            />
-
-        <TextBlock
-            Grid.Column="1"
-            Grid.Row="4"
-            Text="PoE Session Id:"
-            ToolTipService.InitialShowDelay="50"
-            ToolTip="The name of your account"
+            ToolTip="PoE Session ID. Visit https://github.com/kosace/EnhancePoEApp for more information."
             Margin="0,0,0,10"/>
 
         <TextBox
             x:Name="sessionId"
             Grid.Column="2"
-            Grid.Row="4"
+            Grid.Row="3"
             Width="200"
             Margin="10,0,20,10"
             Text="{Binding Source={x:Static properties:Settings.Default}, Path=SessionId}"
@@ -114,16 +96,16 @@
 
         <TextBlock
             Grid.Column="1"
-            Grid.Row="6"
+            Grid.Row="5"
             Text="Number of Sets:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="Number of sets you aim for. Standard (leave at 0) is 2 (or 4) Sets for 1 Tab (or Quad Tab)."
+            ToolTip="Number of sets you aim for. Standard is 4 (16) Sets for each Tab (Quad Tab). Leave at 0 for standard."
             Margin="0,0,0,10"/>
 
         <TextBox
             x:Name="Sets"
             Grid.Column="2"
-            Grid.Row="6"
+            Grid.Row="5"
             Width="200"
             Margin="10,0,20,10"
             Text="{Binding Source={x:Static properties:Settings.Default}, Path=Sets}"
@@ -131,16 +113,16 @@
 
         <TextBlock
             Grid.Column="1"
-            Grid.Row="7"
+            Grid.Row="6"
             Text="Refreshrate (sec):"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The delay in seconds between checking your items in a stash tab."
+            ToolTip="The delay in seconds between checking your items in a stash tab. Minimum is 15."
             Margin="0,0,0,10"/>
 
         <TextBox
             x:Name="RefreshRate"
             Grid.Column="2"
-            Grid.Row="7"
+            Grid.Row="6"
             Width="200"
             Margin="10,0,20,10"
             Text="{Binding Source={x:Static properties:Settings.Default}, Path=RefreshRate}"
@@ -148,16 +130,16 @@
 
         <TextBlock
             Grid.Column="1"
-            Grid.Row="5"
+            Grid.Row="4"
             Text="League:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The delay in seconds between checking your items in a stash tab."
+            ToolTip="The league you are playing in."
             Margin="0,0,0,10"/>
 
         <TextBox
             x:Name="League"
             Grid.Column="2"
-            Grid.Row="5"
+            Grid.Row="4"
             Width="200"
             Margin="10,0,20,10"
             Text="{Binding Source={x:Static properties:Settings.Default}, Path=League}"
@@ -168,7 +150,7 @@
         <TextBlock
             Grid.Column="3"
             Grid.Row="5"
-            Text="Minimize to Tray:"
+            Text="Close to Tray:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="Minimizes to Tray when closing the application."
             Margin="0,0,0,10"/>
@@ -210,7 +192,7 @@
             Grid.Row="7"
             Text="Opacity StashTab Overlay:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The background opacity of the overlay from 0 (0%) to 1 (100%)."
+            ToolTip="The background opacity of the stashtabs overlay from 0 (0%) to 1 (100%)."
             Margin="0,0,0,10"/>
 
         <Slider
@@ -261,7 +243,7 @@
             Grid.Row="2"
             Text="Toggle Overlay:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The button to start/ stop the overlay. While stopped there will be no calls to the server. Apply Settings required."
+            ToolTip="Hotkey for showing/ hiding the overlay. While stopped there will be no requests to the server."
             Margin="0,0,0,10"/>
 
         <TextBox
@@ -283,7 +265,7 @@
             Grid.Row="3"
             Text="Toggle Fetching:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            ToolTip="Hotkey for starting/ stopping refreshing data."
             Margin="0,0,0,10"/>
 
         <TextBox
@@ -305,7 +287,7 @@
             Grid.Row="4"
             Text="Toggle StashTab:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            ToolTip="Hotkey for showing/ hiding the stashtabs overlay."
             Margin="0,0,0,10"/>
 
         <TextBox
@@ -335,7 +317,7 @@
             Grid.Row="4"
             Text="Boots Color:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            ToolTip="The color of boots. This color will also be written into your lootfilter if you activated Lootfilter Manipulation."
             Margin="0,0,0,10"/>
 
         <xctk:ColorPicker 
@@ -353,7 +335,7 @@
             Grid.Row="3"
             Text="Gloves Color:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            ToolTip="The color of gloves. This color will also be written into your lootfilter if you activated Lootfilter Manipulation."
             Margin="0,0,0,10"/>
 
         <xctk:ColorPicker 
@@ -371,7 +353,7 @@
             Grid.Row="5"
             Text="Helmet Color:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            ToolTip="The color of helmets. This color will also be written into your lootfilter if you activated Lootfilter Manipulation."
             Margin="0,0,0,10"/>
 
         <xctk:ColorPicker 
@@ -389,7 +371,7 @@
             Grid.Row="6"
             Text="Body Armour Color:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            ToolTip="The color of body armours. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.."
             Margin="0,0,0,10"/>
 
         <xctk:ColorPicker 
@@ -407,7 +389,7 @@
             Grid.Row="7"
             Text="Weapons Color:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            ToolTip="The color of weapons. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.."
             Margin="0,0,0,10"/>
 
         <xctk:ColorPicker 
@@ -425,7 +407,7 @@
             Grid.Row="2"
             Text="Jewellery Color:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            ToolTip="The color of rings, amulets and belts. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.."
             Margin="0,0,0,10"/>
 
         <xctk:ColorPicker 
@@ -443,7 +425,7 @@
             Grid.Row="8"
             Text="Stashtab Color:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The button to manually refresh data (does not guarantee that PoE servers have refreshed data). Apply Settings required."
+            ToolTip="The color that highlights the items in your stashtab overlay."
             Margin="0,0,0,10"/>
 
         <xctk:ColorPicker 
@@ -458,16 +440,16 @@
 
         <TextBlock
             Grid.Column="1"
-            Grid.Row="8"
+            Grid.Row="7"
             Text="Lootfilter Location:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The name of your account"
+            ToolTip="The path to your lootfilter. Standard path is: 'Username/Documents/My Games/Path of Exile'."
             Margin="0,0,0,10"/>
 
         <TextBox
             x:Name="LootfilterFileDialog"
             Grid.Column="2"
-            Grid.Row="8"
+            Grid.Row="7"
             Width="200"
             MouseDoubleClick="LootfilterFileDialog_MouseDown"
             Margin="10,0,20,10"
@@ -480,7 +462,7 @@
             Grid.Row="8"
             Text="Lootfilter Manipulation:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="Minimizes to Tray when closing the application."
+            ToolTip="Activates manipulation of lootfilter. When active your lootfilter gets rewritten as soon as an itemtype changes."
             Margin="0,0,0,10"/>
 
         <CheckBox
@@ -532,9 +514,22 @@
 
         </TabControl>
 
+            <TextBlock
+                Grid.Column="1"
+                Grid.ColumnSpan="7"
+                Grid.Row="13"
+                Margin="0,10,0,10"
+                FontSize="12"
+                TextAlignment="Center"
+                Text="Enhance PoE - A Chaos Recipe Tool ">
+                <TextBlock.Inlines>
+                    <Run FontFamily="Segoe UI" FontSize="12" Text="by kosace " />
+                </TextBlock.Inlines>
+            </TextBlock>
 
 
 
-    </Grid>
+
+        </Grid>
     </Border>
 </Window>

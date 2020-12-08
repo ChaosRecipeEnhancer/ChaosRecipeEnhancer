@@ -37,6 +37,8 @@ namespace EnhancePoE
         private System.Windows.Forms.MenuItem menuItem;
         private System.ComponentModel.IContainer components;
 
+        public static bool SettingsComplete { get; set; }
+
         public static ChaosRecipeEnhancer overlay = new ChaosRecipeEnhancer();
 
         public static StashTabWindow stashTabOverlay = new StashTabWindow();
@@ -50,54 +52,71 @@ namespace EnhancePoE
 
 
 
-
         public MainWindow()
         {
-
-
-            //TabsTab.DataContext = newModel;
-
             InitializeComponent();
+
+            //TESTING SETTINGS RESET
+            //if (Debugger.IsAttached)
+            //    Properties.Settings.Default.Reset();
+
+            // initialize stashtabs
             DataContext = stashTabsModel;
 
+            InitializeColors();
+            InitializeHotkeys();
+            InitializeTray();
+
+            // add Action to MouseHook
+            MouseHook.MouseAction += new EventHandler(Coordinates.Event);
+        }
+
+        private void InitializeHotkeys()
+        {
+            HotkeysManager.SetupSystemHook();
+            HotkeysManager.RequiresModifierKey = false;
+            HotkeysManager.GetRefreshHotkey();
+            HotkeysManager.GetToggleHotkey();
+            HotkeysManager.GetStashTabHotkey();
+            AddAllHotkeys();
+        }
+
+        private void InitializeColors()
+        {
             if (Properties.Settings.Default.ColorBoots != "")
             {
                 ColorBootsPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorBoots);
             }
-            if(Properties.Settings.Default.ColorChest != "")
+            if (Properties.Settings.Default.ColorChest != "")
             {
                 ColorChestPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorChest);
             }
-            if(Properties.Settings.Default.ColorWeapon != "")
+            if (Properties.Settings.Default.ColorWeapon != "")
             {
                 ColorWeaponsPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorWeapon);
             }
-            if(Properties.Settings.Default.ColorGloves != "")
+            if (Properties.Settings.Default.ColorGloves != "")
             {
                 ColorGlovesPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorGloves);
             }
-            if(Properties.Settings.Default.ColorHelmet != "")
+            if (Properties.Settings.Default.ColorHelmet != "")
             {
                 ColorHelmetPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorHelmet);
             }
             if (Properties.Settings.Default.ColorJewellery != "")
             {
                 ColorJewelleryPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorJewellery);
-            }            
+            }
             if (Properties.Settings.Default.ColorStash != "")
             {
                 ColorStashPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash);
             }
+        }
 
 
-            HotkeysManager.SetupSystemHook();
-            HotkeysManager.RequiresModifierKey = false;
-
-            HotkeysManager.GetRefreshHotkey();
-            HotkeysManager.GetToggleHotkey();
-            HotkeysManager.GetStashTabHotkey();
-            AddAllHotkeys();
-
+        // creates tray icon with menu
+        private void InitializeTray()
+        {
             ni.Icon = Properties.Resources.treasureChest_removebg_preview;
             ni.Visible = true;
             ni.DoubleClick +=
@@ -117,34 +136,31 @@ namespace EnhancePoE
             // Initialize menuItem1
             this.menuItem.Index = 0;
             this.menuItem.Text = "E&xit";
-            this.menuItem.Click += new System.EventHandler(this.menuItem_Click);
+            this.menuItem.Click += new System.EventHandler(this.MenuItem_Click);
 
             ni.ContextMenu = this.contextMenu;
-
-
-            // add Action to MouseHook
-            MouseHook.MouseAction += new EventHandler(Coordinates.Event);
-
-
-
         }
 
-
-        private void menuItem_Click(object Sender, EventArgs e)
+        // Close the form, which closes the application.
+        private void MenuItem_Click(object Sender, EventArgs e)
         {
-            // Close the form, which closes the application.
             this.trayClose = true;
             this.Close();
         }
 
-        // 
-        protected override void OnStateChanged(EventArgs e)
-        {
-            if (WindowState == System.Windows.WindowState.Minimized)
-                this.Hide();
 
-            base.OnStateChanged(e);
-        }
+        // 
+        //protected override void OnStateChanged(EventArgs e)
+        //{
+        //    Trace.WriteLine("minimize");
+        //    if (this.WindowState == WindowState.Minimized)
+        //    {
+        //        Trace.WriteLine("Windowstate minimized");
+        //        this.Hide();
+        //        if()
+        //    }
+        //    base.OnStateChanged(e);
+        //}
 
         // Minimize to system tray when application is closed.
         protected override void OnClosing(CancelEventArgs e)
@@ -153,7 +169,6 @@ namespace EnhancePoE
             // if hideOnClose
             // setting cancel to true will cancel the close request
             // so the application is not closed
-
             if (Properties.Settings.Default.hideOnClose && !this.trayClose)
             {
                 e.Cancel = true;
@@ -166,29 +181,15 @@ namespace EnhancePoE
                 ni.Visible = false;
                 HotkeysManager.ShutdownSystemHook();
                 Properties.Settings.Default.Save();
-                overlay.Close();
-                stashTabOverlay.Close();
+                //overlay.Close();
+                //stashTabOverlay.Close();
+                App.Current.Shutdown();
             }
         }
 
+        // save all settings, recreate hotkeys
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
-            //if(Int32.TryParse(stashTabNumber.Text, out int stashTab))
-            //{
-            //    if(stashTab < 0)
-            //    {
-            //        System.Windows.MessageBox.Show("Stash Tab Number has to be greater than 0!");
-            //    } else
-            //    {
-            //        Properties.Settings.Default.stash = stashTab;
-            //    }
-            //}
-            //else
-            //{
-            //    System.Windows.MessageBox.Show("Quad Stash Tab has to be a number!");
-            //}
-
             if (Int32.TryParse(RefreshRate.Text, out int refresh))
             {
                 if(refresh < 15)
@@ -204,7 +205,6 @@ namespace EnhancePoE
             {
                 System.Windows.MessageBox.Show("Refreshrate has to be a number!");
             }
-
             if (Int32.TryParse(Sets.Text, out int sets))
             {
                 if (sets < 0)
@@ -221,87 +221,59 @@ namespace EnhancePoE
                 System.Windows.MessageBox.Show("Number of Sets has to be a number!");
             }
 
-            //RemoveToggleHotkey();
-            //RemoveRefreshHotkey();
-            //GetToggleHotkey();
-            //GetRefreshHotkey();
-            //AddRefreshHotkey();
-            //AddToggleHotkey();
-            //HotkeysManager.AddHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay);
             RemoveAllHotkeys();
             AddAllHotkeys();
 
-
-            Properties.Settings.Default.charName = characterName.Text.ToString();
             Properties.Settings.Default.accName = accountName.Text.ToString();
-            //Properties.Settings.Default.quad = (bool)quadStashTab.IsChecked;
-
             Properties.Settings.Default.StashTabsString = SettingsSerializer.SerializeStashTab(stashTabsModel);
-
-            //SettingsSerializer.SaveObjectAsString(SettingsSerializer.Serialize(stashTabsModel.StashTabs), "StashTabs");
-
             Properties.Settings.Default.StashTabs = stashTabsModel;
-
-
-
             Properties.Settings.Default.Save();
-
             System.Windows.MessageBox.Show("Settings saved!");
-
-
-            //int count = newModel.StashTabs.Count();
-
-            //App.Current.Properties["StashTabModel"] = newModel;
-
-            //TabItemViewModel testModel = App.Current.Properties["StashTabModel"];
-
-            //int count = App.Current.Properties["StashTabModel"];
-
-            //Trace.WriteLine(count);
-
         }
 
         public void RunOverlay()
         {
-            if (RunButton.Content.ToString() == "Run")
+            bool ready = CheckAllSettings();
+            if (ready)
             {
-                RunButton.Content = "Stop";
-                overlay.Show();
+                if (RunButton.Content.ToString() == "Run")
+                {
+                    RunButton.Content = "Stop";
+                    overlay.Show();
+                }
+                else
+                {
+                    RunButton.Content = "Run";
+                    overlay.Hide();
+                }
             }
-            else
-            {
-                RunButton.Content = "Run";
-                overlay.Hide();
-            }
-
-
-            //List<string> testList = new List<string>() { "Two-Stone Ring", "Agate", "Amber", "Chain Belt", "Citrine" };
-
-            //string test = FilterGeneration.GenerateSection(testList, "ring");
-            //Trace.WriteLine(test);
-
         }
 
         private void RunButton_Click(object sender, RoutedEventArgs e)
         {
+
             RunOverlay();
         }
 
         public static void RunStashTabOverlay()
         {
-            if (stashTabOverlay.IsOpen)
+            bool ready = CheckAllSettings();
+            if (ready)
             {
-                //MouseHook.Stop();
-                stashTabOverlay.Hide();
-            }
-            else
-            {
-                if(ChaosRecipeEnhancer.FetchingActive == true)
+                if (stashTabOverlay.IsOpen)
                 {
-                    overlay.RunFetching();
+                    //MouseHook.Stop();
+                    stashTabOverlay.Hide();
                 }
-                //MouseHook.Start();
-                stashTabOverlay.Show();
+                else
+                {
+                    if (ChaosRecipeEnhancer.FetchingActive == true)
+                    {
+                        overlay.RunFetching();
+                    }
+                    //MouseHook.Start();
+                    stashTabOverlay.Show();
+                }
             }
         }
 
@@ -376,7 +348,6 @@ namespace EnhancePoE
             {
                 HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey, RunStashTabOverlay);
             }
-
         }
 
         public void RemoveAllHotkeys()
@@ -445,6 +416,66 @@ namespace EnhancePoE
                 LootfilterFileDialog.Select(LootfilterFileDialog.Text.Length, 0);
 
             }
+        }
+
+        public static bool CheckAllSettings()
+        {
+            string accName = Properties.Settings.Default.accName;
+            string sessId = Properties.Settings.Default.SessionId;
+            string league = Properties.Settings.Default.League;
+            int refreshRate = Properties.Settings.Default.RefreshRate;
+            string lootfilterLocation = Properties.Settings.Default.LootfilterLocation;
+            bool lootfilterActive = Properties.Settings.Default.LootfilterActive;
+            int numberOfTabs = stashTabsModel.StashTabs.Count;
+
+            List<string> missingSettings = new List<string>();
+            string errorMessage = "Please add: \n";
+
+            if(accName == "")
+            {
+                missingSettings.Add("- Account Name \n");
+            }
+            if(sessId == "")
+            {
+                missingSettings.Add("- PoE Session ID \n");
+            }
+            if(league == "")
+            {
+                missingSettings.Add("- League \n");
+            }
+            if(refreshRate < 15)
+            {
+                missingSettings.Add("- Refresh Rate \n");
+            }
+            if (lootfilterActive)
+            {
+                if(lootfilterLocation == "")
+                {
+                    missingSettings.Add("- Lootfilter Location \n");
+                }
+            }
+            if(numberOfTabs <= 0) 
+            {
+                missingSettings.Add("- At least 1 Tab \n");
+            }
+
+            if(missingSettings.Count > 0)
+            {
+                SettingsComplete = false;
+            }
+            else
+            {
+                SettingsComplete = true;
+                return true; 
+            }
+
+            foreach(string setting in missingSettings)
+            {
+                errorMessage += setting;
+            }
+
+            System.Windows.MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+            return false;
         }
     }
 

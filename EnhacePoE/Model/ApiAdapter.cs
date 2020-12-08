@@ -62,7 +62,7 @@ namespace EnhancePoE
                 {
                     string stashTab = i.TabNumber.ToString();
                     i.StashTabUri = new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabIndex={stashTab}&league={league}");
-
+                    Trace.WriteLine(i.StashTabUri);
                     //stashTabNumbers.Add(i.TabNumber);
                 }
 
@@ -154,7 +154,9 @@ namespace EnhancePoE
                             }
                             else
                             {
-                                Trace.WriteLine("error fetching data");
+                                //Trace.WriteLine("error fetching data");
+                                System.Windows.MessageBox.Show(res.ReasonPhrase, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+
                             }
                         }
                     }

@@ -48,11 +48,11 @@ namespace EnhancePoE.Model
             string result = "";
             if (show)
             {
-                result += "SHOW";
+                result += "Show";
             }
             else
             {
-                result += "HIDE";
+                result += "Hide";
             }
             string nl = " \n";
             string tab = " \t ";

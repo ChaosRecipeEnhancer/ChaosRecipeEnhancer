@@ -59,6 +59,7 @@ namespace EnhancePoE.View
 
         public new virtual void Show()
         {
+
             IsOpen = true;
             OverlayStashTabList.Clear();
 

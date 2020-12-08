@@ -2,17 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EnhancePoE.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="charName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="accName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="quad" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="stash" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="hideOnClose" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -30,7 +21,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Opacity" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="HotkeyToggle" Type="System.String" Scope="User">
       <Value Profile="(Default)">&lt; not set &gt;</Value>
@@ -39,7 +30,7 @@
       <Value Profile="(Default)">&lt; not set &gt;</Value>
     </Setting>
     <Setting Name="RefreshRate" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">60</Value>
     </Setting>
     <Setting Name="Sets" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -66,13 +57,13 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="StashTabs" Type="EnhancePoE.TabItemViewModel" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="StashTabsString" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="HotkeyStashTab" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">&lt; not set &gt;</Value>
     </Setting>
     <Setting Name="TopStashTabOverlay" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -87,7 +78,7 @@
       <Value Profile="(Default)">50</Value>
     </Setting>
     <Setting Name="OpacityStashTab" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="ColorJewellery" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

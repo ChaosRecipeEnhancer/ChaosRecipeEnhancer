@@ -26,48 +26,12 @@ namespace EnhancePoE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string charName {
-            get {
-                return ((string)(this["charName"]));
-            }
-            set {
-                this["charName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string accName {
             get {
                 return ((string)(this["accName"]));
             }
             set {
                 this["accName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool quad {
-            get {
-                return ((bool)(this["quad"]));
-            }
-            set {
-                this["quad"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int stash {
-            get {
-                return ((int)(this["stash"]));
-            }
-            set {
-                this["stash"] = value;
             }
         }
         
@@ -133,7 +97,7 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public float Opacity {
             get {
                 return ((float)(this["Opacity"]));
@@ -169,7 +133,7 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
         public int RefreshRate {
             get {
                 return ((int)(this["RefreshRate"]));
@@ -277,7 +241,6 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
         public global::EnhancePoE.TabItemViewModel StashTabs {
             get {
                 return ((global::EnhancePoE.TabItemViewModel)(this["StashTabs"]));
@@ -300,7 +263,7 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
         public string HotkeyStashTab {
             get {
                 return ((string)(this["HotkeyStashTab"]));
@@ -360,7 +323,7 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public float OpacityStashTab {
             get {
                 return ((float)(this["OpacityStashTab"]));
