@@ -21,17 +21,20 @@ The overlays will only work in Windowed or Fullscreen Windowed Mode if you have 
 #### Main Overlay
 
 The Main Overlay shows each itemtype with its color. While fetching data it shows a loading bar. When you have enough items of a specific itemtype the image will grey out. If you have Lootfilter Manipulation activated, this is the time to refresh your lootfilter ingame. 
-You can just drag the Main Overlay whereever you want. 
+
+You can just drag the Main Overlay whereever you want except if you set the opacity to 0 (better set it to 0.01).
 
 #### Stashtab Overlay
 
 The Stashtab Overlay highlights items in a specific order if you have full sets in a stashtab. No more wondering which part is missing when selling. Also this way you can put 2 sets in one inventory. (At the moment the tool only highlights a set if the full set is in one stashtab). If there is another set in another tab the overlay highlights that too.
 
-If you want to change position or size of the Stashtabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stashtabs Overlay around and resize it (bottom right corner). 
+If you want to change position or size of the Stashtabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stashtabs Overlay around and resize it (bottom right corner) except if you set the opacity to 0 (better set it to 0.01). 
 
 #### Lootfilter
 
 You can use any lootfilter you want. When modified new rules will be added without deleting your old rules. Only if you have specific rules for the chaos recipe these rules will get overwritten. At the moment there is no possibility of changing the look of highlighting other than color.
+
+#### Settings
 
 ##  F.A.Q.
 #### How do I get my SessionID?
