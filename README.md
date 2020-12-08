@@ -37,6 +37,8 @@ If you want to change position or size of the Stashtabs Overlay, you have to pre
 
 You can use any lootfilter you want. When modified new rules will be added without deleting your old rules. Only if you have specific rules for the chaos recipe these rules will get overwritten. At the moment there is no possibility of changing the look of highlighting other than color.
 
+Unfortunately there is no possibility to automatically refresh your lootfilter ingame (that are legal), so you will have to do that manually (2 clicks).
+
 #### Settings
 
 ##  F.A.Q.
