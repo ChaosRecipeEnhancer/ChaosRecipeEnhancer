@@ -13,6 +13,14 @@ Coming Soon...
  - Stashtab Overlay
  - Lootfilter Manipulation (optional)
 
+## Guide
+
+#### Settings
+
+#### Main Overlay
+
+The main overlay shows each itemtype with its color. When you have enough items of a specific itemtype the image will grey out. If you have Lootfilter Manipulation activated, this is the time to refresh your lootfilter ingame. 
+
 ##  F.A.Q.
 #### How do I get my SessionID?
 Login at PoE website and copy it from your cookies. Everytime you relog at the website your SessionID gets refreshed. You can find an easy to use tutorial [here](http://www.vhpg.com/how-to-find-poe-session-id/).
