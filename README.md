@@ -17,7 +17,7 @@ Coming Soon...
 
 #### General
 
-The overlays will not work in Fullscreen Mode. Instead they only work in:
+The overlays will not work in Fullscreen Mode. Instead they will only work in:
  - DirectX11: Windowed or Fullscreen Windowed Mode
  - Vulkan: Windowed Mode
 
