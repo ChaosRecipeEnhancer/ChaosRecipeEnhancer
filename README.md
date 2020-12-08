@@ -29,6 +29,10 @@ The Stashtab Overlay highlights items in a specific order if you have full sets 
 
 If you want to change position or size of the Stashtabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stashtabs Overlay around and resize it (bottom right corner). 
 
+#### Lootfilter
+
+You can use any lootfilter you want. When modified new rules will be added without deleting your old rules. Only if you have specific rules for the chaos recipe these rules will get overwritten. At the moment there is no possibility of changing the look of highlighting other than color.
+
 ##  F.A.Q.
 #### How do I get my SessionID?
 Login at PoE website and copy it from your cookies. Everytime you relog at the website your SessionID gets refreshed. You can find an easy to use tutorial [here](http://www.vhpg.com/how-to-find-poe-session-id/).
