@@ -39,8 +39,6 @@ You can use any lootfilter you want. When modified new rules will be added witho
 
 Unfortunately there is no possibility to automatically refresh your lootfilter ingame (that are legal), so you will have to do that manually (2 clicks).
 
-#### Settings
-
 ##  F.A.Q.
 #### How do I get my SessionID?
 Login at PoE website and copy it from your cookies. Everytime you relog at the website your SessionID gets refreshed. You can find an easy to use tutorial [here](http://www.vhpg.com/how-to-find-poe-session-id/).
