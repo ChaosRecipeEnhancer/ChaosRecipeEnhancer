@@ -16,7 +16,9 @@ Coming Soon...
 ## Guide
 
 #### General
-The overlays will only work in Windowed or Fullscreen Windowed Mode if you have directx11 enabled or only in Windowed Mode if you have Vulkan renderer enabled.
+
+ - DirectX11: Windowed or Fullscreen Windowed Mode
+ - Vulkan: Windowed Mode
 
 #### Main Overlay
 
