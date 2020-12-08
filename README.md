@@ -33,7 +33,7 @@ The Stashtab Overlay highlights items in a specific order if you have full sets 
 
 If you want to change position or size of the Stashtabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stashtabs Overlay around and resize it (bottom right corner) except if you set the opacity to 0 (better set it to 0.01). 
 
-#### Stashtabs
+#### Stashtabs Order
 
 You have to specify the number of your stashtab from left to right starting from 0. That means your 1st stashtab is 0, your 2nd is 1 and so on. It seems that folders count as 1 stashtab. At the moment it is not possible to fetch items in folders (send E-Mail if you know how).
 
