@@ -26,7 +26,7 @@ namespace EnhancePoE
     public partial class ChaosRecipeEnhancer : Window
     {
 
-        public static Data currentData = new Data();
+        public static Data currentData { get; set; } = new Data();
 
         public static bool FetchingActive { get; set;} = false;
         private static System.Timers.Timer aTimer;
@@ -51,6 +51,8 @@ namespace EnhancePoE
 
         private async void FetchData()
         {
+            GetFrequency();
+            ApiAdapter.GenerateUri();
             await this.Dispatcher.Invoke(async() =>
             {
                 await ApiAdapter.GetItems();
@@ -77,7 +79,6 @@ namespace EnhancePoE
                 }
                 else
                 {
-                    GetFrequency();
                     FetchData();
                     //aTimer.Interval = 1000;
                     aTimer.Enabled = true;
@@ -177,7 +178,6 @@ namespace EnhancePoE
                 FetchData();
             }
 
-            ApiAdapter.GenerateUri();
             base.Show();
 
         }

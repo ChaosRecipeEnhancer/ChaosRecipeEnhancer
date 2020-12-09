@@ -142,8 +142,9 @@ namespace EnhancePoE
                                     //    Trace.WriteLine(i.name);
                                     //}
                                     i.ItemList = deserializedContent.items;
+                                    i.RemoveQualityFromItems();
                                     i.CleanItemList();
-
+                                    //i.RemoveQualityFromItems();
                                     //Trace.WriteLine(deserializedContent);
 
                                     //Trace.WriteLine(myobject.id.ToString());

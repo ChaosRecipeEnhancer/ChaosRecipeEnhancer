@@ -6,12 +6,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Media;
 using EnhancePoE.Model;
 
 
 namespace EnhancePoE
 {
+    // TODO: rework to static class
     public class Data
     {
         //public List<List<Item>> Items { get; set; }
@@ -42,6 +43,10 @@ namespace EnhancePoE
 
         public int SetAmount { get; set; } = 0;
         public int SetTargetAmount { get; set; } = 0;
+
+
+        public static List<ItemWithStash> GlobalItemOrderList { get; set; } = new List<ItemWithStash>();
+        public static List<ItemWithStash> GlobalItemOrderListRest { get; set; } = new List<ItemWithStash>();
 
         private void InitializeBases()
         {
@@ -179,13 +184,9 @@ namespace EnhancePoE
                             s.WeaponAmount += 1;
                             this.OverallWeaponAmount += 1;
                         }
-                    }
+                    } 
                 }
-                else
-                {
-                    Trace.WriteLine("ItemList empty...");
-                }
-
+                s.GetFullSets();
             }
         }
 
@@ -333,5 +334,279 @@ namespace EnhancePoE
             CountTab();
             GetSetAmount();
         }
+
+
+        // TODO: reuse this code in count methods
+        private bool HasFullSet(List<ItemWithStash> itemList)
+        {
+            int ringsAmount = 0;
+            int weaponsAmount = 0;
+            int helmetAmount = 0;
+            int bootsAmount = 0;
+            int glovesAmount = 0;
+            int chestAmount = 0;
+            int amuletAmount = 0;
+            int beltAmount = 0;
+
+            foreach (ItemWithStash item in itemList)
+            {
+                if (item.ItemOfStash.ItemType == "ring")
+                {
+                    ringsAmount++;
+                }
+                else if (item.ItemOfStash.ItemType == "amulet")
+                {
+                    amuletAmount++;
+                }
+                else if (item.ItemOfStash.ItemType == "belt")
+                {
+                    beltAmount++;
+                }
+                else if (item.ItemOfStash.ItemType == "boots")
+                {
+                    bootsAmount++;
+                }
+                else if (item.ItemOfStash.ItemType == "gloves")
+                {
+                    glovesAmount++;
+                }
+                else if (item.ItemOfStash.ItemType == "chest")
+                {
+                    chestAmount++;
+                }
+                else if (item.ItemOfStash.ItemType == "helmet")
+                {
+                    helmetAmount++;
+                }
+                else if (item.ItemOfStash.ItemType == "weapon")
+                {
+                    weaponsAmount++;
+                }
+            }
+
+
+
+            int rings = ringsAmount / 2;
+            int weapons = weaponsAmount / 2;
+            int sets = new[] { rings, weapons, helmetAmount, bootsAmount, glovesAmount, chestAmount, amuletAmount, beltAmount }.Min();
+
+            if(sets > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private Dictionary<string, List<ItemWithStash>> GetItemOrderList(List<ItemWithStash> itemList)
+        {
+            //int breakvar = 0;
+            //ItemOrderList.Clear();
+            List<ItemWithStash> newItemOrderList = new List<ItemWithStash>();
+            List<ItemWithStash> newItemOrderListRest = new List<ItemWithStash>();
+
+            while (HasFullSet(itemList))
+            {
+                // 0: chest
+                // 1: weapon 1
+                // 2: weapon 2
+                // 3: gloves
+                // 4: helmet
+                // 5: boots
+                // 6: belt
+                // 7: ring 1
+                // 8: ring 2
+                // 9: amulet
+                int end = 0;
+                while (end < 10)
+                {
+                    Trace.WriteLine(end, "end: ");
+                    for(int i = 0; i < itemList.Count; i++)
+                    //foreach(Item i in itemList)
+                    {
+                        ItemWithStash _i = itemList[i];
+                        switch (end)
+                        {
+                            case 0:
+                                if (itemList[i].ItemOfStash.ItemType == "chest" && !newItemOrderList.Contains(_i))
+                                {
+                                    newItemOrderList.Add(_i);
+                                    itemList.RemoveAt(i);
+                                    end++;
+                                }
+                                break;
+                            case 1:
+                                if (itemList[i].ItemOfStash.ItemType == "weapon" && !newItemOrderList.Contains(_i))
+                                {
+                                    newItemOrderList.Add(_i);
+                                    itemList.RemoveAt(i);
+                                    end++;
+                                }
+                                break;
+
+                            case 2:
+                                if (itemList[i].ItemOfStash.ItemType == "weapon" && !newItemOrderList.Contains(_i))
+                                {
+                                    newItemOrderList.Add(_i);
+                                    itemList.RemoveAt(i);
+                                    end++;
+                                }
+                                break;
+
+                            case 3:
+                                if (itemList[i].ItemOfStash.ItemType == "gloves" && !newItemOrderList.Contains(_i))
+                                {
+                                    newItemOrderList.Add(_i);
+                                    itemList.RemoveAt(i);
+                                    end++;
+                                }
+                                break;
+                            case 4:
+                                if (itemList[i].ItemOfStash.ItemType == "helmet" && !newItemOrderList.Contains(_i))
+                                {
+                                    newItemOrderList.Add(_i);
+                                    itemList.RemoveAt(i);
+                                    end++;
+                                }
+                                break;
+                            case 5:
+                                if (itemList[i].ItemOfStash.ItemType == "boots" && !newItemOrderList.Contains(_i))
+                                {
+                                    newItemOrderList.Add(_i);
+                                    itemList.RemoveAt(i);
+                                    end++;
+                                }
+                                break;
+                            case 6:
+                                if (itemList[i].ItemOfStash.ItemType == "belt" && !newItemOrderList.Contains(_i))
+                                {
+                                    newItemOrderList.Add(_i);
+                                    itemList.RemoveAt(i);
+                                    end++;
+                                }
+                                break;
+                            case 7:
+                                if (itemList[i].ItemOfStash.ItemType == "ring" && !newItemOrderList.Contains(_i))
+                                {
+                                    newItemOrderList.Add(_i);
+                                    itemList.RemoveAt(i);
+                                    end++;
+                                }
+                                break;
+                            case 8:
+                                if (itemList[i].ItemOfStash.ItemType == "ring" && !newItemOrderList.Contains(_i))
+                                {
+                                    newItemOrderList.Add(_i);
+                                    itemList.RemoveAt(i);
+                                    end++;
+                                }
+                                break;
+                            case 9:
+                                if (itemList[i].ItemOfStash.ItemType == "amulet" && !newItemOrderList.Contains(_i))
+                                {
+                                    newItemOrderList.Add(_i);
+                                    itemList.RemoveAt(i);
+                                    end++;
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+
+            foreach(ItemWithStash i in itemList)
+            {
+                newItemOrderListRest.Add(i);
+            }
+
+            Dictionary<string, List<ItemWithStash>> ret = new Dictionary<string, List<ItemWithStash>>();
+            ret.Add("list", newItemOrderList);
+            ret.Add("rest", newItemOrderListRest);
+
+            return ret;
+        }
+
+        // 
+        public void ActivateNextCell(bool active)
+        {
+            if (active)
+            {
+                if (GlobalItemOrderList.Count > 0)
+                {
+                    foreach (StashTab s in MainWindow.stashTabsModel.StashTabs)
+                    {
+                        s.TabHeaderColor = Brushes.Transparent;
+                        foreach (Cell c in s.OverlayCellsList)
+                        {
+                            c.Active = false;
+                        }
+                    }
+                    MainWindow.stashTabsModel.StashTabs[GlobalItemOrderList[0].IndexOfStash].ActivateItemCells(GlobalItemOrderList[0].ItemOfStash);
+                    if (Properties.Settings.Default.ColorStash != "")
+                    {
+                        MainWindow.stashTabsModel.StashTabs[GlobalItemOrderList[0].IndexOfStash].TabHeaderColor = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
+                    }
+                    else
+                    {
+                        MainWindow.stashTabsModel.StashTabs[GlobalItemOrderList[0].IndexOfStash].TabHeaderColor = Brushes.Red;
+                    }
+                    //ActivateItemCells(ItemOrderList[0]);
+                    GlobalItemOrderList.RemoveAt(0);
+                }
+                else
+                {
+                    //MainWindow.stashTabsModel.StashTabs[GlobalItemOrderList[0].IndexOfStash].TabHeaderColor = Brushes.Transparent;
+                    foreach(StashTab s in MainWindow.stashTabsModel.StashTabs)
+                    {
+                        s.TabHeaderColor = Brushes.Transparent;
+                        foreach (Cell c in s.OverlayCellsList)
+                        {
+                            c.Active = false;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        public void PrepareSelling()
+        {
+            GlobalItemOrderList.Clear();
+            GlobalItemOrderListRest.Clear();
+            foreach(StashTab s in MainWindow.stashTabsModel.StashTabs)
+            {
+                s.PrepareOverlayList();
+                if (s.ItemList != null)
+                {
+                    //Trace.WriteLine(s.ItemList.Count());
+                    if (s.FullSets == 0)
+                    {
+                        foreach (Item i in s.ItemList)
+                        {
+                            GlobalItemOrderListRest.Add(new ItemWithStash { IndexOfStash = s.TabIndex, ItemOfStash = i });
+                        }
+                    }
+                    else
+                    {
+                        List<ItemWithStash> copyItemList = new List<ItemWithStash>();
+                        foreach(Item i in s.ItemList)
+                        {
+                            copyItemList.Add(new ItemWithStash { IndexOfStash = s.TabIndex, ItemOfStash = i });
+                        }
+                        Dictionary<string, List<ItemWithStash>> itemorder = GetItemOrderList(copyItemList);
+                        GlobalItemOrderList.AddRange(itemorder["list"]);
+                        GlobalItemOrderListRest.AddRange(itemorder["rest"]);
+                    }
+                }
+            }
+            Dictionary<string, List<ItemWithStash>> itemorderrest = GetItemOrderList(GlobalItemOrderListRest);
+            GlobalItemOrderList.AddRange(itemorderrest["list"]);
+        }
+    }
+
+    public class ItemWithStash
+    {
+        public int IndexOfStash { get; set; }
+        public Item ItemOfStash { get; set; }
     }
 }

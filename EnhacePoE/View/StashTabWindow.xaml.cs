@@ -28,11 +28,11 @@ namespace EnhancePoE.View
 
         public bool IsOpen { get; set; } = false;
         public bool IsEditing { get; set; } = false;
-        public Dictionary<TextBlock, int> TextBlockList { get; set; } = new Dictionary<TextBlock, int>();
+        //public Dictionary<TextBlock, int> TextBlockList { get; set; } = new Dictionary<TextBlock, int>();
 
 
 
-        public ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
+        public static ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
         public StashTabWindow()
         {
             InitializeComponent();
@@ -53,7 +53,7 @@ namespace EnhancePoE.View
             IsEditing = false;
             MainWindow.overlay.OpenStashTabOverlay.Content = "Stash";
             MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
-            TextBlockList.Clear();
+            //TextBlockList.Clear();
             base.Hide();
         }
 
@@ -65,21 +65,37 @@ namespace EnhancePoE.View
 
             foreach (StashTab i in MainWindow.stashTabsModel.StashTabs)
             {
-                i.PrepareOverlayList();
-                i.ActivateNextCell(true);
+                //i.PrepareOverlayList();
+                //i.ActivateNextCell(true);
                 TabItem newStashTabItem;
-                TextBlock tbk = new TextBlock() { Text = i.TabName, Padding = new Thickness(5, 2, 5, 2) };
-                if (i.ItemOrderList.Count > 0)
-                {
-                    if (Properties.Settings.Default.ColorStash != "")
-                    {
-                        tbk.Background = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
-                    }
-                    else
-                    {
-                        tbk.Background = Brushes.Red;
-                    }
-                }
+                TextBlock tbk = new TextBlock() { Text = i.TabName, Padding = new Thickness(20, 2, 20, 2) };
+                //if (i.ItemOrderList.Count > 0)
+                //{
+                //    if (Properties.Settings.Default.ColorStash != "")
+                //    {
+                //        tbk.Background = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
+                //    }
+                //    else
+                //    {
+                //        tbk.Background = Brushes.Red;
+                //    }
+                //}
+
+                //tbk.Background = i.TabHeaderColor;
+                tbk.DataContext = i;
+                tbk.SetBinding(TextBlock.BackgroundProperty, new System.Windows.Data.Binding("TabHeaderColor"));
+                tbk.FontSize = 16;
+                //if(i..Co > 0)
+                //{
+                //    if (Properties.Settings.Default.ColorStash != "")
+                //    {
+                //        i.TabHeaderColor = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
+                //    }
+                //    else
+                //    {
+                //        i.TabHeaderColor = Brushes.Red;
+                //    }
+                //}
 
                 i.TabHeader = tbk;
 
@@ -109,7 +125,7 @@ namespace EnhancePoE.View
                         }
                     };
                 }
-
+                
                 //TabItem newStashTabItem = new TabItem;
                 //newStashTabItem.Header = i.TabName;
                 ////newStashTabItem.DataContext = i.ItemList;
@@ -123,6 +139,9 @@ namespace EnhancePoE.View
             }
 
             StashTabOverlayTabControl.SelectedIndex = 0;
+
+            ChaosRecipeEnhancer.currentData.PrepareSelling();
+            ChaosRecipeEnhancer.currentData.ActivateNextCell(true);
 
             MainWindow.overlay.OpenStashTabOverlay.Content = "Hide";
 

@@ -41,8 +41,6 @@ namespace EnhancePoE.Model
         }
 
 
-
-        //TODO: create StashTab from settings and add these in TabItemViewModel
         public static List<StashTab> DeserializeStashTab()
         {
             StringCollection saveStringCollection = Properties.Settings.Default.StashTabsString;

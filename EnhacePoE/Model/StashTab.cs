@@ -43,6 +43,8 @@ namespace EnhancePoE.Model
         public int FullSets { get; set; } = 0;
         public ObservableCollection<Cell> OverlayCellsList { get; set; } = new ObservableCollection<Cell>();
         public List<Item> ItemOrderList { get; set; } = new List<Item>();
+
+        // used for registering clicks on tab headers
         public TextBlock TabHeader { get; set; }
 
 
@@ -105,6 +107,20 @@ namespace EnhancePoE.Model
             }
         }
 
+        private SolidColorBrush _tabHeaderColor;
+        public SolidColorBrush TabHeaderColor
+        {
+            get
+            {
+                return _tabHeaderColor;
+            }
+            set
+            {
+                _tabHeaderColor = value;
+                OnPropertyChanged(nameof(TabHeaderColor));
+            }
+        }
+
         public StashTabControl _stashControl { get; set; } = new StashTabControl();
 
         private TabItem _stashTabItem;
@@ -127,6 +143,7 @@ namespace EnhancePoE.Model
             this._stashTabItem.Content = this._stashControl;
             this._stashTabItem.DataContext = this;
             //this.TabHeader = new TextBlock() { Text = this.TabName, Padding = new Thickness(5, 2, 5, 2) };
+            TabHeaderColor = Brushes.Transparent;
         }
 
         public StashTab(string name, bool quad, int number, int index)
@@ -140,9 +157,11 @@ namespace EnhancePoE.Model
             this._stashTabItem.Content = this._stashControl;
             this._stashTabItem.DataContext = this;
             //this.TabHeader = new TextBlock() { Text = name, Padding = new Thickness(5, 2, 5, 2) };
+            TabHeaderColor = Brushes.Transparent;
+
         }
 
-        private void GetFullSets()
+        public void GetFullSets()
         {
             int rings = this.RingAmount / 2;
             int weapons = this.WeaponAmount / 2;
@@ -171,7 +190,7 @@ namespace EnhancePoE.Model
                         Active = false,
                         XIndex = j,
                         YIndex = i,
-                        ToggleCellCommand = new RelayCommand<bool>(ActivateNextCell),
+                        ToggleCellCommand = new RelayCommand<bool>(ChaosRecipeEnhancer.currentData.ActivateNextCell),
                         //ButtonName = "Btn " + j + " " + i,
                         //CellName = "Cell " + j + " " + i
                     });
@@ -180,178 +199,9 @@ namespace EnhancePoE.Model
         }
 
 
-        // multithread for avoiding endlessloop
-        private void GenerateItemOrderList()
-        {
-            int breakvar = 0;
-            ItemOrderList.Clear();
-            while (FullSets > 0 && breakvar < 1000)
-            {
-                // 0: chest
-                // 1: weapon 1
-                // 2: weapon 2
-                // 3: gloves
-                // 4: helmet
-                // 5: boots
-                // 6: belt
-                // 7: ring 1
-                // 8: ring 2
-                // 9: amulet
-                int end = 0;
-                breakvar++;
-                while (end < 10 && breakvar < 1000)
-                {
-                    Trace.WriteLine(end, "end");
-                    breakvar++;
-                    switch(end)
-                    {
-                        case 0:
-                            foreach(Item i in ItemList)
-                            {
-                                if (i.ItemType == "chest" && !ItemOrderList.Contains(i))
-                                {
-                                    ItemOrderList.Add(i);
-                                    Trace.WriteLine(i.typeLine);
-                                    end++;
-                                    break;
-                                }
-                            }
-                            break;
-                        case 1:
-                            foreach (Item i in ItemList)
-                            {
-                                if (i.ItemType == "weapon" && !ItemOrderList.Contains(i))
-                                {
-                                    ItemOrderList.Add(i);
-                                    Trace.WriteLine(i.typeLine);
-                                    end++;
-                                    break;
-                                }
-                            }
-                            break;                            
-                        case 2:
-                            foreach (Item i in ItemList)
-                            {
-                                if (i.ItemType == "weapon" && !ItemOrderList.Contains(i))
-                                {
-                                    ItemOrderList.Add(i);
-                                    Trace.WriteLine(i.typeLine);
-                                    end++;
-
-                                    break;
-                                }
-                            }
-                            break;
-                        case 3:
-                            foreach (Item i in ItemList)
-                            {
-                                if (i.ItemType == "gloves" && !ItemOrderList.Contains(i))
-                                {
-                                    ItemOrderList.Add(i);
-                                    Trace.WriteLine(i.typeLine);
-                                    end++;
-                                    
-
-                                    break;
-                                }
-                            }
-                            break;
-                        case 4:
-                            foreach (Item i in ItemList)
-                            {
-                                if (i.ItemType == "boots" && !ItemOrderList.Contains(i))
-                                {
-                                    ItemOrderList.Add(i);
-                                    Trace.WriteLine(i.typeLine);
-                                    end++;
-                                    
-
-                                    break;
-                                }
-                            }
-                            break;
-                        case 5:
-                            foreach (Item i in ItemList)
-                            {
-                                if (i.ItemType == "helmet" && !ItemOrderList.Contains(i))
-                                {
-                                    ItemOrderList.Add(i);
-                                    Trace.WriteLine(i.typeLine);
-                                    end++;
-                                    
-
-                                    break;
-                                }
-                            }
-                            break;
-                        case 6:
-                            foreach (Item i in ItemList)
-                            {
-                                if (i.ItemType == "belt" && !ItemOrderList.Contains(i))
-                                {
-                                    ItemOrderList.Add(i);
-                                    Trace.WriteLine(i.typeLine);
-                                    end++;
-                                    
-
-                                    break;
-                                }
-                            }
-                            break;
-                        case 7:
-                            foreach (Item i in ItemList)
-                            {
-                                if (i.ItemType == "ring" && !ItemOrderList.Contains(i))
-                                {
-                                    ItemOrderList.Add(i);
-                                    Trace.WriteLine(i.typeLine);
-                                    end++;
-                                    
-
-                                    break;
-                                }
-                            }
-                            break;
-                        case 8:
-                            foreach (Item i in ItemList)
-                            {
-                                if (i.ItemType == "ring" && !ItemOrderList.Contains(i))
-                                {
-                                    ItemOrderList.Add(i);
-                                    Trace.WriteLine(i.typeLine);
-                                    end++;
-                                    
-
-                                    break;
-                                }
-                            }
-                            break;
-                        case 9:
-                            foreach (Item i in ItemList)
-                            {
-                                if (i.ItemType == "amulet" && !ItemOrderList.Contains(i))
-                                {
-                                    ItemOrderList.Add(i);
-                                    Trace.WriteLine(i.typeLine);
-                                    end++;
-                                    
-
-                                    break;
-                                }
-                            }
-                            break;
-                    }
-                    FullSets--;
-                }
-            }
-        }
-
-        //public Thread th { get; set; }
-
-
         public void PrepareOverlayList()
         {
-            GetFullSets();
+            //GetFullSets();
             int size;
             if (this.Quad)
             {
@@ -365,8 +215,8 @@ namespace EnhancePoE.Model
             //GenerateItemOrderList();
             //th = new Thread(GenerateItemOrderList);
             //th.Start();
-            GenerateItemOrderList();
-            Trace.WriteLine(OverlayCellsList.Count, "overlaycelllist count");
+            //GenerateItemOrderList();
+            //Trace.WriteLine(OverlayCellsList.Count, "overlaycelllist count");
         }
 
         private string CheckBase(Item item)
@@ -438,6 +288,22 @@ namespace EnhancePoE.Model
             return null;
         }
 
+        public void RemoveQualityFromItems()
+        {
+            foreach(Item i in this.ItemList)
+            {
+                //Trace.WriteLine(i.typeLine);
+                //Trace.WriteLine(i.typeLine);
+                if (i.typeLine.StartsWith("Superior"))
+                {
+                    //Trace.WriteLine(i.typeLine);
+                    i.typeLine = i.typeLine.Replace("Superior ", "");
+                    //i.typeLine.Trim();
+                }
+                //Trace.WriteLine(i.typeLine);
+            }
+        }
+
         public void CleanItemList()
         {
             // for loop backwards for deleting from list 
@@ -497,63 +363,7 @@ namespace EnhancePoE.Model
                 }
             }
 
-            if(this.ItemOrderList.Count <= 0)
-            {
-                this.TabHeader.ClearValue(TextBlock.BackgroundProperty);
-            }
-
-            // TESTING
-            //foreach(List<int> i in AllCoordinates)
-            //{
-            //    Trace.WriteLine(i[0], "x");
-            //    Trace.WriteLine(i[1], "y");
-            //}
         }
-
-
-        // needs cell for icommand, not sure why
-        public void ActivateNextCell(bool active)
-        {
-
-            //Trace.WriteLine(param, "cell");
-            //if (MainWindow.stashTabOverlay.IsVisible)
-            //{
-            //    Point GetMousePos() => MainWindow.stashTabOverlay.PointToScreen(Mouse.GetPosition(MainWindow.stashTabOverlay));
-            //    Point point = GetMousePos();
-            //    Trace.WriteLine(point, "point");
-            //    //MainWindow.stashTabOverlay.IsHitTestVisible = false;
-            //    ClickLeftMouseButton(0, 0);
-            //    //MainWindow.stashTabOverlay.IsHitTestVisible = true;
-            //}
-
-
-
-            if (active)
-            {
-                if (ItemOrderList.Count > 0)
-                {
-                    ActivateItemCells(ItemOrderList[0]);
-                    ItemOrderList.RemoveAt(0);
-                }
-                else
-                {
-                    foreach (Cell c in OverlayCellsList)
-                    {
-                        c.Active = false;
-                    }
-                    if(this.TabHeader != null)
-                    {
-                        this.TabHeader.ClearValue(TextBlock.BackgroundProperty);
-                    }
-                    //Trace.WriteLine(ItemOrderList.Count, "itemorderlist count");
-                }
-            }
-
-
-        }
-
-
-
 
 
 

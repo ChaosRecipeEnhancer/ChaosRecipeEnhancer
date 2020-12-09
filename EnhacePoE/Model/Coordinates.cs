@@ -117,7 +117,7 @@ namespace EnhancePoE.Model
 
                 if (isHit)
                 {
-                    MainWindow.stashTabsModel.StashTabs[selectedIndex].ActivateNextCell(true);
+                    ChaosRecipeEnhancer.currentData.ActivateNextCell(true);
                 }
 
                 //Trace.WriteLine(isHit);
@@ -151,7 +151,7 @@ namespace EnhancePoE.Model
 
                 if (isHit)
                 {
-                    MainWindow.stashTabsModel.StashTabs[selectedIndex].ActivateNextCell(true);
+                    ChaosRecipeEnhancer.currentData.ActivateNextCell(true);
                 }
 
                 //Trace.WriteLine(isHit);

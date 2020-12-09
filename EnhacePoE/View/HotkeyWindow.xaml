@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:EnhancePoE"
         mc:Ignorable="d"
         FontSize="18"
+        Topmost="True"
         xmlns:uc="clr-namespace:EnhancePoE"
         WindowStartupLocation="CenterScreen"
         Title="HotkeyWindow" Height="200" Width="200">

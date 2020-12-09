@@ -245,13 +245,16 @@ namespace EnhancePoE
                 {
                     RunButton.Content = "Run";
                     overlay.Hide();
+                    if (stashTabOverlay.IsOpen)
+                    {
+                        stashTabOverlay.Hide();
+                    }
                 }
             }
         }
 
         private void RunButton_Click(object sender, RoutedEventArgs e)
         {
-
             RunOverlay();
         }
 

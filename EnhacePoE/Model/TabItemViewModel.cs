@@ -95,8 +95,12 @@ namespace EnhancePoE
 
         private void RemoveTabItem()
         {
-            if(CurrentTab >= 0)
+            if (CurrentTab >= 0)
             {
+                if (MainWindow.stashTabOverlay.IsOpen)
+                {
+                    MainWindow.stashTabOverlay.Hide();
+                }
                 StashTabs.Remove(StashTabs[CurrentTab]);
                 StashTabItems.Remove(StashTabItems[CurrentTab]);
             }
@@ -104,7 +108,10 @@ namespace EnhancePoE
 
         private void AddTabItem()
         {
-
+            if (MainWindow.stashTabOverlay.IsOpen)
+            {
+                MainWindow.stashTabOverlay.Hide();
+            }
             Model.StashTab currTab = new Model.StashTab("New Tab");
             StashTabs.Add(currTab);
             StashTabItems.Add(currTab.StashTabItem);
