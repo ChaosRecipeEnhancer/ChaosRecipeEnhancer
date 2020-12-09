@@ -2,9 +2,18 @@
 
 For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com.
 
-Main Overlay
-![EnhancePoE1](https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen2.png)
 
+## Main Overlay
+
+![Main Overlay](https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen2.png)
+
+## Stashtab Overlay
+
+![Stashtab Overlay](https://github.com/kosace/EnhancePoEApp/blob/master/EnhancePoEscreen1.png)
+
+## The Settings
+
+![Settings](https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen3.png)
 
 ## Installation
 Coming Soon...
