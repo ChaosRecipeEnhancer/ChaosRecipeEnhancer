@@ -15,23 +15,25 @@ Coming Soon...
 
 ## Guide
 
-#### General
+#### Compatibility
 
 The overlays will not work in Fullscreen Mode. Instead they will only work in:
  - DirectX11: Windowed or Fullscreen Windowed Mode
  - Vulkan: Windowed Mode
+ 
+The tool only works in Windows, no support for other OS.
 
 #### Main Overlay
 
-The Main Overlay shows each itemtype with its color. While fetching data it shows a loading bar. When you have enough items of a specific itemtype the image will grey out. If you have Lootfilter Manipulation activated, this is the time to refresh your lootfilter ingame. 
+The Main Overlay shows each itemtype with its color and while fetching data it shows a loading bar. When you have enough items of a specific itemtype the image will grey out. If you have Lootfilter Manipulation activated, this is the time to refresh your lootfilter ingame. 
 
-You can just drag the Main Overlay whereever you want except if you set the opacity to 0 (better set it to 0.01).
+You can just drag the Main Overlay whereever you want, except if you set the opacity to 0 (better set it to 0.01).
 
 #### Stashtab Overlay
 
 The Stashtab Overlay highlights items in a specific order if you have full sets in a stashtab. No more wondering which part is missing when selling. Also this way you can put 2 sets in one inventory.
 
-If you want to change position or size of the Stashtabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stashtabs Overlay around and resize it (bottom right corner) except if you set the opacity to 0 (better set it to 0.01). At the moment the tabheader sizes are optimized for full hd. I will add support for manually editing these later.
+If you want to change position or size of the Stashtabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stashtabs Overlay around and resize it (bottom right corner), except if you set the opacity to 0 (better set it to 0.01). At the moment the tabheader sizes are optimized for full hd. I will add support for manually editing these later.
 
 #### Stashtabs Order
 
