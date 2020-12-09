@@ -9,11 +9,11 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com.
 
 #### Stashtab Overlay
 
-![Stashtab Overlay](https://github.com/kosace/EnhancePoEApp/blob/master/EnhancePoEscreen1.png)
+<img src="https://github.com/kosace/EnhancePoEApp/blob/master/EnhancePoEscreen1.png" width="500">
 
 #### The Settings
 
-![Settings](https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen3.png)
+<img src="https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen3.png" width="500">
 
 ## Installation
 Coming Soon...
