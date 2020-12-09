@@ -45,6 +45,10 @@ You can use any lootfilter you want. When modified new rules will be added witho
 
 Unfortunately there is no possibility to automatically refresh your lootfilter ingame (that are legal), so you will have to do that manually (2 clicks).
 
+#### Bases
+
+If you want to change the bases you pick up, navigate to installationsfolder/bases and edit the .txt files accordingly. This way you can still use this tool when new bases are released or if you want to pick up bigger weapons too. 
+
 ##  F.A.Q.
 #### How do I get my SessionID?
 Login at PoE website and copy it from your cookies. Everytime you relog at the website your SessionID gets refreshed. You can find an easy to use tutorial [here](http://www.vhpg.com/how-to-find-poe-session-id/).
