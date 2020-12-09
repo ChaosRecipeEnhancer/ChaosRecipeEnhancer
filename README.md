@@ -22,6 +22,7 @@ Coming Soon...
 
  - Easy to use
  - Multiple Stashtabs
+ - Hotkeys
  - Customizable Overlay
  - Stashtab Overlay for easy selling
  - Lootfilter Manipulation (optional)
