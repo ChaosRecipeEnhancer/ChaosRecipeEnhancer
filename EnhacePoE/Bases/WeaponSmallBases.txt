@@ -33,7 +33,6 @@ Trisula
 Gutting Knife
 Ambusher
 Pneumatic Dagger
-Sai
 Rusted Sword
 Copper Sword
 Sabre

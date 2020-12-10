@@ -156,7 +156,7 @@ namespace EnhancePoE
                             else
                             {
                                 //Trace.WriteLine("error fetching data");
-                                System.Windows.MessageBox.Show(res.ReasonPhrase, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+                                System.Windows.MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
 
                             }
                         }
