@@ -2,7 +2,7 @@
 
 This App fetches data from PoE servers and shows which items you need to pick up for the Chaos Recipe. Optionally it manipulates your lootfilter, so you can go full braindead while farming! While selling your stuff it shows you what items to put in your inventory in which order. No more using your brain at all!
 
-For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com.
+For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam this [discord](https://discord.gg/KgVsUdSSrR).
 
 
 #### Main Overlay
@@ -18,7 +18,10 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com.
 <img src="https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen3.png" width="500">
 
 ## Installation
-Coming Soon...
+
+[Download](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi) and install. 
+
+Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
 
 ## Features
 
@@ -65,7 +68,10 @@ Unfortunately there is no possibility to automatically refresh your lootfilter i
 
 If you want to change the bases you pick up, navigate to "C:\Users\ [username]\AppData\Roaming\ChaosRecipeEnhancer\Bases", and edit the .txt files accordingly. This way you can still use this tool when new bases are released or if you want to pick up bigger weapons too. At the moment identified items will get ignored.
 
-The list of bases may include some old bases and too big weapons at the moment. If you have a recent list of all bases and small weapons, send me an E-Mail please.
+You have to restart the app after changing the files.
+
+The list of bases may include some old bases and too big weapons at the moment. If you have a up-to-date list of all bases and small weapons (1x3), send me an E-Mail please. 
+Also Sai in weapon bases produces a bug where some body armours get highlighted, so i deleted Sai.
 
 ##  F.A.Q.
 #### How do I get my SessionID?
@@ -74,7 +80,7 @@ Login at PoE website and copy it from your cookies. Everytime you relog at the w
 Don't share your SessionID with anyone.
 
 #### Is this tool safe?
-You can compile the sourcecode for yourself or control outgoing traffic with [Wireshark](https://www.wireshark.org/). You will see that this tool only communicates with PoE servers. The hotkeys are safe too as they are Windows hotkeys. No keylogging if you thought so.
+You can check and compile the sourcecode for yourself, so it should be safe as long as you are downloading it from here.
 
 #### Can I get banned for using this tool?
 Well, I contacted GGG but as usual they don't answer any questions regarding legality of 3rd party tools. As this tool does not interfer with any game files directly, the answer is: probably no!
