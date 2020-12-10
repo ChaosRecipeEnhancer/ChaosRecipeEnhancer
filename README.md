@@ -80,7 +80,7 @@ Login at PoE website and copy it from your cookies. Everytime you relog at the w
 Don't share your SessionID with anyone.
 
 #### Is this tool safe?
-You can compile the sourcecode for yourself or control outgoing traffic with [Wireshark](https://www.wireshark.org/). You will see that this tool only communicates with PoE servers. The hotkeys are safe too as they are Windows hotkeys. No keylogging if you thought so.
+You can compile the sourcecode for yourself or control outgoing traffic with [Wireshark](https://www.wireshark.org/). You will see that this tool only communicates with PoE servers.
 
 #### Can I get banned for using this tool?
 Well, I contacted GGG but as usual they don't answer any questions regarding legality of 3rd party tools. As this tool does not interfer with any game files directly, the answer is: probably no!
