@@ -70,7 +70,8 @@ If you want to change the bases you pick up, navigate to "C:\Users\ [username]\A
 
 You have to restart the app after changing the files.
 
-The list of bases may include some old bases and too big weapons at the moment. If you have a recent list of all bases and small weapons, send me an E-Mail please. Also Saint's Hauberk and Saintly Chainmail get highlighted as weapons when you have Sai in your weapon bases. If you don't want that just delete Sai from weapon bases.
+The list of bases may include some old bases and too big weapons at the moment. If you have a recent list of all bases and small weapons, send me an E-Mail please. 
+Also Sai in weapon bases produces a bug where some body armours get highlighted, so i deleted Sai.
 
 ##  F.A.Q.
 #### How do I get my SessionID?
