@@ -70,7 +70,7 @@ If you want to change the bases you pick up, navigate to "C:\Users\ [username]\A
 
 You have to restart the app after changing the files.
 
-The list of bases may include some old bases and too big weapons at the moment. If you have a recent list of all bases and small weapons, send me an E-Mail please.
+The list of bases may include some old bases and too big weapons at the moment. If you have a recent list of all bases and small weapons, send me an E-Mail please. Also Saint's Hauberk and Saintly Chainmail get highlighted as weapons when you have Sai in your weapon bases. If you don't want that just delete Sai from weapon bases.
 
 ##  F.A.Q.
 #### How do I get my SessionID?
@@ -87,7 +87,3 @@ Well, I contacted GGG but as usual they don't answer any questions regarding leg
 Although there are 2 points which could be problematic:
 1. The tool fetches data from PoE servers repeatedly, so they could think you are stressing the servers too much. That is why I limited the refreshrate a bit. One request per one second (if you have under 15 stashtabs configured). 
 2. The tool manipulates your lootfilter. I'm not sure if they are considered "game files" by GGG, personally I would'nt consider them so. But if you are unsure you can deactivate this feature and only use the overlay. 
-
-## Known Bugs
-
- - Saintly Chainmail and Saint's Hauberk get highlighted as weapons
