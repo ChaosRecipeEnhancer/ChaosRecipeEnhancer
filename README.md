@@ -17,8 +17,9 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com.
 
 <img src="https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen3.png" width="500">
 
-## Installation
-Coming Soon...
+## Download
+
+[Download now!](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi)
 
 ## Features
 
