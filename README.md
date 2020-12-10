@@ -17,9 +17,9 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com.
 
 <img src="https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen3.png" width="500">
 
-## Download
+## Installation
 
-[Download now!](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi)
+[Download now!](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi) and install. Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
 
 ## Features
 
