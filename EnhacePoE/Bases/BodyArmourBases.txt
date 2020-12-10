@@ -81,8 +81,6 @@ Devout Chainmail
 Loricated Ringmail
 Conquest Chainmail
 Elegant Ringmail
-Saint's Hauberk
-Saintly Chainmail
 Padded Vest
 Oiled Vest
 Padded Jacket
@@ -101,3 +99,5 @@ Blood Raiment
 Sadist Garb
 Carnal Armour
 Sacrificial Garb
+Saint's Hauberk
+Saintly Chainmail

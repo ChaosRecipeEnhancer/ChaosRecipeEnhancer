@@ -260,44 +260,6 @@
     <Resource Include="Assets\gloves.png" />
     <Resource Include="Assets\helmet.png" />
     <Resource Include="Assets\weapon.png" />
-    <Content Include="Bases\RingBases.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Bases\BeltBases.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Bases\AmuletBases.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Bases\BodyArmourBases.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Bases\BootsBases.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Bases\GlovesBases.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Bases\HelmetBases.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Bases\WeaponSmallBases.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -310,6 +272,16 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Bases\AmuletBases.txt" />
+    <Resource Include="Bases\BeltBases.txt" />
+    <Resource Include="Bases\BodyArmourBases.txt" />
+    <Resource Include="Bases\BootsBases.txt" />
+    <Resource Include="Bases\GlovesBases.txt" />
+    <Resource Include="Bases\HelmetBases.txt" />
+    <Resource Include="Bases\RingBases.txt" />
+    <Resource Include="Bases\WeaponSmallBases.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
