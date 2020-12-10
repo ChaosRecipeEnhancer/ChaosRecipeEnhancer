@@ -87,4 +87,4 @@ Well, I contacted GGG but as usual they don't answer any questions regarding leg
 
 Although there are 2 points which could be problematic:
 1. The tool fetches data from PoE servers repeatedly, so they could think you are stressing the servers too much. That is why I limited the refreshrate a bit. One request per one second (if you have under 15 stashtabs configured). 
-2. The tool manipulates your lootfilter. I'm not sure if they are considered "game files" by GGG, personally I would'nt consider them so. But if you are unsure you can deactivate this feature and only use the overlay. 
+2. The tool manipulates your lootfilter. I'm not sure if they are considered "game files" by GGG, personally I would'nt consider them so. The tool certainly doesn't interact with the game client in any way. But if you are unsure you can deactivate this feature and only use the overlay. 
