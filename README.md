@@ -70,7 +70,7 @@ If you want to change the bases you pick up, navigate to "C:\Users\ [username]\A
 
 You have to restart the app after changing the files.
 
-The list of bases may include some old bases and too big weapons at the moment. If you have a recent list of all bases and small weapons, send me an E-Mail please. 
+The list of bases may include some old bases and too big weapons at the moment. If you have a up-to-date list of all bases and small weapons (1x3), send me an E-Mail please. 
 Also Sai in weapon bases produces a bug where some body armours get highlighted, so i deleted Sai.
 
 ##  F.A.Q.
