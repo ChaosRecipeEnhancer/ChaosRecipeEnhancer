@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancePoE", "EnhacePoE\EnhancePoE.csproj", "{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EnhancePoEAppInstaller", "EnhancePoEAppInstaller\EnhancePoEAppInstaller.vdproj", "{8B7FC88D-C421-4D17-964B-FFE05188207A}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EnhancePoESetup", "EnhancePoESetup\EnhancePoESetup.vdproj", "{B7983236-7440-4F74-B947-3205A5D450F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,8 +17,8 @@ Global
 		{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8B7FC88D-C421-4D17-964B-FFE05188207A}.Debug|Any CPU.ActiveCfg = Debug
-		{8B7FC88D-C421-4D17-964B-FFE05188207A}.Release|Any CPU.ActiveCfg = Release
+		{B7983236-7440-4F74-B947-3205A5D450F7}.Debug|Any CPU.ActiveCfg = Debug
+		{B7983236-7440-4F74-B947-3205A5D450F7}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

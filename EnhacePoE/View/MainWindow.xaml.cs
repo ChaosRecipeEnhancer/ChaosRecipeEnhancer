@@ -117,7 +117,7 @@ namespace EnhancePoE
         // creates tray icon with menu
         private void InitializeTray()
         {
-            ni.Icon = Properties.Resources.treasureChest_removebg_preview;
+            ni.Icon = Properties.Resources.gold_removebg_preview;
             ni.Visible = true;
             ni.DoubleClick +=
                 delegate (object sender, EventArgs args)

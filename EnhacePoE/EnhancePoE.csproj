@@ -63,7 +63,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\treasureChest-removebg-preview.ico</ApplicationIcon>
+    <ApplicationIcon>gold-removebg-preview.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -248,6 +252,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="gold-removebg-preview.ico" />
+    <None Include="Resources\gold-removebg-preview.ico" />
     <None Include="Resources\treasureChest-removebg-preview.ico" />
     <Resource Include="Assets\boots.png" />
     <Resource Include="Assets\chest.png" />

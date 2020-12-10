@@ -458,7 +458,7 @@
             />
 
         <TextBlock
-            Grid.Column="3"
+            Grid.Column="1"
             Grid.Row="8"
             Text="Lootfilter Manipulation:"
             ToolTipService.InitialShowDelay="50"
@@ -467,7 +467,7 @@
 
         <CheckBox
             x:Name="LootfilterActiveCheckbox"
-            Grid.Column="4"
+            Grid.Column="2"
             Grid.Row="8"
             Margin="10,0,20,10"
             VerticalAlignment="Center"
