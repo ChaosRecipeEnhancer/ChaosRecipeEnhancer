@@ -16,6 +16,7 @@ namespace EnhancePoE
     {
 
 
+        // TODO: make app single instance 
         public App()
         {
             this.Dispatcher.UnhandledException += OnDispatcherUnhandledException;

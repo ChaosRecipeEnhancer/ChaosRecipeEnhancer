@@ -566,13 +566,22 @@ namespace EnhancePoE
                 }
             }
         }
-
-
+        private void ReIndexAllStashTabs()
+        {
+            if(MainWindow.stashTabsModel != null)
+            {
+                for (int i = 0; i < MainWindow.stashTabsModel.StashTabs.Count; i++)
+                {
+                    MainWindow.stashTabsModel.StashTabs[i].TabIndex = i;
+                }
+            }
+        }
 
         public void PrepareSelling()
         {
             GlobalItemOrderList.Clear();
             GlobalItemOrderListRest.Clear();
+            ReIndexAllStashTabs();
             foreach(StashTab s in MainWindow.stashTabsModel.StashTabs)
             {
                 s.PrepareOverlayList();
