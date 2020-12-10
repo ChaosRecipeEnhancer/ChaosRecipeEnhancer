@@ -63,7 +63,9 @@ Unfortunately there is no possibility to automatically refresh your lootfilter i
 
 #### Bases
 
-If you want to change the bases you pick up, navigate to installationsfolder/bases and edit the .txt files accordingly. This way you can still use this tool when new bases are released or if you want to pick up bigger weapons too. At the moment identified items will get ignored.
+If you want to change the bases you pick up, navigate to "C:\Users\[username]\AppData\Roaming\ChaosRecipeEnhancer\Bases", and edit the .txt files accordingly. This way you can still use this tool when new bases are released or if you want to pick up bigger weapons too. At the moment identified items will get ignored.
+
+The list of bases may include some old bases and too big weapons at the moment. If you have a recent list of all bases and small weapons, send me an E-Mail please.
 
 ##  F.A.Q.
 #### How do I get my SessionID?
