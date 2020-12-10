@@ -68,7 +68,7 @@ namespace EnhancePoE.View
                 //i.PrepareOverlayList();
                 //i.ActivateNextCell(true);
                 TabItem newStashTabItem;
-                TextBlock tbk = new TextBlock() { Text = i.TabName, Padding = new Thickness(20, 2, 20, 2) };
+                TextBlock tbk = new TextBlock() { Text = i.TabName, Padding = new Thickness(22, 2, 22, 2) };
                 //if (i.ItemOrderList.Count > 0)
                 //{
                 //    if (Properties.Settings.Default.ColorStash != "")

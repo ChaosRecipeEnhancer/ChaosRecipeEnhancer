@@ -28,7 +28,7 @@
             Width="200"
             Text="Stash Tab Name:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The number of the observed stash tab from left to right. Starts at 0!"
+            ToolTip="Name it whatever you want!"
             Margin="0,0,0,10"/>
 
         <TextBox
@@ -46,7 +46,7 @@
             Width="200"
             Text="Stash Tab Number:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The number of the observed stash tab from left to right. Starts at 0!"
+            ToolTip="The Index of your Stashtab from left to right starting at 0."
             Margin="0,0,0,10"/>
 
         <TextBox
@@ -64,7 +64,7 @@
             Width="200"
             Text="Quad Stash Tab:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="Activate if you are using a quad stash tab. Has no effect if you specify number of sets."
+            ToolTip="Activate on Quad Tabs."
             />
 
         <CheckBox

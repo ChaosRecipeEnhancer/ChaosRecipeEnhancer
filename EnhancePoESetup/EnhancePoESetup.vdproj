@@ -268,12 +268,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0B4E5CC9000311B8385813E1B1574AA5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_4A407A2711BB4296956B16ED5540F321"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -361,6 +355,12 @@
         "OwnerKey" = "8:_4253225E6876CA0FC7B42BFB245CBDC3"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0B4E5CC9000311B8385813E1B1574AA5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -379,13 +379,29 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\EnhancePoESetup.msi"
+        "OutputFilename" = "8:Release\\EnhancerSetup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -395,6 +411,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -460,7 +492,7 @@
             "SourcePath" = "8:..\\EnhacePoE\\Bases\\GlovesBases.txt"
             "TargetName" = "8:GlovesBases.txt"
             "Tag" = "8:"
-            "Folder" = "8:_BE1F733696394ADC8FB6EB9831A5DD8C"
+            "Folder" = "8:_29AF4522D06C47D6AB96B231026D3B15"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -480,7 +512,7 @@
             "SourcePath" = "8:..\\EnhacePoE\\Bases\\WeaponSmallBases.txt"
             "TargetName" = "8:WeaponSmallBases.txt"
             "Tag" = "8:"
-            "Folder" = "8:_BE1F733696394ADC8FB6EB9831A5DD8C"
+            "Folder" = "8:_29AF4522D06C47D6AB96B231026D3B15"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -500,7 +532,7 @@
             "SourcePath" = "8:..\\EnhacePoE\\Bases\\BodyArmourBases.txt"
             "TargetName" = "8:BodyArmourBases.txt"
             "Tag" = "8:"
-            "Folder" = "8:_BE1F733696394ADC8FB6EB9831A5DD8C"
+            "Folder" = "8:_29AF4522D06C47D6AB96B231026D3B15"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -551,7 +583,7 @@
             "SourcePath" = "8:..\\EnhacePoE\\Bases\\RingBases.txt"
             "TargetName" = "8:RingBases.txt"
             "Tag" = "8:"
-            "Folder" = "8:_BE1F733696394ADC8FB6EB9831A5DD8C"
+            "Folder" = "8:_29AF4522D06C47D6AB96B231026D3B15"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -602,7 +634,7 @@
             "SourcePath" = "8:..\\EnhacePoE\\Bases\\AmuletBases.txt"
             "TargetName" = "8:AmuletBases.txt"
             "Tag" = "8:"
-            "Folder" = "8:_BE1F733696394ADC8FB6EB9831A5DD8C"
+            "Folder" = "8:_29AF4522D06C47D6AB96B231026D3B15"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -766,7 +798,7 @@
             "SourcePath" = "8:..\\EnhacePoE\\Bases\\BeltBases.txt"
             "TargetName" = "8:BeltBases.txt"
             "Tag" = "8:"
-            "Folder" = "8:_BE1F733696394ADC8FB6EB9831A5DD8C"
+            "Folder" = "8:_29AF4522D06C47D6AB96B231026D3B15"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -848,7 +880,7 @@
             "SourcePath" = "8:..\\EnhacePoE\\Bases\\BootsBases.txt"
             "TargetName" = "8:BootsBases.txt"
             "Tag" = "8:"
-            "Folder" = "8:_BE1F733696394ADC8FB6EB9831A5DD8C"
+            "Folder" = "8:_29AF4522D06C47D6AB96B231026D3B15"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -899,7 +931,7 @@
             "SourcePath" = "8:..\\EnhacePoE\\Bases\\HelmetBases.txt"
             "TargetName" = "8:HelmetBases.txt"
             "Tag" = "8:"
-            "Folder" = "8:_BE1F733696394ADC8FB6EB9831A5DD8C"
+            "Folder" = "8:_29AF4522D06C47D6AB96B231026D3B15"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1097,6 +1129,39 @@
                 {
                 }
             }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_D9D79E4DD5D94D788F2C0EF08F609EB2"
+            {
+            "Name" = "8:#1915"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:AppDataFolder"
+                "Folders"
+                {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_22A8F43046E144D4866CB1DA8B7A358F"
+                    {
+                    "Name" = "8:ChaosRecipeEnhancer"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_7C8BA27E9C044B41A179CD562A0CB56F"
+                        "Folders"
+                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_29AF4522D06C47D6AB96B231026D3B15"
+                            {
+                            "Name" = "8:Bases"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_327507FB0F7343DBA83299AAC426D583"
+                                "Folders"
+                                {
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_FB266262ED8B4D5BA43E50F9DA438A8E"
             {
             "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
@@ -1107,17 +1172,6 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_BE1F733696394ADC8FB6EB9831A5DD8C"
-                    {
-                    "Name" = "8:Bases"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_327507FB0F7343DBA83299AAC426D583"
-                        "Folders"
-                        {
-                        }
-                    }
                 }
             }
         }
@@ -1135,9 +1189,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:EnhancePoE"
+        "ProductName" = "8:Chaos Recipe Enhancer"
         "ProductCode" = "8:{D3021C91-EE27-473E-A1F8-AF7A2FD57B26}"
-        "PackageCode" = "8:{E8B7C698-429B-42C3-B897-4E181AA21D0E}"
+        "PackageCode" = "8:{4C79B1E7-0BBA-4FC0-AABF-C61344C8E069}"
         "UpgradeCode" = "8:{EA65B2F9-564C-4C55-AB20-BB9B5A9083BE}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1148,7 +1202,7 @@
         "Manufacturer" = "8:kosace"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:EnhancePoE"
+        "Title" = "8:Chaos Recipe Enhancer"
         "Subject" = "8:"
         "ARPCONTACT" = "8:kosace"
         "Keywords" = "8:"
@@ -1259,7 +1313,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_9C436F2F727C4AAC802C480855DE3AA4"
             {
-            "Name" = "8:EnhancePoE"
+            "Name" = "8:ChaosRecipeEnhancer"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -1273,7 +1327,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_EBDB8F28F83E434194D2710DE46B144D"
             {
-            "Name" = "8:EnhancePoE"
+            "Name" = "8:ChaosRecipeEnhancer"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"

@@ -50,7 +50,11 @@ namespace EnhancePoE
 
         private void InitializeBases()
         {
-            string pathBoots = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Bases\BootsBases.txt");
+
+
+
+
+            string pathBoots = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\BootsBases.txt");
             string[] boots = File.ReadAllLines(pathBoots);
             foreach (string line in boots)
             {
@@ -58,7 +62,7 @@ namespace EnhancePoE
                 this.BootsBases.Add(line.Trim());
             }
 
-            string pathGloves = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Bases\GlovesBases.txt");
+            string pathGloves = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\GlovesBases.txt");
             string[] gloves = File.ReadAllLines(pathGloves);
             foreach (string line in gloves)
             {
@@ -66,7 +70,7 @@ namespace EnhancePoE
                 this.GlovesBases.Add(line.Trim());
             }
 
-            string pathHelmet = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Bases\HelmetBases.txt");
+            string pathHelmet = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\HelmetBases.txt");
             string[] helmet = File.ReadAllLines(pathHelmet);
             foreach (string line in helmet)
             {
@@ -74,7 +78,7 @@ namespace EnhancePoE
                 this.HelmetBases.Add(line.Trim());
             }
 
-            string pathWeapon = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Bases\WeaponSmallBases.txt");
+            string pathWeapon = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\WeaponSmallBases.txt");
             string[] weapon = File.ReadAllLines(pathWeapon);
             foreach (string line in weapon)
             {
@@ -82,7 +86,7 @@ namespace EnhancePoE
                 this.WeaponBases.Add(line.Trim());
             }
 
-            string pathChest = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Bases\BodyArmourBases.txt");
+            string pathChest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\BodyArmourBases.txt");
             string[] chest = File.ReadAllLines(pathChest);
             foreach (string line in chest)
             {
@@ -90,7 +94,7 @@ namespace EnhancePoE
                 this.ChestBases.Add(line.Trim());
             }
 
-            string pathRing = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Bases\RingBases.txt");
+            string pathRing = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\RingBases.txt");
             string[] ring = File.ReadAllLines(pathRing);
             foreach (string line in ring)
             {
@@ -98,7 +102,7 @@ namespace EnhancePoE
                 this.RingBases.Add(line.Trim());
             }
 
-            string pathAmulet = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Bases\AmuletBases.txt");
+            string pathAmulet = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\AmuletBases.txt");
             string[] amulet = File.ReadAllLines(pathAmulet);
             foreach (string line in amulet)
             {
@@ -106,7 +110,7 @@ namespace EnhancePoE
                 this.AmuletBases.Add(line.Trim());
             }
 
-            string pathBelt = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Bases\BeltBases.txt");
+            string pathBelt = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\BeltBases.txt");
             string[] belt = File.ReadAllLines(pathBelt);
             foreach (string line in belt)
             {
