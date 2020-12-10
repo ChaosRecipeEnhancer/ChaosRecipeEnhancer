@@ -1,4 +1,4 @@
-# The Chaos Recipe Enhancer
+# The PoE Chaos Recipe Enhancer
 
 This App fetches data from PoE servers and shows which items you need to pick up for the Chaos Recipe. Optionally it manipulates your lootfilter, so you can go full braindead while farming! While selling your stuff it shows you what items to put in your inventory in which order. No more using your brain at all!
 
