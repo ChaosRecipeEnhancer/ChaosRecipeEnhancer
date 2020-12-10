@@ -1,4 +1,4 @@
-# Enhance PoE - A Chaos Recipe Tool
+# The PoE Chaos Recipe Enhancer
 
 This App fetches data from PoE servers and shows which items you need to pick up for the Chaos Recipe. Optionally it manipulates your lootfilter, so you can go full braindead while farming! While selling your stuff it shows you what items to put in your inventory in which order. No more using your brain at all!
 
@@ -47,7 +47,7 @@ You can just drag the Main Overlay whereever you want, except if you set the opa
 
 #### Stashtab Overlay
 
-The Stashtab Overlay highlights items in a specific order if you have full sets in a stashtab. No more wondering which part is missing when selling. Also this way you can put 2 sets in one inventory.
+The Stashtab Overlay highlights items in a specific order if you have full sets in a stashtab. No more wondering which part is missing when selling. Also this way you can put 2 sets in one inventory. Leave it open when selling! Otherwise the highlighting will start from beginning with items you already sold.
 
 If you want to change position or size of the Stashtabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stashtabs Overlay around and resize it (bottom right corner), except if you set the opacity to 0 (better set it to 0.01). At the moment the tabheader sizes are optimized for full hd. I will add support for manually editing these later.
 
@@ -63,7 +63,9 @@ Unfortunately there is no possibility to automatically refresh your lootfilter i
 
 #### Bases
 
-If you want to change the bases you pick up, navigate to installationsfolder/bases and edit the .txt files accordingly. This way you can still use this tool when new bases are released or if you want to pick up bigger weapons too. At the moment identified items will get ignored.
+If you want to change the bases you pick up, navigate to "C:\Users\ [username]\AppData\Roaming\ChaosRecipeEnhancer\Bases", and edit the .txt files accordingly. This way you can still use this tool when new bases are released or if you want to pick up bigger weapons too. At the moment identified items will get ignored.
+
+The list of bases may include some old bases and too big weapons at the moment. If you have a recent list of all bases and small weapons, send me an E-Mail please.
 
 ##  F.A.Q.
 #### How do I get my SessionID?
