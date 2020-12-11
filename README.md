@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam this [discord](https://discord.gg/KgVsUdSSrR).
 
-## Known Bugs
+#### Known Bugs
 
  - Don't add more than 10 Stashtabs for now. There may occur issues for flooding the server.
  - The filter will probably hide rare, unidentified 6 Links and 6 Sockets with ilvl 60 - 74. Will work on a fix.
