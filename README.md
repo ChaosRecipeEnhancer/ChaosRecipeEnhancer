@@ -4,6 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam this [discord](https://discord.gg/KgVsUdSSrR).
 
+Don't add more than 10 Stashtabs for now. There may occur issues for flooding the server.
 
 #### Main Overlay
 
