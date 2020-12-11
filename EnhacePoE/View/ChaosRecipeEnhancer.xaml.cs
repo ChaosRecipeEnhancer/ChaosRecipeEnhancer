@@ -88,7 +88,6 @@ namespace EnhancePoE
             }
         }
 
-
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             RunFetching();
@@ -96,7 +95,12 @@ namespace EnhancePoE
 
         private static void GetFrequency()
         {
-            aTimer.Interval = Properties.Settings.Default.RefreshRate * 1000;
+            int addedTime = 0;
+            if(MainWindow.stashTabsModel.StashTabs.Count > 0)
+            {
+                addedTime += MainWindow.stashTabsModel.StashTabs.Count * 1000;
+            }
+            aTimer.Interval = (Properties.Settings.Default.RefreshRate * 1000) + addedTime;
         }
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
