@@ -102,7 +102,7 @@ namespace EnhancePoE.Model
 
         public static List<int> GetRGB(string type)
         {
-            Trace.WriteLine(type);
+            //Trace.WriteLine(type);
             int r;
             int g;
             int b;

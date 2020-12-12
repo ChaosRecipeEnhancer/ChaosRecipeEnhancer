@@ -32,6 +32,14 @@ namespace EnhancePoE.Model
 
         public Uri StashTabUri { get; set; }
         public List<Item> ItemList { get; set; }
+        public List<Item> ItemListShaper { get; set; } = new List<Item>();
+        public List<Item> ItemListElder { get; set; } = new List<Item>();
+        public List<Item> ItemListWarlord { get; set; } = new List<Item>();
+        public List<Item> ItemListCrusader { get; set; } = new List<Item>();
+        public List<Item> ItemListHunter { get; set; } = new List<Item>();
+        public List<Item> ItemListRedeemer { get; set; } = new List<Item>();
+
+
         //public int GlovesAmount { get; set; } = 0;
         //public int HelmetAmount { get; set; } = 0;
         //public int BootsAmount { get; set; } = 0;
@@ -320,6 +328,7 @@ namespace EnhancePoE.Model
 
         public void CleanItemList()
         {
+
             // for loop backwards for deleting from list 
             for (int i = ItemList.Count - 1; i > -1; i--)
             {
@@ -328,6 +337,38 @@ namespace EnhancePoE.Model
                     ItemList.RemoveAt(i);
                     continue;
                 }
+
+                //exalted recipe every ilvl allowed, same bases, sort in itemlists
+                if (Properties.Settings.Default.ExaltedRecipe)
+                {
+                    ItemListShaper.Clear();
+                    ItemListElder.Clear();
+                    ItemListCrusader.Clear();
+                    ItemListWarlord.Clear();
+                    ItemListHunter.Clear();
+                    ItemListRedeemer.Clear();
+
+                    if (ItemList[i].influences != null)
+                    {
+                        if (ItemList[i].frameType == 2)
+                        {
+                            string result = CheckBase(ItemList[i]);
+                            if (result != null)
+                            {
+                                ItemList[i].ItemType = result;
+                                if (ItemList[i].influences.shaper) { ItemListShaper.Add(ItemList[i]); }
+                                else if (ItemList[i].influences.elder) { ItemListElder.Add(ItemList[i]); }
+                                else if (ItemList[i].influences.warlord) { ItemListWarlord.Add(ItemList[i]); }
+                                else if (ItemList[i].influences.crusader) { ItemListCrusader.Add(ItemList[i]); }
+                                else if (ItemList[i].influences.hunter) { ItemListHunter.Add(ItemList[i]); }
+                                else if (ItemList[i].influences.redeemer) { ItemListRedeemer.Add(ItemList[i]); }
+                            }
+                            ItemList.RemoveAt(i);
+                            continue;
+                        }
+                    }
+                }
+
                 if (ItemList[i].ilvl < 60)
                 {
                     ItemList.RemoveAt(i);

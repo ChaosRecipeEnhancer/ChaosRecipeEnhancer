@@ -14,7 +14,7 @@ namespace EnhancePoE
         // poe json props
         public int w { get; set; }
         public int h { get; set; }
-        public string league { get; set; }
+        //public string league { get; set; }
         public string typeLine { get; set; }
         public string name { get; set; }
         public bool identified { get; set; }
@@ -22,15 +22,27 @@ namespace EnhancePoE
         public int frameType { get; set; }
         public int x { get; set; }
         public int y { get; set; }
-        public string inventoryId { get; set; }
-        public string id { get; set; }
+        //public string inventoryId { get; set; }
+        //public string id { get; set; }
+        public Influence influences { get; set; }
 
         // own prop
         public string ItemType { get; set; }
+        public int StashTabIndex { get; set; }
     }
 
     public class ItemList
     {
         public List<Item> items { get; set; }
+    }
+
+    public class Influence
+    {
+        public bool shaper { get; set; } = false;
+        public bool elder { get; set; } = false;
+        public bool crusader { get; set; } = false;
+        public bool redeemer { get; set; } = false;
+        public bool hunter { get; set; } = false;
+        public bool warlord { get; set; } = false;
     }
 }

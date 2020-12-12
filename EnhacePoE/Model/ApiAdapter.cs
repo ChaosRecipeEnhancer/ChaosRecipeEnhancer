@@ -66,6 +66,8 @@ namespace EnhancePoE
                     //stashTabNumbers.Add(i.TabNumber);
                 }
 
+                // https://www.pathofexile.com/character-window/get-stash-items?accountName=kosace&tabIndex=0&league=Heist
+
                 //Trace.WriteLine(stashTabNumbers.Count());
 
                 //foreach(int number in stashTabNumbers)

@@ -179,6 +179,7 @@ namespace EnhancePoE
             if(!Properties.Settings.Default.hideOnClose || this.trayClose)
             {
                 ni.Visible = false;
+                MouseHook.Stop();
                 HotkeysManager.ShutdownSystemHook();
                 Properties.Settings.Default.Save();
                 //overlay.Close();

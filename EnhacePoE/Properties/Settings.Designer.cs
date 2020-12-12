@@ -404,5 +404,17 @@ namespace EnhancePoE.Properties {
                 this["TwoHand"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ExaltedRecipe {
+            get {
+                return ((bool)(this["ExaltedRecipe"]));
+            }
+            set {
+                this["ExaltedRecipe"] = value;
+            }
+        }
     }
 }
