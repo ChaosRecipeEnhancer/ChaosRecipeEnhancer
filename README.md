@@ -11,6 +11,10 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam 
  - ~~Don't add more than 10 Stashtabs for now. There may occur issues with flooding the server.~~ Fixed
  - The filter will probably hide rare, unidentified 6 Links and 6 Sockets with ilvl 60 - 74. Will work on a fix.
 
+#### Updates
+
+ 1.0.1 - added Two-Hand Weapon support
+       - added Custom Style support. Edit your style in "C:\Users\[username]\AppData\Roaming\ChaosRecipeEnhancer\Bases\NormalItemsStyle.txt"
 
 #### Main Overlay
 
