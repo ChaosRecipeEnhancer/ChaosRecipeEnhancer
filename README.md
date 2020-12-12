@@ -28,12 +28,6 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam 
 
 <img src="https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen3.png" width="500">
 
-## Installation
-
-[Download](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi) and install. 
-
-Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
-
 ## Features
 
  - Easy to use
@@ -42,6 +36,13 @@ Since this app is not trusted (too expensive), you will have to accept few times
  - Customizable Overlay
  - Stashtab Overlay for easy selling
  - Lootfilter Manipulation (optional)
+
+
+## Installation
+
+[Download](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi) and install. 
+
+Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
 
 ## Guide
 
