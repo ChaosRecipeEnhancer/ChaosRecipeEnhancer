@@ -12,6 +12,8 @@ namespace EnhancePoE.Model
     public static class FilterGeneration
     {
 
+        public static List<string> CustomStyle { get; set; } = new List<string>();
+
         public static string OpenLootfilter()
         {
             string location = Properties.Settings.Default.LootfilterLocation;
@@ -43,6 +45,18 @@ namespace EnhancePoE.Model
             }
         }
 
+        public static void LoadCustomStyle()
+        {
+            string pathNormalItemsStyle = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Styles\NormalItemsStyle.txt");
+            string[] boots = File.ReadAllLines(pathNormalItemsStyle);
+            foreach (string line in boots)
+            {
+                if (line == "") { continue; }
+                if (line.Contains("#")) { continue; }
+                CustomStyle.Add(line.Trim());
+            }
+        }
+
         public static string GenerateSection(bool show, List<string>bases, string itemClass)
         {
             string result = "";
@@ -54,16 +68,17 @@ namespace EnhancePoE.Model
             {
                 result += "Hide";
             }
-            string nl = " \n";
-            string tab = " \t ";
-            result = result + nl + tab + "ItemLevel >= 65" + nl + tab + "ItemLevel <= 74" + nl + tab + "Rarity Rare" + nl + tab + "Identified False" + nl + tab;
+            string nl = "\n";
+            string tab = "\t";
+            result = result + nl + tab + "ItemLevel >= 60" + nl + tab + "ItemLevel <= 74" + nl + tab + "Rarity Rare" + nl + tab + "Identified False" + nl + tab;
             
             string baseType = "BaseType ";
             foreach(string b in bases)
             {
                 baseType = baseType + "\"" + b + "\" ";
             }
-            result = result + baseType + nl + tab + "SetFontSize 40" + nl + tab + "SetTextColor 255 255 255 255" + nl + tab + "SetBorderColor 0 0 0" + nl + tab;
+
+            result = result + baseType + nl + tab;
 
             string bgColor = "SetBackgroundColor";
 
@@ -73,12 +88,21 @@ namespace EnhancePoE.Model
                 bgColor = bgColor + " " + colors[i].ToString();
             }
 
-            result = result + bgColor + nl + nl;
+            result = result + bgColor + nl + tab;
+
+            foreach(string cs in CustomStyle)
+            {
+                result = result + cs + nl + tab;
+            }
+
+            result = result + nl + nl;
+
             return result;
         }
 
         public static List<int> GetRGB(string type)
         {
+            Trace.WriteLine(type);
             int r;
             int g;
             int b;

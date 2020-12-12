@@ -283,5 +283,11 @@
     <Resource Include="Bases\RingBases.txt" />
     <Resource Include="Bases\WeaponSmallBases.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Bases\TwoHandBases.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Styles\NormalItemsStyle.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

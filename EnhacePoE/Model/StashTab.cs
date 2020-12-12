@@ -32,17 +32,19 @@ namespace EnhancePoE.Model
 
         public Uri StashTabUri { get; set; }
         public List<Item> ItemList { get; set; }
-        public int GlovesAmount { get; set; } = 0;
-        public int HelmetAmount { get; set; } = 0;
-        public int BootsAmount { get; set; } = 0;
-        public int ChestAmount { get; set; } = 0;
-        public int WeaponAmount { get; set; } = 0;
-        public int RingAmount { get; set; } = 0;
-        public int AmuletAmount { get; set; } = 0;
-        public int BeltAmount { get; set; } = 0;
-        public int FullSets { get; set; } = 0;
+        //public int GlovesAmount { get; set; } = 0;
+        //public int HelmetAmount { get; set; } = 0;
+        //public int BootsAmount { get; set; } = 0;
+        //public int ChestAmount { get; set; } = 0;
+        //public int WeaponAmount { get; set; } = 0;
+        //public int RingAmount { get; set; } = 0;
+        //public int AmuletAmount { get; set; } = 0;
+        //public int BeltAmount { get; set; } = 0;
+        //public int TwoHandAmount { get; set; } = 0;
+        //public int FullSets { get; set; } = 0;
+
         public ObservableCollection<Cell> OverlayCellsList { get; set; } = new ObservableCollection<Cell>();
-        public List<Item> ItemOrderList { get; set; } = new List<Item>();
+        //public List<Item> ItemOrderList { get; set; } = new List<Item>();
 
         // used for registering clicks on tab headers
         public TextBlock TabHeader { get; set; }
@@ -161,24 +163,25 @@ namespace EnhancePoE.Model
 
         }
 
-        public void GetFullSets()
-        {
-            int rings = this.RingAmount / 2;
-            int weapons = this.WeaponAmount / 2;
-            int sets = new[] { rings, weapons, this.HelmetAmount, this.BootsAmount, this.GlovesAmount, this.ChestAmount, this.AmuletAmount, this.BeltAmount }.Min();
-            this.FullSets = sets;
-            //if (FullSets > 0)
-            //{
-            //    if (Properties.Settings.Default.ColorStash != "")
-            //    {
-            //        this.TabHeader.Background = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
-            //    }
-            //    else
-            //    {
-            //        this.TabHeader.Background = Brushes.Red;
-            //    }
-            //}
-        }
+        //public void GetFullSets()
+        //{
+        //    int rings = this.RingAmount / 2;
+        //    int weapons = this.WeaponAmount / 2;
+        //    weapons += this.TwoHandAmount;
+        //    int sets = new[] { rings, weapons, this.HelmetAmount, this.BootsAmount, this.GlovesAmount, this.ChestAmount, this.AmuletAmount, this.BeltAmount }.Min();
+        //    this.FullSets = sets;
+        //    //if (FullSets > 0)
+        //    //{
+        //    //    if (Properties.Settings.Default.ColorStash != "")
+        //    //    {
+        //    //        this.TabHeader.Background = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        this.TabHeader.Background = Brushes.Red;
+        //    //    }
+        //    //}
+        //}
         private void Generate2dArr(int size)
         { 
             for (int i = 0; i < size; i++)
@@ -285,6 +288,17 @@ namespace EnhancePoE.Model
                 }
             }
 
+            if (Properties.Settings.Default.TwoHand)
+            {
+                foreach (string twohandBase in ChaosRecipeEnhancer.currentData.TwoHandBases)
+                {
+                    if (item.typeLine == twohandBase)
+                    {
+                        return "twohand";
+                    }
+                }
+            }
+
             return null;
         }
 
@@ -362,7 +376,6 @@ namespace EnhancePoE.Model
                     }
                 }
             }
-
         }
 
 

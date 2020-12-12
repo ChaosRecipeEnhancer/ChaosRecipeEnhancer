@@ -52,7 +52,6 @@ Graceful Sword
 Grappler
 Gemstone Sword
 Corsair Sword
-Legion Sword
 Anarchic Spiritblade
 Infernal Blade
 Carving Knife

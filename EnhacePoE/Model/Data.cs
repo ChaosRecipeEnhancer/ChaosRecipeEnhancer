@@ -31,6 +31,7 @@ namespace EnhancePoE
         public int OverallRingAmount { get; set; } = 0;
         public int OverallAmuletAmount { get; set; } = 0;
         public int OverallBeltAmount { get; set; } = 0;
+        public int OverallTwoHandAmount { get; set; } = 0;
 
         public List<string> BootsBases { get; set; } = new List<string>();
         public List<string> GlovesBases { get; set; } = new List<string>();
@@ -40,6 +41,7 @@ namespace EnhancePoE
         public List<string> RingBases { get; set; } = new List<string>();
         public List<string> AmuletBases { get; set; } = new List<string>();
         public List<string> BeltBases { get; set; } = new List<string>();
+        public List<string> TwoHandBases { get; set; } = new List<string>();
 
         public int SetAmount { get; set; } = 0;
         public int SetTargetAmount { get; set; } = 0;
@@ -50,9 +52,6 @@ namespace EnhancePoE
 
         private void InitializeBases()
         {
-
-
-
 
             string pathBoots = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\BootsBases.txt");
             string[] boots = File.ReadAllLines(pathBoots);
@@ -117,6 +116,14 @@ namespace EnhancePoE
                 if (line == "") { continue; }
                 this.BeltBases.Add(line.Trim());
             }
+
+            string pathTwoHand = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\TwoHandBases.txt");
+            string[] twohand = File.ReadAllLines(pathTwoHand);
+            foreach(string line in twohand)
+            {
+                if(line == "") { continue; }
+                this.TwoHandBases.Add(line.Trim());
+            }
         }
 
         public Data()
@@ -135,6 +142,7 @@ namespace EnhancePoE
             OverallRingAmount = 0;
             OverallAmuletAmount = 0;
             OverallBeltAmount = 0;
+            OverallTwoHandAmount = 0;
 
             foreach(StashTab s in MainWindow.stashTabsModel.StashTabs)
             {
@@ -145,52 +153,57 @@ namespace EnhancePoE
                     {
                         if (item.ItemType == "ring")
                         {
-                            s.RingAmount += 1;
+                            //s.RingAmount += 1;
                             this.OverallRingAmount += 1;
                         }
                         else if (item.ItemType == "amulet")
                         {
-                            s.AmuletAmount += 1;
+                            //s.AmuletAmount += 1;
                             this.OverallAmuletAmount += 1;
                         }
                         else if (item.ItemType == "belt")
                         {
-                            s.BeltAmount += 1;
+                            //s.BeltAmount += 1;
                             this.OverallBeltAmount += 1;
 
                         }
                         else if (item.ItemType == "boots")
                         {
-                            s.BootsAmount += 1;
+                            //s.BootsAmount += 1;
                             this.OverallBootsAmount += 1;
 
                         }
                         else if (item.ItemType == "gloves")
                         {
-                            s.GlovesAmount += 1;
+                            //s.GlovesAmount += 1;
                             this.OverallGlovesAmount += 1;
 
                         }
                         else if (item.ItemType == "chest")
                         {
-                            s.ChestAmount += 1;
+                            //s.ChestAmount += 1;
                             this.OverallChestAmount += 1;
 
                         }
                         else if (item.ItemType == "helmet")
                         {
-                            s.HelmetAmount += 1;
+                            //s.HelmetAmount += 1;
                             this.OverallHelmetAmount += 1;
 
                         }
                         else if (item.ItemType == "weapon")
                         {
-                            s.WeaponAmount += 1;
+                            //s.WeaponAmount += 1;
                             this.OverallWeaponAmount += 1;
                         }
-                    } 
+                        else if(item.ItemType == "twohand")
+                        {
+                            //s.TwoHandAmount += 1;
+                            this.OverallTwoHandAmount += 1;
+                        } 
+                    }
                 }
-                s.GetFullSets();
+                //s.GetFullSets();
             }
         }
 
@@ -219,13 +232,35 @@ namespace EnhancePoE
         {
             int rings = OverallRingAmount / 2;
             int weapons = OverallWeaponAmount / 2;
+            weapons += OverallTwoHandAmount;
             int sets = new[] { rings, weapons, OverallHelmetAmount, OverallBootsAmount, OverallGlovesAmount, OverallChestAmount, OverallAmuletAmount, OverallBeltAmount }.Min();
             SetAmount = sets;
 
             List<string> sectionList = new List<string>();
             bool filterActive = Properties.Settings.Default.LootfilterActive;
 
+            if (filterActive)
+            {
+                FilterGeneration.LoadCustomStyle();
+            }
 
+            if (Properties.Settings.Default.TwoHand)
+            {
+                if (weapons >= SetTargetAmount)
+                {
+                    if (filterActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(false, TwoHandBases, "weapon"));
+                    }
+                }
+                else
+                {
+                    if (filterActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(true, TwoHandBases, "weapon"));
+                    }
+                }
+            }
             if(weapons >= SetTargetAmount)
             {
                 WeaponActive = false;
@@ -351,6 +386,7 @@ namespace EnhancePoE
             int chestAmount = 0;
             int amuletAmount = 0;
             int beltAmount = 0;
+            int twoHandAmount = 0;
 
             foreach (ItemWithStash item in itemList)
             {
@@ -386,15 +422,83 @@ namespace EnhancePoE
                 {
                     weaponsAmount++;
                 }
+                else if(item.ItemOfStash.ItemType == "twohand")
+                {
+                    twoHandAmount++;
+                }
             }
-
-
 
             int rings = ringsAmount / 2;
             int weapons = weaponsAmount / 2;
+            weapons += twoHandAmount;
             int sets = new[] { rings, weapons, helmetAmount, bootsAmount, glovesAmount, chestAmount, amuletAmount, beltAmount }.Min();
 
             if(sets > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        // TODO: combine with HasFullSets
+        private bool HasFullSet2(List<Item> itemList)
+        {
+            int ringsAmount = 0;
+            int weaponsAmount = 0;
+            int helmetAmount = 0;
+            int bootsAmount = 0;
+            int glovesAmount = 0;
+            int chestAmount = 0;
+            int amuletAmount = 0;
+            int beltAmount = 0;
+            int twoHandAmount = 0;
+
+            foreach (Item item in itemList)
+            {
+                if (item.ItemType == "ring")
+                {
+                    ringsAmount++;
+                }
+                else if (item.ItemType == "amulet")
+                {
+                    amuletAmount++;
+                }
+                else if (item.ItemType == "belt")
+                {
+                    beltAmount++;
+                }
+                else if (item.ItemType == "boots")
+                {
+                    bootsAmount++;
+                }
+                else if (item.ItemType == "gloves")
+                {
+                    glovesAmount++;
+                }
+                else if (item.ItemType == "chest")
+                {
+                    chestAmount++;
+                }
+                else if (item.ItemType == "helmet")
+                {
+                    helmetAmount++;
+                }
+                else if (item.ItemType == "weapon")
+                {
+                    weaponsAmount++;
+                }
+                else if(item.ItemType == "twohand")
+                {
+                    twoHandAmount++;
+                }
+            }
+
+            int rings = ringsAmount / 2;
+            int weapons = weaponsAmount / 2;
+            weapons += twoHandAmount;
+            int sets = new[] { rings, weapons, helmetAmount, bootsAmount, glovesAmount, chestAmount, amuletAmount, beltAmount }.Min();
+
+            if (sets > 0)
             {
                 return true;
             }
@@ -408,6 +512,8 @@ namespace EnhancePoE
             List<ItemWithStash> newItemOrderList = new List<ItemWithStash>();
             List<ItemWithStash> newItemOrderListRest = new List<ItemWithStash>();
 
+            //bool twoHandPicked = false;
+
             while (HasFullSet(itemList))
             {
                 // 0: chest
@@ -420,6 +526,22 @@ namespace EnhancePoE
                 // 7: ring 1
                 // 8: ring 2
                 // 9: amulet
+
+                bool twoHandPicked = false;
+                if (Properties.Settings.Default.TwoHand)
+                {
+                    for (int i = 0; i < itemList.Count; i++)
+                    {
+                        if (itemList[i].ItemOfStash.ItemType == "twohand" && !newItemOrderList.Contains(itemList[i]))
+                        {
+                            newItemOrderList.Add(itemList[i]);
+                            itemList.RemoveAt(i);
+                            twoHandPicked = true;
+                            break;
+                        }
+                    }
+                }
+
                 int end = 0;
                 while (end < 10)
                 {
@@ -439,7 +561,11 @@ namespace EnhancePoE
                                 }
                                 break;
                             case 1:
-                                if (itemList[i].ItemOfStash.ItemType == "weapon" && !newItemOrderList.Contains(_i))
+                                if (twoHandPicked)
+                                {
+                                    end++;
+                                }
+                                else if ((itemList[i].ItemOfStash.ItemType == "weapon") && !newItemOrderList.Contains(_i))
                                 {
                                     newItemOrderList.Add(_i);
                                     itemList.RemoveAt(i);
@@ -448,7 +574,11 @@ namespace EnhancePoE
                                 break;
 
                             case 2:
-                                if (itemList[i].ItemOfStash.ItemType == "weapon" && !newItemOrderList.Contains(_i))
+                                if (twoHandPicked)
+                                {
+                                    end++;
+                                }
+                                else if (itemList[i].ItemOfStash.ItemType == "weapon" && !newItemOrderList.Contains(_i))
                                 {
                                     newItemOrderList.Add(_i);
                                     itemList.RemoveAt(i);
@@ -592,7 +722,7 @@ namespace EnhancePoE
                 if (s.ItemList != null)
                 {
                     //Trace.WriteLine(s.ItemList.Count());
-                    if (s.FullSets == 0)
+                    if (!HasFullSet2(s.ItemList))
                     {
                         foreach (Item i in s.ItemList)
                         {
