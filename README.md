@@ -6,6 +6,12 @@ Don't forget to refresh your lootfilter ingame everytime the itemtypes change!
 
 For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam this [discord](https://discord.gg/KgVsUdSSrR).
 
+## Installation
+
+[Download](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi) and install. 
+
+Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
+
 #### Known Bugs
 
  - ~~Don't add more than 10 Stashtabs for now. There may occur issues with flooding the server.~~ Fixed
@@ -27,12 +33,6 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam 
 #### The Settings
 
 <img src="https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen3.png" width="500">
-
-## Installation
-
-[Download](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi) and install. 
-
-Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
 
 ## Features
 
