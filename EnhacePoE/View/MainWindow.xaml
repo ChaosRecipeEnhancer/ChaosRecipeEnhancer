@@ -456,7 +456,7 @@
             IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=TwoHand, Mode=TwoWay}"
             />
 
-            <TextBlock
+        <TextBlock
             Grid.Column="1"
             Grid.Row="8"
             Text="Lootfilter Manipulation:"
@@ -474,6 +474,23 @@
             />
 
         <TextBlock
+            Grid.Column="3"
+            Grid.Row="8"
+            Text="Exalted Shard Recipe:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="Activates Exalted Shard Recipe. Not fully functional at the moment. Visit github for more information."
+            Margin="0,0,0,10"/>
+
+        <CheckBox
+            x:Name="ExaltedRecipeCheckBox"
+            Grid.Column="4"
+            Grid.Row="8"
+            Margin="10,0,20,10"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedRecipe, Mode=TwoWay}"
+            />
+
+            <TextBlock
             Grid.Column="1"
             Grid.Row="10"
             Grid.ColumnSpan="2"

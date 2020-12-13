@@ -255,11 +255,6 @@
     <Resource Include="gold-removebg-preview.ico" />
     <None Include="Resources\gold-removebg-preview.ico" />
     <None Include="Resources\treasureChest-removebg-preview.ico" />
-    <Resource Include="Assets\boots.png" />
-    <Resource Include="Assets\chest.png" />
-    <Resource Include="Assets\gloves.png" />
-    <Resource Include="Assets\helmet.png" />
-    <Resource Include="Assets\weapon.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -291,6 +286,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Styles\InfluencedItemsStyle.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\chest.png" />
+    <Resource Include="Assets\boots.png" />
+    <Resource Include="Assets\gloves.png" />
+    <Resource Include="Assets\helmet.png" />
+    <Resource Include="Assets\weapon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
