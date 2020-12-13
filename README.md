@@ -128,9 +128,9 @@ Although there are 2 points which could be problematic:
 
   - Icons made by [Freepik]("https://www.flaticon.com/authors/freepik") from [www.flaticon.com](https://www.flaticon.com/)
   
-  -Icons made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [www.flaticon.com](https://www.flaticon.com/)
+  - Icons made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [www.flaticon.com](https://www.flaticon.com/)
   
-  -Icons made by [iconixar](https://www.flaticon.com/authors/iconixar) from [www.flaticon.com](https://www.flaticon.com/)
+  - Icons made by [iconixar](https://www.flaticon.com/authors/iconixar) from [www.flaticon.com](https://www.flaticon.com/)
   
   
   
