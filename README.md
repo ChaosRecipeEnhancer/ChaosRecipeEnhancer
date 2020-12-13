@@ -79,9 +79,10 @@ You can use any lootfilter you want. If you don't have the recognition phrase in
  - Exalted Recipe Start: "#Chaos Recipe Enhancer by kosace Exalted Recipe Start"
  - Exalted Recipe End: "#Chaos Recipe Enhancer by kosace Exalted Recipe End"
  
-Don't "cross" them, meaning if you start one section end it before starting the other one. If you don't have both, the Exalted Recipe Section gets written on top of the Chaos one.
+Don't "cross" them, meaning if you start one section end it before starting the other one.
 
 You can change the look of the Chaos Recipe Section in "C:\Users\username\AppData\Roaming\ChaosRecipeEnhancer\Styles\NormalItemsStyle.txt". 
+
 You can change the look of the Exalted Recipe Section in "C:\Users\username\AppData\Roaming\ChaosRecipeEnhancer\Styles\InfluencedItemsStyle.txt"
 
 Unfortunately there is no possibility to automatically refresh your lootfilter ingame (that are legal), so you will have to do that manually (2 clicks).
