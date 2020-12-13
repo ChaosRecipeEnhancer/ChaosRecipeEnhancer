@@ -6,15 +6,12 @@ Don't forget to refresh your lootfilter ingame everytime the itemtypes change!
 
 For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam this [discord](https://discord.gg/KgVsUdSSrR).
 
-#### Known Bugs
-
- - ~~Don't add more than 10 Stashtabs for now. There may occur issues with flooding the server.~~ Fixed
- - The filter will probably hide rare, unidentified 6 Links and 6 Sockets with ilvl 60 - 74. Will work on a fix.
-
 #### Updates
 
  - added Two-Hand Weapon support
  - added Custom Style support. Edit your style in "C:\Users\[username]\AppData\Roaming\ChaosRecipeEnhancer\Bases\NormalItemsStyle.txt"
+ - added Exalted Shard Recipe (Read guide)
+ - changed lootfilter parsing
 
 #### Main Overlay
 
@@ -35,6 +32,7 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam 
  - Hotkeys
  - Customizable Overlay
  - Stashtab Overlay for easy selling
+ - Exalted Shard Recipe
  - Lootfilter Manipulation (optional)
 
 
@@ -72,20 +70,40 @@ You have to specify the number of your stashtab from left to right starting from
 
 #### Lootfilter
 
-You can use any lootfilter you want. When modified new rules will be added without deleting your old rules. Only if you have specific rules for the chaos recipe these rules will get overwritten. At the moment there is no possibility of changing the look of highlighting other than color.
+You can use any lootfilter you want. If you don't have the recognition phrase in your lootfilter, the recipe rules will be added to the top of your existing lootfilter (which overwrites some rules, working on a fix). When the recognition phrase is added, the app will only change the styles in within the phrases. That means you can decide where the recipe rules should be modified.
+
+######## Recoginition Phrases:
+ - Chaos Recipe Start: "#Chaos Recipe Enhancer by kosace Chaos Recipe Start"
+ - Chaos Recipe End: "#Chaos Recipe Enhancer by kosace Chaos Recipe End"
+ 
+ - Exalted Recipe Start: "#Chaos Recipe Enhancer by kosace Exalted Recipe Start"
+ - Exalted Recipe End: "#Chaos Recipe Enhancer by kosace Exalted Recipe End"
+ 
+Don't "cross" them, meaning if you start one section end it before starting the other one. If you don't have both, the Exalted Recipe Section gets written on top of the Chaos one.
+
+You can change the look of the Chaos Recipe Section in "C:\Users\username\AppData\Roaming\ChaosRecipeEnhancer\Styles\NormalItemsStyle.txt". 
+You can change the look of the Exalted Recipe Section in "C:\Users\username\AppData\Roaming\ChaosRecipeEnhancer\Styles\InfluencedItemsStyle.txt"
 
 Unfortunately there is no possibility to automatically refresh your lootfilter ingame (that are legal), so you will have to do that manually (2 clicks).
 
 #### Bases
 
-If you want to change the bases you pick up, navigate to "C:\Users\ [username]\AppData\Roaming\ChaosRecipeEnhancer\Bases", and edit the .txt files accordingly. This way you can still use this tool when new bases are released or if you want to pick up bigger weapons too. At the moment identified items will get ignored.
+If you want to change the bases you pick up, navigate to "C:\Users\username\AppData\Roaming\ChaosRecipeEnhancer\Bases", and edit the .txt files accordingly. This way you can still use this tool when new bases are released or if you want to pick up bigger weapons too. At the moment identified items will get ignored.
 
-Two Hand Bases and Bows and Quivers are not supported. Tell me, if you want support for them.
+Bows and Quivers are not supported. Tell me, if you want support for them.
 
 You have to restart the app after changing the files.
 
 The list of bases may include some old bases and too big weapons at the moment. If you have a up-to-date list of all bases and small weapons (1x3), send me an E-Mail please. 
 Also Sai in weapon bases produces a bug where some body armours get highlighted, so i deleted Sai.
+
+#### Exalted Shard Recipe
+
+If you have Exalted Shard Recipe activated, every influenced rare item will be highlighted no matter the ilvl. Also it doesn't hide influenced rares when you have full sets. Means, influenced items are always shown.
+
+Exalted Shard Sets will still count as "Full Sets" and the Selling algorithm should still work (it shows you both recipes).
+
+This feature is not tested too much, tell me if you find bugs!
 
 ##  F.A.Q.
 #### How do I get my SessionID?
