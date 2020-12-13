@@ -7,7 +7,7 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam 
 #### Updates
 
  - added Two-Hand Weapon support
- - added Custom Style support. Edit your style in "C:\Users\[username]\AppData\Roaming\ChaosRecipeEnhancer\Bases\NormalItemsStyle.txt"
+ - added Custom Style support
  - added Exalted Shard Recipe (Read guide)
  - changed lootfilter parsing
 
