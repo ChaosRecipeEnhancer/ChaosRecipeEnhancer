@@ -6,12 +6,13 @@
 # To comment you have to make sure the '#' sign is at the beginning of the line, no in-line comments allowed
 
 #Show 
-# 	ItemLevel >= 60 
+#   HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord
+#   ItemLevel >= 60 
 # 	ItemLevel <= 74 
 # 	Rarity Rare 
 # 	Identified False 
 # 	BaseType --- MODIFY THIS IN THE BASES FOLDER
 # 	SetBackgroundColor 0 251 238 255 --- MODIFY THIS IN THE APPLICATION
- 	SetFontSize 40 
+ 	SetFontSize 100 
  	SetTextColor 255 255 255 255 
  	SetBorderColor 0 0 0 

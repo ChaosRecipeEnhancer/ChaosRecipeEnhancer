@@ -289,5 +289,8 @@
   <ItemGroup>
     <Resource Include="Styles\NormalItemsStyle.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Styles\InfluencedItemsStyle.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

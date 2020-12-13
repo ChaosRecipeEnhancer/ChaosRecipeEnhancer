@@ -217,6 +217,10 @@ namespace EnhancePoE
             if (filterActive)
             {
                 FilterGeneration.LoadCustomStyle();
+                if (Properties.Settings.Default.ExaltedRecipe)
+                {
+                    FilterGeneration.LoadCustomStyleInfluenced();
+                }
             }
 
             if (Properties.Settings.Default.TwoHand)
@@ -312,7 +316,6 @@ namespace EnhancePoE
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(false, HelmetBases, "helmet"));
-
                 }
             }
             else
@@ -338,6 +341,24 @@ namespace EnhancePoE
                 string oldFilter = FilterGeneration.OpenLootfilter();
                 string newFilter = FilterGeneration.GenerateLootFilter(oldFilter, sectionList);
                 FilterGeneration.WriteLootfilter(newFilter);
+
+                if (Properties.Settings.Default.ExaltedRecipe)
+                {
+                    List<string> sectionListInfluenced = new List<string>();
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, RingBases, "ring", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, AmuletBases, "amulet", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, BeltBases, "belt", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, HelmetBases, "helmet", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, GlovesBases, "gloves", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, BootsBases, "boots", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, ChestBases, "chests", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, WeaponBases, "weapons", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, TwoHandBases, "weapons", true));
+
+                    string oldFilter2 = FilterGeneration.OpenLootfilter();
+                    string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
+                    FilterGeneration.WriteLootfilter(newFilter2);
+                }
             }
         }
 

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace EnhancePoE.Model
@@ -13,6 +14,7 @@ namespace EnhancePoE.Model
     {
 
         public static List<string> CustomStyle { get; set; } = new List<string>();
+        public static List<string> CustomStyleInfluenced { get; set; } = new List<string>();
 
         public static string OpenLootfilter()
         {
@@ -48,8 +50,8 @@ namespace EnhancePoE.Model
         public static void LoadCustomStyle()
         {
             string pathNormalItemsStyle = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Styles\NormalItemsStyle.txt");
-            string[] boots = File.ReadAllLines(pathNormalItemsStyle);
-            foreach (string line in boots)
+            string[] style = File.ReadAllLines(pathNormalItemsStyle);
+            foreach (string line in style)
             {
                 if (line == "") { continue; }
                 if (line.Contains("#")) { continue; }
@@ -57,7 +59,19 @@ namespace EnhancePoE.Model
             }
         }
 
-        public static string GenerateSection(bool show, List<string>bases, string itemClass)
+        public static void LoadCustomStyleInfluenced()
+        {
+            string pathInfluencedItemsStyle = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Styles\InfluencedItemsStyle.txt");
+            string[] style = File.ReadAllLines(pathInfluencedItemsStyle);
+            foreach (string line in style)
+            {
+                if (line == "") { continue; }
+                if (line.Contains("#")) { continue; }
+                CustomStyleInfluenced.Add(line.Trim());
+            }
+        }
+
+        public static string GenerateSection(bool show, List<string>bases, string itemClass, bool influenced = false)
         {
             string result = "";
             if (show)
@@ -70,8 +84,12 @@ namespace EnhancePoE.Model
             }
             string nl = "\n";
             string tab = "\t";
-            result = result + nl + tab + "ItemLevel >= 60" + nl + tab + "ItemLevel <= 74" + nl + tab + "Rarity Rare" + nl + tab + "Identified False" + nl + tab;
-            
+            result = result  + nl + tab  + "Rarity Rare" + nl + tab + "Identified False";
+            if (!influenced)
+            {
+                result += nl + tab + "ItemLevel >= 60" + nl + tab + "ItemLevel <= 74" + nl + tab;
+            }
+
             string baseType = "BaseType ";
             foreach(string b in bases)
             {
@@ -90,12 +108,22 @@ namespace EnhancePoE.Model
 
             result = result + bgColor + nl + tab;
 
-            foreach(string cs in CustomStyle)
+            if (influenced)
             {
-                result = result + cs + nl + tab;
+                foreach (string cs in CustomStyleInfluenced)
+                {
+                    result = result + cs + nl + tab;
+                }
+            }
+            else
+            {
+                foreach (string cs in CustomStyle)
+                {
+                    result = result + cs + nl + tab;
+                }
             }
 
-            result = result + nl + nl;
+            //result = result;
 
             return result;
         }
@@ -162,29 +190,114 @@ namespace EnhancePoE.Model
             return colorList;
         }
 
+
+        // refactor this shit
         public static string GenerateLootFilter(string oldFilter, List<string> sections)
         {
-            string nl = " \n";
-            string result = "#Enhance PoE Lootfilter Start \n";
-            string end = "#Enhance PoE Lootfilter End \n";
+            // order has to be:
+            // 1. exa start
+            // 2. exa end
+            // 3. chaos start
+            // 4. chaos end
 
-            string[] seperator = { end };
-            string[] split = oldFilter.Split(seperator, System.StringSplitOptions.RemoveEmptyEntries);
+            string nl = "\n";
+            string result;
+            string chaosSection = "";
+            string chaosStart = "#Chaos Recipe Enhancer by kosace Chaos Recipe Start\n";
+            string chaosEnd = "#Chaos Recipe Enhancer by kosace Chaos Recipe End\n";
 
+            //string exaltedStart = "#Chaos Recipe Enhancer by kosace Exalted Recipe Start\n";
+            //string exaltedEnd = "#Chaos Recipe Enhancer by kosace Exalted Recipe End\n";
+
+            string beforeChaos = "";
+            string afterChaos = "";
+
+            // generate chaos recipe section
+            chaosSection += chaosStart + nl;
             foreach (string s in sections)
             {
-                result += s + nl;
+                chaosSection += s + nl;
             }
-            result += end;
+            chaosSection += chaosEnd;
 
-            if (split.Length > 1)
+            string[] sep = { chaosEnd };
+            string[] split = oldFilter.Split(sep, System.StringSplitOptions.None);
+
+            if(split.Length > 1)
             {
-                result += split[1];
+                afterChaos = split[1];
+                string[] sep2 = { chaosStart };
+                string[] split2 = split[0].Split(sep2, System.StringSplitOptions.None);
+                
+                if(split2.Length > 1)
+                {
+                    beforeChaos = split2[0];
+                }
+                else
+                {
+                    afterChaos = oldFilter;
+                }
             }
             else
             {
-                result += oldFilter;
+                afterChaos = oldFilter;
             }
+
+            result = beforeChaos + chaosSection + afterChaos;
+
+            return result;
+        }
+
+        public static string GenerateLootFilterInfluenced(string oldFilter, List<string> sections)
+        {
+            // order has to be:
+            // 1. exa start
+            // 2. exa end
+            // 3. chaos start
+            // 4. chaos end
+
+            string nl = "\n";
+            string result;
+            string exaltedSection = "";
+            string exaltedStart = "#Chaos Recipe Enhancer by kosace Exalted Recipe Start\n";
+            string exaltedEnd = "#Chaos Recipe Enhancer by kosace Exalted Recipe End\n";
+
+            string beforeExalted = "";
+            string afterExalted = "";
+
+            // generate chaos recipe section
+            exaltedSection += exaltedStart + nl;
+            foreach (string s in sections)
+            {
+                exaltedSection += s + nl;
+            }
+            exaltedSection += exaltedEnd;
+
+            string[] sep = { exaltedEnd };
+            string[] split = oldFilter.Split(sep, System.StringSplitOptions.None);
+
+            if (split.Length > 1)
+            {
+                afterExalted = split[1];
+
+                string[] sep2 = { exaltedStart };
+                string[] split2 = split[0].Split(sep2, System.StringSplitOptions.None);
+
+                if (split2.Length > 1)
+                {
+                    beforeExalted = split2[0];
+                }
+                else
+                {
+                    afterExalted = oldFilter;
+                }
+            }
+            else
+            {
+                afterExalted = oldFilter;
+            }
+
+            result = beforeExalted + exaltedSection + afterExalted;
 
             return result;
         }
