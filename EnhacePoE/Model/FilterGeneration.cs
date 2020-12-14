@@ -49,6 +49,7 @@ namespace EnhancePoE.Model
 
         public static void LoadCustomStyle()
         {
+            CustomStyle.Clear();
             string pathNormalItemsStyle = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Styles\NormalItemsStyle.txt");
             string[] style = File.ReadAllLines(pathNormalItemsStyle);
             foreach (string line in style)
@@ -61,6 +62,7 @@ namespace EnhancePoE.Model
 
         public static void LoadCustomStyleInfluenced()
         {
+            CustomStyleInfluenced.Clear();
             string pathInfluencedItemsStyle = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Styles\InfluencedItemsStyle.txt");
             string[] style = File.ReadAllLines(pathInfluencedItemsStyle);
             foreach (string line in style)
@@ -84,10 +86,14 @@ namespace EnhancePoE.Model
             }
             string nl = "\n";
             string tab = "\t";
-            result = result  + nl + tab  + "Rarity Rare" + nl + tab + "Identified False";
+            if (influenced)
+            {
+                result += nl + tab + "HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord";
+            }
+            result = result  + nl + tab  + "Rarity Rare" + nl + tab + "Identified False" + nl + tab;
             if (!influenced)
             {
-                result += nl + tab + "ItemLevel >= 60" + nl + tab + "ItemLevel <= 74" + nl + tab;
+                result += "ItemLevel >= 60" + nl + tab + "ItemLevel <= 74" + nl + tab;
             }
 
             string baseType = "BaseType ";

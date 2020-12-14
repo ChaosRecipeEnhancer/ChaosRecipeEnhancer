@@ -143,7 +143,7 @@ namespace EnhancePoE
         public Data()
         {
             InitializeBases();
-            Player.Open(new Uri("../../Sounds/filterchanged.mp3", UriKind.Relative));
+            Player.Open(new Uri(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
         }
 
         public void GetSetTargetAmount(StashTab stash)
@@ -277,7 +277,6 @@ namespace EnhancePoE
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(false, ChestBases, "chest"));
-
                 }
             }
             else

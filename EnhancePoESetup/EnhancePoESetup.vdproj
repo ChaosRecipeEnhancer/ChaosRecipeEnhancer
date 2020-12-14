@@ -51,6 +51,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3C5A08CB0A5041FE974FB950082F17FD"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3F8C600B2DD24686AF692BF67B5E8BFD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -185,6 +191,12 @@
         {
         "MsmKey" = "8:_BDA44F3AE2441B5099A0AFBEB4B64B06"
         "OwnerKey" = "8:_9D6276E2DBB941B1687C1E738BE6A0B7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C825CC18753146D491036E28B8B294BA"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -610,6 +622,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3C5A08CB0A5041FE974FB950082F17FD"
+            {
+            "SourcePath" = "8:..\\EnhacePoE\\Styles\\InfluencedItemsStyle.txt"
+            "TargetName" = "8:InfluencedItemsStyle.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_36E881B4E80D40D898A307E4F0BFF867"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F8C600B2DD24686AF692BF67B5E8BFD"
             {
             "SourcePath" = "8:..\\EnhacePoE\\Bases\\RingBases.txt"
@@ -907,6 +939,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C825CC18753146D491036E28B8B294BA"
+            {
+            "SourcePath" = "8:..\\EnhacePoE\\Sounds\\filterchanged.mp3"
+            "TargetName" = "8:filterchanged.mp3"
+            "Tag" = "8:"
+            "Folder" = "8:_23B134C48A474642994033AFF22B3F72"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CBD3A552E17644919B0C64CE2333E01F"
             {
             "SourcePath" = "8:..\\EnhacePoE\\Bases\\BootsBases.txt"
@@ -963,7 +1015,7 @@
             "SourcePath" = "8:..\\EnhacePoE\\Styles\\NormalItemsStyle.txt"
             "TargetName" = "8:NormalItemsStyle.txt"
             "Tag" = "8:"
-            "Folder" = "8:_5FCA77B523C64978A6F65CF430D6A675"
+            "Folder" = "8:_36E881B4E80D40D898A307E4F0BFF867"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1199,6 +1251,17 @@
                     "Property" = "8:_7C8BA27E9C044B41A179CD562A0CB56F"
                         "Folders"
                         {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_23B134C48A474642994033AFF22B3F72"
+                            {
+                            "Name" = "8:Sounds"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_CE5AE816504548E99C6081E9553675DA"
+                                "Folders"
+                                {
+                                }
+                            }
                             "{9EF0B969-E518-4E46-987F-47570745A589}:_29AF4522D06C47D6AB96B231026D3B15"
                             {
                             "Name" = "8:Bases"
@@ -1210,17 +1273,17 @@
                                 {
                                 }
                             }
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_5FCA77B523C64978A6F65CF430D6A675"
-                    {
-                    "Name" = "8:Styles"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_4016C50F0EAE44CB8A5676AAFF20D693"
-                        "Folders"
-                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_36E881B4E80D40D898A307E4F0BFF867"
+                            {
+                            "Name" = "8:Styles"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_4016C50F0EAE44CB8A5676AAFF20D693"
+                                "Folders"
+                                {
+                                }
+                            }
                         }
                     }
                 }
@@ -1254,7 +1317,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Chaos Recipe Enhancer"
         "ProductCode" = "8:{DC46C21D-806E-4B24-818B-4602F4FBA85F}"
-        "PackageCode" = "8:{DF307244-47BE-480A-84CA-5F992DAC3D1C}"
+        "PackageCode" = "8:{B32E14F3-DB84-4891-8539-C8DA94C2CC3F}"
         "UpgradeCode" = "8:{EA65B2F9-564C-4C55-AB20-BB9B5A9083BE}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
