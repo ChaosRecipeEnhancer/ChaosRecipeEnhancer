@@ -10,6 +10,8 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam 
  - added Custom Style support
  - added Exalted Shard Recipe (Read guide)
  - changed lootfilter parsing
+ - added sound when lootfilter changes
+ - added custom tabheader width for aligning tab headers to game
 
 #### Main Overlay
 
