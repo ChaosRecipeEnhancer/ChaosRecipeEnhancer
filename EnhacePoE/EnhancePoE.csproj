@@ -240,6 +240,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="EnhancePoE_TemporaryKey.pfx" />
     <None Include="packages.config" />
@@ -254,7 +255,6 @@
   <ItemGroup>
     <Resource Include="gold-removebg-preview.ico" />
     <None Include="Resources\gold-removebg-preview.ico" />
-    <None Include="Resources\treasureChest-removebg-preview.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -293,6 +293,9 @@
     <Resource Include="Assets\gloves.png" />
     <Resource Include="Assets\helmet.png" />
     <Resource Include="Assets\weapon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sounds\filterchanged.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

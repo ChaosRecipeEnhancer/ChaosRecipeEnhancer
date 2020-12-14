@@ -31,6 +31,7 @@ namespace EnhancePoE.Model
                 test.TabName = t.TabName;
                 test.TabNumber = t.TabNumber;
                 test.Quad = t.Quad;
+                test.TabHeaderWidth = t.TabHeaderWidth;
 
                 string jsonString;
                 jsonString = JsonSerializer.Serialize(test);
@@ -48,7 +49,7 @@ namespace EnhancePoE.Model
             foreach(string save in saveStringCollection)
             {
                 StashTabSaveFile settingsTab = JsonSerializer.Deserialize<StashTabSaveFile>(save);
-                allSavedTabs.Add(new StashTab(name: settingsTab.TabName, quad: settingsTab.Quad, index: settingsTab.TabIndex, number: settingsTab.TabNumber));
+                allSavedTabs.Add(new StashTab(name: settingsTab.TabName, quad: settingsTab.Quad, index: settingsTab.TabIndex, number: settingsTab.TabNumber, width: settingsTab.TabHeaderWidth));
             }
             return allSavedTabs;
             
@@ -62,6 +63,7 @@ namespace EnhancePoE.Model
             public int TabNumber { get; set; }
             public int TabIndex { get; set; }
             public bool Quad { get; set; }
+            public double TabHeaderWidth { get; set; }
         }
     }
 }

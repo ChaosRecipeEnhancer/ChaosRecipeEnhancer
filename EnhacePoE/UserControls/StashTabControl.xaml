@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:EnhancePoE.UserControls"
              mc:Ignorable="d" 
              HorizontalAlignment="Left"
-             FontSize="14" Height="120" Width="450">
+             FontSize="14">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -16,6 +16,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -74,6 +75,29 @@
             Margin="10,0,0,10"
             VerticalAlignment="Center"
             IsChecked="{Binding Quad, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            />
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="4"
+            Text="Tab Header Width:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The Width of the Header in the Stashtabs Overlay"
+            Margin="0,0,0,10"/>
+
+        <Slider
+            x:Name="TabHeaderWidthSlider"
+            Width="200"
+            Grid.Column="2"
+            Grid.Row="4"
+            Margin="10,0,0,10"
+            VerticalAlignment="Center"
+            Minimum="0"
+            Maximum="50"
+            AutoToolTipPlacement="TopLeft"
+            IsMoveToPointEnabled="True"
+            AutoToolTipPrecision="1"
+            Value="{Binding TabHeaderWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             />
     </Grid>
 </UserControl>

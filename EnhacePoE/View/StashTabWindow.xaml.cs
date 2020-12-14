@@ -57,6 +57,7 @@ namespace EnhancePoE.View
             base.Hide();
         }
 
+        // TODO: rework tabitems, tabheaders
         public new virtual void Show()
         {
 
@@ -68,7 +69,9 @@ namespace EnhancePoE.View
                 //i.PrepareOverlayList();
                 //i.ActivateNextCell(true);
                 TabItem newStashTabItem;
-                TextBlock tbk = new TextBlock() { Text = i.TabName, Padding = new Thickness(22, 2, 22, 2) };
+                TextBlock tbk = new TextBlock() { Text = i.TabName, Padding = new Thickness(i.TabHeaderWidth, 2, i.TabHeaderWidth, 2) };
+
+                //TextBlock tbk = new TextBlock() { Text = i.TabName};
                 //if (i.ItemOrderList.Count > 0)
                 //{
                 //    if (Properties.Settings.Default.ColorStash != "")
@@ -84,6 +87,7 @@ namespace EnhancePoE.View
                 //tbk.Background = i.TabHeaderColor;
                 tbk.DataContext = i;
                 tbk.SetBinding(TextBlock.BackgroundProperty, new System.Windows.Data.Binding("TabHeaderColor"));
+                //tbk.SetBinding(TextBlock.PaddingProperty, new System.Windows.Data.Binding("TabHeaderThickness"));
                 tbk.FontSize = 16;
                 //if(i..Co > 0)
                 //{

@@ -49,6 +49,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -474,8 +475,8 @@
             />
 
         <TextBlock
-            Grid.Column="3"
-            Grid.Row="8"
+            Grid.Column="1"
+            Grid.Row="10"
             Text="Exalted Shard Recipe:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="Activates Exalted Shard Recipe. Not fully functional at the moment. Visit github for more information."
@@ -483,23 +484,67 @@
 
         <CheckBox
             x:Name="ExaltedRecipeCheckBox"
-            Grid.Column="4"
-            Grid.Row="8"
+            Grid.Column="2"
+            Grid.Row="10"
             Margin="10,0,20,10"
             VerticalAlignment="Center"
             IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedRecipe, Mode=TwoWay}"
             />
 
-            <TextBlock
+        <TextBlock
+            Grid.Column="3"
+            Grid.Row="8"
+            Text="Notification Sound:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="Plays a sound everytime you have to refresh your lootfilter."
+            Margin="0,0,0,10"/>
+
+        <CheckBox
+            x:Name="PlaySoundCheckBox"
+            Grid.Column="4"
+            Grid.Row="8"
+            Margin="10,0,20,10"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=Sound, Mode=TwoWay}"
+            />
+
+        <TextBlock
+            Grid.Column="3"
+            Grid.Row="9"
+            Text="Sound Volume:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="Sound Volume"
+            Margin="0,0,0,10"/>
+
+        <Slider
+            x:Name="VolumeSlider"
+            Width="200"
+            Grid.Column="4"
+            Grid.Row="9"
+            Margin="10,0,20,10"
+            VerticalAlignment="Center"
+            Minimum="0"
+            Maximum="100"
+            AutoToolTipPlacement="TopLeft"
+            IsMoveToPointEnabled="True"
+            AutoToolTipPrecision="0"
+            Value="{Binding Source={x:Static properties:Settings.Default}, Path=Volume, Mode=TwoWay}"
+            />
+
+
+
+        <TextBlock
             Grid.Column="1"
-            Grid.Row="10"
+            Grid.Row="11"
             Grid.ColumnSpan="2"
             Text="Tabs"
             FontSize="36"
             Margin="0,0,0,20"/>
+        
+        
 
         <StackPanel
-            Grid.Row="11"
+            Grid.Row="12"
             Grid.Column="1"
             VerticalAlignment="Center">
             <Button
@@ -520,7 +565,7 @@
         <TabControl
             x:Name="TabsTab"
             Grid.Column="2"
-            Grid.Row="11"
+            Grid.Row="12"
             Grid.ColumnSpan="5"
             Padding="10, 10, 10, 0"
             TabStripPlacement="Top"
@@ -533,7 +578,7 @@
             <TextBlock
                 Grid.Column="1"
                 Grid.ColumnSpan="7"
-                Grid.Row="14"
+                Grid.Row="15"
                 Margin="0,10,0,10"
                 FontSize="12"
                 TextAlignment="Center"
@@ -548,7 +593,7 @@
             Click="SaveButton_Click"
             Content="Save Settings"
             Grid.Column="1"
-            Grid.Row="12"
+            Grid.Row="13"
             Grid.ColumnSpan="2"
             Margin="20, 20, 20, 10"
             />
@@ -558,7 +603,7 @@
             Click="RunButton_Click"
             Content="Run"
             Grid.Column="5"
-            Grid.Row="12"
+            Grid.Row="13"
             Grid.ColumnSpan="2"
             Margin="20, 20, 20, 10"
             />

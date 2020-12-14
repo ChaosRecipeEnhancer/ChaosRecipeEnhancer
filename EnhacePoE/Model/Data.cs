@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Diagnostics;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Threading;
 using EnhancePoE.Model;
 
 
@@ -16,11 +18,12 @@ namespace EnhancePoE
     public class Data
     {
 
-        public bool GlovesActive { get; set; } = true;
-        public bool HelmetActive { get; set; } = true;
-        public bool BootsActive { get; set; } = true;
-        public bool ChestActive { get; set; } = true;
-        public bool WeaponActive { get; set; } = true;
+        public static ActiveItemTypes ActiveItems { get; set; } = new ActiveItemTypes();
+        public static ActiveItemTypes PreviousActiveItems { get; set; }
+
+        private static MediaPlayer Player { get; set; } = new MediaPlayer();
+
+        //private static int Volume { get; set; }
 
         public static List<Item> GlobalNormalItemList { get; set; } = new List<Item>();
         public static List<Item> GlobalShaperItemList { get; set; } = new List<Item>();
@@ -140,6 +143,7 @@ namespace EnhancePoE
         public Data()
         {
             InitializeBases();
+            Player.Open(new Uri("../../Sounds/filterchanged.mp3", UriKind.Relative));
         }
 
         public void GetSetTargetAmount(StashTab stash)
@@ -163,6 +167,17 @@ namespace EnhancePoE
 
         public void CheckActives()
         {
+            if (Properties.Settings.Default.Sound)
+            {
+                PreviousActiveItems = new ActiveItemTypes
+                {
+                    BootsActive = ActiveItems.BootsActive,
+                    GlovesActive = ActiveItems.GlovesActive,
+                    HelmetActive = ActiveItems.HelmetActive,
+                    WeaponActive = ActiveItems.WeaponActive,
+                    ChestActive = ActiveItems.ChestActive
+                };
+            }
 
             bool exaltedActive = Properties.Settings.Default.ExaltedRecipe;
             bool filterActive = Properties.Settings.Default.LootfilterActive;
@@ -242,7 +257,7 @@ namespace EnhancePoE
             }
             if(globalAmount["weapons"] >= SetTargetAmount)
             {
-                WeaponActive = false;
+                ActiveItems.WeaponActive = false;
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(false, WeaponBases, "weapon"));
@@ -250,7 +265,7 @@ namespace EnhancePoE
             }
             else
             {
-                WeaponActive = true;
+                ActiveItems.WeaponActive = true;
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(true, WeaponBases, "weapon"));
@@ -258,7 +273,7 @@ namespace EnhancePoE
             }
             if(globalAmount["chests"] >= SetTargetAmount)
             {
-                ChestActive = false;
+                ActiveItems.ChestActive = false;
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(false, ChestBases, "chest"));
@@ -267,7 +282,7 @@ namespace EnhancePoE
             }
             else
             {
-                ChestActive = true;
+                ActiveItems.ChestActive = true;
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(true, ChestBases, "chest"));
@@ -276,7 +291,7 @@ namespace EnhancePoE
             }
             if (globalAmount["boots"] >= SetTargetAmount)
             {
-                BootsActive = false;
+                ActiveItems.BootsActive = false;
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(false, BootsBases, "boots"));
@@ -285,7 +300,7 @@ namespace EnhancePoE
             }
             else
             {
-                BootsActive = true;
+                ActiveItems.BootsActive = true;
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(true, BootsBases, "boots"));
@@ -294,7 +309,7 @@ namespace EnhancePoE
             }
             if (globalAmount["gloves"] >= SetTargetAmount)
             {
-                GlovesActive = false;
+                ActiveItems.GlovesActive = false;
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(false, GlovesBases, "gloves"));
@@ -303,7 +318,7 @@ namespace EnhancePoE
             }
             else
             {
-                GlovesActive = true;
+                ActiveItems.GlovesActive = true;
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(true, GlovesBases, "gloves"));
@@ -312,7 +327,7 @@ namespace EnhancePoE
             }
             if (globalAmount["helmets"] >= SetTargetAmount)
             {
-                HelmetActive = false;
+                ActiveItems.HelmetActive = false;
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(false, HelmetBases, "helmet"));
@@ -320,7 +335,7 @@ namespace EnhancePoE
             }
             else
             {
-                HelmetActive = true;
+                ActiveItems.HelmetActive = true;
                 if (filterActive)
                 {
                     sectionList.Add(FilterGeneration.GenerateSection(true, HelmetBases, "helmet"));
@@ -358,6 +373,21 @@ namespace EnhancePoE
                     string oldFilter2 = FilterGeneration.OpenLootfilter();
                     string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
                     FilterGeneration.WriteLootfilter(newFilter2);
+                }
+            }
+
+            if (Properties.Settings.Default.Sound)
+            {
+                if(!(PreviousActiveItems.GlovesActive == ActiveItems.GlovesActive 
+                    && PreviousActiveItems.BootsActive == ActiveItems.BootsActive
+                    && PreviousActiveItems.HelmetActive == ActiveItems.HelmetActive
+                    && PreviousActiveItems.ChestActive == ActiveItems.ChestActive
+                    && PreviousActiveItems.WeaponActive == ActiveItems.WeaponActive))
+                {
+                    double volume = Properties.Settings.Default.Volume / 100.0;
+                    Player.Volume = volume;
+                    Player.Position = TimeSpan.Zero;
+                    Player.Play();
                 }
             }
         }
@@ -843,5 +873,14 @@ namespace EnhancePoE
                 GlobalItemOrderList.AddRange(itemorderrestredeemer["list"]);
             }
         }
+    }
+
+    public class ActiveItemTypes
+    {
+        public bool GlovesActive { get; set; } = true;
+        public bool HelmetActive { get; set; } = true;
+        public bool BootsActive { get; set; } = true;
+        public bool ChestActive { get; set; } = true;
+        public bool WeaponActive { get; set; } = true;
     }
 }

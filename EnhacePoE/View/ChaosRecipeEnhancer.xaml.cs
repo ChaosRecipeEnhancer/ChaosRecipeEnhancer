@@ -120,7 +120,7 @@ namespace EnhancePoE
 
             Dispatcher.Invoke(() =>
             {
-                if (!currentData.HelmetActive)
+                if (!Data.ActiveItems.HelmetActive)
                 {
                     Helmet.Opacity = deactivatedOpacity;
                 }
@@ -128,7 +128,7 @@ namespace EnhancePoE
                 {
                     Helmet.Opacity = activatedOpacity;
                 }
-                if (!currentData.GlovesActive)
+                if (!Data.ActiveItems.GlovesActive)
                 {
                     Gloves.Opacity = deactivatedOpacity;
                 }
@@ -136,7 +136,7 @@ namespace EnhancePoE
                 {
                     Gloves.Opacity = activatedOpacity;
                 }
-                if (!currentData.BootsActive)
+                if (!Data.ActiveItems.BootsActive)
                 {
                     Boots.Opacity = deactivatedOpacity;
                 }
@@ -144,7 +144,7 @@ namespace EnhancePoE
                 {
                     Boots.Opacity = activatedOpacity;
                 }
-                if (!currentData.WeaponActive)
+                if (!Data.ActiveItems.WeaponActive)
                 {
                     Weapon.Opacity = deactivatedOpacity;
                 }
@@ -152,7 +152,7 @@ namespace EnhancePoE
                 {
                     Weapon.Opacity = activatedOpacity;
                 }
-                if (!currentData.ChestActive)
+                if (!Data.ActiveItems.ChestActive)
                 {
                     Chest.Opacity = deactivatedOpacity;
                 }

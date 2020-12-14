@@ -56,7 +56,25 @@ namespace EnhancePoE.Model
 
         // used for registering clicks on tab headers
         public TextBlock TabHeader { get; set; }
+        public double TabHeaderWidth { get; set; } = 22;
 
+        //private double _tabHeaderWidth = 22;
+        //public double TabHeaderWidth
+        //{
+        //    get
+        //    {
+        //        return _tabHeaderWidth;
+        //    }
+        //    set
+        //    {
+        //        if (value == _tabHeaderWidth)
+        //        {
+        //            return;
+        //        }
+        //        _tabHeaderWidth = value;
+        //        OnPropertyChanged("TabHeaderWidth");
+        //    }
+        //}
 
 
         private string _tabName;
@@ -156,7 +174,7 @@ namespace EnhancePoE.Model
             TabHeaderColor = Brushes.Transparent;
         }
 
-        public StashTab(string name, bool quad, int number, int index)
+        public StashTab(string name, bool quad, int number, int index, double width)
         {
             this.TabName = name;
             this.Quad = quad;
@@ -166,30 +184,13 @@ namespace EnhancePoE.Model
             this._stashTabItem.Header = this._tabName;
             this._stashTabItem.Content = this._stashControl;
             this._stashTabItem.DataContext = this;
+            this.TabHeaderWidth = width;
             //this.TabHeader = new TextBlock() { Text = name, Padding = new Thickness(5, 2, 5, 2) };
             TabHeaderColor = Brushes.Transparent;
 
+
         }
 
-        //public void GetFullSets()
-        //{
-        //    int rings = this.RingAmount / 2;
-        //    int weapons = this.WeaponAmount / 2;
-        //    weapons += this.TwoHandAmount;
-        //    int sets = new[] { rings, weapons, this.HelmetAmount, this.BootsAmount, this.GlovesAmount, this.ChestAmount, this.AmuletAmount, this.BeltAmount }.Min();
-        //    this.FullSets = sets;
-        //    //if (FullSets > 0)
-        //    //{
-        //    //    if (Properties.Settings.Default.ColorStash != "")
-        //    //    {
-        //    //        this.TabHeader.Background = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        this.TabHeader.Background = Brushes.Red;
-        //    //    }
-        //    //}
-        //}
         private void Generate2dArr(int size)
         { 
             for (int i = 0; i < size; i++)
@@ -209,7 +210,6 @@ namespace EnhancePoE.Model
             }
         }
 
-
         public void PrepareOverlayList()
         {
             //GetFullSets();
@@ -223,11 +223,6 @@ namespace EnhancePoE.Model
                 size = 12;
             }
             Generate2dArr(size);
-            //GenerateItemOrderList();
-            //th = new Thread(GenerateItemOrderList);
-            //th.Start();
-            //GenerateItemOrderList();
-            //Trace.WriteLine(OverlayCellsList.Count, "overlaycelllist count");
         }
 
         private string CheckBase(Item item)
@@ -314,15 +309,10 @@ namespace EnhancePoE.Model
         {
             foreach(Item i in this.ItemList)
             {
-                //Trace.WriteLine(i.typeLine);
-                //Trace.WriteLine(i.typeLine);
                 if (i.typeLine.StartsWith("Superior"))
                 {
-                    //Trace.WriteLine(i.typeLine);
                     i.typeLine = i.typeLine.Replace("Superior ", "");
-                    //i.typeLine.Trim();
                 }
-                //Trace.WriteLine(i.typeLine);
             }
         }
 
