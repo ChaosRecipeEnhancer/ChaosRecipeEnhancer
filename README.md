@@ -93,7 +93,7 @@ Unfortunately there is no possibility to automatically refresh your lootfilter i
 
 If you want to change the bases you pick up, navigate to "C:\Users\username\AppData\Roaming\ChaosRecipeEnhancer\Bases", and edit the .txt files accordingly. This way you can still use this tool when new bases are released or if you want to pick up bigger weapons too. At the moment identified items will get ignored.
 
-Bows and Quivers are not supported. Tell me, if you want support for them.
+1-Hand Maces are missing at the moment. 
 
 You have to restart the app after changing the files.
 
