@@ -4,8 +4,11 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam this [discord](https://discord.gg/KgVsUdSSrR).
 
-#### Updates
+#### Change Log (Current Version 1.0.6)
 
+ - fixed lootfilter parsing bug (should recognize the phrases now correctly)
+ - added default values
+ - adjusted stashtab overlay highlighting sizes
  - added Two-Hand Weapon support
  - added Custom Style support
  - added Exalted Shard Recipe (Read guide)
