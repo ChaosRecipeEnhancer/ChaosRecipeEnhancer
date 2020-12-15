@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace EnhancePoE.Model
 {
@@ -10,8 +11,16 @@ namespace EnhancePoE.Model
             int clickX = MouseHook.ClickLocationX;
             int clickY = MouseHook.ClickLocationY;
 
-            int btnX = Convert.ToInt32(Math.Floor(pt.X + btn.ActualWidth));
-            int btnY = Convert.ToInt32(Math.Floor(pt.Y + btn.ActualHeight));
+            //Trace.WriteLine);
+
+
+            // adjust btn x,y position a bit
+            pt.X -= 1;
+            pt.Y -= 1;
+
+            // +1 border thickness
+            int btnX = Convert.ToInt32(Math.Ceiling(pt.X + btn.ActualWidth + 1));
+            int btnY = Convert.ToInt32(Math.Ceiling(pt.Y + btn.ActualHeight + 1));
 
             if (clickX > pt.X
                 && clickY > pt.Y

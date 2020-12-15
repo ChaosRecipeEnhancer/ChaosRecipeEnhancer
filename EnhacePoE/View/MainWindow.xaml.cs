@@ -54,6 +54,7 @@ namespace EnhancePoE
 
         public MainWindow()
         {
+            //Properties.Settings.Default.Reset();
             InitializeComponent();
 
             //TESTING SETTINGS RESET

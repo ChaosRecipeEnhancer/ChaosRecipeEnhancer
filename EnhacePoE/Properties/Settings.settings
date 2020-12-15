@@ -36,19 +36,19 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="ColorBoots" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">#FF0018FF</Value>
     </Setting>
     <Setting Name="ColorGloves" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">#FF04FF00</Value>
     </Setting>
     <Setting Name="ColorHelmet" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">#FFF8FF04</Value>
     </Setting>
     <Setting Name="ColorChest" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">#FFDD00FF</Value>
     </Setting>
     <Setting Name="ColorWeapon" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">#FF00DCFF</Value>
     </Setting>
     <Setting Name="SessionId" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -81,10 +81,10 @@
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="ColorJewellery" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">#FFFF0303</Value>
     </Setting>
     <Setting Name="ColorStash" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">#96F90000</Value>
     </Setting>
     <Setting Name="ColorBelt" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -102,13 +102,13 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Sound" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Volume" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">50</Value>
     </Setting>
     <Setting Name="StashTabBackgroundColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">#14FFFFFF</Value>
     </Setting>
   </Settings>
 </SettingsFile>
