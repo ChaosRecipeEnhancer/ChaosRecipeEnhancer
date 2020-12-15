@@ -4,17 +4,9 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam this [discord](https://discord.gg/KgVsUdSSrR).
 
-#### Change Log (Current Version 1.0.6)
+#### Current Version 1.0.6
 
- - fixed lootfilter parsing bug (should recognize the phrases now correctly)
- - added default values
- - adjusted stashtab overlay highlighting sizes
- - added Two-Hand Weapon support
- - added Custom Style support
- - added Exalted Shard Recipe (Read guide)
- - changed lootfilter parsing
- - added sound when lootfilter changes
- - added custom tabheader width for aligning tab headers to game
+For details on changes, check the end of this site.
 
 #### Main Overlay
 
@@ -151,6 +143,16 @@ Although there are 2 points which could be problematic:
  - fixed lootfilter parsing bug (should recognize the phrases now correctly)
  - added default values
  - adjusted stashtab overlay highlighting sizes
+ - added bows and 1h maces
+ 
+#### 1.0.5
+
+ - added Two-Hand Weapon support
+ - added Custom Style support
+ - added Exalted Shard Recipe (Read guide)
+ - changed lootfilter parsing
+ - added sound when lootfilter changes
+ - added custom tabheader width for aligning tab headers to game
   
   
   
