@@ -143,7 +143,7 @@ namespace EnhancePoE.Model
             }
             if (type == "belt") 
             {
-                color = Properties.Settings.Default.ColorBelt;
+                color = Properties.Settings.Default.ColorJewellery;
             }
             if(type == "helmet")
             {
@@ -199,8 +199,8 @@ namespace EnhancePoE.Model
             string nl = "\n";
             string result;
             string chaosSection = "";
-            string chaosStart = "#Chaos Recipe Enhancer by kosace Chaos Recipe Start\n";
-            string chaosEnd = "#Chaos Recipe Enhancer by kosace Chaos Recipe End\n";
+            string chaosStart = "#Chaos Recipe Enhancer by kosace Chaos Recipe Start";
+            string chaosEnd = "#Chaos Recipe Enhancer by kosace Chaos Recipe End";
 
             //string exaltedStart = "#Chaos Recipe Enhancer by kosace Exalted Recipe Start\n";
             //string exaltedEnd = "#Chaos Recipe Enhancer by kosace Exalted Recipe End\n";
@@ -209,12 +209,12 @@ namespace EnhancePoE.Model
             string afterChaos = "";
 
             // generate chaos recipe section
-            chaosSection += chaosStart + nl;
+            chaosSection += chaosStart + nl + nl;
             foreach (string s in sections)
             {
                 chaosSection += s + nl;
             }
-            chaosSection += chaosEnd;
+            chaosSection += chaosEnd + nl;
 
             string[] sep = { chaosEnd };
             string[] split = oldFilter.Split(sep, System.StringSplitOptions.None);
@@ -222,12 +222,15 @@ namespace EnhancePoE.Model
             if(split.Length > 1)
             {
                 afterChaos = split[1];
+                Trace.WriteLine(split[1], "afterchaos");
                 string[] sep2 = { chaosStart };
                 string[] split2 = split[0].Split(sep2, System.StringSplitOptions.None);
                 
                 if(split2.Length > 1)
                 {
                     beforeChaos = split2[0];
+                    Trace.WriteLine(split2[0], "beforechaos");
+                    
                 }
                 else
                 {
@@ -236,6 +239,7 @@ namespace EnhancePoE.Model
             }
             else
             {
+                Trace.WriteLine(split[0], "length = 1");
                 afterChaos = oldFilter;
             }
 
@@ -255,19 +259,19 @@ namespace EnhancePoE.Model
             string nl = "\n";
             string result;
             string exaltedSection = "";
-            string exaltedStart = "#Chaos Recipe Enhancer by kosace Exalted Recipe Start\n";
-            string exaltedEnd = "#Chaos Recipe Enhancer by kosace Exalted Recipe End\n";
+            string exaltedStart = "#Chaos Recipe Enhancer by kosace Exalted Recipe Start";
+            string exaltedEnd = "#Chaos Recipe Enhancer by kosace Exalted Recipe End";
 
             string beforeExalted = "";
             string afterExalted = "";
 
             // generate chaos recipe section
-            exaltedSection += exaltedStart + nl;
+            exaltedSection += exaltedStart + nl + nl;
             foreach (string s in sections)
             {
                 exaltedSection += s + nl;
             }
-            exaltedSection += exaltedEnd;
+            exaltedSection += exaltedEnd + nl;
 
             string[] sep = { exaltedEnd };
             string[] split = oldFilter.Split(sep, System.StringSplitOptions.None);
