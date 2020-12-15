@@ -143,6 +143,15 @@ Although there are 2 points which could be problematic:
   
   - Icons made by [iconixar](https://www.flaticon.com/authors/iconixar) from [www.flaticon.com](https://www.flaticon.com/)
   
+ 
+## Change Log
+
+#### 1.0.6
+
+ - fixed lootfilter parsing bug (should recognize the phrases now correctly)
+ - added default values
+ - adjusted stashtab overlay highlighting sizes
+  
   
   
   
