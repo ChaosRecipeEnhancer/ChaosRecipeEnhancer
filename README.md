@@ -100,6 +100,12 @@ You have to restart the app after changing the files.
 The list of bases may include some old bases and too big weapons at the moment. If you have a up-to-date list of all bases and small weapons (1x3), send me an E-Mail please. 
 Also Sai in weapon bases produces a bug where some body armours get highlighted, so i deleted Sai.
 
+#### Leagues
+
+- Normal: just the league name. e.g. "Standard" or "Heist"
+- SSF: SSF + the league name e.g. "SSF Standard" or "SSF Heist"
+- Event: the name under the character on poe website e.g. for Mayhem it was "Mayhem (DRE001)"
+
 #### Exalted Shard Recipe
 
 If you have Exalted Shard Recipe activated, every influenced rare item will be highlighted no matter the ilvl. Also it doesn't hide influenced rares when you have full sets. Means, influenced items are always shown.
