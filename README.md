@@ -48,7 +48,7 @@ Since this app is not trusted (too expensive), you will have to accept few times
 
 The overlays will not work in Fullscreen Mode. Instead they will only work in:
  - DirectX11: Windowed or Fullscreen Windowed Mode
- - Vulkan: Windowed Mode
+ - Vulkan: Windowed Mode or Fullscreen Windowed Mode (tell me, if there are problems with it)
  
 The tool only works in Windows, no support for other OS.
 
