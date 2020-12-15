@@ -3,16 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media;
 //using System.Windows.Input;
 
@@ -39,43 +30,12 @@ namespace EnhancePoE.Model
         public List<Item> ItemListHunter { get; set; } = new List<Item>();
         public List<Item> ItemListRedeemer { get; set; } = new List<Item>();
 
-
-        //public int GlovesAmount { get; set; } = 0;
-        //public int HelmetAmount { get; set; } = 0;
-        //public int BootsAmount { get; set; } = 0;
-        //public int ChestAmount { get; set; } = 0;
-        //public int WeaponAmount { get; set; } = 0;
-        //public int RingAmount { get; set; } = 0;
-        //public int AmuletAmount { get; set; } = 0;
-        //public int BeltAmount { get; set; } = 0;
-        //public int TwoHandAmount { get; set; } = 0;
-        //public int FullSets { get; set; } = 0;
-
         public ObservableCollection<Cell> OverlayCellsList { get; set; } = new ObservableCollection<Cell>();
         //public List<Item> ItemOrderList { get; set; } = new List<Item>();
 
         // used for registering clicks on tab headers
         public TextBlock TabHeader { get; set; }
         public double TabHeaderWidth { get; set; } = 22;
-
-        //private double _tabHeaderWidth = 22;
-        //public double TabHeaderWidth
-        //{
-        //    get
-        //    {
-        //        return _tabHeaderWidth;
-        //    }
-        //    set
-        //    {
-        //        if (value == _tabHeaderWidth)
-        //        {
-        //            return;
-        //        }
-        //        _tabHeaderWidth = value;
-        //        OnPropertyChanged("TabHeaderWidth");
-        //    }
-        //}
-
 
         private string _tabName;
         public string TabName { 
@@ -202,9 +162,7 @@ namespace EnhancePoE.Model
                         Active = false,
                         XIndex = j,
                         YIndex = i,
-                        ToggleCellCommand = new RelayCommand<bool>(ChaosRecipeEnhancer.currentData.ActivateNextCell),
-                        //ButtonName = "Btn " + j + " " + i,
-                        //CellName = "Cell " + j + " " + i
+                        //ToggleCellCommand = new RelayCommand<bool>(ChaosRecipeEnhancer.currentData.ActivateNextCell),
                     });
                 }
             }

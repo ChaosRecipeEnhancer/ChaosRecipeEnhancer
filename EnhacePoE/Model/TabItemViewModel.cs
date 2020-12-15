@@ -3,10 +3,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
-using System.Linq;
-using EnhancePoE.UserControls;
 using System.Windows.Controls;
-using System.Collections.Generic;
 using EnhancePoE.Model;
 
 namespace EnhancePoE

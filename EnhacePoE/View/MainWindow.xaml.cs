@@ -111,6 +111,11 @@ namespace EnhancePoE
             {
                 ColorStashPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash);
             }
+            if (Properties.Settings.Default.StashTabBackgroundColor != "")
+            {
+                ColorStashBackgroundPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.StashTabBackgroundColor);
+            }
+
         }
 
 
@@ -480,6 +485,15 @@ namespace EnhancePoE
 
             System.Windows.MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
             return false;
+        }
+
+        private void VolumeSlider_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Data.PlayNotificationSound();
+        }
+        private void ColorStashBackgroundPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
+        {
+            Properties.Settings.Default.StashTabBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
         }
     }
 

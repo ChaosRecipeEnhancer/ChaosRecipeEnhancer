@@ -221,5 +221,11 @@ namespace EnhancePoE
                 HandleEditButton();
             }
         }
+
+        //private void Window_Deactivated(object sender, EventArgs e)
+        //{
+        //    // The Window was deactivated 
+        //    MainWindow.overlay.Topmost = true;
+        //}
     }
 }

@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <ItemsControl.Background>
-        <SolidColorBrush Opacity="0" Color="White"/>
+        <SolidColorBrush Opacity="0" Color="Transparent"/>
     </ItemsControl.Background>
 
 
@@ -22,15 +22,13 @@
         <!-- ItemTemplate -->
     <ItemsControl.ItemTemplate>
         <DataTemplate>
-            <Button Command="{Binding ToggleCellCommand}"
-                    CommandParameter="{Binding Active}"
-                    >
+            <Button>
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="1">
+                                    <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="0.5">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>

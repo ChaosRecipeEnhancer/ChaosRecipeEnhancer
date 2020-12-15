@@ -101,3 +101,33 @@ Despot Axe
 Void Axe
 Apex Cleaver
 Fleshripper
+
+Crude Bow
+Short Bow
+Long Bow
+Composite Bow
+Recurve Bow
+Bone Bow
+Royal Bow
+Hedron Bow
+Death Bow
+Grove Bow
+Reflex Bow
+Decurve Bow
+Compound Bow
+Sniper Bow
+Ivory Bow
+Foundry Bow
+Highborn Bow
+Decimation Bow
+Thicket Bow
+Steelwood Bow
+Citadel Bow
+Ranger Bow
+Assassin Bow
+Spine Bow
+Imperial Bow
+Harbinger Bow
+Solarine Bow
+Maraketh Bow
+

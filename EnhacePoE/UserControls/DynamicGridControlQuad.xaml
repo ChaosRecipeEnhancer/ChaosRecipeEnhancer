@@ -22,7 +22,7 @@
     <!-- ItemTemplate -->
     <ItemsControl.ItemTemplate>
         <DataTemplate>
-            <Button Command="{Binding ToggleCellCommand}">
+            <Button>
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -44,7 +44,7 @@
                             </Trigger>
                             <DataTrigger Binding="{Binding Active}"
                              Value="True">
-                                <Setter Property="Background" Value="Red" />
+                                <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=ColorStash}" />
                                 <Setter Property="Opacity" Value="1" />
 
                             </DataTrigger>

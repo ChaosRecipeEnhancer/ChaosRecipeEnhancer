@@ -148,9 +148,6 @@
     <Compile Include="UserControls\DynamicGridControlQuad.xaml.cs">
       <DependentUpon>DynamicGridControlQuad.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\StashTabOverlayControl.xaml.cs">
-      <DependentUpon>StashTabOverlayControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\StashTabWindow.xaml.cs">
       <DependentUpon>StashTabWindow.xaml</DependentUpon>
     </Compile>
@@ -163,10 +160,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\StashTabControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\StashTabOverlayControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

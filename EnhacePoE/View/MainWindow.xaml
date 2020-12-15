@@ -406,7 +406,7 @@
         <TextBlock
             Grid.Column="5"
             Grid.Row="8"
-            Text="Stashtab Color:"
+            Text="Highlight Color:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The color that highlights the items in your stashtab overlay."
             Margin="0,0,0,10"/>
@@ -419,6 +419,24 @@
             Name="ColorStashPicker" 
             ColorMode="ColorCanvas"
             SelectedColorChanged="ColorStashPicker_SelectedColorChanged">
+        </xctk:ColorPicker>
+
+        <TextBlock
+            Grid.Column="5"
+            Grid.Row="9"
+            Text="Stashtab Background Color:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The color of the background of the Stashtab Overlay. Make this opaque if you want."
+            Margin="0,0,0,10"/>
+
+        <xctk:ColorPicker 
+            Grid.Column="6"
+            Grid.Row="9"
+            Width="200"
+            Margin="10,0,10,10"
+            Name="ColorStashBackgroundPicker" 
+            ColorMode="ColorCanvas"
+            SelectedColorChanged="ColorStashBackgroundPicker_SelectedColorChanged">
         </xctk:ColorPicker>
 
         <TextBlock
@@ -528,6 +546,7 @@
             AutoToolTipPlacement="TopLeft"
             IsMoveToPointEnabled="True"
             AutoToolTipPrecision="0"
+            PreviewMouseUp="VolumeSlider_PreviewMouseUp"
             Value="{Binding Source={x:Static properties:Settings.Default}, Path=Volume, Mode=TwoWay}"
             />
 

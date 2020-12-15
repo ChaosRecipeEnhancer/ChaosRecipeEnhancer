@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
 
 namespace EnhancePoE.Model
 {
@@ -24,11 +19,8 @@ namespace EnhancePoE.Model
                 using(StreamReader reader = new StreamReader(location))
                 {
                     string ret = reader.ReadToEnd();
-                    //Trace.Write(ret);
                     reader.Close();
                     return ret;
-
-                    //Trace.Write(reader.ReadToEnd());
                 }
             }
             return null;
@@ -128,8 +120,6 @@ namespace EnhancePoE.Model
                     result = result + cs + nl + tab;
                 }
             }
-
-            //result = result;
 
             return result;
         }
@@ -307,6 +297,5 @@ namespace EnhancePoE.Model
 
             return result;
         }
-
     }
 }

@@ -19,7 +19,7 @@
         Height="{Binding Source={x:Static properties:Settings.Default}, Path=YStashTabOverlay, Mode=TwoWay}"
         Width="{Binding Source={x:Static properties:Settings.Default}, Path=XStashTabOverlay, Mode=TwoWay}">
     <Window.Background>
-        <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab}" Color="White"/>
+        <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab}" Color="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabBackgroundColor}" />
     </Window.Background>
 
     <Grid>

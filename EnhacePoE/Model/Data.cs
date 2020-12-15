@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Media;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
-using System.Windows.Threading;
 using EnhancePoE.Model;
 
 
@@ -20,11 +15,7 @@ namespace EnhancePoE
 
         public static ActiveItemTypes ActiveItems { get; set; } = new ActiveItemTypes();
         public static ActiveItemTypes PreviousActiveItems { get; set; }
-
         private static MediaPlayer Player { get; set; } = new MediaPlayer();
-
-        //private static int Volume { get; set; }
-
         public static List<Item> GlobalNormalItemList { get; set; } = new List<Item>();
         public static List<Item> GlobalShaperItemList { get; set; } = new List<Item>();
         public static List<Item> GlobalElderItemList { get; set; } = new List<Item>();
@@ -32,7 +23,6 @@ namespace EnhancePoE
         public static List<Item> GlobalHunterItemList { get; set; } = new List<Item>();
         public static List<Item> GlobalRedeemerItemList { get; set; } = new List<Item>();
         public static List<Item> GlobalCrusaderItemList { get; set; } = new List<Item>();
-
 
         public List<string> BootsBases { get; set; } = new List<string>();
         public List<string> GlovesBases { get; set; } = new List<string>();
@@ -383,15 +373,19 @@ namespace EnhancePoE
                     && PreviousActiveItems.ChestActive == ActiveItems.ChestActive
                     && PreviousActiveItems.WeaponActive == ActiveItems.WeaponActive))
                 {
-                    double volume = Properties.Settings.Default.Volume / 100.0;
-                    Player.Volume = volume;
-                    Player.Position = TimeSpan.Zero;
-                    Player.Play();
+                    PlayNotificationSound();
                 }
             }
         }
 
-        // TODO: combine with HasFullSets
+        public static void PlayNotificationSound()
+        {
+            double volume = Properties.Settings.Default.Volume / 100.0;
+            Player.Volume = volume;
+            Player.Position = TimeSpan.Zero;
+            Player.Play();
+        }
+
         private Dictionary<string, int> GetFullSets(List<Item> itemList)
         {
             int ringsAmount = 0;
@@ -500,10 +494,8 @@ namespace EnhancePoE
                 int end = 0;
                 while (end < 10)
                 {
-                    //Trace.WriteLine(end, "end: ");
                     for(int i = itemList.Count - 1; i > -1; i--)
                     {
-                        //ItemWithStash _i = itemList[i];
                         switch (end)
                         {
                             case 0:
@@ -620,21 +612,6 @@ namespace EnhancePoE
             {
                 if (GlobalItemOrderList.Count > 0)
                 {
-
-                    // INFLUENCE TEST
-                    //if(GlobalItemOrderList[0].influences != null)
-                    //{
-                    //    Trace.WriteLine(GlobalItemOrderList[0].influences.shaper, "shaper");
-                    //    Trace.WriteLine(GlobalItemOrderList[0].influences.elder, "elder");
-                    //    Trace.WriteLine(GlobalItemOrderList[0].influences.crusader, "crusader");
-                    //    Trace.WriteLine(GlobalItemOrderList[0].influences.redeemer, "redeemer");
-                    //    Trace.WriteLine(GlobalItemOrderList[0].influences.warlord, "warlord");
-                    //    Trace.WriteLine(GlobalItemOrderList[0].influences.hunter, "hunter");
-                    //}
-                    //else
-                    //{
-                    //    Trace.WriteLine("influences null");
-                    //}
 
                     foreach (StashTab s in MainWindow.stashTabsModel.StashTabs)
                     {

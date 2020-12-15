@@ -440,5 +440,17 @@ namespace EnhancePoE.Properties {
                 this["Volume"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StashTabBackgroundColor {
+            get {
+                return ((string)(this["StashTabBackgroundColor"]));
+            }
+            set {
+                this["StashTabBackgroundColor"] = value;
+            }
+        }
     }
 }

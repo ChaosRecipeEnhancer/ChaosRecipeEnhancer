@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EnhancePoE.Model
 {
@@ -86,82 +83,73 @@ namespace EnhancePoE.Model
 
 
 
-        // retarded, find out how to dynamically change uniform grid amount of rows
+        // 
         private static void OverlayClickEvent()
         {
-            int selectedIndex = MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedIndex;
-            bool isHit = false;
 
-
-            List<Cell> activeCells = GetAllActiveCells(selectedIndex);
-
-            List<System.Windows.Controls.Button> buttonList = new List<System.Windows.Controls.Button>();
-
-            if (MainWindow.stashTabsModel.StashTabs[selectedIndex].Quad)
+            if (MainWindow.stashTabOverlay.IsOpen)
             {
-                var ctrl = MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedContent as UserControls.DynamicGridControlQuad;
-                foreach (Cell cell in activeCells)
+                int selectedIndex = MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedIndex;
+                bool isHit = false;
+
+
+                List<Cell> activeCells = GetAllActiveCells(selectedIndex);
+
+                List<System.Windows.Controls.Button> buttonList = new List<System.Windows.Controls.Button>();
+
+                if (MainWindow.stashTabsModel.StashTabs[selectedIndex].Quad)
                 {
-                    buttonList.Add(ctrl.GetButtonFromCell(cell));
-                }
-                foreach (System.Windows.Controls.Button b in buttonList)
-                {
-                    //Trace.WriteLine(b.Content);
-                    //Trace.WriteLine(GetCoordinates(b));
-                    //Trace.WriteLine(b.ActualHeight + "height " + b.ActualWidth + "width");
-                    if (CheckForHit(GetCoordinates(b), b))
+                    var ctrl = MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedContent as UserControls.DynamicGridControlQuad;
+                    foreach (Cell cell in activeCells)
                     {
-                        isHit = true;
+                        buttonList.Add(ctrl.GetButtonFromCell(cell));
+                    }
+                    foreach (System.Windows.Controls.Button b in buttonList)
+                    {
+                        if (CheckForHit(GetCoordinates(b), b))
+                        {
+                            isHit = true;
+                        }
+                    }
+
+                    if (isHit)
+                    {
+                        ChaosRecipeEnhancer.currentData.ActivateNextCell(true);
+                    }
+
+                    for (int stash = 0; stash < MainWindow.stashTabsModel.StashTabs.Count; stash++)
+                    {
+                        if (CheckForHeaderHit(MainWindow.stashTabsModel.StashTabs[stash]))
+                        {
+                            MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedIndex = stash;
+                        }
                     }
                 }
-
-                if (isHit)
+                else
                 {
-                    ChaosRecipeEnhancer.currentData.ActivateNextCell(true);
-                }
-
-                //Trace.WriteLine(isHit);
-
-                for (int stash = 0; stash < MainWindow.stashTabsModel.StashTabs.Count; stash++)
-                {
-                    if (CheckForHeaderHit(MainWindow.stashTabsModel.StashTabs[stash]))
+                    var ctrl = MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedContent as UserControls.DynamicGridControl;
+                    foreach (Cell cell in activeCells)
                     {
-                        //Trace.WriteLine("tab header hit");
-                        MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedIndex = stash;
+                        buttonList.Add(ctrl.GetButtonFromCell(cell));
                     }
-                }
-            }
-            else
-            {
-                var ctrl = MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedContent as UserControls.DynamicGridControl;
-                foreach (Cell cell in activeCells)
-                {
-                    buttonList.Add(ctrl.GetButtonFromCell(cell));
-                }
-                foreach (System.Windows.Controls.Button b in buttonList)
-                {
-                    //Trace.WriteLine(b.Content);
-                    //Trace.WriteLine(GetCoordinates(b));
-                    //Trace.WriteLine(b.ActualHeight + "height " + b.ActualWidth + "width");
-                    if (CheckForHit(GetCoordinates(b), b))
+                    foreach (System.Windows.Controls.Button b in buttonList)
                     {
-                        isHit = true;
+                        if (CheckForHit(GetCoordinates(b), b))
+                        {
+                            isHit = true;
+                        }
                     }
-                }
 
-                if (isHit)
-                {
-                    ChaosRecipeEnhancer.currentData.ActivateNextCell(true);
-                }
-
-                //Trace.WriteLine(isHit);
-
-                for (int stash = 0; stash < MainWindow.stashTabsModel.StashTabs.Count; stash++)
-                {
-                    if (CheckForHeaderHit(MainWindow.stashTabsModel.StashTabs[stash]))
+                    if (isHit)
                     {
-                        //Trace.WriteLine("tab header hit");
-                        MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedIndex = stash;
+                        ChaosRecipeEnhancer.currentData.ActivateNextCell(true);
+                    }
+                    for (int stash = 0; stash < MainWindow.stashTabsModel.StashTabs.Count; stash++)
+                    {
+                        if (CheckForHeaderHit(MainWindow.stashTabsModel.StashTabs[stash]))
+                        {
+                            MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedIndex = stash;
+                        }
                     }
                 }
             }
