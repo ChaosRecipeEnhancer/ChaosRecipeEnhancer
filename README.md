@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam this [discord](https://discord.gg/KgVsUdSSrR).
 
-#### Current Version 1.0.6
+#### Current Version 1.0.7
 
 For details on changes, check the bottom of this site.
 
@@ -135,6 +135,12 @@ Although there are 2 points which could be problematic:
   
  
 ## Change Log
+
+#### 1.0.7
+
+ - minor UI changes
+ - added colors for jewellery
+ - fixed crash occuring when sound notification is activated
 
 #### 1.0.6
 
