@@ -6,7 +6,7 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam 
 
 #### Current Version 1.0.6
 
-For details on changes, check the end of this site.
+For details on changes, check the bottom of this site.
 
 #### Main Overlay
 
