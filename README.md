@@ -4,14 +4,9 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam this [discord](https://discord.gg/KgVsUdSSrR).
 
-#### Updates
+#### Current Version 1.0.7
 
- - added Two-Hand Weapon support
- - added Custom Style support
- - added Exalted Shard Recipe (Read guide)
- - changed lootfilter parsing
- - added sound when lootfilter changes
- - added custom tabheader width for aligning tab headers to game
+For details on changes, check the bottom of this site.
 
 #### Main Overlay
 
@@ -93,8 +88,6 @@ Unfortunately there is no possibility to automatically refresh your lootfilter i
 
 If you want to change the bases you pick up, navigate to "C:\Users\username\AppData\Roaming\ChaosRecipeEnhancer\Bases", and edit the .txt files accordingly. This way you can still use this tool when new bases are released or if you want to pick up bigger weapons too. At the moment identified items will get ignored.
 
-1-Hand Maces are missing at the moment. 
-
 You have to restart the app after changing the files.
 
 The list of bases may include some old bases and too big weapons at the moment. If you have a up-to-date list of all bases and small weapons (1x3), send me an E-Mail please. 
@@ -104,6 +97,7 @@ Also Sai in weapon bases produces a bug where some body armours get highlighted,
 
 - Normal: just the league name. e.g. "Standard" or "Heist"
 - SSF: SSF + the league name e.g. "SSF Standard" or "SSF Heist"
+- Hardcore: just "Hardcore"
 - Event: the name under the character on poe website e.g. for Mayhem it was "Mayhem (DRE001)"
 
 #### Exalted Shard Recipe
@@ -139,6 +133,31 @@ Although there are 2 points which could be problematic:
   - Icons made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [www.flaticon.com](https://www.flaticon.com/)
   
   - Icons made by [iconixar](https://www.flaticon.com/authors/iconixar) from [www.flaticon.com](https://www.flaticon.com/)
+  
+ 
+## Change Log
+
+#### 1.0.7
+
+ - minor UI changes
+ - added colors for jewellery
+ - fixed crash occuring when sound notification is activated
+
+#### 1.0.6
+
+ - fixed lootfilter parsing bug (should recognize the phrases now correctly)
+ - added default values
+ - adjusted stashtab overlay highlighting sizes
+ - added bows and 1h maces
+ 
+#### 1.0.5
+
+ - added Two-Hand Weapon support
+ - added Custom Style support
+ - added Exalted Shard Recipe (Read guide)
+ - changed lootfilter parsing
+ - added sound when lootfilter changes
+ - added custom tabheader width for aligning tab headers to game
   
   
   
