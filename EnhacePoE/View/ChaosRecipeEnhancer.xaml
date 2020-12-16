@@ -12,14 +12,24 @@
         AllowsTransparency="True" 
         Topmost="True"
         MouseDown="Window_MouseDown"
+        Background="Transparent"
         xmlns:properties="clr-namespace:EnhancePoE.Properties"
         Left="{Binding Source={x:Static properties:Settings.Default}, Path=LeftOverlay, Mode=TwoWay}"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=TopOverlay, Mode=TwoWay}"
         >
-    <Window.Background>
-        <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=Opacity}" Color="White"/>
-    </Window.Background>
+
+
+    <Border
+    BorderThickness="1"
+    CornerRadius="5">
+        <Border.BorderBrush>
+            <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=Opacity}" Color="White"/>
+        </Border.BorderBrush>
+        <Border.Background>
+            <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=Opacity}" Color="White"/>
+        </Border.Background>
     
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -195,6 +205,7 @@
             BorderThickness = "0,0,0,0"
             x:Name="OverlayProgressBar"
             ></ProgressBar>
-
     </Grid>
+    </Border>
+
 </Window>

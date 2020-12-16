@@ -76,6 +76,7 @@ namespace EnhancePoE
                                     string resContent = await content.ReadAsStringAsync();
                                     ItemList deserializedContent = JsonSerializer.Deserialize<ItemList>(resContent);
                                     i.ItemList = deserializedContent.items;
+                                    i.Quad = deserializedContent.quadLayout;
                                     i.RemoveQualityFromItems();
                                     i.CleanItemList();
                                 }

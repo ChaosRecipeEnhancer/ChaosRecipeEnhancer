@@ -61,24 +61,6 @@
 
         <TextBlock
             Grid.Column="1"
-            Grid.Row="3"
-            Width="200"
-            Text="Quad Stash Tab:"
-            ToolTipService.InitialShowDelay="50"
-            ToolTip="Activate on Quad Tabs."
-            />
-
-        <CheckBox
-            x:Name="quadStashTab"
-            Grid.Column="2"
-            Grid.Row="3"
-            Margin="10,0,0,10"
-            VerticalAlignment="Center"
-            IsChecked="{Binding Quad, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            />
-
-        <TextBlock
-            Grid.Column="1"
             Grid.Row="4"
             Text="Tab Header Width:"
             ToolTipService.InitialShowDelay="50"

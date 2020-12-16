@@ -134,10 +134,10 @@ namespace EnhancePoE.Model
             TabHeaderColor = Brushes.Transparent;
         }
 
-        public StashTab(string name, bool quad, int number, int index, double width)
+        public StashTab(string name, int number, int index, double width)
         {
             this.TabName = name;
-            this.Quad = quad;
+            //this.Quad = quad;
             this.TabIndex = index;
             this.TabNumber = number;
             this.StashTabItem = new TabItem();

@@ -706,7 +706,7 @@
             <TextBlock
                 Grid.Column="6"
                 Grid.Row="16"
-                Text="Version 1.0.7"
+                Text="Version 1.0.8"
                 FontSize="12"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"

@@ -32,6 +32,7 @@ namespace EnhancePoE
     public class ItemList
     {
         public List<Item> items { get; set; }
+        public bool quadLayout { get; set; } = false;
     }
 
     public class Influence
