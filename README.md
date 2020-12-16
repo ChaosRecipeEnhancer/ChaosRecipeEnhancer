@@ -97,6 +97,7 @@ Also Sai in weapon bases produces a bug where some body armours get highlighted,
 
 - Normal: just the league name. e.g. "Standard" or "Heist"
 - SSF: SSF + the league name e.g. "SSF Standard" or "SSF Heist"
+- Hardcore: just "Hardcore"
 - Event: the name under the character on poe website e.g. for Mayhem it was "Mayhem (DRE001)"
 
 #### Exalted Shard Recipe
