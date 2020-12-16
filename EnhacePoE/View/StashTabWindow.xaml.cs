@@ -25,9 +25,9 @@ namespace EnhancePoE.View
     /// </summary>
     public partial class StashTabWindow : Window
     {
-
         public bool IsOpen { get; set; } = false;
         public bool IsEditing { get; set; } = false;
+
         //public Dictionary<TextBlock, int> TextBlockList { get; set; } = new Dictionary<TextBlock, int>();
 
 

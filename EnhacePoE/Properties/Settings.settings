@@ -80,14 +80,14 @@
     <Setting Name="OpacityStashTab" Type="System.Single" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="ColorJewellery" Type="System.String" Scope="User">
+    <Setting Name="ColorRing" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FFFF0303</Value>
     </Setting>
     <Setting Name="ColorStash" Type="System.String" Scope="User">
       <Value Profile="(Default)">#96F90000</Value>
     </Setting>
     <Setting Name="ColorBelt" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">#FFFF0303</Value>
     </Setting>
     <Setting Name="LootfilterLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -109,6 +109,9 @@
     </Setting>
     <Setting Name="StashTabBackgroundColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#14FFFFFF</Value>
+    </Setting>
+    <Setting Name="ColorAmulet" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFF0303</Value>
     </Setting>
   </Settings>
 </SettingsFile>

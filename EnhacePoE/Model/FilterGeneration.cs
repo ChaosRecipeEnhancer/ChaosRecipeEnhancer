@@ -135,15 +135,15 @@ namespace EnhancePoE.Model
             List<int> colorList = new List<int>();
             if(type == "ring") 
             {
-                color = Properties.Settings.Default.ColorJewellery;
+                color = Properties.Settings.Default.ColorRing;
             }
             if(type == "amulet") 
             { 
-                color = Properties.Settings.Default.ColorJewellery;
+                color = Properties.Settings.Default.ColorAmulet;
             }
             if (type == "belt") 
             {
-                color = Properties.Settings.Default.ColorJewellery;
+                color = Properties.Settings.Default.ColorBelt;
             }
             if(type == "helmet")
             {
@@ -222,14 +222,14 @@ namespace EnhancePoE.Model
             if(split.Length > 1)
             {
                 afterChaos = split[1];
-                Trace.WriteLine(split[1], "afterchaos");
+                //Trace.WriteLine(split[1], "afterchaos");
                 string[] sep2 = { chaosStart };
                 string[] split2 = split[0].Split(sep2, System.StringSplitOptions.None);
                 
                 if(split2.Length > 1)
                 {
                     beforeChaos = split2[0];
-                    Trace.WriteLine(split2[0], "beforechaos");
+                    //Trace.WriteLine(split2[0], "beforechaos");
                     
                 }
                 else
@@ -239,7 +239,7 @@ namespace EnhancePoE.Model
             }
             else
             {
-                Trace.WriteLine(split[0], "length = 1");
+                //Trace.WriteLine(split[0], "length = 1");
                 afterChaos = oldFilter;
             }
 

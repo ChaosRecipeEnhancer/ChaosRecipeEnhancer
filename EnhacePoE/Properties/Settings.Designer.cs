@@ -336,12 +336,12 @@ namespace EnhancePoE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#FFFF0303")]
-        public string ColorJewellery {
+        public string ColorRing {
             get {
-                return ((string)(this["ColorJewellery"]));
+                return ((string)(this["ColorRing"]));
             }
             set {
-                this["ColorJewellery"] = value;
+                this["ColorRing"] = value;
             }
         }
         
@@ -359,7 +359,7 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFF0303")]
         public string ColorBelt {
             get {
                 return ((string)(this["ColorBelt"]));
@@ -450,6 +450,18 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["StashTabBackgroundColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFF0303")]
+        public string ColorAmulet {
+            get {
+                return ((string)(this["ColorAmulet"]));
+            }
+            set {
+                this["ColorAmulet"] = value;
             }
         }
     }

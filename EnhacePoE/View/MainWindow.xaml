@@ -50,6 +50,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -99,9 +100,9 @@
         <TextBlock
             Grid.Column="1"
             Grid.Row="5"
-            Text="Number of Sets:"
+            Text="Full Set Threshold:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="Number of sets you aim for. Standard is 4 (16) Sets for each Tab (Quad Tab). Leave at 0 for standard."
+            ToolTip="Number of full sets you want. If you have collected this amount of items of an itemtype, itemtype will get deactivated. Leave at 0 for auto calculation, that means 4 sets for each normal tab and 16 sets for each quad tab.  "
             Margin="0,0,0,10"/>
 
         <TextBox
@@ -229,21 +230,34 @@
             ToolTip="Hotkey for showing/ hiding the overlay. While stopped there will be no requests to the server."
             Margin="0,0,0,10"/>
 
-        <TextBox
+            <Button
             x:Name="CustomHotkeyToggle"
             Width="200"
             Margin="10,0,20,10"
             Grid.Row="2"
             Grid.Column="4"
-            IsReadOnly="True"
             IsManipulationEnabled="False"
-            IsReadOnlyCaretVisible="False"
             Focusable="False"
-            Text="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyToggle, TargetNullValue=&lt; not set &gt;}"
-            MouseDoubleClick="CustomHotkeyToggle_MouseDoubleClick"
-            />
+            Content="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyToggle, TargetNullValue=&lt; not set &gt;}"
+            Click="CustomHotkeyToggle_Click"
+            >
+                <Button.Style>
+                    <Style TargetType="Button">
 
-        <TextBlock
+                        <!-- Set the default value here (if any) 
+                 if you set it directly on the button that will override the trigger -->
+                        <Setter Property="Background" Value="Transparent" />
+                      
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <TextBlock
             Grid.Column="3"
             Grid.Row="3"
             Text="Toggle Fetching:"
@@ -251,21 +265,34 @@
             ToolTip="Hotkey for starting/ stopping refreshing data."
             Margin="0,0,0,10"/>
 
-        <TextBox
+            <Button
             x:Name="RefreshHotkey"
             Width="200"
             Margin="10,0,20,10"
             Grid.Row="3"
             Grid.Column="4"
-            IsReadOnly="True"
             IsManipulationEnabled="False"
-            IsReadOnlyCaretVisible="False"
             Focusable="False"
-            Text="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyRefresh, TargetNullValue=&lt; not set &gt;}"
-            MouseDoubleClick="RefreshHotkey_MouseDoubleClick"
-            />
+            Content="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyRefresh, TargetNullValue=&lt; not set &gt;}"
+            Click="RefreshHotkey_Click"
+            >
+                <Button.Style>
+                    <Style TargetType="Button">
 
-        <TextBlock
+                        <!-- Set the default value here (if any) 
+                 if you set it directly on the button that will override the trigger -->
+                        <Setter Property="Background" Value="Transparent" />
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <TextBlock
             Grid.Column="3"
             Grid.Row="4"
             Text="Toggle StashTab:"
@@ -273,21 +300,34 @@
             ToolTip="Hotkey for showing/ hiding the stashtabs overlay."
             Margin="0,0,0,10"/>
 
-        <TextBox
+            <Button
             x:Name="StashTabHotkey"
             Width="200"
             Margin="10,0,20,10"
             Grid.Row="4"
             Grid.Column="4"
-            IsReadOnly="True"
             IsManipulationEnabled="False"
-            IsReadOnlyCaretVisible="False"
             Focusable="False"
-            Text="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyStashTab, TargetNullValue=&lt; not set &gt;}"
-            MouseDoubleClick="StashTabHotkey_MouseDoubleClick"
-            />
+            Content="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyStashTab, TargetNullValue=&lt; not set &gt;}"
+            Click="StashTabHotkey_Click"
+            >
+                <Button.Style>
+                    <Style TargetType="Button">
 
-        <TextBlock
+                        <!-- Set the default value here (if any) 
+                 if you set it directly on the button that will override the trigger -->
+                        <Setter Property="Background" Value="Transparent" />
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <TextBlock
             Grid.Column="5"
             Grid.Row="1"
             Grid.ColumnSpan="2"
@@ -296,8 +336,62 @@
             Margin="0,0,0,20"/>
 
         <TextBlock
+        Grid.Column="5"
+        Grid.Row="2"
+        Text="Ring Color:"
+        ToolTipService.InitialShowDelay="50"
+        ToolTip="The color of rings. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.."
+        Margin="0,0,0,10"/>
+
+        <xctk:ColorPicker 
+        Grid.Column="6"
+        Grid.Row="2"
+        Width="200"
+        Margin="10,0,10,10"
+        Name="ColorRingPicker" 
+        ColorMode="ColorCanvas"
+        SelectedColorChanged="ColorRingPicker_SelectedColorChanged">
+        </xctk:ColorPicker>
+
+            <TextBlock
+        Grid.Column="5"
+        Grid.Row="3"
+        Text="Amulet Color:"
+        ToolTipService.InitialShowDelay="50"
+        ToolTip="The color of amulets. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.."
+        Margin="0,0,0,10"/>
+
+            <xctk:ColorPicker 
+        Grid.Column="6"
+        Grid.Row="3"
+        Width="200"
+        Margin="10,0,10,10"
+        Name="ColorAmuletPicker" 
+        ColorMode="ColorCanvas"
+        SelectedColorChanged="ColorAmuletPicker_SelectedColorChanged">
+            </xctk:ColorPicker>
+
+            <TextBlock
+        Grid.Column="5"
+        Grid.Row="4"
+        Text="Belt Color:"
+        ToolTipService.InitialShowDelay="50"
+        ToolTip="The color of belts. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.."
+        Margin="0,0,0,10"/>
+
+            <xctk:ColorPicker 
+        Grid.Column="6"
+        Grid.Row="4"
+        Width="200"
+        Margin="10,0,10,10"
+        Name="ColorBeltPicker" 
+        ColorMode="ColorCanvas"
+        SelectedColorChanged="ColorBeltPicker_SelectedColorChanged">
+            </xctk:ColorPicker>
+
+            <TextBlock
             Grid.Column="5"
-            Grid.Row="4"
+            Grid.Row="6"
             Text="Boots Color:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The color of boots. This color will also be written into your lootfilter if you activated Lootfilter Manipulation."
@@ -305,7 +399,7 @@
 
         <xctk:ColorPicker 
             Grid.Column="6"
-            Grid.Row="4"
+            Grid.Row="6"
             Width="200"
             Margin="10,0,10,10"
             Name="ColorBootsPicker" 
@@ -315,7 +409,7 @@
 
         <TextBlock
             Grid.Column="5"
-            Grid.Row="3"
+            Grid.Row="5"
             Text="Gloves Color:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The color of gloves. This color will also be written into your lootfilter if you activated Lootfilter Manipulation."
@@ -323,7 +417,7 @@
 
         <xctk:ColorPicker 
             Grid.Column="6"
-            Grid.Row="3"
+            Grid.Row="5"
             Width="200"
             Margin="10,0,10,10"
             Name="ColorGlovesPicker" 
@@ -333,7 +427,7 @@
 
         <TextBlock
             Grid.Column="5"
-            Grid.Row="5"
+            Grid.Row="7"
             Text="Helmet Color:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The color of helmets. This color will also be written into your lootfilter if you activated Lootfilter Manipulation."
@@ -341,7 +435,7 @@
 
         <xctk:ColorPicker 
             Grid.Column="6"
-            Grid.Row="5"
+            Grid.Row="7"
             Width="200"
             Margin="10,0,10,10"
             Name="ColorHelmetPicker" 
@@ -351,7 +445,7 @@
 
         <TextBlock
             Grid.Column="5"
-            Grid.Row="6"
+            Grid.Row="8"
             Text="Body Armour Color:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The color of body armours. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.."
@@ -359,7 +453,7 @@
 
         <xctk:ColorPicker 
             Grid.Column="6"
-            Grid.Row="6"
+            Grid.Row="8"
             Width="200"
             Margin="10,0,10,10"
             Name="ColorChestPicker" 
@@ -369,7 +463,7 @@
 
         <TextBlock
             Grid.Column="5"
-            Grid.Row="7"
+            Grid.Row="9"
             Text="Weapons Color:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The color of weapons. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.."
@@ -377,7 +471,7 @@
 
         <xctk:ColorPicker 
             Grid.Column="6"
-            Grid.Row="7"
+            Grid.Row="9"
             Width="200"
             Margin="10,0,10,10"
             Name="ColorWeaponsPicker" 
@@ -387,25 +481,7 @@
 
         <TextBlock
             Grid.Column="5"
-            Grid.Row="2"
-            Text="Jewellery Color:"
-            ToolTipService.InitialShowDelay="50"
-            ToolTip="The color of rings, amulets and belts. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.."
-            Margin="0,0,0,10"/>
-
-        <xctk:ColorPicker 
-            Grid.Column="6"
-            Grid.Row="2"
-            Width="200"
-            Margin="10,0,10,10"
-            Name="ColorJewelleryPicker" 
-            ColorMode="ColorCanvas"
-            SelectedColorChanged="ColorJewelleryPicker_SelectedColorChanged">
-        </xctk:ColorPicker>
-
-        <TextBlock
-            Grid.Column="5"
-            Grid.Row="8"
+            Grid.Row="10"
             Text="Highlight Color:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The color that highlights the items in your stashtab overlay."
@@ -413,7 +489,7 @@
 
         <xctk:ColorPicker 
             Grid.Column="6"
-            Grid.Row="8"
+            Grid.Row="10"
             Width="200"
             Margin="10,0,10,10"
             Name="ColorStashPicker" 
@@ -423,7 +499,7 @@
 
         <TextBlock
             Grid.Column="5"
-            Grid.Row="9"
+            Grid.Row="11"
             Text="Stashtab Background Color:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The color of the background of the Stashtab Overlay. Make this opaque if you want."
@@ -431,7 +507,7 @@
 
         <xctk:ColorPicker 
             Grid.Column="6"
-            Grid.Row="9"
+            Grid.Row="11"
             Width="200"
             Margin="10,0,10,10"
             Name="ColorStashBackgroundPicker" 
@@ -554,7 +630,7 @@
 
         <TextBlock
             Grid.Column="1"
-            Grid.Row="11"
+            Grid.Row="12"
             Grid.ColumnSpan="2"
             Text="Tabs"
             FontSize="36"
@@ -563,7 +639,7 @@
         
 
         <StackPanel
-            Grid.Row="12"
+            Grid.Row="13"
             Grid.Column="1"
             VerticalAlignment="Center">
             <Button
@@ -584,7 +660,7 @@
         <TabControl
             x:Name="TabsTab"
             Grid.Column="2"
-            Grid.Row="12"
+            Grid.Row="13"
             Grid.ColumnSpan="5"
             Padding="10, 10, 10, 0"
             TabStripPlacement="Top"
@@ -597,7 +673,7 @@
             <TextBlock
                 Grid.Column="1"
                 Grid.ColumnSpan="7"
-                Grid.Row="15"
+                Grid.Row="16"
                 Margin="0,10,0,10"
                 FontSize="12"
                 TextAlignment="Center"
@@ -612,7 +688,7 @@
             Click="SaveButton_Click"
             Content="Save Settings"
             Grid.Column="1"
-            Grid.Row="13"
+            Grid.Row="14"
             Grid.ColumnSpan="2"
             Margin="20, 20, 20, 10"
             />
@@ -620,13 +696,23 @@
         <Button
             x:Name="RunButton"
             Click="RunButton_Click"
-            Content="Run"
+            Content="Run Overlay"
             Grid.Column="5"
-            Grid.Row="13"
+            Grid.Row="14"
             Grid.ColumnSpan="2"
             Margin="20, 20, 20, 10"
             />
 
+            <TextBlock
+                Grid.Column="6"
+                Grid.Row="16"
+                Text="Version 1.0.7"
+                FontSize="12"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                >
+                
+            </TextBlock>
 
         </Grid>
     </Border>

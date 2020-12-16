@@ -104,10 +104,6 @@ namespace EnhancePoE
             {
                 ColorHelmetPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorHelmet);
             }
-            if (Properties.Settings.Default.ColorJewellery != "")
-            {
-                ColorJewelleryPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorJewellery);
-            }
             if (Properties.Settings.Default.ColorStash != "")
             {
                 ColorStashPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash);
@@ -115,6 +111,18 @@ namespace EnhancePoE
             if (Properties.Settings.Default.StashTabBackgroundColor != "")
             {
                 ColorStashBackgroundPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.StashTabBackgroundColor);
+            }
+            if (Properties.Settings.Default.ColorRing != "")
+            {
+                ColorRingPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorRing);
+            }
+            if (Properties.Settings.Default.ColorAmulet != "")
+            {
+                ColorAmuletPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorAmulet);
+            }
+            if (Properties.Settings.Default.ColorBelt != "")
+            {
+                ColorBeltPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorBelt);
             }
 
         }
@@ -243,14 +251,14 @@ namespace EnhancePoE
             bool ready = CheckAllSettings();
             if (ready)
             {
-                if (RunButton.Content.ToString() == "Run")
+                if (RunButton.Content.ToString() == "Run Overlay")
                 {
-                    RunButton.Content = "Stop";
+                    RunButton.Content = "Stop Overlay";
                     overlay.Show();
                 }
                 else
                 {
-                    RunButton.Content = "Run";
+                    RunButton.Content = "Run Overlay";
                     overlay.Hide();
                     if (stashTabOverlay.IsOpen)
                     {
@@ -284,63 +292,6 @@ namespace EnhancePoE
                     //MouseHook.Start();
                     stashTabOverlay.Show();
                 }
-            }
-        }
-
-
-
-
-        private void CustomHotkeyToggle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            bool isWindowOpen = false;
-            foreach (Window w in System.Windows.Application.Current.Windows)
-            {
-                if (w is HotkeyWindow)
-                {
-                    isWindowOpen = true;
-                }
-            }
-
-            if (!isWindowOpen)
-            {
-                HotkeyWindow hotkeyDialog = new HotkeyWindow("toggle");
-                hotkeyDialog.Show();
-            }
-        }
-
-        private void RefreshHotkey_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            bool isWindowOpen = false;
-            foreach (Window w in System.Windows.Application.Current.Windows)
-            {
-                if (w is HotkeyWindow)
-                {
-                    isWindowOpen = true;
-                }
-            }
-
-            if (!isWindowOpen)
-            {
-                HotkeyWindow hotkeyDialog = new HotkeyWindow("refresh");
-                hotkeyDialog.Show();
-            }
-        }
-
-        private void StashTabHotkey_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            bool isWindowOpen = false;
-            foreach (Window w in System.Windows.Application.Current.Windows)
-            {
-                if (w is HotkeyWindow)
-                {
-                    isWindowOpen = true;
-                }
-            }
-
-            if (!isWindowOpen)
-            {
-                HotkeyWindow hotkeyDialog = new HotkeyWindow("stashtab");
-                hotkeyDialog.Show();
             }
         }
 
@@ -393,14 +344,24 @@ namespace EnhancePoE
             Properties.Settings.Default.ColorWeapon = ColorWeaponsPicker.SelectedColor.ToString();
         }
 
-        private void ColorJewelleryPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
-        {
-            Properties.Settings.Default.ColorJewellery = ColorJewelleryPicker.SelectedColor.ToString();
-        }
-
         private void ColorStashPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
         {
             Properties.Settings.Default.ColorStash = ColorStashPicker.SelectedColor.ToString();
+        }
+
+        private void ColorRingPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
+        {
+            Properties.Settings.Default.ColorRing = ColorRingPicker.SelectedColor.ToString();
+        }
+
+        private void ColorAmuletPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
+        {
+            Properties.Settings.Default.ColorAmulet = ColorAmuletPicker.SelectedColor.ToString();
+        }
+
+        private void ColorBeltPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
+        {
+            Properties.Settings.Default.ColorBelt = ColorBeltPicker.SelectedColor.ToString();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -496,6 +457,61 @@ namespace EnhancePoE
         {
             Properties.Settings.Default.StashTabBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
         }
+
+        private void CustomHotkeyToggle_Click(object sender, RoutedEventArgs e)
+        {
+            bool isWindowOpen = false;
+            foreach (Window w in System.Windows.Application.Current.Windows)
+            {
+                if (w is HotkeyWindow)
+                {
+                    isWindowOpen = true;
+                }
+            }
+
+            if (!isWindowOpen)
+            {
+                HotkeyWindow hotkeyDialog = new HotkeyWindow("toggle");
+                hotkeyDialog.Show();
+            }
+        }
+
+        private void RefreshHotkey_Click(object sender, RoutedEventArgs e)
+        {
+            bool isWindowOpen = false;
+            foreach (Window w in System.Windows.Application.Current.Windows)
+            {
+                if (w is HotkeyWindow)
+                {
+                    isWindowOpen = true;
+                }
+            }
+
+            if (!isWindowOpen)
+            {
+                HotkeyWindow hotkeyDialog = new HotkeyWindow("refresh");
+                hotkeyDialog.Show();
+            }
+        }
+
+        private void StashTabHotkey_Click(object sender, RoutedEventArgs e)
+        {
+            bool isWindowOpen = false;
+            foreach (Window w in System.Windows.Application.Current.Windows)
+            {
+                if (w is HotkeyWindow)
+                {
+                    isWindowOpen = true;
+                }
+            }
+
+            if (!isWindowOpen)
+            {
+                HotkeyWindow hotkeyDialog = new HotkeyWindow("stashtab");
+                hotkeyDialog.Show();
+            }
+        }
+
     }
 
 }

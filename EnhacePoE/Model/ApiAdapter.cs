@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Diagnostics;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +12,8 @@ namespace EnhancePoE
 {
     public class ApiAdapter
     {
+
+        private static bool IsFetching { get; set; }
         public static void GenerateUri()
         {
             if (Properties.Settings.Default.accName != ""
@@ -37,12 +39,17 @@ namespace EnhancePoE
 
         public async static Task GetItems()
         {
+            if (IsFetching)
+            {
+                Trace.WriteLine("already fetching");
+                return;
+            }
             if (Properties.Settings.Default.SessionId == "")
             {
                 MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set PoE Session Id.");
                 return;
             }
-
+            IsFetching = true;
             List<Uri> usedUris = new List<Uri>();
 
             // start loading bar
@@ -84,6 +91,7 @@ namespace EnhancePoE
             }
 
             MainWindow.overlay.OverlayProgressBar.IsIndeterminate = false;
+            IsFetching = false;
         }
     }
 }

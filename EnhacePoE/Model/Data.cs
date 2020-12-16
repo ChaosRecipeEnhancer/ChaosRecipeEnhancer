@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using EnhancePoE.Model;
 
@@ -373,7 +374,10 @@ namespace EnhancePoE
                     && PreviousActiveItems.ChestActive == ActiveItems.ChestActive
                     && PreviousActiveItems.WeaponActive == ActiveItems.WeaponActive))
                 {
-                    PlayNotificationSound();
+                    Player.Dispatcher.Invoke(() =>
+                    {
+                        PlayNotificationSound();
+                    });
                 }
             }
         }

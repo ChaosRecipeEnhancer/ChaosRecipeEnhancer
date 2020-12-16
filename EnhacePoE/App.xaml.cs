@@ -31,6 +31,5 @@ namespace EnhancePoE
             // for quick debugging etc.
             e.Handled = true;
         }
-
     }
 }
