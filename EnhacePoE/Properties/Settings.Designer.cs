@@ -241,17 +241,6 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::EnhancePoE.TabItemViewModel StashTabs {
-            get {
-                return ((global::EnhancePoE.TabItemViewModel)(this["StashTabs"]));
-            }
-            set {
-                this["StashTabs"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::System.Collections.Specialized.StringCollection StashTabsString {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["StashTabsString"]));
@@ -275,7 +264,7 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("74")]
         public double TopStashTabOverlay {
             get {
                 return ((double)(this["TopStashTabOverlay"]));
@@ -287,7 +276,7 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("12")]
         public double LeftStashTabOverlay {
             get {
                 return ((double)(this["LeftStashTabOverlay"]));
@@ -299,7 +288,7 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        [global::System.Configuration.DefaultSettingValueAttribute("641")]
         public double XStashTabOverlay {
             get {
                 return ((double)(this["XStashTabOverlay"]));
@@ -311,7 +300,7 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        [global::System.Configuration.DefaultSettingValueAttribute("690")]
         public double YStashTabOverlay {
             get {
                 return ((double)(this["YStashTabOverlay"]));
@@ -462,6 +451,66 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["ColorAmulet"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int StashtabMode {
+            get {
+                return ((int)(this["StashtabMode"]));
+            }
+            set {
+                this["StashtabMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StashTabName {
+            get {
+                return ((string)(this["StashTabName"]));
+            }
+            set {
+                this["StashTabName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StashTabIndices {
+            get {
+                return ((string)(this["StashTabIndices"]));
+            }
+            set {
+                this["StashTabIndices"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20.4")]
+        public double TabHeaderWidth {
+            get {
+                return ((double)(this["TabHeaderWidth"]));
+            }
+            set {
+                this["TabHeaderWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public double TabHeaderGap {
+            get {
+                return ((double)(this["TabHeaderGap"]));
+            }
+            set {
+                this["TabHeaderGap"] = value;
             }
         }
     }

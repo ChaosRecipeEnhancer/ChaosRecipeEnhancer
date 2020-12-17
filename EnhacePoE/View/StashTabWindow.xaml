@@ -51,7 +51,7 @@
                                 <Grid>
                                     <Border 
                                         Name="Border"
-                                        Margin="3,0,2.5,0" 
+                                        Margin="{Binding TabHeaderGap}"
                                         BorderThickness="1,1,1,1"
                                         BorderBrush="Gainsboro"
                                         CornerRadius="2,12,0,0" >

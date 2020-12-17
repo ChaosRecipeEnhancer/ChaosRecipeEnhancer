@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -23,19 +24,36 @@ namespace EnhancePoE.View
     /// <summary>
     /// Interaction logic for StashTabWindow.xaml
     /// </summary>
-    public partial class StashTabWindow : Window
+    /// 
+    // TODO: fix bug where transparentize not applying after editing
+    // TODO: update tab header gap and tab header width dynamically
+
+    public partial class StashTabWindow : Window, INotifyPropertyChanged
     {
         public bool IsOpen { get; set; } = false;
         public bool IsEditing { get; set; } = false;
 
-        //public Dictionary<TextBlock, int> TextBlockList { get; set; } = new Dictionary<TextBlock, int>();
+        private Thickness _tabHeaderGap;
+        public Thickness TabHeaderGap
+        {
+            get { return _tabHeaderGap; }
+            set 
+            { 
+                if (value != _tabHeaderGap) 
+                {
+                    _tabHeaderGap = value;
+                    OnPropertyChanged("TabHeaderGap");
+                } 
+            }
+        }
 
-
+        public double Gap { get; set; } = 0;
 
         public static ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
         public StashTabWindow()
         {
             InitializeComponent();
+            DataContext = this;
             StashTabOverlayTabControl.ItemsSource = OverlayStashTabList;
         }
 
@@ -43,7 +61,7 @@ namespace EnhancePoE.View
         {
             MouseHook.Stop();
 
-            foreach (StashTab i in MainWindow.stashTabsModel.StashTabs)
+            foreach (StashTab i in StashTabList.StashTabs)
             {
                 i.OverlayCellsList.Clear();
                 i.TabHeader = null;
@@ -61,98 +79,107 @@ namespace EnhancePoE.View
         public new virtual void Show()
         {
 
-            IsOpen = true;
-            OverlayStashTabList.Clear();
-
-            foreach (StashTab i in MainWindow.stashTabsModel.StashTabs)
+            if(StashTabList.StashTabs != null && StashTabList.StashTabs.Count != 0)
             {
-                //i.PrepareOverlayList();
-                //i.ActivateNextCell(true);
-                TabItem newStashTabItem;
-                TextBlock tbk = new TextBlock() { Text = i.TabName, Padding = new Thickness(i.TabHeaderWidth, 2, i.TabHeaderWidth, 2) };
+                IsOpen = true;
+                OverlayStashTabList.Clear();
+                _tabHeaderGap.Right = Properties.Settings.Default.TabHeaderGap;
+                _tabHeaderGap.Left = Properties.Settings.Default.TabHeaderGap;
 
-                //TextBlock tbk = new TextBlock() { Text = i.TabName};
-                //if (i.ItemOrderList.Count > 0)
-                //{
-                //    if (Properties.Settings.Default.ColorStash != "")
-                //    {
-                //        tbk.Background = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
-                //    }
-                //    else
-                //    {
-                //        tbk.Background = Brushes.Red;
-                //    }
-                //}
-
-                //tbk.Background = i.TabHeaderColor;
-                tbk.DataContext = i;
-                tbk.SetBinding(TextBlock.BackgroundProperty, new System.Windows.Data.Binding("TabHeaderColor"));
-                //tbk.SetBinding(TextBlock.PaddingProperty, new System.Windows.Data.Binding("TabHeaderThickness"));
-                tbk.FontSize = 16;
-                //if(i..Co > 0)
-                //{
-                //    if (Properties.Settings.Default.ColorStash != "")
-                //    {
-                //        i.TabHeaderColor = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
-                //    }
-                //    else
-                //    {
-                //        i.TabHeaderColor = Brushes.Red;
-                //    }
-                //}
-
-                i.TabHeader = tbk;
-
-                //TextBlockList.Add(tbk, i.TabIndex);
-
-                //string name = i.TabName + "GridControl";
-                if (i.Quad)
+                foreach (StashTab i in StashTabList.StashTabs)
                 {
-                    newStashTabItem = new TabItem
+                    //i.PrepareOverlayList();
+                    //i.ActivateNextCell(true);
+                    TabItem newStashTabItem;
+                    TextBlock tbk = new TextBlock() { Text = i.TabName, Padding = new Thickness(Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2) };
+
+                    //TextBlock tbk = new TextBlock() { Text = i.TabName};
+                    //if (i.ItemOrderList.Count > 0)
+                    //{
+                    //    if (Properties.Settings.Default.ColorStash != "")
+                    //    {
+                    //        tbk.Background = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
+                    //    }
+                    //    else
+                    //    {
+                    //        tbk.Background = Brushes.Red;
+                    //    }
+                    //}
+
+                    //tbk.Background = i.TabHeaderColor;
+                    tbk.DataContext = i;
+                    tbk.SetBinding(TextBlock.BackgroundProperty, new System.Windows.Data.Binding("TabHeaderColor"));
+                    //tbk.SetBinding(TextBlock.TextProperty, new System.Windows.Data.Binding("TabName"));
+
+                    //tbk.SetBinding(TextBlock.PaddingProperty, new System.Windows.Data.Binding("TabHeaderThickness"));
+                    tbk.FontSize = 16;
+                    //if(i..Co > 0)
+                    //{
+                    //    if (Properties.Settings.Default.ColorStash != "")
+                    //    {
+                    //        i.TabHeaderColor = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
+                    //    }
+                    //    else
+                    //    {
+                    //        i.TabHeaderColor = Brushes.Red;
+                    //    }
+                    //}
+
+                    i.TabHeader = tbk;
+
+                    //TextBlockList.Add(tbk, i.TabIndex);
+
+                    //string name = i.TabName + "GridControl";
+                    if (i.Quad)
                     {
-                        Header = tbk,
-                        Content = new UserControls.DynamicGridControlQuad
+                        newStashTabItem = new TabItem
                         {
-                            ItemsSource = i.OverlayCellsList,
+                            Header = tbk,
+                            Content = new UserControls.DynamicGridControlQuad
+                            {
+                                ItemsSource = i.OverlayCellsList,
 
-                        }
-                    };
-                }
-                else
-                {
-                    newStashTabItem = new TabItem
+                            }
+                        };
+                    }
+                    else
                     {
-                        Header = tbk,
-                        Content = new UserControls.DynamicGridControl
+                        newStashTabItem = new TabItem
                         {
-                            ItemsSource = i.OverlayCellsList
-                        }
-                    };
+                            Header = tbk,
+                            Content = new UserControls.DynamicGridControl
+                            {
+                                ItemsSource = i.OverlayCellsList
+                            }
+                        };
+                    }
+
+                    //TabItem newStashTabItem = new TabItem;
+                    //newStashTabItem.Header = i.TabName;
+                    ////newStashTabItem.DataContext = i.ItemList;
+                    //newStashTabItem.Content = i.TabNumber;
+                    OverlayStashTabList.Add(newStashTabItem);
+
+                    //Trace.WriteLine("works");
+
+
+                    //OverlayStashTabList.Add(i);
                 }
-                
-                //TabItem newStashTabItem = new TabItem;
-                //newStashTabItem.Header = i.TabName;
-                ////newStashTabItem.DataContext = i.ItemList;
-                //newStashTabItem.Content = i.TabNumber;
-                OverlayStashTabList.Add(newStashTabItem);
 
-                //Trace.WriteLine("works");
+                StashTabOverlayTabControl.SelectedIndex = 0;
 
+                Data.PrepareSelling();
+                Data.ActivateNextCell(true);
 
-                //OverlayStashTabList.Add(i);
+                MainWindow.overlay.OpenStashTabOverlay.Content = "Hide";
+
+                MouseHook.Start();
+                base.Show();
             }
-
-            StashTabOverlayTabControl.SelectedIndex = 0;
-
-            ChaosRecipeEnhancer.currentData.PrepareSelling();
-            ChaosRecipeEnhancer.currentData.ActivateNextCell(true);
-
-            MainWindow.overlay.OpenStashTabOverlay.Content = "Hide";
-
-            MouseHook.Start();
-            base.Show();
-
-            //Test();
+            else
+            {
+                System.Windows.MessageBox.Show("No StashTabs Available!", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -160,91 +187,6 @@ namespace EnhancePoE.View
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
         }
-
-
-        //public void Test()
-        //{
-
-        //    //StashTabOverlayTabControl.SelectedContent
-        //    //Dispatcher.BeginInvoke((Action)(() => StashTabOverlayTabControl.SelectedIndex = 0));
-        //    var ctrl = StashTabOverlayTabControl.SelectedContent as UserControls.DynamicGridControl;
-
-        //    //Trace.WriteLine(ctrl.Items[5]);
-        //    //ctrl.GetButtonFromCell(ctrl.Items[5]);
-
-
-
-        //    //StashTabOverlayTabControl.SelectedIndex = 0;
-
-
-
-        //    int index = StashTabOverlayTabControl.SelectedIndex;
-
-        //    Trace.WriteLine(index, "selected index");
-
-
-        //    foreach (TabItem i in OverlayStashTabList)
-        //    {
-
-
-
-        //        //Trace.WriteLine(i.Content, "test");
-        //        //Trace.WriteLine(i.Content.Items, " test");
-
-        //        //UserControls.DynamicGridControl test = (UserControls.DynamicGridControl)i.Content;
-
-        //        //if(test != null)
-        //        //{
-        //        //    Trace.WriteLine("not null");
-
-        //        //    test.Test();
-        //        //}
-        //        //else
-        //        //{
-        //        //    Trace.WriteLine("null");
-        //        //}
-
-
-        //        //var ctrl = i.SelectedContent as UserControls.DynamicGridControl;
-        //        //test.Test();
-
-        //        //Trace.WriteLine(OverlayStashTabList.Count(), "count overlay stashtbalist");
-
-
-
-        //        //    ContentPresenter cp = test.ItemContainerGenerator.ContainerFromItem(c) as ContentPresenter;
-        //        //    Button tb = Utility.FindVisualChild<Button>(cp);
-
-
-        //        //foreach (Cell c in test.Items)
-        //        //{
-        //        //    //Trace.WriteLine(c.Active);
-        //        //    ContentPresenter cp = test.ItemContainerGenerator.ContainerFromItem(test) as ContentPresenter;
-        //        //    Button tb = Utility.FindVisualChild<Button>(cp);
-
-        //        //    Trace.WriteLine(tb.Content);
-        //        //}
-
-
-
-        //        //Trace.WriteLine(tb.Count());
-
-
-        //        //int count = VisualTreeHelper.GetChildrenCount(test);
-
-        //        //Trace.WriteLine(count, "children count");
-
-        //        //var test = Utility.FindVisualChild<ItemsControl>(i);
-
-
-        //        //Trace.WriteLine(test.Count(), "test");
-        //        //Trace.WriteLine(firstStackPanelInTabControl);
-        //        //foreach (Button btn in i.Content)
-        //        //{
-
-        //        //}
-        //    }
-        //}
 
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -275,7 +217,16 @@ namespace EnhancePoE.View
 
 
 
-
+        #region INotifyPropertyChanged implementation
+        // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
 
         //private void hook_MouseUp(object sender, MouseHookEventArgs e)
         //{

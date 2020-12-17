@@ -29,7 +29,7 @@ namespace EnhancePoE
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
         private System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
@@ -44,8 +44,31 @@ namespace EnhancePoE
         public static StashTabWindow stashTabOverlay = new StashTabWindow();
 
 
-        public static TabItemViewModel stashTabsModel = new TabItemViewModel();
+        private Visibility _indicesVisible = Visibility.Hidden;
+        public Visibility IndicesVisible
+        {
+            get { return _indicesVisible; }
+            set { if(_indicesVisible != value)
+                {
+                    _indicesVisible = value;
+                    OnPropertyChanged("IndicesVisible");
+                } }
+        }
+        private Visibility _nameVisible = Visibility.Hidden;
+        public Visibility NameVisible
+        {
+            get { return _nameVisible; }
+            set
+            {
+                if (_nameVisible != value)
+                {
+                    _nameVisible = value;
+                    OnPropertyChanged("NameVisible");
+                }
+            }
+        }
 
+        //public static TabItemViewModel stashTabsModel = new TabItemViewModel();
 
 
         private bool trayClose = false;
@@ -56,18 +79,21 @@ namespace EnhancePoE
         {
             //Properties.Settings.Default.Reset();
             InitializeComponent();
+            DataContext = this;
 
+            //Data.InitializeBases();
+            Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
             //TESTING SETTINGS RESET
             //if (Debugger.IsAttached)
             //    Properties.Settings.Default.Reset();
 
             // initialize stashtabs
-            DataContext = stashTabsModel;
+            //DataContext = stashTabsModel;
 
             InitializeColors();
             InitializeHotkeys();
             InitializeTray();
-
+            LoadModeVisibility();
             // add Action to MouseHook
             MouseHook.MouseAction += new EventHandler(Coordinates.Event);
         }
@@ -163,19 +189,6 @@ namespace EnhancePoE
         }
 
 
-        // 
-        //protected override void OnStateChanged(EventArgs e)
-        //{
-        //    Trace.WriteLine("minimize");
-        //    if (this.WindowState == WindowState.Minimized)
-        //    {
-        //        Trace.WriteLine("Windowstate minimized");
-        //        this.Hide();
-        //        if()
-        //    }
-        //    base.OnStateChanged(e);
-        //}
-
         // Minimize to system tray when application is closed.
         protected override void OnClosing(CancelEventArgs e)
         {
@@ -239,9 +252,14 @@ namespace EnhancePoE
             RemoveAllHotkeys();
             AddAllHotkeys();
 
+            Trace.WriteLine(Properties.Settings.Default.YStashTabOverlay, "y");
+            Trace.WriteLine(Properties.Settings.Default.XStashTabOverlay, "x");
+            Trace.WriteLine(Properties.Settings.Default.LeftStashTabOverlay, "left");
+            Trace.WriteLine(Properties.Settings.Default.TopStashTabOverlay, "top");
+
             Properties.Settings.Default.accName = accountName.Text.ToString();
-            Properties.Settings.Default.StashTabsString = SettingsSerializer.SerializeStashTab(stashTabsModel);
-            Properties.Settings.Default.StashTabs = stashTabsModel;
+            //Properties.Settings.Default.StashTabsString = SettingsSerializer.SerializeStashTab(stashTabsModel);
+            //Properties.Settings.Default.StashTabs = stashTabsModel;
             Properties.Settings.Default.Save();
             System.Windows.MessageBox.Show("Settings saved!");
         }
@@ -374,20 +392,10 @@ namespace EnhancePoE
 
 
 
-        private void LootfilterFileDialog_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            OpenFileDialog open = new OpenFileDialog();
-            open.Filter = "Lootfilter|*.filter";
-            DialogResult res = open.ShowDialog();
-            if(res == System.Windows.Forms.DialogResult.OK)
-            {
-                string filename = open.FileName;
-                //LootfilterFileDialog.Text = filename;
-                Properties.Settings.Default.LootfilterLocation = filename;
-                LootfilterFileDialog.Select(LootfilterFileDialog.Text.Length, 0);
+        //private void LootfilterFileDialog_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
 
-            }
-        }
+        //}
 
         public static bool CheckAllSettings()
         {
@@ -397,7 +405,6 @@ namespace EnhancePoE
             int refreshRate = Properties.Settings.Default.RefreshRate;
             string lootfilterLocation = Properties.Settings.Default.LootfilterLocation;
             bool lootfilterActive = Properties.Settings.Default.LootfilterActive;
-            int numberOfTabs = stashTabsModel.StashTabs.Count;
 
             List<string> missingSettings = new List<string>();
             string errorMessage = "Please add: \n";
@@ -425,9 +432,19 @@ namespace EnhancePoE
                     missingSettings.Add("- Lootfilter Location \n");
                 }
             }
-            if(numberOfTabs <= 0) 
+            if(Properties.Settings.Default.StashtabMode == 0)
             {
-                missingSettings.Add("- At least 1 Tab \n");
+                if(Properties.Settings.Default.StashTabIndices == "")
+                {
+                    missingSettings.Add("- StashTab Index");
+                }
+            }
+            else if(Properties.Settings.Default.StashtabMode == 1)
+            {
+                if (Properties.Settings.Default.StashTabName == "")
+                {
+                    missingSettings.Add("- StashTab Name");
+                }
             }
 
             if(missingSettings.Count > 0)
@@ -512,6 +529,50 @@ namespace EnhancePoE
             }
         }
 
+        private void LootfilterFileDialog_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog();
+            open.Filter = "Lootfilter|*.filter";
+            DialogResult res = open.ShowDialog();
+            if (res == System.Windows.Forms.DialogResult.OK)
+            {
+                string filename = open.FileName;
+                //LootfilterFileDialog.Text = filename;
+                Properties.Settings.Default.LootfilterLocation = filename;
+                //LootfilterFileDialog.Select(LootfilterFileDialog.Text.Length, 0);
+                LootfilterFileDialog.Content = filename;
+            }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadModeVisibility();
+        }
+
+        private void LoadModeVisibility()
+        {
+            if (Properties.Settings.Default.StashtabMode == 0)
+            {
+                IndicesVisible = Visibility.Visible;
+                NameVisible = Visibility.Hidden;
+            }
+            else
+            {
+                NameVisible = Visibility.Visible;
+                IndicesVisible = Visibility.Hidden;
+            }
+        }
+
+        #region INotifyPropertyChanged implementation
+        // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
     }
 
 }

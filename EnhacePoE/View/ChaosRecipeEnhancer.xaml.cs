@@ -1,22 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EnhancePoE.Model;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Timers;
-using System.ComponentModel;
-using EnhancePoE.Model;
-using System.Collections.Specialized;
-using System.Threading;
 
 namespace EnhancePoE
 {
@@ -25,8 +10,6 @@ namespace EnhancePoE
     /// </summary>
     public partial class ChaosRecipeEnhancer : Window
     {
-
-        public static Data currentData { get; set; } = new Data();
 
         public static bool FetchingActive { get; set;} = false;
         private static System.Timers.Timer aTimer;
@@ -51,13 +34,17 @@ namespace EnhancePoE
 
         private async void FetchData()
         {
-            GetFrequency();
-            ApiAdapter.GenerateUri();
+
+
             await this.Dispatcher.Invoke(async() =>
             {
+                GetFrequency();
+
+                await ApiAdapter.GenerateUri();
+
                 await ApiAdapter.GetItems();
             });
-            currentData.CheckActives();
+            Data.CheckActives();
             SetOpacity();
 
         }
@@ -79,6 +66,10 @@ namespace EnhancePoE
                 }
                 else
                 {
+                    if (MainWindow.stashTabOverlay.IsOpen)
+                    {
+                        MainWindow.stashTabOverlay.Hide();
+                    }
                     FetchData();
                     //aTimer.Interval = 1000;
                     aTimer.Enabled = true;
@@ -93,12 +84,13 @@ namespace EnhancePoE
             RunFetching();
         }
 
+        // TODO: find better algo for getting frequency, maybe implementing response header thresholds
         private static void GetFrequency()
         {
             int addedTime = 0;
-            if(MainWindow.stashTabsModel.StashTabs.Count > 0)
+            if(Properties.Settings.Default.StashTabIndices != "")
             {
-                addedTime += MainWindow.stashTabsModel.StashTabs.Count * 1000;
+                addedTime += (Properties.Settings.Default.StashTabIndices.Length / 2) * 1000;
             }
             aTimer.Interval = (Properties.Settings.Default.RefreshRate * 1000) + addedTime;
         }

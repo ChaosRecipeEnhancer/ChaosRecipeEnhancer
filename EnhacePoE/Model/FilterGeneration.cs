@@ -65,7 +65,7 @@ namespace EnhancePoE.Model
             }
         }
 
-        public static string GenerateSection(bool show, List<string>bases, string itemClass, bool influenced = false)
+        public static string GenerateSection(bool show, string itemClass, bool influenced = false)
         {
             string result = "";
             if (show)
@@ -88,10 +88,21 @@ namespace EnhancePoE.Model
                 result += "ItemLevel >= 60" + nl + tab + "ItemLevel <= 74" + nl + tab;
             }
 
-            string baseType = "BaseType ";
-            foreach(string b in bases)
+            string baseType = "Class ";
+
+            if(itemClass == "OneHandWeapons")
             {
-                baseType = baseType + "\"" + b + "\" ";
+                baseType += "\"Daggers\" \"One Hand Axes\" \"One Hand Maces\" \"One Hand Swords\" \"Rune Daggers\" \"Sceptres\" \"Thrusting One Hand Swords\" \"Wands\"";
+                baseType += nl + tab + "Width <= 1" + nl + tab + "Height <= 3";
+            }
+            else if(itemClass == "TwoHandWeapons")
+            {
+                baseType += "\"Two Hand Swords\" \"Two Hand Axes\" \"Two Hand Maces\" \"Staves\" \"Warstaves\" \"Bows\"";
+                baseType += nl + tab + "Width <= 2" + nl + tab + "Height <= 3";
+            }
+            else
+            {
+                baseType += itemClass;
             }
 
             result = result + baseType + nl + tab;
@@ -133,37 +144,41 @@ namespace EnhancePoE.Model
             int a;
             string color = "";
             List<int> colorList = new List<int>();
-            if(type == "ring") 
+            if(type == "Rings") 
             {
                 color = Properties.Settings.Default.ColorRing;
             }
-            if(type == "amulet") 
+            if(type == "Amulets") 
             { 
                 color = Properties.Settings.Default.ColorAmulet;
             }
-            if (type == "belt") 
+            if (type == "Belts") 
             {
                 color = Properties.Settings.Default.ColorBelt;
             }
-            if(type == "helmet")
+            if(type == "Helmets")
             {
                 color = Properties.Settings.Default.ColorHelmet;
             }
-            if(type == "weapon") 
+            if(type == "OneHandWeapons") 
             {
                 color = Properties.Settings.Default.ColorWeapon;
             }
-            if(type == "gloves") 
+            if(type == "Gloves") 
             {
                 color = Properties.Settings.Default.ColorGloves;
             }
-            if(type == "boots")
+            if(type == "Boots")
             {
                 color = Properties.Settings.Default.ColorBoots;
             }
-            if(type == "chest") 
+            if(type == "Body Armours") 
             {
                 color = Properties.Settings.Default.ColorChest;
+            }
+            if(type == "TwoHandWeapons")
+            {
+                color = Properties.Settings.Default.ColorWeapon;
             }
             if(color != "")
             {

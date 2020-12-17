@@ -31,69 +31,18 @@ namespace EnhancePoE.Model
         public List<Item> ItemListRedeemer { get; set; } = new List<Item>();
 
         public ObservableCollection<Cell> OverlayCellsList { get; set; } = new ObservableCollection<Cell>();
-        //public List<Item> ItemOrderList { get; set; } = new List<Item>();
 
         // used for registering clicks on tab headers
         public TextBlock TabHeader { get; set; }
-        public double TabHeaderWidth { get; set; } = 22;
 
-        private string _tabName;
-        public string TabName { 
-            get
-            {
-                return _tabName;
-            }
-            set
-            {
-                if (value == _tabName)
-                    return;
+        public string TabName { get; set; }
+        public bool Quad { get; set; }
+        public int TabIndex { get; set; }
 
-                _tabName = value;
-                OnPropertyChanged("TabName");
-            }
-        }
 
-        private bool _quad;
-        public bool Quad
-        {
-            get
-            {
-                return _quad;
-            }
-            set
-            {
-                _quad = value;
-                OnPropertyChanged(nameof(Quad));
-            }
-        }
 
-        private int _tabNumber;
-        public int TabNumber
-        {
-            get
-            {
-                return _tabNumber;
-            }
-            set
-            {
-                _tabNumber = value;
-                OnPropertyChanged(nameof(TabNumber));
-            }
-        }
 
-        private int _tabIndex;
-        public int TabIndex
-        {
-            get
-            {
-                return _tabIndex;
-            }
-            set
-            {
-                _tabIndex = value;
-                OnPropertyChanged(nameof(TabIndex));
-            }
-        }
+
 
         private SolidColorBrush _tabHeaderColor;
         public SolidColorBrush TabHeaderColor
@@ -109,46 +58,14 @@ namespace EnhancePoE.Model
             }
         }
 
-        public StashTabControl _stashControl { get; set; } = new StashTabControl();
-
-        private TabItem _stashTabItem;
-        public TabItem StashTabItem
-        {
-            get { return _stashTabItem; }
-            set
-            {
-                _stashTabItem = value;
-                OnPropertyChanged(nameof(StashTabItem));
-            }
-        }
 
 
-        public StashTab(string name)
-        {
-            this._tabName = name;
-            this._stashTabItem = new TabItem();
-            this._stashTabItem.Header = this._tabName;
-            this._stashTabItem.Content = this._stashControl;
-            this._stashTabItem.DataContext = this;
-            //this.TabHeader = new TextBlock() { Text = this.TabName, Padding = new Thickness(5, 2, 5, 2) };
-            TabHeaderColor = Brushes.Transparent;
-        }
 
-        public StashTab(string name, int number, int index, double width)
+        public StashTab(string name, int index)
         {
             this.TabName = name;
-            //this.Quad = quad;
             this.TabIndex = index;
-            this.TabNumber = number;
-            this.StashTabItem = new TabItem();
-            this._stashTabItem.Header = this._tabName;
-            this._stashTabItem.Content = this._stashControl;
-            this._stashTabItem.DataContext = this;
-            this.TabHeaderWidth = width;
-            //this.TabHeader = new TextBlock() { Text = name, Padding = new Thickness(5, 2, 5, 2) };
             TabHeaderColor = Brushes.Transparent;
-
-
         }
 
         private void Generate2dArr(int size)
@@ -161,8 +78,7 @@ namespace EnhancePoE.Model
                     {
                         Active = false,
                         XIndex = j,
-                        YIndex = i,
-                        //ToggleCellCommand = new RelayCommand<bool>(ChaosRecipeEnhancer.currentData.ActivateNextCell),
+                        YIndex = i
                     });
                 }
             }
@@ -170,7 +86,6 @@ namespace EnhancePoE.Model
 
         public void PrepareOverlayList()
         {
-            //GetFullSets();
             int size;
             if (this.Quad)
             {
@@ -182,96 +97,24 @@ namespace EnhancePoE.Model
             }
             Generate2dArr(size);
         }
-
-        private string CheckBase(Item item)
+        public static string GetItemClass(Item item)
         {
-            foreach (string ringBase in ChaosRecipeEnhancer.currentData.RingBases)
+            List<string> iconParts = new List<string>(item.icon.Split('/'));
+            String itemClass = iconParts[6];
+            switch (itemClass)
             {
-                if (item.typeLine == ringBase)
-                {
-                    return "ring";
-                }
+                case "Weapons":
+                case "Armours":
+                    itemClass = iconParts[7];
+                    break;
+                case "Rings":
+                case "Amulets":
+                case "Belts":
+                    break;
+                default:
+                    return null;
             }
-
-            foreach (string amuletBase in ChaosRecipeEnhancer.currentData.AmuletBases)
-            {
-                if (item.typeLine == amuletBase)
-                {
-                    return "amulet";
-                }
-            }
-
-            foreach (string beltBase in ChaosRecipeEnhancer.currentData.BeltBases)
-            {
-                if (item.typeLine == beltBase)
-                {
-                    return "belt";
-                }
-            }
-
-            foreach (string bootBase in ChaosRecipeEnhancer.currentData.BootsBases)
-            {
-                if (item.typeLine == bootBase)
-                {
-                    return "boots";
-                }
-            }
-
-            foreach (string gloveBase in ChaosRecipeEnhancer.currentData.GlovesBases)
-            {
-                if (item.typeLine == gloveBase)
-                {
-                    return "gloves";
-                }
-            }
-
-            foreach (string helmetBase in ChaosRecipeEnhancer.currentData.HelmetBases)
-            {
-                if (item.typeLine == helmetBase)
-                {
-                    return "helmet";
-                }
-            }
-
-            foreach (string chestBase in ChaosRecipeEnhancer.currentData.ChestBases)
-            {
-                if (item.typeLine == chestBase)
-                {
-                    return "chest";
-                }
-            }
-
-            foreach (string weaponBase in ChaosRecipeEnhancer.currentData.WeaponBases)
-            {
-                if (item.typeLine == weaponBase)
-                {
-                    return "weapon";
-                }
-            }
-
-            if (Properties.Settings.Default.TwoHand)
-            {
-                foreach (string twohandBase in ChaosRecipeEnhancer.currentData.TwoHandBases)
-                {
-                    if (item.typeLine == twohandBase)
-                    {
-                        return "twohand";
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        public void RemoveQualityFromItems()
-        {
-            foreach(Item i in this.ItemList)
-            {
-                if (i.typeLine.StartsWith("Superior"))
-                {
-                    i.typeLine = i.typeLine.Replace("Superior ", "");
-                }
-            }
+            return itemClass;
         }
 
         public void CleanItemList()
@@ -300,7 +143,7 @@ namespace EnhancePoE.Model
                     {
                         if (ItemList[i].frameType == 2)
                         {
-                            string result = CheckBase(ItemList[i]);
+                            string result = GetItemClass(ItemList[i]);
                             if (result != null)
                             {
                                 ItemList[i].ItemType = result;
@@ -329,7 +172,7 @@ namespace EnhancePoE.Model
                 }
                 if (ItemList[i].frameType == 2)
                 {
-                    string result = CheckBase(ItemList[i]);
+                    string result = GetItemClass(ItemList[i]);
                     if (result != null)
                     {
                         ItemList[i].ItemType = result;
@@ -366,8 +209,5 @@ namespace EnhancePoE.Model
                 }
             }
         }
-
-
-
     }
 }

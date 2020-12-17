@@ -11,12 +11,12 @@ using EnhancePoE.Model;
 namespace EnhancePoE
 {
     // TODO: rework to static class
-    public class Data
+    public static class Data
     {
 
         public static ActiveItemTypes ActiveItems { get; set; } = new ActiveItemTypes();
         public static ActiveItemTypes PreviousActiveItems { get; set; }
-        private static MediaPlayer Player { get; set; } = new MediaPlayer();
+        public static MediaPlayer Player { get; set; } = new MediaPlayer();
         public static List<Item> GlobalNormalItemList { get; set; } = new List<Item>();
         public static List<Item> GlobalShaperItemList { get; set; } = new List<Item>();
         public static List<Item> GlobalElderItemList { get; set; } = new List<Item>();
@@ -25,18 +25,8 @@ namespace EnhancePoE
         public static List<Item> GlobalRedeemerItemList { get; set; } = new List<Item>();
         public static List<Item> GlobalCrusaderItemList { get; set; } = new List<Item>();
 
-        public List<string> BootsBases { get; set; } = new List<string>();
-        public List<string> GlovesBases { get; set; } = new List<string>();
-        public List<string> HelmetBases { get; set; } = new List<string>();
-        public List<string> ChestBases { get; set; } = new List<string>();
-        public List<string> WeaponBases { get; set; } = new List<string>();
-        public List<string> RingBases { get; set; } = new List<string>();
-        public List<string> AmuletBases { get; set; } = new List<string>();
-        public List<string> BeltBases { get; set; } = new List<string>();
-        public List<string> TwoHandBases { get; set; } = new List<string>();
-
-        public int SetAmount { get; set; } = 0;
-        public int SetTargetAmount { get; set; } = 0;
+        public static int SetAmount { get; set; } = 0;
+        public static int SetTargetAmount { get; set; } = 0;
 
 
         public static List<Item> GlobalItemOrderList { get; set; } = new List<Item>();
@@ -55,108 +45,26 @@ namespace EnhancePoE
         public static List<Item> GlobalItemOrderListRestHunter { get; set; } = new List<Item>();
 
 
-        private void InitializeBases()
-        {
-
-            string pathBoots = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\BootsBases.txt");
-            string[] boots = File.ReadAllLines(pathBoots);
-            foreach (string line in boots)
-            {
-                if (line == "") { continue; }
-                this.BootsBases.Add(line.Trim());
-            }
-
-            string pathGloves = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\GlovesBases.txt");
-            string[] gloves = File.ReadAllLines(pathGloves);
-            foreach (string line in gloves)
-            {
-                if (line == "") { continue; }
-                this.GlovesBases.Add(line.Trim());
-            }
-
-            string pathHelmet = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\HelmetBases.txt");
-            string[] helmet = File.ReadAllLines(pathHelmet);
-            foreach (string line in helmet)
-            {
-                if (line == "") { continue; }
-                this.HelmetBases.Add(line.Trim());
-            }
-
-            string pathWeapon = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\WeaponSmallBases.txt");
-            string[] weapon = File.ReadAllLines(pathWeapon);
-            foreach (string line in weapon)
-            {
-                if (line == "") { continue; }
-                this.WeaponBases.Add(line.Trim());
-            }
-
-            string pathChest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\BodyArmourBases.txt");
-            string[] chest = File.ReadAllLines(pathChest);
-            foreach (string line in chest)
-            {
-                if (line == "") { continue; }
-                this.ChestBases.Add(line.Trim());
-            }
-
-            string pathRing = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\RingBases.txt");
-            string[] ring = File.ReadAllLines(pathRing);
-            foreach (string line in ring)
-            {
-                if (line == "") { continue; }
-                this.RingBases.Add(line.Trim());
-            }
-
-            string pathAmulet = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\AmuletBases.txt");
-            string[] amulet = File.ReadAllLines(pathAmulet);
-            foreach (string line in amulet)
-            {
-                if (line == "") { continue; }
-                this.AmuletBases.Add(line.Trim());
-            }
-
-            string pathBelt = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\BeltBases.txt");
-            string[] belt = File.ReadAllLines(pathBelt);
-            foreach (string line in belt)
-            {
-                if (line == "") { continue; }
-                this.BeltBases.Add(line.Trim());
-            }
-
-            string pathTwoHand = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Bases\TwoHandBases.txt");
-            string[] twohand = File.ReadAllLines(pathTwoHand);
-            foreach(string line in twohand)
-            {
-                if(line == "") { continue; }
-                this.TwoHandBases.Add(line.Trim());
-            }
-        }
-
-        public Data()
-        {
-            InitializeBases();
-            Player.Open(new Uri(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
-        }
-
-        public void GetSetTargetAmount(StashTab stash)
+        public static void GetSetTargetAmount(StashTab stash)
         {
             if(Properties.Settings.Default.Sets > 0)
             {
-                this.SetTargetAmount = Properties.Settings.Default.Sets;
+                SetTargetAmount = Properties.Settings.Default.Sets;
             }
             else
             {
                 if (stash.Quad)
                 {
-                    this.SetTargetAmount += 16;
+                    SetTargetAmount += 16;
                 }
                 else
                 {
-                    this.SetTargetAmount += 4;
+                    SetTargetAmount += 4;
                 }
             }
         }
 
-        public void CheckActives()
+        public static void CheckActives()
         {
             if (Properties.Settings.Default.Sound)
             {
@@ -182,9 +90,9 @@ namespace EnhancePoE
             GlobalWarlordItemList.Clear();
             GlobalHunterItemList.Clear();
 
-            if(MainWindow.stashTabsModel != null)
+            if (StashTabList.StashTabs != null)
             {
-                foreach (StashTab s in MainWindow.stashTabsModel.StashTabs)
+                foreach (StashTab s in StashTabList.StashTabs)
                 {
                     GetSetTargetAmount(s);
                     if (s.ItemList != null)
@@ -235,14 +143,14 @@ namespace EnhancePoE
                 {
                     if (filterActive)
                     {
-                        sectionList.Add(FilterGeneration.GenerateSection(false, TwoHandBases, "weapon"));
+                        sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
                     }
                 }
                 else
                 {
                     if (filterActive)
                     {
-                        sectionList.Add(FilterGeneration.GenerateSection(true, TwoHandBases, "weapon"));
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons"));
                     }
                 }
             }
@@ -251,7 +159,7 @@ namespace EnhancePoE
                 ActiveItems.WeaponActive = false;
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(false, WeaponBases, "weapon"));
+                    sectionList.Add(FilterGeneration.GenerateSection(false, "OneHandWeapons"));
                 }
             }
             else
@@ -259,7 +167,7 @@ namespace EnhancePoE
                 ActiveItems.WeaponActive = true;
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(true, WeaponBases, "weapon"));
+                    sectionList.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons"));
                 }
             }
             if(globalAmount["chests"] >= SetTargetAmount)
@@ -267,7 +175,7 @@ namespace EnhancePoE
                 ActiveItems.ChestActive = false;
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(false, ChestBases, "chest"));
+                    sectionList.Add(FilterGeneration.GenerateSection(false, "Body Armours"));
                 }
             }
             else
@@ -275,7 +183,7 @@ namespace EnhancePoE
                 ActiveItems.ChestActive = true;
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(true, ChestBases, "chest"));
+                    sectionList.Add(FilterGeneration.GenerateSection(true, "Body Armours"));
 
                 }
             }
@@ -284,7 +192,7 @@ namespace EnhancePoE
                 ActiveItems.BootsActive = false;
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(false, BootsBases, "boots"));
+                    sectionList.Add(FilterGeneration.GenerateSection(false, "Boots"));
 
                 }
             }
@@ -293,7 +201,7 @@ namespace EnhancePoE
                 ActiveItems.BootsActive = true;
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(true, BootsBases, "boots"));
+                    sectionList.Add(FilterGeneration.GenerateSection(true, "Boots"));
 
                 }
             }
@@ -302,7 +210,7 @@ namespace EnhancePoE
                 ActiveItems.GlovesActive = false;
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(false, GlovesBases, "gloves"));
+                    sectionList.Add(FilterGeneration.GenerateSection(false, "Gloves"));
 
                 }
             }
@@ -311,7 +219,7 @@ namespace EnhancePoE
                 ActiveItems.GlovesActive = true;
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(true, GlovesBases, "gloves"));
+                    sectionList.Add(FilterGeneration.GenerateSection(true, "Gloves"));
 
                 }
             }
@@ -320,7 +228,7 @@ namespace EnhancePoE
                 ActiveItems.HelmetActive = false;
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(false, HelmetBases, "helmet"));
+                    sectionList.Add(FilterGeneration.GenerateSection(false, "Helmets"));
                 }
             }
             else
@@ -328,7 +236,7 @@ namespace EnhancePoE
                 ActiveItems.HelmetActive = true;
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(true, HelmetBases, "helmet"));
+                    sectionList.Add(FilterGeneration.GenerateSection(true, "Helmets"));
                 }
             }
 
@@ -339,9 +247,9 @@ namespace EnhancePoE
 
             if (filterActive)
             {
-                sectionList.Add(FilterGeneration.GenerateSection(true, RingBases, "ring"));
-                sectionList.Add(FilterGeneration.GenerateSection(true, AmuletBases, "amulet"));
-                sectionList.Add(FilterGeneration.GenerateSection(true, BeltBases, "belt"));
+                sectionList.Add(FilterGeneration.GenerateSection(true, "Rings"));
+                sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets"));
+                sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
 
                 string oldFilter = FilterGeneration.OpenLootfilter();
                 string newFilter = FilterGeneration.GenerateLootFilter(oldFilter, sectionList);
@@ -350,15 +258,15 @@ namespace EnhancePoE
                 if (Properties.Settings.Default.ExaltedRecipe)
                 {
                     List<string> sectionListInfluenced = new List<string>();
-                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, RingBases, "ring", true));
-                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, AmuletBases, "amulet", true));
-                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, BeltBases, "belt", true));
-                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, HelmetBases, "helmet", true));
-                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, GlovesBases, "gloves", true));
-                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, BootsBases, "boots", true));
-                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, ChestBases, "chests", true));
-                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, WeaponBases, "weapons", true));
-                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, TwoHandBases, "weapons", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Rings", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Amulets", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Belts", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Helmets", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Gloves", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Boots", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Body Armours", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", true));
+                    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", true));
 
                     string oldFilter2 = FilterGeneration.OpenLootfilter();
                     string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
@@ -390,7 +298,7 @@ namespace EnhancePoE
             Player.Play();
         }
 
-        private Dictionary<string, int> GetFullSets(List<Item> itemList)
+        private static Dictionary<string, int> GetFullSets(List<Item> itemList)
         {
             int ringsAmount = 0;
             int weaponsAmount = 0;
@@ -404,39 +312,39 @@ namespace EnhancePoE
 
             foreach (Item item in itemList)
             {
-                if (item.ItemType == "ring")
+                if (item.ItemType == "Rings")
                 {
                     ringsAmount++;
                 }
-                else if (item.ItemType == "amulet")
+                else if (item.ItemType == "Amulets")
                 {
                     amuletAmount++;
                 }
-                else if (item.ItemType == "belt")
+                else if (item.ItemType == "Belts")
                 {
                     beltAmount++;
                 }
-                else if (item.ItemType == "boots")
+                else if (item.ItemType == "Boots")
                 {
                     bootsAmount++;
                 }
-                else if (item.ItemType == "gloves")
+                else if (item.ItemType == "Gloves")
                 {
                     glovesAmount++;
                 }
-                else if (item.ItemType == "chest")
+                else if (item.ItemType == "BodyArmours")
                 {
                     chestAmount++;
                 }
-                else if (item.ItemType == "helmet")
+                else if (item.ItemType == "Helmets")
                 {
                     helmetAmount++;
                 }
-                else if (item.ItemType == "weapon")
+                else if (item.ItemType == "OneHandWeapons")
                 {
                     weaponsAmount++;
                 }
-                else if(item.ItemType == "twohand")
+                else if(item.ItemType == "TwoHandWeapons")
                 {
                     twoHandAmount++;
                 }
@@ -461,7 +369,7 @@ namespace EnhancePoE
             return ret;
         }
 
-        private Dictionary<string, List<Item>> GetItemOrderList(List<Item> itemList)
+        private static Dictionary<string, List<Item>> GetItemOrderList(List<Item> itemList)
         {
 
             List<Item> newItemOrderList = new List<Item>();
@@ -485,7 +393,7 @@ namespace EnhancePoE
                 {
                     for (int i = itemList.Count - 1; i > -1; i--)
                     {
-                        if (itemList[i].ItemType == "twohand" && !newItemOrderList.Contains(itemList[i]))
+                        if (itemList[i].ItemType == "TwoHandWeapons" && !newItemOrderList.Contains(itemList[i]))
                         {
                             newItemOrderList.Add(itemList[i]);
                             itemList.RemoveAt(i);
@@ -503,7 +411,7 @@ namespace EnhancePoE
                         switch (end)
                         {
                             case 0:
-                                if (itemList[i].ItemType == "chest" && !newItemOrderList.Contains(itemList[i]))
+                                if (itemList[i].ItemType == "BodyArmours" && !newItemOrderList.Contains(itemList[i]))
                                 {
                                     newItemOrderList.Add(itemList[i]);
                                     itemList.RemoveAt(i);
@@ -515,7 +423,7 @@ namespace EnhancePoE
                                 {
                                     end++;
                                 }
-                                else if ((itemList[i].ItemType == "weapon") && !newItemOrderList.Contains(itemList[i]))
+                                else if ((itemList[i].ItemType == "OneHandWeapons") && !newItemOrderList.Contains(itemList[i]))
                                 {
                                     newItemOrderList.Add(itemList[i]);
                                     itemList.RemoveAt(i);
@@ -528,7 +436,7 @@ namespace EnhancePoE
                                 {
                                     end++;
                                 }
-                                else if (itemList[i].ItemType == "weapon" && !newItemOrderList.Contains(itemList[i]))
+                                else if (itemList[i].ItemType == "OneHandWeapons" && !newItemOrderList.Contains(itemList[i]))
                                 {
                                     newItemOrderList.Add(itemList[i]);
                                     itemList.RemoveAt(i);
@@ -537,7 +445,7 @@ namespace EnhancePoE
                                 break;
 
                             case 3:
-                                if (itemList[i].ItemType == "gloves" && !newItemOrderList.Contains(itemList[i]))
+                                if (itemList[i].ItemType == "Gloves" && !newItemOrderList.Contains(itemList[i]))
                                 {
                                     newItemOrderList.Add(itemList[i]);
                                     itemList.RemoveAt(i);
@@ -545,7 +453,7 @@ namespace EnhancePoE
                                 }
                                 break;
                             case 4:
-                                if (itemList[i].ItemType == "helmet" && !newItemOrderList.Contains(itemList[i]))
+                                if (itemList[i].ItemType == "Helmets" && !newItemOrderList.Contains(itemList[i]))
                                 {
                                     newItemOrderList.Add(itemList[i]);
                                     itemList.RemoveAt(i);
@@ -553,7 +461,7 @@ namespace EnhancePoE
                                 }
                                 break;
                             case 5:
-                                if (itemList[i].ItemType == "boots" && !newItemOrderList.Contains(itemList[i]))
+                                if (itemList[i].ItemType == "Boots" && !newItemOrderList.Contains(itemList[i]))
                                 {
                                     newItemOrderList.Add(itemList[i]);
                                     itemList.RemoveAt(i);
@@ -561,7 +469,7 @@ namespace EnhancePoE
                                 }
                                 break;
                             case 6:
-                                if (itemList[i].ItemType == "belt" && !newItemOrderList.Contains(itemList[i]))
+                                if (itemList[i].ItemType == "Belts" && !newItemOrderList.Contains(itemList[i]))
                                 {
                                     newItemOrderList.Add(itemList[i]);
                                     itemList.RemoveAt(i);
@@ -569,7 +477,7 @@ namespace EnhancePoE
                                 }
                                 break;
                             case 7:
-                                if (itemList[i].ItemType == "ring" && !newItemOrderList.Contains(itemList[i]))
+                                if (itemList[i].ItemType == "Rings" && !newItemOrderList.Contains(itemList[i]))
                                 {
                                     newItemOrderList.Add(itemList[i]);
                                     itemList.RemoveAt(i);
@@ -577,7 +485,7 @@ namespace EnhancePoE
                                 }
                                 break;
                             case 8:
-                                if (itemList[i].ItemType == "ring" && !newItemOrderList.Contains(itemList[i]))
+                                if (itemList[i].ItemType == "Rings" && !newItemOrderList.Contains(itemList[i]))
                                 {
                                     newItemOrderList.Add(itemList[i]);
                                     itemList.RemoveAt(i);
@@ -585,7 +493,7 @@ namespace EnhancePoE
                                 }
                                 break;
                             case 9:
-                                if (itemList[i].ItemType == "amulet" && !newItemOrderList.Contains(itemList[i]))
+                                if (itemList[i].ItemType == "Amulets" && !newItemOrderList.Contains(itemList[i]))
                                 {
                                     newItemOrderList.Add(itemList[i]);
                                     itemList.RemoveAt(i);
@@ -610,14 +518,14 @@ namespace EnhancePoE
         }
 
         // 
-        public void ActivateNextCell(bool active)
+        public static void ActivateNextCell(bool active)
         {
             if (active)
             {
                 if (GlobalItemOrderList.Count > 0)
                 {
 
-                    foreach (StashTab s in MainWindow.stashTabsModel.StashTabs)
+                    foreach (StashTab s in StashTabList.StashTabs)
                     {
                         s.TabHeaderColor = Brushes.Transparent;
                         foreach (Cell c in s.OverlayCellsList)
@@ -625,20 +533,20 @@ namespace EnhancePoE
                             c.Active = false;
                         }
                     }
-                    MainWindow.stashTabsModel.StashTabs[GlobalItemOrderList[0].StashTabIndex].ActivateItemCells(GlobalItemOrderList[0]);
+                    StashTabList.StashTabs[GlobalItemOrderList[0].StashTabIndex].ActivateItemCells(GlobalItemOrderList[0]);
                     if (Properties.Settings.Default.ColorStash != "")
                     {
-                        MainWindow.stashTabsModel.StashTabs[GlobalItemOrderList[0].StashTabIndex].TabHeaderColor = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
+                        StashTabList.StashTabs[GlobalItemOrderList[0].StashTabIndex].TabHeaderColor = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
                     }
                     else
                     {
-                        MainWindow.stashTabsModel.StashTabs[GlobalItemOrderList[0].StashTabIndex].TabHeaderColor = Brushes.Red;
+                        StashTabList.StashTabs[GlobalItemOrderList[0].StashTabIndex].TabHeaderColor = Brushes.Red;
                     }
                     GlobalItemOrderList.RemoveAt(0);
                 }
                 else
                 {
-                    foreach(StashTab s in MainWindow.stashTabsModel.StashTabs)
+                    foreach(StashTab s in StashTabList.StashTabs)
                     {
                         s.TabHeaderColor = Brushes.Transparent;
                         foreach (Cell c in s.OverlayCellsList)
@@ -649,62 +557,62 @@ namespace EnhancePoE
                 }
             }
         }
-        private void ReIndexAllStashTabs()
-        {
-            if(MainWindow.stashTabsModel != null)
-            {
-                for (int i = 0; i < MainWindow.stashTabsModel.StashTabs.Count; i++)
-                {
-                    MainWindow.stashTabsModel.StashTabs[i].TabIndex = i;
-                }
-                ReIndexAllItems();
-            }
-        }
-        private void ReIndexAllItems()
-        {
-            if(MainWindow.stashTabsModel != null)
-            {
-                foreach(StashTab s in MainWindow.stashTabsModel.StashTabs)
-                {
-                    if(s.ItemList != null)
-                    {
-                        foreach (Item i in s.ItemList)
-                        {
-                            i.StashTabIndex = s.TabIndex;
-                        }
-                    }
-                    if (Properties.Settings.Default.ExaltedRecipe)
-                    {
-                        foreach(Item i in s.ItemListShaper)
-                        {
-                            i.StashTabIndex = s.TabIndex;
-                        }
-                        foreach (Item i in s.ItemListElder)
-                        {
-                            i.StashTabIndex = s.TabIndex;
-                        }
-                        foreach (Item i in s.ItemListCrusader)
-                        {
-                            i.StashTabIndex = s.TabIndex;
-                        }
-                        foreach (Item i in s.ItemListHunter)
-                        {
-                            i.StashTabIndex = s.TabIndex;
-                        }
-                        foreach (Item i in s.ItemListWarlord)
-                        {
-                            i.StashTabIndex = s.TabIndex;
-                        }
-                        foreach (Item i in s.ItemListRedeemer)
-                        {
-                            i.StashTabIndex = s.TabIndex;
-                        }
-                    }
-                }
-            }
-        }
+        //private static void ReIndexAllStashTabs()
+        //{
+        //    if(StashTabList.StashTabs != null)
+        //    {
+        //        for (int i = 0; i < StashTabList.StashTabs.Count; i++)
+        //        {
+        //            StashTabList.StashTabs[i].TabIndex = i;
+        //        }
+        //        ReIndexAllItems();
+        //    }
+        //}
+        //private static void ReIndexAllItems()
+        //{
+        //    if(StashTabList.StashTabs != null)
+        //    {
+        //        foreach(StashTab s in StashTabList.StashTabs)
+        //        {
+        //            if(s.ItemList != null)
+        //            {
+        //                foreach (Item i in s.ItemList)
+        //                {
+        //                    i.StashTabIndex = s.TabIndex;
+        //                }
+        //            }
+        //            if (Properties.Settings.Default.ExaltedRecipe)
+        //            {
+        //                foreach(Item i in s.ItemListShaper)
+        //                {
+        //                    i.StashTabIndex = s.TabIndex;
+        //                }
+        //                foreach (Item i in s.ItemListElder)
+        //                {
+        //                    i.StashTabIndex = s.TabIndex;
+        //                }
+        //                foreach (Item i in s.ItemListCrusader)
+        //                {
+        //                    i.StashTabIndex = s.TabIndex;
+        //                }
+        //                foreach (Item i in s.ItemListHunter)
+        //                {
+        //                    i.StashTabIndex = s.TabIndex;
+        //                }
+        //                foreach (Item i in s.ItemListWarlord)
+        //                {
+        //                    i.StashTabIndex = s.TabIndex;
+        //                }
+        //                foreach (Item i in s.ItemListRedeemer)
+        //                {
+        //                    i.StashTabIndex = s.TabIndex;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
-        private void ClearAllItemOrderLists()
+        private static void ClearAllItemOrderLists()
         {
             GlobalItemOrderList.Clear();
             GlobalItemOrderListRest.Clear();
@@ -727,11 +635,11 @@ namespace EnhancePoE
             }
         }
 
-        public void PrepareSelling()
+        public static void PrepareSelling()
         {
             ClearAllItemOrderLists();
-            ReIndexAllStashTabs();
-            foreach(StashTab s in MainWindow.stashTabsModel.StashTabs)
+            //ReIndexAllStashTabs();
+            foreach(StashTab s in StashTabList.StashTabs)
             {
                 s.PrepareOverlayList();
                 if (s.ItemList != null)

@@ -74,7 +74,7 @@ namespace EnhancePoE.Model
         private static List<Cell> GetAllActiveCells(int index)
         {
             List<Cell> activeCells = new List<Cell>();
-            foreach (Cell cell in MainWindow.stashTabsModel.StashTabs[index].OverlayCellsList)
+            foreach (Cell cell in StashTabList.StashTabs[index].OverlayCellsList)
             {
                 if (cell.Active)
                 {
@@ -106,7 +106,7 @@ namespace EnhancePoE.Model
 
                 List<System.Windows.Controls.Button> buttonList = new List<System.Windows.Controls.Button>();
 
-                if (MainWindow.stashTabsModel.StashTabs[selectedIndex].Quad)
+                if (StashTabList.StashTabs[selectedIndex].Quad)
                 {
                     var ctrl = MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedContent as UserControls.DynamicGridControlQuad;
                     foreach (Cell cell in activeCells)
@@ -123,12 +123,12 @@ namespace EnhancePoE.Model
 
                     if (isHit)
                     {
-                        ChaosRecipeEnhancer.currentData.ActivateNextCell(true);
+                        Data.ActivateNextCell(true);
                     }
 
-                    for (int stash = 0; stash < MainWindow.stashTabsModel.StashTabs.Count; stash++)
+                    for (int stash = 0; stash < StashTabList.StashTabs.Count; stash++)
                     {
-                        if (CheckForHeaderHit(MainWindow.stashTabsModel.StashTabs[stash]))
+                        if (CheckForHeaderHit(StashTabList.StashTabs[stash]))
                         {
                             MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedIndex = stash;
                         }
@@ -151,11 +151,11 @@ namespace EnhancePoE.Model
 
                     if (isHit)
                     {
-                        ChaosRecipeEnhancer.currentData.ActivateNextCell(true);
+                        Data.ActivateNextCell(true);
                     }
-                    for (int stash = 0; stash < MainWindow.stashTabsModel.StashTabs.Count; stash++)
+                    for (int stash = 0; stash < StashTabList.StashTabs.Count; stash++)
                     {
-                        if (CheckForHeaderHit(MainWindow.stashTabsModel.StashTabs[stash]))
+                        if (CheckForHeaderHit(StashTabList.StashTabs[stash]))
                         {
                             MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedIndex = stash;
                         }

@@ -523,18 +523,35 @@
             ToolTip="The path to your lootfilter. Standard path is: 'Username/Documents/My Games/Path of Exile'."
             Margin="0,0,0,10"/>
 
-        <TextBox
+            <Button
             x:Name="LootfilterFileDialog"
             Grid.Column="2"
             Grid.Row="7"
             Width="200"
-            MouseDoubleClick="LootfilterFileDialog_MouseDown"
+            Click="LootfilterFileDialog_Click"
             Margin="10,0,20,10"
-            IsReadOnly="True"
-            Text="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterLocation, Mode=TwoWay}"
-            />
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterLocation, Mode=TwoWay}"
+            Content="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterLocation, Mode=TwoWay}"
+                HorizontalContentAlignment="Left"
+            >
+                <Button.Style>
+                    <Style TargetType="Button">
 
-        <TextBlock
+                        <!-- Set the default value here (if any) 
+                 if you set it directly on the button that will override the trigger -->
+                        <Setter Property="Background" Value="Transparent" />
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <TextBlock
             Grid.Column="1"
             Grid.Row="9"
             Text="Two-Hand Weapons:"
@@ -586,12 +603,75 @@
             />
 
         <TextBlock
-            Grid.Column="3"
-            Grid.Row="8"
-            Text="Notification Sound:"
+            Grid.Column="1"
+            Grid.Row="11"
+            Text="Stashtab Mode:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="Plays a sound everytime you have to refresh your lootfilter."
+            ToolTip="."
             Margin="0,0,0,10"/>
+
+        <ComboBox
+            Grid.Column="2"
+            Grid.Row="11"
+            Width="200"
+            VerticalContentAlignment="Center"
+            Margin="0,0,10,10"
+            SelectionChanged="ComboBox_SelectionChanged"
+            SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=StashtabMode, Mode=TwoWay}">
+                <ComboBoxItem Content="ID"></ComboBoxItem>
+                <ComboBoxItem Content="Name"></ComboBoxItem>
+        </ComboBox>
+
+        <TextBlock
+        Name="StashTabNameTextBlock"
+        Grid.Column="1"
+        Grid.Row="12"
+        Text="StashTab Name:"
+        ToolTipService.InitialShowDelay="50"
+        ToolTip="The name of your account"
+            Visibility="{Binding NameVisible}"
+        Margin="0,0,0,10"/>
+
+        <TextBox
+        Name="StashTabNameTextBox"
+        Grid.Column="2"
+        Grid.Row="12"
+        Width="200"
+        Margin="10,0,20,10"
+            Visibility="{Binding NameVisible}"
+        Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabName, Mode=TwoWay}"
+        />
+
+        <TextBlock
+            Name="StashTabIndicesTextBlock"
+        Grid.Column="1"
+        Grid.Row="12"
+        Text="StashTab Indices:"
+        ToolTipService.InitialShowDelay="50"
+        ToolTip="The name of your account"
+            Visibility="{Binding IndicesVisible}"
+        Margin="0,0,0,10"/>
+
+        <TextBox
+            Name="StashTabIndicesTextBox"
+        Grid.Column="2"
+        Grid.Row="12"
+        Width="200"
+            Visibility="{Binding IndicesVisible}"
+        Margin="10,0,20,10"
+        Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabIndices, Mode=TwoWay}"
+        />
+        
+
+
+
+        <TextBlock
+        Grid.Column="3"
+        Grid.Row="8"
+        Text="Notification Sound:"
+        ToolTipService.InitialShowDelay="50"
+        ToolTip="Plays a sound everytime you have to refresh your lootfilter."
+        Margin="0,0,0,10"/>
 
         <CheckBox
             x:Name="PlaySoundCheckBox"
@@ -627,61 +707,62 @@
             />
 
 
-
         <TextBlock
-            Grid.Column="1"
-            Grid.Row="12"
-            Grid.ColumnSpan="2"
-            Text="Tabs"
-            FontSize="36"
-            Margin="0,0,0,20"/>
-        
-        
+        Grid.Column="3"
+        Grid.Row="10"
+        Text="Tab Header Width:"
+        ToolTipService.InitialShowDelay="50"
+        ToolTip="Tab"
+        Margin="0,0,0,10"/>
 
-        <StackPanel
-            Grid.Row="13"
-            Grid.Column="1"
-            VerticalAlignment="Center">
-            <Button
-                    x:Name="AddItemButton"
-                    Margin="0,0,0,10"
-                    Content="Add"
-                    Command="{Binding AddTab}"
-                    Height="30" Width="80"
-                    VerticalAlignment="Top" />
-
-            <Button
-                    Content="Remove"
-                    Command="{Binding RemoveTab}"
-                    Height="30" Width="80"
-                    VerticalAlignment="Top" />
-        </StackPanel>
-
-        <TabControl
-            x:Name="TabsTab"
-            Grid.Column="2"
-            Grid.Row="13"
-            Grid.ColumnSpan="5"
-            Padding="10, 10, 10, 0"
-            TabStripPlacement="Top"
-            ItemsSource="{Binding StashTabItems, Mode=TwoWay}"
-            SelectedIndex="{Binding CurrentTab, Mode=TwoWay}"
-         >
-
-        </TabControl>
+        <Slider
+        Width="200"
+        Grid.Column="4"
+        Grid.Row="10"
+        Margin="10,0,20,10"
+        VerticalAlignment="Center"
+        Minimum="0"
+        Maximum="50"
+        AutoToolTipPlacement="TopLeft"
+        IsMoveToPointEnabled="True"
+        AutoToolTipPrecision="1"
+        Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderWidth, Mode=TwoWay}"
+        />
 
             <TextBlock
-                Grid.Column="1"
-                Grid.ColumnSpan="7"
-                Grid.Row="16"
-                Margin="0,10,0,10"
-                FontSize="12"
-                TextAlignment="Center"
-                Text="Chaos Recipe Enhancer ">
-                <TextBlock.Inlines>
-                    <Run FontFamily="Segoe UI" FontSize="12" Text="by kosace " />
-                </TextBlock.Inlines>
-            </TextBlock>
+        Grid.Column="3"
+        Grid.Row="11"
+        Text="Tab Header Gap:"
+        ToolTipService.InitialShowDelay="50"
+        ToolTip="Tab"
+        Margin="0,0,0,10"/>
+
+            <Slider
+        Width="200"
+        Grid.Column="4"
+        Grid.Row="11"
+        Margin="10,0,20,10"
+        VerticalAlignment="Center"
+        Minimum="0"
+        Maximum="20"
+        AutoToolTipPlacement="TopLeft"
+        IsMoveToPointEnabled="True"
+        AutoToolTipPrecision="1"
+        Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderGap, Mode=TwoWay}"
+        />
+
+            <TextBlock
+            Grid.Column="1"
+            Grid.ColumnSpan="7"
+            Grid.Row="16"
+            Margin="0,10,0,10"
+            FontSize="12"
+            TextAlignment="Center"
+            Text="Chaos Recipe Enhancer ">
+            <TextBlock.Inlines>
+                <Run FontFamily="Segoe UI" FontSize="12" Text="by kosace " />
+            </TextBlock.Inlines>
+        </TextBlock>
 
         <Button
             x:Name="SaveButton"
