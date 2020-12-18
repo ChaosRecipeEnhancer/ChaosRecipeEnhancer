@@ -573,6 +573,29 @@ namespace EnhancePoE
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
-    }
 
+
+        private void TabHeaderGapSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            stashTabOverlay.TabHeaderGap = new Thickness(Properties.Settings.Default.TabHeaderGap, 0, Properties.Settings.Default.TabHeaderGap, 0);
+        }
+
+
+        // TODO: make tabheaderwidth single instance for only changing once
+        private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if(StashTabList.StashTabs != null)
+            {
+                foreach(StashTab s in StashTabList.StashTabs)
+                {
+                    s.TabHeaderWidth = new Thickness(Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2);
+                }
+            }
+        }
+
+        private void TabHeaderMarginSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            stashTabOverlay.TabMargin = new Thickness(Properties.Settings.Default.TabMargin, 0, 0, 0);
+        }
+    }
 }

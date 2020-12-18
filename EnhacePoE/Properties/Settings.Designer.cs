@@ -241,17 +241,6 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Specialized.StringCollection StashTabsString {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["StashTabsString"]));
-            }
-            set {
-                this["StashTabsString"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
         public string HotkeyStashTab {
             get {
@@ -511,6 +500,30 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["TabHeaderGap"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("23")]
+        public double TabMargin {
+            get {
+                return ((double)(this["TabMargin"]));
+            }
+            set {
+                this["TabMargin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int HighlightMode {
+            get {
+                return ((int)(this["HighlightMode"]));
+            }
+            set {
+                this["HighlightMode"] = value;
             }
         }
     }

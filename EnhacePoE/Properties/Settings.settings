@@ -56,9 +56,6 @@
     <Setting Name="League" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="StashTabsString" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="HotkeyStashTab" Type="System.String" Scope="User">
       <Value Profile="(Default)">&lt; not set &gt;</Value>
     </Setting>
@@ -124,6 +121,12 @@
     </Setting>
     <Setting Name="TabHeaderGap" Type="System.Double" Scope="User">
       <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="TabMargin" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">23</Value>
+    </Setting>
+    <Setting Name="HighlightMode" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

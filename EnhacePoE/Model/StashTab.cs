@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 //using System.Windows.Input;
@@ -40,10 +41,6 @@ namespace EnhancePoE.Model
         public int TabIndex { get; set; }
 
 
-
-
-
-
         private SolidColorBrush _tabHeaderColor;
         public SolidColorBrush TabHeaderColor
         {
@@ -58,6 +55,20 @@ namespace EnhancePoE.Model
             }
         }
 
+        private Thickness _tabHeaderWidth;
+        public Thickness TabHeaderWidth
+        {
+            get { return _tabHeaderWidth; }
+            set
+            {
+                if (value != _tabHeaderWidth)
+                {
+                    _tabHeaderWidth = value;
+                    OnPropertyChanged("TabHeaderWidth");
+                }
+            }
+        }
+
 
 
 
@@ -66,6 +77,7 @@ namespace EnhancePoE.Model
             this.TabName = name;
             this.TabIndex = index;
             TabHeaderColor = Brushes.Transparent;
+            TabHeaderWidth = new Thickness(Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2);
         }
 
         private void Generate2dArr(int size)

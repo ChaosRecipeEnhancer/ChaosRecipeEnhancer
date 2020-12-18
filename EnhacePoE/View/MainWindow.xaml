@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnhancePoE"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        
         xmlns:properties="clr-namespace:EnhancePoE.Properties"
         mc:Ignorable="d"
         FontSize="14"
@@ -13,6 +12,7 @@
         SizeToContent="WidthAndHeight"
         WindowStyle="SingleBorderWindow"
         MouseDown="Window_MouseDown"
+        ResizeMode="CanMinimize"
         Left="{Binding Source={x:Static properties:Settings.Default}, Path=LeftMain, Mode=TwoWay}"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=TopMain, Mode=TwoWay}"
         >
@@ -34,20 +34,20 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -556,7 +556,7 @@
             Grid.Row="9"
             Text="Two-Hand Weapons:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="Activates Two-Hand Weapons."
+            ToolTip="Activates Two-Hand Weapons with Size 2x3."
             Margin="0,0,0,10"/>
 
         <CheckBox
@@ -607,7 +607,7 @@
             Grid.Row="11"
             Text="Stashtab Mode:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="."
+            ToolTip="The stashtab fetching mode. Stashtabs will automatically be added."
             Margin="0,0,0,10"/>
 
         <ComboBox
@@ -619,16 +619,36 @@
             SelectionChanged="ComboBox_SelectionChanged"
             SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=StashtabMode, Mode=TwoWay}">
                 <ComboBoxItem Content="ID"></ComboBoxItem>
-                <ComboBoxItem Content="Name"></ComboBoxItem>
+                <ComboBoxItem Content="Prefix"></ComboBoxItem>
         </ComboBox>
 
-        <TextBlock
+            <TextBlock
+            Grid.Column="5"
+            Grid.Row="12"
+            Text="Highlight Mode:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="."
+            Margin="0,0,0,10"/>
+
+            <ComboBox
+                Name="HighlightModeComboBox"
+            Grid.Column="6"
+            Grid.Row="12"
+            Width="200"
+            VerticalContentAlignment="Center"
+            Margin="0,0,0,10"
+            SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=HighlightMode, Mode=TwoWay}">
+                <ComboBoxItem Content="Item by Item"></ComboBoxItem>
+                <ComboBoxItem Content="Full Sets"></ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock
         Name="StashTabNameTextBlock"
         Grid.Column="1"
         Grid.Row="12"
-        Text="StashTab Name:"
+        Text="StashTab Prefix:"
         ToolTipService.InitialShowDelay="50"
-        ToolTip="The name of your account"
+        ToolTip="Every stashtab which name starts with this prefix will be added."
             Visibility="{Binding NameVisible}"
         Margin="0,0,0,10"/>
 
@@ -648,7 +668,7 @@
         Grid.Row="12"
         Text="StashTab Indices:"
         ToolTipService.InitialShowDelay="50"
-        ToolTip="The name of your account"
+        ToolTip="Every stashtab with this indices will be added. Seperate them by ',' e.g. '0,1,2,3,4,5' will fetch first 6 stashtabs."
             Visibility="{Binding IndicesVisible}"
         Margin="0,0,0,10"/>
 
@@ -716,6 +736,7 @@
         Margin="0,0,0,10"/>
 
         <Slider
+            Name="TabHeaderWidthSlider"
         Width="200"
         Grid.Column="4"
         Grid.Row="10"
@@ -726,6 +747,7 @@
         AutoToolTipPlacement="TopLeft"
         IsMoveToPointEnabled="True"
         AutoToolTipPrecision="1"
+            ValueChanged="TabHeaderWidthSlider_ValueChanged"
         Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderWidth, Mode=TwoWay}"
         />
 
@@ -738,6 +760,7 @@
         Margin="0,0,0,10"/>
 
             <Slider
+                Name="TabHeaderGapSlider"
         Width="200"
         Grid.Column="4"
         Grid.Row="11"
@@ -748,7 +771,32 @@
         AutoToolTipPlacement="TopLeft"
         IsMoveToPointEnabled="True"
         AutoToolTipPrecision="1"
+        ValueChanged="TabHeaderGapSlider_ValueChanged"
         Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderGap, Mode=TwoWay}"
+        />
+
+            <TextBlock
+        Grid.Column="3"
+        Grid.Row="12"
+        Text="Tab Header Margin:"
+        ToolTipService.InitialShowDelay="50"
+        ToolTip="Tab"
+        Margin="0,0,0,10"/>
+
+            <Slider
+                Name="TabHeaderMarginSlider"
+        Width="200"
+        Grid.Column="4"
+        Grid.Row="12"
+        Margin="10,0,20,10"
+        VerticalAlignment="Center"
+        Minimum="0"
+        Maximum="50"
+        AutoToolTipPlacement="TopLeft"
+        IsMoveToPointEnabled="True"
+        AutoToolTipPrecision="1"
+        ValueChanged="TabHeaderMarginSlider_ValueChanged"
+        Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabMargin, Mode=TwoWay}"
         />
 
             <TextBlock

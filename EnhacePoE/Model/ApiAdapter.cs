@@ -66,7 +66,7 @@ namespace EnhancePoE
                 string stashName = Properties.Settings.Default.StashTabName;
                 foreach (StashTabProps p in PropsList.tabs)
                 {
-                    if (p.n == stashName)
+                    if (p.n.StartsWith(stashName))
                     {
                         ret.Add(new StashTab(p.n, p.i));
                     }

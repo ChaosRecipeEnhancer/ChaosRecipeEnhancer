@@ -96,12 +96,12 @@
                                         </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
                                     <TabPanel x:Name="HeaderPanel"
-                    Grid.Row="0"
-                    Panel.ZIndex="1"
-                    Margin="23,0,0,0"
-                    IsItemsHost="True"
-                    KeyboardNavigation.TabIndex="1"
-                    Background="Transparent" />
+                                    Grid.Row="0"
+                                    Panel.ZIndex="1"
+                                    Margin="{Binding TabMargin}"
+                                    IsItemsHost="True"
+                                    KeyboardNavigation.TabIndex="1"
+                                    Background="Transparent" />
                                     <Border x:Name="Border"
                   Grid.Row="1"
                   BorderThickness="1"

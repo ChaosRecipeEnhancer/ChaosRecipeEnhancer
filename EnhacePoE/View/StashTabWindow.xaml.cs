@@ -47,7 +47,22 @@ namespace EnhancePoE.View
             }
         }
 
-        public double Gap { get; set; } = 0;
+        private Thickness _tabMargin;
+        public Thickness TabMargin
+        {
+            get { return _tabMargin; }
+            set
+            {
+                if (value != _tabMargin)
+                {
+                    _tabMargin = value;
+                    OnPropertyChanged("TabMargin");
+                }
+            }
+        }
+
+
+        //public double Gap { get; set; } = 0;
 
         public static ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
         public StashTabWindow()
@@ -55,6 +70,7 @@ namespace EnhancePoE.View
             InitializeComponent();
             DataContext = this;
             StashTabOverlayTabControl.ItemsSource = OverlayStashTabList;
+
         }
 
         public new virtual void Hide()
@@ -85,13 +101,15 @@ namespace EnhancePoE.View
                 OverlayStashTabList.Clear();
                 _tabHeaderGap.Right = Properties.Settings.Default.TabHeaderGap;
                 _tabHeaderGap.Left = Properties.Settings.Default.TabHeaderGap;
+                TabMargin = new Thickness(Properties.Settings.Default.TabMargin, 0, 0, 0);
+                //TabHeaderWidth = new Thickness(Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2);
 
                 foreach (StashTab i in StashTabList.StashTabs)
                 {
                     //i.PrepareOverlayList();
                     //i.ActivateNextCell(true);
                     TabItem newStashTabItem;
-                    TextBlock tbk = new TextBlock() { Text = i.TabName, Padding = new Thickness(Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2) };
+                    TextBlock tbk = new TextBlock() { Text = i.TabName };
 
                     //TextBlock tbk = new TextBlock() { Text = i.TabName};
                     //if (i.ItemOrderList.Count > 0)
@@ -109,6 +127,8 @@ namespace EnhancePoE.View
                     //tbk.Background = i.TabHeaderColor;
                     tbk.DataContext = i;
                     tbk.SetBinding(TextBlock.BackgroundProperty, new System.Windows.Data.Binding("TabHeaderColor"));
+                    tbk.SetBinding(TextBlock.PaddingProperty, new System.Windows.Data.Binding("TabHeaderWidth"));
+
                     //tbk.SetBinding(TextBlock.TextProperty, new System.Windows.Data.Binding("TabName"));
 
                     //tbk.SetBinding(TextBlock.PaddingProperty, new System.Windows.Data.Binding("TabHeaderThickness"));
