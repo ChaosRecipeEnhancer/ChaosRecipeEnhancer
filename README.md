@@ -10,7 +10,9 @@ For details on changes, check the bottom of this site.
 
 ## Installation
 
-[Download](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi) and install. 
+DO NOT download the whole github repository, since it may include some new experimental features.
+
+[Download it here](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi) instead. 
 
 Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
 
