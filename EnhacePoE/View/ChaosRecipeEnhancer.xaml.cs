@@ -119,23 +119,27 @@ namespace EnhancePoE
                 {
 
                     Data.cs.Cancel();
-
-
                     aTimer.Enabled = false;
                     FetchingActive = false;
                     RefreshButton.Content = "Fetch";
                 }
                 else
                 {
-                    if (MainWindow.stashTabOverlay.IsOpen)
+                    if (!ApiAdapter.IsFetching)
                     {
-                        MainWindow.stashTabOverlay.Hide();
+                        Data.cs = new System.Threading.CancellationTokenSource();
+                        Data.ct = Data.cs.Token;
+                        if (MainWindow.stashTabOverlay.IsOpen)
+                        {
+                            MainWindow.stashTabOverlay.Hide();
+                        }
+                        FetchData();
+                        //aTimer.Interval = 1000;
+                        aTimer.Enabled = true;
+                        FetchingActive = true;
+                        RefreshButton.Content = "Stop";
                     }
-                    FetchData();
-                    //aTimer.Interval = 1000;
-                    aTimer.Enabled = true;
-                    FetchingActive = true;
-                    RefreshButton.Content = "Stop";
+
                 }
             }
         }
