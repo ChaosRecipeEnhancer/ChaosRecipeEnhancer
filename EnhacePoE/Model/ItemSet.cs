@@ -12,7 +12,7 @@ namespace EnhancePoE.Model
         // We'll use the list to check which types we still needs to add to the set. We'll need some logic to extract that from the item icon path but that should be possible
         public List<string> EmptyItemSlots { get; set; } = new List<string>() { "Helmets", "BodyArmours", "Gloves", "Boots", "Rings", "Rings", "Amulets", "Belts", "OneHandWeapons", "OneHandWeapons", "TwoHandWeapons" };
         public bool HasChaos { get; set; } = false;
-        public List<int> CurrentPosition { get; set; }
+        public List<int> CurrentPosition { get; set; } = new List<int> { 0, 0, 0 };
         public string InfluenceType { get; set; }
         public bool AddItem(Item item)
         {
@@ -33,7 +33,10 @@ namespace EnhancePoE.Model
                 }
                 EmptyItemSlots.Remove(item.ItemType);
                 ItemList.Add(item);
-                CurrentPosition = new List<int> { item.x, item.y, item.StashTabIndex };
+                CurrentPosition[0] = item.x;
+                CurrentPosition[1] = item.y;
+                CurrentPosition[2] = item.StashTabIndex;
+                //CurrentPosition = new List<int> { item.x, item.y, item.StashTabIndex };
                 return true;
             }
             return false;
@@ -46,11 +49,20 @@ namespace EnhancePoE.Model
 
         public double GetItemDistance(Item item)
         {
-            if (item.StashTabIndex != this.CurrentPosition[2])
+            if (item.StashTabIndex != CurrentPosition[2])
             {
                 return 40;
             }
             return Math.Sqrt(Math.Pow(item.x - CurrentPosition[0], 2) + Math.Pow(item.y - CurrentPosition[1], 2));
+        }
+
+        public bool IsValidItem(Item item)
+        {
+            if (EmptyItemSlots.Contains(item.ItemType) && !ItemList.Contains(item))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -78,56 +78,181 @@ namespace EnhancePoE
         // tries to add item, if item added returns
         private static bool AddChaosItemToItemSet(ItemSet set)
         {
-            foreach (StashTab s in StashTabList.StashTabs)
+
+            Item minItem = null;
+            double minDistance = 1000.00;
+
+            foreach(StashTab s in StashTabList.StashTabs)
             {
-                foreach (Item item in s.ItemListChaos)
+                foreach(Item i in s.ItemListChaos)
                 {
-                    if (set.AddItem(item))
+                    if (set.IsValidItem(i))
                     {
-                        s.ItemListChaos.Remove(item);
-                        return true;
+                        if(set.GetItemDistance(i) < minDistance)
+                        {
+                            Trace.WriteLine(minDistance, "minDistance");
+                            minDistance = set.GetItemDistance(i);
+                            minItem = i;
+                        }
                     }
                 }
             }
+            if(minItem != null)
+            {
+                set.AddItem(minItem);
+                StashTab tab = GetStashTabFromItem(minItem);
+                tab.ItemListChaos.Remove(minItem);
+                return true;
+            }
             return false;
+
+
+
+            //foreach (StashTab s in StashTabList.StashTabs)
+            //{
+            //    for(int i = s.ItemListChaos.Count -1; i > -1; i--)
+            //    {
+            //        if (set.AddItem(s.ItemListChaos[i]))
+            //        {
+
+            //            s.ItemListChaos.RemoveAt(i);
+            //            return true;
+            //        }
+            //    }
+            //    //foreach (Item item in s.ItemListChaos)
+            //    //{
+            //    //    if (set.AddItem(item))
+            //    //    {
+            //    //        s.ItemListChaos.Remove(item);
+            //    //        return true;
+            //    //    }
+            //    //}
+            //}
+            //return false;
         }
 
         // keeps adding items, breaks when full
         private static void FillItemSetWithRegalItems(ItemSet set)
         {
-            foreach (StashTab s in StashTabList.StashTabs)
+            double minDistance;
+            Item minItem;
+
+            while (set.EmptyItemSlots.Count != 0)
             {
-                foreach(Item item in s.ItemList)
+                minItem = null;
+                minDistance = 1000.00;
+
+                foreach (StashTab s in StashTabList.StashTabs)
                 {
-                    if (set.AddItem(item))
+                    foreach (Item i in s.ItemList)
                     {
-                        s.ItemList.Remove(item);
-                    }
-                    if (set.EmptyItemSlots.Count == 0)
-                    {
-                        return;
+                        if (set.IsValidItem(i))
+                        {
+                            if (set.GetItemDistance(i) < minDistance)
+                            {
+                                Trace.WriteLine(minDistance, "minDistance");
+
+                                minDistance = set.GetItemDistance(i);
+                                minItem = i;
+                            }
+                        }
                     }
                 }
+                if (minItem != null)
+                {
+                    set.AddItem(minItem);
+                    StashTab tab = GetStashTabFromItem(minItem);
+                    tab.ItemList.Remove(minItem);
+                }
+                else
+                {
+                    return;
+                }
             }
+
+
+
+
+            //foreach (StashTab s in StashTabList.StashTabs)
+            //{
+            //    for(int i = s.ItemList.Count -1; i > -1; i--)
+            //    {
+            //        if (set.AddItem(s.ItemList[i]))
+            //        {
+            //            s.ItemList.RemoveAt(i);
+            //        }
+            //        if (set.EmptyItemSlots.Count == 0)
+            //        {
+            //            return;
+            //        }
+            //    }
+            //}
         }
 
         // keeps adding items breaks when full
         private static void FillItemSetWithChaosItems(ItemSet set)
         {
-            foreach (StashTab s in StashTabList.StashTabs)
+            double minDistance;
+            Item minItem;
+            while (set.EmptyItemSlots.Count != 0)
             {
-                foreach (Item item in s.ItemListChaos)
+                minItem = null;
+                minDistance = 1000;
+
+                foreach (StashTab s in StashTabList.StashTabs)
                 {
-                    if (set.AddItem(item))
+                    foreach (Item i in s.ItemListChaos)
                     {
-                        s.ItemListChaos.Remove(item);
-                    }
-                    if (set.EmptyItemSlots.Count == 0)
-                    {
-                        return;
+                        if (set.IsValidItem(i))
+                        {
+                            if (set.GetItemDistance(i) < minDistance)
+                            {
+                                Trace.WriteLine(minDistance, "minDistance");
+
+                                minDistance = set.GetItemDistance(i);
+                                minItem = i;
+                            }
+                        }
                     }
                 }
+                if (minItem != null)
+                {
+                    set.AddItem(minItem);
+                    StashTab tab = GetStashTabFromItem(minItem);
+                    tab.ItemListChaos.Remove(minItem);
+                }
+                else
+                {
+                    return;
+                }
             }
+
+            //foreach (StashTab s in StashTabList.StashTabs)
+            //{
+            //    for(int i = s.ItemListChaos.Count -1; i > -1; i--)
+            //    {
+            //        if (set.AddItem(s.ItemListChaos[i]))
+            //        {
+            //            s.ItemListChaos.RemoveAt(i);
+            //        }
+            //        if (set.EmptyItemSlots.Count == 0)
+            //        {
+            //            return;
+            //        }
+            //    }
+
+                //foreach (Item item in s.ItemListChaos)
+                //{
+                //    if (set.AddItem(item))
+                //    {
+                //        s.ItemListChaos.Remove(item);
+                //    }
+                //    if (set.EmptyItemSlots.Count == 0)
+                //    {
+                //        return;
+                //    }
+                //}
+            //}
         }
 
         private static void FillItemSets()
