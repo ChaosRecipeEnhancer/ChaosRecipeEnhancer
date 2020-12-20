@@ -100,30 +100,35 @@ namespace EnhancePoE.Model
             {
                 int selectedIndex = MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedIndex;
                 bool isHit = false;
-
+                int hitIndex = -1;
 
                 List<Cell> activeCells = GetAllActiveCells(selectedIndex);
 
-                List<System.Windows.Controls.Button> buttonList = new List<System.Windows.Controls.Button>();
+                List<ButtonAndCell> buttonList = new List<ButtonAndCell>();
 
                 if (StashTabList.StashTabs[selectedIndex].Quad)
                 {
                     var ctrl = MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedContent as UserControls.DynamicGridControlQuad;
                     foreach (Cell cell in activeCells)
                     {
-                        buttonList.Add(ctrl.GetButtonFromCell(cell));
+                        buttonList.Add(new ButtonAndCell 
+                        {
+                            Button = ctrl.GetButtonFromCell(cell),
+                            Cell = cell
+                        } );
                     }
-                    foreach (System.Windows.Controls.Button b in buttonList)
+                    for (int b = 0; b < buttonList.Count; b++)
                     {
-                        if (CheckForHit(GetCoordinates(b), b))
+                        if (CheckForHit(GetCoordinates(buttonList[b].Button), buttonList[b].Button))
                         {
                             isHit = true;
+                            hitIndex = b;
                         }
                     }
 
                     if (isHit)
                     {
-                        Data.ActivateNextCell(true);
+                        Data.ActivateNextCell(true, buttonList[hitIndex].Cell);
                     }
 
                     for (int stash = 0; stash < StashTabList.StashTabs.Count; stash++)
@@ -139,19 +144,24 @@ namespace EnhancePoE.Model
                     var ctrl = MainWindow.stashTabOverlay.StashTabOverlayTabControl.SelectedContent as UserControls.DynamicGridControl;
                     foreach (Cell cell in activeCells)
                     {
-                        buttonList.Add(ctrl.GetButtonFromCell(cell));
+                        buttonList.Add(new ButtonAndCell
+                        {
+                            Button = ctrl.GetButtonFromCell(cell),
+                            Cell = cell
+                        });
                     }
-                    foreach (System.Windows.Controls.Button b in buttonList)
+                    for (int b = 0; b < buttonList.Count; b++)
                     {
-                        if (CheckForHit(GetCoordinates(b), b))
+                        if (CheckForHit(GetCoordinates(buttonList[b].Button), buttonList[b].Button))
                         {
                             isHit = true;
+                            hitIndex = b;
                         }
                     }
 
                     if (isHit)
                     {
-                        Data.ActivateNextCell(true);
+                        Data.ActivateNextCell(true, buttonList[hitIndex].Cell);
                     }
                     for (int stash = 0; stash < StashTabList.StashTabs.Count; stash++)
                     {
@@ -163,5 +173,11 @@ namespace EnhancePoE.Model
                 }
             }
         }
+    }
+
+    class ButtonAndCell
+    {
+        public System.Windows.Controls.Button Button { get; set; }
+        public Cell Cell { get; set; }
     }
 }

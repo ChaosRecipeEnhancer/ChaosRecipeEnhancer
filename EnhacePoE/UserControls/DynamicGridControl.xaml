@@ -30,15 +30,17 @@
                                 <ControlTemplate TargetType="{x:Type Button}">
                                     <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="0.5">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
+                                    </Border>  
+
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
                         <!-- Set the default value here (if any) 
                  if you set it directly on the button that will override the trigger -->
                         <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Opacity" Value="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab}" />
-                        <Style.Triggers>
+						<Setter Property="Opacity"
+								Value="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab}" />
+						<Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="Transparent" />
                             </Trigger>
@@ -46,8 +48,13 @@
                              Value="True">
                                 <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=ColorStash}" />
                                 <Setter Property="Opacity" Value="1" />
-                            
-                            </DataTrigger>
+								<Setter Property="Content"
+										Value="{Binding ButtonName}"></Setter>
+								<Setter Property="Foreground"
+										Value="White"></Setter>
+								<Setter Property="FontSize"
+										Value="20"></Setter>
+							</DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>

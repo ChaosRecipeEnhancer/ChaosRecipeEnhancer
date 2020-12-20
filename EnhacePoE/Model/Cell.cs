@@ -31,20 +31,31 @@ namespace EnhancePoE.Model
         public int YIndex { get; set; }
         public string ItemID { get; set; }
         //public ICommand ToggleCellCommand { get; set; }
-        
+
         public string CellName { get; set; }
 
-        public string ButtonName { get; set; }
-
+        private string _buttonName { get; set; }
+        public string ButtonName
+        {
+            get
+            {
+                return _buttonName;
+            }
+            set
+            {
+                _buttonName = value;
+                OnPropertyChanged("ButtonName");
+            }
+        }
         public Button CellButton { get; set; }
+        public Item CellItem { get; set; }
+        public int TabIndex { get; set; }
 
         public Cell()
         {
             CellButton = new Button
             {
-                //Command = ToggleCellCommand,
-                Content = ButtonName,
-                CommandParameter = Active
+                Content = ButtonName
             };
         }
     }

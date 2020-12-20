@@ -189,7 +189,18 @@ namespace EnhancePoE.View
                 StashTabOverlayTabControl.SelectedIndex = 0;
 
                 Data.PrepareSelling();
-                Data.ActivateNextCell(true);
+                Data.ActivateNextCell(true, null);
+                if(Properties.Settings.Default.HighlightMode == 2)
+                {
+                    foreach(ItemSet set in Data.ItemSetListHighlight)
+                    {
+                        foreach (Item i in set.ItemList)
+                        {
+                            StashTab currTab = Data.GetStashTabFromItem(i);
+                            currTab.ActivateItemCells(i);
+                        }
+                    }
+                }
 
                 MainWindow.overlay.OpenStashTabOverlay.Content = "Hide";
 

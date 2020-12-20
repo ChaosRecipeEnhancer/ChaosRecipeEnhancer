@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -24,6 +25,7 @@ namespace EnhancePoE.Model
 
         public Uri StashTabUri { get; set; }
         public List<Item> ItemList { get; set; }
+        public List<Item> ItemListChaos { get; set; } = new List<Item>();
         public List<Item> ItemListShaper { get; set; } = new List<Item>();
         public List<Item> ItemListElder { get; set; } = new List<Item>();
         public List<Item> ItemListWarlord { get; set; } = new List<Item>();
@@ -35,7 +37,6 @@ namespace EnhancePoE.Model
 
         // used for registering clicks on tab headers
         public TextBlock TabHeader { get; set; }
-
         public string TabName { get; set; }
         public bool Quad { get; set; }
         public int TabIndex { get; set; }
@@ -109,7 +110,7 @@ namespace EnhancePoE.Model
             }
             Generate2dArr(size);
         }
-        public static string GetItemClass(Item item)
+        private static string GetItemClass(Item item)
         {
             List<string> iconParts = new List<string>(item.icon.Split('/'));
             String itemClass = iconParts[6];
@@ -140,7 +141,7 @@ namespace EnhancePoE.Model
                     ItemList.RemoveAt(i);
                     continue;
                 }
-
+                ItemList[i].StashTabIndex = this.TabIndex;
                 //exalted recipe every ilvl allowed, same bases, sort in itemlists
                 if (Properties.Settings.Default.ExaltedRecipe)
                 {
@@ -177,11 +178,6 @@ namespace EnhancePoE.Model
                     ItemList.RemoveAt(i);
                     continue;
                 }
-                if (ItemList[i].ilvl > 74)
-                {
-                    ItemList.RemoveAt(i);
-                    continue;
-                }
                 if (ItemList[i].frameType == 2)
                 {
                     string result = GetItemClass(ItemList[i]);
@@ -192,6 +188,43 @@ namespace EnhancePoE.Model
                     else
                     {
                         ItemList.RemoveAt(i);
+                    }
+                }
+                if (ItemList[i].ilvl <= 74)
+                {
+                    ItemListChaos.Add(ItemList[i]);
+                    ItemList.RemoveAt(i);
+                }
+            }
+        }
+
+        public void DeactivateItemCells()
+        {
+            foreach(Cell cell in OverlayCellsList)
+            {
+                cell.Active = false;
+            }
+        }
+
+        public void DeactivateSingleItemCells(Item item)
+        {
+            List<List<int>> AllCoordinates = new List<List<int>>();
+
+            for (int i = 0; i < item.w; i++)
+            {
+                for (int j = 0; j < item.h; j++)
+                {
+                    AllCoordinates.Add(new List<int> { item.x + i, item.y + j });
+                }
+            }
+
+            foreach (Cell cell in OverlayCellsList)
+            {
+                foreach (List<int> coordinate in AllCoordinates)
+                {
+                    if (coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
+                    {
+                        cell.Active = false;
                     }
                 }
             }
@@ -208,16 +241,39 @@ namespace EnhancePoE.Model
                     AllCoordinates.Add(new List<int> { item.x + i, item.y + j });
                 }
             }
-
             foreach(Cell cell in OverlayCellsList)
             {
-                cell.Active = false;
                 foreach(List<int> coordinate in AllCoordinates)
                 {
                     if(coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
                     {
                         cell.Active = true;
+                        cell.CellItem = item;
+                        cell.TabIndex = this.TabIndex;
                     }
+                }
+            }
+        }
+
+        public void MarkNextItem(Item item)
+        {
+            foreach(Cell cell in OverlayCellsList)
+            {
+                if(cell.CellItem == item)
+                {
+                    cell.ButtonName = "X";
+                }
+            }
+        }
+
+        public void ShowNumbersOnActiveCells(int index)
+        {
+            index++;
+            foreach(Cell cell in OverlayCellsList)
+            {
+                if (cell.Active)
+                {
+                    cell.ButtonName = index.ToString();
                 }
             }
         }

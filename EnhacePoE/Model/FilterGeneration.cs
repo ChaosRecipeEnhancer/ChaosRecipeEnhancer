@@ -65,7 +65,7 @@ namespace EnhancePoE.Model
             }
         }
 
-        public static string GenerateSection(bool show, string itemClass, bool influenced = false)
+        public static string GenerateSection(bool show, string itemClass, bool influenced = false, bool onlyChaos = false)
         {
             string result = "";
             if (show)
@@ -83,7 +83,7 @@ namespace EnhancePoE.Model
                 result += nl + tab + "HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord";
             }
             result = result  + nl + tab  + "Rarity Rare" + nl + tab + "Identified False" + nl + tab;
-            if (!influenced)
+            if (!influenced && onlyChaos)
             {
                 result += "ItemLevel >= 60" + nl + tab + "ItemLevel <= 74" + nl + tab;
             }

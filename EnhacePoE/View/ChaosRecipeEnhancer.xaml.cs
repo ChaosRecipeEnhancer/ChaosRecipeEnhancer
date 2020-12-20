@@ -1,5 +1,6 @@
 ﻿using EnhancePoE.Model;
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -8,14 +9,56 @@ namespace EnhancePoE
     /// <summary>
     /// Interaction logic for ChaosRecipeEnhancer.xaml
     /// </summary>
-    public partial class ChaosRecipeEnhancer : Window
+    public partial class ChaosRecipeEnhancer : Window, INotifyPropertyChanged
     {
+
 
         public static bool FetchingActive { get; set;} = false;
         private static System.Timers.Timer aTimer;
 
         private static readonly double deactivatedOpacity = .1;
         private static readonly double activatedOpacity = 1;
+
+        private string _warningMessage;
+        public string WarningMessage
+        {
+            get
+            {
+                return _warningMessage;
+            }
+            set
+            {
+                _warningMessage = value;
+                OnPropertyChanged("WarningMessage");
+            }
+        }
+
+        private Visibility _warningMessageVisibility = Visibility.Hidden;
+        public Visibility WarningMessageVisibility
+        {
+            get
+            {
+                return _warningMessageVisibility;
+            }
+            set
+            {
+                _warningMessageVisibility = value;
+                OnPropertyChanged("WarningMessageVisibility");
+            }
+        }
+        private double _shadowOpacity = 0;
+        public double ShadowOpacity
+        {
+            get
+            {
+                return _shadowOpacity;
+            }
+            set
+            {
+                _shadowOpacity = value;
+                OnPropertyChanged("ShadowOpacity");
+            }
+        }
 
         public static int FullSets { get; set; } = 0;
 
@@ -24,6 +67,7 @@ namespace EnhancePoE
         public ChaosRecipeEnhancer()
         {
             InitializeComponent();
+            DataContext = this;
             aTimer = new System.Timers.Timer();
             aTimer.Elapsed += OnTimedEvent;
             aTimer.AutoReset = true;
@@ -35,7 +79,9 @@ namespace EnhancePoE
         private async void FetchData()
         {
 
-
+            MainWindow.overlay.WarningMessage = "";
+            MainWindow.overlay.ShadowOpacity = 0;
+            MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Hidden;
             await this.Dispatcher.Invoke(async() =>
             {
                 GetFrequency();
@@ -44,9 +90,11 @@ namespace EnhancePoE
 
                 await ApiAdapter.GetItems();
             });
-            Data.CheckActives();
-            SetOpacity();
-
+            if (ApiAdapter.FetchingDone)
+            {
+                Data.CheckActives();
+                SetOpacity();
+            }
         }
 
 
@@ -219,5 +267,18 @@ namespace EnhancePoE
         //    // The Window was deactivated 
         //    MainWindow.overlay.Topmost = true;
         //}
+
+        #region INotifyPropertyChanged implementation
+        // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+
+
     }
 }

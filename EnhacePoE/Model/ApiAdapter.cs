@@ -13,10 +13,14 @@ namespace EnhancePoE
     public class ApiAdapter
     {
 
-        private static bool IsFetching { get; set; } = false;
+        public static bool IsFetching { get; set; } = false;
         private static StashTabPropsList PropsList { get; set; }
+        private static bool FetchError { get; set; } = false;
+        public static bool FetchingDone { get; set; } = false;
         public static async Task GenerateUri()
         {
+            FetchError = false;
+            FetchingDone = false;
             Trace.WriteLine("generating uris!!");
             if (Properties.Settings.Default.accName != ""
                 && Properties.Settings.Default.League != "")
@@ -25,9 +29,12 @@ namespace EnhancePoE
                 string league = Properties.Settings.Default.League;
 
                 await GetProps(accName, league);
+                if (!FetchError)
+                {
+                    GenerateStashTabs();
+                    GenerateStashtabUris(accName, league);
+                }
 
-                GenerateStashTabs();
-                GenerateStashtabUris(accName, league);
 
 
                 // https://www.pathofexile.com/character-window/get-stash-items?accountName=kosace&tabIndex=0&league=Heist
@@ -46,32 +53,38 @@ namespace EnhancePoE
             if (Properties.Settings.Default.StashtabMode == 0)
             {
                 StashTabList.GetStashTabIndices();
-                foreach (StashTabProps p in PropsList.tabs)
+                if(PropsList != null)
                 {
-                    for(int i = StashTabList.StashTabIndices.Count - 1; i > -1; i--)
+                    foreach (StashTabProps p in PropsList.tabs)
                     {
-                        if(StashTabList.StashTabIndices[i] == p.i)
+                        for (int i = StashTabList.StashTabIndices.Count - 1; i > -1; i--)
                         {
-                            StashTabList.StashTabIndices.RemoveAt(i);
-                            ret.Add(new StashTab(p.n, p.i));
+                            if (StashTabList.StashTabIndices[i] == p.i)
+                            {
+                                StashTabList.StashTabIndices.RemoveAt(i);
+                                ret.Add(new StashTab(p.n, p.i));
+                            }
                         }
                     }
+                    StashTabList.StashTabs = ret;
+                    GetAllTabNames();
                 }
-                StashTabList.StashTabs = ret;
-                GetAllTabNames();
             }
             // mode = Name
             else
             {
-                string stashName = Properties.Settings.Default.StashTabName;
-                foreach (StashTabProps p in PropsList.tabs)
+                if(PropsList != null)
                 {
-                    if (p.n.StartsWith(stashName))
+                    string stashName = Properties.Settings.Default.StashTabName;
+                    foreach (StashTabProps p in PropsList.tabs)
                     {
-                        ret.Add(new StashTab(p.n, p.i));
+                        if (p.n.StartsWith(stashName))
+                        {
+                            ret.Add(new StashTab(p.n, p.i));
+                        }
                     }
+                    StashTabList.StashTabs = ret;
                 }
-                StashTabList.StashTabs = ret;
             }
             Trace.WriteLine(StashTabList.StashTabs.Count, "stash tab count");
         }
@@ -147,6 +160,7 @@ namespace EnhancePoE
                     {
                         System.Windows.MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
                         //Trace.WriteLine("fetching props failed!");
+                        FetchError = true;
                         //Trace.WriteLine(res.StatusCode);
                     }
                 }
@@ -167,6 +181,10 @@ namespace EnhancePoE
             if (Properties.Settings.Default.SessionId == "")
             {
                 MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set PoE Session Id.");
+                return;
+            }
+            if (FetchError)
+            {
                 return;
             }
             IsFetching = true;
@@ -202,6 +220,7 @@ namespace EnhancePoE
                             }
                             else
                             {
+                                FetchError = true;
                                 System.Windows.MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                         }
@@ -212,6 +231,7 @@ namespace EnhancePoE
 
             MainWindow.overlay.OverlayProgressBar.IsIndeterminate = false;
             IsFetching = false;
+            FetchingDone = true;
         }
     }
 }

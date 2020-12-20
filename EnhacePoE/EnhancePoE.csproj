@@ -139,6 +139,7 @@
     <Compile Include="Model\Cell.cs" />
     <Compile Include="Model\Coordinates.cs" />
     <Compile Include="Model\FilterGeneration.cs" />
+    <Compile Include="Model\ItemSet.cs" />
     <Compile Include="Model\MouseHook.cs" />
     <Compile Include="Model\StashTabList.cs" />
     <Compile Include="Model\StashTabPropsList.cs" />
