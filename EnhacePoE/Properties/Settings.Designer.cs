@@ -526,5 +526,17 @@ namespace EnhancePoE.Properties {
                 this["HighlightMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FillWithChaos {
+            get {
+                return ((bool)(this["FillWithChaos"]));
+            }
+            set {
+                this["FillWithChaos"] = value;
+            }
+        }
     }
 }

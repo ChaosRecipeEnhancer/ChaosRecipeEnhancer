@@ -83,6 +83,7 @@ namespace EnhancePoE
 
             //Data.InitializeBases();
             Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
+            Data.PlayerSet.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\itemsPickedUp.mp3")));
             //TESTING SETTINGS RESET
             //if (Debugger.IsAttached)
             //    Properties.Settings.Default.Reset();

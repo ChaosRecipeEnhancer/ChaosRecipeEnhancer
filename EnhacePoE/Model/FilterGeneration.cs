@@ -203,7 +203,7 @@ namespace EnhancePoE.Model
 
 
         // refactor this shit
-        public static string GenerateLootFilter(string oldFilter, List<string> sections)
+        public static string GenerateLootFilter(string oldFilter, HashSet<string> sections)
         {
             // order has to be:
             // 1. exa start

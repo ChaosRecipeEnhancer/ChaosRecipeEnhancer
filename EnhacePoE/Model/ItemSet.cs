@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace EnhancePoE.Model
     {
         public List<Item> ItemList { get; set; } = new List<Item>();
         // We'll use the list to check which types we still needs to add to the set. We'll need some logic to extract that from the item icon path but that should be possible
-        public List<string> EmptyItemSlots { get; set; } = new List<string>() { "Helmets", "BodyArmours", "Gloves", "Boots", "Rings", "Rings", "Amulets", "Belts", "OneHandWeapons", "OneHandWeapons", "TwoHandWeapons" };
+        public List<string> EmptyItemSlots { get; set; } = new List<string>() { "BodyArmours", "TwoHandWeapons", "OneHandWeapons", "OneHandWeapons", "Helmets", "Gloves", "Boots", "Belts", "Rings", "Rings", "Amulets" };
         public bool HasChaos { get; set; } = false;
         public List<int> CurrentPosition { get; set; } = new List<int> { 0, 0, 0 };
         public string InfluenceType { get; set; }
@@ -27,7 +28,7 @@ namespace EnhancePoE.Model
                     EmptyItemSlots.Remove("OneHandWeapons");
                     EmptyItemSlots.Remove("OneHandWeapons");
                 }
-                if(item.ilvl <= 74)
+                if (item.ilvl <= 74)
                 {
                     this.HasChaos = true;
                 }
@@ -43,7 +44,7 @@ namespace EnhancePoE.Model
         }
         public void OrderItems()
         {
-            List<string> orderedClasses = new List<string>() { "BodyArmours", "TwoHandWeapons", "OneHandWeapons", "OneHandWeapons", "Helmets", "Gloves", "Boots","Belts", "Rings", "Rings", "Amulets"  };
+            List<string> orderedClasses = new List<string>() { "BodyArmours", "TwoHandWeapons", "OneHandWeapons", "OneHandWeapons", "Helmets", "Gloves", "Boots", "Belts", "Rings", "Rings", "Amulets" };
             ItemList = ItemList.OrderBy(d => orderedClasses.IndexOf(d.ItemType)).ToList();
         }
 
@@ -58,11 +59,17 @@ namespace EnhancePoE.Model
 
         public bool IsValidItem(Item item)
         {
-            if (EmptyItemSlots.Contains(item.ItemType) && !ItemList.Contains(item))
+            if (EmptyItemSlots.Contains(item.ItemType))
             {
                 return true;
             }
             return false;
+        }
+
+
+        public string GetNextItemClass()
+        {
+            return EmptyItemSlots[0];
         }
     }
 }

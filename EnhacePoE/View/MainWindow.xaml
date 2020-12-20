@@ -640,16 +640,16 @@
 				<TextBlock Grid.Column="1"
 						   Grid.Row="7"
 						   VerticalAlignment="Center"
-						   Text="Two-Hand Weapons:"
+						   Text="Fill Greedy:"
 						   ToolTipService.InitialShowDelay="50"
-						   ToolTip="Activates Two-Hand Weapons with Size 2x3." />
-				<CheckBox x:Name="TwoHandCheckBox"
+						   ToolTip="Sets will be filled with more than 1 low ilvl item. Deactivate to only allow 1 low ilvl item." />
+				<CheckBox x:Name="LimitChaosCheckBox"
 						  Grid.Column="3"
 						  Grid.Row="7"
 						  VerticalAlignment="Center"
-						  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=TwoHand, Mode=TwoWay}" />
+						  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=FillWithChaos, Mode=TwoWay}" />
 				<TextBlock Grid.Column="1"
-						   Grid.Row="9"
+						   Grid.Row="15"
 						   VerticalAlignment="Center"
 						   Text="Opacity Overlay:"
 						   ToolTipService.InitialShowDelay="50"
@@ -657,7 +657,7 @@
 				<Slider x:Name="OpacityOverlay"
 						Width="200"
 						Grid.Column="3"
-						Grid.Row="9"
+						Grid.Row="15"
 						VerticalAlignment="Center"
 						Minimum="0"
 						Maximum="1"
@@ -709,14 +709,14 @@
 						 Visibility="{Binding IndicesVisible}"
 						 Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabIndices, Mode=TwoWay}" />
 				<TextBlock Grid.Column="1"
-						   Grid.Row="15"
+						   Grid.Row="9"
 						   VerticalAlignment="Center"
 						   Text="Exalted Shard Recipe:"
 						   ToolTipService.InitialShowDelay="50"
 						   ToolTip="Activates Exalted Shard Recipe. Not fully functional at the moment. Visit github for more information." />
 				<CheckBox x:Name="ExaltedRecipeCheckBox"
 						  Grid.Column="3"
-						  Grid.Row="15"
+						  Grid.Row="9"
 						  VerticalAlignment="Center"
 						  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedRecipe, Mode=TwoWay}" />
 				<TextBlock Grid.Column="1"

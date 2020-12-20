@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using EnhancePoE.Model;
@@ -18,6 +19,8 @@ namespace EnhancePoE
         public static ActiveItemTypes PreviousActiveItems { get; set; }
         public static MediaPlayer Player { get; set; } = new MediaPlayer();
 
+        public static MediaPlayer PlayerSet { get; set; } = new MediaPlayer();
+
         public static int SetAmount { get; set; } = 0;
         public static int SetTargetAmount { get; set; } = 0;
 
@@ -31,9 +34,12 @@ namespace EnhancePoE
         public static ItemSet ItemSetRedeemer { get; set; }
         public static ItemSet ItemSetHunter { get; set; }
 
+        public static CancellationTokenSource cs { get; set; } = new CancellationTokenSource();
+        public static CancellationToken ct { get; set; } = cs.Token;
+
         public static void GetSetTargetAmount(StashTab stash)
         {
-            if(Properties.Settings.Default.Sets > 0)
+            if (Properties.Settings.Default.Sets > 0)
             {
                 SetTargetAmount = Properties.Settings.Default.Sets;
             }
@@ -63,7 +69,7 @@ namespace EnhancePoE
         private static void GenerateItemSetList()
         {
             List<ItemSet> ret = new List<ItemSet>();
-            for(int i = 0; i < SetTargetAmount; i++)
+            for (int i = 0; i < SetTargetAmount; i++)
             {
                 ret.Add(new ItemSet());
             }
@@ -75,193 +81,144 @@ namespace EnhancePoE
             }
         }
 
+
         // tries to add item, if item added returns
-        private static bool AddChaosItemToItemSet(ItemSet set)
+        private static bool AddItemToItemSet(ItemSet set, bool chaosItems = false, bool honorOrder = true)
         {
+            string listName;
+            switch (chaosItems)
+            {
+                case false:
+                    listName = "ItemList";
+                    break;
+                case true:
+                    listName = "ItemListChaos";
+                    break;
+                default:
+                    throw new Exception("How did you manage to provide a value neither true or false for a boolean?");
+            }
 
             Item minItem = null;
-            double minDistance = 1000.00;
+            double minDistance = double.PositiveInfinity;
 
-            foreach(StashTab s in StashTabList.StashTabs)
+            foreach (StashTab s in StashTabList.StashTabs)
             {
-                foreach(Item i in s.ItemListChaos)
+                foreach (Item i in ((List<Item>)Utility.GetPropertyValue(s, listName)))
                 {
-                    if (set.IsValidItem(i))
+                    if (set.GetNextItemClass() == i.ItemType || (!honorOrder && set.IsValidItem(i)))
                     {
-                        if(set.GetItemDistance(i) < minDistance)
+                        if (set.GetItemDistance(i) < minDistance)
                         {
-                            Trace.WriteLine(minDistance, "minDistance");
+                            //Trace.WriteLine(minDistance, "minDistance");
                             minDistance = set.GetItemDistance(i);
                             minItem = i;
                         }
                     }
                 }
             }
-            if(minItem != null)
+            if (minItem != null)
             {
                 set.AddItem(minItem);
                 StashTab tab = GetStashTabFromItem(minItem);
-                tab.ItemListChaos.Remove(minItem);
+                ((List<Item>)Utility.GetPropertyValue(tab, listName)).Remove(minItem);
+                //tab.ItemListChaos.Remove(minItem);
                 return true;
             }
+            else
+            {
+                // Looks ugly but in case we allow TwoHandWeapons we need to consider that adding a 1H fails but we might have a 2H (this only applies if we honor the order)
+                if (honorOrder)
+                {
+                    string nextItemType = set.GetNextItemClass();
+                    if (nextItemType == "TwoHandWeapons")
+                    {
+                        nextItemType = "OneHandWeapons";
+                        foreach (StashTab s in StashTabList.StashTabs)
+                        {
+                            foreach (Item i in ((List<Item>)Utility.GetPropertyValue(s, listName)))
+                            {
+                                if (nextItemType == i.ItemType)
+                                {
+                                    if (set.GetItemDistance(i) < minDistance)
+                                    {
+                                        Trace.WriteLine(minDistance, "minDistance");
+                                        minDistance = set.GetItemDistance(i);
+                                        minItem = i;
+                                    }
+                                }
+                            }
+                        }
+                        if (minItem != null)
+                        {
+                            set.AddItem(minItem);
+                            StashTab tab = GetStashTabFromItem(minItem);
+                            ((List<Item>)Utility.GetPropertyValue(tab, listName)).Remove(minItem);
+                            //tab.ItemListChaos.Remove(minItem);
+                            return true;
+                        }
+                    }
+                }
+            }
             return false;
-
-
-
-            //foreach (StashTab s in StashTabList.StashTabs)
-            //{
-            //    for(int i = s.ItemListChaos.Count -1; i > -1; i--)
-            //    {
-            //        if (set.AddItem(s.ItemListChaos[i]))
-            //        {
-
-            //            s.ItemListChaos.RemoveAt(i);
-            //            return true;
-            //        }
-            //    }
-            //    //foreach (Item item in s.ItemListChaos)
-            //    //{
-            //    //    if (set.AddItem(item))
-            //    //    {
-            //    //        s.ItemListChaos.Remove(item);
-            //    //        return true;
-            //    //    }
-            //    //}
-            //}
-            //return false;
-        }
-
-        // keeps adding items, breaks when full
-        private static void FillItemSetWithRegalItems(ItemSet set)
-        {
-            double minDistance;
-            Item minItem;
-
-            while (set.EmptyItemSlots.Count != 0)
-            {
-                minItem = null;
-                minDistance = 1000.00;
-
-                foreach (StashTab s in StashTabList.StashTabs)
-                {
-                    foreach (Item i in s.ItemList)
-                    {
-                        if (set.IsValidItem(i))
-                        {
-                            if (set.GetItemDistance(i) < minDistance)
-                            {
-                                Trace.WriteLine(minDistance, "minDistance");
-
-                                minDistance = set.GetItemDistance(i);
-                                minItem = i;
-                            }
-                        }
-                    }
-                }
-                if (minItem != null)
-                {
-                    set.AddItem(minItem);
-                    StashTab tab = GetStashTabFromItem(minItem);
-                    tab.ItemList.Remove(minItem);
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-
-
-
-            //foreach (StashTab s in StashTabList.StashTabs)
-            //{
-            //    for(int i = s.ItemList.Count -1; i > -1; i--)
-            //    {
-            //        if (set.AddItem(s.ItemList[i]))
-            //        {
-            //            s.ItemList.RemoveAt(i);
-            //        }
-            //        if (set.EmptyItemSlots.Count == 0)
-            //        {
-            //            return;
-            //        }
-            //    }
-            //}
-        }
-
-        // keeps adding items breaks when full
-        private static void FillItemSetWithChaosItems(ItemSet set)
-        {
-            double minDistance;
-            Item minItem;
-            while (set.EmptyItemSlots.Count != 0)
-            {
-                minItem = null;
-                minDistance = 1000;
-
-                foreach (StashTab s in StashTabList.StashTabs)
-                {
-                    foreach (Item i in s.ItemListChaos)
-                    {
-                        if (set.IsValidItem(i))
-                        {
-                            if (set.GetItemDistance(i) < minDistance)
-                            {
-                                Trace.WriteLine(minDistance, "minDistance");
-
-                                minDistance = set.GetItemDistance(i);
-                                minItem = i;
-                            }
-                        }
-                    }
-                }
-                if (minItem != null)
-                {
-                    set.AddItem(minItem);
-                    StashTab tab = GetStashTabFromItem(minItem);
-                    tab.ItemListChaos.Remove(minItem);
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            //foreach (StashTab s in StashTabList.StashTabs)
-            //{
-            //    for(int i = s.ItemListChaos.Count -1; i > -1; i--)
-            //    {
-            //        if (set.AddItem(s.ItemListChaos[i]))
-            //        {
-            //            s.ItemListChaos.RemoveAt(i);
-            //        }
-            //        if (set.EmptyItemSlots.Count == 0)
-            //        {
-            //            return;
-            //        }
-            //    }
-
-                //foreach (Item item in s.ItemListChaos)
-                //{
-                //    if (set.AddItem(item))
-                //    {
-                //        s.ItemListChaos.Remove(item);
-                //    }
-                //    if (set.EmptyItemSlots.Count == 0)
-                //    {
-                //        return;
-                //    }
-                //}
-            //}
         }
 
         private static void FillItemSets()
         {
-            foreach(ItemSet i in ItemSetList)
+            foreach (ItemSet i in ItemSetList)
             {
-                AddChaosItemToItemSet(i);
-                FillItemSetWithRegalItems(i);
-                FillItemSetWithChaosItems(i);
+                // Try to fill the set in order until one chaos item is present, lastEmptySlots counter prevents infinite loops
+                int lastEmptySlots = 0;
+                while (i.EmptyItemSlots.Count > 0 && lastEmptySlots != i.EmptyItemSlots.Count)
+                {
+                    lastEmptySlots = i.EmptyItemSlots.Count;
+                    if (i.HasChaos == false)
+                    {
+                        AddItemToItemSet(i, true);
+                    }
+                    if (!AddItemToItemSet(i))
+                    {
+                        if (Properties.Settings.Default.FillWithChaos == true)
+                        {
+                            AddItemToItemSet(i, true);
+                        }
+                    }
+                }
+
+                /* At this point in time the following conditions may be met, exclusively
+                 * 1.) We obtained a full set and it contains one chaos item
+                 * 1.1) We obtained a full set and it contains multiple chaos items (only if filling with chaos items is allowed)
+                 * 2.) We obtained a full set without a chaos item -> We aren't lacking a regal item in this set but we don't have enough chaos items. 
+                 * 3.) We couldn't obtain a full set. That means that at least one item slot is missing. We need to check which of the remaining slots we can still fill. We could still be missing a chaos item.
+                 */
+                if (i.EmptyItemSlots.Count == 0 && i.HasChaos)
+                {
+                    // Set full, continue
+                    continue;
+                }
+                else if (i.EmptyItemSlots.Count > 0)
+                {
+                    lastEmptySlots = 0;
+                    while (i.EmptyItemSlots.Count > 0 && i.EmptyItemSlots.Count != lastEmptySlots)
+                    {
+                        lastEmptySlots = i.EmptyItemSlots.Count;
+                        if (!i.HasChaos)
+                        {
+                            AddItemToItemSet(i, true, false);
+                        }
+                        if (!AddItemToItemSet(i, false, false))
+                        {
+                            // couldn't add a regal item. Try chaos item if filling with chaos is allowed
+                            if (Properties.Settings.Default.FillWithChaos == true)
+                            {
+                                AddItemToItemSet(i, true, false);
+                            }
+                        }
+                    }
+                    // At this point the set will contain a chaos item as long as we had at least one left. If not we didn't have any chaos items left.
+                    // If the set is not full at this time we're missing at least one regal item. If it has not chaos item we're also missing chaos items. 
+                    // Technically it could be only the chaos item that's missing but that can be neglected since when mixing you'll always be short on chaos items. 
+                    // If not in "endgame" mode (always show chaos) have the loot filter apply to chaos and regal items the same way.
+                }
             }
             if (Properties.Settings.Default.ExaltedRecipe)
             {
@@ -269,11 +226,217 @@ namespace EnhancePoE
             }
         }
 
+        // tries to add item, if item added returns
+        //private static bool AddChaosItemToItemSet(ItemSet set)
+        //{
+
+        //    Item minItem = null;
+        //    //double minDistance = 1000.00;
+
+        //    foreach(StashTab s in StashTabList.StashTabs)
+        //    {
+        //        foreach(Item i in s.ItemListChaos)
+        //        {
+        //            if (set.IsValidItem(i))
+        //            {
+        //                minItem = i;
+        //            }
+        //        }
+        //    }
+
+        //    if(minItem != null)
+        //    {
+        //        set.AddItem(minItem);
+        //        StashTab tab = GetStashTabFromItem(minItem);
+        //        tab.ItemListChaos.Remove(minItem);
+        //        return true;
+        //    }
+        //    return false;
+
+
+
+        //foreach (StashTab s in StashTabList.StashTabs)
+        //{
+        //    for(int i = s.ItemListChaos.Count -1; i > -1; i--)
+        //    {
+        //        if (set.AddItem(s.ItemListChaos[i]))
+        //        {
+
+        //            s.ItemListChaos.RemoveAt(i);
+        //            return true;
+        //        }
+        //    }
+        //    //foreach (Item item in s.ItemListChaos)
+        //    //{
+        //    //    if (set.AddItem(item))
+        //    //    {
+        //    //        s.ItemListChaos.Remove(item);
+        //    //        return true;
+        //    //    }
+        //    //}
+        //}
+        //return false;
+        //}
+
+        // keeps adding items, breaks when full
+        //private static void FillItemSetWithRegalItems(ItemSet set)
+        //{
+        //    double minDistance;
+        //    Item minItem;
+
+        //    while (set.EmptyItemSlots.Count != 0)
+        //    {
+        //        minItem = null;
+        //        minDistance = 1000.00;
+
+        //        foreach (StashTab s in StashTabList.StashTabs)
+        //        {
+        //            foreach (Item i in s.ItemList)
+        //            {
+        //                if (set.IsValidItem(i))
+        //                {
+        //                    if (set.GetItemDistance(i) < minDistance)
+        //                    {
+        //                        Trace.WriteLine(minDistance, "minDistance");
+
+        //                        minDistance = set.GetItemDistance(i);
+        //                        minItem = i;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        if (minItem != null)
+        //        {
+        //            set.AddItem(minItem);
+        //            StashTab tab = GetStashTabFromItem(minItem);
+        //            tab.ItemList.Remove(minItem);
+        //        }
+        //        else
+        //        {
+        //            return;
+        //        }
+        //    }
+
+
+
+
+        //foreach (StashTab s in StashTabList.StashTabs)
+        //{
+        //    for(int i = s.ItemList.Count -1; i > -1; i--)
+        //    {
+        //        if (set.AddItem(s.ItemList[i]))
+        //        {
+        //            s.ItemList.RemoveAt(i);
+        //        }
+        //        if (set.EmptyItemSlots.Count == 0)
+        //        {
+        //            return;
+        //        }
+        //    }
+        //}
+        //}
+
+        // keeps adding items breaks when full
+        //private static void FillItemSetWithChaosItems(ItemSet set)
+        //{
+        //    double minDistance;
+        //    Item minItem;
+        //    while (set.EmptyItemSlots.Count != 0)
+        //    {
+
+        //        minItem = null;
+        //        minDistance = 1000;
+
+        //        foreach (StashTab s in StashTabList.StashTabs)
+        //        {
+        //            foreach (Item i in s.ItemListChaos)
+        //            {
+        //                if (set.IsValidItem(i))
+        //                {
+        //                    if (set.GetItemDistance(i) < minDistance)
+        //                    {
+        //                        Trace.WriteLine(minDistance, "minDistance");
+
+        //                        minDistance = set.GetItemDistance(i);
+        //                        minItem = i;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        if (minItem != null)
+        //        {
+        //            set.AddItem(minItem);
+        //            StashTab tab = GetStashTabFromItem(minItem);
+        //            tab.ItemListChaos.Remove(minItem);
+        //        }
+        //        else
+        //        {
+        //            return;
+        //        }
+        //    }
+
+        //foreach (StashTab s in StashTabList.StashTabs)
+        //{
+        //    for(int i = s.ItemListChaos.Count -1; i > -1; i--)
+        //    {
+        //        if (set.AddItem(s.ItemListChaos[i]))
+        //        {
+        //            s.ItemListChaos.RemoveAt(i);
+        //        }
+        //        if (set.EmptyItemSlots.Count == 0)
+        //        {
+        //            return;
+        //        }
+        //    }
+
+        //foreach (Item item in s.ItemListChaos)
+        //{
+        //    if (set.AddItem(item))
+        //    {
+        //        s.ItemListChaos.Remove(item);
+        //    }
+        //    if (set.EmptyItemSlots.Count == 0)
+        //    {
+        //        return;
+        //    }
+        //}
+        //}
+        //}
+
+        //private static async void FillItemSets()
+        //{
+        //    await Task.Run(() =>
+        //    {
+        //        //Trace.WriteLine("start new works");
+        //        foreach (ItemSet i in ItemSetList)
+        //        {
+        //            AddChaosItemToItemSet(i);
+        //            FillItemSetWithRegalItems(i);
+        //            FillItemSetWithChaosItems(i);
+        //        }
+        //        if (Properties.Settings.Default.ExaltedRecipe)
+        //        {
+        //            FillItemSetsInfluenced();
+        //        }
+        //    }, ct);
+
+        //foreach (ItemSet i in ItemSetList)
+        //{
+        //    AddChaosItemToItemSet(i);
+        //    FillItemSetWithRegalItems(i);
+        //    FillItemSetWithChaosItems(i);
+        //}
+        //if (Properties.Settings.Default.ExaltedRecipe)+
+        //{
+        //    FillItemSetsInfluenced();
+        //}
+        //}
+
         private static void FillItemSetsInfluenced()
         {
-            foreach(StashTab tab in StashTabList.StashTabs)
+            foreach (StashTab tab in StashTabList.StashTabs)
             {
-                foreach(Item i in tab.ItemListShaper)
+                foreach (Item i in tab.ItemListShaper)
                 {
                     if (ItemSetShaper.EmptyItemSlots.Count == 0)
                     {
@@ -281,7 +444,7 @@ namespace EnhancePoE
                     }
                     ItemSetShaper.AddItem(i);
                 }
-                foreach(Item i in tab.ItemListElder)
+                foreach (Item i in tab.ItemListElder)
                 {
                     if (ItemSetElder.EmptyItemSlots.Count == 0)
                     {
@@ -326,396 +489,286 @@ namespace EnhancePoE
 
         public static void CheckActives()
         {
-            if (Properties.Settings.Default.Sound)
+            try
             {
-                PreviousActiveItems = new ActiveItemTypes
+                if (Properties.Settings.Default.Sound)
                 {
-                    BootsActive = ActiveItems.BootsActive,
-                    GlovesActive = ActiveItems.GlovesActive,
-                    HelmetActive = ActiveItems.HelmetActive,
-                    WeaponActive = ActiveItems.WeaponActive,
-                    ChestActive = ActiveItems.ChestActive
-                };
-            }
-
-            bool exaltedActive = Properties.Settings.Default.ExaltedRecipe;
-            bool filterActive = Properties.Settings.Default.LootfilterActive;
-
-            SetTargetAmount = 0;
-            if (StashTabList.StashTabs != null)
-            {
-                foreach (StashTab s in StashTabList.StashTabs)
-                {
-                    GetSetTargetAmount(s);
-                }
-            }
-            GenerateItemSetList();
-            FillItemSets();
-
-            // check for full sets/ missing items
-            bool missingChaos = false;
-            int fullSets = 0;
-            // unique missing item classes
-            HashSet<string> missingItemClasses = new HashSet<string>();
-            List<string> deactivatedItemClasses = new List<string> {"Helmets", "BodyArmours", "Gloves", "Boots", "Rings", "Amulets", "Belts", "OneHandWeapons", "TwoHandWeapons" };
-
-            foreach (ItemSet set in ItemSetList)
-            {
-                if(set.EmptyItemSlots.Count == 0)
-                {
-                    if (set.HasChaos)
+                    PreviousActiveItems = new ActiveItemTypes
                     {
-                        fullSets++;
+                        BootsActive = ActiveItems.BootsActive,
+                        GlovesActive = ActiveItems.GlovesActive,
+                        HelmetActive = ActiveItems.HelmetActive,
+                        WeaponActive = ActiveItems.WeaponActive,
+                        ChestActive = ActiveItems.ChestActive
+                    };
+                }
+
+                bool exaltedActive = Properties.Settings.Default.ExaltedRecipe;
+                bool filterActive = Properties.Settings.Default.LootfilterActive;
+
+                SetTargetAmount = 0;
+                if (StashTabList.StashTabs != null)
+                {
+                    foreach (StashTab s in StashTabList.StashTabs)
+                    {
+                        GetSetTargetAmount(s);
+                    }
+                }
+                GenerateItemSetList();
+
+                FillItemSets();
+
+                // check for full sets/ missing items
+                bool missingChaos = false;
+                int fullSets = 0;
+                // unique missing item classes
+                HashSet<string> missingItemClasses = new HashSet<string>();
+                List<string> deactivatedItemClasses = new List<string> { "Helmets", "BodyArmours", "Gloves", "Boots", "Rings", "Amulets", "Belts", "OneHandWeapons", "TwoHandWeapons" };
+
+                foreach (ItemSet set in ItemSetList)
+                {
+                    if (set.EmptyItemSlots.Count == 0)
+                    {
+                        if (set.HasChaos)
+                        {
+                            fullSets++;
+                        }
+                        else
+                        {
+                            missingChaos = true;
+                        }
                     }
                     else
                     {
-                        missingChaos = true;
+                        // all classes which are active over all ilvls
+                        foreach (string itemClass in set.EmptyItemSlots)
+                        {
+                            missingItemClasses.Add(itemClass);
+                        }
                     }
+                }
+
+                //foreach(string miss in missingItemClasses)
+                //{
+                //    Trace.WriteLine(miss, "missing");
+                //}
+
+                HashSet<string> sectionList = new HashSet<string>();
+
+                if (filterActive)
+                {
+                    FilterGeneration.LoadCustomStyle();
+                    if (Properties.Settings.Default.ExaltedRecipe)
+                    {
+                        FilterGeneration.LoadCustomStyleInfluenced();
+                    }
+                }
+
+                if (fullSets == SetTargetAmount && missingChaos)
+                {
+                    // activate only chaos items
+                    if (filterActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "Body Armours", false, true));
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "Helmets", false, true));
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "Gloves", false, true));
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "Boots", false, true));
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", false, true));
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", false, true));
+                    }
+                    ActiveItems.GlovesActive = false;
+                    ActiveItems.HelmetActive = false;
+                    ActiveItems.ChestActive = false;
+                    ActiveItems.BootsActive = false;
+                    ActiveItems.WeaponActive = false;
+                    ActiveItems.ChaosMissing = true;
+                }
+                else if (fullSets == SetTargetAmount && !missingChaos)
+                {
+                    //deactivate all
+                    if (filterActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(false, "Body Armours"));
+                        sectionList.Add(FilterGeneration.GenerateSection(false, "Helmets"));
+                        sectionList.Add(FilterGeneration.GenerateSection(false, "Gloves"));
+                        sectionList.Add(FilterGeneration.GenerateSection(false, "Boots"));
+                        sectionList.Add(FilterGeneration.GenerateSection(false, "OneHandWeapons"));
+                        sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
+                    }
+                    ActiveItems.GlovesActive = false;
+                    ActiveItems.HelmetActive = false;
+                    ActiveItems.ChestActive = false;
+                    ActiveItems.BootsActive = false;
+                    ActiveItems.WeaponActive = false;
+                    ActiveItems.ChaosMissing = false;
                 }
                 else
                 {
-                    // all classes which are active over all ilvls
-                    foreach(string itemClass in set.EmptyItemSlots)
+                    // activate missing classes
+                    foreach (string itemClass in missingItemClasses)
                     {
-                        missingItemClasses.Add(itemClass);
+                        switch (itemClass)
+                        {
+                            case "BodyArmours":
+                                sectionList.Add(FilterGeneration.GenerateSection(true, "Body Armours"));
+                                ActiveItems.ChestActive = true;
+                                break;
+                            case "Helmets":
+                                sectionList.Add(FilterGeneration.GenerateSection(true, "Helmets"));
+                                ActiveItems.HelmetActive = true;
+                                break;
+                            case "Gloves":
+                                sectionList.Add(FilterGeneration.GenerateSection(true, "Gloves"));
+                                ActiveItems.GlovesActive = true;
+                                break;
+                            case "Boots":
+                                sectionList.Add(FilterGeneration.GenerateSection(true, "Boots"));
+                                ActiveItems.BootsActive = true;
+                                break;
+                            case "OneHandWeapons":
+                            case "TwoHandWeapons":
+                                sectionList.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons"));
+                                sectionList.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons"));
+                                ActiveItems.WeaponActive = true;
+                                deactivatedItemClasses.Remove("OneHandWeapons");
+                                deactivatedItemClasses.Remove("TwoHandWeapons");
+                                break;
+                        }
+                        deactivatedItemClasses.Remove(itemClass);
+                        //ActiveItems.ChaosMissing = true;
+                    }
+                    //deactivate rest
+                    foreach (string itemClass in deactivatedItemClasses)
+                    {
+                        switch (itemClass)
+                        {
+                            case "BodyArmours":
+                                sectionList.Add(FilterGeneration.GenerateSection(false, "Body Armours"));
+                                ActiveItems.ChestActive = false;
+                                break;
+                            case "Helmets":
+                                sectionList.Add(FilterGeneration.GenerateSection(false, "Helmets"));
+                                ActiveItems.HelmetActive = false;
+                                break;
+                            case "Gloves":
+                                sectionList.Add(FilterGeneration.GenerateSection(false, "Gloves"));
+                                ActiveItems.GlovesActive = false;
+                                break;
+                            case "Boots":
+                                sectionList.Add(FilterGeneration.GenerateSection(false, "Boots"));
+                                ActiveItems.BootsActive = false;
+                                break;
+                            case "OneHandWeapons":
+                                sectionList.Add(FilterGeneration.GenerateSection(false, "OneHandWeapons"));
+                                ActiveItems.WeaponActive = false;
+                                break;
+                            case "TwoHandWeapons":
+                                ActiveItems.WeaponActive = false;
+                                sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
+                                break;
+                        }
                     }
                 }
-            }
 
-            List<string> sectionList = new List<string>();
-
-            if (filterActive)
-            {
-                FilterGeneration.LoadCustomStyle();
-                if (Properties.Settings.Default.ExaltedRecipe)
-                {
-                    FilterGeneration.LoadCustomStyleInfluenced();
-                }
-            }
-
-            if (fullSets == SetTargetAmount && missingChaos)
-            {
-                // activate only chaos items
+                // always on
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(true, "Body Armours", false, true));
-                    sectionList.Add(FilterGeneration.GenerateSection(true, "Helmets", false, true));
-                    sectionList.Add(FilterGeneration.GenerateSection(true, "Gloves", false, true));
-                    sectionList.Add(FilterGeneration.GenerateSection(true, "Boots", false, true));
-                    sectionList.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", false, true));
-                    sectionList.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", false, true));
+                    sectionList.Add(FilterGeneration.GenerateSection(true, "Rings"));
+                    sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets"));
+                    sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
                 }
-                ActiveItems.GlovesActive = false;
-                ActiveItems.HelmetActive = false;
-                ActiveItems.ChestActive = false;
-                ActiveItems.BootsActive = false;
-                ActiveItems.WeaponActive = false;
-                ActiveItems.ChaosMissing = true;
-            }
-            else if(fullSets == SetTargetAmount && !missingChaos)
-            {
-                //deactivate all
-                if (filterActive)
-                {
-                    sectionList.Add(FilterGeneration.GenerateSection(false, "Body Armours"));
-                    sectionList.Add(FilterGeneration.GenerateSection(false, "Helmets"));
-                    sectionList.Add(FilterGeneration.GenerateSection(false, "Gloves"));
-                    sectionList.Add(FilterGeneration.GenerateSection(false, "Boots"));
-                    sectionList.Add(FilterGeneration.GenerateSection(false, "OneHandWeapons"));
-                    sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
-                }
-                ActiveItems.GlovesActive = false;
-                ActiveItems.HelmetActive = false;
-                ActiveItems.ChestActive = false;
-                ActiveItems.BootsActive = false;
-                ActiveItems.WeaponActive = false;
-                ActiveItems.ChaosMissing = false;
-            }
-            else
-            {
-                // activate missing classes
-                foreach (string itemClass in missingItemClasses) 
-                {
-                    switch (itemClass)
-                    {
-                        case "BodyArmours":
-                            sectionList.Add(FilterGeneration.GenerateSection(true, "Body Armours"));
-                            ActiveItems.ChestActive = true;
-                            break;
-                        case "Helmets":
-                            sectionList.Add(FilterGeneration.GenerateSection(true, "Helmets"));
-                            ActiveItems.HelmetActive = true;
-                            break;
-                        case "Gloves":
-                            sectionList.Add(FilterGeneration.GenerateSection(true, "Gloves"));
-                            ActiveItems.GlovesActive = true;
-                            break;
-                        case "Boots":
-                            sectionList.Add(FilterGeneration.GenerateSection(true, "Boots"));
-                            ActiveItems.BootsActive = true;
-                            break;
-                        case "OneHandWeapons":
-                            sectionList.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons"));
-                            ActiveItems.WeaponActive = true;
-                            break;
-                        case "TwoHandWeapons":
-                            sectionList.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons"));
-                            ActiveItems.WeaponActive = true;
-                            break;
-                    }
-                    deactivatedItemClasses.Remove(itemClass);
-                    //ActiveItems.ChaosMissing = true;
-                }
-                //deactivate rest
-                foreach (string itemClass in deactivatedItemClasses)
-                {
-                    switch (itemClass)
-                    {
-                        case "BodyArmours":
-                            sectionList.Add(FilterGeneration.GenerateSection(false, "Body Armours"));
-                            ActiveItems.ChestActive = false;
-                            break;
-                        case "Helmets":
-                            sectionList.Add(FilterGeneration.GenerateSection(false, "Helmets"));
-                            ActiveItems.HelmetActive = false;
-                            break;
-                        case "Gloves":
-                            sectionList.Add(FilterGeneration.GenerateSection(false, "Gloves"));
-                            ActiveItems.GlovesActive = false;
-                            break;
-                        case "Boots":
-                            sectionList.Add(FilterGeneration.GenerateSection(false, "Boots"));
-                            ActiveItems.BootsActive = false;
-                            break;
-                        case "OneHandWeapons":
-                            sectionList.Add(FilterGeneration.GenerateSection(false, "OneHandWeapons"));
-                            ActiveItems.WeaponActive = false;
-                            break;
-                        case "TwoHandWeapons":
-                            ActiveItems.WeaponActive = false;
-                            sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
-                            break;
-                    }
-                }
-            }
 
-            // always on
-            if (filterActive)
-            {
-                sectionList.Add(FilterGeneration.GenerateSection(true, "Rings"));
-                sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets"));
-                sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
-            }
-
-            //Trace.WriteLine(fullSets, "full sets");
-            MainWindow.overlay.Dispatcher.Invoke(() =>
-            {
-                MainWindow.overlay.FullSetsTextBlock.Text = fullSets.ToString();
-            });
-
-            // invoke chaos missing
-            if (missingChaos)
-            {
-                //ChaosRecipeEnhancer.WarningMessage = "Need lower level items!";
-                MainWindow.overlay.WarningMessage = "Need lower level items!";
-                MainWindow.overlay.ShadowOpacity = 1;
-                MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
-            }
-
-            // invoke exalted recipe ready
-            if (Properties.Settings.Default.ExaltedRecipe)
-            {
-                if(ItemSetShaper.EmptyItemSlots.Count == 0
-                    || ItemSetElder.EmptyItemSlots.Count == 0
-                    || ItemSetCrusader.EmptyItemSlots.Count == 0
-                    || ItemSetWarlord.EmptyItemSlots.Count == 0
-                    || ItemSetHunter.EmptyItemSlots.Count == 0
-                    || ItemSetRedeemer.EmptyItemSlots.Count == 0)
+                //Trace.WriteLine(fullSets, "full sets");
+                MainWindow.overlay.Dispatcher.Invoke(() =>
                 {
-                    MainWindow.overlay.WarningMessage = "Exalted Recipe ready!";
+                    MainWindow.overlay.FullSetsTextBlock.Text = fullSets.ToString();
+                });
+
+                // invoke chaos missing
+                if (missingChaos)
+                {
+                    //ChaosRecipeEnhancer.WarningMessage = "Need lower level items!";
+                    MainWindow.overlay.WarningMessage = "Need lower level items!";
                     MainWindow.overlay.ShadowOpacity = 1;
                     MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
                 }
-            }
 
-            // invoke set full
-            if(fullSets == SetTargetAmount)
-            {
-                MainWindow.overlay.WarningMessage = "Sets full!";
-                MainWindow.overlay.ShadowOpacity = 1;
-                MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
-            }
-
-            Trace.WriteLine(fullSets, "full sets");
-
-
-
-
-
-            //Dictionary<string, int> globalAmount = GetFullSets(GlobalNormalItemList);
-
-                //if (exaltedActive)
-                //{
-                //    globalAmount["sets"] += GetFullSets(GlobalShaperItemList)["sets"];
-                //    globalAmount["sets"] += GetFullSets(GlobalElderItemList)["sets"];
-                //    globalAmount["sets"] += GetFullSets(GlobalWarlordItemList)["sets"];
-                //    globalAmount["sets"] += GetFullSets(GlobalCrusaderItemList)["sets"];
-                //    globalAmount["sets"] += GetFullSets(GlobalHunterItemList)["sets"];
-                //    globalAmount["sets"] += GetFullSets(GlobalRedeemerItemList)["sets"];
-                //}
-
-                //SetAmount = globalAmount["sets"];
-
-
-
-                //if (Properties.Settings.Default.TwoHand)
-                //{
-                //    if (globalAmount["weapons"] >= SetTargetAmount)
-                //    {
-                //        if (filterActive)
-                //        {
-                //            sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
-                //        }
-                //    }
-                //    else
-                //    {
-                //        if (filterActive)
-                //        {
-                //            sectionList.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons"));
-                //        }
-                //    }
-                ////}
-                //if(globalAmount["weapons"] >= SetTargetAmount)
-                //{
-                //    ActiveItems.WeaponActive = false;
-                //    if (filterActive)
-                //    {
-                //        sectionList.Add(FilterGeneration.GenerateSection(false, "OneHandWeapons"));
-                //    }
-                //}
-                //else
-                //{
-                //    ActiveItems.WeaponActive = true;
-                //    if (filterActive)
-                //    {
-                //        sectionList.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons"));
-                //    }
-                //}
-                //if(globalAmount["chests"] >= SetTargetAmount)
-                //{
-                //    ActiveItems.ChestActive = false;
-                //    if (filterActive)
-                //    {
-                //        sectionList.Add(FilterGeneration.GenerateSection(false, "Body Armours"));
-                //    }
-                //}
-                //else
-                //{
-                //    ActiveItems.ChestActive = true;
-                //    if (filterActive)
-                //    {
-                //        sectionList.Add(FilterGeneration.GenerateSection(true, "Body Armours"));
-
-                //    }
-                //}
-                //if (globalAmount["boots"] >= SetTargetAmount)
-                //{
-                //    ActiveItems.BootsActive = false;
-                //    if (filterActive)
-                //    {
-                //        sectionList.Add(FilterGeneration.GenerateSection(false, "Boots"));
-
-                //    }
-                //}
-                //else
-                //{
-                //    ActiveItems.BootsActive = true;
-                //    if (filterActive)
-                //    {
-                //        sectionList.Add(FilterGeneration.GenerateSection(true, "Boots"));
-
-                //    }
-                //}
-                //if (globalAmount["gloves"] >= SetTargetAmount)
-                //{
-                //    ActiveItems.GlovesActive = false;
-                //    if (filterActive)
-                //    {
-                //        sectionList.Add(FilterGeneration.GenerateSection(false, "Gloves"));
-
-                //    }
-                //}
-                //else
-                //{
-                //    ActiveItems.GlovesActive = true;
-                //    if (filterActive)
-                //    {
-                //        sectionList.Add(FilterGeneration.GenerateSection(true, "Gloves"));
-
-                //    }
-                //}
-                //if (globalAmount["helmets"] >= SetTargetAmount)
-                //{
-                //    ActiveItems.HelmetActive = false;
-                //    if (filterActive)
-                //    {
-                //        sectionList.Add(FilterGeneration.GenerateSection(false, "Helmets"));
-                //    }
-                //}
-                //else
-                //{
-                //    ActiveItems.HelmetActive = true;
-                //    if (filterActive)
-                //    {
-                //        sectionList.Add(FilterGeneration.GenerateSection(true, "Helmets"));
-                //    }
-                //}
-
-
-
-            if (filterActive)
-            {
-                //sectionList.Add(FilterGeneration.GenerateSection(true, "Rings"));
-                //sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets"));
-                //sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
-
-                string oldFilter = FilterGeneration.OpenLootfilter();
-                string newFilter = FilterGeneration.GenerateLootFilter(oldFilter, sectionList);
-                FilterGeneration.WriteLootfilter(newFilter);
-
-                //if (Properties.Settings.Default.ExaltedRecipe)
-                //{
-                //    List<string> sectionListInfluenced = new List<string>();
-                //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Rings", true));
-                //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Amulets", true));
-                //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Belts", true));
-                //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Helmets", true));
-                //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Gloves", true));
-                //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Boots", true));
-                //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Body Armours", true));
-                //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", true));
-                //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", true));
-
-                //    string oldFilter2 = FilterGeneration.OpenLootfilter();
-                //    string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
-                //    FilterGeneration.WriteLootfilter(newFilter2);
-                //}
-            }
-
-            if (Properties.Settings.Default.Sound)
-            {
-                if(!(PreviousActiveItems.GlovesActive == ActiveItems.GlovesActive 
-                    && PreviousActiveItems.BootsActive == ActiveItems.BootsActive
-                    && PreviousActiveItems.HelmetActive == ActiveItems.HelmetActive
-                    && PreviousActiveItems.ChestActive == ActiveItems.ChestActive
-                    && PreviousActiveItems.WeaponActive == ActiveItems.WeaponActive))
+                // invoke exalted recipe ready
+                if (Properties.Settings.Default.ExaltedRecipe)
                 {
-                    Player.Dispatcher.Invoke(() =>
+                    if (ItemSetShaper.EmptyItemSlots.Count == 0
+                        || ItemSetElder.EmptyItemSlots.Count == 0
+                        || ItemSetCrusader.EmptyItemSlots.Count == 0
+                        || ItemSetWarlord.EmptyItemSlots.Count == 0
+                        || ItemSetHunter.EmptyItemSlots.Count == 0
+                        || ItemSetRedeemer.EmptyItemSlots.Count == 0)
                     {
-                        PlayNotificationSound();
-                    });
+                        MainWindow.overlay.WarningMessage = "Exalted Recipe ready!";
+                        MainWindow.overlay.ShadowOpacity = 1;
+                        MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                    }
+                }
+
+                // invoke set full
+                if (fullSets == SetTargetAmount)
+                {
+                    MainWindow.overlay.WarningMessage = "Sets full!";
+                    MainWindow.overlay.ShadowOpacity = 1;
+                    MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                }
+
+                Trace.WriteLine(fullSets, "full sets");
+
+
+                if (filterActive)
+                {
+                    //sectionList.Add(FilterGeneration.GenerateSection(true, "Rings"));
+                    //sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets"));
+                    //sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
+
+                    string oldFilter = FilterGeneration.OpenLootfilter();
+                    string newFilter = FilterGeneration.GenerateLootFilter(oldFilter, sectionList);
+                    FilterGeneration.WriteLootfilter(newFilter);
+
+                    //if (Properties.Settings.Default.ExaltedRecipe)
+                    //{
+                    //    List<string> sectionListInfluenced = new List<string>();
+                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Rings", true));
+                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Amulets", true));
+                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Belts", true));
+                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Helmets", true));
+                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Gloves", true));
+                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Boots", true));
+                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Body Armours", true));
+                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", true));
+                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", true));
+
+                    //    string oldFilter2 = FilterGeneration.OpenLootfilter();
+                    //    string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
+                    //    FilterGeneration.WriteLootfilter(newFilter2);
+                    //}
+                }
+
+                if (Properties.Settings.Default.Sound)
+                {
+                    if (!(PreviousActiveItems.GlovesActive == ActiveItems.GlovesActive
+                        && PreviousActiveItems.BootsActive == ActiveItems.BootsActive
+                        && PreviousActiveItems.HelmetActive == ActiveItems.HelmetActive
+                        && PreviousActiveItems.ChestActive == ActiveItems.ChestActive
+                        && PreviousActiveItems.WeaponActive == ActiveItems.WeaponActive))
+                    {
+                        Player.Dispatcher.Invoke(() =>
+                        {
+                            PlayNotificationSound();
+                        });
+                    }
                 }
             }
+            catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
+            {
+                Trace.WriteLine("abort");
+            }
+
         }
 
         public static void PlayNotificationSound()
@@ -726,11 +779,19 @@ namespace EnhancePoE
             Player.Play();
         }
 
+        public static void PlayNotificationSoundSetPicked()
+        {
+            double volume = Properties.Settings.Default.Volume / 100.0;
+            PlayerSet.Volume = volume;
+            PlayerSet.Position = TimeSpan.Zero;
+            PlayerSet.Play();
+        }
+
         public static StashTab GetStashTabFromItem(Item item)
         {
-            foreach(StashTab s in StashTabList.StashTabs)
+            foreach (StashTab s in StashTabList.StashTabs)
             {
-                if(item.StashTabIndex == s.TabIndex)
+                if (item.StashTabIndex == s.TabIndex)
                 {
                     return s;
                 }
@@ -743,22 +804,22 @@ namespace EnhancePoE
         {
             if (active)
             {
-                if(Properties.Settings.Default.HighlightMode == 0)
+                if (Properties.Settings.Default.HighlightMode == 0)
                 {
                     //activate cell by cell
-                    foreach(StashTab s in StashTabList.StashTabs)
+                    foreach (StashTab s in StashTabList.StashTabs)
                     {
                         s.DeactivateItemCells();
                         s.TabHeaderColor = Brushes.Transparent;
                     }
-                    if(ItemSetListHighlight.Count > 0)
+                    if (ItemSetListHighlight.Count > 0)
                     {
-                        // check for full sets
-                        if(ItemSetListHighlight[0].ItemList.Count > 0 && ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
+
+                        if (ItemSetListHighlight[0].ItemList.Count > 0 && ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
                         {
                             Item highlightItem = ItemSetListHighlight[0].ItemList[0];
                             StashTab currentTab = GetStashTabFromItem(highlightItem);
-                            if(currentTab != null)
+                            if (currentTab != null)
                             {
                                 currentTab.ActivateItemCells(highlightItem);
                                 if (Properties.Settings.Default.ColorStash != "")
@@ -770,15 +831,20 @@ namespace EnhancePoE
                                     currentTab.TabHeaderColor = Brushes.Red;
                                 }
                                 ItemSetListHighlight[0].ItemList.RemoveAt(0);
-                                if (ItemSetListHighlight[0].ItemList.Count == 0)
+                            }
+                            //check for full sets
+                            if (ItemSetListHighlight[0].ItemList.Count <= 0)
+                            {
+                                ItemSetListHighlight.RemoveAt(0);
+                                PlayerSet.Dispatcher.Invoke(() =>
                                 {
-                                    ItemSetListHighlight.RemoveAt(0);
-                                }
+                                    PlayNotificationSoundSetPicked();
+                                });
                             }
                         }
                     }
                 }
-                else if(Properties.Settings.Default.HighlightMode == 1)
+                else if (Properties.Settings.Default.HighlightMode == 1)
                 {
                     // activate whole set 
                     if (ItemSetListHighlight.Count > 0)
@@ -789,7 +855,7 @@ namespace EnhancePoE
 
                         if (ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
                         {
-                            if(cell != null)
+                            if (cell != null)
                             {
                                 Item highlightItem = cell.CellItem;
                                 StashTab currentTab = GetStashTabFromItem(highlightItem);
@@ -821,7 +887,7 @@ namespace EnhancePoE
                             // mark item order
                             if (ItemSetListHighlight[0] != null)
                             {
-                                if(ItemSetListHighlight[0].ItemList.Count > 0)
+                                if (ItemSetListHighlight[0].ItemList.Count > 0)
                                 {
                                     StashTab cTab = GetStashTabFromItem(ItemSetListHighlight[0].ItemList[0]);
                                     cTab.MarkNextItem(ItemSetListHighlight[0].ItemList[0]);
@@ -833,18 +899,22 @@ namespace EnhancePoE
                                 ItemSetListHighlight.RemoveAt(0);
                                 // activate next set
                                 ActivateNextCell(true, null);
+                                PlayerSet.Dispatcher.Invoke(() =>
+                                {
+                                    PlayNotificationSoundSetPicked();
+                                });
                             }
                         }
                     }
                 }
-                else if(Properties.Settings.Default.HighlightMode == 2)
+                else if (Properties.Settings.Default.HighlightMode == 2)
                 {
                     //activate all cells at once
-                    if(ItemSetListHighlight.Count > 0)
+                    if (ItemSetListHighlight.Count > 0)
                     {
-                        foreach(ItemSet set in ItemSetListHighlight)
+                        foreach (ItemSet set in ItemSetListHighlight)
                         {
-                            if(set.EmptyItemSlots.Count == 0)
+                            if (set.EmptyItemSlots.Count == 0)
                             {
                                 if (cell != null)
                                 {
@@ -876,7 +946,7 @@ namespace EnhancePoE
             {
                 s.PrepareOverlayList();
             }
-            foreach(ItemSet itemSet in ItemSetList)
+            foreach (ItemSet itemSet in ItemSetList)
             {
                 itemSet.OrderItems();
                 //GlobalItemOrderList.AddRange(itemSet.ItemList);
@@ -889,7 +959,7 @@ namespace EnhancePoE
                 ItemSetCrusader.OrderItems();
                 ItemSetHunter.OrderItems();
                 ItemSetRedeemer.OrderItems();
-                if(ItemSetShaper.EmptyItemSlots.Count == 0)
+                if (ItemSetShaper.EmptyItemSlots.Count == 0)
                 {
                     ItemSetListHighlight.Add(new ItemSet
                     {
@@ -897,7 +967,7 @@ namespace EnhancePoE
                         EmptyItemSlots = new List<string>(ItemSetShaper.EmptyItemSlots)
                     });
                 }
-                if(ItemSetElder.EmptyItemSlots.Count == 0) 
+                if (ItemSetElder.EmptyItemSlots.Count == 0)
                 {
                     ItemSetListHighlight.Add(new ItemSet
                     {
@@ -905,28 +975,32 @@ namespace EnhancePoE
                         EmptyItemSlots = new List<string>(ItemSetElder.EmptyItemSlots)
                     });
                 }
-                if(ItemSetCrusader.EmptyItemSlots.Count == 0) {
+                if (ItemSetCrusader.EmptyItemSlots.Count == 0)
+                {
                     ItemSetListHighlight.Add(new ItemSet
                     {
                         ItemList = new List<Item>(ItemSetCrusader.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetCrusader.EmptyItemSlots)
                     });
                 }
-                if(ItemSetHunter.EmptyItemSlots.Count == 0) {
+                if (ItemSetHunter.EmptyItemSlots.Count == 0)
+                {
                     ItemSetListHighlight.Add(new ItemSet
                     {
                         ItemList = new List<Item>(ItemSetHunter.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetHunter.EmptyItemSlots)
                     });
                 }
-                if(ItemSetWarlord.EmptyItemSlots.Count == 0) {
+                if (ItemSetWarlord.EmptyItemSlots.Count == 0)
+                {
                     ItemSetListHighlight.Add(new ItemSet
                     {
                         ItemList = new List<Item>(ItemSetWarlord.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetWarlord.EmptyItemSlots)
                     });
                 }
-                if(ItemSetRedeemer.EmptyItemSlots.Count == 0) {
+                if (ItemSetRedeemer.EmptyItemSlots.Count == 0)
+                {
                     ItemSetListHighlight.Add(new ItemSet
                     {
                         ItemList = new List<Item>(ItemSetRedeemer.ItemList),
@@ -935,7 +1009,7 @@ namespace EnhancePoE
                 }
             }
             //ItemSetListHighlight = new List<ItemSet>(ItemSetList);
-            foreach(ItemSet set in ItemSetList)
+            foreach (ItemSet set in ItemSetList)
             {
                 ItemSetListHighlight.Add(new ItemSet
                 {

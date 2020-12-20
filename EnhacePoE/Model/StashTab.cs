@@ -188,6 +188,7 @@ namespace EnhancePoE.Model
                     else
                     {
                         ItemList.RemoveAt(i);
+                        continue;
                     }
                 }
                 if (ItemList[i].ilvl <= 74)

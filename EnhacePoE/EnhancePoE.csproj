@@ -271,5 +271,8 @@
   <ItemGroup>
     <None Include="Sounds\filterchanged.mp3" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Sounds\itemsPickedUp.mp3" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

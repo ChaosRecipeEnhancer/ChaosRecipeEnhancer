@@ -1,6 +1,8 @@
 ﻿using EnhancePoE.Model;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -82,18 +84,25 @@ namespace EnhancePoE
             MainWindow.overlay.WarningMessage = "";
             MainWindow.overlay.ShadowOpacity = 0;
             MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Hidden;
+
             await this.Dispatcher.Invoke(async() =>
             {
                 GetFrequency();
-
                 await ApiAdapter.GenerateUri();
-
                 await ApiAdapter.GetItems();
             });
-            if (ApiAdapter.FetchingDone)
+
+            try
             {
-                Data.CheckActives();
-                SetOpacity();
+                await Task.Run(() =>
+                {
+                    Data.CheckActives();
+                    SetOpacity();
+                }, Data.ct);
+            }
+            catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
+            {
+                Trace.WriteLine("abort");
             }
         }
 
@@ -108,6 +117,10 @@ namespace EnhancePoE
                 }
                 if (aTimer.Enabled)
                 {
+
+                    Data.cs.Cancel();
+
+
                     aTimer.Enabled = false;
                     FetchingActive = false;
                     RefreshButton.Content = "Fetch";
