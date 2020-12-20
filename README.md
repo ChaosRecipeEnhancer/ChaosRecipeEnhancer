@@ -8,17 +8,13 @@ For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam 
 
 For details on changes, check the bottom of this site.
 
-#### Main Overlay
+## Installation
 
-<img src="https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen2.png" width="500">
+DO NOT download the whole github repository, since it may include some new experimental features.
 
-#### Stashtab Overlay
+[Download it here](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi) instead. 
 
-<img src="https://github.com/kosace/EnhancePoEApp/blob/master/EnhancePoEscreen1.png" width="500">
-
-#### The Settings
-
-<img src="https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen3.png" width="500">
+Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
 
 ## Features
 
@@ -30,12 +26,17 @@ For details on changes, check the bottom of this site.
  - Exalted Shard Recipe
  - Lootfilter Manipulation (optional)
 
+#### Main Overlay
 
-## Installation
+<img src="https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen2.png" width="500">
 
-[Download](https://github.com/kosace/EnhancePoEApp/raw/master/ChaosRecipeEnhancerSetup.msi) and install. 
+#### Stashtab Overlay
 
-Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
+<img src="https://github.com/kosace/EnhancePoEApp/blob/master/EnhancePoEscreen1.png" width="500">
+
+#### The Settings
+
+<img src="https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen3.png" width="500">
 
 ## Guide
 
