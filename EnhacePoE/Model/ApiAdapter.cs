@@ -25,6 +25,7 @@ namespace EnhancePoE
             if (Properties.Settings.Default.accName != ""
                 && Properties.Settings.Default.League != "")
             {
+
                 string accName = Properties.Settings.Default.accName;
                 string league = Properties.Settings.Default.League;
 

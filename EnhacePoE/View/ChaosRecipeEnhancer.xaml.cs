@@ -115,6 +115,22 @@ namespace EnhancePoE
                 {
                     return;
                 }
+                if (Properties.Settings.Default.StashtabMode == 0)
+                {
+                    if (Properties.Settings.Default.StashTabIndices == "")
+                    {
+                        MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stashtab Indices.");
+                        return;
+                    }
+                }
+                else if (Properties.Settings.Default.StashtabMode == 1)
+                {
+                    if (Properties.Settings.Default.StashTabName == "")
+                    {
+                        MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stashtab Prefix.");
+                        return;
+                    }
+                }
                 if (aTimer.Enabled)
                 {
 
