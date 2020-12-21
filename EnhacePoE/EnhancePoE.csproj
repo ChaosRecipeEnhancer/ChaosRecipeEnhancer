@@ -230,6 +230,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="EnhancePoE_TemporaryKey.pfx" />
+    <Resource Include="Fonts\password.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -269,6 +270,7 @@
     <Resource Include="Assets\weapon.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\password.ttf" />
     <None Include="Sounds\filterchanged.mp3" />
   </ItemGroup>
   <ItemGroup>

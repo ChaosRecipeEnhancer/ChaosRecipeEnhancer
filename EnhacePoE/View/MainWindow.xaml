@@ -89,6 +89,7 @@
 						 Grid.Column="3"
 						 Grid.Row="5"
 						 Width="200"
+						 FontFamily="{StaticResource PasswordFont}"
 						 Text="{Binding Source={x:Static properties:Settings.Default}, Path=SessionId, Mode=TwoWay}" />
 				<TextBlock Grid.Column="1"
 						   Grid.Row="7"

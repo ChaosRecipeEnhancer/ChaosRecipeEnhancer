@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:EnhancePoE"
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
-         
+		<FontFamily x:Key="PasswordFont">pack://application:,,,/Fonts/#password</FontFamily>
     </Application.Resources>
 </Application>
