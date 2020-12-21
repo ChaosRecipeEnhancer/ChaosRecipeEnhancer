@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports send me an E-Mail to kosacewebdev@gmail.com or spam this [discord](https://discord.gg/KgVsUdSSrR).
 
-#### Current Version 1.0.8 Major Changes
+#### Current Version 1.0.8 - Major Changes
 
 For details on changes, check the bottom of this site.
 
@@ -21,7 +21,7 @@ Since this app is not trusted (too expensive), you will have to accept few times
  - Easy to use
  - Multiple Stashtabs
  - Hotkeys
- - Customizable Overlay
+ - Customizable Overlays
  - Stashtab Overlay for easy selling
  - Exalted Shard Recipe
  - Lootfilter Manipulation (optional)
@@ -50,19 +50,18 @@ The tool only works in Windows, no support for other OS.
 
 #### Main Overlay
 
-The Main Overlay shows each itemtype with its color and while fetching data it shows a loading bar. When you have enough items of a specific itemtype the image will grey out. If you have Lootfilter Manipulation activated, this is the time to refresh your lootfilter ingame. 
+The Main Overlay shows each itemtype with its color and while fetching data it shows a loading bar. When you have enough items of a specific itemtype the image will grey out. If you have Lootfilter Manipulation activated, this is the time to refresh your lootfilter manually ingame. Also if you have sound activated, it will play to remember you to refresh your lootfilter.
 
 You can just drag the Main Overlay whereever you want, except if you set the opacity to 0 (better set it to 0.01).
+
+ - Show Button: shows/ hides the StashTab Overlay
+ - Edit Button: makes the StashTab Overlay clickable and drawable
 
 #### Stashtab Overlay
 
 The Stashtab Overlay highlights items in a specific order if you have full sets in a stashtab. No more wondering which part is missing when selling. Also this way you can put 2 sets in one inventory. Leave it open when selling! Otherwise the highlighting will start from beginning with items you already sold.
 
-If you want to change position or size of the Stashtabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stashtabs Overlay around and resize it (bottom right corner), except if you set the opacity to 0 (better set it to 0.01). At the moment the tabheader sizes are optimized for full hd. I will add support for manually editing these later.
-
-#### Stashtabs Order
-
-You have to specify the number of your stashtab from left to right starting from 0. That means your 1st stashtab is 0, your 2nd is 1 and so on. It seems that folders count as 1 stashtab. At the moment it is not possible to fetch items in folders (tell me if you know how).
+If you want to change position or size of the Stashtabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stashtabs Overlay around and resize it (bottom right corner), except if you set the opacity to 0 (better set it to 0.01). The TabHeader position and sizes can be modified in the Settings Page.
 
 #### Lootfilter
 
@@ -85,21 +84,44 @@ You can change the look of the Exalted Recipe Section in "C:\Users\username\AppD
 
 Unfortunately there is no possibility to automatically refresh your lootfilter ingame (that are legal), so you will have to do that manually (2 clicks).
 
-#### Bases
+### Settings
 
-If you want to change the bases you pick up, navigate to "C:\Users\username\AppData\Roaming\ChaosRecipeEnhancer\Bases", and edit the .txt files accordingly. This way you can still use this tool when new bases are released or if you want to pick up bigger weapons too. At the moment identified items will get ignored.
+#### Account Name
 
-You have to restart the app after changing the files.
+The name of your PoE account (not the character)
 
-The list of bases may include some old bases and too big weapons at the moment. If you have a up-to-date list of all bases and small weapons (1x3), send me an E-Mail please. 
-Also Sai in weapon bases produces a bug where some body armours get highlighted, so i deleted Sai.
+#### PoE Session ID
 
-#### Leagues
+Login at PoE website and copy it from your cookies (press F12). Everytime you relog at the website your SessionID gets refreshed. You can find an easy to use tutorial [here](http://www.vhpg.com/how-to-find-poe-session-id/). To prevent leaking your SessionID, it will only show dots.
+
+Don't share your SessionID with anyone.
+
+#### League
+
+The league you are playing in.
 
 - Normal: just the league name. e.g. "Standard" or "Heist"
 - SSF: SSF + the league name e.g. "SSF Standard" or "SSF Heist"
 - Hardcore: just "Hardcore"
 - Event: the name under the character on poe website e.g. for Mayhem it was "Mayhem (DRE001)"
+
+#### Full Set Threshold
+
+This is the amount of sets you want to gather. The lootfilter will hide items depending on this setting. For example: if you want 5 sets and have 5 body armours already, the lootfilter will hide body armours. If you have this number of sets full, you should sell, otherwise every item will be hidden (except for jewellery). 
+
+#### Refreshrate
+
+The time in seconds the tool waits between fetching the data. The tool will ask the servers every x seconds, no matter if you are in a map or in your hideout. The minimum time is 15 seconds, but I recommend setting it higher, especially if you have many stashtabs configured.
+
+#### Fill Greedy
+
+The tool tries to fit at least 1 item with ilvl 60-74 in every set. Then it tries to fill the rest of the slots with higher ilvl items. When Fill Greedy is activated it will then fill the remaining slots with lower ilvl items again. When deactivated it will only allow 1 lower ilvl item in each set, that means it will save lower ilvl items for the next set. So you are more efficient when you are deactivating it while playing high tier maps.
+
+#### Exalted Shard Recipe
+
+When activated the tool will also look for influenced unidentified rare itemsets, but it will never hide influenced items. When you have a full set, it will tell you in the Main Overlay.
+
+#### ...
 
 #### Exalted Shard Recipe
 
@@ -111,9 +133,7 @@ This feature is not tested too much, tell me if you find bugs!
 
 ##  F.A.Q.
 #### How do I get my SessionID?
-Login at PoE website and copy it from your cookies. Everytime you relog at the website your SessionID gets refreshed. You can find an easy to use tutorial [here](http://www.vhpg.com/how-to-find-poe-session-id/).
 
-Don't share your SessionID with anyone.
 
 #### Is this tool safe?
 You can check and compile the sourcecode for yourself, so it should be safe as long as you are downloading it from here.
@@ -137,6 +157,25 @@ Although there are 2 points which could be problematic:
   
  
 ## Change Log
+
+#### 1.0.8
+
+ - grouped Settings by category
+ - removed Save Button, everything should save automatically
+ - removed individual stashtabs
+ - added stashtab mode, for easier stashtab adding
+ - now automatically detects quad tabs
+ - now automatically detects stashtab names/ IDs
+ - added distance algorithm, the tool prefers items close together
+ - added highlight mode
+ - added sound when full set is picked up for selling
+ - added support for every itemlevel, now you can mix higher and lower ilvl items
+ - added fill greedy mode, you can decide if there should only be one lower ilvl item in your sets or more
+ - removed bases, works with classes now
+ - removed the option for 2 hand weapons, now every 2 hand weapon with size 2x3 and every 1 hand weapon with size 1x3 will be allowed
+ - added initial position and size of Stashtab Overlay optimized for full hd
+ - added password font in SessionID field, no more leaking your ID
+ - updated guide
 
 #### 1.0.7
 
