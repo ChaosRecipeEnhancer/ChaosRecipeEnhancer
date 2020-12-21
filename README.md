@@ -36,7 +36,7 @@ Since this app is not trusted (too expensive), you will have to accept few times
 
 #### The Settings
 
-<img src="https://github.com/kosace/EnhancePoEApp/blob/master/enhancepoescreen3.png" width="500">
+<img src="https://github.com/kosace/EnhancePoEApp/blob/master/Screenshot 2020-12-20 234313.png" width="500">
 
 ## Guide
 
