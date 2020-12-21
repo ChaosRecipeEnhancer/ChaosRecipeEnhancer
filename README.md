@@ -56,6 +56,13 @@ You can just drag the Main Overlay whereever you want, except if you set the opa
 
  - Show Button: shows/ hides the StashTab Overlay
  - Edit Button: makes the StashTab Overlay clickable and drawable
+ - Fetch Button: starts fetching items from PoE servers periodically
+ 
+There will be warning displayed in this overlay also:
+
+ - Warning if you have full sets, but need lower ilvl items (ilvl 60-74)
+ - Warning if you have full sets and need to sell them
+ - Warning if you have full exalted shard recipe set
 
 #### Stashtab Overlay
 
@@ -121,15 +128,94 @@ The tool tries to fit at least 1 item with ilvl 60-74 in every set. Then it trie
 
 When activated the tool will also look for influenced unidentified rare itemsets, but it will never hide influenced items. When you have a full set, it will tell you in the Main Overlay.
 
-#### ...
+#### Stashtab Mode
 
-#### Exalted Shard Recipe
+Switches the way how you configure your stashtabs. 
+ - ID: let's you input a sequence of stashtab IDs. 
+ - Prefix: let's you input a stashtab name prefix
+ 
+#### Stashtab Indices
+ 
+ Visible in ID Stashtab Mode. Enter all stashtab with their IDs that you want to fetch seperated with a comma. Indexes start at 0.
+ 
+ For example: "0,1,3,4" fetches the first, second, 4th and the 5th stashtab.
+ 
+#### Stashtab Prefix
 
-If you have Exalted Shard Recipe activated, every influenced rare item will be highlighted no matter the ilvl. Also it doesn't hide influenced rares when you have full sets. Means, influenced items are always shown.
+Visible in Prefix Stashtab Mode. The tool will look for any stashtab that starts with that prefix and get the IDs automatically. 
 
-Exalted Shard Sets will still count as "Full Sets" and the Selling algorithm should still work (it shows you both recipes).
+For example: "Test" will fetch stashtabs named "Test" but also Stashtabs named "Testsldfjs"
 
-This feature is not tested too much, tell me if you find bugs!
+#### Opacity Overlay
+
+The opacity of the Main Overlay from 0 to 1 which means 0% to 100%.
+ 
+#### Close to Tray
+
+When you close the Settings page it will minimize to the tray instead of terminating the tool.
+
+#### Hotkeys
+
+Here you can set hotkeys for showing/ hiding the Main Overlay, Stashtab Overlay and for starting/ stopping the fetching to the servers. 
+
+Although the tool is fully usable with mouse only, too.
+
+#### Opacity StashTab Overlay
+
+The opacity of the Stashtab overlay in general. Although if you want the borders of the itemcells visible, set it to 1 and modify the Stashtab Background Color. There you can set opacity of the background.
+
+#### Stashtab Background Color
+
+Advantage of this is, that you can set opacity here too. Means you can have fully visible borders and still see your items in your stashtab.
+
+The opacity is the 'A' of the RGBA.
+
+#### Highlight Color
+
+The color of the highlighting in Stashtab Overlay while selling.
+
+#### Highlight Mode
+
+ - Item by Item: shows you each item after another in the right order to fit 2 full sets in your inventory
+ - Set by Set: shows you whole sets after each other. The right order to fit 2 full sets in your inventory will still be marked.
+ - All Items: shows you every item in every full set. No order.
+ 
+#### Tab Header Margin
+
+The space from the left side of the window to your first tab header.
+
+#### Tab Header Width
+
+The width of each tab header.
+
+#### Tab Header Gap
+
+The space between each tab header.
+
+#### Lootfitler Manipulation
+
+Alters your lootfilter every time you need to pick up other items. You still need to refresh your lootfilter ingame manually. There is no legal way to do that for you.
+
+#### Lootfilter Location
+
+Opens a file dialog. Pick any lootfilter you want. Only shows .filter files. The standard location of PoE lootfilters is: 
+
+"/Username/Documents/My Games/Path of Exile/"
+
+#### Colors
+
+The colors of each itemtype that are written in your lootfilter.
+
+#### Notification Sound
+
+Play a sound when you have to manually refresh your lootfilter ingame and when you picked up a whole set in the Stashtab Overlay.
+
+#### Sound Volume
+
+The sound volume...
+
+
+
 
 ##  F.A.Q.
 #### How do I get my SessionID?
