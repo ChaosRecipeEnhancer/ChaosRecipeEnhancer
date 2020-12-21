@@ -87,6 +87,11 @@ namespace EnhancePoE.Model
             {
                 result += "ItemLevel >= 60" + nl + tab + "ItemLevel <= 74" + nl + tab;
             }
+            else
+            {
+                result += "ItemLevel >= 60" + nl + tab;
+            }
+
 
             string baseType = "Class ";
 
