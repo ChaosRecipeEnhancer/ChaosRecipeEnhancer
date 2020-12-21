@@ -21,6 +21,8 @@ namespace EnhancePoE
         private static readonly double deactivatedOpacity = .1;
         private static readonly double activatedOpacity = 1;
 
+        public bool IsOpen { get; set; } = false;
+
         private string _warningMessage;
         public string WarningMessage
         {
@@ -64,7 +66,6 @@ namespace EnhancePoE
 
         public static int FullSets { get; set; } = 0;
 
-        private static bool isOpen = false;
 
         public ChaosRecipeEnhancer()
         {
@@ -111,7 +112,7 @@ namespace EnhancePoE
         {
             if (MainWindow.SettingsComplete)
             {
-                if (!isOpen)
+                if (!IsOpen)
                 {
                     return;
                 }
@@ -238,7 +239,7 @@ namespace EnhancePoE
 
         public new virtual void Hide()
         {
-            isOpen = false;
+            IsOpen = false;
 
             aTimer.Enabled = false;
             base.Hide();
@@ -248,7 +249,7 @@ namespace EnhancePoE
         {
 
 
-            isOpen = true;
+            IsOpen = true;
             if (FetchingActive)
             {
                 aTimer.Enabled = true;
