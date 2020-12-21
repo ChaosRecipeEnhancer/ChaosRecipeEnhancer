@@ -95,7 +95,7 @@ Unfortunately there is no possibility to automatically refresh your lootfilter i
 
 #### Account Name
 
-The name of your PoE account (not the character)
+The name of your PoE account (not the character).
 
 #### PoE Session ID
 
@@ -214,12 +214,25 @@ Play a sound when you have to manually refresh your lootfilter ingame and when y
 
 The sound volume...
 
-
-
-
 ##  F.A.Q.
-#### How do I get my SessionID?
 
+#### The tool seems to not pick the right stashtabs?
+
+Make sure you do NOT have "Remove-only Stashtabs" hidden. They will still be counted, even if you can't see them. That means the index will be off. 
+
+This will also apply to Event Stashtabs. When you are playing in an event, check if you have Remove-only Tabs from events before. You can check your stashtab IDs by searching this address in your browser (replace YOURACCOUNTNAME and YOURLEAGUE accordingly):
+
+https://www.pathofexile.com/character-window/get-stash-items?accountName=YOURACCOUNTNAME&league=YOURLEAGUE&tabIndex=0
+
+It will output all your stashtabs currently available. 
+
+#### The tool cannot find my account?
+
+If you are a steam user, make sure you have linked your steam account to your PoE account on the website
+
+#### The highlighting in StashTab Overlay seems off?
+
+If you have changed your Display Scaling in Windows (Display Settings -> Scale and layout) it will not get the right mouse positions. Set it to 100%.
 
 #### Is this tool safe?
 You can check and compile the sourcecode for yourself, so it should be safe as long as you are downloading it from here.
@@ -232,6 +245,10 @@ Although there are 2 points which could be problematic:
 2. The tool manipulates your lootfilter. I'm not sure if they are considered "game files" by GGG, personally I would'nt consider them like that. The tool certainly doesn't interact with the game client in any way. But if you are unsure you can deactivate this feature and only use the overlay. 
 
 ## Attributions
+
+#### Algorithm
+
+ - **Immo** helped me greatly with improving and simplifying the algorithm. Also he seems to know every API request to PoE servers? Much Thanks!
 
 #### ItemIcons
 
