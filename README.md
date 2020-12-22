@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.0.8 - Major Changes
+#### Current Version 1.0.9
 
 For details on changes, check the bottom of this site.
 
