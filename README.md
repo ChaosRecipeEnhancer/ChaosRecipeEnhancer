@@ -48,6 +48,8 @@ The overlays will not work in Fullscreen Mode. Instead they will only work in:
  
 The tool only works in Windows, no support for other OS.
 
+Overlay only works with Display Scaling 100% in Windows Settings (working on a fix). 
+
 #### Main Overlay
 
 The Main Overlay shows each itemtype with its color and while fetching data it shows a loading bar. When you have enough items of a specific itemtype the image will grey out. If you have Lootfilter Manipulation activated, this is the time to refresh your lootfilter manually ingame. Also if you have sound activated, it will play to remember you to refresh your lootfilter.
