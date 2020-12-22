@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.0.8 - Major Changes
+#### Current Version 1.0.9
 
 For details on changes, check the bottom of this site.
 
@@ -222,7 +222,7 @@ Make sure you do NOT have "Remove-only Stashtabs" hidden. They will still be cou
 
 This will also apply to Event Stashtabs. When you are playing in an event, check if you have Remove-only Tabs from events before. You can check your stashtab IDs by searching this address in your browser (replace YOURACCOUNTNAME and YOURLEAGUE accordingly):
 
-https://www.pathofexile.com/character-window/get-stash-items?accountName=YOURACCOUNTNAME&league=YOURLEAGUE&tabIndex=0
+https://www.pathofexile.com/character-window/get-stash-items?accountName=YOURACCOUNTNAME&league=YOURLEAGUE&tabs=1
 
 It will output all your stashtabs currently available. 
 
