@@ -35,17 +35,17 @@ namespace EnhancePoE.Model
                         MessageBox.Show("Stashtab Index has to be a number!", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
-                if(ret.Count == 0) { MessageBox.Show("Stashtab Indix empty!", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error); }
+                if(ret.Count == 0) { MessageBox.Show("Stashtab Indices empty!", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error); }
                 StashTabIndices = ret;
                 //Trace.WriteLine(ret, "ret");
-                foreach(int i in StashTabIndices)
-                {
-                    Trace.WriteLine(i, "stash tab index");
-                }
+                //foreach(int i in StashTabIndices)
+                //{
+                //    Trace.WriteLine(i, "stash tab index");
+                //}
             }
             else
             {
-                MessageBox.Show("Stashtab Indix empty!", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Stashtab Indices empty!", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

@@ -24,15 +24,17 @@ namespace EnhancePoE.Model
             // Change the extended window style to include WS_EX_TRANSPARENT
 
 
-        int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-                Win32.SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle |
-                WS_EX_TRANSPARENT);
+            int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+            Win32.SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle |
+            WS_EX_TRANSPARENT);
+            //MainWindow.stashTabOverlay.IsHitTestVisible = false;
         }
 
         public static void makeNormal(IntPtr hwnd)
         {
             int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
             Win32.SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle & ~WS_EX_TRANSPARENT);
+            //MainWindow.stashTabOverlay.IsHitTestVisible = true;
         }
     }
 }

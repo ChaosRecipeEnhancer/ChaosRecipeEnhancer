@@ -209,7 +209,7 @@ namespace EnhancePoE.View
             }
             else
             {
-                System.Windows.MessageBox.Show("No StashTabs Available!", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("No StashTabs Available! Fetch before opening Overlay.", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

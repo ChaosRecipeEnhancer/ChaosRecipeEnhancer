@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancePoE", "EnhacePoE\EnhancePoE.csproj", "{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancePoE", "EnhancePoE\EnhancePoE.csproj", "{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EnhancePoESetup", "EnhancePoESetup\EnhancePoESetup.vdproj", "{08532107-D2DC-4099-A1C6-7BEEA7929B40}"
 EndProject
