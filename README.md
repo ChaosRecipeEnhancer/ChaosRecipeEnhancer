@@ -222,7 +222,7 @@ Make sure you do NOT have "Remove-only Stashtabs" hidden. They will still be cou
 
 This will also apply to Event Stashtabs. When you are playing in an event, check if you have Remove-only Tabs from events before. You can check your stashtab IDs by searching this address in your browser (replace YOURACCOUNTNAME and YOURLEAGUE accordingly):
 
-https://www.pathofexile.com/character-window/get-stash-items?accountName=YOURACCOUNTNAME&league=YOURLEAGUE&tabIndex=0
+https://www.pathofexile.com/character-window/get-stash-items?accountName=YOURACCOUNTNAME&league=YOURLEAGUE&tabs=1
 
 It will output all your stashtabs currently available. 
 
