@@ -263,7 +263,8 @@ Although there are 2 points which could be problematic:
 
 #### 1.0.9
 
- - fixed bug not showing item order in set by set highlight mode
+ - fixed bug not showing item order in set by set highlight mode in quad tabs
+ - fixed bug when entering accountname or league with spaces
 
 #### 1.0.8
 
