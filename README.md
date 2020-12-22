@@ -261,6 +261,10 @@ Although there are 2 points which could be problematic:
  
 ## Change Log
 
+#### 1.0.9
+
+ - fixed bug not showing item order in set by set highlight mode
+
 #### 1.0.8
 
  - grouped Settings by category
