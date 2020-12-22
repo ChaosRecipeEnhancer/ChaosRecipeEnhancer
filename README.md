@@ -269,6 +269,8 @@ Although there are 2 points which could be problematic:
 
  - fixed bug not showing item order in set by set highlight mode in quad tabs
  - fixed bug when entering accountname or league with spaces
+ - changed icon
+ - fixed bug showing items ilvl < 60
 
 #### 1.0.8
 
