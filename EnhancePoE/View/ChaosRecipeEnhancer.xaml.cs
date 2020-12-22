@@ -21,6 +21,8 @@ namespace EnhancePoE
         private static readonly double deactivatedOpacity = .1;
         private static readonly double activatedOpacity = 1;
 
+        public bool IsOpen { get; set; } = false;
+
         private string _warningMessage;
         public string WarningMessage
         {
@@ -64,7 +66,6 @@ namespace EnhancePoE
 
         public static int FullSets { get; set; } = 0;
 
-        private static bool isOpen = false;
 
         public ChaosRecipeEnhancer()
         {
@@ -111,7 +112,7 @@ namespace EnhancePoE
         {
             if (MainWindow.SettingsComplete)
             {
-                if (!isOpen)
+                if (!IsOpen)
                 {
                     return;
                 }
@@ -137,7 +138,9 @@ namespace EnhancePoE
                     Data.cs.Cancel();
                     aTimer.Enabled = false;
                     FetchingActive = false;
-                    RefreshButton.Content = "Fetch";
+                    //RefreshButton.Content = "Fetch\nStart";
+                    FetchButtonBottomContent.Text = "Start";
+                    FetchButtonTopContent.Text = "Fetch";
                 }
                 else
                 {
@@ -153,7 +156,9 @@ namespace EnhancePoE
                         //aTimer.Interval = 1000;
                         aTimer.Enabled = true;
                         FetchingActive = true;
-                        RefreshButton.Content = "Stop";
+                        //RefreshButton.Content = "Stop";
+                        FetchButtonBottomContent.Text = "Stop";
+                        FetchButtonTopContent.Text = "Fetch";
                     }
 
                 }
@@ -238,9 +243,10 @@ namespace EnhancePoE
 
         public new virtual void Hide()
         {
-            isOpen = false;
+            IsOpen = false;
 
             aTimer.Enabled = false;
+            //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Run Overlay";
             base.Hide();
         }
 
@@ -248,12 +254,13 @@ namespace EnhancePoE
         {
 
 
-            isOpen = true;
+            IsOpen = true;
             if (FetchingActive)
             {
                 aTimer.Enabled = true;
                 FetchData();
             }
+            //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Stop Overlay";
 
             base.Show();
 
@@ -293,6 +300,11 @@ namespace EnhancePoE
                 MainWindow.RunStashTabOverlay();
                 HandleEditButton();
             }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+
         }
 
         //private void Window_Deactivated(object sender, EventArgs e)

@@ -250,7 +250,7 @@ Although there are 2 points which could be problematic:
 
  - **Immo** helped me greatly with improving and simplifying the algorithm. Also he seems to know every API request to PoE servers? Much Thanks!
 
-#### ItemIcons
+#### Item Icons
 
   - Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
   
@@ -258,8 +258,19 @@ Although there are 2 points which could be problematic:
   
   - Icons made by [iconixar](https://www.flaticon.com/authors/iconixar) from [www.flaticon.com](https://www.flaticon.com/)
   
+#### Client Icon 
+
+ - Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
+  
  
 ## Change Log
+
+#### 1.0.9
+
+ - fixed bug not showing item order in set by set highlight mode in quad tabs
+ - fixed bug when entering accountname or league with spaces
+ - changed icon
+ - fixed bug showing items ilvl < 60
 
 #### 1.0.8
 

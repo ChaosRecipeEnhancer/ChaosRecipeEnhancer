@@ -43,6 +43,8 @@ namespace EnhancePoE
 
         public static StashTabWindow stashTabOverlay = new StashTabWindow();
 
+        private static string RunButtonContent { get; set; } = "Run Overlay";
+
 
         private Visibility _indicesVisible = Visibility.Hidden;
         public Visibility IndicesVisible
@@ -158,7 +160,7 @@ namespace EnhancePoE
         // creates tray icon with menu
         private void InitializeTray()
         {
-            ni.Icon = Properties.Resources.gold_removebg_preview;
+            ni.Icon = Properties.Resources.coin;
             ni.Visible = true;
             ni.DoubleClick +=
                 delegate (object sender, EventArgs args)
@@ -250,8 +252,7 @@ namespace EnhancePoE
                 System.Windows.MessageBox.Show("Number of Sets has to be a number!");
             }
 
-            RemoveAllHotkeys();
-            AddAllHotkeys();
+
 
             Trace.WriteLine(Properties.Settings.Default.YStashTabOverlay, "y");
             Trace.WriteLine(Properties.Settings.Default.XStashTabOverlay, "x");
@@ -267,24 +268,42 @@ namespace EnhancePoE
 
         public void RunOverlay()
         {
-            bool ready = CheckAllSettings();
-            if (ready)
+            if (overlay.IsOpen)
             {
-                if (RunButton.Content.ToString() == "Run Overlay")
+                overlay.Hide();
+                if (stashTabOverlay.IsOpen)
                 {
-                    RunButton.Content = "Stop Overlay";
-                    overlay.Show();
+                    stashTabOverlay.Hide();
                 }
-                else
+                RunButton.Content = "Run Overlay";
+            }
+            else
+            {
+                if (CheckAllSettings())
                 {
-                    RunButton.Content = "Run Overlay";
-                    overlay.Hide();
-                    if (stashTabOverlay.IsOpen)
-                    {
-                        stashTabOverlay.Hide();
-                    }
+                    overlay.Show();
+                    RunButton.Content = "Stop Overlay";
                 }
             }
+            //bool ready = CheckAllSettings();
+            //if (ready)
+            //{
+
+            //    if (RunButton.Content.ToString() == "Run Overlay")
+            //    {
+            //        RunButton.Content = "Stop Overlay";
+            //        overlay.Show();
+            //    }
+            //    else
+            //    {
+            //        RunButton.Content = "Run Overlay";
+            //        overlay.Hide();
+            //        if (stashTabOverlay.IsOpen)
+            //        {
+            //            stashTabOverlay.Hide();
+            //        }
+            //    }
+            //}
         }
 
         private void RunButton_Click(object sender, RoutedEventArgs e)
@@ -597,6 +616,15 @@ namespace EnhancePoE
         private void TabHeaderMarginSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             stashTabOverlay.TabMargin = new Thickness(Properties.Settings.Default.TabMargin, 0, 0, 0);
+        }
+
+        public static void GenerateNewOverlay()
+        {
+            overlay = new ChaosRecipeEnhancer();
+        }
+        public static void GenerateNewStashtabOverlay()
+        {
+            stashTabOverlay = new StashTabWindow();
         }
     }
 }

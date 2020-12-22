@@ -63,9 +63,9 @@ namespace EnhancePoE.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon gold_removebg_preview {
+        internal static System.Drawing.Icon coin {
             get {
-                object obj = ResourceManager.GetObject("gold_removebg_preview", resourceCulture);
+                object obj = ResourceManager.GetObject("coin", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

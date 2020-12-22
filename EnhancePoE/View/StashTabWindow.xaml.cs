@@ -209,7 +209,7 @@ namespace EnhancePoE.View
             }
             else
             {
-                System.Windows.MessageBox.Show("No StashTabs Available!", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("No StashTabs Available! Fetch before opening Overlay.", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -241,6 +241,15 @@ namespace EnhancePoE.View
             IntPtr hwnd = new WindowInteropHelper(this).Handle;
 
             Win32.makeNormal(hwnd);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (IsOpen)
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
+
+            }
         }
 
 

@@ -26,8 +26,8 @@ namespace EnhancePoE
                 && Properties.Settings.Default.League != "")
             {
 
-                string accName = Properties.Settings.Default.accName;
-                string league = Properties.Settings.Default.League;
+                string accName = Properties.Settings.Default.accName.Trim();
+                string league = Properties.Settings.Default.League.Trim();
 
                 await GetProps(accName, league);
                 if (!FetchError)

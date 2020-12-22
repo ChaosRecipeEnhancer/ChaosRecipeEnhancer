@@ -58,6 +58,7 @@ namespace EnhancePoE
                     Properties.Settings.Default.HotkeyRefresh = CustomHotkeyToggle.Hotkey.ToString();
                     HotkeysManager.GetRefreshHotkey();
                 }
+                ReApplyHotkeys();
             }
             else if(type == "toggle")
             {
@@ -71,6 +72,7 @@ namespace EnhancePoE
                     Properties.Settings.Default.HotkeyToggle = CustomHotkeyToggle.Hotkey.ToString();
                     HotkeysManager.GetToggleHotkey();
                 }
+                ReApplyHotkeys();
             }
             else if (type == "stashtab")
             {
@@ -84,8 +86,15 @@ namespace EnhancePoE
                     Properties.Settings.Default.HotkeyStashTab = CustomHotkeyToggle.Hotkey.ToString();
                     HotkeysManager.GetStashTabHotkey();
                 }
+                ReApplyHotkeys();
             }
             this.Close();
+        }
+
+        private static void ReApplyHotkeys()
+        {
+            ((MainWindow)System.Windows.Application.Current.MainWindow).RemoveAllHotkeys();
+            ((MainWindow)System.Windows.Application.Current.MainWindow).AddAllHotkeys();
         }
     }
 }

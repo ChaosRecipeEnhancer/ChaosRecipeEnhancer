@@ -4,6 +4,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:EnhancePoE"
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		mc:Ignorable="d"
 		Title="ChaosRecipeEnhancer"
 		SizeToContent="WidthAndHeight"
@@ -129,8 +130,12 @@
 						Grid.Column="8"
 						Grid.Row="2"
 						Grid.RowSpan="2"
-						Content="Fetch"
-						Margin="10,0" />
+						Margin="10,0">
+					<UniformGrid Columns="1" Rows="2">
+						<TextBlock x:Name="FetchButtonTopContent" HorizontalAlignment="Center">Fetch</TextBlock>
+						<TextBlock x:Name="FetchButtonBottomContent" HorizontalAlignment="Center">Start</TextBlock>
+					</UniformGrid>
+				</Button>
 				<Button x:Name="OpenStashTabOverlay"
 						Click="OpenStashTabOverlay_Click"
 						Width="50"
