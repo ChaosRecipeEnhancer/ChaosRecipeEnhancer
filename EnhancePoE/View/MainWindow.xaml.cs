@@ -160,7 +160,7 @@ namespace EnhancePoE
         // creates tray icon with menu
         private void InitializeTray()
         {
-            ni.Icon = Properties.Resources.gold_removebg_preview;
+            ni.Icon = Properties.Resources.coin;
             ni.Visible = true;
             ni.DoubleClick +=
                 delegate (object sender, EventArgs args)
@@ -616,6 +616,15 @@ namespace EnhancePoE
         private void TabHeaderMarginSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             stashTabOverlay.TabMargin = new Thickness(Properties.Settings.Default.TabMargin, 0, 0, 0);
+        }
+
+        public static void GenerateNewOverlay()
+        {
+            overlay = new ChaosRecipeEnhancer();
+        }
+        public static void GenerateNewStashtabOverlay()
+        {
+            stashTabOverlay = new StashTabWindow();
         }
     }
 }

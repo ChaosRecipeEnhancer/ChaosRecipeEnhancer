@@ -138,7 +138,9 @@ namespace EnhancePoE
                     Data.cs.Cancel();
                     aTimer.Enabled = false;
                     FetchingActive = false;
-                    RefreshButton.Content = "Fetch";
+                    //RefreshButton.Content = "Fetch\nStart";
+                    FetchButtonBottomContent.Text = "Start";
+                    FetchButtonTopContent.Text = "Fetch";
                 }
                 else
                 {
@@ -154,7 +156,9 @@ namespace EnhancePoE
                         //aTimer.Interval = 1000;
                         aTimer.Enabled = true;
                         FetchingActive = true;
-                        RefreshButton.Content = "Stop";
+                        //RefreshButton.Content = "Stop";
+                        FetchButtonBottomContent.Text = "Stop";
+                        FetchButtonTopContent.Text = "Fetch";
                     }
 
                 }
@@ -242,6 +246,7 @@ namespace EnhancePoE
             IsOpen = false;
 
             aTimer.Enabled = false;
+            //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Run Overlay";
             base.Hide();
         }
 
@@ -255,6 +260,7 @@ namespace EnhancePoE
                 aTimer.Enabled = true;
                 FetchData();
             }
+            //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Stop Overlay";
 
             base.Show();
 
@@ -294,6 +300,11 @@ namespace EnhancePoE
                 MainWindow.RunStashTabOverlay();
                 HandleEditButton();
             }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+
         }
 
         //private void Window_Deactivated(object sender, EventArgs e)

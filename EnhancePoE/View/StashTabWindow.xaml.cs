@@ -243,6 +243,15 @@ namespace EnhancePoE.View
             Win32.makeNormal(hwnd);
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (IsOpen)
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
+
+            }
+        }
+
 
 
 
