@@ -265,6 +265,10 @@ Although there are 2 points which could be problematic:
  
 ## Change Log
 
+#### 1.1.0
+
+ - added warning when fetching failed
+
 #### 1.0.9
 
  - fixed bug not showing item order in set by set highlight mode in quad tabs
