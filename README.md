@@ -6,7 +6,7 @@ For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) o
 
 #### Current Version 1.0.9
 
-For details on changes, check Change Log at the bottom of this site.
+For details on changes, check the Change Log at the bottom of this site.
 
 ## Installation
 
