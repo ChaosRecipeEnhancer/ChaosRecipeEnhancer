@@ -280,6 +280,7 @@ Although there are 2 points which could be problematic:
  - changed Stashtab Overlay grid color to white
  - set minimum opacity of overlays to 0.01
  - fetching now automatically resumes when closing the Stashtab Overlay, if you were fetching before.
+ - minor UI changes
 
 #### 1.0.9
 
