@@ -275,6 +275,7 @@ Although there are 2 points which could be problematic:
  - fixed a bug where Stashtab Overlay was not "through-cickable" after using the edit mode
  - changed Stashtab Overlay grid color to white
  - set minimum opacity of overlays to 0.01
+ - fetching now automatically resumes when closing the Stashtab Overlay, if you were fetching before.
 
 #### 1.0.9
 
