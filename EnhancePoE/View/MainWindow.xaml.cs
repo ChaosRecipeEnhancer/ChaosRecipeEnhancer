@@ -323,10 +323,10 @@ namespace EnhancePoE
                 }
                 else
                 {
-                    if (ChaosRecipeEnhancer.FetchingActive == true)
-                    {
-                        overlay.RunFetching();
-                    }
+                    //if (ChaosRecipeEnhancer.FetchingActive == true)
+                    //{
+                    //    overlay.RunFetching();
+                    //}
                     //MouseHook.Start();
                     stashTabOverlay.Show();
                 }

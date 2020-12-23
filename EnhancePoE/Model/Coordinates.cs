@@ -49,8 +49,12 @@ namespace EnhancePoE.Model
 
             System.Windows.Point pt = GetTabHeaderCoordinates(s.TabHeader);
 
-            int tabX = Convert.ToInt32(Math.Floor(pt.X + s.TabHeader.ActualWidth));
-            int tabY = Convert.ToInt32(Math.Floor(pt.Y + s.TabHeader.ActualHeight));
+            // adjust btn x,y position a bit
+            pt.X -= 1;
+            pt.Y -= 1;
+
+            int tabX = Convert.ToInt32(Math.Floor(pt.X + s.TabHeader.ActualWidth + 1));
+            int tabY = Convert.ToInt32(Math.Floor(pt.Y + s.TabHeader.ActualHeight + 1));
             if (clickX > pt.X
                 && clickY > pt.Y
                 && clickX < tabX
@@ -61,11 +65,46 @@ namespace EnhancePoE.Model
             return false;
         }
 
+        private static bool CheckForEditButtonHit(System.Windows.Controls.Button btn)
+        {
+            int clickX = MouseHook.ClickLocationX;
+            int clickY = MouseHook.ClickLocationY;
+
+            System.Windows.Point pt = GetEditButtonCoordinates(btn);
+
+            // adjust btn x,y position a bit
+            pt.X -= 1;
+            pt.Y -= 1;
+
+            int btnX = Convert.ToInt32(Math.Floor(pt.X + btn.ActualWidth + 1));
+            int btnY = Convert.ToInt32(Math.Floor(pt.Y + btn.ActualHeight + 1));
+            if (clickX > pt.X
+                && clickY > pt.Y
+                && clickX < btnX
+                && clickY < btnY)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+
         private static System.Windows.Point GetTabHeaderCoordinates(System.Windows.Controls.TextBlock item)
         {
             if (item != null)
             {
                 System.Windows.Point locationFromScreen = item.PointToScreen(new System.Windows.Point(0, 0));
+                return locationFromScreen;
+            }
+            return new System.Windows.Point(0, 0);
+        }
+
+        private static System.Windows.Point GetEditButtonCoordinates(System.Windows.Controls.Button button)
+        {
+            if(button != null)
+            {
+                System.Windows.Point locationFromScreen = button.PointToScreen(new System.Windows.Point(0, 0));
                 return locationFromScreen;
             }
             return new System.Windows.Point(0, 0);
@@ -105,6 +144,11 @@ namespace EnhancePoE.Model
                 List<Cell> activeCells = GetAllActiveCells(selectedIndex);
 
                 List<ButtonAndCell> buttonList = new List<ButtonAndCell>();
+
+                if (CheckForEditButtonHit(MainWindow.stashTabOverlay.EditModeButton))
+                {
+                    MainWindow.stashTabOverlay.HandleEditButton();
+                }
 
                 if (StashTabList.StashTabs[selectedIndex].Quad)
                 {

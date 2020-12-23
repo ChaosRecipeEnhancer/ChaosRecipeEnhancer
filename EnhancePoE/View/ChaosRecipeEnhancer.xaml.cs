@@ -16,7 +16,7 @@ namespace EnhancePoE
 
 
         public static bool FetchingActive { get; set;} = false;
-        private static System.Timers.Timer aTimer;
+        public static System.Timers.Timer aTimer;
 
         private static readonly double deactivatedOpacity = .1;
         private static readonly double activatedOpacity = 1;
@@ -81,7 +81,6 @@ namespace EnhancePoE
 
         private async void FetchData()
         {
-
             MainWindow.overlay.WarningMessage = "";
             MainWindow.overlay.ShadowOpacity = 0;
             MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Hidden;
@@ -271,36 +270,21 @@ namespace EnhancePoE
             MainWindow.RunStashTabOverlay();
         }
 
-        private void HandleEditButton()
-        {
-            if (MainWindow.stashTabOverlay.IsEditing)
-            {
-                MainWindow.stashTabOverlay.IsEditing = false;
-                MainWindow.stashTabOverlay.Transparentize();
-                EditStashTabOverlay.Content = "Edit";
-                MouseHook.Start();
-            }
-            else
-            {
-                MouseHook.Stop();
-                MainWindow.stashTabOverlay.IsEditing = true;
-                MainWindow.stashTabOverlay.Normalize();
-                EditStashTabOverlay.Content = "Save";
-            }
-        }
-
-        private void EditStashTabOverlay_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainWindow.stashTabOverlay.IsOpen)
-            {
-                HandleEditButton();
-            }
-            else
-            {
-                MainWindow.RunStashTabOverlay();
-                HandleEditButton();
-            }
-        }
+        //private void EditStashTabOverlay_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (MainWindow.stashTabOverlay.IsOpen)
+        //    {
+        //        HandleEditButton();
+        //    }
+        //    else
+        //    {
+        //        MainWindow.RunStashTabOverlay();
+        //        if (MainWindow.stashTabOverlay.IsOpen)
+        //        {
+        //            HandleEditButton();
+        //        }
+        //    }
+        //}
 
         protected override void OnClosing(CancelEventArgs e)
         {
