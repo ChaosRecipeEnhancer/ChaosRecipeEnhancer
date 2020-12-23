@@ -491,6 +491,14 @@ namespace EnhancePoE
         {
             try
             {
+                if (ApiAdapter.FetchError)
+                {
+                    MainWindow.overlay.WarningMessage = "Fetching Error...";
+                    MainWindow.overlay.ShadowOpacity = 1;
+                    MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                    //MainWindow.overlay.RunFetching();
+                    return;
+                }
                 if (Properties.Settings.Default.Sound)
                 {
                     PreviousActiveItems = new ActiveItemTypes

@@ -15,7 +15,7 @@ namespace EnhancePoE
 
         public static bool IsFetching { get; set; } = false;
         private static StashTabPropsList PropsList { get; set; }
-        private static bool FetchError { get; set; } = false;
+        public static bool FetchError { get; set; } = false;
         public static bool FetchingDone { get; set; } = false;
         public static async Task GenerateUri()
         {
