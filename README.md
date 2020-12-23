@@ -6,7 +6,7 @@ For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) o
 
 #### Current Version 1.1.0
 
-For details on changes, check the bottom of this site.
+For details on changes, check the Change Log at the bottom of this site.
 
 ## Installation
 
@@ -42,11 +42,13 @@ Since this app is not trusted (too expensive), you will have to accept few times
 
 #### Compatibility
 
-The overlays will not work in Fullscreen Mode. Instead they will only work in:
- - DirectX11: Windowed or Fullscreen Windowed Mode
- - Vulkan: Windowed Mode or Fullscreen Windowed Mode (tell me, if there are problems with it)
+The overlays will not work in Fullscreen Mode. They will only work in:
+ - Windowed Mode
+ - Fullscreen Windowed Mode
  
 The tool only works in Windows, no support for other OS.
+
+Overlay only works with Display Scaling 100% in Windows Settings (working on a fix). 
 
 #### Main Overlay
 
@@ -222,7 +224,7 @@ Make sure you do NOT have "Remove-only Stashtabs" hidden. They will still be cou
 
 This will also apply to Event Stashtabs. When you are playing in an event, check if you have Remove-only Tabs from events before. You can check your stashtab IDs by searching this address in your browser (replace YOURACCOUNTNAME and YOURLEAGUE accordingly):
 
-https://www.pathofexile.com/character-window/get-stash-items?accountName=YOURACCOUNTNAME&league=YOURLEAGUE&tabIndex=0
+https://www.pathofexile.com/character-window/get-stash-items?accountName=YOURACCOUNTNAME&league=YOURLEAGUE&tabs=1
 
 It will output all your stashtabs currently available. 
 
