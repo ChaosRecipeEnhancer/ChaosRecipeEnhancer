@@ -234,6 +234,10 @@ If you are a steam user, make sure you have linked your steam account to your Po
 
 If you have changed your Display Scaling in Windows (Display Settings -> Scale and layout) it will not get the right mouse positions. Set it to 100%.
 
+#### The highlighting in Stashtab Overlay shows items already sold
+
+Make sure you do not close the overlay while selling. The data cannot be refreshed that fast, that means the tool calculates an order for picking the items out of your stash. This order will start from the beginning if you closed the overlay and did not fetch before. So just leave it open while selling.
+
 #### Is this tool safe?
 You can check and compile the sourcecode for yourself, so it should be safe as long as you are downloading it from here.
 
