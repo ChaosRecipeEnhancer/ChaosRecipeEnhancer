@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.0.9
+#### Current Version 1.1.0
 
 For details on changes, check the Change Log at the bottom of this site.
 
@@ -236,6 +236,14 @@ If you are a steam user, make sure you have linked your steam account to your Po
 
 If you have changed your Display Scaling in Windows (Display Settings -> Scale and layout) it will not get the right mouse positions. Set it to 100%.
 
+#### The highlighting in Stashtab Overlay shows items already sold
+
+Make sure you do not close the overlay while selling. The data cannot be refreshed that fast, that means the tool calculates an order for picking the items out of your stash. This order will start from the beginning if you closed the overlay and did not fetch before. So just leave it open while selling.
+
+#### The Stashtab Overlay is not aligned?
+
+You can align it yourself by going in edit mode. Press "Edit" on the Main Overlay and drag the Stashtab Overlay (at the top) around. In the bottom right corner there is a grip to resize the Stashtab Overlay.
+
 #### Is this tool safe?
 You can check and compile the sourcecode for yourself, so it should be safe as long as you are downloading it from here.
 
@@ -266,6 +274,15 @@ Although there are 2 points which could be problematic:
   
  
 ## Change Log
+
+#### 1.1.0
+
+ - added warning when fetching failed
+ - fixed a bug where Stashtab Overlay was not "through-cickable" after using the edit mode
+ - changed Stashtab Overlay grid color to white
+ - set minimum opacity of overlays to 0.01
+ - fetching now automatically resumes when closing the Stashtab Overlay, if you were fetching before.
+ - minor UI changes
 
 #### 1.0.9
 

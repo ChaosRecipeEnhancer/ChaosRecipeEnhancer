@@ -61,6 +61,17 @@ namespace EnhancePoE.View
             }
         }
 
+        private Visibility _stashBorderVisibility = Visibility.Hidden;
+        public Visibility StashBorderVisibility
+        {
+            get { return _stashBorderVisibility; }
+            set
+            {
+                _stashBorderVisibility = value;
+                OnPropertyChanged("StashBorderVisibility");
+            }
+        }
+
 
         //public double Gap { get; set; } = 0;
 
@@ -73,8 +84,13 @@ namespace EnhancePoE.View
 
         }
 
+
         public new virtual void Hide()
         {
+            Transparentize();
+            //MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
+            EditModeButton.Content = "Edit";
+            IsEditing = false;
             MouseHook.Stop();
 
             foreach (StashTab i in StashTabList.StashTabs)
@@ -86,16 +102,26 @@ namespace EnhancePoE.View
             IsOpen = false;
             IsEditing = false;
             MainWindow.overlay.OpenStashTabOverlay.Content = "Stash";
-            MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
+            //MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
             //TextBlockList.Clear();
+
+            if (ChaosRecipeEnhancer.FetchingActive)
+            {
+                ChaosRecipeEnhancer.aTimer.Enabled = true;
+            }
+
+
             base.Hide();
         }
 
         // TODO: rework tabitems, tabheaders
         public new virtual void Show()
         {
-
-            if(StashTabList.StashTabs != null && StashTabList.StashTabs.Count != 0)
+            if (ChaosRecipeEnhancer.FetchingActive)
+            {
+                ChaosRecipeEnhancer.aTimer.Enabled = false;
+            }
+            if (StashTabList.StashTabs != null && StashTabList.StashTabs.Count != 0)
             {
                 IsOpen = true;
                 OverlayStashTabList.Clear();
@@ -174,16 +200,7 @@ namespace EnhancePoE.View
                         };
                     }
 
-                    //TabItem newStashTabItem = new TabItem;
-                    //newStashTabItem.Header = i.TabName;
-                    ////newStashTabItem.DataContext = i.ItemList;
-                    //newStashTabItem.Content = i.TabNumber;
                     OverlayStashTabList.Add(newStashTabItem);
-
-                    //Trace.WriteLine("works");
-
-
-                    //OverlayStashTabList.Add(i);
                 }
 
                 StashTabOverlayTabControl.SelectedIndex = 0;
@@ -213,6 +230,26 @@ namespace EnhancePoE.View
             }
         }
 
+        public void StartEditMode()
+        {
+            MouseHook.Stop();
+            //MainWindow.overlay.EditStashTabOverlay.Content = "Save";
+            EditModeButton.Content = "Save";
+            StashBorderVisibility = Visibility.Visible;
+            Normalize();
+            IsEditing = true;
+        }
+
+        public void StopEditMode()
+        {
+            Transparentize();
+            //MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
+            EditModeButton.Content = "Edit";
+            StashBorderVisibility = Visibility.Hidden;
+            MouseHook.Start();
+            IsEditing = false;
+        }
+
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -231,6 +268,7 @@ namespace EnhancePoE.View
 
         public void Transparentize()
         {
+            Trace.WriteLine("make transparent");
             IntPtr hwnd = new WindowInteropHelper(this).Handle;
 
             Win32.makeTransparent(hwnd);
@@ -238,6 +276,7 @@ namespace EnhancePoE.View
 
         public void Normalize()
         {
+            Trace.WriteLine("make normal");
             IntPtr hwnd = new WindowInteropHelper(this).Handle;
 
             Win32.makeNormal(hwnd);
@@ -245,14 +284,29 @@ namespace EnhancePoE.View
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (IsOpen)
-            {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
+            //if (IsOpen)
+            //{
+            //    ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
 
+            //}
+        }
+
+        public void HandleEditButton()
+        {
+            if (MainWindow.stashTabOverlay.IsEditing)
+            {
+                StopEditMode();
+            }
+            else
+            {
+                StartEditMode();
             }
         }
 
-
+        private void EditModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            HandleEditButton();
+        }
 
 
 

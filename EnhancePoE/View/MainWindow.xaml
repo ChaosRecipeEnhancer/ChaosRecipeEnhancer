@@ -151,7 +151,7 @@
 						Grid.Row="3"
 						Width="200"
 						VerticalAlignment="Center"
-						Minimum="0"
+						Minimum="0.01"
 						Maximum="1"
 						AutoToolTipPlacement="TopLeft"
 						IsMoveToPointEnabled="True"
@@ -641,7 +641,7 @@
 				<TextBlock Grid.Column="1"
 						   Grid.Row="7"
 						   VerticalAlignment="Center"
-						   Text="Fill Greedy:"
+						   Text="Fill Greedy Mode:"
 						   ToolTipService.InitialShowDelay="50"
 						   ToolTip="Sets will be filled with more than 1 low ilvl item. Deactivate to only allow 1 low ilvl item." />
 				<CheckBox x:Name="LimitChaosCheckBox"
@@ -660,7 +660,7 @@
 						Grid.Column="3"
 						Grid.Row="15"
 						VerticalAlignment="Center"
-						Minimum="0"
+						Minimum="0.01"
 						Maximum="1"
 						AutoToolTipPlacement="TopLeft"
 						IsMoveToPointEnabled="True"
@@ -763,7 +763,7 @@
 					Grid.Row="7" />
 			<TextBlock Grid.Column="3"
 					   Grid.Row="8"
-					   Text="Version 1.0.9"
+					   Text="Version 1.1.0"
 					   FontSize="12"
 					   HorizontalAlignment="Right"
 					   VerticalAlignment="Center"></TextBlock>
