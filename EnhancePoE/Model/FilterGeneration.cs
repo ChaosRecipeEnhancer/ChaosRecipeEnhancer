@@ -82,6 +82,10 @@ namespace EnhancePoE.Model
             {
                 result += nl + tab + "HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord";
             }
+            else
+            {
+                result += nl + tab + "HasInfluence None";
+            }
             result = result  + nl + tab  + "Rarity Rare" + nl + tab + "Identified False" + nl + tab;
             if (!influenced && onlyChaos)
             {

@@ -268,6 +268,8 @@ namespace EnhancePoE
 
         public void RunOverlay()
         {
+            Trace.WriteLine(ForegroundWindows.GetForegroundProcessName(), "focused");
+
             if (overlay.IsOpen)
             {
                 overlay.Hide();

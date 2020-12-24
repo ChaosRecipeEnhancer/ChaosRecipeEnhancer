@@ -166,6 +166,7 @@ namespace EnhancePoE
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
+            
             RunFetching();
         }
 
