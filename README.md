@@ -279,6 +279,7 @@ Although there are 2 points which could be problematic:
 
  - fixed bug where influenced items got hidden
  - (probably) fixed crash while fetching
+ - fixed bug where exalted orb recipe rules did not write to itemfilter
  
 
 #### 1.1.0
