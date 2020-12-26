@@ -362,6 +362,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -1089,15 +1097,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Chaos Recipe Enhancer"
-        "ProductCode" = "8:{F1562FFF-00B2-4C49-9936-60DFBE909D59}"
-        "PackageCode" = "8:{FA2DE8F0-0A56-47CC-ABC4-75ECD73C66A3}"
+        "ProductCode" = "8:{3BE071C2-FA96-4A09-89B8-1D2D34C394E7}"
+        "PackageCode" = "8:{C7389CEE-E341-43E6-9307-A590E96FF6C8}"
         "UpgradeCode" = "8:{9ED38D60-F070-4A5B-A4CB-9DB37E856451}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.1.0"
+        "ProductVersion" = "8:1.1.1"
         "Manufacturer" = "8:kosace"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

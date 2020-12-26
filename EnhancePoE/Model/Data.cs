@@ -101,6 +101,8 @@ namespace EnhancePoE
             Item minItem = null;
             double minDistance = double.PositiveInfinity;
 
+
+            // TODO: crashes here after some time
             foreach (StashTab s in StashTabList.StashTabs)
             {
                 foreach (Item i in ((List<Item>)Utility.GetPropertyValue(s, listName)))
@@ -225,212 +227,6 @@ namespace EnhancePoE
                 FillItemSetsInfluenced();
             }
         }
-
-        // tries to add item, if item added returns
-        //private static bool AddChaosItemToItemSet(ItemSet set)
-        //{
-
-        //    Item minItem = null;
-        //    //double minDistance = 1000.00;
-
-        //    foreach(StashTab s in StashTabList.StashTabs)
-        //    {
-        //        foreach(Item i in s.ItemListChaos)
-        //        {
-        //            if (set.IsValidItem(i))
-        //            {
-        //                minItem = i;
-        //            }
-        //        }
-        //    }
-
-        //    if(minItem != null)
-        //    {
-        //        set.AddItem(minItem);
-        //        StashTab tab = GetStashTabFromItem(minItem);
-        //        tab.ItemListChaos.Remove(minItem);
-        //        return true;
-        //    }
-        //    return false;
-
-
-
-        //foreach (StashTab s in StashTabList.StashTabs)
-        //{
-        //    for(int i = s.ItemListChaos.Count -1; i > -1; i--)
-        //    {
-        //        if (set.AddItem(s.ItemListChaos[i]))
-        //        {
-
-        //            s.ItemListChaos.RemoveAt(i);
-        //            return true;
-        //        }
-        //    }
-        //    //foreach (Item item in s.ItemListChaos)
-        //    //{
-        //    //    if (set.AddItem(item))
-        //    //    {
-        //    //        s.ItemListChaos.Remove(item);
-        //    //        return true;
-        //    //    }
-        //    //}
-        //}
-        //return false;
-        //}
-
-        // keeps adding items, breaks when full
-        //private static void FillItemSetWithRegalItems(ItemSet set)
-        //{
-        //    double minDistance;
-        //    Item minItem;
-
-        //    while (set.EmptyItemSlots.Count != 0)
-        //    {
-        //        minItem = null;
-        //        minDistance = 1000.00;
-
-        //        foreach (StashTab s in StashTabList.StashTabs)
-        //        {
-        //            foreach (Item i in s.ItemList)
-        //            {
-        //                if (set.IsValidItem(i))
-        //                {
-        //                    if (set.GetItemDistance(i) < minDistance)
-        //                    {
-        //                        Trace.WriteLine(minDistance, "minDistance");
-
-        //                        minDistance = set.GetItemDistance(i);
-        //                        minItem = i;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        if (minItem != null)
-        //        {
-        //            set.AddItem(minItem);
-        //            StashTab tab = GetStashTabFromItem(minItem);
-        //            tab.ItemList.Remove(minItem);
-        //        }
-        //        else
-        //        {
-        //            return;
-        //        }
-        //    }
-
-
-
-
-        //foreach (StashTab s in StashTabList.StashTabs)
-        //{
-        //    for(int i = s.ItemList.Count -1; i > -1; i--)
-        //    {
-        //        if (set.AddItem(s.ItemList[i]))
-        //        {
-        //            s.ItemList.RemoveAt(i);
-        //        }
-        //        if (set.EmptyItemSlots.Count == 0)
-        //        {
-        //            return;
-        //        }
-        //    }
-        //}
-        //}
-
-        // keeps adding items breaks when full
-        //private static void FillItemSetWithChaosItems(ItemSet set)
-        //{
-        //    double minDistance;
-        //    Item minItem;
-        //    while (set.EmptyItemSlots.Count != 0)
-        //    {
-
-        //        minItem = null;
-        //        minDistance = 1000;
-
-        //        foreach (StashTab s in StashTabList.StashTabs)
-        //        {
-        //            foreach (Item i in s.ItemListChaos)
-        //            {
-        //                if (set.IsValidItem(i))
-        //                {
-        //                    if (set.GetItemDistance(i) < minDistance)
-        //                    {
-        //                        Trace.WriteLine(minDistance, "minDistance");
-
-        //                        minDistance = set.GetItemDistance(i);
-        //                        minItem = i;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        if (minItem != null)
-        //        {
-        //            set.AddItem(minItem);
-        //            StashTab tab = GetStashTabFromItem(minItem);
-        //            tab.ItemListChaos.Remove(minItem);
-        //        }
-        //        else
-        //        {
-        //            return;
-        //        }
-        //    }
-
-        //foreach (StashTab s in StashTabList.StashTabs)
-        //{
-        //    for(int i = s.ItemListChaos.Count -1; i > -1; i--)
-        //    {
-        //        if (set.AddItem(s.ItemListChaos[i]))
-        //        {
-        //            s.ItemListChaos.RemoveAt(i);
-        //        }
-        //        if (set.EmptyItemSlots.Count == 0)
-        //        {
-        //            return;
-        //        }
-        //    }
-
-        //foreach (Item item in s.ItemListChaos)
-        //{
-        //    if (set.AddItem(item))
-        //    {
-        //        s.ItemListChaos.Remove(item);
-        //    }
-        //    if (set.EmptyItemSlots.Count == 0)
-        //    {
-        //        return;
-        //    }
-        //}
-        //}
-        //}
-
-        //private static async void FillItemSets()
-        //{
-        //    await Task.Run(() =>
-        //    {
-        //        //Trace.WriteLine("start new works");
-        //        foreach (ItemSet i in ItemSetList)
-        //        {
-        //            AddChaosItemToItemSet(i);
-        //            FillItemSetWithRegalItems(i);
-        //            FillItemSetWithChaosItems(i);
-        //        }
-        //        if (Properties.Settings.Default.ExaltedRecipe)
-        //        {
-        //            FillItemSetsInfluenced();
-        //        }
-        //    }, ct);
-
-        //foreach (ItemSet i in ItemSetList)
-        //{
-        //    AddChaosItemToItemSet(i);
-        //    FillItemSetWithRegalItems(i);
-        //    FillItemSetWithChaosItems(i);
-        //}
-        //if (Properties.Settings.Default.ExaltedRecipe)+
-        //{
-        //    FillItemSetsInfluenced();
-        //}
-        //}
 
         private static void FillItemSetsInfluenced()
         {
@@ -738,23 +534,23 @@ namespace EnhancePoE
                     string newFilter = FilterGeneration.GenerateLootFilter(oldFilter, sectionList);
                     FilterGeneration.WriteLootfilter(newFilter);
 
-                    //if (Properties.Settings.Default.ExaltedRecipe)
-                    //{
-                    //    List<string> sectionListInfluenced = new List<string>();
-                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Rings", true));
-                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Amulets", true));
-                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Belts", true));
-                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Helmets", true));
-                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Gloves", true));
-                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Boots", true));
-                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Body Armours", true));
-                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", true));
-                    //    sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", true));
+                    if (Properties.Settings.Default.ExaltedRecipe)
+                    {
+                        List<string> sectionListInfluenced = new List<string>();
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Rings", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Amulets", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Belts", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Helmets", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Gloves", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Boots", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Body Armours", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", true));
 
-                    //    string oldFilter2 = FilterGeneration.OpenLootfilter();
-                    //    string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
-                    //    FilterGeneration.WriteLootfilter(newFilter2);
-                    //}
+                        string oldFilter2 = FilterGeneration.OpenLootfilter();
+                        string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
+                        FilterGeneration.WriteLootfilter(newFilter2);
+                    }
                 }
 
                 if (Properties.Settings.Default.Sound)
@@ -820,9 +616,30 @@ namespace EnhancePoE
                         s.DeactivateItemCells();
                         s.TabHeaderColor = Brushes.Transparent;
                     }
+
+                    // remove and sound if itemlist empty
+                    if(ItemSetListHighlight.Count > 0)
+                    {
+                        if (ItemSetListHighlight[0].ItemList.Count == 0)
+                        {
+                            ItemSetListHighlight.RemoveAt(0);
+                            PlayerSet.Dispatcher.Invoke(() =>
+                            {
+                                PlayNotificationSoundSetPicked();
+                            });
+                        }
+                    }
+                    else
+                    {
+                        PlayerSet.Dispatcher.Invoke(() =>
+                        {
+                            PlayNotificationSoundSetPicked();
+                        });
+                    }
+
+                    // next item if itemlist not empty
                     if (ItemSetListHighlight.Count > 0)
                     {
-
                         if (ItemSetListHighlight[0].ItemList.Count > 0 && ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
                         {
                             Item highlightItem = ItemSetListHighlight[0].ItemList[0];
@@ -841,14 +658,9 @@ namespace EnhancePoE
                                 ItemSetListHighlight[0].ItemList.RemoveAt(0);
                             }
                             //check for full sets
-                            if (ItemSetListHighlight[0].ItemList.Count <= 0)
-                            {
-                                ItemSetListHighlight.RemoveAt(0);
-                                PlayerSet.Dispatcher.Invoke(() =>
-                                {
-                                    PlayNotificationSoundSetPicked();
-                                });
-                            }
+                            //if (ItemSetListHighlight[0].ItemList.Count <= 0)
+                            //{
+                            //}
                         }
                     }
                 }

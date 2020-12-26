@@ -88,22 +88,25 @@ namespace EnhancePoE
             await this.Dispatcher.Invoke(async() =>
             {
                 GetFrequency();
-                await ApiAdapter.GenerateUri();
-                await ApiAdapter.GetItems();
-            });
-
-            try
-            {
-                await Task.Run(() =>
+                if(await ApiAdapter.GenerateUri())
                 {
-                    Data.CheckActives();
-                    SetOpacity();
-                }, Data.ct);
-            }
-            catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
-            {
-                Trace.WriteLine("abort");
-            }
+                    if(await ApiAdapter.GetItems())
+                    {
+                        try
+                        {
+                            await Task.Run(() =>
+                            {
+                                Data.CheckActives();
+                                SetOpacity();
+                            }, Data.ct);
+                        }
+                        catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
+                        {
+                            Trace.WriteLine("abort");
+                        }
+                    }
+                }
+            });
         }
 
 
@@ -173,7 +176,7 @@ namespace EnhancePoE
         // TODO: find better algo for getting frequency, maybe implementing response header thresholds
         private static void GetFrequency()
         {
-            int addedTime = 0;
+            int addedTime = 5000;
             if(Properties.Settings.Default.StashTabIndices != "")
             {
                 addedTime += (Properties.Settings.Default.StashTabIndices.Length / 2) * 1000;

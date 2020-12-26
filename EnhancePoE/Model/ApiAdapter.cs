@@ -17,7 +17,7 @@ namespace EnhancePoE
         private static StashTabPropsList PropsList { get; set; }
         public static bool FetchError { get; set; } = false;
         public static bool FetchingDone { get; set; } = false;
-        public static async Task GenerateUri()
+        public static async Task<bool> GenerateUri()
         {
             FetchError = false;
             FetchingDone = false;
@@ -34,9 +34,8 @@ namespace EnhancePoE
                 {
                     GenerateStashTabs();
                     GenerateStashtabUris(accName, league);
+                    return true;
                 }
-
-
 
                 // https://www.pathofexile.com/character-window/get-stash-items?accountName=kosace&tabIndex=0&league=Heist
             }
@@ -44,6 +43,7 @@ namespace EnhancePoE
             {
                 MessageBox.Show("Missing Settings!" +  Environment.NewLine + "Please set Accountname, Stash Tab and League.");
             }
+            return false;
         }
 
         private static void GenerateStashTabs()
@@ -172,21 +172,21 @@ namespace EnhancePoE
             IsFetching = false;
         }
 
-        public async static Task GetItems()
+        public async static Task<bool> GetItems()
         {
             if (IsFetching)
             {
                 Trace.WriteLine("already fetching");
-                return;
+                return false;
             }
             if (Properties.Settings.Default.SessionId == "")
             {
                 MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set PoE Session Id.");
-                return;
+                return false;
             }
             if (FetchError)
             {
-                return;
+                return false;
             }
             IsFetching = true;
             List<Uri> usedUris = new List<Uri>();
@@ -223,6 +223,7 @@ namespace EnhancePoE
                             {
                                 FetchError = true;
                                 System.Windows.MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return false;
                             }
                         }
                     }
@@ -233,6 +234,7 @@ namespace EnhancePoE
             MainWindow.overlay.OverlayProgressBar.IsIndeterminate = false;
             IsFetching = false;
             FetchingDone = true;
+            return true;
         }
     }
 }
