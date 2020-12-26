@@ -278,6 +278,7 @@ Although there are 2 points which could be problematic:
 #### 1.1.1
 
  - fixed bug where influenced items got hidden
+ - (probably) fixed crash while fetching
  
 
 #### 1.1.0
