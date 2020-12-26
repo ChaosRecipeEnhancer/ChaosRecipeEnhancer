@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.1.0
+#### Current Version 1.1.1
 
 For details on changes, check the Change Log at the bottom of this site.
 
@@ -274,6 +274,14 @@ Although there are 2 points which could be problematic:
   
  
 ## Change Log
+
+#### 1.1.1
+
+ - fixed bug where influenced items got hidden
+ - (probably) fixed crash while fetching
+ - fixed bug where exalted orb recipe rules did not write to itemfilter
+ - fixed bug in item by item mode where sound was not playing on last item
+ 
 
 #### 1.1.0
 
