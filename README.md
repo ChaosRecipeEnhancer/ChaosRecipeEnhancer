@@ -279,6 +279,7 @@ Although there are 2 points which could be problematic:
 
  - fixed bug where highlight sound played with empty stashtabs
  - fetching does not resume when closing and opening the overlay anymore
+ - lootfilter now always shows 6 links and 6 sockets even when recipe section at top
 
 #### 1.1.1
 
