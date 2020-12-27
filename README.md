@@ -275,6 +275,11 @@ Although there are 2 points which could be problematic:
  
 ## Change Log
 
+#### 1.1.2
+
+ - fixed bug where highlight sound played with empty stashtabs
+ - fetching does not resume when closing and opening the overlay anymore
+
 #### 1.1.1
 
  - fixed bug where influenced items got hidden
