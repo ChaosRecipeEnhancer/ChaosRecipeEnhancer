@@ -606,7 +606,7 @@ namespace EnhancePoE
         // TODO: make tabheaderwidth single instance for only changing once
         private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if(StashTabList.StashTabs != null)
+            if(StashTabList.StashTabs.Count > 0)
             {
                 foreach(StashTab s in StashTabList.StashTabs)
                 {

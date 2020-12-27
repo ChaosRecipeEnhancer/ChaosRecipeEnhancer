@@ -311,7 +311,7 @@ namespace EnhancePoE
                 bool filterActive = Properties.Settings.Default.LootfilterActive;
 
                 SetTargetAmount = 0;
-                if (StashTabList.StashTabs != null)
+                if (StashTabList.StashTabs.Count > 0)
                 {
                     foreach (StashTab s in StashTabList.StashTabs)
                     {
@@ -631,10 +631,14 @@ namespace EnhancePoE
                     }
                     else
                     {
-                        PlayerSet.Dispatcher.Invoke(() =>
+                        if(ItemSetListHighlight.Count > 0)
                         {
-                            PlayNotificationSoundSetPicked();
-                        });
+                            PlayerSet.Dispatcher.Invoke(() =>
+                            {
+                                PlayNotificationSoundSetPicked();
+                            });
+                        }
+
                     }
 
                     // next item if itemlist not empty

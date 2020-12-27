@@ -10,9 +10,8 @@ namespace EnhancePoE.Model
 {
     static class StashTabList
     {
-        public static List<StashTab> StashTabs { get; set; } = null;
+        public static List<StashTab> StashTabs { get; set; } = new List<StashTab>();
         public static List<int> StashTabIndices { get; set; }
-
         public static void GetStashTabIndices()
         {
             if(Properties.Settings.Default.StashTabIndices != "")

@@ -258,11 +258,12 @@ namespace EnhancePoE
 
 
             IsOpen = true;
-            if (FetchingActive)
-            {
-                aTimer.Enabled = true;
-                FetchData();
-            }
+            FetchButtonBottomContent.Text = "Start";
+            //if (FetchingActive)
+            //{
+            //    aTimer.Enabled = true;
+            //    FetchData();
+            //}
             //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Stop Overlay";
 
             base.Show();

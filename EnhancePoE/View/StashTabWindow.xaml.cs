@@ -121,7 +121,7 @@ namespace EnhancePoE.View
             {
                 ChaosRecipeEnhancer.aTimer.Enabled = false;
             }
-            if (StashTabList.StashTabs != null && StashTabList.StashTabs.Count != 0)
+            if (StashTabList.StashTabs.Count != 0)
             {
                 IsOpen = true;
                 OverlayStashTabList.Clear();
