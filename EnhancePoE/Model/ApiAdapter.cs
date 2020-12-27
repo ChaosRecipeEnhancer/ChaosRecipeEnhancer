@@ -7,6 +7,7 @@ using System.Windows;
 using System.Text.Json;
 using System.Net;
 using EnhancePoE.Model;
+using System.Linq;
 
 namespace EnhancePoE
 {
@@ -155,6 +156,12 @@ namespace EnhancePoE
                             string resContent = await content.ReadAsStringAsync();
                             //Trace.Write(resContent);
                             PropsList = JsonSerializer.Deserialize<StashTabPropsList>(resContent);
+
+                            string rateLimit = res.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
+                            string rateLimitState = res.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
+                            Trace.WriteLine(rateLimit, "rate limit");
+                            Trace.WriteLine(rateLimitState, "rate limit state");
+
                         }
                     }
                     else

@@ -142,6 +142,7 @@
     <Compile Include="Model\ForegroundWindows.cs" />
     <Compile Include="Model\ItemSet.cs" />
     <Compile Include="Model\MouseHook.cs" />
+    <Compile Include="Model\RateLimit.cs" />
     <Compile Include="Model\StashTabList.cs" />
     <Compile Include="Model\StashTabPropsList.cs" />
     <Compile Include="Model\Utility.cs" />
