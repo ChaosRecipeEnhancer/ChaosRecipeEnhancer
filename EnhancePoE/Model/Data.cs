@@ -765,6 +765,11 @@ namespace EnhancePoE
             {
                 return;
             }
+            if (ItemSetList == null)
+            {
+                return;
+            }
+            //Trace.WriteLine(StashTabList.StashTabs.Count, "stashtab count");
             foreach (StashTab s in StashTabList.StashTabs)
             {
                 s.PrepareOverlayList();

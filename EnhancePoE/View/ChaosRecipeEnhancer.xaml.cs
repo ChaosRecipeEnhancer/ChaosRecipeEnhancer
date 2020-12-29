@@ -120,6 +120,7 @@ namespace EnhancePoE
                         catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
                         {
                             Trace.WriteLine("abort");
+                            CalculationActive = false;
                             this.Dispatcher.Invoke(() =>
                             {
                                 this.OverlayProgressBar.IsIndeterminate = false;
@@ -129,21 +130,29 @@ namespace EnhancePoE
                         }
                     }
                 }
-                if(RateLimit.BanTime > 0)
-                {
-                    aTimer.Enabled = false;
-                    await Task.Delay(RateLimit.BanTime * 1000);
-                    RateLimit.BanTime = 0;
-                    aTimer.Enabled = true;
-                }
                 if (RateLimit.RateLimitExceeded)
                 {
+                    // TODO: show rate limit exceeded in ui
+                    MainWindow.overlay.WarningMessage = "Rate Limit Exceeded! Waiting...";
+                    MainWindow.overlay.ShadowOpacity = 1;
+                    MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
                     aTimer.Enabled = false;
                     await Task.Delay(RateLimit.GetSecondsToWait() * 1000);
                     RateLimit.RequestCounter = 0;
                     RateLimit.RateLimitExceeded = false;
                     aTimer.Enabled = true;
                 }
+                if (RateLimit.BanTime > 0)
+                {
+                    MainWindow.overlay.WarningMessage = "Temporary Ban! Waiting...";
+                    MainWindow.overlay.ShadowOpacity = 1;
+                    MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                    aTimer.Enabled = false;
+                    await Task.Delay(RateLimit.BanTime * 1000);
+                    RateLimit.BanTime = 0;
+                    aTimer.Enabled = true;
+                }
+
             });
         }
 
@@ -191,9 +200,9 @@ namespace EnhancePoE
                         {
                             MainWindow.stashTabOverlay.Hide();
                         }
-                        //FetchData();
+                        FetchData();
                         //aTimer.Interval = 1000;
-                        aTimer.Enabled = true;
+                        //aTimer.Enabled = true;
                         FetchingActive = true;
                         //RefreshButton.Content = "Stop";
                         FetchButtonBottomContent.Text = "Stop";
