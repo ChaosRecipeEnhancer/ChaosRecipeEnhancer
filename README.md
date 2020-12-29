@@ -284,6 +284,10 @@ Although there are 2 points which could be problematic:
  - changed fetching, it is way faster now
  - added rate limit calculations, now it should be impossible to get request banned
  - added warnings for temporary bans and if you exceed the rate limit
+ - crash reports should now appear correctly
+ - added Overlay modes
+ - added Minified Overlay UI
+ - added Buttons Only Overlay UI
  
 #### 1.1.1
 
