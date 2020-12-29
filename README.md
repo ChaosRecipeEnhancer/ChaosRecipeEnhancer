@@ -280,6 +280,9 @@ Although there are 2 points which could be problematic:
  - fixed bug where highlight sound played with empty stashtabs
  - lootfilter now prevents hiding of 6 link and 6 socket items
  - added Save Button, the app will still save settings when you close it regularly
+ - changed fetching, it is way faster now
+ - added rate limit calculations, now it should be impossible to get request banned
+ - added warnings for temporary bans and if you exceed the rate limit
  
 #### 1.1.1
 
