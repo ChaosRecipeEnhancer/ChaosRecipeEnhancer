@@ -279,7 +279,8 @@ Although there are 2 points which could be problematic:
 
  - fixed bug where highlight sound played with empty stashtabs
  - lootfilter now prevents hiding of 6 link and 6 socket items
-
+ - added Save Button, the app will still save settings when you close it regularly
+ 
 #### 1.1.1
 
  - fixed bug where influenced items got hidden
