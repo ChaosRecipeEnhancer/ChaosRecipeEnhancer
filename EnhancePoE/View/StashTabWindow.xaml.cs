@@ -25,8 +25,6 @@ namespace EnhancePoE.View
     /// Interaction logic for StashTabWindow.xaml
     /// </summary>
     /// 
-    // TODO: fix bug where transparentize not applying after editing
-    // TODO: update tab header gap and tab header width dynamically
 
     public partial class StashTabWindow : Window, INotifyPropertyChanged
     {

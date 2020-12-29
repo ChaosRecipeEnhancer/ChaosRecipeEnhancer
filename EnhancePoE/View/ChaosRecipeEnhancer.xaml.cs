@@ -88,6 +88,11 @@ namespace EnhancePoE
             MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Hidden;
             //aTimer.Stop();
             CalculationActive = true;
+            this.Dispatcher.Invoke(() =>
+            {
+                this.OverlayProgressBar.IsIndeterminate = true;
+
+            });
             await this.Dispatcher.Invoke(async() =>
             {
                 GetFrequency();
@@ -105,13 +110,22 @@ namespace EnhancePoE
                                 Trace.WriteLine("timer enabled");
                                 aTimer.Enabled = true;
                                 CalculationActive = false;
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    this.OverlayProgressBar.IsIndeterminate = false;
 
+                                });
                             }, Data.ct);
                         }
                         catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
                         {
                             Trace.WriteLine("abort");
-                            CalculationActive = false;
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                this.OverlayProgressBar.IsIndeterminate = false;
+
+                            });
+
                         }
                     }
                 }

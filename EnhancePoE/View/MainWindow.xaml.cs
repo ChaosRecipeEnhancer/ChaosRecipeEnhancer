@@ -99,6 +99,7 @@ namespace EnhancePoE
             LoadModeVisibility();
             // add Action to MouseHook
             MouseHook.MouseAction += new EventHandler(Coordinates.Event);
+            RateLimit.InitializeRateLimitTimer();
         }
 
         private void InitializeHotkeys()
@@ -602,8 +603,6 @@ namespace EnhancePoE
             stashTabOverlay.TabHeaderGap = new Thickness(Properties.Settings.Default.TabHeaderGap, 0, Properties.Settings.Default.TabHeaderGap, 0);
         }
 
-
-        // TODO: make tabheaderwidth single instance for only changing once
         private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if(StashTabList.StashTabs.Count > 0)

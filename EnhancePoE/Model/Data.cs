@@ -11,7 +11,6 @@ using EnhancePoE.Model;
 
 namespace EnhancePoE
 {
-    // TODO: rework to static class
     public static class Data
     {
 

@@ -129,11 +129,20 @@ namespace EnhancePoE
                 MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set PoE Session Id.");
                 return;
             }
+            // check rate limit
+            RateLimit.WaitIfBan();
+            if(RateLimit.RequestCounter >= RateLimit.MaximumRequests - 2)
+            {
+                RateLimit.RateLimitExceeded = true;
+                return;
+            }
+            if (!RateLimit.RateLimitTimer.Enabled || !RateLimit.RateLimitTimerHigh.Enabled)
+            {
+                RateLimit.RateLimitTimer.Enabled = true;
+                RateLimit.RateLimitTimerHigh.Enabled = true;
+            }
             IsFetching = true;
             Uri propsUri = new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabs=1&league={league}");
-
-            // start loading bar
-            MainWindow.overlay.OverlayProgressBar.IsIndeterminate = true;
 
             string sessionId = Properties.Settings.Default.SessionId;
 
@@ -143,9 +152,6 @@ namespace EnhancePoE
             using (var handler = new HttpClientHandler() { CookieContainer = cC })
             using (HttpClient client = new HttpClient(handler))
             {
-
-
-
                 //Trace.WriteLine("is here");
 
                 using (HttpResponseMessage res = await client.GetAsync(propsUri))
@@ -160,25 +166,25 @@ namespace EnhancePoE
                             //Trace.Write(resContent);
                             PropsList = JsonSerializer.Deserialize<StashTabPropsList>(resContent);
 
+                            Trace.WriteLine(res.Headers, "res headers");
+
+                            // get new rate limit values
+                            RateLimit.IncreaseRequestCounter();
                             string rateLimit = res.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
                             string rateLimitState = res.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
-                            Trace.WriteLine(rateLimit, "rate limit");
-                            Trace.WriteLine(rateLimitState, "rate limit state");
+                            RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
 
                         }
                     }
                     else
                     {
                         System.Windows.MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
-                        //Trace.WriteLine("fetching props failed!");
                         FetchError = true;
-                        //Trace.WriteLine(res.StatusCode);
                     }
                 }
             }
 
-            await Task.Delay(1000);
-            MainWindow.overlay.OverlayProgressBar.IsIndeterminate = false;
+            //await Task.Delay(1000);
             IsFetching = false;
         }
 
@@ -198,11 +204,14 @@ namespace EnhancePoE
             {
                 return false;
             }
+            // check rate limit
+            if (RateLimit.RequestCounter >= RateLimit.MaximumRequests - StashTabList.StashTabs.Count - 2)
+            {
+                RateLimit.RateLimitExceeded = true;
+                return false;
+            }
             IsFetching = true;
             List<Uri> usedUris = new List<Uri>();
-
-            // start loading bar
-            MainWindow.overlay.OverlayProgressBar.IsIndeterminate = true;
 
             string sessionId = Properties.Settings.Default.SessionId;
 
@@ -212,6 +221,8 @@ namespace EnhancePoE
             {
                 foreach (StashTab i in StashTabList.StashTabs)
                 {
+                    // check rate limit ban
+                    RateLimit.WaitIfBan();
                     if (!usedUris.Contains(i.StashTabUri))
                     {
                         cookieContainer.Add(i.StashTabUri, new Cookie("POESESSID", sessionId));
@@ -222,6 +233,13 @@ namespace EnhancePoE
                             {
                                 using (HttpContent content = res.Content)
                                 {
+                                    // get new rate limit values
+                                    RateLimit.IncreaseRequestCounter();
+                                    string rateLimit = res.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
+                                    string rateLimitState = res.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
+                                    RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
+
+                                    // deserialize response
                                     string resContent = await content.ReadAsStringAsync();
                                     ItemList deserializedContent = JsonSerializer.Deserialize<ItemList>(resContent);
                                     i.ItemList = deserializedContent.items;
@@ -237,11 +255,10 @@ namespace EnhancePoE
                             }
                         }
                     }
-                    await Task.Delay(1000);
+                    //await Task.Delay(1000);
                 }
             }
 
-            MainWindow.overlay.OverlayProgressBar.IsIndeterminate = false;
             IsFetching = false;
             FetchingDone = true;
             return true;
