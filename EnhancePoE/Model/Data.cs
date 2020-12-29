@@ -142,7 +142,7 @@ namespace EnhancePoE
                                 {
                                     if (set.GetItemDistance(i) < minDistance)
                                     {
-                                        Trace.WriteLine(minDistance, "minDistance");
+                                        //Trace.WriteLine(minDistance, "minDistance");
                                         minDistance = set.GetItemDistance(i);
                                         minItem = i;
                                     }

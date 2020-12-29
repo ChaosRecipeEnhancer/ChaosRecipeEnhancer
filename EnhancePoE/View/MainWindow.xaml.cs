@@ -99,7 +99,6 @@ namespace EnhancePoE
             LoadModeVisibility();
             // add Action to MouseHook
             MouseHook.MouseAction += new EventHandler(Coordinates.Event);
-            RateLimit.InitializeRateLimitTimer();
         }
 
         private void InitializeHotkeys()

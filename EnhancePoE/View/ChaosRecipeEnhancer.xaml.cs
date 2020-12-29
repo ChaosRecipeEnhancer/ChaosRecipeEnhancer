@@ -129,6 +129,21 @@ namespace EnhancePoE
                         }
                     }
                 }
+                if(RateLimit.BanTime > 0)
+                {
+                    aTimer.Enabled = false;
+                    await Task.Delay(RateLimit.BanTime * 1000);
+                    RateLimit.BanTime = 0;
+                    aTimer.Enabled = true;
+                }
+                if (RateLimit.RateLimitExceeded)
+                {
+                    aTimer.Enabled = false;
+                    await Task.Delay(RateLimit.GetSecondsToWait() * 1000);
+                    RateLimit.RequestCounter = 0;
+                    RateLimit.RateLimitExceeded = false;
+                    aTimer.Enabled = true;
+                }
             });
         }
 

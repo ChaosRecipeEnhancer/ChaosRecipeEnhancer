@@ -33,12 +33,14 @@ namespace EnhancePoE
                 string accName = Properties.Settings.Default.accName.Trim();
                 string league = Properties.Settings.Default.League.Trim();
 
-                await GetProps(accName, league);
-                if (!FetchError)
+                if(await GetProps(accName, league))
                 {
-                    GenerateStashTabs();
-                    GenerateStashtabUris(accName, league);
-                    return true;
+                    if (!FetchError)
+                    {
+                        GenerateStashTabs();
+                        GenerateStashtabUris(accName, league);
+                        return true;
+                    }
                 }
 
                 // https://www.pathofexile.com/character-window/get-stash-items?accountName=kosace&tabIndex=0&league=Heist
@@ -117,29 +119,28 @@ namespace EnhancePoE
             }
         }
 
-        private static async Task GetProps(string accName, string league)
+        private static async Task<bool> GetProps(string accName, string league)
         {
             //Trace.WriteLine(IsFetching, "isfetching props");
             if(IsFetching)
             {
-                return;
+                return false;
             }
             if (Properties.Settings.Default.SessionId == "")
             {
                 MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set PoE Session Id.");
-                return;
+                return false;
             }
             // check rate limit
-            RateLimit.WaitIfBan();
-            if(RateLimit.RequestCounter >= RateLimit.MaximumRequests - 2)
+            if (RateLimit.CheckForBan())
+            {
+                return false;
+            }
+            // -1 for 1 request + 3 times if ratelimit high exceeded
+            if(RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - 4)
             {
                 RateLimit.RateLimitExceeded = true;
-                return;
-            }
-            if (!RateLimit.RateLimitTimer.Enabled || !RateLimit.RateLimitTimerHigh.Enabled)
-            {
-                RateLimit.RateLimitTimer.Enabled = true;
-                RateLimit.RateLimitTimerHigh.Enabled = true;
+                return false;
             }
             IsFetching = true;
             Uri propsUri = new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabs=1&league={league}");
@@ -169,23 +170,26 @@ namespace EnhancePoE
                             Trace.WriteLine(res.Headers, "res headers");
 
                             // get new rate limit values
-                            RateLimit.IncreaseRequestCounter();
+                            //RateLimit.IncreaseRequestCounter();
                             string rateLimit = res.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
                             string rateLimitState = res.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
+                            string responseTime = res.Headers.GetValues("Date").FirstOrDefault();
                             RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
-
+                            RateLimit.DeserializeResponseSeconds(responseTime);
                         }
                     }
                     else
                     {
                         System.Windows.MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
                         FetchError = true;
+                        return false;
                     }
                 }
             }
 
             //await Task.Delay(1000);
             IsFetching = false;
+            return true;
         }
 
         public async static Task<bool> GetItems()
@@ -205,7 +209,7 @@ namespace EnhancePoE
                 return false;
             }
             // check rate limit
-            if (RateLimit.RequestCounter >= RateLimit.MaximumRequests - StashTabList.StashTabs.Count - 2)
+            if (RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - StashTabList.StashTabs.Count - 4)
             {
                 RateLimit.RateLimitExceeded = true;
                 return false;
@@ -222,7 +226,10 @@ namespace EnhancePoE
                 foreach (StashTab i in StashTabList.StashTabs)
                 {
                     // check rate limit ban
-                    RateLimit.WaitIfBan();
+                    if (RateLimit.CheckForBan())
+                    {
+                        return false;
+                    }
                     if (!usedUris.Contains(i.StashTabUri))
                     {
                         cookieContainer.Add(i.StashTabUri, new Cookie("POESESSID", sessionId));
@@ -234,10 +241,12 @@ namespace EnhancePoE
                                 using (HttpContent content = res.Content)
                                 {
                                     // get new rate limit values
-                                    RateLimit.IncreaseRequestCounter();
+                                    //RateLimit.IncreaseRequestCounter();
                                     string rateLimit = res.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
                                     string rateLimitState = res.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
+                                    string responseTime = res.Headers.GetValues("Date").FirstOrDefault();
                                     RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
+                                    RateLimit.DeserializeResponseSeconds(responseTime);
 
                                     // deserialize response
                                     string resContent = await content.ReadAsStringAsync();
