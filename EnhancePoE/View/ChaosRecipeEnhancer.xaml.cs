@@ -15,13 +15,17 @@ namespace EnhancePoE
     {
 
 
+        // toggle fetch button
         public static bool FetchingActive { get; set;} = false;
+        // fetching and calculations currently active
+        public static bool CalculationActive { get; set; } = false;
         public static System.Timers.Timer aTimer;
 
         private static readonly double deactivatedOpacity = .1;
         private static readonly double activatedOpacity = 1;
 
         public bool IsOpen { get; set; } = false;
+
 
         private string _warningMessage;
         public string WarningMessage
@@ -65,8 +69,6 @@ namespace EnhancePoE
         }
 
         public static int FullSets { get; set; } = 0;
-
-
         public ChaosRecipeEnhancer()
         {
             InitializeComponent();
@@ -84,7 +86,8 @@ namespace EnhancePoE
             MainWindow.overlay.WarningMessage = "";
             MainWindow.overlay.ShadowOpacity = 0;
             MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Hidden;
-
+            //aTimer.Stop();
+            CalculationActive = true;
             await this.Dispatcher.Invoke(async() =>
             {
                 GetFrequency();
@@ -98,11 +101,17 @@ namespace EnhancePoE
                             {
                                 Data.CheckActives();
                                 SetOpacity();
+                                //ChaosRecipeEnhancer.aTimer.Enabled = true;
+                                Trace.WriteLine("timer enabled");
+                                aTimer.Enabled = true;
+                                CalculationActive = false;
+
                             }, Data.ct);
                         }
                         catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
                         {
                             Trace.WriteLine("abort");
+                            CalculationActive = false;
                         }
                     }
                 }
@@ -134,9 +143,8 @@ namespace EnhancePoE
                         return;
                     }
                 }
-                if (aTimer.Enabled)
+                if (CalculationActive || aTimer.Enabled)
                 {
-
                     Data.cs.Cancel();
                     aTimer.Enabled = false;
                     FetchingActive = false;
@@ -154,7 +162,7 @@ namespace EnhancePoE
                         {
                             MainWindow.stashTabOverlay.Hide();
                         }
-                        FetchData();
+                        //FetchData();
                         //aTimer.Interval = 1000;
                         aTimer.Enabled = true;
                         FetchingActive = true;
@@ -176,11 +184,11 @@ namespace EnhancePoE
         // TODO: find better algo for getting frequency, maybe implementing response header thresholds
         private static void GetFrequency()
         {
-            int addedTime = 5000;
-            if(Properties.Settings.Default.StashTabIndices != "")
-            {
-                addedTime += (Properties.Settings.Default.StashTabIndices.Length / 2) * 1000;
-            }
+            int addedTime = 0;
+            //if(Properties.Settings.Default.StashTabIndices != "")
+            //{
+            //    addedTime += (Properties.Settings.Default.StashTabIndices.Length / 2) * 1000;
+            //}
             aTimer.Interval = (Properties.Settings.Default.RefreshRate * 1000) + addedTime;
         }
 
@@ -249,21 +257,21 @@ namespace EnhancePoE
             IsOpen = false;
 
             aTimer.Enabled = false;
+            
             //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Run Overlay";
             base.Hide();
         }
 
         public new virtual void Show()
         {
-
-
             IsOpen = true;
             FetchButtonBottomContent.Text = "Start";
-            //if (FetchingActive)
-            //{
-            //    aTimer.Enabled = true;
-            //    FetchData();
-            //}
+            if (FetchingActive)
+            {
+                aTimer.Enabled = true;
+                //FetchData();
+                FetchButtonBottomContent.Text = "Stop";
+            }
             //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Stop Overlay";
 
             base.Show();

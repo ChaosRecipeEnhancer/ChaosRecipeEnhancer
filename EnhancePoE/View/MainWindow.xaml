@@ -759,7 +759,12 @@
 			<Button x:Name="RunButton"
 					Click="RunButton_Click"
 					Content="Run Overlay"
-					Grid.Column="2"
+					Grid.Column="3"
+					Grid.Row="7" />
+			<Button x:Name="SaveButton"
+					Click="SaveButton_Click_1"
+					Content="Save Settings"
+					Grid.Column="1"
 					Grid.Row="7" />
 			<TextBlock Grid.Column="3"
 					   Grid.Row="8"
