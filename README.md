@@ -278,6 +278,7 @@ Although there are 2 points which could be problematic:
 #### 1.1.2
 
  - fixed bug where highlight sound played with empty stashtabs
+ - fixed bug where stash overlay showed itemsets with no low ilvl item
  - lootfilter now prevents hiding of 6 link and 6 socket items
  - added Save Button, the app will still save settings when you close it regularly
  - changed fetching, it is way faster now
