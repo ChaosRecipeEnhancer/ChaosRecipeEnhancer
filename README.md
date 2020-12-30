@@ -177,7 +177,7 @@ Only shows each Button and the number of full sets.
 
 #### Show Item Amounts
 
-Only works in Standard Overlay Mode. Shows the amount of each item you have to fill full sets. Means if you have 5 helmets it shows you 5. But if you have 7 rings it shows you 3 because you can make 3 sets with 7 rings.
+Only works in Standard Overlay Mode. Shows the amount of each item you have to fill full sets. Means if you have 5 helmets it shows you 5. But if you have 7 rings it shows you 3 because you can make 3 sets with 7 rings. Itemlevels will be ignored.
 
 #### Hotkeys
 
