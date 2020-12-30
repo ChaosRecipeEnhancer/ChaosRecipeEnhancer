@@ -270,7 +270,7 @@ Make sure you do not close the overlay while selling. The data cannot be refresh
 
 #### The Stashtab Overlay is not aligned?
 
-You can align it yourself by going in edit mode. Press "Edit" on the Main Overlay and drag the Stashtab Overlay (at the top) around. In the bottom right corner there is a grip to resize the Stashtab Overlay.
+You can align it yourself by going in edit mode. Press "Edit" on top of the Stashtab Overlay and drag the Stashtab Overlay (at the top) around. In the bottom right corner there is a grip to resize the Stashtab Overlay.
 
 #### Is this tool safe?
 You can check and compile the sourcecode for yourself, so it should be safe as long as you are downloading it from here.
