@@ -156,6 +156,29 @@ The opacity of the Main Overlay from 0 to 1 which means 0% to 100%.
 
 When you close the Settings page it will minimize to the tray instead of terminating the tool.
 
+#### Overlay Mode
+
+Switches the Main Overlay modes.
+
+##### Standard
+
+Shows each itemtype and optionally their amounts. 
+
+##### Minified
+
+Smaller version of the standard overlay. Click on the number of sets (left) to open Stashtab Overlay or click on "S" (right) to start/ stop fetching. 
+
+Red Border means it is not fetching.
+Green Border means it is fetching.
+
+##### Only Buttons
+
+Only shows each Button and the number of full sets.
+
+#### Show Item Amounts
+
+Only works in Standard Overlay Mode. Shows the amount of each item you have to fill full sets. Means if you have 5 helmets it shows you 5. But if you have 7 rings it shows you 3 because you can make 3 sets with 7 rings.
+
 #### Hotkeys
 
 Here you can set hotkeys for showing/ hiding the Main Overlay, Stashtab Overlay and for starting/ stopping the fetching to the servers. 
@@ -288,6 +311,8 @@ Although there are 2 points which could be problematic:
  - added Overlay modes
  - added Minified Overlay UI
  - added Buttons Only Overlay UI
+ - added option to show item amounts (only in Standard mode)
+ - updated Guide
  
 #### 1.1.1
 
