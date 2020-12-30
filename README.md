@@ -57,7 +57,6 @@ The Main Overlay shows each itemtype with its color and while fetching data it s
 You can just drag the Main Overlay whereever you want, except if you set the opacity to 0 (better set it to 0.01).
 
  - Show Button: shows/ hides the StashTab Overlay
- - Edit Button: makes the StashTab Overlay clickable and drawable
  - Fetch Button: starts fetching items from PoE servers periodically
  
 There will be warning displayed in this overlay also:
@@ -65,12 +64,18 @@ There will be warning displayed in this overlay also:
  - Warning if you have full sets, but need lower ilvl items (ilvl 60-74)
  - Warning if you have full sets and need to sell them
  - Warning if you have full exalted shard recipe set
+ - Warning if you are temporarily banned from fetching from PoE servers
+ - Warning if you exceeded the rate limit
 
 #### Stashtab Overlay
 
 The Stashtab Overlay highlights items in a specific order if you have full sets in a stashtab. No more wondering which part is missing when selling. Also this way you can put 2 sets in one inventory. Leave it open when selling! Otherwise the highlighting will start from beginning with items you already sold.
 
 If you want to change position or size of the Stashtabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stashtabs Overlay around and resize it (bottom right corner), except if you set the opacity to 0 (better set it to 0.01). The TabHeader position and sizes can be modified in the Settings Page.
+
+At the top of the overlay you can find the
+
+ - Edit Button: makes the StashTab Overlay clickable and drawable
 
 #### Lootfilter
 
