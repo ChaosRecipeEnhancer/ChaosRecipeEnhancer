@@ -308,6 +308,7 @@ Although there are 2 points which could be problematic:
  - added rate limit calculations, now it should be impossible to get request banned
  - added warnings for temporary bans and if you exceed the rate limit
  - crash reports should now appear correctly
+ - now shows every itemtype in Overlay, including rings, belts and amulets
  - added Overlay modes
  - added Minified Overlay UI
  - added Buttons Only Overlay UI
