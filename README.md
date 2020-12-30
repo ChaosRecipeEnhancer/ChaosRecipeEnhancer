@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.1.1
+#### Current Version 1.1.2
 
 For details on changes, check the Change Log at the bottom of this site.
 
@@ -57,7 +57,6 @@ The Main Overlay shows each itemtype with its color and while fetching data it s
 You can just drag the Main Overlay whereever you want, except if you set the opacity to 0 (better set it to 0.01).
 
  - Show Button: shows/ hides the StashTab Overlay
- - Edit Button: makes the StashTab Overlay clickable and drawable
  - Fetch Button: starts fetching items from PoE servers periodically
  
 There will be warning displayed in this overlay also:
@@ -65,12 +64,18 @@ There will be warning displayed in this overlay also:
  - Warning if you have full sets, but need lower ilvl items (ilvl 60-74)
  - Warning if you have full sets and need to sell them
  - Warning if you have full exalted shard recipe set
+ - Warning if you are temporarily banned from fetching from PoE servers
+ - Warning if you exceeded the rate limit
 
 #### Stashtab Overlay
 
 The Stashtab Overlay highlights items in a specific order if you have full sets in a stashtab. No more wondering which part is missing when selling. Also this way you can put 2 sets in one inventory. Leave it open when selling! Otherwise the highlighting will start from beginning with items you already sold.
 
 If you want to change position or size of the Stashtabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stashtabs Overlay around and resize it (bottom right corner), except if you set the opacity to 0 (better set it to 0.01). The TabHeader position and sizes can be modified in the Settings Page.
+
+At the top of the overlay you can find the
+
+ - Edit Button: makes the StashTab Overlay clickable and draggable
 
 #### Lootfilter
 
@@ -155,6 +160,29 @@ The opacity of the Main Overlay from 0 to 1 which means 0% to 100%.
 #### Close to Tray
 
 When you close the Settings page it will minimize to the tray instead of terminating the tool.
+
+#### Overlay Mode
+
+Switches the Main Overlay modes.
+
+##### Standard
+
+Shows each itemtype and optionally their amounts. 
+
+##### Minified
+
+Smaller version of the standard overlay. Click on the number of sets (left) to open Stashtab Overlay or click on "S" (right) to start/ stop fetching. 
+
+Red Border means it is not fetching.
+Green Border means it is fetching.
+
+##### Only Buttons
+
+Only shows each Button and the number of full sets.
+
+#### Show Item Amounts
+
+Only works in Standard Overlay Mode. Shows the amount of each item you have to fill full sets. Means if you have 5 helmets it shows you 5. But if you have 7 rings it shows you 3 because you can make 3 sets with 7 rings. Itemlevels will be ignored.
 
 #### Hotkeys
 
@@ -242,7 +270,7 @@ Make sure you do not close the overlay while selling. The data cannot be refresh
 
 #### The Stashtab Overlay is not aligned?
 
-You can align it yourself by going in edit mode. Press "Edit" on the Main Overlay and drag the Stashtab Overlay (at the top) around. In the bottom right corner there is a grip to resize the Stashtab Overlay.
+You can align it yourself by going in edit mode. Press "Edit" on top of the Stashtab Overlay and drag the Stashtab Overlay (at the top) around. In the bottom right corner there is a grip to resize the Stashtab Overlay.
 
 #### Is this tool safe?
 You can check and compile the sourcecode for yourself, so it should be safe as long as you are downloading it from here.
@@ -278,8 +306,19 @@ Although there are 2 points which could be problematic:
 #### 1.1.2
 
  - fixed bug where highlight sound played with empty stashtabs
+ - fixed bug where stash overlay showed itemsets with no low ilvl item
  - lootfilter now prevents hiding of 6 link and 6 socket items
  - added Save Button, the app will still save settings when you close it regularly
+ - changed fetching, it is way faster now
+ - added rate limit calculations, now it should be impossible to get request banned
+ - added warnings for temporary bans and if you exceed the rate limit
+ - crash reports should now appear correctly
+ - now shows every itemtype in Overlay, including rings, belts and amulets
+ - added Overlay modes
+ - added Minified Overlay UI
+ - added Buttons Only Overlay UI
+ - added option to show item amounts (only in Standard mode)
+ - updated Guide
  
 #### 1.1.1
 
