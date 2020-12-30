@@ -96,6 +96,10 @@ namespace EnhancePoE.Model
                 result += "ItemLevel >= 60" + nl + tab;
             }
 
+            if(itemClass == "Body Armours")
+            {
+                result += "Sockets <= 5" + nl + tab + "LinkedSockets <= 5" + nl + tab;
+            }
 
             string baseType = "Class ";
 
@@ -108,6 +112,7 @@ namespace EnhancePoE.Model
             {
                 baseType += "\"Two Hand Swords\" \"Two Hand Axes\" \"Two Hand Maces\" \"Staves\" \"Warstaves\" \"Bows\"";
                 baseType += nl + tab + "Width <= 2" + nl + tab + "Height <= 3";
+                baseType += nl + tab + "Sockets <= 5" + nl + tab + "LinkedSockets <= 5";
             }
             else
             {

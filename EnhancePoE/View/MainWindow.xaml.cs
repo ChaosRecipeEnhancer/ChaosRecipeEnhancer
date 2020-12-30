@@ -99,6 +99,8 @@ namespace EnhancePoE
             LoadModeVisibility();
             // add Action to MouseHook
             MouseHook.MouseAction += new EventHandler(Coordinates.Event);
+
+            //throw new NullReferenceException();
         }
 
         private void InitializeHotkeys()
@@ -219,52 +221,52 @@ namespace EnhancePoE
         }
 
         // save all settings, recreate hotkeys
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Int32.TryParse(RefreshRate.Text, out int refresh))
-            {
-                if(refresh < 15)
-                {
-                    System.Windows.MessageBox.Show("Refreshrate has to be greater than 15!");
-                }
-                else
-                {
-                    Properties.Settings.Default.RefreshRate = refresh;
-                }
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("Refreshrate has to be a number!");
-            }
-            if (Int32.TryParse(Sets.Text, out int sets))
-            {
-                if (sets < 0)
-                {
-                    System.Windows.MessageBox.Show("Refreshrate has to be greater than 0!");
-                }
-                else
-                {
-                    Properties.Settings.Default.Sets = sets;
-                }
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("Number of Sets has to be a number!");
-            }
+        //private void SaveButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (Int32.TryParse(RefreshRate.Text, out int refresh))
+        //    {
+        //        if(refresh < 15)
+        //        {
+        //            System.Windows.MessageBox.Show("Refreshrate has to be greater than 15!");
+        //        }
+        //        else
+        //        {
+        //            Properties.Settings.Default.RefreshRate = refresh;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        System.Windows.MessageBox.Show("Refreshrate has to be a number!");
+        //    }
+        //    if (Int32.TryParse(Sets.Text, out int sets))
+        //    {
+        //        if (sets < 0)
+        //        {
+        //            System.Windows.MessageBox.Show("Refreshrate has to be greater than 0!");
+        //        }
+        //        else
+        //        {
+        //            Properties.Settings.Default.Sets = sets;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        System.Windows.MessageBox.Show("Number of Sets has to be a number!");
+        //    }
 
 
 
-            Trace.WriteLine(Properties.Settings.Default.YStashTabOverlay, "y");
-            Trace.WriteLine(Properties.Settings.Default.XStashTabOverlay, "x");
-            Trace.WriteLine(Properties.Settings.Default.LeftStashTabOverlay, "left");
-            Trace.WriteLine(Properties.Settings.Default.TopStashTabOverlay, "top");
+        //    Trace.WriteLine(Properties.Settings.Default.YStashTabOverlay, "y");
+        //    Trace.WriteLine(Properties.Settings.Default.XStashTabOverlay, "x");
+        //    Trace.WriteLine(Properties.Settings.Default.LeftStashTabOverlay, "left");
+        //    Trace.WriteLine(Properties.Settings.Default.TopStashTabOverlay, "top");
 
-            Properties.Settings.Default.accName = accountName.Text.ToString();
-            //Properties.Settings.Default.StashTabsString = SettingsSerializer.SerializeStashTab(stashTabsModel);
-            //Properties.Settings.Default.StashTabs = stashTabsModel;
-            Properties.Settings.Default.Save();
-            System.Windows.MessageBox.Show("Settings saved!");
-        }
+        //    Properties.Settings.Default.accName = accountName.Text.ToString();
+        //    //Properties.Settings.Default.StashTabsString = SettingsSerializer.SerializeStashTab(stashTabsModel);
+        //    //Properties.Settings.Default.StashTabs = stashTabsModel;
+        //    Properties.Settings.Default.Save();
+        //    System.Windows.MessageBox.Show("Settings saved!");
+        //}
 
         public void RunOverlay()
         {
@@ -602,11 +604,9 @@ namespace EnhancePoE
             stashTabOverlay.TabHeaderGap = new Thickness(Properties.Settings.Default.TabHeaderGap, 0, Properties.Settings.Default.TabHeaderGap, 0);
         }
 
-
-        // TODO: make tabheaderwidth single instance for only changing once
         private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if(StashTabList.StashTabs != null)
+            if(StashTabList.StashTabs.Count > 0)
             {
                 foreach(StashTab s in StashTabList.StashTabs)
                 {
@@ -627,6 +627,38 @@ namespace EnhancePoE
         public static void GenerateNewStashtabOverlay()
         {
             stashTabOverlay = new StashTabWindow();
+        }
+
+        private void SaveButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.Save();
+        }
+
+        private void OverlayModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(Properties.Settings.Default.OverlayMode == 0)
+            {
+                overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContent();
+            }
+            else if(Properties.Settings.Default.OverlayMode == 1)
+            {
+                overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContentMinified();
+            }
+            else if(Properties.Settings.Default.OverlayMode == 2)
+            {
+                overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayOnlyButtons();
+            }
+        }
+
+        private void ShowNumbersCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            overlay.AmountsVisibility = Visibility.Visible;
+        }
+
+        private void ShowNumbersCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            overlay.AmountsVisibility = Visibility.Hidden;
+
         }
     }
 }

@@ -25,8 +25,6 @@ namespace EnhancePoE.View
     /// Interaction logic for StashTabWindow.xaml
     /// </summary>
     /// 
-    // TODO: fix bug where transparentize not applying after editing
-    // TODO: update tab header gap and tab header width dynamically
 
     public partial class StashTabWindow : Window, INotifyPropertyChanged
     {
@@ -101,7 +99,7 @@ namespace EnhancePoE.View
 
             IsOpen = false;
             IsEditing = false;
-            MainWindow.overlay.OpenStashTabOverlay.Content = "Stash";
+            MainWindow.overlay.OpenStashOverlayButtonContent = "Stash";
             //MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
             //TextBlockList.Clear();
 
@@ -121,7 +119,7 @@ namespace EnhancePoE.View
             {
                 ChaosRecipeEnhancer.aTimer.Enabled = false;
             }
-            if (StashTabList.StashTabs != null && StashTabList.StashTabs.Count != 0)
+            if (StashTabList.StashTabs.Count != 0)
             {
                 IsOpen = true;
                 OverlayStashTabList.Clear();
@@ -219,7 +217,7 @@ namespace EnhancePoE.View
                     }
                 }
 
-                MainWindow.overlay.OpenStashTabOverlay.Content = "Hide";
+                MainWindow.overlay.OpenStashOverlayButtonContent = "Hide";
 
                 MouseHook.Start();
                 base.Show();

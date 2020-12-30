@@ -142,6 +142,7 @@
     <Compile Include="Model\ForegroundWindows.cs" />
     <Compile Include="Model\ItemSet.cs" />
     <Compile Include="Model\MouseHook.cs" />
+    <Compile Include="Model\RateLimit.cs" />
     <Compile Include="Model\StashTabList.cs" />
     <Compile Include="Model\StashTabPropsList.cs" />
     <Compile Include="Model\Utility.cs" />
@@ -157,6 +158,15 @@
     <Compile Include="UserControls\DynamicGridControlQuad.xaml.cs">
       <DependentUpon>DynamicGridControlQuad.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\MainOverlayContent.xaml.cs">
+      <DependentUpon>MainOverlayContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\MainOverlayContentMinified.xaml.cs">
+      <DependentUpon>MainOverlayContentMinified.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\MainOverlayOnlyButtons.xaml.cs">
+      <DependentUpon>MainOverlayOnlyButtons.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\StashTabWindow.xaml.cs">
       <DependentUpon>StashTabWindow.xaml</DependentUpon>
     </Compile>
@@ -165,6 +175,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\DynamicGridControlQuad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\MainOverlayContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\MainOverlayContentMinified.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\MainOverlayOnlyButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -277,6 +299,9 @@
     <Resource Include="coin.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\amulet.png" />
+    <Resource Include="Assets\belt.png" />
+    <Resource Include="Assets\ring.png" />
     <Content Include="Sounds\itemsPickedUp.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

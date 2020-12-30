@@ -1,10 +1,12 @@
 ﻿using EnhancePoE.Model;
+using EnhancePoE.UserControls;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace EnhancePoE
 {
@@ -15,13 +17,17 @@ namespace EnhancePoE
     {
 
 
+        // toggle fetch button
         public static bool FetchingActive { get; set;} = false;
+        // fetching and calculations currently active
+        public static bool CalculationActive { get; set; } = false;
         public static System.Timers.Timer aTimer;
 
         private static readonly double deactivatedOpacity = .1;
         private static readonly double activatedOpacity = 1;
 
         public bool IsOpen { get; set; } = false;
+
 
         private string _warningMessage;
         public string WarningMessage
@@ -64,9 +70,217 @@ namespace EnhancePoE
             }
         }
 
+        private string _fullSetsText = "0";
+        public string FullSetsText
+        {
+            get { return _fullSetsText; }
+            set
+            {
+                _fullSetsText = value;
+                OnPropertyChanged("FullSetsText");
+            }
+        }
+
+        private bool _isIndeterminate = false;
+        public bool IsIndeterminate
+        {
+            get { return _isIndeterminate; }
+            set
+            {
+                _isIndeterminate = value;
+                OnPropertyChanged("IsIndeterminate");
+            }
+        }
+
+        private string _fetchButtonBottomText = "Start";
+        public string FetchButtonBottomText
+        {
+            get { return _fetchButtonBottomText; }
+            set
+            {
+                _fetchButtonBottomText = value;
+                OnPropertyChanged("FetchButtonBottomText");
+            }
+        }
+
+        private string _openStashOverlayButtonContent = "Stash";
+        public string OpenStashOverlayButtonContent
+        {
+            get { return _openStashOverlayButtonContent; }
+            set
+            {
+                _openStashOverlayButtonContent = value;
+                OnPropertyChanged("OpenStashOverlayButtonContent");
+            }
+        }
+
+        private double _helmetOpacity = activatedOpacity;
+        public double HelmetOpacity
+        {
+            get { return _helmetOpacity; }
+            set
+            {
+                _helmetOpacity = value;
+                OnPropertyChanged("HelmetOpacity");
+            }
+        }
+        private double _bootsOpacity = activatedOpacity;
+        public double BootsOpacity
+        {
+            get { return _bootsOpacity; }
+            set
+            {
+                _bootsOpacity = value;
+                OnPropertyChanged("BootsOpacity");
+            }
+        }        
+        private double _glovesOpacity = activatedOpacity;
+        public double GlovesOpacity
+        {
+            get { return _glovesOpacity; }
+            set
+            {
+                _glovesOpacity = value;
+                OnPropertyChanged("GlovesOpacity");
+            }
+        }        
+        private double _chestsOpacity = activatedOpacity;
+        public double ChestsOpacity
+        {
+            get { return _chestsOpacity; }
+            set
+            {
+                _chestsOpacity = value;
+                OnPropertyChanged("ChestsOpacity");
+            }
+        }        
+        private double _weaponsOpacity = activatedOpacity;
+        public double WeaponsOpacity
+        {
+            get { return _weaponsOpacity; }
+            set
+            {
+                _weaponsOpacity = value;
+                OnPropertyChanged("WeaponsOpacity");
+            }
+        }
+
+        private ContentElement _mainOverlayContent;
+        public ContentElement MainOverlayContent
+        {
+            get { return _mainOverlayContent; }
+            set
+            {
+                _mainOverlayContent = value;
+                OnPropertyChanged("MainOverlayContent");
+            }
+        }
+
+        private SolidColorBrush _fetchButtonColor = Brushes.Red;
+        public SolidColorBrush FetchButtonColor
+        {
+            get { return _fetchButtonColor; }
+            set
+            {
+                _fetchButtonColor = value;
+                OnPropertyChanged("FetchButtonColor");
+            }
+        }
+
+        private int _ringsAmount;
+        public int RingsAmount
+        {
+            get { return _ringsAmount; }
+            set
+            {
+                _ringsAmount = value;
+                OnPropertyChanged("RingsAmount");
+            }
+        }        
+        private int _amuletsAmount;
+        public int AmuletsAmount
+        {
+            get { return _amuletsAmount; }
+            set
+            {
+                _amuletsAmount = value;
+                OnPropertyChanged("AmuletsAmount");
+            }
+        }        
+        private int _beltsAmount;
+        public int BeltsAmount
+        {
+            get { return _beltsAmount; }
+            set
+            {
+                _beltsAmount = value;
+                OnPropertyChanged("BeltsAmount");
+            }
+        }        
+        private int _chestsAmount;
+        public int ChestsAmount
+        {
+            get { return _chestsAmount; }
+            set
+            {
+                _chestsAmount = value;
+                OnPropertyChanged("ChestsAmount");
+            }
+        }        
+        private int _weaponsAmount;
+        public int WeaponsAmount
+        {
+            get { return _weaponsAmount; }
+            set
+            {
+                _weaponsAmount = value;
+                OnPropertyChanged("WeaponsAmount");
+            }
+        }        
+        private int _glovesAmount;
+        public int GlovesAmount
+        {
+            get { return _glovesAmount; }
+            set
+            {
+                _glovesAmount = value;
+                OnPropertyChanged("GlovesAmount");
+            }
+        }        
+        private int _helmetsAmount;
+        public int HelmetsAmount
+        {
+            get { return _helmetsAmount; }
+            set
+            {
+                _helmetsAmount = value;
+                OnPropertyChanged("HelmetsAmount");
+            }
+        }        
+        private int _bootsAmount;
+        public int BootsAmount
+        {
+            get { return _bootsAmount; }
+            set
+            {
+                _bootsAmount = value;
+                OnPropertyChanged("BootsAmount");
+            }
+        }
+
+        private Visibility _amountsVisibility = Visibility.Hidden;
+        public Visibility AmountsVisibility
+        {
+            get { return _amountsVisibility; }
+            set
+            {
+                _amountsVisibility = value;
+                OnPropertyChanged("AmountsVisibility");
+            }
+        }
+
+
         public static int FullSets { get; set; } = 0;
-
-
         public ChaosRecipeEnhancer()
         {
             InitializeComponent();
@@ -75,7 +289,7 @@ namespace EnhancePoE
             aTimer.Elapsed += OnTimedEvent;
             aTimer.AutoReset = true;
             aTimer.Enabled = false;
-            this.FullSetsTextBlock.Text = "0";
+            FullSetsText = "0";
         }
 
 
@@ -84,7 +298,12 @@ namespace EnhancePoE
             MainWindow.overlay.WarningMessage = "";
             MainWindow.overlay.ShadowOpacity = 0;
             MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Hidden;
-
+            //aTimer.Stop();
+            CalculationActive = true;
+            this.Dispatcher.Invoke(() =>
+            {
+                IsIndeterminate = true;
+            });
             await this.Dispatcher.Invoke(async() =>
             {
                 GetFrequency();
@@ -98,14 +317,54 @@ namespace EnhancePoE
                             {
                                 Data.CheckActives();
                                 SetOpacity();
+
+                                //ChaosRecipeEnhancer.aTimer.Enabled = true;
+                                Trace.WriteLine("timer enabled");
+                                aTimer.Enabled = true;
+                                CalculationActive = false;
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    IsIndeterminate = false;
+
+                                });
                             }, Data.ct);
                         }
                         catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
                         {
                             Trace.WriteLine("abort");
+                            CalculationActive = false;
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                IsIndeterminate = false;
+
+                            });
+
                         }
                     }
                 }
+                if (RateLimit.RateLimitExceeded)
+                {
+                    // TODO: show rate limit exceeded in ui
+                    MainWindow.overlay.WarningMessage = "Rate Limit Exceeded! Waiting...";
+                    MainWindow.overlay.ShadowOpacity = 1;
+                    MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                    aTimer.Enabled = false;
+                    await Task.Delay(RateLimit.GetSecondsToWait() * 1000);
+                    RateLimit.RequestCounter = 0;
+                    RateLimit.RateLimitExceeded = false;
+                    aTimer.Enabled = true;
+                }
+                if (RateLimit.BanTime > 0)
+                {
+                    MainWindow.overlay.WarningMessage = "Temporary Ban! Waiting...";
+                    MainWindow.overlay.ShadowOpacity = 1;
+                    MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                    aTimer.Enabled = false;
+                    await Task.Delay(RateLimit.BanTime * 1000);
+                    RateLimit.BanTime = 0;
+                    aTimer.Enabled = true;
+                }
+
             });
         }
 
@@ -134,15 +393,14 @@ namespace EnhancePoE
                         return;
                     }
                 }
-                if (aTimer.Enabled)
+                if (CalculationActive || aTimer.Enabled)
                 {
-
                     Data.cs.Cancel();
                     aTimer.Enabled = false;
                     FetchingActive = false;
                     //RefreshButton.Content = "Fetch\nStart";
-                    FetchButtonBottomContent.Text = "Start";
-                    FetchButtonTopContent.Text = "Fetch";
+                    FetchButtonBottomText = "Start";
+                    FetchButtonColor = Brushes.Red;
                 }
                 else
                 {
@@ -156,31 +414,27 @@ namespace EnhancePoE
                         }
                         FetchData();
                         //aTimer.Interval = 1000;
-                        aTimer.Enabled = true;
+                        //aTimer.Enabled = true;
                         FetchingActive = true;
                         //RefreshButton.Content = "Stop";
-                        FetchButtonBottomContent.Text = "Stop";
-                        FetchButtonTopContent.Text = "Fetch";
+                        FetchButtonBottomText = "Stop";
+                        FetchButtonColor = Brushes.Green;
                     }
 
                 }
             }
         }
 
-        private void RefreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            
-            RunFetching();
-        }
+
 
         // TODO: find better algo for getting frequency, maybe implementing response header thresholds
         private static void GetFrequency()
         {
-            int addedTime = 5000;
-            if(Properties.Settings.Default.StashTabIndices != "")
-            {
-                addedTime += (Properties.Settings.Default.StashTabIndices.Length / 2) * 1000;
-            }
+            int addedTime = 0;
+            //if(Properties.Settings.Default.StashTabIndices != "")
+            //{
+            //    addedTime += (Properties.Settings.Default.StashTabIndices.Length / 2) * 1000;
+            //}
             aTimer.Interval = (Properties.Settings.Default.RefreshRate * 1000) + addedTime;
         }
 
@@ -203,43 +457,43 @@ namespace EnhancePoE
             {
                 if (!Data.ActiveItems.HelmetActive)
                 {
-                    Helmet.Opacity = deactivatedOpacity;
+                    HelmetOpacity = deactivatedOpacity;
                 }
                 else
                 {
-                    Helmet.Opacity = activatedOpacity;
+                    HelmetOpacity = activatedOpacity;
                 }
                 if (!Data.ActiveItems.GlovesActive)
                 {
-                    Gloves.Opacity = deactivatedOpacity;
+                    GlovesOpacity = deactivatedOpacity;
                 }
                 else
                 {
-                    Gloves.Opacity = activatedOpacity;
+                    GlovesOpacity = activatedOpacity;
                 }
                 if (!Data.ActiveItems.BootsActive)
                 {
-                    Boots.Opacity = deactivatedOpacity;
+                    BootsOpacity = deactivatedOpacity;
                 }
                 else
                 {
-                    Boots.Opacity = activatedOpacity;
+                    BootsOpacity = activatedOpacity;
                 }
                 if (!Data.ActiveItems.WeaponActive)
                 {
-                    Weapon.Opacity = deactivatedOpacity;
+                    WeaponsOpacity = deactivatedOpacity;
                 }
                 else
                 {
-                    Weapon.Opacity = activatedOpacity;
+                    WeaponsOpacity = activatedOpacity;
                 }
                 if (!Data.ActiveItems.ChestActive)
                 {
-                    Chest.Opacity = deactivatedOpacity;
+                    ChestsOpacity = deactivatedOpacity;
                 }
                 else
                 {
-                    Chest.Opacity = activatedOpacity;
+                    ChestsOpacity = activatedOpacity;
                 }
             });
         }
@@ -249,19 +503,20 @@ namespace EnhancePoE
             IsOpen = false;
 
             aTimer.Enabled = false;
+            
             //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Run Overlay";
             base.Hide();
         }
 
         public new virtual void Show()
         {
-
-
             IsOpen = true;
+            FetchButtonBottomText = "Start";
             if (FetchingActive)
             {
                 aTimer.Enabled = true;
-                FetchData();
+                //FetchData();
+                FetchButtonBottomText = "Stop";
             }
             //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Stop Overlay";
 
@@ -269,10 +524,7 @@ namespace EnhancePoE
 
         }
 
-        private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.RunStashTabOverlay();
-        }
+
 
         //private void EditStashTabOverlay_Click(object sender, RoutedEventArgs e)
         //{
