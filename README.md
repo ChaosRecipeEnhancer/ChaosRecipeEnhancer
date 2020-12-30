@@ -75,7 +75,7 @@ If you want to change position or size of the Stashtabs Overlay, you have to pre
 
 At the top of the overlay you can find the
 
- - Edit Button: makes the StashTab Overlay clickable and drawable
+ - Edit Button: makes the StashTab Overlay clickable and draggable
 
 #### Lootfilter
 
