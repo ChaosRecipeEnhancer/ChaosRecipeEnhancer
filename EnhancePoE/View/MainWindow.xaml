@@ -607,6 +607,10 @@
 					<RowDefinition Height="25"></RowDefinition>
 					<RowDefinition Height="5"></RowDefinition>
 					<RowDefinition Height="25"></RowDefinition>
+					<RowDefinition Height="5"></RowDefinition>
+					<RowDefinition Height="25"></RowDefinition>
+					<RowDefinition Height="5"></RowDefinition>
+					<RowDefinition Height="25"></RowDefinition>
 					<RowDefinition Height="10"></RowDefinition>
 				</Grid.RowDefinitions>
 				<TextBlock Grid.Column="1"
@@ -731,6 +735,36 @@
 						  Grid.Row="17"
 						  VerticalAlignment="Center"
 						  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=hideOnClose, Mode=TwoWay}" />
+				<TextBlock Grid.Column="1"
+						   Grid.Row="19"
+						   VerticalAlignment="Center"
+						   Text="Overlay Mode:"
+						   ToolTipService.InitialShowDelay="50"
+						   ToolTip="The design of the Main Overlay." />
+				<ComboBox Grid.Column="3"
+						  Grid.Row="19"
+						  Width="200"
+						  VerticalContentAlignment="Center"
+						  Name="OverlayModeComboBox"
+						  SelectionChanged="OverlayModeComboBox_SelectionChanged"
+						  SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=OverlayMode, Mode=TwoWay}">
+					<ComboBoxItem Content="Standard"></ComboBoxItem>
+					<ComboBoxItem Content="Minified"></ComboBoxItem>
+					<ComboBoxItem Content="Only Buttons"></ComboBoxItem>
+				</ComboBox>
+				<TextBlock Grid.Column="1"
+						   Grid.Row="21"
+						   VerticalAlignment="Center"
+						   Text="Show Item Amounts:"
+						   ToolTipService.InitialShowDelay="50"
+						   ToolTip="Shows little numbers in your itemtypes in the Main Overlay (only in Standard Overlay Mode)." />
+				<CheckBox x:Name="ShowNumbersCheckBox"
+						  Grid.Column="3"
+						  Grid.Row="21"
+						  VerticalAlignment="Center"
+						  Checked="ShowNumbersCheckBox_Checked"
+						  Unchecked="ShowNumbersCheckBox_Unchecked"
+						  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowItemAmount, Mode=TwoWay}" />
 			</Grid>
 
 
@@ -768,7 +802,7 @@
 					Grid.Row="7" />
 			<TextBlock Grid.Column="3"
 					   Grid.Row="8"
-					   Text="Version 1.1.1"
+					   Text="Version 1.1.2"
 					   FontSize="12"
 					   HorizontalAlignment="Right"
 					   VerticalAlignment="Center"></TextBlock>

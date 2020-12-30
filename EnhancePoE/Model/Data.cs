@@ -294,6 +294,11 @@ namespace EnhancePoE
                     //MainWindow.overlay.RunFetching();
                     return;
                 }
+                if (Properties.Settings.Default.ShowItemAmount)
+                {
+                    Data.CalculateItemAmounts();
+                }
+
                 if (Properties.Settings.Default.Sound)
                 {
                     PreviousActiveItems = new ActiveItemTypes
@@ -484,7 +489,7 @@ namespace EnhancePoE
                 //Trace.WriteLine(fullSets, "full sets");
                 MainWindow.overlay.Dispatcher.Invoke(() =>
                 {
-                    MainWindow.overlay.FullSetsTextBlock.Text = fullSets.ToString();
+                    MainWindow.overlay.FullSetsText = fullSets.ToString();
                 });
 
                 // invoke chaos missing
@@ -551,7 +556,6 @@ namespace EnhancePoE
                         FilterGeneration.WriteLootfilter(newFilter2);
                     }
                 }
-
                 if (Properties.Settings.Default.Sound)
                 {
                     if (!(PreviousActiveItems.GlovesActive == ActiveItems.GlovesActive
@@ -572,6 +576,133 @@ namespace EnhancePoE
                 Trace.WriteLine("abort");
             }
 
+        }
+
+        public static void CalculateItemAmounts()
+        {
+            if (StashTabList.StashTabs != null)
+            {
+                Trace.WriteLine("calculating items amount");
+                // 0: rings
+                // 1: amulets
+                // 2: belts
+                // 3: chests
+                // 4: weapons
+                // 5: gloves
+                // 6: helmets
+                // 7: boots
+                int[] amounts = new int[8];
+                int weaponsSmall = 0;
+                int weaponBig = 0;
+                foreach (StashTab tab in StashTabList.StashTabs)
+                {
+                    if (tab.ItemList.Count > 0)
+                    {
+                        foreach (Item i in tab.ItemList)
+                        {
+                            Trace.WriteLine(i.ItemType);
+                            if (i.ItemType == "Rings")
+                            {
+                                amounts[0]++;
+                            }
+                            else if (i.ItemType == "Amulets")
+                            {
+                                amounts[1]++;
+                            }
+                            else if (i.ItemType == "Belts")
+                            {
+                                amounts[2]++;
+                            }
+                            else if (i.ItemType == "BodyArmours")
+                            {
+                                amounts[3]++;
+                            }
+                            else if (i.ItemType == "TwoHandWeapons")
+                            {
+                                weaponBig++;
+                            }
+                            else if (i.ItemType == "OneHandWeapons")
+                            {
+                                weaponsSmall++;
+                            }
+                            else if (i.ItemType == "Gloves")
+                            {
+                                amounts[5]++;
+                            }
+                            else if (i.ItemType == "Helmets")
+                            {
+                                amounts[6]++;
+                            }
+                            else if (i.ItemType == "Boots")
+                            {
+                                amounts[7]++;
+                            }
+
+                        }
+                    }
+                    if (tab.ItemListChaos.Count > 0)
+                    {
+                        foreach (Item i in tab.ItemListChaos)
+                        {
+                            Trace.WriteLine(i.ItemType);
+                            if (i.ItemType == "Rings")
+                            {
+                                amounts[0]++;
+                            }
+                            else if (i.ItemType == "Amulets")
+                            {
+                                amounts[1]++;
+                            }
+                            else if (i.ItemType == "Belts")
+                            {
+                                amounts[2]++;
+                            }
+                            else if (i.ItemType == "BodyArmours")
+                            {
+                                amounts[3]++;
+                            }
+                            else if (i.ItemType == "TwoHandWeapons")
+                            {
+                                weaponBig++;
+                            }
+                            else if (i.ItemType == "OneHandWeapons")
+                            {
+                                weaponsSmall++;
+                            }
+                            else if (i.ItemType == "Gloves")
+                            {
+                                amounts[5]++;
+                            }
+                            else if (i.ItemType == "Helmets")
+                            {
+                                amounts[6]++;
+                            }
+                            else if (i.ItemType == "Boots")
+                            {
+                                amounts[7]++;
+                            }
+
+                        }
+                    }
+                }
+
+                foreach(int i in amounts)
+                {
+                    Trace.WriteLine(i, "amount");
+                }
+
+                // calculate amounts needed for full sets
+                amounts[0] = amounts[0] / 2;
+                amounts[4] = (weaponsSmall / 2) + weaponBig;
+                MainWindow.overlay.RingsAmount = amounts[0];
+                MainWindow.overlay.AmuletsAmount = amounts[1];
+                MainWindow.overlay.BeltsAmount = amounts[2];
+                MainWindow.overlay.ChestsAmount = amounts[3];
+                MainWindow.overlay.WeaponsAmount = amounts[4];
+                MainWindow.overlay.GlovesAmount = amounts[5];
+                MainWindow.overlay.HelmetsAmount = amounts[6];
+                MainWindow.overlay.BootsAmount = amounts[7];
+            }
         }
 
         public static void PlayNotificationSound()
@@ -617,7 +748,7 @@ namespace EnhancePoE
                     }
 
                     // remove and sound if itemlist empty
-                    if(ItemSetListHighlight.Count > 0)
+                    if (ItemSetListHighlight.Count > 0)
                     {
                         if (ItemSetListHighlight[0].ItemList.Count == 0)
                         {
@@ -630,7 +761,7 @@ namespace EnhancePoE
                     }
                     else
                     {
-                        if(ItemSetListHighlight.Count > 0)
+                        if (ItemSetListHighlight.Count > 0)
                         {
                             PlayerSet.Dispatcher.Invoke(() =>
                             {
@@ -839,11 +970,14 @@ namespace EnhancePoE
             //ItemSetListHighlight = new List<ItemSet>(ItemSetList);
             foreach (ItemSet set in ItemSetList)
             {
-                ItemSetListHighlight.Add(new ItemSet
+                if (set.HasChaos)
                 {
-                    ItemList = new List<Item>(set.ItemList),
-                    EmptyItemSlots = new List<string>(set.EmptyItemSlots)
-                });
+                    ItemSetListHighlight.Add(new ItemSet
+                    {
+                        ItemList = new List<Item>(set.ItemList),
+                        EmptyItemSlots = new List<string>(set.EmptyItemSlots)
+                    });
+                }
             }
         }
 
@@ -858,5 +992,17 @@ namespace EnhancePoE
         public bool ChestActive { get; set; } = true;
         public bool WeaponActive { get; set; } = true;
         public bool ChaosMissing { get; set; } = true;
+    }
+
+    public class ItemTypeAmounts
+    {
+        public int Gloves { get; set; } = 0;
+        public int Helmets { get; set; } = 0;
+        public int Boots { get; set; } = 0;
+        public int Chests { get; set; } = 0;
+        public int Weapons { get; set; } = 0;
+        public int Amulets { get; set; } = 0;
+        public int Rings { get; set; } = 0;
+        public int Belts { get; set; } = 0;
     }
 }

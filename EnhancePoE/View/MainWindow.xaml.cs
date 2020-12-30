@@ -99,6 +99,8 @@ namespace EnhancePoE
             LoadModeVisibility();
             // add Action to MouseHook
             MouseHook.MouseAction += new EventHandler(Coordinates.Event);
+
+            //throw new NullReferenceException();
         }
 
         private void InitializeHotkeys()
@@ -630,6 +632,33 @@ namespace EnhancePoE
         private void SaveButton_Click_1(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.Save();
+        }
+
+        private void OverlayModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(Properties.Settings.Default.OverlayMode == 0)
+            {
+                overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContent();
+            }
+            else if(Properties.Settings.Default.OverlayMode == 1)
+            {
+                overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContentMinified();
+            }
+            else if(Properties.Settings.Default.OverlayMode == 2)
+            {
+                overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayOnlyButtons();
+            }
+        }
+
+        private void ShowNumbersCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            overlay.AmountsVisibility = Visibility.Visible;
+        }
+
+        private void ShowNumbersCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            overlay.AmountsVisibility = Visibility.Hidden;
+
         }
     }
 }

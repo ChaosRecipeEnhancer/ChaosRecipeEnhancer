@@ -526,5 +526,29 @@ namespace EnhancePoE.Properties {
                 this["FillWithChaos"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int OverlayMode {
+            get {
+                return ((int)(this["OverlayMode"]));
+            }
+            set {
+                this["OverlayMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowItemAmount {
+            get {
+                return ((bool)(this["ShowItemAmount"]));
+            }
+            set {
+                this["ShowItemAmount"] = value;
+            }
+        }
     }
 }

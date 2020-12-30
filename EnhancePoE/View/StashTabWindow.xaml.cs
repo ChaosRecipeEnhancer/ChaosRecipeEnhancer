@@ -99,7 +99,7 @@ namespace EnhancePoE.View
 
             IsOpen = false;
             IsEditing = false;
-            MainWindow.overlay.OpenStashTabOverlay.Content = "Stash";
+            MainWindow.overlay.OpenStashOverlayButtonContent = "Stash";
             //MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
             //TextBlockList.Clear();
 
@@ -217,7 +217,7 @@ namespace EnhancePoE.View
                     }
                 }
 
-                MainWindow.overlay.OpenStashTabOverlay.Content = "Hide";
+                MainWindow.overlay.OpenStashOverlayButtonContent = "Hide";
 
                 MouseHook.Start();
                 base.Show();
