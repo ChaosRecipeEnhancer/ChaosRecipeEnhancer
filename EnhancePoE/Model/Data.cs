@@ -174,7 +174,10 @@ namespace EnhancePoE
                     lastEmptySlots = i.EmptyItemSlots.Count;
                     if (i.HasChaos == false)
                     {
-                        AddItemToItemSet(i, true);
+                        if (AddItemToItemSet(i, true))
+                        {
+                            continue;
+                        }
                     }
                     if (!AddItemToItemSet(i))
                     {
@@ -204,7 +207,10 @@ namespace EnhancePoE
                         lastEmptySlots = i.EmptyItemSlots.Count;
                         if (!i.HasChaos)
                         {
-                            AddItemToItemSet(i, true, false);
+                            if (AddItemToItemSet(i, true, false))
+                            {
+                                continue;
+                            }
                         }
                         if (!AddItemToItemSet(i, false, false))
                         {
@@ -322,6 +328,7 @@ namespace EnhancePoE
                         GetSetTargetAmount(s);
                     }
                 }
+
                 GenerateItemSetList();
 
                 FillItemSets();
