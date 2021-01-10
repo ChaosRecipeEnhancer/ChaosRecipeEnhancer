@@ -512,7 +512,7 @@ namespace EnhancePoE
 
             if (!isWindowOpen)
             {
-                HotkeyWindow hotkeyDialog = new HotkeyWindow("toggle");
+                HotkeyWindow hotkeyDialog = new HotkeyWindow(this, "toggle");
                 hotkeyDialog.Show();
             }
         }
@@ -530,7 +530,7 @@ namespace EnhancePoE
 
             if (!isWindowOpen)
             {
-                HotkeyWindow hotkeyDialog = new HotkeyWindow("refresh");
+                HotkeyWindow hotkeyDialog = new HotkeyWindow(this, "refresh");
                 hotkeyDialog.Show();
             }
         }
@@ -548,7 +548,7 @@ namespace EnhancePoE
 
             if (!isWindowOpen)
             {
-                HotkeyWindow hotkeyDialog = new HotkeyWindow("stashtab");
+                HotkeyWindow hotkeyDialog = new HotkeyWindow(this, "stashtab");
                 hotkeyDialog.Show();
             }
         }
