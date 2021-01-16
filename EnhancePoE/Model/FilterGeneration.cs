@@ -74,7 +74,7 @@ namespace EnhancePoE.Model
             }
             else
             {
-                result += "Hide";
+                return "";
             }
             string nl = "\n";
             string tab = "\t";
