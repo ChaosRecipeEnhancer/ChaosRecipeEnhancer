@@ -2,7 +2,7 @@
 
 #### Temporarily disabled
 
-I will temporarily disable downloads on this page since GGG seems to have severely servers issues. I hope it has nothing to do with this tool but I cant be sure. 
+I will temporarily disable downloads on this page since GGG seems to have severe servers issues. I hope it has nothing to do with this tool but I cant be sure. 
 
 Of course I asked GGG if their servers could face flooding issues and when these issues could occur before publishing this tool but as always they dont answer questions relating to 3rd party tools. 
 
