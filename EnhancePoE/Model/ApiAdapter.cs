@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Net;
 using EnhancePoE.Model;
 using System.Linq;
+using System.Reflection;
 
 namespace EnhancePoE
 {
@@ -154,7 +155,8 @@ namespace EnhancePoE
             using (HttpClient client = new HttpClient(handler))
             {
                 //Trace.WriteLine("is here");
-
+                // add user agent
+                client.DefaultRequestHeaders.Add("User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}");
                 using (HttpResponseMessage res = await client.GetAsync(propsUri))
                 {
                     //Trace.WriteLine("is NOT here");
@@ -223,6 +225,8 @@ namespace EnhancePoE
             using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
             using (HttpClient client = new HttpClient(handler))
             {
+                // add user agent
+                client.DefaultRequestHeaders.Add("User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}");
                 foreach (StashTab i in StashTabList.StashTabs)
                 {
                     // check rate limit ban
