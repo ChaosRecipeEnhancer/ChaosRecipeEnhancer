@@ -303,6 +303,14 @@ Although there are 2 points which could be problematic:
  
 ## Change Log
 
+#### 1.1.4 
+
+ - added user-agent to every request (thanks to @WhiteFang5)
+ - changed minimum refreshrate to 45 seconds (this will change soon when I rework the fetching algorithm)
+ - avoided InvalidCastException (thanks to @devinvisible)
+ - removed "Hide" rules from lootfilter, now your own rules kick in if you have enough items for the recipe
+ - actual numbers of each item are now shown
+ 
 #### 1.1.3
 
  - fixed fetching bug (thanks Immo)
