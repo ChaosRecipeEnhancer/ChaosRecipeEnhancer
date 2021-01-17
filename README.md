@@ -8,6 +8,8 @@ Of course I asked GGG if their servers could face flooding issues and when these
 
 I will enable the download option again after the servers normalize. Also there will be coming updates to the fetch algorithm to reduce the amount of requests to the servers soon.
 
+Also if you still want to use it please set the refrehsrate to at least 60 seconds for now.
+
 ---
 
 
