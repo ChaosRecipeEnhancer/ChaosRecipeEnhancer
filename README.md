@@ -303,6 +303,10 @@ Although there are 2 points which could be problematic:
  
 ## Change Log
 
+#### 1.1.5
+
+ - added Reset Settings button
+
 #### 1.1.4 
 
  - added user-agent to every request (thanks to @WhiteFang5)
