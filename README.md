@@ -1,5 +1,16 @@
 # The PoE Chaos Recipe Enhancer
 
+#### Temporarily disabled
+
+I will temporarily disable downloads on this page since GGG seems to have severely servers issues. I hope it has nothing to do with this tool but I cant be sure. 
+
+Of course I asked GGG if their servers could face flooding issues and when these issues could occur before publishing this tool but as always they dont answer questions relating to 3rd party tools. 
+
+I will enable the download option again after the servers normalize. Also there will be coming updates to the fetch algorithm to reduce the amount of requests to the servers soon.
+
+---
+
+
 This App fetches data from PoE servers and shows which items you need to pick up for the Chaos Recipe. Optionally it manipulates your lootfilter, so you can go full braindead while farming! While selling your stuff it shows you what items to put in your inventory in which order. No more using your brain at all!
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
