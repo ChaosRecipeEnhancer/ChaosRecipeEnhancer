@@ -24,9 +24,12 @@ namespace EnhancePoE
     public partial class HotkeyWindow : Window
     {
         private string type;
+        private MainWindow mainWindow;
 
-        public HotkeyWindow(string hotkeyType)
+        public HotkeyWindow(MainWindow mainWindow, string hotkeyType)
         {
+            this.mainWindow = mainWindow;
+
             if(hotkeyType == "refresh")
             {
                 type = "refresh";
@@ -91,10 +94,10 @@ namespace EnhancePoE
             this.Close();
         }
 
-        private static void ReApplyHotkeys()
+        private void ReApplyHotkeys()
         {
-            ((MainWindow)System.Windows.Application.Current.MainWindow).RemoveAllHotkeys();
-            ((MainWindow)System.Windows.Application.Current.MainWindow).AddAllHotkeys();
+            mainWindow.RemoveAllHotkeys();
+            mainWindow.AddAllHotkeys();
         }
     }
 }

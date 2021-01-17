@@ -699,8 +699,8 @@ namespace EnhancePoE
                 }
 
                 // calculate amounts needed for full sets
-                amounts[0] = amounts[0] / 2;
-                amounts[4] = (weaponsSmall / 2) + weaponBig;
+                //amounts[0] = amounts[0] / 2;
+                amounts[4] = weaponsSmall + weaponBig;
                 MainWindow.overlay.RingsAmount = amounts[0];
                 MainWindow.overlay.AmuletsAmount = amounts[1];
                 MainWindow.overlay.BeltsAmount = amounts[2];

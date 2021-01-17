@@ -125,7 +125,7 @@
 							Value="True" />
 					<Setter Property="Template">
 						<Setter.Value>
-							<ControlTemplate TargetType="{x:Type TabControl}">
+							<ControlTemplate TargetType="{x:Type TabControl}" >
 								<Grid KeyboardNavigation.TabNavigation="Local">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto" />
