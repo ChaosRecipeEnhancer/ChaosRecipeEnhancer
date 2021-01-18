@@ -14,7 +14,7 @@ If you want to support the project consider buying some coffees ;)
 
 Nevertheless I will continue to support and update this tool!
 
-[![Donate with PayPal](https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/Webp.net-resizeimage(2).png)](https://www.paypal.com/donate?hosted_button_id=HUCVZUSH5VQRW)
+[![Donate with PayPal](https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/Webp.net-resizeimage(5).png)](https://www.paypal.com/donate?hosted_button_id=HUCVZUSH5VQRW)
 
 ## Installation
 
