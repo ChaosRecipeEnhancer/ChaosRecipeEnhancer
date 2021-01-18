@@ -87,7 +87,13 @@ namespace EnhancePoE.Model
             {
                 result += nl + tab + "HasInfluence None";
             }
-            result = result  + nl + tab  + "Rarity Rare" + nl + tab + "Identified False" + nl + tab;
+
+
+            result = result  + nl + tab  + "Rarity Rare" + nl + tab;
+            if (!Properties.Settings.Default.IncludeIdentified)
+            {
+                result += "Identified False" + nl + tab;
+            }
             if (!influenced && onlyChaos)
             {
                 result += "ItemLevel >= 60" + nl + tab + "ItemLevel <= 74" + nl + tab;
@@ -244,7 +250,7 @@ namespace EnhancePoE.Model
             {
                 chaosSection += s + nl;
             }
-            chaosSection += chaosEnd + nl;
+            chaosSection += chaosEnd;
 
             string[] sep = { chaosEnd };
             string[] split = oldFilter.Split(sep, System.StringSplitOptions.None);

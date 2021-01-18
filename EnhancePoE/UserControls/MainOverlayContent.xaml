@@ -199,6 +199,7 @@
 				CornerRadius="6"
 				Width="50"
 				Margin="5,0"
+				Opacity="{Binding RingsOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorRing}"
 				x:Name="Rings">
 			<Grid>
@@ -230,6 +231,7 @@
 				CornerRadius="6"
 				Width="50"
 				Margin="5,0"
+				Opacity="{Binding AmuletsOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorAmulet}"
 				x:Name="Amulet">
 			<Grid>
@@ -261,6 +263,7 @@
 				CornerRadius="6"
 				Width="50"
 				Margin="5,0"
+				Opacity="{Binding BeltsOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBelt}"
 				x:Name="Belt">
 			<Grid>

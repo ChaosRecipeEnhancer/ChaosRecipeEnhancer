@@ -136,7 +136,7 @@ namespace EnhancePoE.Model
             // for loop backwards for deleting from list 
             for (int i = ItemList.Count - 1; i > -1; i--)
             {
-                if (ItemList[i].identified == true)
+                if (ItemList[i].identified == true && !Properties.Settings.Default.IncludeIdentified)
                 {
                     ItemList.RemoveAt(i);
                     continue;

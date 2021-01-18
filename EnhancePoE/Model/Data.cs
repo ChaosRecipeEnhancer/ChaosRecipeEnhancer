@@ -288,6 +288,42 @@ namespace EnhancePoE
             }
         }
 
+        public static void GetAlwaysActive()
+        {
+            if (Properties.Settings.Default.RingsAlwaysActive)
+            {
+                ActiveItems.RingActive = true;
+            }
+            if (Properties.Settings.Default.AmuletsAlwaysActive)
+            {
+                ActiveItems.AmuletActive = true;
+            }
+            if (Properties.Settings.Default.BeltsAlwaysActive)
+            {
+                ActiveItems.BeltActive = true;
+            }
+            if (Properties.Settings.Default.GlovesAlwaysActive)
+            {
+                ActiveItems.GlovesActive = true;
+            }
+            if (Properties.Settings.Default.BootsAlwaysActive)
+            {
+                ActiveItems.BootsActive = true;
+            }
+            if (Properties.Settings.Default.HelmetsAlwaysActive)
+            {
+                ActiveItems.HelmetActive = true;
+            }
+            if (Properties.Settings.Default.ChestsAlwaysActive)
+            {
+                ActiveItems.ChestActive = true;
+            }
+            if (Properties.Settings.Default.WeaponsAlwaysActive)
+            {
+                ActiveItems.WeaponActive = true;
+            }
+        }
+
         public static void CheckActives()
         {
             try
@@ -313,7 +349,10 @@ namespace EnhancePoE
                         GlovesActive = ActiveItems.GlovesActive,
                         HelmetActive = ActiveItems.HelmetActive,
                         WeaponActive = ActiveItems.WeaponActive,
-                        ChestActive = ActiveItems.ChestActive
+                        ChestActive = ActiveItems.ChestActive,
+                        RingActive = ActiveItems.RingActive,
+                        AmuletActive = ActiveItems.AmuletActive,
+                        BeltActive = ActiveItems.BeltActive
                     };
                 }
 
@@ -330,7 +369,6 @@ namespace EnhancePoE
                 }
 
                 GenerateItemSetList();
-
                 FillItemSets();
 
                 // check for full sets/ missing items
@@ -363,11 +401,6 @@ namespace EnhancePoE
                     }
                 }
 
-                //foreach(string miss in missingItemClasses)
-                //{
-                //    Trace.WriteLine(miss, "missing");
-                //}
-
                 HashSet<string> sectionList = new HashSet<string>();
 
                 if (filterActive)
@@ -384,37 +417,84 @@ namespace EnhancePoE
                     // activate only chaos items
                     if (filterActive)
                     {
-                        sectionList.Add(FilterGeneration.GenerateSection(true, "Body Armours", false, true));
-                        sectionList.Add(FilterGeneration.GenerateSection(true, "Helmets", false, true));
-                        sectionList.Add(FilterGeneration.GenerateSection(true, "Gloves", false, true));
-                        sectionList.Add(FilterGeneration.GenerateSection(true, "Boots", false, true));
-                        sectionList.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", false, true));
-                        sectionList.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", false, true));
+                        if (!Properties.Settings.Default.ChestsAlwaysActive)
+                        {
+                            sectionList.Add(FilterGeneration.GenerateSection(true, "Body Armours", false, true));
+
+                        }
+                        if (!Properties.Settings.Default.HelmetsAlwaysActive)
+                        {
+                            sectionList.Add(FilterGeneration.GenerateSection(true, "Helmets", false, true));
+
+                        }
+                        if (!Properties.Settings.Default.GlovesAlwaysActive)
+                        {
+                            sectionList.Add(FilterGeneration.GenerateSection(true, "Gloves", false, true));
+
+                        }
+                        if (!Properties.Settings.Default.BootsAlwaysActive)
+                        {
+                            sectionList.Add(FilterGeneration.GenerateSection(true, "Boots", false, true));
+
+                        }
+                        if (!Properties.Settings.Default.WeaponsAlwaysActive)
+                        {
+                            sectionList.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", false, true));
+
+                        }
+                        if (!Properties.Settings.Default.WeaponsAlwaysActive)
+                        {
+                            sectionList.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", false, true));
+
+                        }
+                        if (!Properties.Settings.Default.RingsAlwaysActive)
+                        {
+                            sectionList.Add(FilterGeneration.GenerateSection(true, "Rings", false, true));
+
+                        }
+                        if (!Properties.Settings.Default.AmuletsAlwaysActive)
+                        {
+                            sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets", false, true));
+
+                        }
+                        if (!Properties.Settings.Default.BeltsAlwaysActive)
+                        {
+                            sectionList.Add(FilterGeneration.GenerateSection(true, "Belts", false, true));
+
+                        }
                     }
                     ActiveItems.GlovesActive = false;
                     ActiveItems.HelmetActive = false;
                     ActiveItems.ChestActive = false;
                     ActiveItems.BootsActive = false;
                     ActiveItems.WeaponActive = false;
+                    ActiveItems.RingActive = false;
+                    ActiveItems.AmuletActive = false;
+                    ActiveItems.BeltActive = false;
+                    
                     ActiveItems.ChaosMissing = true;
                 }
                 else if (fullSets == SetTargetAmount && !missingChaos)
                 {
                     //deactivate all
-                    if (filterActive)
-                    {
-                        sectionList.Add(FilterGeneration.GenerateSection(false, "Body Armours"));
-                        sectionList.Add(FilterGeneration.GenerateSection(false, "Helmets"));
-                        sectionList.Add(FilterGeneration.GenerateSection(false, "Gloves"));
-                        sectionList.Add(FilterGeneration.GenerateSection(false, "Boots"));
-                        sectionList.Add(FilterGeneration.GenerateSection(false, "OneHandWeapons"));
-                        sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
-                    }
+                    //if (filterActive)
+                    //{
+                    //    sectionList.Add(FilterGeneration.GenerateSection(false, "Body Armours"));
+                    //    sectionList.Add(FilterGeneration.GenerateSection(false, "Helmets"));
+                    //    sectionList.Add(FilterGeneration.GenerateSection(false, "Gloves"));
+                    //    sectionList.Add(FilterGeneration.GenerateSection(false, "Boots"));
+                    //    sectionList.Add(FilterGeneration.GenerateSection(false, "OneHandWeapons"));
+                    //    sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
+                    //}
                     ActiveItems.GlovesActive = false;
                     ActiveItems.HelmetActive = false;
                     ActiveItems.ChestActive = false;
                     ActiveItems.BootsActive = false;
                     ActiveItems.WeaponActive = false;
+                    ActiveItems.RingActive = false;
+                    ActiveItems.AmuletActive = false;
+                    ActiveItems.BeltActive = false;
+
                     ActiveItems.ChaosMissing = false;
                 }
                 else
@@ -425,25 +505,67 @@ namespace EnhancePoE
                         switch (itemClass)
                         {
                             case "BodyArmours":
-                                sectionList.Add(FilterGeneration.GenerateSection(true, "Body Armours"));
+                                if (!Properties.Settings.Default.ChestsAlwaysActive)
+                                {
+                                    sectionList.Add(FilterGeneration.GenerateSection(true, "Body Armours"));
+                                }
                                 ActiveItems.ChestActive = true;
                                 break;
                             case "Helmets":
-                                sectionList.Add(FilterGeneration.GenerateSection(true, "Helmets"));
+                                if (!Properties.Settings.Default.HelmetsAlwaysActive)
+                                {
+                                    sectionList.Add(FilterGeneration.GenerateSection(true, "Helmets"));
+
+                                }
                                 ActiveItems.HelmetActive = true;
                                 break;
                             case "Gloves":
-                                sectionList.Add(FilterGeneration.GenerateSection(true, "Gloves"));
+                                if (!Properties.Settings.Default.GlovesAlwaysActive)
+                                {
+                                    sectionList.Add(FilterGeneration.GenerateSection(true, "Gloves"));
+
+                                }
                                 ActiveItems.GlovesActive = true;
                                 break;
                             case "Boots":
-                                sectionList.Add(FilterGeneration.GenerateSection(true, "Boots"));
+                                if (!Properties.Settings.Default.BootsAlwaysActive)
+                                {
+                                    sectionList.Add(FilterGeneration.GenerateSection(true, "Boots"));
+
+                                }
                                 ActiveItems.BootsActive = true;
+                                break;
+                            case "Rings":
+                                if (!Properties.Settings.Default.RingsAlwaysActive)
+                                {
+                                    sectionList.Add(FilterGeneration.GenerateSection(true, "Rings"));
+
+                                }
+                                ActiveItems.RingActive = true;
+                                break;
+                            case "Amulets":
+                                if (!Properties.Settings.Default.AmuletsAlwaysActive)
+                                {
+                                    sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets"));
+
+                                }
+                                ActiveItems.AmuletActive = true;
+                                break;
+                            case "Belts":
+                                if (!Properties.Settings.Default.BeltsAlwaysActive)
+                                {
+                                    sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
+
+                                }
+                                ActiveItems.BeltActive = true;
                                 break;
                             case "OneHandWeapons":
                             case "TwoHandWeapons":
-                                sectionList.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons"));
-                                sectionList.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons"));
+                                if (!Properties.Settings.Default.WeaponsAlwaysActive)
+                                {
+                                    sectionList.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons"));
+                                    sectionList.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons"));
+                                }
                                 ActiveItems.WeaponActive = true;
                                 deactivatedItemClasses.Remove("OneHandWeapons");
                                 deactivatedItemClasses.Remove("TwoHandWeapons");
@@ -458,40 +580,90 @@ namespace EnhancePoE
                         switch (itemClass)
                         {
                             case "BodyArmours":
-                                sectionList.Add(FilterGeneration.GenerateSection(false, "Body Armours"));
+                                //sectionList.Add(FilterGeneration.GenerateSection(false, "Body Armours"));
                                 ActiveItems.ChestActive = false;
                                 break;
                             case "Helmets":
-                                sectionList.Add(FilterGeneration.GenerateSection(false, "Helmets"));
+                                //sectionList.Add(FilterGeneration.GenerateSection(false, "Helmets"));
                                 ActiveItems.HelmetActive = false;
                                 break;
                             case "Gloves":
-                                sectionList.Add(FilterGeneration.GenerateSection(false, "Gloves"));
+                                //sectionList.Add(FilterGeneration.GenerateSection(false, "Gloves"));
                                 ActiveItems.GlovesActive = false;
                                 break;
                             case "Boots":
-                                sectionList.Add(FilterGeneration.GenerateSection(false, "Boots"));
+                                //sectionList.Add(FilterGeneration.GenerateSection(false, "Boots"));
                                 ActiveItems.BootsActive = false;
                                 break;
                             case "OneHandWeapons":
-                                sectionList.Add(FilterGeneration.GenerateSection(false, "OneHandWeapons"));
+                                //sectionList.Add(FilterGeneration.GenerateSection(false, "OneHandWeapons"));
                                 ActiveItems.WeaponActive = false;
                                 break;
                             case "TwoHandWeapons":
                                 ActiveItems.WeaponActive = false;
-                                sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
+                                //sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
+                                break;
+                            case "Rings":
+                                ActiveItems.WeaponActive = false;
+                                //sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
+                                break;
+                            case "Amulets":
+                                ActiveItems.WeaponActive = false;
+                                //sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
+                                break;
+                            case "Belts":
+                                ActiveItems.WeaponActive = false;
+                                //sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
                                 break;
                         }
                     }
                 }
 
-                // always on
+                GetAlwaysActive();
                 if (filterActive)
                 {
-                    sectionList.Add(FilterGeneration.GenerateSection(true, "Rings"));
-                    sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets"));
-                    sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
+                    if (Properties.Settings.Default.RingsAlwaysActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "Rings"));
+                    }
+                    if (Properties.Settings.Default.AmuletsAlwaysActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets"));
+                    }
+                    if (Properties.Settings.Default.BeltsAlwaysActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
+                    }
+                    if (Properties.Settings.Default.GlovesAlwaysActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "Gloves"));
+                    }
+                    if (Properties.Settings.Default.BootsAlwaysActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "Boots"));
+                    }
+                    if (Properties.Settings.Default.HelmetsAlwaysActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "Helmets"));
+                    }
+                    if (Properties.Settings.Default.ChestsAlwaysActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "Body Armours"));
+                    }
+                    if (Properties.Settings.Default.WeaponsAlwaysActive)
+                    {
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons"));
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons"));
+                    }
                 }
+
+                // always on
+                //if (filterActive)
+                //{
+                //    sectionList.Add(FilterGeneration.GenerateSection(true, "Rings"));
+                //    sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets"));
+                //    sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
+                //}
 
                 //Trace.WriteLine(fullSets, "full sets");
                 MainWindow.overlay.Dispatcher.Invoke(() =>
@@ -569,7 +741,10 @@ namespace EnhancePoE
                         && PreviousActiveItems.BootsActive == ActiveItems.BootsActive
                         && PreviousActiveItems.HelmetActive == ActiveItems.HelmetActive
                         && PreviousActiveItems.ChestActive == ActiveItems.ChestActive
-                        && PreviousActiveItems.WeaponActive == ActiveItems.WeaponActive))
+                        && PreviousActiveItems.WeaponActive == ActiveItems.WeaponActive
+                        && PreviousActiveItems.RingActive == ActiveItems.RingActive
+                        && PreviousActiveItems.AmuletActive == ActiveItems.AmuletActive
+                        && PreviousActiveItems.BeltActive == ActiveItems.BeltActive))
                     {
                         Player.Dispatcher.Invoke(() =>
                         {
@@ -693,7 +868,7 @@ namespace EnhancePoE
                     }
                 }
 
-                foreach(int i in amounts)
+                foreach (int i in amounts)
                 {
                     Trace.WriteLine(i, "amount");
                 }
@@ -998,6 +1173,9 @@ namespace EnhancePoE
         public bool BootsActive { get; set; } = true;
         public bool ChestActive { get; set; } = true;
         public bool WeaponActive { get; set; } = true;
+        public bool RingActive { get; set; } = true;
+        public bool AmuletActive { get; set; } = true;
+        public bool BeltActive { get; set; } = true;
         public bool ChaosMissing { get; set; } = true;
     }
 

@@ -100,6 +100,7 @@
 				Width="30"
 				CornerRadius="50"
 				Margin="3,0"
+				Opacity="{Binding RingsOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorRing}"
 				x:Name="Rings">
 			<Image MaxHeight="20"
@@ -112,6 +113,7 @@
 				Width="30"
 				Margin="3,0"
 				CornerRadius="50"
+				Opacity="{Binding AmuletsOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorAmulet}"
 				x:Name="Amulet">
 			<Image MaxHeight="20"
@@ -124,6 +126,7 @@
 				Width="30"
 				Margin="3,0"
 				CornerRadius="50"
+				Opacity="{Binding BeltsOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBelt}"
 				x:Name="Belt">
 			<Image MaxHeight="20"
