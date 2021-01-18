@@ -308,7 +308,14 @@ Although there are 2 points which could be problematic:
 
  - Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
   
- 
+  
+## Contributions
+
+If you want to contribute to the project you can push changes to the "patches"-branch. Do not push to master please.
+
+Best thing would be to join the discord though especially if you want to make bigger changes. There we can discuss how to do what.
+Help is always appreciated since this is my starter project for WPF anyways.
+
 ## Change Log
 
 #### 1.1.5
@@ -319,6 +326,9 @@ Although there are 2 points which could be problematic:
  - rearranged UI
  - added support for identified items
  - increased Tab Header Margin to 500 maximum
+ - added Show Item Amounts support for Minified UI mode
+ - added Contribution Section
+ - separated Exalted recipe from Chaos Recipe. You can now turn both on and off individually.
 
 #### 1.1.4 
 
