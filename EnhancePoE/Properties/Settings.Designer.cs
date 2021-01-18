@@ -658,5 +658,17 @@ namespace EnhancePoE.Properties {
                 this["IncludeIdentified"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ChaosRecipe {
+            get {
+                return ((bool)(this["ChaosRecipe"]));
+            }
+            set {
+                this["ChaosRecipe"] = value;
+            }
+        }
     }
 }

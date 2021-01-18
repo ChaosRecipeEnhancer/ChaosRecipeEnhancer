@@ -38,9 +38,28 @@
 				Margin="3,0"
 				Opacity="{Binding GlovesOpacity}"
 				x:Name="Gloves">
-			<Image Source="/Assets/gloves.png"
-				   MaxWidth="20"
-				   MaxHeight="20" />
+			<Grid>
+				<Image Source="/Assets/gloves.png"
+					   MaxWidth="20"
+					   MaxHeight="20" />
+				<Border Width="15"
+						Height="15"
+						Visibility="{Binding AmountsVisibility}"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Right"
+						CornerRadius="50"
+						Background="White">
+					<TextBlock FontSize="14"
+							   FontFamily="Segoe UI"
+							   FontWeight="DemiBold"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center"
+							   TextAlignment="Center"
+							   Background="Transparent"
+							   Foreground="Black"
+							   Text="{Binding GlovesAmount}"></TextBlock>
+				</Border>
+			</Grid>
 		</Border>
 		<Border Grid.Column="4"
 				Grid.Row="1"
@@ -51,9 +70,28 @@
 				Opacity="{Binding BootsOpacity}"
 				x:Name="Boots"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBoots}">
-			<Image MaxHeight="20"
-				   MaxWidth="20"
-				   Source="/Assets/boots.png" />
+			<Grid>
+				<Image MaxHeight="20"
+					   MaxWidth="20"
+					   Source="/Assets/boots.png" />
+				<Border Width="15"
+						Height="15"
+						Visibility="{Binding AmountsVisibility}"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Right"
+						CornerRadius="50"
+						Background="White">
+					<TextBlock FontSize="14"
+							   FontFamily="Segoe UI"
+							   FontWeight="DemiBold"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center"
+							   TextAlignment="Center"
+							   Background="Transparent"
+							   Foreground="Black"
+							   Text="{Binding BootsAmount}"></TextBlock>
+				</Border>
+			</Grid>
 		</Border>
 		<Border Grid.Column="6"
 				Grid.Row="1"
@@ -64,9 +102,29 @@
 				x:Name="Chest"
 				Opacity="{Binding ChestsOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorChest}">
-			<Image MaxHeight="20"
-				   MaxWidth="20"
-				   Source="/Assets/chest.png" />
+			<Grid>
+				<Image MaxHeight="20"
+					   MaxWidth="20"
+					   Source="/Assets/chest.png" />
+				<Border Width="15"
+						Height="15"
+						Visibility="{Binding AmountsVisibility}"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Right"
+						CornerRadius="50"
+						Background="White">
+					<TextBlock FontSize="14"
+							   FontFamily="Segoe UI"
+							   FontWeight="DemiBold"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center"
+							   TextAlignment="Center"
+							   Background="Transparent"
+							   Foreground="Black"
+							   Text="{Binding ChestsAmount}"></TextBlock>
+				</Border>
+			</Grid>
+
 		</Border>
 		<Border Grid.Column="7"
 				Grid.Row="1"
@@ -77,9 +135,29 @@
 				x:Name="Weapon"
 				Opacity="{Binding WeaponsOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorWeapon}">
-			<Image MaxHeight="20"
-				   MaxWidth="20"
-				   Source="/Assets/weapon.png" />
+			<Grid>
+				<Image MaxHeight="20"
+					   MaxWidth="20"
+					   Source="/Assets/weapon.png" />
+				<Border Width="15"
+						Height="15"
+						Visibility="{Binding AmountsVisibility}"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Right"
+						CornerRadius="50"
+						Background="White">
+					<TextBlock FontSize="14"
+							   FontFamily="Segoe UI"
+							   FontWeight="DemiBold"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center"
+							   TextAlignment="Center"
+							   Background="Transparent"
+							   Foreground="Black"
+							   Text="{Binding WeaponsAmount}"></TextBlock>
+				</Border>
+			</Grid>
+
 		</Border>
 		<Border Grid.Column="5"
 				Grid.Row="1"
@@ -90,9 +168,29 @@
 				Opacity="{Binding HelmetOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorHelmet}"
 				x:Name="Helmet">
-			<Image MaxHeight="20"
-				   MaxWidth="20"
-				   Source="/Assets/helmet.png" />
+			<Grid>
+				<Image MaxHeight="20"
+					   MaxWidth="20"
+					   Source="/Assets/helmet.png" />
+				<Border Width="15"
+						Height="15"
+						Visibility="{Binding AmountsVisibility}"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Right"
+						CornerRadius="50"
+						Background="White">
+					<TextBlock FontSize="14"
+							   FontFamily="Segoe UI"
+							   FontWeight="DemiBold"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center"
+							   TextAlignment="Center"
+							   Background="Transparent"
+							   Foreground="Black"
+							   Text="{Binding HelmetsAmount}"></TextBlock>
+				</Border>
+			</Grid>
+
 		</Border>
 		<Border Grid.Column="8"
 				Grid.Row="1"
@@ -103,9 +201,29 @@
 				Opacity="{Binding RingsOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorRing}"
 				x:Name="Rings">
-			<Image MaxHeight="20"
-				   MaxWidth="20"
-				   Source="/Assets/ring.png" />
+			<Grid>
+				<Image MaxHeight="20"
+					   MaxWidth="20"
+					   Source="/Assets/ring.png" />
+				<Border Width="15"
+						Height="15"
+						Visibility="{Binding AmountsVisibility}"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Right"
+						CornerRadius="50"
+						Background="White">
+					<TextBlock FontSize="14"
+							   FontFamily="Segoe UI"
+							   FontWeight="DemiBold"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center"
+							   TextAlignment="Center"
+							   Background="Transparent"
+							   Foreground="Black"
+							   Text="{Binding RingsAmount}"></TextBlock>
+				</Border>
+			</Grid>
+
 		</Border>
 		<Border Grid.Column="9"
 				Grid.Row="1"
@@ -116,9 +234,29 @@
 				Opacity="{Binding AmuletsOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorAmulet}"
 				x:Name="Amulet">
-			<Image MaxHeight="20"
-				   MaxWidth="20"
-				   Source="/Assets/amulet.png" />
+			<Grid>
+				<Image MaxHeight="20"
+					   MaxWidth="20"
+					   Source="/Assets/amulet.png" />
+				<Border Width="15"
+						Height="15"
+						Visibility="{Binding AmountsVisibility}"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Right"
+						CornerRadius="50"
+						Background="White">
+					<TextBlock FontSize="14"
+							   FontFamily="Segoe UI"
+							   FontWeight="DemiBold"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center"
+							   TextAlignment="Center"
+							   Background="Transparent"
+							   Foreground="Black"
+							   Text="{Binding AmuletsAmount}"></TextBlock>
+				</Border>
+			</Grid>
+
 		</Border>
 		<Border Grid.Column="10"
 				Grid.Row="1"
@@ -129,9 +267,29 @@
 				Opacity="{Binding BeltsOpacity}"
 				Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBelt}"
 				x:Name="Belt">
-			<Image MaxHeight="20"
-				   MaxWidth="20"
-				   Source="/Assets/belt.png" />
+			<Grid>
+				<Image MaxHeight="20"
+					   MaxWidth="20"
+					   Source="/Assets/belt.png" />
+				<Border Width="15"
+						Height="15"
+						Visibility="{Binding AmountsVisibility}"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Right"
+						CornerRadius="50"
+						Background="White">
+					<TextBlock FontSize="14"
+							   FontFamily="Segoe UI"
+							   FontWeight="DemiBold"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center"
+							   TextAlignment="Center"
+							   Background="Transparent"
+							   Foreground="Black"
+							   Text="{Binding BeltsAmount}"></TextBlock>
+				</Border>
+			</Grid>
+
 		</Border>
 		<Border Grid.Row="1"
 					 Grid.Column="2"

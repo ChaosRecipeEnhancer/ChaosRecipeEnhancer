@@ -32,6 +32,7 @@
 				<RowDefinition Height="auto" />
 				<RowDefinition Height="*" />
 				<RowDefinition Height="auto" />
+
 			</Grid.RowDefinitions>
 			<TabControl Grid.Column="1"
 						Grid.Row="1">
@@ -118,7 +119,81 @@
 									 Width="200"
 									 Text="{Binding Source={x:Static properties:Settings.Default}, Path=League, Mode=TwoWay}" />
 						</Grid>
-
+						<!-- RECIPES -->
+						<Grid Grid.Column="1"
+							  Grid.Row="2">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="10"></ColumnDefinition>
+								<ColumnDefinition Width="*"></ColumnDefinition>
+								<ColumnDefinition Width="10"></ColumnDefinition>
+								<ColumnDefinition Width="*"></ColumnDefinition>
+								<ColumnDefinition Width="10"></ColumnDefinition>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="10"></RowDefinition>
+								<RowDefinition Height="30"></RowDefinition>
+								<RowDefinition Height="5"></RowDefinition>
+								<RowDefinition Height="25"></RowDefinition>
+								<RowDefinition Height="5"></RowDefinition>
+								<RowDefinition Height="25"></RowDefinition>
+								<RowDefinition Height="5"></RowDefinition>
+								<RowDefinition Height="25"></RowDefinition>
+								<RowDefinition Height="5"></RowDefinition>
+								<RowDefinition Height="25"></RowDefinition>
+								<RowDefinition Height="10"></RowDefinition>
+							</Grid.RowDefinitions>
+							<TextBlock Grid.Column="1"
+									   Grid.Row="1"
+									   VerticalAlignment="Center"
+									   Grid.ColumnSpan="2"
+									   Text="Recipes"
+									   FontSize="24"
+									   FontWeight="Bold" />
+							<TextBlock Grid.Column="1"
+									   Grid.Row="3"
+									   VerticalAlignment="Center"
+									   Text="Chaos Orb Recipe:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="Activates Exalted Shard Recipe. Not fully functional at the moment. Visit github for more information." />
+							<CheckBox x:Name="ChaosRecipeCheckBox"
+									  Grid.Column="3"
+									  Grid.Row="3"
+									  VerticalAlignment="Center"
+									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ChaosRecipe, Mode=TwoWay}" />
+							<TextBlock Grid.Column="1"
+									   Grid.Row="5"
+									   VerticalAlignment="Center"
+									   Text="Exalted Shard Recipe:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="Activates Exalted Shard Recipe. Not fully functional at the moment. Visit github for more information." />
+							<CheckBox x:Name="ExaltedRecipeCheckBox"
+									  Grid.Column="3"
+									  Grid.Row="5"
+									  VerticalAlignment="Center"
+									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedRecipe, Mode=TwoWay}" />
+							<TextBlock Grid.Column="1"
+									   Grid.Row="7"
+									   VerticalAlignment="Center"
+									   Text="Fill Greedy Mode:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="Sets will be filled with more than 1 low ilvl item. Deactivate to only allow 1 low ilvl item." />
+							<CheckBox x:Name="LimitChaosCheckBox"
+									  Grid.Column="3"
+									  Grid.Row="7"
+									  VerticalAlignment="Center"
+									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=FillWithChaos, Mode=TwoWay}" />
+							<TextBlock Grid.Column="1"
+									   Grid.Row="9"
+									   VerticalAlignment="Center"
+									   Text="Include Identified Items:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="." />
+							<CheckBox x:Name="IncludeIdentifiedCheckBox"
+									  Grid.Column="3"
+									  Grid.Row="9"
+									  VerticalAlignment="Center"
+									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IncludeIdentified, Mode=TwoWay}" />
+						</Grid>
 						<!-- HOTKEYS -->
 						<Grid Grid.Column="3"
 							  Grid.Row="1">
@@ -297,25 +372,15 @@
 									 Grid.Row="5"
 									 Width="200"
 									 Text="{Binding Source={x:Static properties:Settings.Default}, Path=RefreshRate, Mode=TwoWay}" />
+
 							<TextBlock Grid.Column="1"
 									   Grid.Row="7"
-									   VerticalAlignment="Center"
-									   Text="Fill Greedy Mode:"
-									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="Sets will be filled with more than 1 low ilvl item. Deactivate to only allow 1 low ilvl item." />
-							<CheckBox x:Name="LimitChaosCheckBox"
-									  Grid.Column="3"
-									  Grid.Row="7"
-									  VerticalAlignment="Center"
-									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=FillWithChaos, Mode=TwoWay}" />
-							<TextBlock Grid.Column="1"
-									   Grid.Row="11"
 									   VerticalAlignment="Center"
 									   Text="Stashtab Mode:"
 									   ToolTipService.InitialShowDelay="50"
 									   ToolTip="The stashtab fetching mode. Stashtabs will automatically be added." />
 							<ComboBox Grid.Column="3"
-									  Grid.Row="11"
+									  Grid.Row="7"
 									  Width="200"
 									  VerticalContentAlignment="Center"
 									  SelectionChanged="ComboBox_SelectionChanged"
@@ -325,7 +390,7 @@
 							</ComboBox>
 							<TextBlock Name="StashTabNameTextBlock"
 									   Grid.Column="1"
-									   Grid.Row="13"
+									   Grid.Row="9"
 									   VerticalAlignment="Center"
 									   Text="StashTab Prefix:"
 									   ToolTipService.InitialShowDelay="50"
@@ -333,13 +398,13 @@
 									   Visibility="{Binding NameVisible}" />
 							<TextBox Name="StashTabNameTextBox"
 									 Grid.Column="3"
-									 Grid.Row="13"
+									 Grid.Row="9"
 									 Width="200"
 									 Visibility="{Binding NameVisible}"
 									 Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabName, Mode=TwoWay}" />
 							<TextBlock Name="StashTabIndicesTextBlock"
 									   Grid.Column="1"
-									   Grid.Row="13"
+									   Grid.Row="9"
 									   VerticalAlignment="Center"
 									   Text="StashTab Indices:"
 									   ToolTipService.InitialShowDelay="50"
@@ -347,21 +412,10 @@
 									   Visibility="{Binding IndicesVisible}" />
 							<TextBox Name="StashTabIndicesTextBox"
 									 Grid.Column="3"
-									 Grid.Row="13"
+									 Grid.Row="9"
 									 Width="200"
 									 Visibility="{Binding IndicesVisible}"
 									 Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabIndices, Mode=TwoWay}" />
-							<TextBlock Grid.Column="1"
-									   Grid.Row="9"
-									   VerticalAlignment="Center"
-									   Text="Exalted Shard Recipe:"
-									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="Activates Exalted Shard Recipe. Not fully functional at the moment. Visit github for more information." />
-							<CheckBox x:Name="ExaltedRecipeCheckBox"
-									  Grid.Column="3"
-									  Grid.Row="9"
-									  VerticalAlignment="Center"
-									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedRecipe, Mode=TwoWay}" />
 							<TextBlock Grid.Column="1"
 									   Grid.Row="15"
 									   VerticalAlignment="Center"
@@ -374,18 +428,18 @@
 									  VerticalAlignment="Center"
 									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=hideOnClose, Mode=TwoWay}" />
 							<TextBlock Grid.Column="1"
-									   Grid.Row="17"
+									   Grid.Row="11"
 									   VerticalAlignment="Center"
 									   Text="Notification Sound:"
 									   ToolTipService.InitialShowDelay="50"
 									   ToolTip="Plays a sound everytime you have to refresh your lootfilter." />
 							<CheckBox x:Name="PlaySoundCheckBox"
 									  Grid.Column="3"
-									  Grid.Row="17"
+									  Grid.Row="11"
 									  VerticalAlignment="Center"
 									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=Sound, Mode=TwoWay}" />
 							<TextBlock Grid.Column="1"
-									   Grid.Row="19"
+									   Grid.Row="13"
 									   VerticalAlignment="Center"
 									   Text="Sound Volume:"
 									   ToolTipService.InitialShowDelay="50"
@@ -393,7 +447,7 @@
 							<Slider x:Name="VolumeSlider"
 									Width="200"
 									Grid.Column="3"
-									Grid.Row="19"
+									Grid.Row="13"
 									VerticalAlignment="Center"
 									Minimum="0"
 									Maximum="100"
@@ -402,17 +456,7 @@
 									AutoToolTipPrecision="0"
 									PreviewMouseUp="VolumeSlider_PreviewMouseUp"
 									Value="{Binding Source={x:Static properties:Settings.Default}, Path=Volume, Mode=TwoWay}" />
-							<TextBlock Grid.Column="1"
-									   Grid.Row="21"
-									   VerticalAlignment="Center"
-									   Text="Include Identified Items:"
-									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="." />
-							<CheckBox x:Name="IncludeIdentifiedCheckBox"
-									  Grid.Column="3"
-									  Grid.Row="21"
-									  VerticalAlignment="Center"
-									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IncludeIdentified, Mode=TwoWay}" />
+
 						</Grid>
 					</Grid>
 				</TabItem>
@@ -1035,7 +1079,7 @@
 				</TabItem>
 			</TabControl>
 			<Grid Grid.Column="1"
-				  Grid.Row="3">
+				  Grid.Row="2">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="20"></ColumnDefinition>
 					<ColumnDefinition Width="1*"></ColumnDefinition>
@@ -1044,10 +1088,10 @@
 					<ColumnDefinition Width="20"></ColumnDefinition>
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="auto" />
 					<RowDefinition Height="20" />
-					<RowDefinition Height="auto" />
 					<RowDefinition Height="*" />
+					<RowDefinition Height="auto" />
+					<RowDefinition Height="auto" />
 				</Grid.RowDefinitions>
 				<TextBlock Grid.Column="2"
 						   Grid.Row="3"

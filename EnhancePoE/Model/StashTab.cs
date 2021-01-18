@@ -172,7 +172,11 @@ namespace EnhancePoE.Model
                         }
                     }
                 }
-
+                if (!Properties.Settings.Default.ChaosRecipe)
+                {
+                    ItemList.RemoveAt(i);
+                    return;
+                }
                 if (ItemList[i].ilvl < 60)
                 {
                     ItemList.RemoveAt(i);

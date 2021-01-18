@@ -657,6 +657,12 @@ namespace EnhancePoE
                     }
                 }
 
+                if (!Properties.Settings.Default.ChaosRecipe)
+                {
+                    sectionList.Clear();
+                    Trace.WriteLine("section list cleared");
+                }
+
                 // always on
                 //if (filterActive)
                 //{
@@ -717,9 +723,10 @@ namespace EnhancePoE
                     string newFilter = FilterGeneration.GenerateLootFilter(oldFilter, sectionList);
                     FilterGeneration.WriteLootfilter(newFilter);
 
+
+                    List<string> sectionListInfluenced = new List<string>();
                     if (Properties.Settings.Default.ExaltedRecipe)
                     {
-                        List<string> sectionListInfluenced = new List<string>();
                         sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Rings", true));
                         sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Amulets", true));
                         sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Belts", true));
@@ -730,6 +737,12 @@ namespace EnhancePoE
                         sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", true));
                         sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", true));
 
+                        string oldFilter2 = FilterGeneration.OpenLootfilter();
+                        string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
+                        FilterGeneration.WriteLootfilter(newFilter2);
+                    }
+                    else
+                    {
                         string oldFilter2 = FilterGeneration.OpenLootfilter();
                         string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
                         FilterGeneration.WriteLootfilter(newFilter2);
