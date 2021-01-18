@@ -328,6 +328,7 @@ Help is always appreciated since this is my starter project for WPF anyways.
  - increased Tab Header Margin to 500 maximum
  - added Show Item Amounts support for Minified UI mode
  - added Contribution Section
+ - separated Exalted recipe from Chaos Recipe. You can now turn both on and off individually.
 
 #### 1.1.4 
 
