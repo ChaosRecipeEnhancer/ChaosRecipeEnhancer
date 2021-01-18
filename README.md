@@ -308,7 +308,14 @@ Although there are 2 points which could be problematic:
 
  - Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
   
- 
+  
+## Contributions
+
+If you want to contribute to the project you can push changes to the "patches"-branch. Do not push to master please.
+
+Best thing would be to join the discord though especially if you want to make bigger changes. There we can discuss how to do what.
+Help is always appreciated since this is my starter project for WPF anyways.
+
 ## Change Log
 
 #### 1.1.5
