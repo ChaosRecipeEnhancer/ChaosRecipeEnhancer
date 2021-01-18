@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.1.3
+#### Current Version 1.1.5
 
 For details on changes, check the Change Log at the bottom of this site.
 
@@ -306,6 +306,11 @@ Although there are 2 points which could be problematic:
 #### 1.1.5
 
  - added Reset Settings button
+ - fixed infinite spaces in lootfilter bug
+ - added Always Active Section
+ - rearranged UI
+ - added support for identified items
+ - increased Tab Header Margin to 500 maximum
 
 #### 1.1.4 
 
