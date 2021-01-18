@@ -8,6 +8,14 @@ For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) o
 
 For details on changes, check the Change Log at the bottom of this site.
 
+## Support
+
+[
+  ![Donate with PayPal]
+  (https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/btn_donateCC_LG.webp)
+]
+(https://www.paypal.com/donate?hosted_button_id=HUCVZUSH5VQRW)
+
 ## Installation
 
 DO NOT download the whole github repository, since it may include some new experimental features.
