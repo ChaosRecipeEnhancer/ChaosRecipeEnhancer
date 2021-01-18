@@ -319,6 +319,7 @@ Although there are 2 points which could be problematic:
  - rearranged UI
  - added support for identified items
  - increased Tab Header Margin to 500 maximum
+ - added Show Item Amounts support for Minified UI mode
 
 #### 1.1.4 
 
