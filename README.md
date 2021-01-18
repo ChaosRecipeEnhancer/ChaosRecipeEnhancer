@@ -12,7 +12,7 @@ For details on changes, check the Change Log at the bottom of this site.
 
 [
   ![Donate with PayPal]
-  (https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/btn_donateCC_LG.webp)
+  (https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/Webp.net-resizeimage(2).png)
 ]
 (https://www.paypal.com/donate?hosted_button_id=HUCVZUSH5VQRW)
 
