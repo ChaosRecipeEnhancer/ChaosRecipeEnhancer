@@ -660,5 +660,18 @@ namespace EnhancePoE
             overlay.AmountsVisibility = Visibility.Hidden;
 
         }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = System.Windows.MessageBox.Show("This will reset all of your settings!", "Reset Settings", MessageBoxButton.YesNo);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    Properties.Settings.Default.Reset();
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+        }
     }
 }

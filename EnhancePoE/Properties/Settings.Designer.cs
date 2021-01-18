@@ -550,5 +550,125 @@ namespace EnhancePoE.Properties {
                 this["ShowItemAmount"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RingsAlwaysActive {
+            get {
+                return ((bool)(this["RingsAlwaysActive"]));
+            }
+            set {
+                this["RingsAlwaysActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AmuletsAlwaysActive {
+            get {
+                return ((bool)(this["AmuletsAlwaysActive"]));
+            }
+            set {
+                this["AmuletsAlwaysActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool BeltsAlwaysActive {
+            get {
+                return ((bool)(this["BeltsAlwaysActive"]));
+            }
+            set {
+                this["BeltsAlwaysActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool BootsAlwaysActive {
+            get {
+                return ((bool)(this["BootsAlwaysActive"]));
+            }
+            set {
+                this["BootsAlwaysActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool GlovesAlwaysActive {
+            get {
+                return ((bool)(this["GlovesAlwaysActive"]));
+            }
+            set {
+                this["GlovesAlwaysActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool HelmetsAlwaysActive {
+            get {
+                return ((bool)(this["HelmetsAlwaysActive"]));
+            }
+            set {
+                this["HelmetsAlwaysActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ChestsAlwaysActive {
+            get {
+                return ((bool)(this["ChestsAlwaysActive"]));
+            }
+            set {
+                this["ChestsAlwaysActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool WeaponsAlwaysActive {
+            get {
+                return ((bool)(this["WeaponsAlwaysActive"]));
+            }
+            set {
+                this["WeaponsAlwaysActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IncludeIdentified {
+            get {
+                return ((bool)(this["IncludeIdentified"]));
+            }
+            set {
+                this["IncludeIdentified"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ChaosRecipe {
+            get {
+                return ((bool)(this["ChaosRecipe"]));
+            }
+            set {
+                this["ChaosRecipe"] = value;
+            }
+        }
     }
 }

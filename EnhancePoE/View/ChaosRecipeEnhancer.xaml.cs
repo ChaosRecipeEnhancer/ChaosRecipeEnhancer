@@ -164,6 +164,36 @@ namespace EnhancePoE
                 OnPropertyChanged("WeaponsOpacity");
             }
         }
+        private double _ringsOpacity = activatedOpacity;
+        public double RingsOpacity
+        {
+            get { return _ringsOpacity; }
+            set
+            {
+                _ringsOpacity = value;
+                OnPropertyChanged("RingsOpacity");
+            }
+        }
+        private double _amuletsOpacity = activatedOpacity;
+        public double AmuletsOpacity
+        {
+            get { return _amuletsOpacity; }
+            set
+            {
+                _amuletsOpacity = value;
+                OnPropertyChanged("AmuletsOpacity");
+            }
+        }
+        private double _beltsOpacity = activatedOpacity;
+        public double BeltsOpacity
+        {
+            get { return _beltsOpacity; }
+            set
+            {
+                _beltsOpacity = value;
+                OnPropertyChanged("BeltsOpacity");
+            }
+        }
 
         private ContentElement _mainOverlayContent;
         public ContentElement MainOverlayContent
@@ -495,6 +525,31 @@ namespace EnhancePoE
                 {
                     ChestsOpacity = activatedOpacity;
                 }
+                if (!Data.ActiveItems.RingActive)
+                {
+                    RingsOpacity = deactivatedOpacity;
+                }
+                else
+                {
+                    RingsOpacity = activatedOpacity;
+                }
+                if (!Data.ActiveItems.AmuletActive)
+                {
+                    AmuletsOpacity = deactivatedOpacity;
+                }
+                else
+                {
+                    AmuletsOpacity = activatedOpacity;
+                }
+                if (!Data.ActiveItems.BeltActive)
+                {
+                    BeltsOpacity = deactivatedOpacity;
+                }
+                else
+                {
+                    BeltsOpacity = activatedOpacity;
+                }
+
             });
         }
 

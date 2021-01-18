@@ -4,15 +4,23 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.1.4
+#### Current Version 1.1.5
 
 For details on changes, check the Change Log at the bottom of this site.
+
+## Support
+
+If you want to support the project consider buying some coffees ;)
+
+Nevertheless I will continue to support and update this tool!
+
+[![Donate with PayPal](https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/Webp.net-resizeimage(5).png)](https://www.paypal.com/donate?hosted_button_id=HUCVZUSH5VQRW)
 
 ## Installation
 
 DO NOT download the whole github repository, since it may include some new experimental features.
 
-[Download the setup here](https://github.com/kosace/EnhancePoEApp/releases) instead. 
+[Download the setup.msi here](https://github.com/kosace/EnhancePoEApp/releases) instead. 
 
 Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
 
@@ -300,8 +308,27 @@ Although there are 2 points which could be problematic:
 
  - Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
   
- 
+  
+## Contributions
+
+If you want to contribute to the project you can push changes to the "patches"-branch. Do not push to master please.
+
+Best thing would be to join the discord though especially if you want to make bigger changes. There we can discuss how to do what.
+Help is always appreciated since this is my starter project for WPF anyways.
+
 ## Change Log
+
+#### 1.1.5
+
+ - added Reset Settings button
+ - fixed infinite spaces in lootfilter bug
+ - added Always Active Section
+ - rearranged UI
+ - added support for identified items
+ - increased Tab Header Margin to 500 maximum
+ - added Show Item Amounts support for Minified UI mode
+ - added Contribution Section
+ - separated Exalted recipe from Chaos Recipe. You can now turn both on and off individually.
 
 #### 1.1.4 
 
