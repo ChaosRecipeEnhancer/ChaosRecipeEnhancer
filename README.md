@@ -327,6 +327,7 @@ Help is always appreciated since this is my starter project for WPF anyways.
  - added support for identified items
  - increased Tab Header Margin to 500 maximum
  - added Show Item Amounts support for Minified UI mode
+ - added Contribution Section
 
 #### 1.1.4 
 
