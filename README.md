@@ -12,7 +12,7 @@ For details on changes, check the Change Log at the bottom of this site.
 
 DO NOT download the whole github repository, since it may include some new experimental features.
 
-[Download the setup here](https://github.com/kosace/EnhancePoEApp/releases) instead. 
+[Download the setup.msi here](https://github.com/kosace/EnhancePoEApp/releases) instead. 
 
 Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
 
