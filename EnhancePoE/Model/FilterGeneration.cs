@@ -250,9 +250,9 @@ namespace EnhancePoE.Model
             {
                 chaosSection += s + nl;
             }
-            chaosSection += chaosEnd;
+            chaosSection += chaosEnd + nl;
 
-            string[] sep = { chaosEnd };
+            string[] sep = { chaosEnd + nl };
             string[] split = oldFilter.Split(sep, System.StringSplitOptions.None);
 
             if(split.Length > 1)
@@ -309,7 +309,7 @@ namespace EnhancePoE.Model
             }
             exaltedSection += exaltedEnd + nl;
 
-            string[] sep = { exaltedEnd };
+            string[] sep = { exaltedEnd + nl };
             string[] split = oldFilter.Split(sep, System.StringSplitOptions.None);
 
             if (split.Length > 1)
