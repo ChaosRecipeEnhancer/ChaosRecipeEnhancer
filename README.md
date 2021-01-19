@@ -318,6 +318,10 @@ Help is always appreciated since this is my starter project for WPF anyways.
 
 ## Change Log
 
+#### 1.1.8
+
+ - fixed a "not enough new lines" bug (thanks to @MarcLandis)
+
 #### 1.1.7
 
  - fixed new lines bug in exalted shard recipe (which will also occur if you dont use this recipe)
