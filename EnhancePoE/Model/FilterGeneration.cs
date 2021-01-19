@@ -307,7 +307,7 @@ namespace EnhancePoE.Model
             {
                 exaltedSection += s + nl;
             }
-            exaltedSection += exaltedEnd + nl;
+            exaltedSection += exaltedEnd;
 
             string[] sep = { exaltedEnd };
             string[] split = oldFilter.Split(sep, System.StringSplitOptions.None);
