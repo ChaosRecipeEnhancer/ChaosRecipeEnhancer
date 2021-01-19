@@ -1130,7 +1130,7 @@
 						Grid.Row="2" />
 				<TextBlock Grid.Column="3"
 						   Grid.Row="3"
-						   Text="Version 1.1.5"
+						   Text="Version 1.1.6"
 						   FontSize="12"
 						   HorizontalAlignment="Right"
 						   VerticalAlignment="Center"></TextBlock>

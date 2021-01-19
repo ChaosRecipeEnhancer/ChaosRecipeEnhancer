@@ -604,15 +604,15 @@ namespace EnhancePoE
                                 //sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
                                 break;
                             case "Rings":
-                                ActiveItems.WeaponActive = false;
+                                ActiveItems.RingActive = false;
                                 //sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
                                 break;
                             case "Amulets":
-                                ActiveItems.WeaponActive = false;
+                                ActiveItems.AmuletActive = false;
                                 //sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
                                 break;
                             case "Belts":
-                                ActiveItems.WeaponActive = false;
+                                ActiveItems.BeltActive = false;
                                 //sectionList.Add(FilterGeneration.GenerateSection(false, "TwoHandWeapons"));
                                 break;
                         }
