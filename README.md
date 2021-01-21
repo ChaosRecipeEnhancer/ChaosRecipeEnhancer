@@ -91,6 +91,8 @@ You can use any lootfilter you want. If you don't have the recognition phrase in
 
 Don't forget to refresh your lootfilter ingame everytime the itemtypes change!
 
+Please make a copy of your lootfilter before using it.
+
 ###### Recoginition Phrases:
  - Chaos Recipe Start: "#Chaos Recipe Enhancer by kosace Chaos Recipe Start"
  - Chaos Recipe End: "#Chaos Recipe Enhancer by kosace Chaos Recipe End"
