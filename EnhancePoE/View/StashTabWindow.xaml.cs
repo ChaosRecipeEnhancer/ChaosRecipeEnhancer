@@ -103,10 +103,10 @@ namespace EnhancePoE.View
             //MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
             //TextBlockList.Clear();
 
-            if (ChaosRecipeEnhancer.FetchingActive)
-            {
-                ChaosRecipeEnhancer.aTimer.Enabled = true;
-            }
+            //if (ChaosRecipeEnhancer.FetchingActive)
+            //{
+            //    ChaosRecipeEnhancer.aTimer.Enabled = true;
+            //}
 
 
             base.Hide();
@@ -115,10 +115,10 @@ namespace EnhancePoE.View
         // TODO: rework tabitems, tabheaders
         public new virtual void Show()
         {
-            if (ChaosRecipeEnhancer.FetchingActive)
-            {
-                ChaosRecipeEnhancer.aTimer.Enabled = false;
-            }
+            //if (ChaosRecipeEnhancer.FetchingActive)
+            //{
+            //    ChaosRecipeEnhancer.aTimer.Enabled = false;
+            //}
             if (StashTabList.StashTabs.Count != 0)
             {
                 IsOpen = true;

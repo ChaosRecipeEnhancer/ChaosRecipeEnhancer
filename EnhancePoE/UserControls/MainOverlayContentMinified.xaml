@@ -306,6 +306,8 @@
 					   TextAlignment="Center" />
 		</Border>
 		<Border Grid.Row="1"
+				Name="RefreshButton"
+				IsEnabled="{Binding FetchButtonEnabled}"
 				Grid.Column="11"
 				Height="30"
 				Width="30"

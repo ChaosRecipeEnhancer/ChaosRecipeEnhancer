@@ -670,5 +670,41 @@ namespace EnhancePoE.Properties {
                 this["ChaosRecipe"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RegalRecipe {
+            get {
+                return ((bool)(this["RegalRecipe"]));
+            }
+            set {
+                this["RegalRecipe"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoFetch {
+            get {
+                return ((bool)(this["AutoFetch"]));
+            }
+            set {
+                this["AutoFetch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LogLocation {
+            get {
+                return ((string)(this["LogLocation"]));
+            }
+            set {
+                this["LogLocation"] = value;
+            }
+        }
     }
 }

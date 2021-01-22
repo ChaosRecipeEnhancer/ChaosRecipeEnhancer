@@ -94,9 +94,13 @@ namespace EnhancePoE.Model
             {
                 result += "Identified False" + nl + tab;
             }
-            if (!influenced && onlyChaos)
+            if (!influenced && onlyChaos && !Properties.Settings.Default.RegalRecipe)
             {
                 result += "ItemLevel >= 60" + nl + tab + "ItemLevel <= 74" + nl + tab;
+            }
+            else if(!influenced && Properties.Settings.Default.RegalRecipe)
+            {
+                result += "ItemLevel > 75" + nl + tab;
             }
             else
             {
