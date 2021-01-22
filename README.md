@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.1.8
+#### Current Version 1.1.9
 
 For details on changes, check the Change Log at the bottom of this site.
 
@@ -319,6 +319,14 @@ Best thing would be to join the discord though especially if you want to make bi
 Help is always appreciated since this is my starter project for WPF anyways.
 
 ## Change Log
+
+#### 1.1.9
+
+ - added Regal Recipe (thanks to Immo)
+ - removed Refreshrate
+ - added manual Fetch button (30 sec cooldown)
+ - added autofetch on new map (120 sec cooldown)
+ - added Log File Location dialog (specify your PoE log file location to enable autofetch)
 
 #### 1.1.8
 
