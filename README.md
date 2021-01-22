@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.1.9
+#### Current Version 1.2.0
 
 For details on changes, check the Change Log at the bottom of this site.
 
@@ -319,6 +319,10 @@ Best thing would be to join the discord though especially if you want to make bi
 Help is always appreciated since this is my starter project for WPF anyways.
 
 ## Change Log
+
+#### 1.2.0
+
+ - removed check for refreshrate as it has been removed
 
 #### 1.1.9
 
