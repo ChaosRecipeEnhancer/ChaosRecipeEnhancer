@@ -172,7 +172,7 @@ namespace EnhancePoE
                 while (i.EmptyItemSlots.Count > 0 && lastEmptySlots != i.EmptyItemSlots.Count)
                 {
                     lastEmptySlots = i.EmptyItemSlots.Count;
-                    if (i.HasChaos == false)
+                    if (i.HasChaos == false && !Properties.Settings.Default.RegalRecipe)
                     {
                         if (AddItemToItemSet(i, true))
                         {
@@ -181,7 +181,7 @@ namespace EnhancePoE
                     }
                     if (!AddItemToItemSet(i))
                     {
-                        if (Properties.Settings.Default.FillWithChaos == true)
+                        if (Properties.Settings.Default.FillWithChaos == true && !Properties.Settings.Default.RegalRecipe)
                         {
                             AddItemToItemSet(i, true);
                         }
@@ -194,7 +194,7 @@ namespace EnhancePoE
                  * 2.) We obtained a full set without a chaos item -> We aren't lacking a regal item in this set but we don't have enough chaos items. 
                  * 3.) We couldn't obtain a full set. That means that at least one item slot is missing. We need to check which of the remaining slots we can still fill. We could still be missing a chaos item.
                  */
-                if (i.EmptyItemSlots.Count == 0 && i.HasChaos)
+                if (i.EmptyItemSlots.Count == 0 && (i.HasChaos || Properties.Settings.Default.RegalRecipe))
                 {
                     // Set full, continue
                     continue;
@@ -205,7 +205,7 @@ namespace EnhancePoE
                     while (i.EmptyItemSlots.Count > 0 && i.EmptyItemSlots.Count != lastEmptySlots)
                     {
                         lastEmptySlots = i.EmptyItemSlots.Count;
-                        if (!i.HasChaos)
+                        if (!i.HasChaos && !Properties.Settings.Default.RegalRecipe)
                         {
                             if (AddItemToItemSet(i, true, false))
                             {
@@ -215,7 +215,7 @@ namespace EnhancePoE
                         if (!AddItemToItemSet(i, false, false))
                         {
                             // couldn't add a regal item. Try chaos item if filling with chaos is allowed
-                            if (Properties.Settings.Default.FillWithChaos == true)
+                            if (Properties.Settings.Default.FillWithChaos == true && !Properties.Settings.Default.RegalRecipe)
                             {
                                 AddItemToItemSet(i, true, false);
                             }
@@ -382,7 +382,7 @@ namespace EnhancePoE
                 {
                     if (set.EmptyItemSlots.Count == 0)
                     {
-                        if (set.HasChaos)
+                        if (set.HasChaos || Properties.Settings.Default.RegalRecipe)
                         {
                             fullSets++;
                         }
@@ -414,6 +414,7 @@ namespace EnhancePoE
 
                 if (fullSets == SetTargetAmount && missingChaos)
                 {
+                    Trace.WriteLine("filter here 1");
                     // activate only chaos items
                     if (filterActive)
                     {
@@ -476,6 +477,7 @@ namespace EnhancePoE
                 }
                 else if (fullSets == SetTargetAmount && !missingChaos)
                 {
+                    Trace.WriteLine("filter here 2");
                     //deactivate all
                     //if (filterActive)
                     //{
@@ -499,6 +501,7 @@ namespace EnhancePoE
                 }
                 else
                 {
+                    Trace.WriteLine("filter here 3");
                     // activate missing classes
                     foreach (string itemClass in missingItemClasses)
                     {
@@ -657,7 +660,7 @@ namespace EnhancePoE
                     }
                 }
 
-                if (!Properties.Settings.Default.ChaosRecipe)
+                if (!Properties.Settings.Default.ChaosRecipe && !Properties.Settings.Default.RegalRecipe)
                 {
                     sectionList.Clear();
                     Trace.WriteLine("section list cleared");
@@ -678,7 +681,7 @@ namespace EnhancePoE
                 });
 
                 // invoke chaos missing
-                if (missingChaos)
+                if (missingChaos && !Properties.Settings.Default.RegalRecipe)
                 {
                     //ChaosRecipeEnhancer.WarningMessage = "Need lower level items!";
                     MainWindow.overlay.WarningMessage = "Need lower level items!";
@@ -770,7 +773,6 @@ namespace EnhancePoE
             {
                 Trace.WriteLine("abort");
             }
-
         }
 
         public static void CalculateItemAmounts()
@@ -1165,7 +1167,7 @@ namespace EnhancePoE
             //ItemSetListHighlight = new List<ItemSet>(ItemSetList);
             foreach (ItemSet set in ItemSetList)
             {
-                if (set.HasChaos)
+                if (set.HasChaos || Properties.Settings.Default.RegalRecipe)
                 {
                     ItemSetListHighlight.Add(new ItemSet
                     {

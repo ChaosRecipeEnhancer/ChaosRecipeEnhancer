@@ -21,21 +21,15 @@
 			<RowDefinition Height="auto" />
 			<RowDefinition Height="5" />
 		</Grid.RowDefinitions>
-
 		<Button x:Name="RefreshButton"
 				Click="RefreshButton_Click_1"
+				IsEnabled="{Binding FetchButtonEnabled}"
 				Width="50"
 				Height="40"
 				Grid.Column="3"
 				Grid.Row="1"
-				Margin="3,0">
-			<UniformGrid Columns="1"
-						 Rows="1">
-				<TextBlock x:Name="FetchButtonBottomContent"
-						   Text="{Binding FetchButtonBottomText}"
-						   HorizontalAlignment="Center"></TextBlock>
-			</UniformGrid>
-		</Button>
+				Content="Fetch"
+				Margin="3,0"></Button>
 		<Button x:Name="OpenStashTabOverlay"
 				Click="OpenStashTabOverlay_Click"
 				Width="50"

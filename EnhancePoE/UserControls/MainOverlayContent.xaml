@@ -289,18 +289,11 @@
 		<Button x:Name="RefreshButton"
 				Click="RefreshButton_Click_1"
 				Width="50"
+				IsEnabled="{Binding FetchButtonEnabled}"
 				Grid.Column="11"
 				Grid.Row="1"
-				Margin="5,0">
-			<UniformGrid Columns="1"
-						 Rows="2">
-				<TextBlock x:Name="FetchButtonTopContent"
-						   HorizontalAlignment="Center">Fetch</TextBlock>
-				<TextBlock x:Name="FetchButtonBottomContent"
-						   Text="{Binding FetchButtonBottomText}"
-						   HorizontalAlignment="Center"></TextBlock>
-			</UniformGrid>
-		</Button>
+				Content="Fetch"
+				Margin="5,0"></Button>
 		<Button x:Name="OpenStashTabOverlay"
 				Click="OpenStashTabOverlay_Click"
 				Width="50"

@@ -18,13 +18,18 @@ namespace EnhancePoE
 
 
         // toggle fetch button
-        public static bool FetchingActive { get; set;} = false;
+        public static bool FetchingActive { get; set; } = false;
         // fetching and calculations currently active
         public static bool CalculationActive { get; set; } = false;
-        public static System.Timers.Timer aTimer;
+        //public static System.Timers.Timer aTimer;
 
         private static readonly double deactivatedOpacity = .1;
         private static readonly double activatedOpacity = 1;
+
+        private static readonly int fetchCooldown = 30;
+
+        public static LogWatcher Watcher { get; set; }
+
 
         public bool IsOpen { get; set; } = false;
 
@@ -92,16 +97,16 @@ namespace EnhancePoE
             }
         }
 
-        private string _fetchButtonBottomText = "Start";
-        public string FetchButtonBottomText
-        {
-            get { return _fetchButtonBottomText; }
-            set
-            {
-                _fetchButtonBottomText = value;
-                OnPropertyChanged("FetchButtonBottomText");
-            }
-        }
+        //private string _fetchButtonBottomText = "Start";
+        //public string FetchButtonBottomText
+        //{
+        //    get { return _fetchButtonBottomText; }
+        //    set
+        //    {
+        //        _fetchButtonBottomText = value;
+        //        OnPropertyChanged("FetchButtonBottomText");
+        //    }
+        //}
 
         private string _openStashOverlayButtonContent = "Stash";
         public string OpenStashOverlayButtonContent
@@ -206,7 +211,7 @@ namespace EnhancePoE
             }
         }
 
-        private SolidColorBrush _fetchButtonColor = Brushes.Red;
+        private SolidColorBrush _fetchButtonColor = Brushes.Green;
         public SolidColorBrush FetchButtonColor
         {
             get { return _fetchButtonColor; }
@@ -309,34 +314,59 @@ namespace EnhancePoE
             }
         }
 
+        private bool _fetchButtonEnabled = true;
+        public bool FetchButtonEnabled
+        {
+            get { return _fetchButtonEnabled; }
+            set
+            {
+                _fetchButtonEnabled = value;
+                OnPropertyChanged("FetchButtonEnabled");
+            }
+        }
+
 
         public static int FullSets { get; set; } = 0;
         public ChaosRecipeEnhancer()
         {
             InitializeComponent();
             DataContext = this;
-            aTimer = new System.Timers.Timer();
-            aTimer.Elapsed += OnTimedEvent;
-            aTimer.AutoReset = true;
-            aTimer.Enabled = false;
+            //aTimer = new System.Timers.Timer();
+            //aTimer.Elapsed += OnTimedEvent;
+            //aTimer.AutoReset = true;
+            //aTimer.Enabled = false;
             FullSetsText = "0";
+        }
+
+        private void DisableWarnings()
+        {
+            MainWindow.overlay.WarningMessage = "";
+            MainWindow.overlay.ShadowOpacity = 0;
+            MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Hidden;
         }
 
 
         private async void FetchData()
         {
-            MainWindow.overlay.WarningMessage = "";
-            MainWindow.overlay.ShadowOpacity = 0;
-            MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Hidden;
+            if (FetchingActive)
+            {
+                return;
+            }
+
+            DisableWarnings();
             //aTimer.Stop();
+            FetchingActive = true;
+
             CalculationActive = true;
             this.Dispatcher.Invoke(() =>
             {
                 IsIndeterminate = true;
+                FetchButtonEnabled = false;
+                FetchButtonColor = Brushes.DimGray;
             });
             await this.Dispatcher.Invoke(async() =>
             {
-                GetFrequency();
+                //GetFrequency();
                 if(await ApiAdapter.GenerateUri())
                 {
                     if(await ApiAdapter.GetItems())
@@ -349,15 +379,21 @@ namespace EnhancePoE
                                 SetOpacity();
 
                                 //ChaosRecipeEnhancer.aTimer.Enabled = true;
-                                Trace.WriteLine("timer enabled");
-                                aTimer.Enabled = true;
+                                //Trace.WriteLine("timer enabled");
+                                //aTimer.Enabled = true;
                                 CalculationActive = false;
                                 this.Dispatcher.Invoke(() =>
                                 {
                                     IsIndeterminate = false;
-
+                                    //FetchButtonEnabled = true;
                                 });
                             }, Data.ct);
+                            await Task.Delay(fetchCooldown * 1000).ContinueWith(_ =>
+                            {
+                                FetchButtonEnabled = true;
+                                FetchButtonColor = Brushes.Green;
+                                FetchingActive = false;
+                            });
                         }
                         catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
                         {
@@ -366,7 +402,9 @@ namespace EnhancePoE
                             this.Dispatcher.Invoke(() =>
                             {
                                 IsIndeterminate = false;
-
+                                FetchButtonEnabled = true;
+                                FetchButtonColor = Brushes.Green;
+                                FetchingActive = false;
                             });
 
                         }
@@ -378,21 +416,21 @@ namespace EnhancePoE
                     MainWindow.overlay.WarningMessage = "Rate Limit Exceeded! Waiting...";
                     MainWindow.overlay.ShadowOpacity = 1;
                     MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
-                    aTimer.Enabled = false;
+                    //aTimer.Enabled = false;
                     await Task.Delay(RateLimit.GetSecondsToWait() * 1000);
                     RateLimit.RequestCounter = 0;
                     RateLimit.RateLimitExceeded = false;
-                    aTimer.Enabled = true;
+                    //aTimer.Enabled = true;
                 }
                 if (RateLimit.BanTime > 0)
                 {
                     MainWindow.overlay.WarningMessage = "Temporary Ban! Waiting...";
                     MainWindow.overlay.ShadowOpacity = 1;
                     MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
-                    aTimer.Enabled = false;
+                    //aTimer.Enabled = false;
                     await Task.Delay(RateLimit.BanTime * 1000);
                     RateLimit.BanTime = 0;
-                    aTimer.Enabled = true;
+                    //aTimer.Enabled = true;
                 }
 
             });
@@ -423,14 +461,15 @@ namespace EnhancePoE
                         return;
                     }
                 }
-                if (CalculationActive || aTimer.Enabled)
+                //if (CalculationActive || aTimer.Enabled)
+                if(CalculationActive)
                 {
                     Data.cs.Cancel();
-                    aTimer.Enabled = false;
+                    //aTimer.Enabled = false;
                     FetchingActive = false;
                     //RefreshButton.Content = "Fetch\nStart";
-                    FetchButtonBottomText = "Start";
-                    FetchButtonColor = Brushes.Red;
+                    //FetchButtonBottomText = "Start";
+                    //FetchButtonColor = Brushes.Gray;
                 }
                 else
                 {
@@ -447,8 +486,8 @@ namespace EnhancePoE
                         //aTimer.Enabled = true;
                         FetchingActive = true;
                         //RefreshButton.Content = "Stop";
-                        FetchButtonBottomText = "Stop";
-                        FetchButtonColor = Brushes.Green;
+                        //FetchButtonBottomText = "Stop";
+                        //FetchButtonColor = Brushes.Green;
                     }
 
                 }
@@ -458,15 +497,15 @@ namespace EnhancePoE
 
 
         // TODO: find better algo for getting frequency, maybe implementing response header thresholds
-        private static void GetFrequency()
-        {
-            int addedTime = 0;
-            //if(Properties.Settings.Default.StashTabIndices != "")
-            //{
-            //    addedTime += (Properties.Settings.Default.StashTabIndices.Length / 2) * 1000;
-            //}
-            aTimer.Interval = (Properties.Settings.Default.RefreshRate * 1000) + addedTime;
-        }
+        //private static void GetFrequency()
+        //{
+        //    int addedTime = 0;
+        //    //if(Properties.Settings.Default.StashTabIndices != "")
+        //    //{
+        //    //    addedTime += (Properties.Settings.Default.StashTabIndices.Length / 2) * 1000;
+        //    //}
+        //    aTimer.Interval = (Properties.Settings.Default.RefreshRate * 1000) + addedTime;
+        //}
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
@@ -556,9 +595,12 @@ namespace EnhancePoE
         public new virtual void Hide()
         {
             IsOpen = false;
+            if(LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
+            {
+                LogWatcher.StopWatchingLogFile();
+            }
+            //aTimer.Enabled = false;
 
-            aTimer.Enabled = false;
-            
             //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Run Overlay";
             base.Hide();
         }
@@ -566,13 +608,17 @@ namespace EnhancePoE
         public new virtual void Show()
         {
             IsOpen = true;
-            FetchButtonBottomText = "Start";
-            if (FetchingActive)
+            if (Properties.Settings.Default.AutoFetch)
             {
-                aTimer.Enabled = true;
-                //FetchData();
-                FetchButtonBottomText = "Stop";
+                Watcher = new LogWatcher();
             }
+            //FetchButtonBottomText = "Start";
+            //if (FetchingActive)
+            //{
+            //    aTimer.Enabled = true;
+            //    //FetchData();
+            //    //FetchButtonBottomText = "Stop";
+            //}
             //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Stop Overlay";
 
             base.Show();

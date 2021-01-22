@@ -27,9 +27,9 @@ namespace EnhancePoE
             if (Properties.Settings.Default.accName != ""
                 && Properties.Settings.Default.League != "")
             {
-                ChaosRecipeEnhancer.aTimer.Enabled = false;
-                Trace.WriteLine("stopping timer");
-                Trace.WriteLine(ChaosRecipeEnhancer.aTimer.Interval);
+                //ChaosRecipeEnhancer.aTimer.Enabled = false;
+                //Trace.WriteLine("stopping timer");
+                //Trace.WriteLine(ChaosRecipeEnhancer.aTimer.Interval);
                 //Trace.WriteLine(ChaosRecipeEnhancer.aTimer.)
                 string accName = Properties.Settings.Default.accName.Trim();
                 string league = Properties.Settings.Default.League.Trim();

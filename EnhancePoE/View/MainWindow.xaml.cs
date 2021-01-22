@@ -214,6 +214,10 @@ namespace EnhancePoE
                 MouseHook.Stop();
                 HotkeysManager.ShutdownSystemHook();
                 Properties.Settings.Default.Save();
+                if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
+                {
+                    LogWatcher.StopWatchingLogFile();
+                }
                 //overlay.Close();
                 //stashTabOverlay.Close();
                 App.Current.Shutdown();
@@ -270,7 +274,7 @@ namespace EnhancePoE
 
         public void RunOverlay()
         {
-            Trace.WriteLine(ForegroundWindows.GetForegroundProcessName(), "focused");
+            //Trace.WriteLine(ForegroundWindows.GetForegroundProcessName(), "focused");
 
             if (overlay.IsOpen)
             {
@@ -429,6 +433,8 @@ namespace EnhancePoE
             int refreshRate = Properties.Settings.Default.RefreshRate;
             string lootfilterLocation = Properties.Settings.Default.LootfilterLocation;
             bool lootfilterActive = Properties.Settings.Default.LootfilterActive;
+            string logLocation = Properties.Settings.Default.LogLocation;
+            bool autoFetch = Properties.Settings.Default.AutoFetch;
 
             List<string> missingSettings = new List<string>();
             string errorMessage = "Please add: \n";
@@ -454,6 +460,13 @@ namespace EnhancePoE
                 if(lootfilterLocation == "")
                 {
                     missingSettings.Add("- Lootfilter Location \n");
+                }
+            }
+            if (autoFetch)
+            {
+                if(logLocation == "")
+                {
+                    missingSettings.Add("- Log File Location \n");
                 }
             }
             if(Properties.Settings.Default.StashtabMode == 0)
@@ -671,6 +684,43 @@ namespace EnhancePoE
                     break;
                 case MessageBoxResult.No:
                     break;
+            }
+        }
+
+        private void ChaosRecipeCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.RegalRecipe = false;
+        }
+
+        private void RegalRecipeCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ChaosRecipe = false;
+        }
+
+        private void LogLocationDialog_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog();
+            //open.Filter = "Lootfilter|*.filter";
+            DialogResult res = open.ShowDialog();
+            if (res == System.Windows.Forms.DialogResult.OK)
+            {
+                string filename = open.FileName;
+                //LootfilterFileDialog.Text = filename;
+                Properties.Settings.Default.LogLocation = filename;
+                //LootfilterFileDialog.Select(LootfilterFileDialog.Text.Length, 0);
+                LogLocationDialog.Content = filename;
+            }
+        }
+
+        private void AutoFetchCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void AutoFetchCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if(LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
+            {
+                LogWatcher.WorkerThread.Abort();
             }
         }
     }

@@ -172,12 +172,17 @@ namespace EnhancePoE.Model
                         }
                     }
                 }
-                if (!Properties.Settings.Default.ChaosRecipe)
+                if (!Properties.Settings.Default.ChaosRecipe && !Properties.Settings.Default.RegalRecipe)
                 {
                     ItemList.RemoveAt(i);
                     return;
                 }
                 if (ItemList[i].ilvl < 60)
+                {
+                    ItemList.RemoveAt(i);
+                    continue;
+                }
+                if (Properties.Settings.Default.RegalRecipe && ItemList[i].ilvl < 75)
                 {
                     ItemList.RemoveAt(i);
                     continue;
