@@ -430,7 +430,6 @@ namespace EnhancePoE
             string accName = Properties.Settings.Default.accName;
             string sessId = Properties.Settings.Default.SessionId;
             string league = Properties.Settings.Default.League;
-            int refreshRate = Properties.Settings.Default.RefreshRate;
             string lootfilterLocation = Properties.Settings.Default.LootfilterLocation;
             bool lootfilterActive = Properties.Settings.Default.LootfilterActive;
             string logLocation = Properties.Settings.Default.LogLocation;
@@ -450,10 +449,6 @@ namespace EnhancePoE
             if(league == "")
             {
                 missingSettings.Add("- League \n");
-            }
-            if(refreshRate < 45)
-            {
-                missingSettings.Add("- Refresh Rate \n");
             }
             if (lootfilterActive)
             {

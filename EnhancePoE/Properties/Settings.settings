@@ -29,9 +29,6 @@
     <Setting Name="HotkeyRefresh" Type="System.String" Scope="User">
       <Value Profile="(Default)">&lt; not set &gt;</Value>
     </Setting>
-    <Setting Name="RefreshRate" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">60</Value>
-    </Setting>
     <Setting Name="Sets" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
