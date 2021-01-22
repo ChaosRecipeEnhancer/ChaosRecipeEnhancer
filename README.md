@@ -31,8 +31,11 @@ Since this app is not trusted (too expensive), you will have to accept few times
  - Hotkeys
  - Customizable Overlays
  - Stashtab Overlay for easy selling
+ - Chaos Recipe
+ - Regal Recipe
  - Exalted Shard Recipe
  - Lootfilter Manipulation (optional)
+ - Automatically fetches when you join a new map
 
 #### Main Overlay
 
