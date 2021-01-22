@@ -57,7 +57,7 @@ The overlays will not work in Fullscreen Mode. They will only work in:
  - Windowed Mode
  - Fullscreen Windowed Mode
  
-The tool only works in Windows, no support for other OS.
+The tool only works in Windows(10), no support for other OS.
 
 Overlay only works with Display Scaling 100% in Windows Settings (working on a fix). 
 
