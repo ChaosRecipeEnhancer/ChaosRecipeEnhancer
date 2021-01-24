@@ -22,6 +22,8 @@ DO NOT download the whole github repository, since it may include some new exper
 
 Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
 
+If you have updated your application to 1.2.0 please use a new itemfilter as some changes may break your existing one!
+
 ## Features
 
  - Easy to use
