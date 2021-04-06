@@ -336,6 +336,13 @@ namespace EnhancePoE
                     //MainWindow.overlay.RunFetching();
                     return;
                 }
+                if(StashTabList.StashTabs.Count == 0)
+                {
+                    MainWindow.overlay.WarningMessage = "No Stashtabs found...";
+                    MainWindow.overlay.ShadowOpacity = 1;
+                    MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                    return;
+                }
                 if (Properties.Settings.Default.ShowItemAmount)
                 {
                     Data.CalculateItemAmounts();
@@ -382,14 +389,22 @@ namespace EnhancePoE
                 {
                     if (set.EmptyItemSlots.Count == 0)
                     {
-                        if (set.HasChaos || Properties.Settings.Default.RegalRecipe)
-                        {
-                            fullSets++;
-                        }
-                        else
+                        // TODO: test this part. condition (fullSets == SetTargetAmount && missingChaos) never true cause fullsets < settargetamount when missingChaos @ikogan
+                        fullSets++;
+
+                        if (!set.HasChaos && !Properties.Settings.Default.RegalRecipe)
                         {
                             missingChaos = true;
                         }
+
+                        //if (set.HasChaos || Properties.Settings.Default.RegalRecipe)
+                        //{
+                        //    fullSets++;
+                        //}
+                        //else
+                        //{
+                        //    missingChaos = true;
+                        //}
                     }
                     else
                     {
@@ -706,7 +721,7 @@ namespace EnhancePoE
                 }
 
                 // invoke set full
-                if (fullSets == SetTargetAmount)
+                if (fullSets == SetTargetAmount && !missingChaos)
                 {
                     MainWindow.overlay.WarningMessage = "Sets full!";
                     MainWindow.overlay.ShadowOpacity = 1;

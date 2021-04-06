@@ -132,6 +132,15 @@ namespace EnhancePoE.Model
 
         public void CleanItemList()
         {
+            if (Properties.Settings.Default.ExaltedRecipe)
+            {
+                ItemListShaper.Clear();
+                ItemListElder.Clear();
+                ItemListCrusader.Clear();
+                ItemListWarlord.Clear();
+                ItemListHunter.Clear();
+                ItemListRedeemer.Clear();
+            }
 
             // for loop backwards for deleting from list 
             for (int i = ItemList.Count - 1; i > -1; i--)
@@ -145,13 +154,6 @@ namespace EnhancePoE.Model
                 //exalted recipe every ilvl allowed, same bases, sort in itemlists
                 if (Properties.Settings.Default.ExaltedRecipe)
                 {
-                    ItemListShaper.Clear();
-                    ItemListElder.Clear();
-                    ItemListCrusader.Clear();
-                    ItemListWarlord.Clear();
-                    ItemListHunter.Clear();
-                    ItemListRedeemer.Clear();
-
                     if (ItemList[i].influences != null)
                     {
                         if (ItemList[i].frameType == 2)
@@ -164,7 +166,11 @@ namespace EnhancePoE.Model
                                 else if (ItemList[i].influences.elder) { ItemListElder.Add(ItemList[i]); }
                                 else if (ItemList[i].influences.warlord) { ItemListWarlord.Add(ItemList[i]); }
                                 else if (ItemList[i].influences.crusader) { ItemListCrusader.Add(ItemList[i]); }
-                                else if (ItemList[i].influences.hunter) { ItemListHunter.Add(ItemList[i]); }
+                                else if (ItemList[i].influences.hunter) 
+                                {
+                                    Trace.WriteLine("found item");
+                                    ItemListHunter.Add(ItemList[i]); 
+                                }
                                 else if (ItemList[i].influences.redeemer) { ItemListRedeemer.Add(ItemList[i]); }
                             }
                             ItemList.RemoveAt(i);
@@ -175,7 +181,7 @@ namespace EnhancePoE.Model
                 if (!Properties.Settings.Default.ChaosRecipe && !Properties.Settings.Default.RegalRecipe)
                 {
                     ItemList.RemoveAt(i);
-                    return;
+                    continue;
                 }
                 if (ItemList[i].ilvl < 60)
                 {
@@ -206,6 +212,15 @@ namespace EnhancePoE.Model
                     ItemList.RemoveAt(i);
                 }
             }
+
+            Trace.WriteLine("influence item list amounts");
+            Trace.WriteLine(ItemListShaper.Count);
+            Trace.WriteLine(ItemListElder.Count);
+            Trace.WriteLine(ItemListCrusader.Count);
+            Trace.WriteLine(ItemListHunter.Count);
+            Trace.WriteLine(ItemListWarlord.Count);
+            Trace.WriteLine(ItemListRedeemer.Count);
+            Trace.WriteLine("influenced end");
         }
 
         public void DeactivateItemCells()

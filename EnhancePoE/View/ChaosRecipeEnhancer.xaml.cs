@@ -352,6 +352,11 @@ namespace EnhancePoE
             {
                 return;
             }
+            if(!Properties.Settings.Default.ChaosRecipe && !Properties.Settings.Default.RegalRecipe && !Properties.Settings.Default.ExaltedRecipe)
+            {
+                MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             DisableWarnings();
             //aTimer.Stop();

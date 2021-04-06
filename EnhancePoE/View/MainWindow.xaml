@@ -1174,7 +1174,7 @@
 						Grid.Row="2" />
 				<TextBlock Grid.Column="3"
 						   Grid.Row="3"
-						   Text="Version 1.2.0"
+						   Text="Version 1.2.1"
 						   FontSize="12"
 						   HorizontalAlignment="Right"
 						   VerticalAlignment="Center"></TextBlock>
