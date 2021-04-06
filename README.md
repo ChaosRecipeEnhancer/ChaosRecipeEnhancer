@@ -320,6 +320,13 @@ Help is always appreciated since this is my starter project for WPF anyways.
 
 ## Change Log
 
+#### 1.2.1
+
+ - added warning when no stashtabs were found
+ - fixed bug where missing chaos items never showed (thanks to @ikogan)
+ - added warning when no recipes selected
+ - fixed bug where exalted recipe set could never be filled (it will show a warning now when you have an exalted set full)
+
 #### 1.2.0
 
  - removed check for refreshrate as it has been removed
