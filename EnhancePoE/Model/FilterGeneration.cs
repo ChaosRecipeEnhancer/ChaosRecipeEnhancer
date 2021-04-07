@@ -157,6 +157,11 @@ namespace EnhancePoE.Model
                 }
             }
 
+            if (Properties.Settings.Default.LootfilterIcons)
+            {
+                result = result + "MinimapIcon 2 White Star" + nl + tab;
+            }
+
             return result;
         }
 

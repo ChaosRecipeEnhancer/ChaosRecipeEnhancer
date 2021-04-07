@@ -168,7 +168,7 @@ namespace EnhancePoE.Model
                                 else if (ItemList[i].influences.crusader) { ItemListCrusader.Add(ItemList[i]); }
                                 else if (ItemList[i].influences.hunter) 
                                 {
-                                    Trace.WriteLine("found item");
+                                    //Trace.WriteLine("found item");
                                     ItemListHunter.Add(ItemList[i]); 
                                 }
                                 else if (ItemList[i].influences.redeemer) { ItemListRedeemer.Add(ItemList[i]); }
@@ -212,15 +212,6 @@ namespace EnhancePoE.Model
                     ItemList.RemoveAt(i);
                 }
             }
-
-            Trace.WriteLine("influence item list amounts");
-            Trace.WriteLine(ItemListShaper.Count);
-            Trace.WriteLine(ItemListElder.Count);
-            Trace.WriteLine(ItemListCrusader.Count);
-            Trace.WriteLine(ItemListHunter.Count);
-            Trace.WriteLine(ItemListWarlord.Count);
-            Trace.WriteLine(ItemListRedeemer.Count);
-            Trace.WriteLine("influenced end");
         }
 
         public void DeactivateItemCells()

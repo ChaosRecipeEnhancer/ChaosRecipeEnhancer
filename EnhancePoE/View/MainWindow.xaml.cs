@@ -1,23 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-
-
-using System.Diagnostics;
 using System.Windows.Forms;
-using System.Drawing;
 using System.ComponentModel;
 using EnhancePoE.Model;
 using EnhancePoE.View;
@@ -563,7 +549,7 @@ namespace EnhancePoE
 
         private void LootfilterFileDialog_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog open = new OpenFileDialog();
+            System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog();
             open.Filter = "Lootfilter|*.filter";
             DialogResult res = open.ShowDialog();
             if (res == System.Windows.Forms.DialogResult.OK)
@@ -658,17 +644,6 @@ namespace EnhancePoE
             }
         }
 
-        private void ShowNumbersCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            overlay.AmountsVisibility = Visibility.Visible;
-        }
-
-        private void ShowNumbersCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            overlay.AmountsVisibility = Visibility.Hidden;
-
-        }
-
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = System.Windows.MessageBox.Show("This will reset all of your settings!", "Reset Settings", MessageBoxButton.YesNo);
@@ -694,8 +669,8 @@ namespace EnhancePoE
 
         private void LogLocationDialog_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog open = new OpenFileDialog();
-            //open.Filter = "Lootfilter|*.filter";
+            System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog();
+            open.Filter = "Text|Client.txt";
             DialogResult res = open.ShowDialog();
             if (res == System.Windows.Forms.DialogResult.OK)
             {
@@ -709,6 +684,7 @@ namespace EnhancePoE
 
         private void AutoFetchCheckBox_Checked(object sender, RoutedEventArgs e)
         {
+
         }
 
         private void AutoFetchCheckBox_Unchecked(object sender, RoutedEventArgs e)
@@ -716,6 +692,17 @@ namespace EnhancePoE
             if(LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
             {
                 LogWatcher.WorkerThread.Abort();
+            }
+        }
+
+        private void ShowNumbersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(Properties.Settings.Default.ShowItemAmount != 0)
+            {
+                overlay.AmountsVisibility = Visibility.Visible;
+            } else
+            {
+                overlay.AmountsVisibility = Visibility.Hidden;
             }
         }
     }

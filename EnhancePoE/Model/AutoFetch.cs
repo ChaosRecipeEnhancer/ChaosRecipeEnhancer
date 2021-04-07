@@ -55,10 +55,12 @@ namespace EnhancePoE.Model
                         s = sr.ReadLine();
                         if (s != null)
                         {
-                            if(s.Contains("You have entered") && !s.Contains("Hideout"))
+                            string[] phrase = GetPhraseTranslation();
+                            string hideout = GetHideoutTranslation();
+                            if(s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout))
                             {
                                 LastZone = NewZone;
-                                NewZone = s.Substring(s.IndexOf("You have entered"));
+                                NewZone = s.Substring(s.IndexOf(phrase[0]));
                                 //Trace.WriteLine("entered new zone");
                                 Trace.WriteLine(NewZone);
                                 FetchIfPossible();
@@ -75,6 +77,70 @@ namespace EnhancePoE.Model
             StartWatchingLogFile();
 
             //wh.Close();
+        }
+
+        //Ihr habt 'Sonnenspitze-Versteck' betreten.
+
+        public static string[] GetPhraseTranslation()
+        {
+            string[] ret = new string[2];
+            ret[1] = "";
+            switch (Properties.Settings.Default.Language)
+            {
+                //english
+                case 0:
+                    ret[0] = "You have entered";
+                    break;
+                //french
+                case 1:
+                    ret[0] = "Vous êtes à présent dans";
+                    break;
+                //german
+                case 2:
+                    ret[0] = "Ihr habt";
+                    ret[1] = "betreten.";
+                    break;
+                //portuguese
+                case 3:
+                    ret[0] = "Você entrou em";
+                    break;
+                //russian
+                case 4:
+                    ret[0] = "Вы вошли в область";
+                    break;
+                //spanish
+                case 5:
+                    ret[0] = "Has entrado a";
+                    break;
+                //chinese
+                case 6:
+                    ret[0] = "진입했습니다";
+                    break;
+            }
+            return ret;
+        }
+
+        public static string GetHideoutTranslation()
+        {
+            switch (Properties.Settings.Default.Language)
+            {
+                case 0:
+                    return "Hideout";
+                case 1:
+                    return "Repaire";
+                case 2:
+                    return "Versteck";
+                case 3:
+                    return "Refúgio";
+                case 4:
+                    return "Убежище";
+                case 5:
+                    return "Guarida";
+                case 6:
+                    return "은신처";
+                default:
+                    return "";
+            }
         }
 
         public static void StartWatchingLogFile()
