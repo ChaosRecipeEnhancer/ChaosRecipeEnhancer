@@ -326,6 +326,13 @@ Help is always appreciated since this is my starter project for WPF anyways.
  - fixed bug where missing chaos items never showed (thanks to @ikogan)
  - added warning when no recipes selected
  - fixed bug where exalted recipe set could never be filled (it will show a warning now when you have an exalted set full)
+ - added option for item icons on minimap (only little white stars atm)
+ - added option to lock main overlay position (@hakfo ;))
+ - fixed bug where you couldnt fetch anymore after connection got refused
+ - clarified warning for refused connections (forbidden)
+ - added option to show amount of items missing instead of items owned
+ - fixed bug where amount of items owned/ missing got calculated too early
+ - added autofetch support for each language (except thai, need help there :D), this needs to be the same language your PoE client is in
 
 #### 1.2.0
 
