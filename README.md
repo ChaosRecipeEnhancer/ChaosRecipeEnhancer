@@ -332,6 +332,7 @@ Help is always appreciated since this is my starter project for WPF anyways.
  - clarified warning for refused connections (forbidden)
  - added option to show amount of items missing instead of items owned
  - fixed bug where amount of items owned/ missing got calculated too early
+ - added autofetch support for each language (except thai, need help there :D), this needs to be the same language your PoE client is in
 
 #### 1.2.0
 
