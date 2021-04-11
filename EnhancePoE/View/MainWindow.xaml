@@ -878,6 +878,22 @@
 							           ToolTipService.InitialShowDelay="50"
 							           ToolTip="The path to your lootfilter. Standard path is: 'Username/Documents/My Games/Path of Exile'."
 							           Visibility="{Binding LootfilterFileDialogVisible}"/>
+							<TextBlock Grid.Column="1"
+							           Grid.Row="7"
+							           VerticalAlignment="Center"
+							           ToolTipService.InitialShowDelay="50"
+							           ToolTip="Name of filter to control. Can be found by the link. You should be signed in."
+							           Visibility="{Binding LootfilterOnlineFilterNameVisible}">
+								Filter Name (<Hyperlink 
+									             NavigateUri="https://www.pathofexile.com/account/view-profile/{0}/item-filters"
+									             RequestNavigate="Hyperlink_RequestNavigateByAccName">here</Hyperlink>):
+							</TextBlock>
+							<TextBox x:Name="LootfilterOnlineFilterName"
+							         Grid.Column="3"
+							         Grid.Row="7"
+							         Width="200"
+							         Text="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterOnlineName, Mode=TwoWay}" 
+							         Visibility="{Binding LootfilterOnlineFilterNameVisible}"/>
 							<Button Grid.Column="3"
 									Grid.Row="7"
 									x:Name="LootfilterFileDialog"

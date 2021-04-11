@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Windows.Navigation;
 using EnhancePoE.Model;
 using EnhancePoE.View;
 
@@ -59,6 +60,10 @@ namespace EnhancePoE
         public Visibility LootfilterFileDialogVisible => Properties.Settings.Default.LootfilterOnline
             ? Visibility.Collapsed
             : Visibility.Visible;
+
+        public Visibility LootfilterOnlineFilterNameVisible => Properties.Settings.Default.LootfilterOnline
+            ? Visibility.Visible
+            : Visibility.Collapsed;
         //public static TabItemViewModel stashTabsModel = new TabItemViewModel();
 
 
@@ -712,6 +717,21 @@ namespace EnhancePoE
         private void LootfilterOnlineCheckbox_Checked(object sender, RoutedEventArgs e)
         {
             OnPropertyChanged(nameof(LootfilterFileDialogVisible));
+            OnPropertyChanged(nameof(LootfilterOnlineFilterNameVisible));
+        }
+
+        private void Hyperlink_RequestNavigateByAccName(object sender, RequestNavigateEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Properties.Settings.Default.accName))
+            {
+                const string messageBoxText = "You first need enter your account name";
+                System.Windows.MessageBox.Show(messageBoxText, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                string url = string.Format(e.Uri.ToString(), Properties.Settings.Default.accName);
+                System.Diagnostics.Process.Start(url);
+            }
         }
     }
 }

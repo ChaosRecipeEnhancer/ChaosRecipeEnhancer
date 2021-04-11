@@ -742,5 +742,17 @@ namespace EnhancePoE.Properties {
                 this["LootfilterOnline"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LootfilterOnlineName {
+            get {
+                return ((string)(this["LootfilterOnlineName"]));
+            }
+            set {
+                this["LootfilterOnlineName"] = value;
+            }
+        }
     }
 }
