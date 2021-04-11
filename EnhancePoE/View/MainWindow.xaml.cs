@@ -56,6 +56,9 @@ namespace EnhancePoE
             }
         }
 
+        public Visibility LootfilterFileDialogVisible => Properties.Settings.Default.LootfilterOnline
+            ? Visibility.Collapsed
+            : Visibility.Visible;
         //public static TabItemViewModel stashTabsModel = new TabItemViewModel();
 
 
@@ -704,6 +707,11 @@ namespace EnhancePoE
             {
                 overlay.AmountsVisibility = Visibility.Hidden;
             }
+        }
+
+        private void LootfilterOnlineCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            OnPropertyChanged(nameof(LootfilterFileDialogVisible));
         }
     }
 }
