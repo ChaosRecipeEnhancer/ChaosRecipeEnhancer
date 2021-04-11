@@ -370,6 +370,12 @@ namespace EnhancePoE
                     }
                 }
 
+                if (Properties.Settings.Default.ShowItemAmount != 0)
+                {
+                    Trace.WriteLine("Calculating Items");
+                    Data.CalculateItemAmounts();
+                }
+
                 GenerateItemSetList();
                 FillItemSets();
 
@@ -684,6 +690,7 @@ namespace EnhancePoE
                 //    sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
                 //}
 
+
                 //Trace.WriteLine(fullSets, "full sets");
                 MainWindow.overlay.Dispatcher.Invoke(() =>
                 {
@@ -778,10 +785,7 @@ namespace EnhancePoE
                         });
                     }
                 }
-                if (Properties.Settings.Default.ShowItemAmount != 0)
-                {
-                    Data.CalculateItemAmounts();
-                }
+
             }
             catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
             {
@@ -807,6 +811,8 @@ namespace EnhancePoE
                 int weaponBig = 0;
                 foreach (StashTab tab in StashTabList.StashTabs)
                 {
+                    Trace.WriteLine("tab amount " + tab.ItemList.Count);
+                    Trace.WriteLine("tab amount " + tab.ItemListChaos.Count);
                     if (tab.ItemList.Count > 0)
                     {
                         foreach (Item i in tab.ItemList)
@@ -902,10 +908,17 @@ namespace EnhancePoE
                 //    Trace.WriteLine(i, "amount");
                 //}
 
+
                 if(Properties.Settings.Default.ShowItemAmount == 1)
                 {
+                    Trace.WriteLine("we are here");
+
                     // calculate amounts needed for full sets
                     //amounts[0] = amounts[0] / 2;
+                    foreach(int a in amounts)
+                    {
+                        Trace.WriteLine(a);
+                    }
                     amounts[4] = weaponsSmall + weaponBig;
                     MainWindow.overlay.RingsAmount = amounts[0];
                     MainWindow.overlay.AmuletsAmount = amounts[1];
