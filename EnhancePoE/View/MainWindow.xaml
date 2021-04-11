@@ -437,7 +437,7 @@
 									   VerticalAlignment="Center"
 									   Text="Log File Location:"
 									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="The location of you PoE log file. The standard path is: C:/Programs/Grinding Gear Games/Path of Exile/logs/Client.txt." />
+									   ToolTip="The location of you PoE log file (Client.txt). The standard path is: C:/Programs/Grinding Gear Games/Path of Exile/logs/Client.txt." />
 							<Button Grid.Column="3"
 									Grid.Row="11"
 									x:Name="LogLocationDialog"
@@ -464,16 +464,36 @@
 							<TextBlock Grid.Column="1"
 									   Grid.Row="13"
 									   VerticalAlignment="Center"
+									   Text="Language:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="Fetch on new Map only works in the correct language. Set it to the same as your PoE client." />
+							<ComboBox Grid.Column="3"
+									  Grid.Row="13"
+									  Width="200"
+									  VerticalContentAlignment="Center"
+									  Name="LanguageComboBox"
+									  SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=Language, Mode=TwoWay}">
+								<ComboBoxItem Content="English"></ComboBoxItem>
+								<ComboBoxItem Content="French"></ComboBoxItem>
+								<ComboBoxItem Content="German"></ComboBoxItem>
+								<ComboBoxItem Content="Portuguese"></ComboBoxItem>
+								<ComboBoxItem Content="Russian"></ComboBoxItem>
+								<ComboBoxItem Content="Spanish"></ComboBoxItem>
+								<ComboBoxItem Content="Chinese"></ComboBoxItem>
+							</ComboBox>
+							<TextBlock Grid.Column="1"
+									   Grid.Row="15"
+									   VerticalAlignment="Center"
 									   Text="Notification Sound:"
 									   ToolTipService.InitialShowDelay="50"
 									   ToolTip="Plays a sound everytime you have to refresh your lootfilter." />
 							<CheckBox x:Name="PlaySoundCheckBox"
 									  Grid.Column="3"
-									  Grid.Row="13"
+									  Grid.Row="15"
 									  VerticalAlignment="Center"
 									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=Sound, Mode=TwoWay}" />
 							<TextBlock Grid.Column="1"
-									   Grid.Row="15"
+									   Grid.Row="17"
 									   VerticalAlignment="Center"
 									   Text="Sound Volume:"
 									   ToolTipService.InitialShowDelay="50"
@@ -481,7 +501,7 @@
 							<Slider x:Name="VolumeSlider"
 									Width="200"
 									Grid.Column="3"
-									Grid.Row="15"
+									Grid.Row="17"
 									VerticalAlignment="Center"
 									Minimum="0"
 									Maximum="100"
@@ -491,14 +511,14 @@
 									PreviewMouseUp="VolumeSlider_PreviewMouseUp"
 									Value="{Binding Source={x:Static properties:Settings.Default}, Path=Volume, Mode=TwoWay}" />
 							<TextBlock Grid.Column="1"
-									   Grid.Row="17"
+									   Grid.Row="19"
 									   VerticalAlignment="Center"
 									   Text="Close to Tray:"
 									   ToolTipService.InitialShowDelay="50"
 									   ToolTip="Minimizes to Tray when closing the application." />
 							<CheckBox x:Name="hideOnClose"
 									  Grid.Column="3"
-									  Grid.Row="17"
+									  Grid.Row="19"
 									  VerticalAlignment="Center"
 									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=hideOnClose, Mode=TwoWay}" />
 						</Grid>
@@ -552,6 +572,8 @@
 								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
+								<RowDefinition Height="25"></RowDefinition>								
+								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="10"></RowDefinition>
 							</Grid.RowDefinitions>
@@ -584,14 +606,18 @@
 									   VerticalAlignment="Center"
 									   Text="Show Item Amounts:"
 									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="Shows little numbers in your itemtypes in the Main Overlay (only in Standard Overlay Mode)." />
-							<CheckBox x:Name="ShowNumbersCheckBox"
-									  Grid.Column="3"
+									   ToolTip="Shows little numbers in your itemtypes in the Main Overlay." />
+							<ComboBox Grid.Column="3"
 									  Grid.Row="7"
-									  VerticalAlignment="Center"
-									  Checked="ShowNumbersCheckBox_Checked"
-									  Unchecked="ShowNumbersCheckBox_Unchecked"
-									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowItemAmount, Mode=TwoWay}" />
+									  Width="200"
+									  VerticalContentAlignment="Center"
+									  Name="ShowNumbersComboBox"
+									  SelectionChanged="ShowNumbersComboBox_SelectionChanged"
+									  SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=ShowItemAmount, Mode=TwoWay}">
+								<ComboBoxItem Content="None"></ComboBoxItem>
+								<ComboBoxItem Content="Total Items"></ComboBoxItem>
+								<ComboBoxItem Content="Items Missing"></ComboBoxItem>
+							</ComboBox>
 							<TextBlock Grid.Column="1"
 									   Grid.Row="3"
 									   VerticalAlignment="Center"
@@ -609,6 +635,17 @@
 								<ComboBoxItem Content="Minified"></ComboBoxItem>
 								<ComboBoxItem Content="Only Buttons"></ComboBoxItem>
 							</ComboBox>
+							<TextBlock Grid.Column="1"
+									   Grid.Row="9"
+									   VerticalAlignment="Center"
+									   Text="Lock Position:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="Locks the position of the main overlay in one place." />
+							<CheckBox x:Name="LockOverlayCheckBox"
+									  Grid.Column="3"
+									  Grid.Row="9"
+									  VerticalAlignment="Center"
+									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LockOverlayPosition, Mode=TwoWay}" />
 						</Grid>
 						<!-- Stashtab Overlay   -->
 						<Grid Grid.Column="2"
@@ -798,6 +835,8 @@
 								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
+								<RowDefinition Height="25"></RowDefinition>								
+								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="10"></RowDefinition>
 							</Grid.RowDefinitions>
@@ -848,6 +887,17 @@
 									</Style>
 								</Button.Style>
 							</Button>
+							<TextBlock Grid.Column="1"
+									   Grid.Row="7"
+									   VerticalAlignment="Center"
+									   Text="Show Icon on Map:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="Activates icons on the minimap." />
+							<CheckBox Grid.Column="3"
+									  Grid.Row="7"
+									  x:Name="LootfilterIconsCheckBox"
+									  VerticalAlignment="Center"
+									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterIcons, Mode=TwoWay}" />
 						</Grid>
 						<!-- COLORS -->
 						<Grid Grid.Column="2"
@@ -1174,7 +1224,7 @@
 						Grid.Row="2" />
 				<TextBlock Grid.Column="3"
 						   Grid.Row="3"
-						   Text="Version 1.2.0"
+						   Text="Version 1.2.1"
 						   FontSize="12"
 						   HorizontalAlignment="Right"
 						   VerticalAlignment="Center"></TextBlock>

@@ -50,6 +50,7 @@ namespace EnhancePoE
             {
                 MessageBox.Show("Missing Settings!" +  Environment.NewLine + "Please set Accountname, Stash Tab and League.");
             }
+            IsFetching = false;
             return false;
         }
 
@@ -182,7 +183,14 @@ namespace EnhancePoE
                     }
                     else
                     {
-                        System.Windows.MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
+                        if(res.StatusCode == HttpStatusCode.Forbidden)
+                        {
+                            System.Windows.MessageBox.Show("Connection forbidden. Please check your Accountname and POE Session ID. You may have to refresh your POE Session ID sometimes.", "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
+                        } 
+                        else
+                        {
+                            System.Windows.MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                         FetchError = true;
                         return false;
                     }

@@ -336,11 +336,13 @@ namespace EnhancePoE
                     //MainWindow.overlay.RunFetching();
                     return;
                 }
-                if (Properties.Settings.Default.ShowItemAmount)
+                if(StashTabList.StashTabs.Count == 0)
                 {
-                    Data.CalculateItemAmounts();
+                    MainWindow.overlay.WarningMessage = "No Stashtabs found...";
+                    MainWindow.overlay.ShadowOpacity = 1;
+                    MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                    return;
                 }
-
                 if (Properties.Settings.Default.Sound)
                 {
                     PreviousActiveItems = new ActiveItemTypes
@@ -382,14 +384,22 @@ namespace EnhancePoE
                 {
                     if (set.EmptyItemSlots.Count == 0)
                     {
-                        if (set.HasChaos || Properties.Settings.Default.RegalRecipe)
-                        {
-                            fullSets++;
-                        }
-                        else
+                        // fix for: condition (fullSets == SetTargetAmount && missingChaos) never true cause fullsets < settargetamount when missingChaos @ikogan
+                        fullSets++;
+
+                        if (!set.HasChaos && !Properties.Settings.Default.RegalRecipe)
                         {
                             missingChaos = true;
                         }
+
+                        //if (set.HasChaos || Properties.Settings.Default.RegalRecipe)
+                        //{
+                        //    fullSets++;
+                        //}
+                        //else
+                        //{
+                        //    missingChaos = true;
+                        //}
                     }
                     else
                     {
@@ -706,7 +716,7 @@ namespace EnhancePoE
                 }
 
                 // invoke set full
-                if (fullSets == SetTargetAmount)
+                if (fullSets == SetTargetAmount && !missingChaos)
                 {
                     MainWindow.overlay.WarningMessage = "Sets full!";
                     MainWindow.overlay.ShadowOpacity = 1;
@@ -767,6 +777,10 @@ namespace EnhancePoE
                             PlayNotificationSound();
                         });
                     }
+                }
+                if (Properties.Settings.Default.ShowItemAmount != 0)
+                {
+                    Data.CalculateItemAmounts();
                 }
             }
             catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
@@ -883,22 +897,37 @@ namespace EnhancePoE
                     }
                 }
 
-                foreach (int i in amounts)
+                //foreach (int i in amounts)
+                //{
+                //    Trace.WriteLine(i, "amount");
+                //}
+
+                if(Properties.Settings.Default.ShowItemAmount == 1)
                 {
-                    Trace.WriteLine(i, "amount");
+                    // calculate amounts needed for full sets
+                    //amounts[0] = amounts[0] / 2;
+                    amounts[4] = weaponsSmall + weaponBig;
+                    MainWindow.overlay.RingsAmount = amounts[0];
+                    MainWindow.overlay.AmuletsAmount = amounts[1];
+                    MainWindow.overlay.BeltsAmount = amounts[2];
+                    MainWindow.overlay.ChestsAmount = amounts[3];
+                    MainWindow.overlay.WeaponsAmount = amounts[4];
+                    MainWindow.overlay.GlovesAmount = amounts[5];
+                    MainWindow.overlay.HelmetsAmount = amounts[6];
+                    MainWindow.overlay.BootsAmount = amounts[7];
+                } else if(Properties.Settings.Default.ShowItemAmount == 2)
+                {
+                    amounts[4] = weaponsSmall + weaponBig;
+                    MainWindow.overlay.RingsAmount = (SetTargetAmount * 2) - amounts[0];
+                    MainWindow.overlay.AmuletsAmount = SetTargetAmount - amounts[1];
+                    MainWindow.overlay.BeltsAmount = SetTargetAmount - amounts[2];
+                    MainWindow.overlay.ChestsAmount = SetTargetAmount - amounts[3];
+                    MainWindow.overlay.WeaponsAmount = ((SetTargetAmount * 2) - (weaponsSmall + (weaponBig * 2)));
+                    MainWindow.overlay.GlovesAmount = SetTargetAmount - amounts[5];
+                    MainWindow.overlay.HelmetsAmount = SetTargetAmount - amounts[6];
+                    MainWindow.overlay.BootsAmount = SetTargetAmount - amounts[7];
                 }
 
-                // calculate amounts needed for full sets
-                //amounts[0] = amounts[0] / 2;
-                amounts[4] = weaponsSmall + weaponBig;
-                MainWindow.overlay.RingsAmount = amounts[0];
-                MainWindow.overlay.AmuletsAmount = amounts[1];
-                MainWindow.overlay.BeltsAmount = amounts[2];
-                MainWindow.overlay.ChestsAmount = amounts[3];
-                MainWindow.overlay.WeaponsAmount = amounts[4];
-                MainWindow.overlay.GlovesAmount = amounts[5];
-                MainWindow.overlay.HelmetsAmount = amounts[6];
-                MainWindow.overlay.BootsAmount = amounts[7];
             }
         }
 

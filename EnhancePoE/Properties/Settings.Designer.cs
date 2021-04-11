@@ -529,10 +529,10 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowItemAmount {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ShowItemAmount {
             get {
-                return ((bool)(this["ShowItemAmount"]));
+                return ((int)(this["ShowItemAmount"]));
             }
             set {
                 this["ShowItemAmount"] = value;
@@ -692,6 +692,42 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["LogLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LootfilterIcons {
+            get {
+                return ((bool)(this["LootfilterIcons"]));
+            }
+            set {
+                this["LootfilterIcons"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LockOverlayPosition {
+            get {
+                return ((bool)(this["LockOverlayPosition"]));
+            }
+            set {
+                this["LockOverlayPosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Language {
+            get {
+                return ((int)(this["Language"]));
+            }
+            set {
+                this["Language"] = value;
             }
         }
     }

@@ -352,6 +352,11 @@ namespace EnhancePoE
             {
                 return;
             }
+            if(!Properties.Settings.Default.ChaosRecipe && !Properties.Settings.Default.RegalRecipe && !Properties.Settings.Default.ExaltedRecipe)
+            {
+                MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             DisableWarnings();
             //aTimer.Stop();
@@ -390,23 +395,16 @@ namespace EnhancePoE
                             }, Data.ct);
                             await Task.Delay(fetchCooldown * 1000).ContinueWith(_ =>
                             {
-                                FetchButtonEnabled = true;
-                                FetchButtonColor = Brushes.Green;
-                                FetchingActive = false;
+                                Trace.WriteLine("waited fetchcooldown");
+                                //FetchButtonEnabled = true;
+                                //FetchButtonColor = Brushes.Green;
+                                //FetchingActive = false;
+
                             });
                         }
                         catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
                         {
                             Trace.WriteLine("abort");
-                            CalculationActive = false;
-                            this.Dispatcher.Invoke(() =>
-                            {
-                                IsIndeterminate = false;
-                                FetchButtonEnabled = true;
-                                FetchButtonColor = Brushes.Green;
-                                FetchingActive = false;
-                            });
-
                         }
                     }
                 }
@@ -434,6 +432,19 @@ namespace EnhancePoE
                 }
 
             });
+
+
+            CalculationActive = false;
+            FetchingActive = false;
+            this.Dispatcher.Invoke(() =>
+            {
+                IsIndeterminate = false;
+                FetchButtonEnabled = true;
+                FetchButtonColor = Brushes.Green;
+                FetchingActive = false;
+            });
+            Trace.WriteLine("end of fetch function reached");
+
         }
 
 
@@ -514,8 +525,7 @@ namespace EnhancePoE
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
-            if (e.ChangedButton == MouseButton.Left)
+            if (e.ChangedButton == MouseButton.Left && !Properties.Settings.Default.LockOverlayPosition)
                 this.DragMove();
         }
 
