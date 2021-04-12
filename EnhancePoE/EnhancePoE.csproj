@@ -140,12 +140,15 @@
     <Compile Include="Model\Cell.cs" />
     <Compile Include="Model\Coordinates.cs" />
     <Compile Include="Model\FilterGeneration.cs" />
+    <Compile Include="Model\Storage\FileFilterStorage.cs" />
+    <Compile Include="Model\Storage\FilterStorageFactory.cs" />
     <Compile Include="Model\ForegroundWindows.cs" />
     <Compile Include="Model\ItemSet.cs" />
     <Compile Include="Model\MouseHook.cs" />
     <Compile Include="Model\RateLimit.cs" />
     <Compile Include="Model\StashTabList.cs" />
     <Compile Include="Model\StashTabPropsList.cs" />
+    <Compile Include="Model\Storage\IFilterStorage.cs" />
     <Compile Include="Model\Utility.cs" />
     <Compile Include="Model\Win32.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
