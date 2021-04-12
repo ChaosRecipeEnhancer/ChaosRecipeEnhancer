@@ -6,6 +6,7 @@
 		xmlns:local="clr-namespace:EnhancePoE"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:properties="clr-namespace:EnhancePoE.Properties"
+		xmlns:storage="clr-namespace:EnhancePoE.Model.Storage"
 		mc:Ignorable="d"
 		FontSize="14"
 		Title="Chaos Recipe Enhancer Settings"
@@ -885,7 +886,7 @@
 							           ToolTip="Name of filter to control. Can be found by the link. You should be signed in."
 							           Visibility="{Binding LootfilterOnlineFilterNameVisible}">
 								Filter Name (<Hyperlink 
-									             NavigateUri="https://www.pathofexile.com/account/view-profile/{0}/item-filters"
+									             NavigateUri="{x:Static storage:OnlineFilterStorage.FiltersUrl}"
 									             RequestNavigate="Hyperlink_RequestNavigateByAccName">here</Hyperlink>):
 							</TextBlock>
 							<TextBox x:Name="LootfilterOnlineFilterName"
