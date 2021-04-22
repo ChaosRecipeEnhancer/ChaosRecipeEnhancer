@@ -730,5 +730,29 @@ namespace EnhancePoE.Properties {
                 this["Language"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LootfilterOnline {
+            get {
+                return ((bool)(this["LootfilterOnline"]));
+            }
+            set {
+                this["LootfilterOnline"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LootfilterOnlineName {
+            get {
+                return ((string)(this["LootfilterOnlineName"]));
+            }
+            set {
+                this["LootfilterOnlineName"] = value;
+            }
+        }
     }
 }

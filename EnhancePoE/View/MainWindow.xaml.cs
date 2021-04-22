@@ -5,7 +5,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Windows.Navigation;
 using EnhancePoE.Model;
+using EnhancePoE.Model.Storage;
 using EnhancePoE.View;
 
 //using EnhancePoE.TabItemViewModel;
@@ -56,6 +58,13 @@ namespace EnhancePoE
             }
         }
 
+        public Visibility LootfilterFileDialogVisible => Properties.Settings.Default.LootfilterOnline
+            ? Visibility.Collapsed
+            : Visibility.Visible;
+
+        public Visibility LootfilterOnlineFilterNameVisible => Properties.Settings.Default.LootfilterOnline
+            ? Visibility.Visible
+            : Visibility.Collapsed;
         //public static TabItemViewModel stashTabsModel = new TabItemViewModel();
 
 
@@ -417,6 +426,8 @@ namespace EnhancePoE
             string sessId = Properties.Settings.Default.SessionId;
             string league = Properties.Settings.Default.League;
             string lootfilterLocation = Properties.Settings.Default.LootfilterLocation;
+            bool lootfilterOnline = Properties.Settings.Default.LootfilterOnline;
+            string lootfilterOnlineName = Properties.Settings.Default.LootfilterOnlineName;
             bool lootfilterActive = Properties.Settings.Default.LootfilterActive;
             string logLocation = Properties.Settings.Default.LogLocation;
             bool autoFetch = Properties.Settings.Default.AutoFetch;
@@ -438,9 +449,14 @@ namespace EnhancePoE
             }
             if (lootfilterActive)
             {
-                if(lootfilterLocation == "")
+                if(!lootfilterOnline && lootfilterLocation == "")
                 {
                     missingSettings.Add("- Lootfilter Location \n");
+                }
+
+                if (lootfilterOnline && lootfilterOnlineName == "")
+                {
+                    missingSettings.Add("- Lootfilter Name \n");
                 }
             }
             if (autoFetch)
@@ -703,6 +719,26 @@ namespace EnhancePoE
             } else
             {
                 overlay.AmountsVisibility = Visibility.Hidden;
+            }
+        }
+
+        private void LootfilterOnlineCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            OnPropertyChanged(nameof(LootfilterFileDialogVisible));
+            OnPropertyChanged(nameof(LootfilterOnlineFilterNameVisible));
+        }
+
+        private void Hyperlink_RequestNavigateByAccName(object sender, RequestNavigateEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Properties.Settings.Default.accName))
+            {
+                const string messageBoxText = "You first need enter your account name";
+                System.Windows.MessageBox.Show(messageBoxText, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                string url = string.Format(e.Uri.ToString(), Properties.Settings.Default.accName);
+                System.Diagnostics.Process.Start(url);
             }
         }
     }

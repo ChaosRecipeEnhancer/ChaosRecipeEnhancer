@@ -378,9 +378,9 @@ namespace EnhancePoE
                     {
                         try
                         {
-                            await Task.Run(() =>
+                            await Task.Run(async () =>
                             {
-                                Data.CheckActives();
+                                await Data.CheckActives();
                                 SetOpacity();
 
                                 //ChaosRecipeEnhancer.aTimer.Enabled = true;

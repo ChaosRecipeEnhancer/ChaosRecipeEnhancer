@@ -6,6 +6,7 @@
 		xmlns:local="clr-namespace:EnhancePoE"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:properties="clr-namespace:EnhancePoE.Properties"
+		xmlns:storage="clr-namespace:EnhancePoE.Model.Storage"
 		mc:Ignorable="d"
 		FontSize="14"
 		Title="Chaos Recipe Enhancer Settings"
@@ -139,7 +140,7 @@
 								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
-								<RowDefinition Height="25"></RowDefinition>								
+								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="10"></RowDefinition>
@@ -572,7 +573,7 @@
 								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
-								<RowDefinition Height="25"></RowDefinition>								
+								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="10"></RowDefinition>
@@ -835,7 +836,9 @@
 								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
-								<RowDefinition Height="25"></RowDefinition>								
+								<RowDefinition Height="25"></RowDefinition>
+								<RowDefinition Height="5"></RowDefinition>
+								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="10"></RowDefinition>
@@ -859,20 +862,49 @@
 									  VerticalAlignment="Center"
 									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterActive, Mode=TwoWay}" />
 							<TextBlock Grid.Column="1"
-									   Grid.Row="5"
-									   VerticalAlignment="Center"
-									   Text="Lootfilter Location:"
-									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="The path to your lootfilter. Standard path is: 'Username/Documents/My Games/Path of Exile'." />
+							           Grid.Row="5"
+							           VerticalAlignment="Center"
+							           Text="Online Filter:"
+							           ToolTipService.InitialShowDelay="50"
+							           ToolTip="Activates working with on-line filters." />
+							<CheckBox Grid.Column="3"
+							          Grid.Row="5"
+							          x:Name="LootfilterOnlineCheckbox"
+							          VerticalAlignment="Center"
+							          IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterOnline, Mode=TwoWay}" Checked="LootfilterOnlineCheckbox_Checked" Unchecked="LootfilterOnlineCheckbox_Checked" />
+							<TextBlock Grid.Column="1"
+							           Grid.Row="7"
+							           VerticalAlignment="Center"
+							           Text="Lootfilter Location:"
+							           ToolTipService.InitialShowDelay="50"
+							           ToolTip="The path to your lootfilter. Standard path is: 'Username/Documents/My Games/Path of Exile'."
+							           Visibility="{Binding LootfilterFileDialogVisible}"/>
+							<TextBlock Grid.Column="1"
+							           Grid.Row="7"
+							           VerticalAlignment="Center"
+							           ToolTipService.InitialShowDelay="50"
+							           ToolTip="Name of filter to control. Can be found by the link. You should be signed in."
+							           Visibility="{Binding LootfilterOnlineFilterNameVisible}">
+								Filter Name (<Hyperlink 
+									             NavigateUri="{x:Static storage:OnlineFilterStorage.FiltersUrl}"
+									             RequestNavigate="Hyperlink_RequestNavigateByAccName">here</Hyperlink>):
+							</TextBlock>
+							<TextBox x:Name="LootfilterOnlineFilterName"
+							         Grid.Column="3"
+							         Grid.Row="7"
+							         Width="200"
+							         Text="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterOnlineName, Mode=TwoWay}" 
+							         Visibility="{Binding LootfilterOnlineFilterNameVisible}"/>
 							<Button Grid.Column="3"
-									Grid.Row="5"
+									Grid.Row="7"
 									x:Name="LootfilterFileDialog"
 									Width="200"
 									Click="LootfilterFileDialog_Click"
 									ToolTipService.InitialShowDelay="50"
 									ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterLocation, Mode=TwoWay}"
 									Content="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterLocation, Mode=TwoWay}"
-									HorizontalContentAlignment="Left">
+									HorizontalContentAlignment="Left"
+									Visibility="{Binding LootfilterFileDialogVisible}">
 								<Button.Style>
 									<Style TargetType="Button">
 										<Setter Property="Background"
@@ -888,13 +920,13 @@
 								</Button.Style>
 							</Button>
 							<TextBlock Grid.Column="1"
-									   Grid.Row="7"
+									   Grid.Row="9"
 									   VerticalAlignment="Center"
 									   Text="Show Icon on Map:"
 									   ToolTipService.InitialShowDelay="50"
 									   ToolTip="Activates icons on the minimap." />
 							<CheckBox Grid.Column="3"
-									  Grid.Row="7"
+									  Grid.Row="9"
 									  x:Name="LootfilterIconsCheckBox"
 									  VerticalAlignment="Center"
 									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterIcons, Mode=TwoWay}" />

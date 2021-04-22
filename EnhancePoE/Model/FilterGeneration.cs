@@ -11,34 +11,6 @@ namespace EnhancePoE.Model
         public static List<string> CustomStyle { get; set; } = new List<string>();
         public static List<string> CustomStyleInfluenced { get; set; } = new List<string>();
 
-        public static string OpenLootfilter()
-        {
-            string location = Properties.Settings.Default.LootfilterLocation;
-            if(location != "")
-            {
-                using(StreamReader reader = new StreamReader(location))
-                {
-                    string ret = reader.ReadToEnd();
-                    reader.Close();
-                    return ret;
-                }
-            }
-            return null;
-        }
-
-        public static void WriteLootfilter(string filter)
-        {
-            string location = Properties.Settings.Default.LootfilterLocation;
-            if(location != "" && filter != "")
-            {
-                using(StreamWriter writer = new StreamWriter(location))
-                {
-                    writer.Write(filter);
-                    writer.Close();
-                }
-            }
-        }
-
         public static void LoadCustomStyle()
         {
             CustomStyle.Clear();
