@@ -12,8 +12,6 @@ For details on changes, check the Change Log at the bottom of this site.
 
 If you want to support the project consider buying some coffees ;)
 
-Nevertheless I will continue to support and update this tool!
-
 [![Donate with PayPal](https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/Webp.net-resizeimage(5).png)](https://www.paypal.com/donate?hosted_button_id=HUCVZUSH5VQRW)
 
 ## Installation
@@ -24,6 +22,8 @@ DO NOT download the whole github repository, since it may include some new exper
 
 Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
 
+If you have updated your application to 1.2.0 please use a new itemfilter as some changes may break your existing one!
+
 ## Features
 
  - Easy to use
@@ -31,8 +31,11 @@ Since this app is not trusted (too expensive), you will have to accept few times
  - Hotkeys
  - Customizable Overlays
  - Stashtab Overlay for easy selling
+ - Chaos Recipe
+ - Regal Recipe
  - Exalted Shard Recipe
  - Lootfilter Manipulation (optional)
+ - Automatically fetches when you join a new map
 
 #### Main Overlay
 
@@ -54,7 +57,7 @@ The overlays will not work in Fullscreen Mode. They will only work in:
  - Windowed Mode
  - Fullscreen Windowed Mode
  
-The tool only works in Windows, no support for other OS.
+The tool only works in Windows(10), no support for other OS.
 
 Overlay only works with Display Scaling 100% in Windows Settings (working on a fix). 
 
@@ -319,6 +322,10 @@ Best thing would be to join the discord though especially if you want to make bi
 Help is always appreciated since this is my starter project for WPF anyways.
 
 ## Change Log
+
+#### 1.2.2
+
+ - fixed bug from "fixed bug where amount of items owned/ missing got calculated too early" since it introduced another bug :D
 
 #### 1.2.1
 

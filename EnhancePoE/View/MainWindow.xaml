@@ -1203,6 +1203,20 @@
 						</Grid>
 					</Grid>
 				</TabItem>
+				<!-- ItemLog -->
+				<TabItem Header="ItemLog">
+					<Grid>
+						<ListView Margin="0" Name="lvItemLog">
+							<ListView.View>
+								<GridView>
+									<GridViewColumn Header="Date" Width="150" DisplayMemberBinding="{Binding DateTime}" />
+									<GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}" />
+									<GridViewColumn Header="URL" Width="600" DisplayMemberBinding="{Binding Url}" />
+								</GridView>
+							</ListView.View>
+						</ListView>
+					</Grid>
+				</TabItem>
 			</TabControl>
 			<Grid Grid.Column="1"
 				  Grid.Row="2">
@@ -1256,7 +1270,7 @@
 						Grid.Row="2" />
 				<TextBlock Grid.Column="3"
 						   Grid.Row="3"
-						   Text="Version 1.2.2"
+						   Text="Version 1.2.3"
 						   FontSize="12"
 						   HorizontalAlignment="Right"
 						   VerticalAlignment="Center"></TextBlock>

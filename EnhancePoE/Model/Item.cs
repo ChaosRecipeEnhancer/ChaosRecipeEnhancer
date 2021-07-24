@@ -13,6 +13,7 @@ namespace EnhancePoE
         public int w { get; set; }
         public int h { get; set; }
         public string typeLine { get; set; }
+        public string baseType { get; set; }
         public string name { get; set; }
         public bool identified { get; set; }
         public int ilvl { get; set; }
@@ -21,10 +22,22 @@ namespace EnhancePoE
         public int y { get; set; }
         public Influence influences { get; set; }
         public string icon { get; set; }
+        public List<PropertiesList> properties { get; set; }
 
         // own prop
         public string ItemType { get; set; }
         public int StashTabIndex { get; set; }
+    }
+    
+    public class PropertiesList
+    {
+        public string name { get; set; }
+        
+        //public List<List<string>> values { get; set; }
+
+        public int displayMode { get; set; }
+
+        public int type { get; set; }
     }
 
     public class ItemList
