@@ -4,6 +4,8 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
+@b0ykoe fixed the tool in Expedition. Update to 1.2.3 if you are having problems. Details in Change log.
+
 #### Current Version 1.2.3
 
 For details on changes, check the Change Log at the bottom of this site.
