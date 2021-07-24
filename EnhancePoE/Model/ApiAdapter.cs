@@ -265,7 +265,14 @@ namespace EnhancePoE
                                     ItemList deserializedContent = JsonSerializer.Deserialize<ItemList>(resContent);
                                     i.ItemList = deserializedContent.items;
                                     i.Quad = deserializedContent.quadLayout;
-                                    i.CleanItemList();
+
+                                    String mappingContentRaw;
+                                    using (var mappingClient = new WebClient())
+                                    {
+                                        mappingContentRaw = mappingClient.DownloadString("https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/itemClasses.json");
+                                    }
+                                    var mappingContentDict = JsonSerializer.Deserialize<Dictionary<string, string>>(mappingContentRaw);
+                                    i.CleanItemList(mappingContentDict);
                                 }
                             }
                             else

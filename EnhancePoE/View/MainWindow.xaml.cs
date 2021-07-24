@@ -5,7 +5,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Windows.Navigation;
 using EnhancePoE.Model;
+using EnhancePoE.Model.Storage;
 using EnhancePoE.View;
 
 //using EnhancePoE.TabItemViewModel;
@@ -31,16 +33,21 @@ namespace EnhancePoE
 
         private static string RunButtonContent { get; set; } = "Run Overlay";
 
+        private List<ItemLog> _itemLogs { get; set; } = new List<ItemLog>();
+
 
         private Visibility _indicesVisible = Visibility.Hidden;
         public Visibility IndicesVisible
         {
             get { return _indicesVisible; }
-            set { if(_indicesVisible != value)
+            set
+            {
+                if (_indicesVisible != value)
                 {
                     _indicesVisible = value;
                     OnPropertyChanged("IndicesVisible");
-                } }
+                }
+            }
         }
         private Visibility _nameVisible = Visibility.Hidden;
         public Visibility NameVisible
@@ -56,15 +63,23 @@ namespace EnhancePoE
             }
         }
 
+        public Visibility LootfilterFileDialogVisible => Properties.Settings.Default.LootfilterOnline
+            ? Visibility.Collapsed
+            : Visibility.Visible;
+
+        public Visibility LootfilterOnlineFilterNameVisible => Properties.Settings.Default.LootfilterOnline
+            ? Visibility.Visible
+            : Visibility.Collapsed;
         //public static TabItemViewModel stashTabsModel = new TabItemViewModel();
 
 
         private bool trayClose = false;
 
-
+        public static MainWindow instance;
 
         public MainWindow()
         {
+            instance = this;
             //Properties.Settings.Default.Reset();
             InitializeComponent();
             DataContext = this;
@@ -85,8 +100,28 @@ namespace EnhancePoE
             LoadModeVisibility();
             // add Action to MouseHook
             MouseHook.MouseAction += new EventHandler(Coordinates.Event);
+            lvItemLog.ItemsSource = _itemLogs;
 
             //throw new NullReferenceException();
+        }
+
+        public void addItemLog(String name, String url)
+        {
+            var skip = false;
+            foreach (var itemLog in _itemLogs)
+            {
+                if (itemLog.Name.ToLower().Equals(name.ToLower()))
+                {
+                    itemLog.DateTime = DateTime.Now;
+                    skip = true;
+                }
+            }
+
+            if (skip == false)
+            {
+                _itemLogs.Add(new ItemLog() { Name = name, Url = url });
+            }
+            lvItemLog.Items.Refresh();
         }
 
         private void InitializeHotkeys()
@@ -194,7 +229,7 @@ namespace EnhancePoE
                 base.OnClosing(e);
             }
 
-            if(!Properties.Settings.Default.hideOnClose || this.trayClose)
+            if (!Properties.Settings.Default.hideOnClose || this.trayClose)
             {
                 ni.Visible = false;
                 MouseHook.Stop();
@@ -336,7 +371,7 @@ namespace EnhancePoE
             if (Properties.Settings.Default.HotkeyToggle != "< not set >")
             {
                 HotkeysManager.AddHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay);
-            }            
+            }
             if (Properties.Settings.Default.HotkeyStashTab != "< not set >")
             {
                 HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey, RunStashTabOverlay);
@@ -417,6 +452,8 @@ namespace EnhancePoE
             string sessId = Properties.Settings.Default.SessionId;
             string league = Properties.Settings.Default.League;
             string lootfilterLocation = Properties.Settings.Default.LootfilterLocation;
+            bool lootfilterOnline = Properties.Settings.Default.LootfilterOnline;
+            string lootfilterOnlineName = Properties.Settings.Default.LootfilterOnlineName;
             bool lootfilterActive = Properties.Settings.Default.LootfilterActive;
             string logLocation = Properties.Settings.Default.LogLocation;
             bool autoFetch = Properties.Settings.Default.AutoFetch;
@@ -424,40 +461,45 @@ namespace EnhancePoE
             List<string> missingSettings = new List<string>();
             string errorMessage = "Please add: \n";
 
-            if(accName == "")
+            if (accName == "")
             {
                 missingSettings.Add("- Account Name \n");
             }
-            if(sessId == "")
+            if (sessId == "")
             {
                 missingSettings.Add("- PoE Session ID \n");
             }
-            if(league == "")
+            if (league == "")
             {
                 missingSettings.Add("- League \n");
             }
             if (lootfilterActive)
             {
-                if(lootfilterLocation == "")
+                if (!lootfilterOnline && lootfilterLocation == "")
                 {
                     missingSettings.Add("- Lootfilter Location \n");
+                }
+
+                if (lootfilterOnline && lootfilterOnlineName == "")
+                {
+                    missingSettings.Add("- Lootfilter Name \n");
                 }
             }
             if (autoFetch)
             {
-                if(logLocation == "")
+                if (logLocation == "")
                 {
                     missingSettings.Add("- Log File Location \n");
                 }
             }
-            if(Properties.Settings.Default.StashtabMode == 0)
+            if (Properties.Settings.Default.StashtabMode == 0)
             {
-                if(Properties.Settings.Default.StashTabIndices == "")
+                if (Properties.Settings.Default.StashTabIndices == "")
                 {
                     missingSettings.Add("- StashTab Index");
                 }
             }
-            else if(Properties.Settings.Default.StashtabMode == 1)
+            else if (Properties.Settings.Default.StashtabMode == 1)
             {
                 if (Properties.Settings.Default.StashTabName == "")
                 {
@@ -465,17 +507,17 @@ namespace EnhancePoE
                 }
             }
 
-            if(missingSettings.Count > 0)
+            if (missingSettings.Count > 0)
             {
                 SettingsComplete = false;
             }
             else
             {
                 SettingsComplete = true;
-                return true; 
+                return true;
             }
 
-            foreach(string setting in missingSettings)
+            foreach (string setting in missingSettings)
             {
                 errorMessage += setting;
             }
@@ -581,18 +623,6 @@ namespace EnhancePoE
             }
         }
 
-        #region INotifyPropertyChanged implementation
-        // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
-
         private void TabHeaderGapSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             stashTabOverlay.TabHeaderGap = new Thickness(Properties.Settings.Default.TabHeaderGap, 0, Properties.Settings.Default.TabHeaderGap, 0);
@@ -600,9 +630,9 @@ namespace EnhancePoE
 
         private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if(StashTabList.StashTabs.Count > 0)
+            if (StashTabList.StashTabs.Count > 0)
             {
-                foreach(StashTab s in StashTabList.StashTabs)
+                foreach (StashTab s in StashTabList.StashTabs)
                 {
                     s.TabHeaderWidth = new Thickness(Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2);
                 }
@@ -630,15 +660,15 @@ namespace EnhancePoE
 
         private void OverlayModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(Properties.Settings.Default.OverlayMode == 0)
+            if (Properties.Settings.Default.OverlayMode == 0)
             {
                 overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContent();
             }
-            else if(Properties.Settings.Default.OverlayMode == 1)
+            else if (Properties.Settings.Default.OverlayMode == 1)
             {
                 overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContentMinified();
             }
-            else if(Properties.Settings.Default.OverlayMode == 2)
+            else if (Properties.Settings.Default.OverlayMode == 2)
             {
                 overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayOnlyButtons();
             }
@@ -689,7 +719,7 @@ namespace EnhancePoE
 
         private void AutoFetchCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            if(LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
+            if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
             {
                 LogWatcher.WorkerThread.Abort();
             }
@@ -697,13 +727,55 @@ namespace EnhancePoE
 
         private void ShowNumbersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(Properties.Settings.Default.ShowItemAmount != 0)
+            if (Properties.Settings.Default.ShowItemAmount != 0)
             {
                 overlay.AmountsVisibility = Visibility.Visible;
-            } else
+            }
+            else
             {
                 overlay.AmountsVisibility = Visibility.Hidden;
             }
         }
+
+        public class ItemLog
+        {
+            public DateTime DateTime { get; set; } = DateTime.Now;
+
+            public string Name { get; set; }
+
+            public String Url { get; set; }
+
+        }
+
+        private void LootfilterOnlineCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            OnPropertyChanged(nameof(LootfilterFileDialogVisible));
+            OnPropertyChanged(nameof(LootfilterOnlineFilterNameVisible));
+        }
+
+        private void Hyperlink_RequestNavigateByAccName(object sender, RequestNavigateEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Properties.Settings.Default.accName))
+            {
+                const string messageBoxText = "You first need enter your account name";
+                System.Windows.MessageBox.Show(messageBoxText, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                string url = string.Format(e.Uri.ToString(), Properties.Settings.Default.accName);
+                System.Diagnostics.Process.Start(url);
+            }
+        }
+
+        #region INotifyPropertyChanged implementation
+        // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
     }
 }
