@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -110,27 +111,24 @@ namespace EnhancePoE.Model
             }
             Generate2dArr(size);
         }
-        private static string GetItemClass(Item item)
+        private static string GetItemClass(Item item, Dictionary<string, string> mappingContentDict)
         {
             List<string> iconParts = new List<string>(item.icon.Split('/'));
-            String itemClass = iconParts[6];
-            switch (itemClass)
+            String lastPart = iconParts[iconParts.Count - 1];
+            
+            foreach (var itemMapping in mappingContentDict)
             {
-                case "Weapons":
-                case "Armours":
-                    itemClass = iconParts[7];
-                    break;
-                case "Rings":
-                case "Amulets":
-                case "Belts":
-                    break;
-                default:
-                    return null;
+                if (lastPart.ToLower().Contains(itemMapping.Key))
+                {
+                    return itemMapping.Value;
+                }
             }
-            return itemClass;
+            
+            MainWindow.instance.addItemLog(lastPart, item.icon);
+            return null;
         }
 
-        public void CleanItemList()
+        public void CleanItemList(Dictionary<string, string> mappingContentDict)
         {
             if (Properties.Settings.Default.ExaltedRecipe)
             {
@@ -158,7 +156,7 @@ namespace EnhancePoE.Model
                     {
                         if (ItemList[i].frameType == 2)
                         {
-                            string result = GetItemClass(ItemList[i]);
+                            string result = GetItemClass(ItemList[i], mappingContentDict);
                             if (result != null)
                             {
                                 ItemList[i].ItemType = result;
@@ -195,7 +193,7 @@ namespace EnhancePoE.Model
                 }
                 if (ItemList[i].frameType == 2)
                 {
-                    string result = GetItemClass(ItemList[i]);
+                    string result = GetItemClass(ItemList[i], mappingContentDict);
                     if (result != null)
                     {
                         ItemList[i].ItemType = result;

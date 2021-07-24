@@ -31,6 +31,8 @@ namespace EnhancePoE
 
         private static string RunButtonContent { get; set; } = "Run Overlay";
 
+        private List<ItemLog> _itemLogs { get; set; } = new List<ItemLog>();
+
 
         private Visibility _indicesVisible = Visibility.Hidden;
         public Visibility IndicesVisible
@@ -61,10 +63,11 @@ namespace EnhancePoE
 
         private bool trayClose = false;
 
-
+        public static MainWindow instance;
 
         public MainWindow()
         {
+            instance = this;
             //Properties.Settings.Default.Reset();
             InitializeComponent();
             DataContext = this;
@@ -85,8 +88,28 @@ namespace EnhancePoE
             LoadModeVisibility();
             // add Action to MouseHook
             MouseHook.MouseAction += new EventHandler(Coordinates.Event);
+            lvItemLog.ItemsSource = _itemLogs;
 
             //throw new NullReferenceException();
+        }
+        
+        public void addItemLog(String name, String url)
+        {
+            var skip = false;
+            foreach (var itemLog in _itemLogs)
+            {
+                if (itemLog.Name.ToLower().Equals(name.ToLower()))
+                {
+                    itemLog.DateTime = DateTime.Now;
+                    skip = true;
+                }
+            }
+
+            if (skip == false)
+            {
+                _itemLogs.Add(new ItemLog(){Name = name, Url = url});
+            }
+            lvItemLog.Items.Refresh();
         }
 
         private void InitializeHotkeys()
@@ -704,6 +727,15 @@ namespace EnhancePoE
             {
                 overlay.AmountsVisibility = Visibility.Hidden;
             }
+        }
+        
+        public class ItemLog
+        {
+            public DateTime DateTime { get; set; } = DateTime.Now;
+            
+            public string Name { get; set; }
+
+            public String Url { get; set; }
         }
     }
 }

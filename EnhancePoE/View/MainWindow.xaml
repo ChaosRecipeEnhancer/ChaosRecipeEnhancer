@@ -1171,6 +1171,20 @@
 						</Grid>
 					</Grid>
 				</TabItem>
+				<!-- ItemLog -->
+				<TabItem Header="ItemLog">
+					<Grid>
+						<ListView Margin="0" Name="lvItemLog">
+							<ListView.View>
+								<GridView>
+									<GridViewColumn Header="Date" Width="150" DisplayMemberBinding="{Binding DateTime}" />
+									<GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}" />
+									<GridViewColumn Header="URL" Width="600" DisplayMemberBinding="{Binding Url}" />
+								</GridView>
+							</ListView.View>
+						</ListView>
+					</Grid>
+				</TabItem>
 			</TabControl>
 			<Grid Grid.Column="1"
 				  Grid.Row="2">
