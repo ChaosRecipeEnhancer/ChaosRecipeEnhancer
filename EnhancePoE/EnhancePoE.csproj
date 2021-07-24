@@ -70,6 +70,9 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.11.32.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.32\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -140,12 +143,16 @@
     <Compile Include="Model\Cell.cs" />
     <Compile Include="Model\Coordinates.cs" />
     <Compile Include="Model\FilterGeneration.cs" />
+    <Compile Include="Model\Storage\FileFilterStorage.cs" />
+    <Compile Include="Model\Storage\FilterStorageFactory.cs" />
     <Compile Include="Model\ForegroundWindows.cs" />
     <Compile Include="Model\ItemSet.cs" />
     <Compile Include="Model\MouseHook.cs" />
     <Compile Include="Model\RateLimit.cs" />
     <Compile Include="Model\StashTabList.cs" />
     <Compile Include="Model\StashTabPropsList.cs" />
+    <Compile Include="Model\Storage\IFilterStorage.cs" />
+    <Compile Include="Model\Storage\OnlineFilterStorage.cs" />
     <Compile Include="Model\Utility.cs" />
     <Compile Include="Model\Win32.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

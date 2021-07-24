@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using EnhancePoE.Model;
+using EnhancePoE.Model.Storage;
 
 
 namespace EnhancePoE
@@ -324,7 +325,7 @@ namespace EnhancePoE
             }
         }
 
-        public static void CheckActives()
+        public static async Task CheckActives()
         {
             try
             {
@@ -739,9 +740,11 @@ namespace EnhancePoE
                     //sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets"));
                     //sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
 
-                    string oldFilter = FilterGeneration.OpenLootfilter();
+                    var filterStorage = FilterStorageFactory.Create(Properties.Settings.Default);
+
+                    string oldFilter = await filterStorage.ReadLootFilterAsync();
                     string newFilter = FilterGeneration.GenerateLootFilter(oldFilter, sectionList);
-                    FilterGeneration.WriteLootfilter(newFilter);
+                    await filterStorage.WriteLootFilterAsync(newFilter);
 
 
                     List<string> sectionListInfluenced = new List<string>();
@@ -757,15 +760,15 @@ namespace EnhancePoE
                         sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", true));
                         sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", true));
 
-                        string oldFilter2 = FilterGeneration.OpenLootfilter();
+                        string oldFilter2 = await filterStorage.ReadLootFilterAsync();
                         string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
-                        FilterGeneration.WriteLootfilter(newFilter2);
+                        await filterStorage.WriteLootFilterAsync(newFilter2);
                     }
                     else
                     {
-                        string oldFilter2 = FilterGeneration.OpenLootfilter();
+                        string oldFilter2 = await filterStorage.ReadLootFilterAsync();
                         string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
-                        FilterGeneration.WriteLootfilter(newFilter2);
+                        await filterStorage.WriteLootFilterAsync(newFilter2);
                     }
                 }
                 if (Properties.Settings.Default.Sound)
