@@ -323,6 +323,11 @@ Help is always appreciated since this is my starter project for WPF anyways.
 
 ## Change Log
 
+#### 1.2.3
+
+ - fixed breaking bug where items could not be found anymore because GGG changed their Api (thanks to @b0ykoe)
+ - added online filter functionality, this feature may need some testing (thanks to @Zyertdox )
+
 #### 1.2.2
 
  - fixed bug from "fixed bug where amount of items owned/ missing got calculated too early" since it introduced another bug :D
