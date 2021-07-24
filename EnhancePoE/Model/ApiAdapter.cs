@@ -269,7 +269,7 @@ namespace EnhancePoE
                                     String mappingContentRaw;
                                     using (var mappingClient = new WebClient())
                                     {
-                                        mappingContentRaw = mappingClient.DownloadString("https://poe.rapture.pw/db.json");
+                                        mappingContentRaw = mappingClient.DownloadString("https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/itemClasses.json");
                                     }
                                     var mappingContentDict = JsonSerializer.Deserialize<Dictionary<string, string>>(mappingContentRaw);
                                     i.CleanItemList(mappingContentDict);
