@@ -6,6 +6,8 @@ For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) o
 
 [@b0ykoe](https://github.com/b0ykoe) fixed the tool in Expedition. Update to 1.2.3 if you are having problems. Details in Change log.
 
+This product isn't affiliated with or endorsed by Grinding Gear Games in any way.
+
 #### Current Version 1.2.3
 
 For details on changes, check the Change Log at the bottom of this site.
