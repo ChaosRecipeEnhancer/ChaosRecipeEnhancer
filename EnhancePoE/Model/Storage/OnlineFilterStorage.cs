@@ -24,7 +24,7 @@ namespace EnhancePoE.Model.Storage
 
         internal OnlineFilterStorage(string filterName, string accName, string sessionId)
         {
-            _filterName = filterName;
+            _filterName = filterName.Trim();
             _accName = accName;
             _sessionId = sessionId;
         }
@@ -42,7 +42,6 @@ namespace EnhancePoE.Model.Storage
             using (HttpClient client = new HttpClient(handler))
             {
                 var response = await client.GetAsync(filterUrl);
-
                 var stream = await response.Content.ReadAsStreamAsync();
                 HtmlDocument document = new HtmlDocument();
                 document.Load(stream, Encoding.UTF8);

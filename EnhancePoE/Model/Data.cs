@@ -743,32 +743,38 @@ namespace EnhancePoE
                     var filterStorage = FilterStorageFactory.Create(Properties.Settings.Default);
 
                     string oldFilter = await filterStorage.ReadLootFilterAsync();
-                    string newFilter = FilterGeneration.GenerateLootFilter(oldFilter, sectionList);
-                    await filterStorage.WriteLootFilterAsync(newFilter);
-
-
-                    List<string> sectionListInfluenced = new List<string>();
-                    if (Properties.Settings.Default.ExaltedRecipe)
+                    if (oldFilter == null)
                     {
-                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Rings", true));
-                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Amulets", true));
-                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Belts", true));
-                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Helmets", true));
-                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Gloves", true));
-                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Boots", true));
-                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Body Armours", true));
-                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", true));
-                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", true));
-
-                        string oldFilter2 = await filterStorage.ReadLootFilterAsync();
-                        string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
-                        await filterStorage.WriteLootFilterAsync(newFilter2);
-                    }
-                    else
+                        System.Windows.MessageBox.Show("No lootfilter found! Please check that you set the correct name.", "Missing Settings", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    } else
                     {
-                        string oldFilter2 = await filterStorage.ReadLootFilterAsync();
-                        string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
-                        await filterStorage.WriteLootFilterAsync(newFilter2);
+                        string newFilter = FilterGeneration.GenerateLootFilter(oldFilter, sectionList);
+                        await filterStorage.WriteLootFilterAsync(newFilter);
+
+
+                        List<string> sectionListInfluenced = new List<string>();
+                        if (Properties.Settings.Default.ExaltedRecipe)
+                        {
+                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Rings", true));
+                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Amulets", true));
+                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Belts", true));
+                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Helmets", true));
+                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Gloves", true));
+                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Boots", true));
+                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Body Armours", true));
+                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", true));
+                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", true));
+
+                            string oldFilter2 = await filterStorage.ReadLootFilterAsync();
+                            string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
+                            await filterStorage.WriteLootFilterAsync(newFilter2);
+                        }
+                        else
+                        {
+                            string oldFilter2 = await filterStorage.ReadLootFilterAsync();
+                            string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
+                            await filterStorage.WriteLootFilterAsync(newFilter2);
+                        }
                     }
                 }
                 if (Properties.Settings.Default.Sound)
@@ -794,6 +800,7 @@ namespace EnhancePoE
             {
                 Trace.WriteLine("abort");
             }
+
         }
 
         public static void CalculateItemAmounts()
