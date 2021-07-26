@@ -17,5 +17,6 @@
  "helmet": "Helmets",
  "boot": "Boots",
  "claw": "OneHandWeapons",
- "rapier": "OneHandWeapons"
+ "rapier": "OneHandWeapons",
+ "bow": "TwoHandWeapons"
 }
