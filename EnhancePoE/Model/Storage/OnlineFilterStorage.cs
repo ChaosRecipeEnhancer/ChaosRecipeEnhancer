@@ -33,8 +33,12 @@ namespace EnhancePoE.Model.Storage
         {
             var filterUrl = await GetFilterUrlAsync();
 
+            System.Diagnostics.Trace.WriteLine("filter url", filterUrl);
+
             if (string.IsNullOrWhiteSpace(filterUrl))
             {
+                System.Windows.MessageBox.Show("No lootfilter found! Please check that you set the correct name and that you use your own filter. You cannot use followed filters.", "Could not read Lootfilter", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                //System.Diagnostics.Trace.WriteLine("filter url is null");
                 return null;
             }
 

@@ -736,46 +736,38 @@ namespace EnhancePoE
 
                 if (filterActive)
                 {
-                    //sectionList.Add(FilterGeneration.GenerateSection(true, "Rings"));
-                    //sectionList.Add(FilterGeneration.GenerateSection(true, "Amulets"));
-                    //sectionList.Add(FilterGeneration.GenerateSection(true, "Belts"));
-
                     var filterStorage = FilterStorageFactory.Create(Properties.Settings.Default);
 
                     string oldFilter = await filterStorage.ReadLootFilterAsync();
-                    if (oldFilter == null)
+                    if(oldFilter == null)
                     {
-                        System.Windows.MessageBox.Show("No lootfilter found! Please check that you set the correct name.", "Missing Settings", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-                    } else
-                    {
-                        string newFilter = FilterGeneration.GenerateLootFilter(oldFilter, sectionList);
-                        await filterStorage.WriteLootFilterAsync(newFilter);
-
-
-                        List<string> sectionListInfluenced = new List<string>();
-                        if (Properties.Settings.Default.ExaltedRecipe)
-                        {
-                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Rings", true));
-                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Amulets", true));
-                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Belts", true));
-                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Helmets", true));
-                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Gloves", true));
-                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Boots", true));
-                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Body Armours", true));
-                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", true));
-                            sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", true));
-
-                            string oldFilter2 = await filterStorage.ReadLootFilterAsync();
-                            string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
-                            await filterStorage.WriteLootFilterAsync(newFilter2);
-                        }
-                        else
-                        {
-                            string oldFilter2 = await filterStorage.ReadLootFilterAsync();
-                            string newFilter2 = FilterGeneration.GenerateLootFilterInfluenced(oldFilter2, sectionListInfluenced);
-                            await filterStorage.WriteLootFilterAsync(newFilter2);
-                        }
+                        return;
                     }
+
+                    string newFilter = FilterGeneration.GenerateLootFilter(oldFilter, sectionList);
+                    oldFilter = newFilter;
+
+                    List<string> sectionListInfluenced = new List<string>();
+                    if (Properties.Settings.Default.ExaltedRecipe)
+                    {
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Rings", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Amulets", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Belts", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Helmets", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Gloves", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Boots", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Body Armours", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", true));
+
+                        newFilter = FilterGeneration.GenerateLootFilterInfluenced(oldFilter, sectionListInfluenced);
+                    }
+                    else
+                    {
+                        newFilter = FilterGeneration.GenerateLootFilterInfluenced(oldFilter, sectionListInfluenced);
+                    }
+
+                    await filterStorage.WriteLootFilterAsync(newFilter);
                 }
                 if (Properties.Settings.Default.Sound)
                 {
