@@ -4,7 +4,11 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.2.2
+#### Current Version 1.2.4
+
+[@b0ykoe](https://github.com/b0ykoe) fixed the tool in Expedition. Update to 1.2.3 if you are having problems. Details in Change log.
+
+This product isn't affiliated with or endorsed by Grinding Gear Games in any way.
 
 For details on changes, check the Change Log at the bottom of this site.
 
@@ -326,6 +330,12 @@ Help is always appreciated since this is my starter project for WPF anyways.
 #### 1.2.4
 
  - added error message when online lootfilter was not found
+ - removed itemlog
+
+#### 1.2.3
+
+ - fixed breaking bug where items could not be found anymore because GGG changed their Api (thanks to [@b0ykoe](https://github.com/b0ykoe))
+ - added online filter functionality, this feature may need some testing (thanks to [@Zyertdox](https://github.com/Zyertdox) )
 
 #### 1.2.2
 
