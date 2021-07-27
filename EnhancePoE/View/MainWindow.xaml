@@ -1231,6 +1231,14 @@
 							 FontSize="12"
 							 Text="by kosace " />
 					</TextBlock.Inlines></TextBlock>
+				<TextBlock 
+					Grid.Column="1"
+					Grid.Row="3"
+					FontSize="10"
+					VerticalAlignment="Center"
+					TextAlignment="Center"
+					Text="This product isn't affiliated with or endorsed by Grinding Gear Games in any way."
+				/>
 				<!--
 			<Button x:Name="SaveButton"
 					Click="SaveButton_Click"
