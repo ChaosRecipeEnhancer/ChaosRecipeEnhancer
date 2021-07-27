@@ -225,6 +225,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_DFE9A2F43AA2809F2BCD9F33F450BDE4"
+        "OwnerKey" = "8:_9DA68624C0CB4CB78710079E0AEF9510"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_F02414A99F5F4A96BD53426FA8B97948"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -239,6 +245,12 @@
         {
         "MsmKey" = "8:_F39E7474E6456B53CD476990A6FE0307"
         "OwnerKey" = "8:_12A2CB67514533F6A9C618EAEDAAF8EB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FCE3FF14B01931BA82E0E36ECCC99CD3"
+        "OwnerKey" = "8:_DFE9A2F43AA2809F2BCD9F33F450BDE4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -299,6 +311,18 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_AAFFA7B0F55B233B08DF389BCD609EDF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_DFE9A2F43AA2809F2BCD9F33F450BDE4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FCE3FF14B01931BA82E0E36ECCC99CD3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -946,6 +970,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DFE9A2F43AA2809F2BCD9F33F450BDE4"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:HtmlAgilityPack, Version=1.11.32.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_DFE9A2F43AA2809F2BCD9F33F450BDE4"
+                    {
+                    "Name" = "8:HtmlAgilityPack.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:HtmlAgilityPack.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B5E39B65EA624BA3A5855151B042CC9B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F02414A99F5F4A96BD53426FA8B97948"
             {
             "SourcePath" = "8:..\\EnhancePoE\\Sounds\\filterchanged.mp3"
@@ -980,6 +1035,37 @@
                     }
                 }
             "SourcePath" = "8:Microsoft.Bcl.AsyncInterfaces.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B5E39B65EA624BA3A5855151B042CC9B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FCE3FF14B01931BA82E0E36ECCC99CD3"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:TRUE"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_FCE3FF14B01931BA82E0E36ECCC99CD3"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B5E39B65EA624BA3A5855151B042CC9B"
@@ -1097,15 +1183,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Chaos Recipe Enhancer"
-        "ProductCode" = "8:{25230BEB-2FD7-438B-9AAD-2AE9E95A7EBB}"
-        "PackageCode" = "8:{DA9EF62E-88B5-4857-994B-2343E0BC2BFD}"
+        "ProductCode" = "8:{14EED85F-1C09-40A8-8B92-3215E6D5297A}"
+        "PackageCode" = "8:{A5C1FF54-708C-41A9-A669-05D6ABDEDBFA}"
         "UpgradeCode" = "8:{EEF4EF4B-78CB-4878-BDB3-D5FDD5FFBDC8}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.2.3"
+        "ProductVersion" = "8:1.2.4"
         "Manufacturer" = "8:kosace"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

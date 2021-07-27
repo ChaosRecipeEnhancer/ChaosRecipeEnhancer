@@ -24,7 +24,7 @@ namespace EnhancePoE.Model.Storage
 
         internal OnlineFilterStorage(string filterName, string accName, string sessionId)
         {
-            _filterName = filterName;
+            _filterName = filterName.Trim();
             _accName = accName;
             _sessionId = sessionId;
         }
@@ -33,8 +33,12 @@ namespace EnhancePoE.Model.Storage
         {
             var filterUrl = await GetFilterUrlAsync();
 
+            System.Diagnostics.Trace.WriteLine("filter url", filterUrl);
+
             if (string.IsNullOrWhiteSpace(filterUrl))
             {
+                System.Windows.MessageBox.Show("No lootfilter found! Please check that you set the correct name and that you use your own filter. You cannot use followed filters.", "Could not read Lootfilter", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                //System.Diagnostics.Trace.WriteLine("filter url is null");
                 return null;
             }
 
@@ -42,7 +46,6 @@ namespace EnhancePoE.Model.Storage
             using (HttpClient client = new HttpClient(handler))
             {
                 var response = await client.GetAsync(filterUrl);
-
                 var stream = await response.Content.ReadAsStreamAsync();
                 HtmlDocument document = new HtmlDocument();
                 document.Load(stream, Encoding.UTF8);

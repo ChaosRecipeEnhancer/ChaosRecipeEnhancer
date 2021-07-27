@@ -1,6 +1,7 @@
 ﻿
+using System;
 using System.Collections.Generic;
-
+using System.Text;
 
 namespace EnhancePoE
 {
@@ -27,8 +28,38 @@ namespace EnhancePoE
         // own prop
         public string ItemType { get; set; }
         public int StashTabIndex { get; set; }
+
+        public void GetItemClass()
+        {
+            //https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldFN0ckRleDciLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/0884b27765/HelmetStrDex7.png
+            var urlParts = this.icon.Split("/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string encodedPart = urlParts[4];
+            while (encodedPart.Length % 4 != 0)
+            {
+                encodedPart += "=";
+            }
+            string decodedItemData = Encoding.UTF8.GetString(Convert.FromBase64String(encodedPart));
+            var iconParts = decodedItemData.Split('/');
+            String itemClass = iconParts[1];
+            switch (itemClass)
+            {
+                case "Weapons":
+                case "Armours":
+                    itemClass = iconParts[2];
+                    break;
+                case "Rings":
+                case "Amulets":
+                case "Belts":
+                    break;
+                default:
+                    break;
+            }
+            this.ItemType = itemClass;
+            //System.Diagnostics.Trace.WriteLine("item classe ", itemClass);
+            //return itemClass;
+        }
     }
-    
+
     public class PropertiesList
     {
         public string name { get; set; }

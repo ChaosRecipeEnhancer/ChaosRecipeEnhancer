@@ -266,13 +266,13 @@ namespace EnhancePoE
                                     i.ItemList = deserializedContent.items;
                                     i.Quad = deserializedContent.quadLayout;
 
-                                    String mappingContentRaw;
-                                    using (var mappingClient = new WebClient())
-                                    {
-                                        mappingContentRaw = mappingClient.DownloadString("https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/itemClasses.json");
-                                    }
-                                    var mappingContentDict = JsonSerializer.Deserialize<Dictionary<string, string>>(mappingContentRaw);
-                                    i.CleanItemList(mappingContentDict);
+                                    //String mappingContentRaw;
+                                    //using (var mappingClient = new WebClient())
+                                    //{
+                                    //    mappingContentRaw = mappingClient.DownloadString("https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/itemClasses.json");
+                                    //}
+                                    //var mappingContentDict = JsonSerializer.Deserialize<Dictionary<string, string>>(mappingContentRaw);
+                                    i.CleanItemList();
                                 }
                             }
                             else

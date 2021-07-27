@@ -862,39 +862,39 @@
 									  VerticalAlignment="Center"
 									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterActive, Mode=TwoWay}" />
 							<TextBlock Grid.Column="1"
-							           Grid.Row="5"
-							           VerticalAlignment="Center"
-							           Text="Online Filter:"
-							           ToolTipService.InitialShowDelay="50"
-							           ToolTip="Activates working with on-line filters." />
+									   Grid.Row="5"
+									   VerticalAlignment="Center"
+									   Text="Online Filter:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="Activates working with on-line filters." />
 							<CheckBox Grid.Column="3"
-							          Grid.Row="5"
-							          x:Name="LootfilterOnlineCheckbox"
-							          VerticalAlignment="Center"
-							          IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterOnline, Mode=TwoWay}" Checked="LootfilterOnlineCheckbox_Checked" Unchecked="LootfilterOnlineCheckbox_Checked" />
+									  Grid.Row="5"
+									  x:Name="LootfilterOnlineCheckbox"
+									  VerticalAlignment="Center"
+									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterOnline, Mode=TwoWay}"
+									  Checked="LootfilterOnlineCheckbox_Checked"
+									  Unchecked="LootfilterOnlineCheckbox_Checked" />
 							<TextBlock Grid.Column="1"
-							           Grid.Row="7"
-							           VerticalAlignment="Center"
-							           Text="Lootfilter Location:"
-							           ToolTipService.InitialShowDelay="50"
-							           ToolTip="The path to your lootfilter. Standard path is: 'Username/Documents/My Games/Path of Exile'."
-							           Visibility="{Binding LootfilterFileDialogVisible}"/>
+									   Grid.Row="7"
+									   VerticalAlignment="Center"
+									   Text="Lootfilter Location:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="The path to your lootfilter. Standard path is: 'Username/Documents/My Games/Path of Exile'."
+									   Visibility="{Binding LootfilterFileDialogVisible}" />
 							<TextBlock Grid.Column="1"
-							           Grid.Row="7"
-							           VerticalAlignment="Center"
-							           ToolTipService.InitialShowDelay="50"
-							           ToolTip="Name of filter to control. Can be found by the link. You should be signed in."
-							           Visibility="{Binding LootfilterOnlineFilterNameVisible}">
-								Filter Name (<Hyperlink 
-									             NavigateUri="{x:Static storage:OnlineFilterStorage.FiltersUrl}"
-									             RequestNavigate="Hyperlink_RequestNavigateByAccName">here</Hyperlink>):
-							</TextBlock>
+									   Grid.Row="7"
+									   VerticalAlignment="Center"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="Name of filter to control. Can be found by the link. You should be signed in."
+									   Visibility="{Binding LootfilterOnlineFilterNameVisible}">
+								Filter Name (<Hyperlink NavigateUri="{x:Static storage:OnlineFilterStorage.FiltersUrl}"
+														RequestNavigate="Hyperlink_RequestNavigateByAccName">here</Hyperlink>):</TextBlock>
 							<TextBox x:Name="LootfilterOnlineFilterName"
-							         Grid.Column="3"
-							         Grid.Row="7"
-							         Width="200"
-							         Text="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterOnlineName, Mode=TwoWay}" 
-							         Visibility="{Binding LootfilterOnlineFilterNameVisible}"/>
+									 Grid.Column="3"
+									 Grid.Row="7"
+									 Width="200"
+									 Text="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterOnlineName, Mode=TwoWay}"
+									 Visibility="{Binding LootfilterOnlineFilterNameVisible}" />
 							<Button Grid.Column="3"
 									Grid.Row="7"
 									x:Name="LootfilterFileDialog"
@@ -1203,20 +1203,6 @@
 						</Grid>
 					</Grid>
 				</TabItem>
-				<!-- ItemLog -->
-				<TabItem Header="ItemLog">
-					<Grid>
-						<ListView Margin="0" Name="lvItemLog">
-							<ListView.View>
-								<GridView>
-									<GridViewColumn Header="Date" Width="150" DisplayMemberBinding="{Binding DateTime}" />
-									<GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}" />
-									<GridViewColumn Header="URL" Width="600" DisplayMemberBinding="{Binding Url}" />
-								</GridView>
-							</ListView.View>
-						</ListView>
-					</Grid>
-				</TabItem>
 			</TabControl>
 			<Grid Grid.Column="1"
 				  Grid.Row="2">
@@ -1270,7 +1256,7 @@
 						Grid.Row="2" />
 				<TextBlock Grid.Column="3"
 						   Grid.Row="3"
-						   Text="Version 1.2.3"
+						   Text="Version 1.2.4"
 						   FontSize="12"
 						   HorizontalAlignment="Right"
 						   VerticalAlignment="Center"></TextBlock>
