@@ -323,6 +323,10 @@ Help is always appreciated since this is my starter project for WPF anyways.
 
 ## Change Log
 
+#### 1.2.4
+
+ - added error message when online lootfilter was not found
+
 #### 1.2.2
 
  - fixed bug from "fixed bug where amount of items owned/ missing got calculated too early" since it introduced another bug :D
