@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.2.2
+#### Current Version 1.2.4
 
 For details on changes, check the Change Log at the bottom of this site.
 
@@ -326,6 +326,7 @@ Help is always appreciated since this is my starter project for WPF anyways.
 #### 1.2.4
 
  - added error message when online lootfilter was not found
+ - removed itemlog
 
 #### 1.2.2
 
