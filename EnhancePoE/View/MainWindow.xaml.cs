@@ -82,7 +82,7 @@ namespace EnhancePoE
             DataContext = this;
 
             //Data.InitializeBases();
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.FilterChangeSoundFileLocation))
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.FilterChangeSoundFileLocation) && !FilterSoundLocationDialog.Content.Equals("Default Sound"))
             {
                 Data.Player.Open(new Uri(Properties.Settings.Default.FilterChangeSoundFileLocation));
             }
@@ -91,7 +91,7 @@ namespace EnhancePoE
                 Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
             }
 
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.ItemPickupSoundFileLocation))
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.ItemPickupSoundFileLocation) && !ItemPickupLocationDialog.Content.Equals("Default Sound"))
             {
                 Data.PlayerSet.Open(new Uri(Properties.Settings.Default.ItemPickupSoundFileLocation));
             }

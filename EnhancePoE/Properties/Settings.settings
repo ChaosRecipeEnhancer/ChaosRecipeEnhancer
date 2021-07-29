@@ -186,10 +186,10 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ItemPickupSoundFileLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Default Sound</Value>
     </Setting>
     <Setting Name="FilterChangeSoundFileLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Default Sound</Value>
     </Setting>
   </Settings>
 </SettingsFile>
