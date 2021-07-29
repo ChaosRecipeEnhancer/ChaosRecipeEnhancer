@@ -82,8 +82,24 @@ namespace EnhancePoE
             DataContext = this;
 
             //Data.InitializeBases();
-            Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
-            Data.PlayerSet.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\itemsPickedUp.mp3")));
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.FilterChangeSoundFileLocation))
+            {
+                Data.Player.Open(new Uri(Properties.Settings.Default.FilterChangeSoundFileLocation));
+            }
+            else
+            {
+                Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
+            }
+
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.ItemPickupSoundFileLocation))
+            {
+                Data.PlayerSet.Open(new Uri(Properties.Settings.Default.ItemPickupSoundFileLocation));
+            }
+            else
+            {
+                Data.PlayerSet.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\itemsPickedUp.mp3")));
+            }
+
             //TESTING SETTINGS RESET
             //if (Debugger.IsAttached)
             //    Properties.Settings.Default.Reset();
@@ -360,6 +376,20 @@ namespace EnhancePoE
             HotkeysManager.RemoveRefreshHotkey();
             HotkeysManager.RemoveStashTabHotkey();
             HotkeysManager.RemoveToggleHotkey();
+        }
+
+        private string GetSoundFilePath()
+        {
+            System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog();
+            open.Filter = "MP3|*.mp3";
+            DialogResult res = open.ShowDialog();
+
+            if (res == System.Windows.Forms.DialogResult.OK)
+            {
+                return open.FileName;
+            }
+
+            return null;
         }
 
 
@@ -731,6 +761,34 @@ namespace EnhancePoE
             {
                 string url = string.Format(e.Uri.ToString(), Properties.Settings.Default.accName);
                 System.Diagnostics.Process.Start(url);
+            }
+        }
+
+        private void FilterSoundLocationDialog_OnClick(object sender, RoutedEventArgs e)
+        {
+            var soundFilePath = GetSoundFilePath();
+
+            if (soundFilePath != null)
+            {
+                Properties.Settings.Default.FilterChangeSoundFileLocation = soundFilePath;
+                FilterSoundLocationDialog.Content = soundFilePath;
+                Data.Player.Open(new Uri(soundFilePath));
+
+                Data.PlayNotificationSound();
+            }
+        }
+
+        private void ItemPickupLocationDialog_OnClick(object sender, RoutedEventArgs e)
+        {
+            var soundFilePath = GetSoundFilePath();
+
+            if (soundFilePath != null)
+            {
+                Properties.Settings.Default.ItemPickupSoundFileLocation = soundFilePath;
+                ItemPickupLocationDialog.Content = soundFilePath;
+                Data.PlayerSet.Open(new Uri(soundFilePath));
+
+                Data.PlayNotificationSoundSetPicked();
             }
         }
 

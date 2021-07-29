@@ -754,5 +754,29 @@ namespace EnhancePoE.Properties {
                 this["LootfilterOnlineName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ItemPickupSoundFileLocation {
+            get {
+                return ((string)(this["ItemPickupSoundFileLocation"]));
+            }
+            set {
+                this["ItemPickupSoundFileLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FilterChangeSoundFileLocation {
+            get {
+                return ((string)(this["FilterChangeSoundFileLocation"]));
+            }
+            set {
+                this["FilterChangeSoundFileLocation"] = value;
+            }
+        }
     }
 }
