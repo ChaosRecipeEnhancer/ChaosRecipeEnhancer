@@ -203,7 +203,7 @@
 									   VerticalAlignment="Center"
 									   Text="Include Identified Items:"
 									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="." />
+									   ToolTip="Also counts identified Items for 1 chaos per set." />
 							<CheckBox x:Name="IncludeIdentifiedCheckBox"
 									  Grid.Column="3"
 									  Grid.Row="11"
@@ -223,6 +223,8 @@
 							<Grid.RowDefinitions>
 								<RowDefinition Height="10"></RowDefinition>
 								<RowDefinition Height="30"></RowDefinition>
+								<RowDefinition Height="5"></RowDefinition>
+								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
@@ -308,6 +310,34 @@
 									Focusable="False"
 									Content="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyStashTab, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
 									Click="StashTabHotkey_Click">
+								<Button.Style>
+									<Style TargetType="Button">
+										<Setter Property="Background"
+												Value="Transparent" />
+										<Style.Triggers>
+											<Trigger Property="IsMouseOver"
+													 Value="True">
+												<Setter Property="Background"
+														Value="Transparent" />
+											</Trigger>
+										</Style.Triggers>
+									</Style>
+								</Button.Style>
+							</Button>
+							<TextBlock Grid.Column="1"
+									   Grid.Row="9"
+									   VerticalAlignment="Center"
+									   Text="Reload Itemfilter:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="Hotkey for reloading the itemfilter." />
+							<Button x:Name="ReloadFilterHotkey"
+									Width="200"
+									Grid.Row="9"
+									Grid.Column="3"
+									IsManipulationEnabled="False"
+									Focusable="False"
+									Content="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyReloadFilter, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
+									Click="ReloadFilterHotkey_Click">
 								<Button.Style>
 									<Style TargetType="Button">
 										<Setter Property="Background"

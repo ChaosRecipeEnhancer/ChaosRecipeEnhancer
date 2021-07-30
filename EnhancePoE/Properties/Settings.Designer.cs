@@ -754,5 +754,17 @@ namespace EnhancePoE.Properties {
                 this["LootfilterOnlineName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
+        public string HotkeyReloadFilter {
+            get {
+                return ((string)(this["HotkeyReloadFilter"]));
+            }
+            set {
+                this["HotkeyReloadFilter"] = value;
+            }
+        }
     }
 }

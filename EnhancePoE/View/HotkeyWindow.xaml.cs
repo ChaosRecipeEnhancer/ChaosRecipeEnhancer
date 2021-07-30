@@ -30,18 +30,24 @@ namespace EnhancePoE
         {
             this.mainWindow = mainWindow;
 
-            if(hotkeyType == "refresh")
-            {
-                type = "refresh";
-            }
-            else if(hotkeyType == "toggle")
-            {
-                type = "toggle";
-            } 
-            else if(hotkeyType == "stashtab")
-            {
-                type = "stashtab";
-            }
+            this.type = hotkeyType;
+
+            //if(hotkeyType == "refresh")
+            //{
+            //    type = "refresh";
+            //}
+            //else if(hotkeyType == "toggle")
+            //{
+            //    type = "toggle";
+            //} 
+            //else if(hotkeyType == "stashtab")
+            //{
+            //    type = "stashtab";
+            //}
+            //else if(hotkeyType == "reloadFilter")
+            //{
+            //    type = "reloadFilter";
+            //}
 
             InitializeComponent();
         }
@@ -90,6 +96,21 @@ namespace EnhancePoE
                     HotkeysManager.GetStashTabHotkey();
                 }
                 ReApplyHotkeys();
+            }
+            else if(type == "reloadFilter")
+            {
+                HotkeysManager.RemoveHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey);
+                if (CustomHotkeyToggle.Hotkey == null)
+                {
+                    Properties.Settings.Default.HotkeyReloadFilter = "< not set >";
+                }
+                else
+                {
+                    Properties.Settings.Default.HotkeyReloadFilter = CustomHotkeyToggle.Hotkey.ToString();
+                    HotkeysManager.GetReloadFilterHotkey();
+                }
+                ReApplyHotkeys();
+
             }
             this.Close();
         }

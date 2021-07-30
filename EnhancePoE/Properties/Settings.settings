@@ -185,5 +185,8 @@
     <Setting Name="LootfilterOnlineName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="HotkeyReloadFilter" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt; not set &gt;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

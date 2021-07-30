@@ -104,10 +104,11 @@ namespace EnhancePoE
         private void InitializeHotkeys()
         {
             HotkeysManager.SetupSystemHook();
-            HotkeysManager.RequiresModifierKey = false;
+            //HotkeysManager.RequiresModifierKey = false;
             HotkeysManager.GetRefreshHotkey();
             HotkeysManager.GetToggleHotkey();
             HotkeysManager.GetStashTabHotkey();
+            HotkeysManager.GetReloadFilterHotkey();
             AddAllHotkeys();
         }
 
@@ -353,6 +354,10 @@ namespace EnhancePoE
             {
                 HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey, RunStashTabOverlay);
             }
+            if (Properties.Settings.Default.HotkeyReloadFilter != "< not set >")
+            {
+                HotkeysManager.AddHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey, ReloadItemFilter);
+            }
         }
 
         public void RemoveAllHotkeys()
@@ -360,6 +365,7 @@ namespace EnhancePoE
             HotkeysManager.RemoveRefreshHotkey();
             HotkeysManager.RemoveStashTabHotkey();
             HotkeysManager.RemoveToggleHotkey();
+            HotkeysManager.RemoveReloadFilterHotkey();
         }
 
 
@@ -566,6 +572,24 @@ namespace EnhancePoE
             }
         }
 
+        private void ReloadFilterHotkey_Click(object sender, RoutedEventArgs e)
+        {
+            bool isWindowOpen = false;
+            foreach (Window w in System.Windows.Application.Current.Windows)
+            {
+                if (w is HotkeyWindow)
+                {
+                    isWindowOpen = true;
+                }
+            }
+
+            if (!isWindowOpen)
+            {
+                HotkeyWindow hotkeyDialog = new HotkeyWindow(this, "reloadFilter");
+                hotkeyDialog.Show();
+            }
+        }
+
         private void LootfilterFileDialog_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog();
@@ -734,6 +758,26 @@ namespace EnhancePoE
             }
         }
 
+        private void ReloadItemFilter()
+        {
+            //hotkeys causing problems? 
+            RemoveAllHotkeys();
+            string filterName = GetFilterName();
+            //System.Diagnostics.Trace.WriteLine(filterName);
+            SendInputs.SendInsert(filterName);
+            //HotkeysManager.AddHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey, ReloadItemFilter);
+            AddAllHotkeys();
+        }
+
+        private static string GetFilterName()
+        {
+            if(Properties.Settings.Default.LootfilterOnline)
+            {
+                return Properties.Settings.Default.LootfilterOnlineName.Trim();
+            }
+            return System.IO.Path.GetFileName(Properties.Settings.Default.LootfilterLocation).Split('.')[0];
+        }
+
         #region INotifyPropertyChanged implementation
         // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
         public event PropertyChangedEventHandler PropertyChanged;
@@ -744,5 +788,6 @@ namespace EnhancePoE
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
     }
 }
