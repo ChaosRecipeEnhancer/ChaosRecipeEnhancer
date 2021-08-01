@@ -18,23 +18,23 @@ namespace EnhancePoE.Model
 
         private static InputSimulator sim = new InputSimulator();
 
-        public static void SendInsert(string filterName)
-        {
-            //string insertText = "/itemfilter " + filterName;            
-            string insertText = "test test test";
-            sim.Keyboard.TextEntry("Hello Worl !");
-            sim.Keyboard.Sleep(1000);
+        //public static void SendInsert(string filterName)
+        //{
+        //    //string insertText = "/itemfilter " + filterName;            
+        //    string insertText = "test test test";
+        //    sim.Keyboard.TextEntry("Hello Worl !");
+        //    sim.Keyboard.Sleep(1000);
 
-            //Clipboard.Clear();
-            //Clipboard.SetDataObject(insertText);
-            //SendKeys.SendWait("{Enter}");
-            //System.Threading.Thread.Sleep(100);
-            //SendKeys.SendWait("Test");
-            //SendKeys.SendWait("{Enter}");
+        //    //Clipboard.Clear();
+        //    //Clipboard.SetDataObject(insertText);
+        //    //SendKeys.SendWait("{Enter}");
+        //    //System.Threading.Thread.Sleep(100);
+        //    //SendKeys.SendWait("Test");
+        //    //SendKeys.SendWait("{Enter}");
 
-            //SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Input)));
-            //press();
-        }
+        //    //SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Input)));
+        //    //press();
+        //}
 
         //void ShowDesktop()
         //{

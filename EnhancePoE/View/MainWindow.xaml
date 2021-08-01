@@ -324,34 +324,6 @@
 									</Style>
 								</Button.Style>
 							</Button>
-							<TextBlock Grid.Column="1"
-									   Grid.Row="9"
-									   VerticalAlignment="Center"
-									   Text="Reload Itemfilter:"
-									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="Hotkey for reloading the itemfilter." />
-							<Button x:Name="ReloadFilterHotkey"
-									Width="200"
-									Grid.Row="9"
-									Grid.Column="3"
-									IsManipulationEnabled="False"
-									Focusable="False"
-									Content="{Binding Source={x:Static properties:Settings.Default}, Path=HotkeyReloadFilter, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-									Click="ReloadFilterHotkey_Click">
-								<Button.Style>
-									<Style TargetType="Button">
-										<Setter Property="Background"
-												Value="Transparent" />
-										<Style.Triggers>
-											<Trigger Property="IsMouseOver"
-													 Value="True">
-												<Setter Property="Background"
-														Value="Transparent" />
-											</Trigger>
-										</Style.Triggers>
-									</Style>
-								</Button.Style>
-							</Button>
 						</Grid>
 						<!-- GENERAL -->
 						<Grid Grid.Column="2"

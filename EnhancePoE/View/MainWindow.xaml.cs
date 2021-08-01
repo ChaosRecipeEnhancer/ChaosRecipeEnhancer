@@ -354,10 +354,10 @@ namespace EnhancePoE
             {
                 HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey, RunStashTabOverlay);
             }
-            if (Properties.Settings.Default.HotkeyReloadFilter != "< not set >")
-            {
-                HotkeysManager.AddHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey, ReloadItemFilter);
-            }
+            //if (Properties.Settings.Default.HotkeyReloadFilter != "< not set >")
+            //{
+            //    HotkeysManager.AddHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey, ReloadItemFilter);
+            //}
         }
 
         public void RemoveAllHotkeys()
@@ -365,7 +365,7 @@ namespace EnhancePoE
             HotkeysManager.RemoveRefreshHotkey();
             HotkeysManager.RemoveStashTabHotkey();
             HotkeysManager.RemoveToggleHotkey();
-            HotkeysManager.RemoveReloadFilterHotkey();
+            //HotkeysManager.RemoveReloadFilterHotkey();
         }
 
 
@@ -758,16 +758,16 @@ namespace EnhancePoE
             }
         }
 
-        private void ReloadItemFilter()
-        {
-            //hotkeys causing problems? 
-            RemoveAllHotkeys();
-            string filterName = GetFilterName();
-            //System.Diagnostics.Trace.WriteLine(filterName);
-            SendInputs.SendInsert(filterName);
-            //HotkeysManager.AddHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey, ReloadItemFilter);
-            AddAllHotkeys();
-        }
+        //private void ReloadItemFilter()
+        //{
+        //    //hotkeys causing problems? 
+        //    RemoveAllHotkeys();
+        //    string filterName = GetFilterName();
+        //    //System.Diagnostics.Trace.WriteLine(filterName);
+        //    SendInputs.SendInsert(filterName);
+        //    //HotkeysManager.AddHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey, ReloadItemFilter);
+        //    AddAllHotkeys();
+        //}
 
         private static string GetFilterName()
         {
