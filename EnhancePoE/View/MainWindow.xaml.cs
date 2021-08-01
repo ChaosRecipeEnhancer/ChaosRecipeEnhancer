@@ -814,7 +814,7 @@ namespace EnhancePoE
 
                 Data.PlayNotificationSoundSetPicked();
             }
-
+        }
         //private void ReloadItemFilter()
         //{
         //    //hotkeys causing problems? 
