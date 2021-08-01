@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.2.4
+#### Current Version 1.2.5
 
 [@b0ykoe](https://github.com/b0ykoe) fixed the tool in Expedition. Update to 1.2.3 if you are having problems. Details in Change log.
 
@@ -326,6 +326,11 @@ Best thing would be to join the discord though especially if you want to make bi
 Help is always appreciated since this is my starter project for WPF anyways.
 
 ## Change Log
+
+#### 1.2.5
+
+ - fixed bug where non-rare items would count into sets
+ - added custom sound option (thanks to [@C64Gamer](https://github.com/C64Gamer))
 
 #### 1.2.4
 
