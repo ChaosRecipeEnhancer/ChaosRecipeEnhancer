@@ -185,6 +185,11 @@
     <Setting Name="LootfilterOnlineName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ItemPickupSoundFileLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Default Sound</Value>
+    </Setting>
+    <Setting Name="FilterChangeSoundFileLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Default Sound</Value>
     <Setting Name="HotkeyReloadFilter" Type="System.String" Scope="User">
       <Value Profile="(Default)">&lt; not set &gt;</Value>
     </Setting>

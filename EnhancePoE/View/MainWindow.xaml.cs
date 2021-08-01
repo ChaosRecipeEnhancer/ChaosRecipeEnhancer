@@ -82,8 +82,24 @@ namespace EnhancePoE
             DataContext = this;
 
             //Data.InitializeBases();
-            Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
-            Data.PlayerSet.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\itemsPickedUp.mp3")));
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.FilterChangeSoundFileLocation) && !FilterSoundLocationDialog.Content.Equals("Default Sound"))
+            {
+                Data.Player.Open(new Uri(Properties.Settings.Default.FilterChangeSoundFileLocation));
+            }
+            else
+            {
+                Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
+            }
+
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.ItemPickupSoundFileLocation) && !ItemPickupLocationDialog.Content.Equals("Default Sound"))
+            {
+                Data.PlayerSet.Open(new Uri(Properties.Settings.Default.ItemPickupSoundFileLocation));
+            }
+            else
+            {
+                Data.PlayerSet.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\itemsPickedUp.mp3")));
+            }
+
             //TESTING SETTINGS RESET
             //if (Debugger.IsAttached)
             //    Properties.Settings.Default.Reset();
@@ -366,6 +382,20 @@ namespace EnhancePoE
             HotkeysManager.RemoveStashTabHotkey();
             HotkeysManager.RemoveToggleHotkey();
             //HotkeysManager.RemoveReloadFilterHotkey();
+        }
+
+        private string GetSoundFilePath()
+        {
+            System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog();
+            open.Filter = "MP3|*.mp3";
+            DialogResult res = open.ShowDialog();
+
+            if (res == System.Windows.Forms.DialogResult.OK)
+            {
+                return open.FileName;
+            }
+
+            return null;
         }
 
 
@@ -758,6 +788,33 @@ namespace EnhancePoE
             }
         }
 
+        private void FilterSoundLocationDialog_OnClick(object sender, RoutedEventArgs e)
+        {
+            var soundFilePath = GetSoundFilePath();
+
+            if (soundFilePath != null)
+            {
+                Properties.Settings.Default.FilterChangeSoundFileLocation = soundFilePath;
+                FilterSoundLocationDialog.Content = soundFilePath;
+                Data.Player.Open(new Uri(soundFilePath));
+
+                Data.PlayNotificationSound();
+            }
+        }
+
+        private void ItemPickupLocationDialog_OnClick(object sender, RoutedEventArgs e)
+        {
+            var soundFilePath = GetSoundFilePath();
+
+            if (soundFilePath != null)
+            {
+                Properties.Settings.Default.ItemPickupSoundFileLocation = soundFilePath;
+                ItemPickupLocationDialog.Content = soundFilePath;
+                Data.PlayerSet.Open(new Uri(soundFilePath));
+
+                Data.PlayNotificationSoundSetPicked();
+            }
+
         //private void ReloadItemFilter()
         //{
         //    //hotkeys causing problems? 
@@ -776,6 +833,7 @@ namespace EnhancePoE
                 return Properties.Settings.Default.LootfilterOnlineName.Trim();
             }
             return System.IO.Path.GetFileName(Properties.Settings.Default.LootfilterLocation).Split('.')[0];
+
         }
 
         #region INotifyPropertyChanged implementation
