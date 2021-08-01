@@ -203,7 +203,7 @@
 									   VerticalAlignment="Center"
 									   Text="Include Identified Items:"
 									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="." />
+									   ToolTip="Also counts identified Items for 1 chaos per set." />
 							<CheckBox x:Name="IncludeIdentifiedCheckBox"
 									  Grid.Column="3"
 									  Grid.Row="11"
@@ -342,6 +342,8 @@
 							<Grid.RowDefinitions>
 								<RowDefinition Height="10"></RowDefinition>
 								<RowDefinition Height="30"></RowDefinition>
+								<RowDefinition Height="5"></RowDefinition>
+								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>

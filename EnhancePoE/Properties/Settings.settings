@@ -190,6 +190,8 @@
     </Setting>
     <Setting Name="FilterChangeSoundFileLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)">Default Sound</Value>
+    <Setting Name="HotkeyReloadFilter" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt; not set &gt;</Value>
     </Setting>
   </Settings>
 </SettingsFile>
