@@ -93,6 +93,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_86011AA8DB8D85BAB1F35EC66AD3B18C"
+        "OwnerKey" = "8:_9DA68624C0CB4CB78710079E0AEF9510"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8A559DE6826D440B82DE15878EC78673"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -311,6 +317,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_AAFFA7B0F55B233B08DF389BCD609EDF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_86011AA8DB8D85BAB1F35EC66AD3B18C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -645,6 +657,37 @@
                     }
                 }
             "SourcePath" = "8:System.Net.Http.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B5E39B65EA624BA3A5855151B042CC9B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_86011AA8DB8D85BAB1F35EC66AD3B18C"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_86011AA8DB8D85BAB1F35EC66AD3B18C"
+                    {
+                    "Name" = "8:WindowsInput.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:WindowsInput.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B5E39B65EA624BA3A5855151B042CC9B"
@@ -1183,15 +1226,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Chaos Recipe Enhancer"
-        "ProductCode" = "8:{14EED85F-1C09-40A8-8B92-3215E6D5297A}"
-        "PackageCode" = "8:{A5C1FF54-708C-41A9-A669-05D6ABDEDBFA}"
+        "ProductCode" = "8:{FC02C016-C8E6-441B-BACA-3BC686BD9BD9}"
+        "PackageCode" = "8:{1BD8D1DA-D302-4E24-9EB5-D777EF806FA8}"
         "UpgradeCode" = "8:{EEF4EF4B-78CB-4878-BDB3-D5FDD5FFBDC8}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.2.4"
+        "ProductVersion" = "8:1.2.5"
         "Manufacturer" = "8:kosace"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
