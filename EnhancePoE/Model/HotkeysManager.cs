@@ -60,12 +60,15 @@ namespace EnhancePoE
         public static Key toggleKey;
 
         public static ModifierKeys stashTabModifier;
-        public static Key stashTabKey;
+        public static Key stashTabKey;        
+        
+        public static ModifierKeys reloadFilterModifier;
+        public static Key reloadFilterKey;
 
         static HotkeysManager()
         {
             Hotkeys = new List<GlobalHotkey>();
-            RequiresModifierKey = true;
+            RequiresModifierKey = false;
         }
 
         /// <summary>
@@ -363,6 +366,45 @@ namespace EnhancePoE
                     stashTabModifier = ModifierKeys.None;
                 }
             }
+        }        
+        
+        public static void GetReloadFilterHotkey()
+        {
+            if (Properties.Settings.Default.HotkeyReloadFilter != "< not set >")
+            {
+                string[] reloadFilterString = Properties.Settings.Default.HotkeyReloadFilter.Split('+');
+
+                if (reloadFilterString.Length > 1)
+                {
+                    if (reloadFilterString[0].Trim() == "Ctrl")
+                    {
+                        reloadFilterModifier = ModifierKeys.Control;
+                    }
+                    else if (reloadFilterString[0].Trim() == "Alt")
+                    {
+                        reloadFilterModifier = ModifierKeys.Alt;
+                    }
+                    else if (reloadFilterString[0].Trim() == "Win")
+                    {
+                        reloadFilterModifier = ModifierKeys.Windows;
+                    }
+                    else if (reloadFilterString[0].Trim() == "Shift")
+                    {
+                        reloadFilterModifier = ModifierKeys.Shift;
+                    }
+                    else
+                    {
+                        reloadFilterModifier = ModifierKeys.None;
+                    }
+
+                    Enum.TryParse(reloadFilterString[1].Trim(), out reloadFilterKey);
+                }
+                else
+                {
+                    Enum.TryParse(reloadFilterString[0].Trim(), out reloadFilterKey);
+                    reloadFilterModifier = ModifierKeys.None;
+                }
+            }
         }
 
         public static void RemoveToggleHotkey()
@@ -378,6 +420,11 @@ namespace EnhancePoE
         public static void RemoveRefreshHotkey()
         {
             HotkeysManager.RemoveHotkey(refreshModifier, refreshKey);
+        }
+
+        public static void RemoveReloadFilterHotkey()
+        {
+            HotkeysManager.RemoveHotkey(reloadFilterModifier, reloadFilterKey);
         }
 
         #region Native Methods

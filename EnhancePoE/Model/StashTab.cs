@@ -178,34 +178,34 @@ namespace EnhancePoE.Model
                     ItemList.RemoveAt(i);
                     continue;
                 }
+                if(ItemList[i].frameType != 2)
+                {
+                    ItemList.RemoveAt(i);
+                    continue;
+                }
+
                 ItemList[i].GetItemClass();
+                if(ItemList[i].ItemType == null)
+                {
+                    ItemList.RemoveAt(i);
+                    continue;
+                }
+
                 ItemList[i].StashTabIndex = this.TabIndex;
                 //exalted recipe every ilvl allowed, same bases, sort in itemlists
                 if (Properties.Settings.Default.ExaltedRecipe)
                 {
                     if (ItemList[i].influences != null)
                     {
-                        if (ItemList[i].frameType == 2)
-                        {
-                            //string result = GetItemClass(ItemList[i], mappingContentDict);
-                            //string result = GetItemClass(ItemList[i]);
-                            if (ItemList[i].ItemType != null)
-                            {
-                                //ItemList[i].ItemType = result;
-                                if (ItemList[i].influences.shaper) { ItemListShaper.Add(ItemList[i]); }
-                                else if (ItemList[i].influences.elder) { ItemListElder.Add(ItemList[i]); }
-                                else if (ItemList[i].influences.warlord) { ItemListWarlord.Add(ItemList[i]); }
-                                else if (ItemList[i].influences.crusader) { ItemListCrusader.Add(ItemList[i]); }
-                                else if (ItemList[i].influences.hunter) 
-                                {
-                                    //Trace.WriteLine("found item");
-                                    ItemListHunter.Add(ItemList[i]); 
-                                }
-                                else if (ItemList[i].influences.redeemer) { ItemListRedeemer.Add(ItemList[i]); }
-                            }
-                            ItemList.RemoveAt(i);
-                            continue;
-                        }
+                        if (ItemList[i].influences.shaper) { ItemListShaper.Add(ItemList[i]); }
+                        else if (ItemList[i].influences.elder) { ItemListElder.Add(ItemList[i]); }
+                        else if (ItemList[i].influences.warlord) { ItemListWarlord.Add(ItemList[i]); }
+                        else if (ItemList[i].influences.crusader) { ItemListCrusader.Add(ItemList[i]); }
+                        else if (ItemList[i].influences.hunter) { ItemListHunter.Add(ItemList[i]); }
+                        else if (ItemList[i].influences.redeemer) { ItemListRedeemer.Add(ItemList[i]); }
+
+                        ItemList.RemoveAt(i);
+                        continue;
                     }
                 }
                 if (!Properties.Settings.Default.ChaosRecipe && !Properties.Settings.Default.RegalRecipe)
@@ -222,14 +222,6 @@ namespace EnhancePoE.Model
                 {
                     ItemList.RemoveAt(i);
                     continue;
-                }
-                if (ItemList[i].frameType == 2)
-                {
-                    if(ItemList[i].ItemType == null)
-                    {
-                        ItemList.RemoveAt(i);
-                        continue;
-                    }
                 }
                 if (ItemList[i].ilvl <= 74)
                 {

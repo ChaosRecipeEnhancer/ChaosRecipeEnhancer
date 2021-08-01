@@ -203,14 +203,133 @@
 									   VerticalAlignment="Center"
 									   Text="Include Identified Items:"
 									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="." />
+									   ToolTip="Also counts identified Items for 1 chaos per set." />
 							<CheckBox x:Name="IncludeIdentifiedCheckBox"
 									  Grid.Column="3"
 									  Grid.Row="11"
 									  VerticalAlignment="Center"
 									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IncludeIdentified, Mode=TwoWay}" />
 						</Grid>
-						<!-- HOTKEYS -->
+                        <!-- SOUND -->
+                        <Grid Grid.Column="3"
+							  Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="5"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="5"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="5"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="5"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="1"
+									   Grid.Row="1"
+									   VerticalAlignment="Center"
+									   Grid.ColumnSpan="2"
+									   Text="Sound"
+									   FontSize="24"
+									   FontWeight="Bold" />
+                            <TextBlock Grid.Column="1"
+									   Grid.Row="3"
+									   VerticalAlignment="Center"
+									   Text="Notification Sound:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="Plays a sound everytime you have to refresh your lootfilter." />
+                            <CheckBox x:Name="PlaySoundCheckBox"
+									  Grid.Column="3"
+									  Grid.Row="3"
+									  VerticalAlignment="Center"
+									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=Sound, Mode=TwoWay}" />
+                            <TextBlock Grid.Column="1"
+									   Grid.Row="5"
+									   VerticalAlignment="Center"
+									   Text="Sound Volume:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="Sound Volume" />
+                            <Slider x:Name="VolumeSlider"
+									Width="200"
+									Grid.Column="3"
+									Grid.Row="5"
+									VerticalAlignment="Center"
+									Minimum="0"
+									Maximum="100"
+									AutoToolTipPlacement="TopLeft"
+									IsMoveToPointEnabled="True"
+									AutoToolTipPrecision="0"
+									PreviewMouseUp="VolumeSlider_PreviewMouseUp"
+									Value="{Binding Source={x:Static properties:Settings.Default}, Path=Volume, Mode=TwoWay}" />
+                            <TextBlock Grid.Column="1"
+									   Grid.Row="7"
+									   VerticalAlignment="Center"
+									   Text="Lootfilter Sound:"
+									   ToolTipService.InitialShowDelay="50"
+									   ToolTip="The location of your Lootfilte sound mp3 file (*.mp3). If you don't choose a file the default sound will be used" />
+                            <Button Grid.Column="3"
+									Grid.Row="7"
+									x:Name="FilterSoundLocationDialog"
+									Width="200"
+									Click="FilterSoundLocationDialog_OnClick"
+                                    ToolTipService.InitialShowDelay="50"
+									ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=FilterChangeSoundFileLocation, Mode=TwoWay}"
+									Content="{Binding Source={x:Static properties:Settings.Default}, Path=FilterChangeSoundFileLocation, Mode=TwoWay}"
+									HorizontalContentAlignment="Left">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background"
+												Value="Transparent" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver"
+													 Value="True">
+                                                <Setter Property="Background"
+														Value="Transparent" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <TextBlock Grid.Column="1"
+                                       Grid.Row="9"
+                                       VerticalAlignment="Center"
+                                       Text="Item Set Sound:"
+                                       ToolTipService.InitialShowDelay="50"
+                                       ToolTip="The location of your Item Set Sound mp3 file (*.mp3). If you don't choose a file the default sound will be used" />
+                            <Button Grid.Column="3"
+                                    Grid.Row="9"
+                                    x:Name="ItemPickupLocationDialog"
+                                    Width="200"
+									Click="ItemPickupLocationDialog_OnClick"
+                                    ToolTipService.InitialShowDelay="50"
+                                    ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=ItemPickupSoundFileLocation, Mode=TwoWay}"
+                                    Content="{Binding Source={x:Static properties:Settings.Default}, Path=ItemPickupSoundFileLocation, Mode=TwoWay}"
+                                    HorizontalContentAlignment="Left">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background"
+                                                Value="Transparent" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver"
+                                                     Value="True">
+                                                <Setter Property="Background"
+                                                        Value="Transparent" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Grid>
+                        <!-- HOTKEYS -->
 						<Grid Grid.Column="3"
 							  Grid.Row="1">
 							<Grid.ColumnDefinitions>
@@ -223,6 +342,8 @@
 							<Grid.RowDefinitions>
 								<RowDefinition Height="10"></RowDefinition>
 								<RowDefinition Height="30"></RowDefinition>
+								<RowDefinition Height="5"></RowDefinition>
+								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
 								<RowDefinition Height="25"></RowDefinition>
 								<RowDefinition Height="5"></RowDefinition>
@@ -482,44 +603,15 @@
 								<ComboBoxItem Content="Spanish"></ComboBoxItem>
 								<ComboBoxItem Content="Chinese"></ComboBoxItem>
 							</ComboBox>
-							<TextBlock Grid.Column="1"
-									   Grid.Row="15"
-									   VerticalAlignment="Center"
-									   Text="Notification Sound:"
-									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="Plays a sound everytime you have to refresh your lootfilter." />
-							<CheckBox x:Name="PlaySoundCheckBox"
-									  Grid.Column="3"
-									  Grid.Row="15"
-									  VerticalAlignment="Center"
-									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=Sound, Mode=TwoWay}" />
-							<TextBlock Grid.Column="1"
-									   Grid.Row="17"
-									   VerticalAlignment="Center"
-									   Text="Sound Volume:"
-									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="Sound Volume" />
-							<Slider x:Name="VolumeSlider"
-									Width="200"
-									Grid.Column="3"
-									Grid.Row="17"
-									VerticalAlignment="Center"
-									Minimum="0"
-									Maximum="100"
-									AutoToolTipPlacement="TopLeft"
-									IsMoveToPointEnabled="True"
-									AutoToolTipPrecision="0"
-									PreviewMouseUp="VolumeSlider_PreviewMouseUp"
-									Value="{Binding Source={x:Static properties:Settings.Default}, Path=Volume, Mode=TwoWay}" />
-							<TextBlock Grid.Column="1"
-									   Grid.Row="19"
-									   VerticalAlignment="Center"
-									   Text="Close to Tray:"
-									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="Minimizes to Tray when closing the application." />
+                            <TextBlock Grid.Column="1"
+                                       Grid.Row="15"
+                                       VerticalAlignment="Center"
+                                       Text="Close to Tray:"
+                                       ToolTipService.InitialShowDelay="50"
+                                       ToolTip="Minimizes to Tray when closing the application." />
 							<CheckBox x:Name="hideOnClose"
 									  Grid.Column="3"
-									  Grid.Row="19"
+									  Grid.Row="15"
 									  VerticalAlignment="Center"
 									  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=hideOnClose, Mode=TwoWay}" />
 						</Grid>
@@ -1264,7 +1356,7 @@
 						Grid.Row="2" />
 				<TextBlock Grid.Column="3"
 						   Grid.Row="3"
-						   Text="Version 1.2.4"
+						   Text="Version 1.2.5"
 						   FontSize="12"
 						   HorizontalAlignment="Right"
 						   VerticalAlignment="Center"></TextBlock>

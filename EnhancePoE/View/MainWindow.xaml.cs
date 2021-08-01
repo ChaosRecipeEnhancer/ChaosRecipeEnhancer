@@ -82,8 +82,24 @@ namespace EnhancePoE
             DataContext = this;
 
             //Data.InitializeBases();
-            Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
-            Data.PlayerSet.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\itemsPickedUp.mp3")));
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.FilterChangeSoundFileLocation) && !FilterSoundLocationDialog.Content.Equals("Default Sound"))
+            {
+                Data.Player.Open(new Uri(Properties.Settings.Default.FilterChangeSoundFileLocation));
+            }
+            else
+            {
+                Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
+            }
+
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.ItemPickupSoundFileLocation) && !ItemPickupLocationDialog.Content.Equals("Default Sound"))
+            {
+                Data.PlayerSet.Open(new Uri(Properties.Settings.Default.ItemPickupSoundFileLocation));
+            }
+            else
+            {
+                Data.PlayerSet.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\itemsPickedUp.mp3")));
+            }
+
             //TESTING SETTINGS RESET
             //if (Debugger.IsAttached)
             //    Properties.Settings.Default.Reset();
@@ -104,10 +120,11 @@ namespace EnhancePoE
         private void InitializeHotkeys()
         {
             HotkeysManager.SetupSystemHook();
-            HotkeysManager.RequiresModifierKey = false;
+            //HotkeysManager.RequiresModifierKey = false;
             HotkeysManager.GetRefreshHotkey();
             HotkeysManager.GetToggleHotkey();
             HotkeysManager.GetStashTabHotkey();
+            HotkeysManager.GetReloadFilterHotkey();
             AddAllHotkeys();
         }
 
@@ -353,6 +370,10 @@ namespace EnhancePoE
             {
                 HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey, RunStashTabOverlay);
             }
+            //if (Properties.Settings.Default.HotkeyReloadFilter != "< not set >")
+            //{
+            //    HotkeysManager.AddHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey, ReloadItemFilter);
+            //}
         }
 
         public void RemoveAllHotkeys()
@@ -360,6 +381,21 @@ namespace EnhancePoE
             HotkeysManager.RemoveRefreshHotkey();
             HotkeysManager.RemoveStashTabHotkey();
             HotkeysManager.RemoveToggleHotkey();
+            //HotkeysManager.RemoveReloadFilterHotkey();
+        }
+
+        private string GetSoundFilePath()
+        {
+            System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog();
+            open.Filter = "MP3|*.mp3";
+            DialogResult res = open.ShowDialog();
+
+            if (res == System.Windows.Forms.DialogResult.OK)
+            {
+                return open.FileName;
+            }
+
+            return null;
         }
 
 
@@ -566,6 +602,24 @@ namespace EnhancePoE
             }
         }
 
+        private void ReloadFilterHotkey_Click(object sender, RoutedEventArgs e)
+        {
+            bool isWindowOpen = false;
+            foreach (Window w in System.Windows.Application.Current.Windows)
+            {
+                if (w is HotkeyWindow)
+                {
+                    isWindowOpen = true;
+                }
+            }
+
+            if (!isWindowOpen)
+            {
+                HotkeyWindow hotkeyDialog = new HotkeyWindow(this, "reloadFilter");
+                hotkeyDialog.Show();
+            }
+        }
+
         private void LootfilterFileDialog_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.OpenFileDialog open = new System.Windows.Forms.OpenFileDialog();
@@ -734,6 +788,54 @@ namespace EnhancePoE
             }
         }
 
+        private void FilterSoundLocationDialog_OnClick(object sender, RoutedEventArgs e)
+        {
+            var soundFilePath = GetSoundFilePath();
+
+            if (soundFilePath != null)
+            {
+                Properties.Settings.Default.FilterChangeSoundFileLocation = soundFilePath;
+                FilterSoundLocationDialog.Content = soundFilePath;
+                Data.Player.Open(new Uri(soundFilePath));
+
+                Data.PlayNotificationSound();
+            }
+        }
+
+        private void ItemPickupLocationDialog_OnClick(object sender, RoutedEventArgs e)
+        {
+            var soundFilePath = GetSoundFilePath();
+
+            if (soundFilePath != null)
+            {
+                Properties.Settings.Default.ItemPickupSoundFileLocation = soundFilePath;
+                ItemPickupLocationDialog.Content = soundFilePath;
+                Data.PlayerSet.Open(new Uri(soundFilePath));
+
+                Data.PlayNotificationSoundSetPicked();
+            }
+        }
+        //private void ReloadItemFilter()
+        //{
+        //    //hotkeys causing problems? 
+        //    RemoveAllHotkeys();
+        //    string filterName = GetFilterName();
+        //    //System.Diagnostics.Trace.WriteLine(filterName);
+        //    SendInputs.SendInsert(filterName);
+        //    //HotkeysManager.AddHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey, ReloadItemFilter);
+        //    AddAllHotkeys();
+        //}
+
+        private static string GetFilterName()
+        {
+            if(Properties.Settings.Default.LootfilterOnline)
+            {
+                return Properties.Settings.Default.LootfilterOnlineName.Trim();
+            }
+            return System.IO.Path.GetFileName(Properties.Settings.Default.LootfilterLocation).Split('.')[0];
+
+        }
+
         #region INotifyPropertyChanged implementation
         // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
         public event PropertyChangedEventHandler PropertyChanged;
@@ -744,5 +846,6 @@ namespace EnhancePoE
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
     }
 }

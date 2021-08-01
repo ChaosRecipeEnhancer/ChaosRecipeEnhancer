@@ -754,5 +754,48 @@ namespace EnhancePoE.Properties {
                 this["LootfilterOnlineName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+
+        [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
+        public string ItemPickupSoundFileLocation {
+            get {
+                return ((string)(this["ItemPickupSoundFileLocation"]));
+            }
+            set {
+                this["ItemPickupSoundFileLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
+        public string FilterChangeSoundFileLocation
+        {
+            get
+            {
+                return ((string)(this["FilterChangeSoundFileLocation"]));
+            }
+            set
+            {
+                this["FilterChangeSoundFileLocation"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
+        public string HotkeyReloadFilter
+        {
+            get
+            {
+                return ((string)(this["HotkeyReloadFilter"]));
+            }
+            set
+            {
+                this["HotkeyReloadFilter"] = value;
+            }
+        }
     }
 }
