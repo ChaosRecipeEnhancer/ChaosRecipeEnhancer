@@ -60,7 +60,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>coin.ico</ApplicationIcon>
@@ -144,6 +144,7 @@
     <Compile Include="Model\Coordinates.cs" />
     <Compile Include="Model\FilterGeneration.cs" />
     <Compile Include="Model\SendInputs.cs" />
+    <Compile Include="Model\ReloadItemFilter.cs" />
     <Compile Include="Model\Storage\FileFilterStorage.cs" />
     <Compile Include="Model\Storage\FilterStorageFactory.cs" />
     <Compile Include="Model\ForegroundWindows.cs" />
