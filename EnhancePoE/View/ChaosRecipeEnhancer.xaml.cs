@@ -506,6 +506,12 @@ namespace EnhancePoE
         }
 
 
+        public void ReloadItemFilter()
+        {
+
+            Model.ReloadItemFilter.ReloadItemFilterFile();
+        }
+
 
         // TODO: find better algo for getting frequency, maybe implementing response header thresholds
         //private static void GetFrequency()
