@@ -143,7 +143,6 @@
     <Compile Include="Model\Cell.cs" />
     <Compile Include="Model\Coordinates.cs" />
     <Compile Include="Model\FilterGeneration.cs" />
-    <Compile Include="Model\SendInputs.cs" />
     <Compile Include="Model\ReloadItemFilter.cs" />
     <Compile Include="Model\Storage\FileFilterStorage.cs" />
     <Compile Include="Model\Storage\FilterStorageFactory.cs" />
@@ -156,6 +155,7 @@
     <Compile Include="Model\Storage\IFilterStorage.cs" />
     <Compile Include="Model\Storage\OnlineFilterStorage.cs" />
     <Compile Include="Model\Utility.cs" />
+    <Compile Include="Model\Utils\UserWarning.cs" />
     <Compile Include="Model\Win32.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

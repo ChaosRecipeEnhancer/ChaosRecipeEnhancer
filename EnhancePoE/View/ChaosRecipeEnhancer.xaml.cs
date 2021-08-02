@@ -26,10 +26,7 @@ namespace EnhancePoE
         private static readonly double deactivatedOpacity = .1;
         private static readonly double activatedOpacity = 1;
 
-        private static readonly int fetchCooldown = 30;
-
         public static LogWatcher Watcher { get; set; }
-
 
         public bool IsOpen { get; set; } = false;
 
@@ -96,17 +93,6 @@ namespace EnhancePoE
                 OnPropertyChanged("IsIndeterminate");
             }
         }
-
-        //private string _fetchButtonBottomText = "Start";
-        //public string FetchButtonBottomText
-        //{
-        //    get { return _fetchButtonBottomText; }
-        //    set
-        //    {
-        //        _fetchButtonBottomText = value;
-        //        OnPropertyChanged("FetchButtonBottomText");
-        //    }
-        //}
 
         private string _openStashOverlayButtonContent = "Stash";
         public string OpenStashOverlayButtonContent
@@ -331,10 +317,6 @@ namespace EnhancePoE
         {
             InitializeComponent();
             DataContext = this;
-            //aTimer = new System.Timers.Timer();
-            //aTimer.Elapsed += OnTimedEvent;
-            //aTimer.AutoReset = true;
-            //aTimer.Enabled = false;
             FullSetsText = "0";
         }
 
@@ -359,7 +341,6 @@ namespace EnhancePoE
             }
 
             DisableWarnings();
-            //aTimer.Stop();
             FetchingActive = true;
 
             CalculationActive = true;
@@ -371,7 +352,6 @@ namespace EnhancePoE
             });
             await this.Dispatcher.Invoke(async() =>
             {
-                //GetFrequency();
                 if(await ApiAdapter.GenerateUri())
                 {
                     if(await ApiAdapter.GetItems())
@@ -382,25 +362,12 @@ namespace EnhancePoE
                             {
                                 await Data.CheckActives();
                                 SetOpacity();
-
-                                //ChaosRecipeEnhancer.aTimer.Enabled = true;
-                                //Trace.WriteLine("timer enabled");
-                                //aTimer.Enabled = true;
                                 CalculationActive = false;
                                 this.Dispatcher.Invoke(() =>
                                 {
                                     IsIndeterminate = false;
-                                    //FetchButtonEnabled = true;
                                 });
                             }, Data.ct);
-                            await Task.Delay(fetchCooldown * 1000).ContinueWith(_ =>
-                            {
-                                Trace.WriteLine("waited fetchcooldown");
-                                //FetchButtonEnabled = true;
-                                //FetchButtonColor = Brushes.Green;
-                                //FetchingActive = false;
-
-                            });
                         }
                         catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
                         {
@@ -410,25 +377,20 @@ namespace EnhancePoE
                 }
                 if (RateLimit.RateLimitExceeded)
                 {
-                    // TODO: show rate limit exceeded in ui
                     MainWindow.overlay.WarningMessage = "Rate Limit Exceeded! Waiting...";
                     MainWindow.overlay.ShadowOpacity = 1;
                     MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
-                    //aTimer.Enabled = false;
                     await Task.Delay(RateLimit.GetSecondsToWait() * 1000);
                     RateLimit.RequestCounter = 0;
                     RateLimit.RateLimitExceeded = false;
-                    //aTimer.Enabled = true;
                 }
                 if (RateLimit.BanTime > 0)
                 {
                     MainWindow.overlay.WarningMessage = "Temporary Ban! Waiting...";
                     MainWindow.overlay.ShadowOpacity = 1;
                     MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
-                    //aTimer.Enabled = false;
                     await Task.Delay(RateLimit.BanTime * 1000);
                     RateLimit.BanTime = 0;
-                    //aTimer.Enabled = true;
                 }
 
             });
@@ -476,11 +438,7 @@ namespace EnhancePoE
                 if(CalculationActive)
                 {
                     Data.cs.Cancel();
-                    //aTimer.Enabled = false;
                     FetchingActive = false;
-                    //RefreshButton.Content = "Fetch\nStart";
-                    //FetchButtonBottomText = "Start";
-                    //FetchButtonColor = Brushes.Gray;
                 }
                 else
                 {
@@ -493,12 +451,7 @@ namespace EnhancePoE
                             MainWindow.stashTabOverlay.Hide();
                         }
                         FetchData();
-                        //aTimer.Interval = 1000;
-                        //aTimer.Enabled = true;
                         FetchingActive = true;
-                        //RefreshButton.Content = "Stop";
-                        //FetchButtonBottomText = "Stop";
-                        //FetchButtonColor = Brushes.Green;
                     }
 
                 }
@@ -508,21 +461,8 @@ namespace EnhancePoE
 
         public void ReloadItemFilter()
         {
-
-            Model.ReloadItemFilter.ReloadItemFilterFile();
+            Model.ReloadItemFilter.ReloadItemfilter();
         }
-
-
-        // TODO: find better algo for getting frequency, maybe implementing response header thresholds
-        //private static void GetFrequency()
-        //{
-        //    int addedTime = 0;
-        //    //if(Properties.Settings.Default.StashTabIndices != "")
-        //    //{
-        //    //    addedTime += (Properties.Settings.Default.StashTabIndices.Length / 2) * 1000;
-        //    //}
-        //    aTimer.Interval = (Properties.Settings.Default.RefreshRate * 1000) + addedTime;
-        //}
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
@@ -532,7 +472,12 @@ namespace EnhancePoE
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left && !Properties.Settings.Default.LockOverlayPosition)
-                this.DragMove();
+            {
+                if (Mouse.LeftButton == MouseButtonState.Pressed)
+                {
+                    this.DragMove();
+                }
+            }
         }
 
         private void SetOpacity()

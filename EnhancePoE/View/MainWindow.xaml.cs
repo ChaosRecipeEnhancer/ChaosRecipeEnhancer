@@ -67,7 +67,6 @@ namespace EnhancePoE
         public Visibility LootfilterOnlineFilterNameVisible => Properties.Settings.Default.LootfilterOnline
             ? Visibility.Visible
             : Visibility.Collapsed;
-        //public static TabItemViewModel stashTabsModel = new TabItemViewModel();
 
 
         private bool trayClose = false;
@@ -124,7 +123,7 @@ namespace EnhancePoE
             HotkeysManager.GetRefreshHotkey();
             HotkeysManager.GetToggleHotkey();
             HotkeysManager.GetStashTabHotkey();
-            HotkeysManager.GetReloadFilterHotkey();
+            //HotkeysManager.GetReloadFilterHotkey();
             AddAllHotkeys();
         }
 
@@ -239,53 +238,6 @@ namespace EnhancePoE
             }
         }
 
-        // save all settings, recreate hotkeys
-        //private void SaveButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (Int32.TryParse(RefreshRate.Text, out int refresh))
-        //    {
-        //        if(refresh < 15)
-        //        {
-        //            System.Windows.MessageBox.Show("Refreshrate has to be greater than 15!");
-        //        }
-        //        else
-        //        {
-        //            Properties.Settings.Default.RefreshRate = refresh;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        System.Windows.MessageBox.Show("Refreshrate has to be a number!");
-        //    }
-        //    if (Int32.TryParse(Sets.Text, out int sets))
-        //    {
-        //        if (sets < 0)
-        //        {
-        //            System.Windows.MessageBox.Show("Refreshrate has to be greater than 0!");
-        //        }
-        //        else
-        //        {
-        //            Properties.Settings.Default.Sets = sets;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        System.Windows.MessageBox.Show("Number of Sets has to be a number!");
-        //    }
-
-
-
-        //    Trace.WriteLine(Properties.Settings.Default.YStashTabOverlay, "y");
-        //    Trace.WriteLine(Properties.Settings.Default.XStashTabOverlay, "x");
-        //    Trace.WriteLine(Properties.Settings.Default.LeftStashTabOverlay, "left");
-        //    Trace.WriteLine(Properties.Settings.Default.TopStashTabOverlay, "top");
-
-        //    Properties.Settings.Default.accName = accountName.Text.ToString();
-        //    //Properties.Settings.Default.StashTabsString = SettingsSerializer.SerializeStashTab(stashTabsModel);
-        //    //Properties.Settings.Default.StashTabs = stashTabsModel;
-        //    Properties.Settings.Default.Save();
-        //    System.Windows.MessageBox.Show("Settings saved!");
-        //}
 
         public void RunOverlay()
         {
@@ -448,16 +400,6 @@ namespace EnhancePoE
         {
             MainGrid.Focus();
         }
-
-
-
-
-
-
-        //private void LootfilterFileDialog_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-
-        //}
 
         public static bool CheckAllSettings()
         {
@@ -825,16 +767,6 @@ namespace EnhancePoE
         //    //HotkeysManager.AddHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey, ReloadItemFilter);
         //    AddAllHotkeys();
         //}
-
-        private static string GetFilterName()
-        {
-            if(Properties.Settings.Default.LootfilterOnline)
-            {
-                return Properties.Settings.Default.LootfilterOnlineName.Trim();
-            }
-            return System.IO.Path.GetFileName(Properties.Settings.Default.LootfilterLocation).Split('.')[0];
-
-        }
 
         #region INotifyPropertyChanged implementation
         // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element

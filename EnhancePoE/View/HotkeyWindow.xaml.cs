@@ -97,21 +97,21 @@ namespace EnhancePoE
                 }
                 ReApplyHotkeys();
             }
-            else if(type == "reloadFilter")
-            {
-                HotkeysManager.RemoveHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey);
-                if (CustomHotkeyToggle.Hotkey == null)
-                {
-                    Properties.Settings.Default.HotkeyReloadFilter = "< not set >";
-                }
-                else
-                {
-                    Properties.Settings.Default.HotkeyReloadFilter = CustomHotkeyToggle.Hotkey.ToString();
-                    HotkeysManager.GetReloadFilterHotkey();
-                }
-                ReApplyHotkeys();
+            //else if(type == "reloadFilter")
+            //{
+            //    HotkeysManager.RemoveHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey);
+            //    if (CustomHotkeyToggle.Hotkey == null)
+            //    {
+            //        Properties.Settings.Default.HotkeyReloadFilter = "< not set >";
+            //    }
+            //    else
+            //    {
+            //        Properties.Settings.Default.HotkeyReloadFilter = CustomHotkeyToggle.Hotkey.ToString();
+            //        HotkeysManager.GetReloadFilterHotkey();
+            //    }
+            //    ReApplyHotkeys();
 
-            }
+            //}
             this.Close();
         }
 

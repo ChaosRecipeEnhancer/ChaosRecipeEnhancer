@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EnhancePoE.Model.Utils;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -25,16 +26,27 @@ namespace EnhancePoE.Model
 
 
 
-        public static void ReloadItemFilterFile()
+        public static void ReloadItemfilter()
         {
             // store current clipboard
             string oldClipboard = Clipboard.GetText();
 
+            string chatCommand = BuildChatCommand();
+            if(chatCommand is null)
+            {
+                return;
+            }
+
             Clipboard.SetText(BuildChatCommand());
 
-
+            var poeWindow = FindWindow(null, "Path of Exile");
+            if(poeWindow == IntPtr.Zero)
+            {
+                UserWarning.WarnUser("Could not find Window! Please make sure Path of Exile is running.", "Window not found");
+                return;
+            }
             // get Path of Exile in the foreground to actually sendKeys to it
-            SetForegroundWindow(FindWindow(null, "Path of Exile"));
+            SetForegroundWindow(poeWindow);
 
             // send the chat commands
             System.Windows.Forms.SendKeys.SendWait("{ENTER}");
@@ -46,19 +58,26 @@ namespace EnhancePoE.Model
 
         }
 
-        public static void ReloadItemFilterOnline()
-        {
-            //TODO get the name and test how to reload onlinefilter
-        }
-
         private static string BuildChatCommand()
         {
-            //build chat command for filterFile
-            string filterLocation = Properties.Settings.Default.LootfilterLocation;
 
-            string filterName = Path.GetFileName(filterLocation).Replace(".filter", "");
-
+            string filterName = GetFilterName().Trim();
+            Trace.WriteLine("filtername", filterName);
+            if(String.IsNullOrEmpty(filterName))
+            {
+                UserWarning.WarnUser("No filter found. Please set your filter in settings", "No filter found");
+                return null;
+            }
             return "/itemfilter " + filterName;
+        }
+
+        private static string GetFilterName()
+        {
+            if (Properties.Settings.Default.LootfilterOnline)
+            {
+                return Properties.Settings.Default.LootfilterOnlineName.Trim();
+            }
+            return System.IO.Path.GetFileName(Properties.Settings.Default.LootfilterLocation).Replace(".filter", "");
         }
     }
 }

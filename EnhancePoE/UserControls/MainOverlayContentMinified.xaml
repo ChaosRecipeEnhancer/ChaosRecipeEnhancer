@@ -299,7 +299,9 @@
 					 CornerRadius="50"
 					 Margin="3,0"
 					 PreviewMouseDown="Border_MouseDown"
-					 Background="White">
+					 Background="White"
+					 BorderThickness="3"
+					 BorderBrush="DarkSlateGray">
 			<TextBlock x:Name="FullSetsTextBlock"
 					   Text="{Binding FullSetsText}"
 					   VerticalAlignment="Center"
@@ -333,7 +335,8 @@
 				Margin="3,0"
 				PreviewMouseDown="ReloadItemFilterButton_Click"
 				Background="White"
-				BorderThickness="3">
+				BorderThickness="3"
+				BorderBrush="DarkSlateGray">
             <TextBlock Text="R"
 					   VerticalAlignment="Center"
 					   HorizontalAlignment="Center"
