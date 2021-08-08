@@ -71,5 +71,15 @@ namespace EnhancePoE.Model
         {
             return EmptyItemSlots[0];
         }
+
+        public int GetNumberOfItemOfType(string type)
+        {
+            var itemOfThisType =
+                from item in ItemList
+                where item.ItemType == type
+                select item;
+
+            return itemOfThisType.Count();
+        }
     }
 }
