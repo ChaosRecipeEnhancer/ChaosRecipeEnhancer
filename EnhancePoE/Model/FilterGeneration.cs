@@ -43,6 +43,18 @@ namespace EnhancePoE.Model
 
         public static string GenerateSection(bool show, string itemClass, bool influenced = false, bool onlyChaos = false)
         {
+            if(influenced)
+            {
+                return GenerateSection(show, itemClass, "Crusader Elder Hunter Redeemer Shaper Warlord", onlyChaos);
+            }
+            else
+            {
+                return GenerateSection(show, itemClass, "", onlyChaos);
+            }
+        }
+
+        public static string GenerateSection(bool show, string itemClass, string influenced, bool onlyChaos = false)
+        {
             string result = "";
             if (show)
             {
@@ -55,9 +67,9 @@ namespace EnhancePoE.Model
             }
             string nl = "\n";
             string tab = "\t";
-            if (influenced)
+            if (influenced!="")
             {
-                result += nl + tab + "HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord";
+                result += nl + tab + "HasInfluence " + influenced;
             }
             else
             {
@@ -70,11 +82,11 @@ namespace EnhancePoE.Model
             {
                 result += "Identified False" + nl + tab;
             }
-            if (!influenced && onlyChaos && !Properties.Settings.Default.RegalRecipe)
+            if (influenced=="" && onlyChaos && !Properties.Settings.Default.RegalRecipe)
             {
                 result += "ItemLevel >= 60" + nl + tab + "ItemLevel <= 74" + nl + tab;
             }
-            else if(!influenced && Properties.Settings.Default.RegalRecipe)
+            else if(influenced == "" && Properties.Settings.Default.RegalRecipe)
             {
                 result += "ItemLevel > 75" + nl + tab;
             }
@@ -118,7 +130,7 @@ namespace EnhancePoE.Model
 
             result = result + bgColor + nl + tab;
 
-            if (influenced)
+            if (influenced != "")
             {
                 foreach (string cs in CustomStyleInfluenced)
                 {
