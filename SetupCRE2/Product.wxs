@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?define ProductVersion = "1.0.9.0"?>
+<?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
+
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define EnhancePoE_TargetDir=$(var.EnhancePoE.TargetDir)?>
-	<Product Id="*" Name="ChaosRecipeEnhancer" Language="1033" Version="1.0.5.0" Manufacturer="kosace" UpgradeCode="7524ed46-e953-4ee0-a9cb-399a81b1f3ce">
+	<Product Id="*" Name="ChaosRecipeEnhancer" Language="1033" Version="$(var.ProductVersion)" Manufacturer="kosace" UpgradeCode="$(var.UpgradeCode)">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
-		<MajorUpgrade Schedule="afterInstallInitialize" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-    <MediaTemplate EmbedCab="yes"/>
+		<MajorUpgrade AllowSameVersionUpgrades="no" Schedule="afterInstallInitialize" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
 
     <Icon Id="coin.ico" SourceFile="$(var.ProjectDir)coin.ico" />
     <Property Id="ARPPRODUCTICON" Value="coin.ico" />
@@ -27,9 +31,9 @@
         </Directory>
 			</Directory>
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="ApplicationProgramsFolder" Name="ChaosRecipeEnhancer"/>
+        <Directory Id="ApplicationProgramsFolder" Name="ChaosRecipeEnhancer" />
       </Directory>
-      <Directory Id="DesktopFolder" Name="Desktop"/>
+      <Directory Id="DesktopFolder" Name="Desktop" />
 		</Directory>
 	</Fragment>
 
@@ -124,6 +128,9 @@
 			</Component>
 			<Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="e7696a4e-5159-4be6-a684-4fe4480d3c6c">
 			  <File Id="Microsoft.Bcl.AsyncInterfaces.dll" Name="Microsoft.Bcl.AsyncInterfaces.dll" Source="$(var.EnhancePoE_TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
+			</Component>
+			<Component Id="AutoUpdater.NET.dll" Guid="15b2d54b-f608-418d-85e1-b2523a42fb7d">
+			  <File Id="AutoUpdater.NET.dll" Name="AutoUpdater.NET.dll" Source="$(var.EnhancePoE_TargetDir)AutoUpdater.NET.dll" />
 			</Component>
 		</ComponentGroup>
 	</Fragment>

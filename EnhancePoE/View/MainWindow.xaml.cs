@@ -11,6 +11,7 @@ using EnhancePoE.Model.Storage;
 using EnhancePoE.View;
 using System.IO;
 using System.Reflection;
+using AutoUpdaterDotNET;
 
 //using EnhancePoE.TabItemViewModel;
 
@@ -25,6 +26,7 @@ namespace EnhancePoE
         private System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
         private System.Windows.Forms.ContextMenu contextMenu;
         private System.Windows.Forms.MenuItem menuItem;
+        private System.Windows.Forms.MenuItem menuItemUpdate;
         private System.ComponentModel.IContainer components;
 
         public static bool SettingsComplete { get; set; }
@@ -81,6 +83,14 @@ namespace EnhancePoE
             //Properties.Settings.Default.Reset();
             InitializeComponent();
             DataContext = this;
+
+
+            //check for updates
+            //AutoUpdater.RunUpdateAsAdmin = true;
+            AutoUpdater.ReportErrors = true;
+            AutoUpdater.ShowSkipButton = false;
+            AutoUpdater.InstalledVersion = new Version("1.0.9.0");
+            CheckForUpdates();
 
             //Data.InitializeBases();
             if (!String.IsNullOrEmpty(Properties.Settings.Default.FilterChangeSoundFileLocation) && !FilterSoundLocationDialog.Content.Equals("Default Sound"))
@@ -192,16 +202,35 @@ namespace EnhancePoE
             this.components = new System.ComponentModel.Container();
             this.contextMenu = new System.Windows.Forms.ContextMenu();
             this.menuItem = new System.Windows.Forms.MenuItem();
+            this.menuItemUpdate = new System.Windows.Forms.MenuItem();
 
             // Initialize contextMenu1
-            this.contextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { this.menuItem });
+            this.contextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { this.menuItem, this.menuItemUpdate });
+
 
             // Initialize menuItem1
-            this.menuItem.Index = 0;
+            this.menuItem.Index = 1;
             this.menuItem.Text = "E&xit";
             this.menuItem.Click += new System.EventHandler(this.MenuItem_Click);
 
+            // Initialize menuItemUpdate
+            this.menuItemUpdate.Index = 0;
+            this.menuItemUpdate.Text = "C&eck for Updates";
+            this.menuItemUpdate.Click += new System.EventHandler(CheckForUpdates_Click);
+
+
+
             ni.ContextMenu = this.contextMenu;
+        }
+
+        private void CheckForUpdates()
+        {
+            AutoUpdater.Start("https://raw.githubusercontent.com/kosace/EnhancePoEApp/autoupdate/autoupdate.xml");
+        }        
+        
+        private void CheckForUpdates_Click(object Sender, EventArgs e)
+        {
+            CheckForUpdates();
         }
 
         // Close the form, which closes the application.
