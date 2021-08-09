@@ -757,7 +757,6 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-
         [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
         public string ItemPickupSoundFileLocation {
             get {
@@ -771,29 +770,23 @@ namespace EnhancePoE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
-        public string FilterChangeSoundFileLocation
-        {
-            get
-            {
+        public string FilterChangeSoundFileLocation {
+            get {
                 return ((string)(this["FilterChangeSoundFileLocation"]));
             }
-            set
-            {
+            set {
                 this["FilterChangeSoundFileLocation"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
-        public string HotkeyReloadFilter
-        {
-            get
-            {
+        public string HotkeyReloadFilter {
+            get {
                 return ((string)(this["HotkeyReloadFilter"]));
             }
-            set
-            {
+            set {
                 this["HotkeyReloadFilter"] = value;
             }
         }

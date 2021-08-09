@@ -26,6 +26,8 @@ namespace EnhancePoE
         private static readonly double deactivatedOpacity = .1;
         private static readonly double activatedOpacity = 1;
 
+        private static readonly int fetchCooldown = 30;
+
         public static LogWatcher Watcher { get; set; }
 
         public bool IsOpen { get; set; } = false;
@@ -342,8 +344,8 @@ namespace EnhancePoE
 
             DisableWarnings();
             FetchingActive = true;
-
             CalculationActive = true;
+
             this.Dispatcher.Invoke(() =>
             {
                 IsIndeterminate = true;
@@ -368,6 +370,14 @@ namespace EnhancePoE
                                     IsIndeterminate = false;
                                 });
                             }, Data.ct);
+                            await Task.Delay(fetchCooldown * 1000).ContinueWith(_ =>
+                            {
+                                Trace.WriteLine("waited fetchcooldown");
+                                //FetchButtonEnabled = true;
+                                //FetchButtonColor = Brushes.Green;
+                                //FetchingActive = false;
+
+                            });
                         }
                         catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
                         {

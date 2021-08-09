@@ -9,6 +9,8 @@ using System.Windows.Navigation;
 using EnhancePoE.Model;
 using EnhancePoE.Model.Storage;
 using EnhancePoE.View;
+using System.IO;
+using System.Reflection;
 
 //using EnhancePoE.TabItemViewModel;
 
@@ -87,7 +89,8 @@ namespace EnhancePoE
             }
             else
             {
-                Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
+                //Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
+                Data.Player.Open(new Uri(System.IO.Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Sounds\filterchanged.mp3")));
             }
 
             if (!String.IsNullOrEmpty(Properties.Settings.Default.ItemPickupSoundFileLocation) && !ItemPickupLocationDialog.Content.Equals("Default Sound"))
@@ -96,7 +99,8 @@ namespace EnhancePoE
             }
             else
             {
-                Data.PlayerSet.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\itemsPickedUp.mp3")));
+                //Data.PlayerSet.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\itemsPickedUp.mp3")));
+                Data.PlayerSet.Open(new Uri(System.IO.Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Sounds\itemsPickedUp.mp3")));
             }
 
             //TESTING SETTINGS RESET
