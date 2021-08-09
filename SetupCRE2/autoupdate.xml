@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
     <version>1.0.6.0</version>
-    <url>http://rbsoft.org/downloads/AutoUpdaterTest.zip</url>
+    <url>https://github.com/kosace/EnhancePoEApp/blob/patches/SetupCRE2/CRESetup.msi</url>
     <mandatory>false</mandatory>
 </item>
