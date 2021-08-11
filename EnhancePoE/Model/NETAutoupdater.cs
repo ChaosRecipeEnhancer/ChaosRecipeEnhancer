@@ -12,11 +12,11 @@ namespace EnhancePoE.Model
 
         public static void InitializeAutoupdater(string appVersion)
         {
-            AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.CheckForUpdateEvent += AutoUpdaterOnCheckForUpdateEvent;
             AutoUpdater.ReportErrors = true;
             AutoUpdater.ShowSkipButton = false;
             AutoUpdater.InstalledVersion = new Version(appVersion);
+            AutoUpdater.RunUpdateAsAdmin = true;
             CheckForUpdates();
         }
 
