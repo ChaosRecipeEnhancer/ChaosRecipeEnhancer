@@ -24,7 +24,6 @@
   <ItemGroup>
     <Content Include="autoupdate.xml" />
     <Content Include="coin.ico" />
-    <Content Include="CRESetup.msi" />
     <Content Include="SetupCRE2.wax" />
   </ItemGroup>
   <ItemGroup>
