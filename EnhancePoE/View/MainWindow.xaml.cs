@@ -22,7 +22,7 @@ namespace EnhancePoE
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
-        private static readonly string appVersion = "1.0.10.0";
+        private static readonly string appVersion = "1.0.11.0";
         public static string AppVersionText { get; set; } = "v." + appVersion;
 
         private System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
