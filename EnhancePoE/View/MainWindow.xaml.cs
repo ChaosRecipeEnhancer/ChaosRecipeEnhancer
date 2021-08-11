@@ -11,7 +11,6 @@ using EnhancePoE.Model.Storage;
 using EnhancePoE.View;
 using System.IO;
 using System.Reflection;
-using AutoUpdaterDotNET;
 
 //using EnhancePoE.TabItemViewModel;
 
@@ -22,6 +21,9 @@ namespace EnhancePoE
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+
+        private static readonly string appVersion = "1.0.10.0";
+        public static string AppVersionText { get; set; } = "v." + appVersion;
 
         private System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
         private System.Windows.Forms.ContextMenu contextMenu;
@@ -83,14 +85,11 @@ namespace EnhancePoE
             //Properties.Settings.Default.Reset();
             InitializeComponent();
             DataContext = this;
+            NETAutoupdater.InitializeAutoupdater(appVersion);
 
 
             //check for updates
             //AutoUpdater.RunUpdateAsAdmin = true;
-            AutoUpdater.ReportErrors = true;
-            AutoUpdater.ShowSkipButton = false;
-            AutoUpdater.InstalledVersion = new Version("1.0.9.0");
-            CheckForUpdates();
 
             //Data.InitializeBases();
             if (!String.IsNullOrEmpty(Properties.Settings.Default.FilterChangeSoundFileLocation) && !FilterSoundLocationDialog.Content.Equals("Default Sound"))
@@ -223,14 +222,9 @@ namespace EnhancePoE
             ni.ContextMenu = this.contextMenu;
         }
 
-        private void CheckForUpdates()
-        {
-            AutoUpdater.Start("https://raw.githubusercontent.com/kosace/EnhancePoEApp/autoupdate/autoupdate.xml");
-        }        
-        
         private void CheckForUpdates_Click(object Sender, EventArgs e)
         {
-            CheckForUpdates();
+            NETAutoupdater.CheckForUpdates();
         }
 
         // Close the form, which closes the application.

@@ -197,6 +197,7 @@
     <Compile Include="Model\Cell.cs" />
     <Compile Include="Model\Coordinates.cs" />
     <Compile Include="Model\FilterGeneration.cs" />
+    <Compile Include="Model\NETAutoupdater.cs" />
     <Compile Include="Model\ReloadItemFilter.cs" />
     <Compile Include="Model\Storage\FileFilterStorage.cs" />
     <Compile Include="Model\Storage\FilterStorageFactory.cs" />
