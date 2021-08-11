@@ -87,10 +87,6 @@ namespace EnhancePoE
             DataContext = this;
             NETAutoupdater.InitializeAutoupdater(appVersion);
 
-
-            //check for updates
-            //AutoUpdater.RunUpdateAsAdmin = true;
-
             //Data.InitializeBases();
             if (!String.IsNullOrEmpty(Properties.Settings.Default.FilterChangeSoundFileLocation) && !FilterSoundLocationDialog.Content.Equals("Default Sound"))
             {
