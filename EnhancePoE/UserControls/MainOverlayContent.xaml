@@ -21,6 +21,7 @@
 			<ColumnDefinition Width="auto" />
 			<ColumnDefinition Width="auto" />
 			<ColumnDefinition Width="auto" />
+			<ColumnDefinition Width="auto" />
 			<ColumnDefinition Width="5" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
@@ -294,7 +295,15 @@
 				Grid.Row="1"
 				Content="Fetch"
 				Margin="5,0"></Button>
-		<Button x:Name="OpenStashTabOverlay"
+		<Button x:Name="ReloadFilterButton"
+				Click="ReloadFilterButton_Click"
+				Width="50"
+				Grid.Column="12"
+				Grid.Row="1"
+				Margin="5,0">
+			<TextBlock TextAlignment="Center">Reload<LineBreak />Filter</TextBlock>
+		</Button>
+			<Button x:Name="OpenStashTabOverlay"
 				Click="OpenStashTabOverlay_Click"
 				Width="50"
 				Grid.Column="1"
@@ -318,7 +327,7 @@
 					   TextAlignment="Center" />
 		</UniformGrid>
 		<ProgressBar Grid.Column="1"
-					 Grid.ColumnSpan="11"
+					 Grid.ColumnSpan="12"
 					 Grid.Row="2"
 					 Height="5"
 					 Minimum="0"
@@ -330,7 +339,7 @@
 					 BorderThickness="0,0,0,0"
 					 x:Name="OverlayProgressBar"></ProgressBar>
 		<Border Grid.Column="4"
-				Grid.ColumnSpan="5"
+				Grid.ColumnSpan="6"
 				Grid.Row="0"
 				CornerRadius="5"
 				Background="White"

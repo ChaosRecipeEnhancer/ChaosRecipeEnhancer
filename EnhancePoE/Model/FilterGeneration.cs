@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 
 namespace EnhancePoE.Model
 {
@@ -14,7 +15,9 @@ namespace EnhancePoE.Model
         public static void LoadCustomStyle()
         {
             CustomStyle.Clear();
-            string pathNormalItemsStyle = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Styles\NormalItemsStyle.txt");
+
+            //string pathNormalItemsStyle = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Styles\NormalItemsStyle.txt");            
+            string pathNormalItemsStyle = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Styles\NormalItemsStyle.txt");
             string[] style = File.ReadAllLines(pathNormalItemsStyle);
             foreach (string line in style)
             {
@@ -27,7 +30,8 @@ namespace EnhancePoE.Model
         public static void LoadCustomStyleInfluenced()
         {
             CustomStyleInfluenced.Clear();
-            string pathInfluencedItemsStyle = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Styles\InfluencedItemsStyle.txt");
+            //string pathInfluencedItemsStyle = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Styles\InfluencedItemsStyle.txt");
+            string pathInfluencedItemsStyle = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Styles\InfluencedItemsStyle.txt");
             string[] style = File.ReadAllLines(pathInfluencedItemsStyle);
             foreach (string line in style)
             {
