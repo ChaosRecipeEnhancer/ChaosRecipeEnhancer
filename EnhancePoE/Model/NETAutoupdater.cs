@@ -21,7 +21,7 @@ namespace EnhancePoE.Model
 
         public static void CheckForUpdates()
         {
-            AutoUpdater.Start("https://raw.githubusercontent.com/kosace/EnhancePoEApp/patches/SetupCRE2/autoupdate.xml");
+            AutoUpdater.Start("https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/SetupCRE2/autoupdate.xml");
         }
 
 
