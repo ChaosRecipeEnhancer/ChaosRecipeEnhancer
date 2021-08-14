@@ -33,6 +33,10 @@ namespace EnhancePoE.UserControls
         {
             MainWindow.overlay.RunFetching();
         }
+        private void ReloadItemFilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.overlay.ReloadItemFilter();
+        }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {

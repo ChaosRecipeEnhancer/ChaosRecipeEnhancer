@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
+
 namespace EnhancePoE
 {
     /// <summary>
@@ -43,6 +44,8 @@ namespace EnhancePoE
                     ShowUnhandledException(args.Exception, "Dispatcher.UnhandledException", true);
                 }
             };
+
+
 
             // Catch exceptions from the main UI dispatcher thread.
             // Typically we only need to catch this OR the Dispatcher.UnhandledException.

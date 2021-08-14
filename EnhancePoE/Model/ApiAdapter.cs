@@ -4,11 +4,11 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Text.Json;
 using System.Net;
 using EnhancePoE.Model;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 
 namespace EnhancePoE
 {

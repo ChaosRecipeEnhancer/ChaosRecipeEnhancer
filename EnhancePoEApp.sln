@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancePoE", "EnhancePoE\EnhancePoE.csproj", "{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EnhancePoESetup", "EnhancePoESetup\EnhancePoESetup.vdproj", "{9BC8DED0-6CF7-46CF-9CAB-ED25C4D34B27}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupCRE2", "SetupCRE2\SetupCRE2.wixproj", "{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,16 +41,18 @@ Global
 		{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}.Release|x64.Build.0 = Release|Any CPU
 		{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}.Release|x86.ActiveCfg = Release|Any CPU
 		{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}.Release|x86.Build.0 = Release|Any CPU
-		{9BC8DED0-6CF7-46CF-9CAB-ED25C4D34B27}.Debug|Any CPU.ActiveCfg = Debug
-		{9BC8DED0-6CF7-46CF-9CAB-ED25C4D34B27}.Debug|ARM.ActiveCfg = Debug
-		{9BC8DED0-6CF7-46CF-9CAB-ED25C4D34B27}.Debug|ARM64.ActiveCfg = Debug
-		{9BC8DED0-6CF7-46CF-9CAB-ED25C4D34B27}.Debug|x64.ActiveCfg = Debug
-		{9BC8DED0-6CF7-46CF-9CAB-ED25C4D34B27}.Debug|x86.ActiveCfg = Debug
-		{9BC8DED0-6CF7-46CF-9CAB-ED25C4D34B27}.Release|Any CPU.ActiveCfg = Release
-		{9BC8DED0-6CF7-46CF-9CAB-ED25C4D34B27}.Release|ARM.ActiveCfg = Release
-		{9BC8DED0-6CF7-46CF-9CAB-ED25C4D34B27}.Release|ARM64.ActiveCfg = Release
-		{9BC8DED0-6CF7-46CF-9CAB-ED25C4D34B27}.Release|x64.ActiveCfg = Release
-		{9BC8DED0-6CF7-46CF-9CAB-ED25C4D34B27}.Release|x86.ActiveCfg = Release
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Debug|ARM.ActiveCfg = Debug|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Debug|ARM64.ActiveCfg = Debug|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Debug|x64.ActiveCfg = Debug|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Debug|x86.ActiveCfg = Debug|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Debug|x86.Build.0 = Debug|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Release|Any CPU.ActiveCfg = Release|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Release|ARM.ActiveCfg = Release|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Release|ARM64.ActiveCfg = Release|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Release|x64.ActiveCfg = Release|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Release|x86.ActiveCfg = Release|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
