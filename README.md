@@ -4,9 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.2.5
-
-[@b0ykoe](https://github.com/b0ykoe) fixed the tool in Expedition. Update to 1.2.3 if you are having problems. Details in Change log.
+#### Current Version 1.2.6
 
 This product isn't affiliated with or endorsed by Grinding Gear Games in any way.
 
@@ -326,6 +324,12 @@ Best thing would be to join the discord though especially if you want to make bi
 Help is always appreciated since this is my starter project for WPF anyways.
 
 ## Change Log
+
+#### 1.2.6
+
+ - changed installer
+ - added autoupdater
+ - added itemfilter reload button (thanks to [kxc0re](https://github.com/kxc0re))
 
 #### 1.2.5
 

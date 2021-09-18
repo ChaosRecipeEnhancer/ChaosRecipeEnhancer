@@ -17,7 +17,7 @@ namespace EnhancePoE.Model
         public static string LastZone { get; set; } = "";
         public static string NewZone { get; set; } = "";
 
-        private int cooldown = 120;
+        private static readonly int cooldown = 120;
 
         private static bool FetchAllowed { get; set; } = true;
 

@@ -20,8 +20,9 @@
 			<ColumnDefinition Width="auto" />
 			<ColumnDefinition Width="auto" />
 			<ColumnDefinition Width="auto" />
-			<ColumnDefinition Width="auto" />
-			<ColumnDefinition Width="3" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="3" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto" />
@@ -298,7 +299,9 @@
 					 CornerRadius="50"
 					 Margin="3,0"
 					 PreviewMouseDown="Border_MouseDown"
-					 Background="White">
+					 Background="White"
+					 BorderThickness="3"
+					 BorderBrush="DarkSlateGray">
 			<TextBlock x:Name="FullSetsTextBlock"
 					   Text="{Binding FullSetsText}"
 					   VerticalAlignment="Center"
@@ -323,8 +326,25 @@
 					   TextAlignment="Center"
 					   Foreground="{Binding FetchButtonColor}"/>
 		</Border>
-		<ProgressBar Grid.Column="1"
-					 Grid.ColumnSpan="11"
+        <Border Grid.Row="1"
+				Name="ReloadItemFilterButton"
+				Grid.Column="12"
+				Height="30"
+				Width="30"
+				CornerRadius="50"
+				Margin="3,0"
+				PreviewMouseDown="ReloadItemFilterButton_Click"
+				Background="White"
+				BorderThickness="3"
+				BorderBrush="DarkSlateGray">
+            <TextBlock Text="R"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"
+					   TextAlignment="Center"
+					   Foreground="Black"/>
+        </Border>
+        <ProgressBar Grid.Column="1"
+					 Grid.ColumnSpan="12"
 					 Grid.Row="2"
 					 Height="3"
 					 Minimum="0"
@@ -336,7 +356,7 @@
 					 BorderThickness="0,0,0,0"
 					 x:Name="OverlayProgressBar"></ProgressBar>
 		<Border Grid.Column="3"
-				Grid.ColumnSpan="8"
+				Grid.ColumnSpan="9"
 				Grid.Row="0"
 				CornerRadius="5"
 				Background="White"
