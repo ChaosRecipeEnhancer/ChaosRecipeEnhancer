@@ -750,27 +750,27 @@ namespace EnhancePoE
                     List<string> sectionListInfluenced = new List<string>();
                     if (Properties.Settings.Default.ExaltedRecipe)
                     {
-                        if (Properties.Settings.Default.ExaltedSets > 0)
+                        if (Properties.Settings.Default.ExaltedSets)
                         {
                             ItemSet[] influencedSetList = { ItemSetCrusader, ItemSetElder, ItemSetHunter, ItemSetRedeemer, ItemSetShaper, ItemSetWarlord };
 
                             foreach (ItemSet influencedSet in influencedSetList)
                             {
-                                if (influencedSet.GetNumberOfItemOfType("Rings") < 2 * Properties.Settings.Default.ExaltedSets)
+                                if (influencedSet.GetNumberOfItemOfType("Rings") < 2)
                                     sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Rings", influencedSet.InfluenceType));
-                                if (influencedSet.GetNumberOfItemOfType("Amulets") < Properties.Settings.Default.ExaltedSets)
+                                if (influencedSet.GetNumberOfItemOfType("Amulets") < 1)
                                     sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Amulets", influencedSet.InfluenceType));
-                                if (influencedSet.GetNumberOfItemOfType("Belts") < Properties.Settings.Default.ExaltedSets)
+                                if (influencedSet.GetNumberOfItemOfType("Belts") < 1)
                                     sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Belts", influencedSet.InfluenceType));
-                                if (influencedSet.GetNumberOfItemOfType("Helmets") < Properties.Settings.Default.ExaltedSets)
+                                if (influencedSet.GetNumberOfItemOfType("Helmets") < 1)
                                     sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Helmets", influencedSet.InfluenceType));
-                                if (influencedSet.GetNumberOfItemOfType("Gloves") < Properties.Settings.Default.ExaltedSets)
+                                if (influencedSet.GetNumberOfItemOfType("Gloves") < 1)
                                     sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Gloves", influencedSet.InfluenceType));
-                                if (influencedSet.GetNumberOfItemOfType("Boots") < Properties.Settings.Default.ExaltedSets)
+                                if (influencedSet.GetNumberOfItemOfType("Boots") < 1)
                                     sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Boots", influencedSet.InfluenceType));
-                                if (influencedSet.GetNumberOfItemOfType("Body Armours") < Properties.Settings.Default.ExaltedSets)
+                                if (influencedSet.GetNumberOfItemOfType("BodyArmours") < 1)
                                     sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "Body Armours", influencedSet.InfluenceType));
-                                if (influencedSet.GetNumberOfItemOfType("OneHandWeapons") + 2 * influencedSet.GetNumberOfItemOfType("TwoHandWeapons") < 2 * Properties.Settings.Default.ExaltedSets)
+                                if (influencedSet.GetNumberOfItemOfType("OneHandWeapons") + 2 * influencedSet.GetNumberOfItemOfType("TwoHandWeapons") < 2)
                                 {
                                     sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "OneHandWeapons", influencedSet.InfluenceType));
                                     sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "TwoHandWeapons", influencedSet.InfluenceType));

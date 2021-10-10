@@ -145,10 +145,10 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ExaltedSets {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ExaltedSets {
             get {
-                return ((int)(this["ExaltedSets"]));
+                return ((bool)(this["ExaltedSets"]));
             }
             set {
                 this["ExaltedSets"] = value;
