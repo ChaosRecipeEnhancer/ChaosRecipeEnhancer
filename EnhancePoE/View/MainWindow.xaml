@@ -619,7 +619,7 @@
 									   VerticalAlignment="Center"
 									   Text="Influenced Set Threshold"
 									   ToolTipService.InitialShowDelay="50"
-									   ToolTip="Same as 'Full Set Threshold' but for Exalted Shard Receipe only. Leave at 0 for no threshold. " />
+									   ToolTip="Same as 'Full Set Threshold' but for Exalted Shard Receipe only. Set the threshold at 1 when checked. " />
                             <CheckBox x:Name="ExaltSets"
 									 Grid.Column="3"
 									 Grid.Row="17"
