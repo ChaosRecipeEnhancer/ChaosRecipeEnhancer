@@ -37,7 +37,7 @@ namespace EnhancePoE.Model
                 return;
             }
 
-            Clipboard.SetText(BuildChatCommand());
+            Clipboard.SetDataObject(BuildChatCommand());
 
             var poeWindow = FindWindow(null, "Path of Exile");
             if(poeWindow == IntPtr.Zero)
@@ -54,7 +54,7 @@ namespace EnhancePoE.Model
             System.Windows.Forms.SendKeys.SendWait("{ENTER}");
 
             // restore clipboard
-            Clipboard.SetText(oldClipboard);
+            Clipboard.SetDataObject(oldClipboard);
 
         }
 
