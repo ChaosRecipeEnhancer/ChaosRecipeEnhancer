@@ -57,7 +57,8 @@ namespace EnhancePoE.Model
                         {
                             string[] phrase = GetPhraseTranslation();
                             string hideout = GetHideoutTranslation();
-                            if(s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout))
+                            string harbour = GetHarbourTranslation();
+                            if(s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout) && !s.Contains(harbour))
                             {
                                 LastZone = NewZone;
                                 NewZone = s.Substring(s.IndexOf(phrase[0]));
@@ -138,6 +139,29 @@ namespace EnhancePoE.Model
                     return "Guarida";
                 case 6:
                     return "은신처";
+                default:
+                    return "";
+            }
+        }
+
+        public static string GetHarbourTranslation()
+        {
+            switch (Properties.Settings.Default.Language)
+            {
+                case 0:
+                    return "The Rogue Harbour";
+                case 1:
+                    return "Le Port des Malfaiteurs";
+                case 2:
+                    return "Der Hafen der Abtrünnigen";
+                case 3:
+                    return "O Porto dos Renegados";
+                case 4:
+                    return "Разбойничья гавань";
+                case 5:
+                    return "El Puerto de los renegados";
+                case 6:
+                    return "도둑 항구에";
                 default:
                     return "";
             }
