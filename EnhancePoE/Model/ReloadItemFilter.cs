@@ -1,83 +1,125 @@
-﻿using EnhancePoE.Model.Utils;
-using System;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows;
+using System.Text;
+using System.Windows.Forms;
+using EnhancePoE.Model.Utils;
+using EnhancePoE.Properties;
+using Clipboard = System.Windows.Clipboard;
+
+// REF: https://stackoverflow.com/a/1635680
+using HWND = System.IntPtr;
 
 namespace EnhancePoE.Model
 {
     public static class ReloadItemFilter
     {
+        private delegate bool EnumWindowsProc(HWND hWnd, int lParam);
 
+        [DllImport("USER32.DLL")]
+        private static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        [DllImport("USER32.DLL")]
+        private static extern int GetWindowText(HWND hWnd, StringBuilder lpString, int nMaxCount);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+        [DllImport("USER32.DLL")]
+        private static extern int GetWindowTextLength(HWND hWnd);
 
-        // When you don't want the ProcessId, use this overload and pass IntPtr.Zero for the second parameter
-        [DllImport("user32.dll")]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr ProcessId);
+        [DllImport("USER32.DLL")]
+        private static extern bool IsWindowVisible(HWND hWnd);
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
+        [DllImport("USER32.DLL")]
+        private static extern HWND GetShellWindow();
 
+        [DllImport("USER32.DLL", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool SetForegroundWindow(HWND hWnd);
 
-
-        public static void ReloadItemfilter()
+        /// <summary>Returns a dictionary that contains the handle and title of all the open windows.</summary>
+        /// <returns>A dictionary that contains the handle and title of all the open windows.</returns>
+        /// REF: https://stackoverflow.com/a/43640787
+        private static IDictionary<HWND, string> GetOpenWindows()
         {
-            // store current clipboard
-            string oldClipboard = Clipboard.GetText();
+            var shellWindow = GetShellWindow();
+            var windows = new Dictionary<HWND, string>();
 
-            string chatCommand = BuildChatCommand();
-            if(chatCommand is null)
+            EnumWindows(delegate(HWND hWnd, int lParam)
             {
-                return;
+                if (hWnd == shellWindow) return true;
+                if (!IsWindowVisible(hWnd)) return true;
+
+                var length = GetWindowTextLength(hWnd);
+                if (length == 0) return true;
+
+                var builder = new StringBuilder(length);
+                GetWindowText(hWnd, builder, length + 1);
+
+                windows[hWnd] = builder.ToString();
+                return true;
+            }, 0);
+
+            return windows;
+        }
+
+        public static void ReloadFilter()
+        {
+            // Saving state of current clipboard
+            // TODO How does this work if you have non-text on your clipboard?
+            var oldClipboard = Clipboard.GetText();
+            
+            var chatCommand = BuildFilterReloadCommand();
+            if (chatCommand is null) return;
+
+            Clipboard.SetDataObject(chatCommand);
+
+            // Map all current window names to their associated "handle to a window" pointers (HWND)
+            var openWindows = GetOpenWindows();
+            foreach (var window in openWindows)
+            {
+                var handle = window.Key;
+                var title = window.Value;
+
+                Console.WriteLine("{0}: {1}", handle, title);
             }
 
-            Clipboard.SetDataObject(BuildChatCommand());
-
-            var poeWindow = FindWindow(null, "Path of Exile");
-            if(poeWindow == IntPtr.Zero)
+            // Find the Process ID associated with the 'Path of Exile' game window
+            var poeWindow = openWindows.FirstOrDefault(x => x.Value == "Path of Exile").Key;
+            if (poeWindow == HWND.Zero)
             {
                 UserWarning.WarnUser("Could not find Window! Please make sure Path of Exile is running.", "Window not found");
                 return;
             }
-            // get Path of Exile in the foreground to actually sendKeys to it
+
+            // Get 'Path of Exile' window in the foreground to actually send input to said window
             SetForegroundWindow(poeWindow);
 
-            // send the chat commands
-            System.Windows.Forms.SendKeys.SendWait("{ENTER}");
-            System.Windows.Forms.SendKeys.SendWait("^(v)");
-            System.Windows.Forms.SendKeys.SendWait("{ENTER}");
+            // Compose a series of commands we send to the game window (the in-game chat box, specifically)
+            SendKeys.SendWait("{ENTER}");
+            SendKeys.SendWait("^(v)");
+            SendKeys.SendWait("{ENTER}");
 
             // restore clipboard
             Clipboard.SetDataObject(oldClipboard);
 
         }
 
-        private static string BuildChatCommand()
+        private static string BuildFilterReloadCommand()
         {
+            var filterName = GetFilterName();
+            if (!string.IsNullOrEmpty(filterName)) return "/itemfilter " + filterName;
 
-            string filterName = GetFilterName().Trim();
-            Trace.WriteLine("filtername", filterName);
-            if(String.IsNullOrEmpty(filterName))
-            {
-                UserWarning.WarnUser("No filter found. Please set your filter in settings", "No filter found");
-                return null;
-            }
-            return "/itemfilter " + filterName;
+            UserWarning.WarnUser("No filter found. Please set your filter in settings", "No filter found");
+            return null;
         }
 
         private static string GetFilterName()
         {
-            if (Properties.Settings.Default.LootfilterOnline)
-            {
-                return Properties.Settings.Default.LootfilterOnlineName.Trim();
-            }
-            return System.IO.Path.GetFileName(Properties.Settings.Default.LootfilterLocation).Replace(".filter", "");
+            return Settings.Default.LootfilterOnline
+                // If you've provided an online filter name, we'll use that
+                ? Settings.Default.LootfilterOnlineName.Trim()
+                // Else, we'll 'generate' a filter name from the file path you've provided
+                : Path.GetFileName(Settings.Default.LootfilterLocation).Replace(".filter", "");
         }
     }
 }

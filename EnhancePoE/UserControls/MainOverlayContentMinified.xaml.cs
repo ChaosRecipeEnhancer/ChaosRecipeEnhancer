@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EnhancePoE.UserControls
 {
     /// <summary>
-    /// Interaction logic for MainOverlayContentMinified.xaml
+    ///     Interaction logic for MainOverlayContentMinified.xaml
     /// </summary>
     public partial class MainOverlayContentMinified : UserControl
     {
@@ -24,6 +13,7 @@ namespace EnhancePoE.UserControls
         {
             InitializeComponent();
         }
+
         private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
         {
             MainWindow.RunStashTabOverlay();
@@ -33,6 +23,7 @@ namespace EnhancePoE.UserControls
         {
             MainWindow.overlay.RunFetching();
         }
+
         private void ReloadItemFilterButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow.overlay.ReloadItemFilter();
@@ -41,7 +32,6 @@ namespace EnhancePoE.UserControls
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             MainWindow.RunStashTabOverlay();
-
         }
     }
 }

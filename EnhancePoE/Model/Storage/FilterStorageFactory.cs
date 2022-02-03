@@ -1,4 +1,6 @@
-﻿namespace EnhancePoE.Model.Storage
+﻿using EnhancePoE.Properties;
+
+namespace EnhancePoE.Model.Storage
 {
     public static class FilterStorageFactory
     {
@@ -10,16 +12,11 @@
             string sessionId)
         {
             if (settingsLootFilterOnline)
-            {
                 return new OnlineFilterStorage(filterName, accName, sessionId);
-            }
-            else
-            {
-                return new FileFilterStorage(lootFilterFilePath);
-            }
+            return new FileFilterStorage(lootFilterFilePath);
         }
 
-        internal static IFilterStorage Create(Properties.Settings settings)
+        internal static IFilterStorage Create(Settings settings)
         {
             return Create(
                 settings.LootfilterOnline,

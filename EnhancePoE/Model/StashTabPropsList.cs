@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace EnhancePoE.Model
 {
@@ -12,6 +8,7 @@ namespace EnhancePoE.Model
         public string n { get; set; }
         public int i { get; set; }
     }
+
     public class StashTabPropsList
     {
         public List<StashTabProps> tabs { get; set; }

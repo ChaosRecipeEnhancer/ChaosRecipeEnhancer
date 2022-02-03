@@ -1,320 +1,58 @@
-﻿using EnhancePoE.Model;
-using EnhancePoE.UserControls;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using EnhancePoE.Model;
+using EnhancePoE.Properties;
 
 namespace EnhancePoE
 {
     /// <summary>
-    /// Interaction logic for ChaosRecipeEnhancer.xaml
+    ///     Interaction logic for ChaosRecipeEnhancer.xaml
     /// </summary>
-    public partial class ChaosRecipeEnhancer : Window, INotifyPropertyChanged
+    public partial class ChaosRecipeEnhancer : INotifyPropertyChanged
     {
-
-
-        // toggle fetch button
-        public static bool FetchingActive { get; set; } = false;
-        // fetching and calculations currently active
-        public static bool CalculationActive { get; set; } = false;
-        //public static System.Timers.Timer aTimer;
-
-        private static readonly double deactivatedOpacity = .1;
-        private static readonly double activatedOpacity = 1;
-
-        private static readonly int fetchCooldown = 30;
-
-        public static LogWatcher Watcher { get; set; }
-
-        public bool IsOpen { get; set; } = false;
-
-
-        private string _warningMessage;
-        public string WarningMessage
-        {
-            get
-            {
-                return _warningMessage;
-            }
-            set
-            {
-                _warningMessage = value;
-                OnPropertyChanged("WarningMessage");
-            }
-        }
-
-        private Visibility _warningMessageVisibility = Visibility.Hidden;
-        public Visibility WarningMessageVisibility
-        {
-            get
-            {
-                return _warningMessageVisibility;
-            }
-            set
-            {
-                _warningMessageVisibility = value;
-                OnPropertyChanged("WarningMessageVisibility");
-            }
-        }
-        private double _shadowOpacity = 0;
-        public double ShadowOpacity
-        {
-            get
-            {
-                return _shadowOpacity;
-            }
-            set
-            {
-                _shadowOpacity = value;
-                OnPropertyChanged("ShadowOpacity");
-            }
-        }
-
-        private string _fullSetsText = "0";
-        public string FullSetsText
-        {
-            get { return _fullSetsText; }
-            set
-            {
-                _fullSetsText = value;
-                OnPropertyChanged("FullSetsText");
-            }
-        }
-
-        private bool _isIndeterminate = false;
-        public bool IsIndeterminate
-        {
-            get { return _isIndeterminate; }
-            set
-            {
-                _isIndeterminate = value;
-                OnPropertyChanged("IsIndeterminate");
-            }
-        }
+        private const double DeactivatedOpacity = .1;
+        private const double ActivatedOpacity = 1;
+        private const int FetchCooldown = 30;
 
         private string _openStashOverlayButtonContent = "Stash";
-        public string OpenStashOverlayButtonContent
-        {
-            get { return _openStashOverlayButtonContent; }
-            set
-            {
-                _openStashOverlayButtonContent = value;
-                OnPropertyChanged("OpenStashOverlayButtonContent");
-            }
-        }
-
-        private double _helmetOpacity = activatedOpacity;
-        public double HelmetOpacity
-        {
-            get { return _helmetOpacity; }
-            set
-            {
-                _helmetOpacity = value;
-                OnPropertyChanged("HelmetOpacity");
-            }
-        }
-        private double _bootsOpacity = activatedOpacity;
-        public double BootsOpacity
-        {
-            get { return _bootsOpacity; }
-            set
-            {
-                _bootsOpacity = value;
-                OnPropertyChanged("BootsOpacity");
-            }
-        }        
-        private double _glovesOpacity = activatedOpacity;
-        public double GlovesOpacity
-        {
-            get { return _glovesOpacity; }
-            set
-            {
-                _glovesOpacity = value;
-                OnPropertyChanged("GlovesOpacity");
-            }
-        }        
-        private double _chestsOpacity = activatedOpacity;
-        public double ChestsOpacity
-        {
-            get { return _chestsOpacity; }
-            set
-            {
-                _chestsOpacity = value;
-                OnPropertyChanged("ChestsOpacity");
-            }
-        }        
-        private double _weaponsOpacity = activatedOpacity;
-        public double WeaponsOpacity
-        {
-            get { return _weaponsOpacity; }
-            set
-            {
-                _weaponsOpacity = value;
-                OnPropertyChanged("WeaponsOpacity");
-            }
-        }
-        private double _ringsOpacity = activatedOpacity;
-        public double RingsOpacity
-        {
-            get { return _ringsOpacity; }
-            set
-            {
-                _ringsOpacity = value;
-                OnPropertyChanged("RingsOpacity");
-            }
-        }
-        private double _amuletsOpacity = activatedOpacity;
-        public double AmuletsOpacity
-        {
-            get { return _amuletsOpacity; }
-            set
-            {
-                _amuletsOpacity = value;
-                OnPropertyChanged("AmuletsOpacity");
-            }
-        }
-        private double _beltsOpacity = activatedOpacity;
-        public double BeltsOpacity
-        {
-            get { return _beltsOpacity; }
-            set
-            {
-                _beltsOpacity = value;
-                OnPropertyChanged("BeltsOpacity");
-            }
-        }
-
-        private ContentElement _mainOverlayContent;
-        public ContentElement MainOverlayContent
-        {
-            get { return _mainOverlayContent; }
-            set
-            {
-                _mainOverlayContent = value;
-                OnPropertyChanged("MainOverlayContent");
-            }
-        }
-
-        private SolidColorBrush _fetchButtonColor = Brushes.Green;
-        public SolidColorBrush FetchButtonColor
-        {
-            get { return _fetchButtonColor; }
-            set
-            {
-                _fetchButtonColor = value;
-                OnPropertyChanged("FetchButtonColor");
-            }
-        }
-
-        private int _ringsAmount;
-        public int RingsAmount
-        {
-            get { return _ringsAmount; }
-            set
-            {
-                _ringsAmount = value;
-                OnPropertyChanged("RingsAmount");
-            }
-        }        
-        private int _amuletsAmount;
-        public int AmuletsAmount
-        {
-            get { return _amuletsAmount; }
-            set
-            {
-                _amuletsAmount = value;
-                OnPropertyChanged("AmuletsAmount");
-            }
-        }        
-        private int _beltsAmount;
-        public int BeltsAmount
-        {
-            get { return _beltsAmount; }
-            set
-            {
-                _beltsAmount = value;
-                OnPropertyChanged("BeltsAmount");
-            }
-        }        
-        private int _chestsAmount;
-        public int ChestsAmount
-        {
-            get { return _chestsAmount; }
-            set
-            {
-                _chestsAmount = value;
-                OnPropertyChanged("ChestsAmount");
-            }
-        }        
-        private int _weaponsAmount;
-        public int WeaponsAmount
-        {
-            get { return _weaponsAmount; }
-            set
-            {
-                _weaponsAmount = value;
-                OnPropertyChanged("WeaponsAmount");
-            }
-        }        
-        private int _glovesAmount;
-        public int GlovesAmount
-        {
-            get { return _glovesAmount; }
-            set
-            {
-                _glovesAmount = value;
-                OnPropertyChanged("GlovesAmount");
-            }
-        }        
-        private int _helmetsAmount;
-        public int HelmetsAmount
-        {
-            get { return _helmetsAmount; }
-            set
-            {
-                _helmetsAmount = value;
-                OnPropertyChanged("HelmetsAmount");
-            }
-        }        
-        private int _bootsAmount;
-        public int BootsAmount
-        {
-            get { return _bootsAmount; }
-            set
-            {
-                _bootsAmount = value;
-                OnPropertyChanged("BootsAmount");
-            }
-        }
-
-        private Visibility _amountsVisibility = Visibility.Hidden;
-        public Visibility AmountsVisibility
-        {
-            get { return _amountsVisibility; }
-            set
-            {
-                _amountsVisibility = value;
-                OnPropertyChanged("AmountsVisibility");
-            }
-        }
-
+        private double _shadowOpacity;
+        private string _warningMessage;
+        private bool _isIndeterminate;
         private bool _fetchButtonEnabled = true;
-        public bool FetchButtonEnabled
-        {
-            get { return _fetchButtonEnabled; }
-            set
-            {
-                _fetchButtonEnabled = value;
-                OnPropertyChanged("FetchButtonEnabled");
-            }
-        }
+        private SolidColorBrush _fetchButtonColor = Brushes.Green;
+        private Visibility _amountsVisibility = Visibility.Hidden;
+        private Visibility _warningMessageVisibility = Visibility.Hidden;
 
+        // Defines the number of a given piece of gear you currently have
+        private int _amuletsAmount;
+        private int _ringsAmount;
+        private int _beltsAmount;
+        private int _helmetsAmount;
+        private int _glovesAmount;
+        private int _bootsAmount;
+        private int _chestsAmount;
+        private int _weaponsAmount;
+        
+        // Defines whether or not to 'Activate' a gear icon based on the full set threshold
+        // Upon initialization, the icons are clearly visible (i.e. 'Activated', not translucent at all)
+        private double _amuletsOpacity = ActivatedOpacity;
+        private double _ringsOpacity = ActivatedOpacity;
+        private double _beltsOpacity = ActivatedOpacity;
+        private double _helmetOpacity = ActivatedOpacity;
+        private double _glovesOpacity = ActivatedOpacity;
+        private double _bootsOpacity = ActivatedOpacity;
+        private double _chestsOpacity = ActivatedOpacity;
+        private double _weaponsOpacity = ActivatedOpacity;
 
-        public static int FullSets { get; set; } = 0;
+        private string _fullSetsText = "0";
+        
         public ChaosRecipeEnhancer()
         {
             InitializeComponent();
@@ -322,21 +60,288 @@ namespace EnhancePoE
             FullSetsText = "0";
         }
 
-        private void DisableWarnings()
+        // Tracks whether or not we're currently fetching (i.e. If the 'Fetch' button was pressed recently)
+        // This is to avoid fetching multiple times in quick succession and causing rate limit exceeded problems
+        private static bool FetchingActive { get; set; }
+
+        // Tracks whether or not calculations are currently active
+        // TODO What is a 'calculation'? 
+        private static bool CalculationActive { get; set; }
+        
+        private static LogWatcher Watcher { get; set; }
+
+        public bool IsOpen { get; set; }
+
+        public string WarningMessage
+        {
+            get => _warningMessage;
+            set
+            {
+                _warningMessage = value;
+                OnPropertyChanged("WarningMessage");
+            }
+        }
+
+        public Visibility WarningMessageVisibility
+        {
+            get => _warningMessageVisibility;
+            set
+            {
+                _warningMessageVisibility = value;
+                OnPropertyChanged("WarningMessageVisibility");
+            }
+        }
+
+        public double ShadowOpacity
+        {
+            get => _shadowOpacity;
+            set
+            {
+                _shadowOpacity = value;
+                OnPropertyChanged("ShadowOpacity");
+            }
+        }
+
+        public string FullSetsText
+        {
+            get => _fullSetsText;
+            set
+            {
+                _fullSetsText = value;
+                OnPropertyChanged("FullSetsText");
+            }
+        }
+
+        public bool IsIndeterminate
+        {
+            get => _isIndeterminate;
+            set
+            {
+                _isIndeterminate = value;
+                OnPropertyChanged("IsIndeterminate");
+            }
+        }
+
+        public string OpenStashOverlayButtonContent
+        {
+            get => _openStashOverlayButtonContent;
+            set
+            {
+                _openStashOverlayButtonContent = value;
+                OnPropertyChanged("OpenStashOverlayButtonContent");
+            }
+        }
+
+        #region Gear Icon Opacity Getters & Setters
+        
+        public double AmuletsOpacity
+        {
+            get => _amuletsOpacity;
+            set
+            {
+                _amuletsOpacity = value;
+                OnPropertyChanged("AmuletsOpacity");
+            }
+        }
+        
+        public double RingsOpacity
+        {
+            get => _ringsOpacity;
+            set
+            {
+                _ringsOpacity = value;
+                OnPropertyChanged("RingsOpacity");
+            }
+        }
+        
+        public double BeltsOpacity
+        {
+            get => _beltsOpacity;
+            set
+            {
+                _beltsOpacity = value;
+                OnPropertyChanged("BeltsOpacity");
+            }
+        }
+        
+        public double HelmetOpacity
+        {
+            get => _helmetOpacity;
+            set
+            {
+                _helmetOpacity = value;
+                OnPropertyChanged("HelmetOpacity");
+            }
+        }
+        
+        public double GlovesOpacity
+        {
+            get => _glovesOpacity;
+            set
+            {
+                _glovesOpacity = value;
+                OnPropertyChanged("GlovesOpacity");
+            }
+        }
+
+        public double BootsOpacity
+        {
+            get => _bootsOpacity;
+            set
+            {
+                _bootsOpacity = value;
+                OnPropertyChanged("BootsOpacity");
+            }
+        }
+        
+        public double ChestsOpacity
+        {
+            get => _chestsOpacity;
+            set
+            {
+                _chestsOpacity = value;
+                OnPropertyChanged("ChestsOpacity");
+            }
+        }
+
+        public double WeaponsOpacity
+        {
+            get => _weaponsOpacity;
+            set
+            {
+                _weaponsOpacity = value;
+                OnPropertyChanged("WeaponsOpacity");
+            }
+        }
+        
+        #endregion
+
+        #region Gear Counter Getters & Setters
+        
+        public int AmuletsAmount
+        {
+            get => _amuletsAmount;
+            set
+            {
+                _amuletsAmount = value;
+                OnPropertyChanged("AmuletsAmount");
+            }
+        }
+        
+        public int RingsAmount
+        {
+            get => _ringsAmount;
+            set
+            {
+                _ringsAmount = value;
+                OnPropertyChanged("RingsAmount");
+            }
+        }
+
+        public int BeltsAmount
+        {
+            get => _beltsAmount;
+            set
+            {
+                _beltsAmount = value;
+                OnPropertyChanged("BeltsAmount");
+            }
+        }
+        
+        public int HelmetsAmount
+        {
+            get => _helmetsAmount;
+            set
+            {
+                _helmetsAmount = value;
+                OnPropertyChanged("HelmetsAmount");
+            }
+        }
+
+        public int GlovesAmount
+        {
+            get => _glovesAmount;
+            set
+            {
+                _glovesAmount = value;
+                OnPropertyChanged("GlovesAmount");
+            }
+        }
+        
+        public int BootsAmount
+        {
+            get => _bootsAmount;
+            set
+            {
+                _bootsAmount = value;
+                OnPropertyChanged("BootsAmount");
+            }
+        }
+        
+        public int ChestsAmount
+        {
+            get => _chestsAmount;
+            set
+            {
+                _chestsAmount = value;
+                OnPropertyChanged("ChestsAmount");
+            }
+        }
+
+        public int WeaponsAmount
+        {
+            get => _weaponsAmount;
+            set
+            {
+                _weaponsAmount = value;
+                OnPropertyChanged("WeaponsAmount");
+            }
+        }
+
+        #endregion
+        
+        public Visibility AmountsVisibility
+        {
+            get => _amountsVisibility;
+            set
+            {
+                _amountsVisibility = value;
+                OnPropertyChanged("AmountsVisibility");
+            }
+        }
+
+        private SolidColorBrush FetchButtonColor
+        {
+            get => _fetchButtonColor;
+            set
+            {
+                _fetchButtonColor = value;
+                OnPropertyChanged("FetchButtonColor");
+            }
+        }
+        
+        public bool FetchButtonEnabled
+        {
+            get => _fetchButtonEnabled;
+            set
+            {
+                _fetchButtonEnabled = value;
+                OnPropertyChanged("FetchButtonEnabled");
+            }
+        }
+
+        public static void DisableWarnings()
         {
             MainWindow.overlay.WarningMessage = "";
             MainWindow.overlay.ShadowOpacity = 0;
-            MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Hidden;
+            MainWindow.overlay.WarningMessageVisibility = Visibility.Hidden;
         }
-
 
         private async void FetchData()
         {
-            if (FetchingActive)
-            {
-                return;
-            }
-            if(!Properties.Settings.Default.ChaosRecipe && !Properties.Settings.Default.RegalRecipe && !Properties.Settings.Default.ExaltedRecipe)
+            if (FetchingActive) return;
+
+            if (!Settings.Default.ChaosRecipe && !Settings.Default.RegalRecipe && !Settings.Default.ExaltedRecipe)
             {
                 MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -346,69 +351,67 @@ namespace EnhancePoE
             FetchingActive = true;
             CalculationActive = true;
 
-            this.Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(() =>
             {
                 IsIndeterminate = true;
                 FetchButtonEnabled = false;
                 FetchButtonColor = Brushes.DimGray;
             });
-            await this.Dispatcher.Invoke(async() =>
+            await Dispatcher.Invoke(async () =>
             {
-                if(await ApiAdapter.GenerateUri())
-                {
-                    if(await ApiAdapter.GetItems())
-                    {
+                if (await ApiAdapter.GenerateUri())
+                    if (await ApiAdapter.GetItems())
                         try
                         {
                             await Task.Run(async () =>
                             {
                                 await Data.CheckActives();
+                                
                                 SetOpacity();
                                 CalculationActive = false;
-                                this.Dispatcher.Invoke(() =>
-                                {
-                                    IsIndeterminate = false;
-                                });
-                            }, Data.ct);
-                            await Task.Delay(fetchCooldown * 1000).ContinueWith(_ =>
+                                Dispatcher.Invoke(() => { IsIndeterminate = false; });
+                            }, Data.CancelationToken);
+
+                            await Task.Delay(FetchCooldown * 1000).ContinueWith(_ =>
                             {
                                 Trace.WriteLine("waited fetchcooldown");
                                 //FetchButtonEnabled = true;
                                 //FetchButtonColor = Brushes.Green;
                                 //FetchingActive = false;
-
                             });
                         }
-                        catch (OperationCanceledException ex) when (ex.CancellationToken == Data.ct)
+                        catch (OperationCanceledException ex) when (ex.CancellationToken == Data.CancelationToken)
                         {
                             Trace.WriteLine("abort");
                         }
-                    }
-                }
+
                 if (RateLimit.RateLimitExceeded)
                 {
                     MainWindow.overlay.WarningMessage = "Rate Limit Exceeded! Waiting...";
                     MainWindow.overlay.ShadowOpacity = 1;
-                    MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                    MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
+                    
                     await Task.Delay(RateLimit.GetSecondsToWait() * 1000);
+                    
                     RateLimit.RequestCounter = 0;
                     RateLimit.RateLimitExceeded = false;
                 }
+
                 if (RateLimit.BanTime > 0)
                 {
                     MainWindow.overlay.WarningMessage = "Temporary Ban! Waiting...";
                     MainWindow.overlay.ShadowOpacity = 1;
-                    MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                    MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
+                    
                     await Task.Delay(RateLimit.BanTime * 1000);
+                    
                     RateLimit.BanTime = 0;
                 }
-
             });
-
-
+            
             CalculationActive = false;
             FetchingActive = false;
-            this.Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(() =>
             {
                 IsIndeterminate = false;
                 FetchButtonEnabled = true;
@@ -416,160 +419,108 @@ namespace EnhancePoE
                 FetchingActive = false;
             });
             Trace.WriteLine("end of fetch function reached");
-
         }
-
-
+        
         public void RunFetching()
         {
-            if (MainWindow.SettingsComplete)
+            if (!MainWindow.SettingsComplete) return;
+            
+            if (!IsOpen) return;
+            
+            switch (Settings.Default.StashtabMode)
             {
-                if (!IsOpen)
-                {
+                case 0 when Settings.Default.StashTabIndices == "":
+                    MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stashtab Indices.");
                     return;
-                }
-                if (Properties.Settings.Default.StashtabMode == 0)
-                {
-                    if (Properties.Settings.Default.StashTabIndices == "")
-                    {
-                        MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stashtab Indices.");
-                        return;
-                    }
-                }
-                else if (Properties.Settings.Default.StashtabMode == 1)
-                {
-                    if (Properties.Settings.Default.StashTabName == "")
-                    {
-                        MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stashtab Prefix.");
-                        return;
-                    }
-                }
-                //if (CalculationActive || aTimer.Enabled)
-                if(CalculationActive)
-                {
-                    Data.cs.Cancel();
-                    FetchingActive = false;
-                }
-                else
-                {
-                    if (!ApiAdapter.IsFetching)
-                    {
-                        Data.cs = new System.Threading.CancellationTokenSource();
-                        Data.ct = Data.cs.Token;
-                        if (MainWindow.stashTabOverlay.IsOpen)
-                        {
-                            MainWindow.stashTabOverlay.Hide();
-                        }
-                        FetchData();
-                        FetchingActive = true;
-                    }
+                case 1 when Settings.Default.StashTabName == "":
+                    MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stashtab Prefix.");
+                    return;
+            }
 
-                }
+            if (CalculationActive)
+            {
+                Data.cs.Cancel();
+                FetchingActive = false;
+            }
+            else
+            {
+                if (ApiAdapter.IsFetching) return;
+                
+                Data.cs = new CancellationTokenSource();
+                Data.CancelationToken = Data.cs.Token;
+                if (MainWindow.stashTabOverlay.IsOpen) MainWindow.stashTabOverlay.Hide();
+                FetchData();
+                FetchingActive = true;
             }
         }
-
-
+        
         public void ReloadItemFilter()
         {
-            Model.ReloadItemFilter.ReloadItemfilter();
+            Model.ReloadItemFilter.ReloadFilter();
         }
 
-        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             FetchData();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left && !Properties.Settings.Default.LockOverlayPosition)
-            {
+            if (e.ChangedButton == MouseButton.Left && !Settings.Default.LockOverlayPosition)
                 if (Mouse.LeftButton == MouseButtonState.Pressed)
-                {
-                    this.DragMove();
-                }
-            }
+                    DragMove();
         }
 
         private void SetOpacity()
         {
-
             Dispatcher.Invoke(() =>
             {
                 if (!Data.ActiveItems.HelmetActive)
-                {
-                    HelmetOpacity = deactivatedOpacity;
-                }
+                    HelmetOpacity = DeactivatedOpacity;
                 else
-                {
-                    HelmetOpacity = activatedOpacity;
-                }
+                    HelmetOpacity = ActivatedOpacity;
+                
                 if (!Data.ActiveItems.GlovesActive)
-                {
-                    GlovesOpacity = deactivatedOpacity;
-                }
+                    GlovesOpacity = DeactivatedOpacity;
                 else
-                {
-                    GlovesOpacity = activatedOpacity;
-                }
+                    GlovesOpacity = ActivatedOpacity;
+                
                 if (!Data.ActiveItems.BootsActive)
-                {
-                    BootsOpacity = deactivatedOpacity;
-                }
+                    BootsOpacity = DeactivatedOpacity;
                 else
-                {
-                    BootsOpacity = activatedOpacity;
-                }
+                    BootsOpacity = ActivatedOpacity;
+                
                 if (!Data.ActiveItems.WeaponActive)
-                {
-                    WeaponsOpacity = deactivatedOpacity;
-                }
+                    WeaponsOpacity = DeactivatedOpacity;
                 else
-                {
-                    WeaponsOpacity = activatedOpacity;
-                }
+                    WeaponsOpacity = ActivatedOpacity;
+                
                 if (!Data.ActiveItems.ChestActive)
-                {
-                    ChestsOpacity = deactivatedOpacity;
-                }
+                    ChestsOpacity = DeactivatedOpacity;
                 else
-                {
-                    ChestsOpacity = activatedOpacity;
-                }
+                    ChestsOpacity = ActivatedOpacity;
+                
                 if (!Data.ActiveItems.RingActive)
-                {
-                    RingsOpacity = deactivatedOpacity;
-                }
+                    RingsOpacity = DeactivatedOpacity;
                 else
-                {
-                    RingsOpacity = activatedOpacity;
-                }
+                    RingsOpacity = ActivatedOpacity;
+                
                 if (!Data.ActiveItems.AmuletActive)
-                {
-                    AmuletsOpacity = deactivatedOpacity;
-                }
+                    AmuletsOpacity = DeactivatedOpacity;
                 else
-                {
-                    AmuletsOpacity = activatedOpacity;
-                }
+                    AmuletsOpacity = ActivatedOpacity;
+                
                 if (!Data.ActiveItems.BeltActive)
-                {
-                    BeltsOpacity = deactivatedOpacity;
-                }
+                    BeltsOpacity = DeactivatedOpacity;
                 else
-                {
-                    BeltsOpacity = activatedOpacity;
-                }
-
+                    BeltsOpacity = ActivatedOpacity;
             });
         }
 
         public new virtual void Hide()
         {
             IsOpen = false;
-            if(LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
-            {
-                LogWatcher.StopWatchingLogFile();
-            }
+            if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive) LogWatcher.StopWatchingLogFile();
             //aTimer.Enabled = false;
 
             //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Run Overlay";
@@ -579,10 +530,7 @@ namespace EnhancePoE
         public new virtual void Show()
         {
             IsOpen = true;
-            if (Properties.Settings.Default.AutoFetch)
-            {
-                Watcher = new LogWatcher();
-            }
+            if (Settings.Default.AutoFetch) Watcher = new LogWatcher();
             //FetchButtonBottomText = "Start";
             //if (FetchingActive)
             //{
@@ -593,9 +541,7 @@ namespace EnhancePoE
             //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Stop Overlay";
 
             base.Show();
-
         }
-
 
 
         //private void EditStashTabOverlay_Click(object sender, RoutedEventArgs e)
@@ -616,7 +562,6 @@ namespace EnhancePoE
 
         protected override void OnClosing(CancelEventArgs e)
         {
-
         }
 
         //private void Window_Deactivated(object sender, EventArgs e)
@@ -626,16 +571,17 @@ namespace EnhancePoE
         //}
 
         #region INotifyPropertyChanged implementation
+
         // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
         #endregion
-
-
     }
 }

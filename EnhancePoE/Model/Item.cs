@@ -1,15 +1,12 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace EnhancePoE
 {
-
     // names are from api
     public class Item
     {
-
         // poe json props
         public int w { get; set; }
         public int h { get; set; }
@@ -32,15 +29,15 @@ namespace EnhancePoE
         public void GetItemClass()
         {
             //https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldFN0ckRleDciLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/0884b27765/HelmetStrDex7.png
-            var urlParts = this.icon.Split("/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            string encodedPart = urlParts[4];
-            while (encodedPart.Length % 4 != 0)
-            {
-                encodedPart += "=";
-            }
-            string decodedItemData = Encoding.UTF8.GetString(Convert.FromBase64String(encodedPart));
+            var urlParts = icon.Split("/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var encodedPart = urlParts[4];
+
+            while (encodedPart.Length % 4 != 0) encodedPart += "=";
+
+            var decodedItemData = Encoding.UTF8.GetString(Convert.FromBase64String(encodedPart));
             var iconParts = decodedItemData.Split('/');
-            String itemClass = iconParts[1];
+            var itemClass = iconParts[1];
+
             switch (itemClass)
             {
                 case "Weapons":
@@ -51,20 +48,17 @@ namespace EnhancePoE
                 case "Amulets":
                 case "Belts":
                     break;
-                default:
-                    break;
             }
-            this.ItemType = itemClass;
+
+            ItemType = itemClass;
+
             //System.Diagnostics.Trace.WriteLine("item classe ", itemClass);
-            //return itemClass;
         }
     }
 
     public class PropertiesList
     {
         public string name { get; set; }
-        
-        //public List<List<string>> values { get; set; }
 
         public int displayMode { get; set; }
 

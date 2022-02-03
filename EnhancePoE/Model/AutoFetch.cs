@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EnhancePoE.Properties;
 
 namespace EnhancePoE.Model
 {
@@ -23,27 +20,15 @@ namespace EnhancePoE.Model
 
         public LogWatcher()
         {
-
             Trace.WriteLine("logwatcher created");
-            //string[] sep2 = { chaosStart };
-            //string[] split2 = split[0].Split(sep2, System.StringSplitOptions.None);
-
-            //string[] sep = { @"\Client.txt" };
-            //string[] split = Properties.Settings.Default.LogLocation.Split(sep, System.StringSplitOptions.None);
-            //watcher.Path = @"""" + split[0] + "";
-            //watcher.Path = Path.GetDirectoryName(@"" + Properties.Settings.Default.LogLocation);
-            //watcher.NotifyFilter = NotifyFilters.LastWrite;
-            //watcher.Filter = "Client.txt";
-            //watcher.Changed += new FileSystemEventHandler(OnChanged);
-            //watcher.EnableRaisingEvents = true;
 
             var wh = new AutoResetEvent(false);
-            var fsw = new FileSystemWatcher(Path.GetDirectoryName(@"" + Properties.Settings.Default.LogLocation));
+            var fsw = new FileSystemWatcher(Path.GetDirectoryName(@"" + Settings.Default.LogLocation));
             fsw.Filter = "Client.txt";
             fsw.EnableRaisingEvents = true;
             fsw.Changed += (s, e) => wh.Set();
 
-            var fs = new FileStream(Properties.Settings.Default.LogLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var fs = new FileStream(Settings.Default.LogLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             fs.Position = fs.Length;
             WorkerThread = new Thread(() =>
             {
@@ -55,22 +40,26 @@ namespace EnhancePoE.Model
                         s = sr.ReadLine();
                         if (s != null)
                         {
-                            string[] phrase = GetPhraseTranslation();
-                            string hideout = GetHideoutTranslation();
-                            string harbour = GetHarbourTranslation();
-                            if(s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout) && !s.Contains(harbour))
+                            var phrase = GetPhraseTranslation();
+                            var hideout = GetHideoutTranslation();
+                            var harbour = GetHarbourTranslation();
+                            
+                            if (s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout) && !s.Contains(harbour))
                             {
                                 LastZone = NewZone;
                                 NewZone = s.Substring(s.IndexOf(phrase[0]));
-                                //Trace.WriteLine("entered new zone");
+
+                                Trace.WriteLine("entered new zone");
+
                                 Trace.WriteLine(NewZone);
                                 FetchIfPossible();
                             }
                         }
-                            //Console.WriteLine(s);
-                            
+
                         else
+                        {
                             wh.WaitOne(1000);
+                        }
                     }
                 }
             });
@@ -84,9 +73,9 @@ namespace EnhancePoE.Model
 
         public static string[] GetPhraseTranslation()
         {
-            string[] ret = new string[2];
+            var ret = new string[2];
             ret[1] = "";
-            switch (Properties.Settings.Default.Language)
+            switch (Settings.Default.Language)
             {
                 //english
                 case 0:
@@ -118,12 +107,13 @@ namespace EnhancePoE.Model
                     ret[0] = "진입했습니다";
                     break;
             }
+
             return ret;
         }
 
         public static string GetHideoutTranslation()
         {
-            switch (Properties.Settings.Default.Language)
+            switch (Settings.Default.Language)
             {
                 case 0:
                     return "Hideout";
@@ -146,7 +136,7 @@ namespace EnhancePoE.Model
 
         public static string GetHarbourTranslation()
         {
-            switch (Properties.Settings.Default.Language)
+            switch (Settings.Default.Language)
             {
                 case 0:
                     return "The Rogue Harbour";
@@ -191,7 +181,6 @@ namespace EnhancePoE.Model
                     {
                         FetchAllowed = true;
                         Trace.WriteLine("allow fetch");
-
                     });
                 }
                 catch
@@ -200,11 +189,5 @@ namespace EnhancePoE.Model
                 }
             }
         }
-
-        //private void OnChanged(object source, FileSystemEventArgs e)
-        //{
-        //    Trace.WriteLine("log file changed");
-        //}
-
     }
 }
