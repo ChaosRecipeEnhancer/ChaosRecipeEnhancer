@@ -1,23 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-
 
 namespace EnhancePoE
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    ///     Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
-
-
         // TODO: make app single instance 
         public App()
         {
@@ -46,7 +38,6 @@ namespace EnhancePoE
             };
 
 
-
             // Catch exceptions from the main UI dispatcher thread.
             // Typically we only need to catch this OR the Dispatcher.UnhandledException.
             // Handling both can result in the exception getting handled twice.
@@ -61,7 +52,7 @@ namespace EnhancePoE
             //};
         }
 
-        void ShowUnhandledException(Exception e, string unhandledExceptionType, bool promptUserForShutdown)
+        private void ShowUnhandledException(Exception e, string unhandledExceptionType, bool promptUserForShutdown)
         {
             var messageBoxTitle = $"Unexpected Error Occurred: {unhandledExceptionType}";
             var messageBoxMessage = $"The following exception occurred:\n\n{e}";
@@ -74,10 +65,7 @@ namespace EnhancePoE
             }
 
             // Let the user decide if the app should die or not (if applicable).
-            if (MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons) == MessageBoxResult.Yes)
-            {
-                Application.Current.Shutdown();
-            }
+            if (MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons) == MessageBoxResult.Yes) Current.Shutdown();
         }
     }
 }

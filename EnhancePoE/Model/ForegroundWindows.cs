@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EnhancePoE.Model
+﻿namespace EnhancePoE.Model
 {
-    static class ForegroundWindows
+    internal static class ForegroundWindows
     {
-
         //// The GetForegroundWindow function returns a handle to the foreground window
         //// (the window  with which the user is currently working).
         //[System.Runtime.InteropServices.DllImport("user32.dll")]

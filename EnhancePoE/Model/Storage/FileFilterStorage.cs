@@ -15,24 +15,21 @@ namespace EnhancePoE.Model.Storage
         public async Task<string> ReadLootFilterAsync()
         {
             if (_fileLocation != "")
-            {
-                using (StreamReader reader = new StreamReader(_fileLocation))
+                using (var reader = new StreamReader(_fileLocation))
                 {
                     return await reader.ReadToEndAsync();
                 }
-            }
+
             return null;
         }
 
         public async Task WriteLootFilterAsync(string filter)
         {
             if (_fileLocation != "" && filter != "")
-            {
-                using (StreamWriter writer = new StreamWriter(_fileLocation))
+                using (var writer = new StreamWriter(_fileLocation))
                 {
                     await writer.WriteAsync(filter);
                 }
-            }
         }
     }
 }

@@ -9,17 +9,14 @@ namespace EnhancePoE
         private readonly Action<T> _execute;
 
         public RelayCommand(Action<T> execute)
-           : this(execute, null)
+            : this(execute, null)
         {
             _execute = execute;
         }
 
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
-            if (execute == null)
-            {
-                throw new ArgumentNullException("execute");
-            }
+            if (execute == null) throw new ArgumentNullException("execute");
             _execute = execute;
             _canExecute = canExecute;
         }
@@ -36,8 +33,8 @@ namespace EnhancePoE
 
         public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
     }
 
@@ -47,17 +44,14 @@ namespace EnhancePoE
         private readonly Action<object> _execute;
 
         public Command(Action<object> execute)
-           : this(execute, null)
+            : this(execute, null)
         {
             _execute = execute;
         }
 
         public Command(Action<object> execute, Predicate<object> canExecute)
         {
-            if (execute == null)
-            {
-                throw new ArgumentNullException("execute");
-            }
+            if (execute == null) throw new ArgumentNullException("execute");
             _execute = execute;
             _canExecute = canExecute;
         }

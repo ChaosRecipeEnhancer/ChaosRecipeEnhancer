@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using EnhancePoE.Properties;
 
 
 //Todo: auto focus on open
@@ -19,18 +7,18 @@ using System.Windows.Shapes;
 namespace EnhancePoE
 {
     /// <summary>
-    /// Interaction logic for HotkeyWindow.xaml
+    ///     Interaction logic for HotkeyWindow.xaml
     /// </summary>
     public partial class HotkeyWindow : Window
     {
-        private string type;
-        private MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
+        private readonly string type;
 
         public HotkeyWindow(MainWindow mainWindow, string hotkeyType)
         {
             this.mainWindow = mainWindow;
 
-            this.type = hotkeyType;
+            type = hotkeyType;
 
             //if(hotkeyType == "refresh")
             //{
@@ -54,33 +42,34 @@ namespace EnhancePoE
 
         private void SaveHotkeyButton_Click(object sender, RoutedEventArgs e)
         {
-
-            if(type == "refresh")
+            if (type == "refresh")
             {
                 HotkeysManager.RemoveHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey);
                 if (CustomHotkeyToggle.Hotkey == null)
                 {
-                    Properties.Settings.Default.HotkeyRefresh = "< not set >";
+                    Settings.Default.HotkeyRefresh = "< not set >";
                 }
                 else
                 {
-                    Properties.Settings.Default.HotkeyRefresh = CustomHotkeyToggle.Hotkey.ToString();
+                    Settings.Default.HotkeyRefresh = CustomHotkeyToggle.Hotkey.ToString();
                     HotkeysManager.GetRefreshHotkey();
                 }
+
                 ReApplyHotkeys();
             }
-            else if(type == "toggle")
+            else if (type == "toggle")
             {
                 HotkeysManager.RemoveHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey);
                 if (CustomHotkeyToggle.Hotkey == null)
                 {
-                    Properties.Settings.Default.HotkeyToggle = "< not set >";
+                    Settings.Default.HotkeyToggle = "< not set >";
                 }
                 else
                 {
-                    Properties.Settings.Default.HotkeyToggle = CustomHotkeyToggle.Hotkey.ToString();
+                    Settings.Default.HotkeyToggle = CustomHotkeyToggle.Hotkey.ToString();
                     HotkeysManager.GetToggleHotkey();
                 }
+
                 ReApplyHotkeys();
             }
             else if (type == "stashtab")
@@ -88,13 +77,14 @@ namespace EnhancePoE
                 HotkeysManager.RemoveHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey);
                 if (CustomHotkeyToggle.Hotkey == null)
                 {
-                    Properties.Settings.Default.HotkeyStashTab = "< not set >";
+                    Settings.Default.HotkeyStashTab = "< not set >";
                 }
                 else
                 {
-                    Properties.Settings.Default.HotkeyStashTab = CustomHotkeyToggle.Hotkey.ToString();
+                    Settings.Default.HotkeyStashTab = CustomHotkeyToggle.Hotkey.ToString();
                     HotkeysManager.GetStashTabHotkey();
                 }
+
                 ReApplyHotkeys();
             }
             //else if(type == "reloadFilter")
@@ -112,7 +102,7 @@ namespace EnhancePoE
             //    ReApplyHotkeys();
 
             //}
-            this.Close();
+            Close();
         }
 
         private void ReApplyHotkeys()

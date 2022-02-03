@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EnhancePoE"
         mc:Ignorable="d"
         FontSize="18"
         Topmost="True"
@@ -12,31 +11,28 @@
         Title="HotkeyWindow" Height="200" Width="200">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
 
         <uc:HotkeyEditorControl
             x:Name="CustomHotkeyToggle"
             Grid.Row="1"
-            Grid.Column="1"
-            
-            />
+            Grid.Column="1" />
 
         <Button
             x:Name="SaveHotkeyButton"
             Grid.Column="1"
             Grid.Row="2"
             Content="Save"
-            Click="SaveHotkeyButton_Click"
-            />
+            Click="SaveHotkeyButton_Click" />
 
     </Grid>
 </Window>
