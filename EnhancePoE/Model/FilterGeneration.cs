@@ -199,7 +199,7 @@ namespace EnhancePoE.Model
             // 3. chaos start
             // 4. chaos end
 
-            var nl = "\n";
+            var newLine = "\n";
             string result;
             var exaltedSection = "";
             var exaltedStart = "#Chaos Recipe Enhancer by kosace Exalted Recipe Start";
@@ -209,11 +209,11 @@ namespace EnhancePoE.Model
             var afterExalted = "";
 
             // generate chaos recipe section
-            exaltedSection += exaltedStart + nl + nl;
-            foreach (var s in sections) exaltedSection += s + nl;
-            exaltedSection += exaltedEnd + nl;
+            exaltedSection += exaltedStart + newLine + newLine;
+            foreach (var s in sections) exaltedSection += s + newLine;
+            exaltedSection += exaltedEnd + newLine;
 
-            string[] sep = { exaltedEnd + nl };
+            string[] sep = { exaltedEnd + newLine };
             var split = oldFilter.Split(sep, StringSplitOptions.None);
 
             if (split.Length > 1)
