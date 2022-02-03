@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.2.6
+#### Current Version 1.3.0
 
 This product isn't affiliated with or endorsed by Grinding Gear Games in any way.
 
