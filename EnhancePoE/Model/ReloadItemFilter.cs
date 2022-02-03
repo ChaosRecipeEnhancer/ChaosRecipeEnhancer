@@ -71,7 +71,7 @@ namespace EnhancePoE.Model
             var chatCommand = BuildFilterReloadCommand();
             if (chatCommand is null) return;
 
-            Clipboard.SetText(chatCommand);
+            Clipboard.SetDataObject(chatCommand);
 
             // Map all current window names to their associated "handle to a window" pointers (HWND)
             var openWindows = GetOpenWindows();
@@ -100,7 +100,8 @@ namespace EnhancePoE.Model
             SendKeys.SendWait("{ENTER}");
 
             // restore clipboard
-            Clipboard.SetText(oldClipboard);
+            Clipboard.SetDataObject(oldClipboard);
+
         }
 
         private static string BuildFilterReloadCommand()
