@@ -100,6 +100,28 @@ Don't forget to refresh your loot filter in-game everytime the item types change
 
 Please make a copy of your loot filter before using it.
 
+#### **_Notes on manipulation of Online Loot Filters_**
+
+So some updates on the filter manipulation: Local works just fine! Woo! 🥳
+
+But... we're running into some limitations with the ONLINE Filter Manipulation.
+
+Here's where we're at:
+- Our program has no trouble manipulating the contents of the online filter
+- Our program is successfully sending/saving those changes up to your profile (you can check for yourself after running a fetch)
+
+Once your fetch is complete and your filter is updated on your profile (ONLINE, NOT in-game yet), you hit the reload filter button expecting the new filters to show up. They don't.
+
+After hitting up the dev chat on TFT, I believe the cause is caching that is happening on the GGG side of things for your Loot Filters.
+
+According to FilterBlade, they had to get special permission to implement their version of 'near real-time updates' for filters made on their site.
+
+As a developer, I can completely understand their reasons for implementing a cache before hitting the database - it's faster and generally speaker easier a load on some of their services under the hood.
+
+So, all that said, for the time being we won't be able to guarantee that ***ONLINE *** filter manipulation will work 100% with the new update. It may not even affect the lot of y'all unless you're hitting the set threshold you have set every couple of minutes.
+
+Really sorry about this, y'all!
+
 ###### Recognition Phrases:
  - Chaos Recipe Start: "#Chaos Recipe Enhancer by kosace Chaos Recipe Start"
  - Chaos Recipe End: "#Chaos Recipe Enhancer by kosace Chaos Recipe End"
@@ -263,7 +285,7 @@ The sound volume...
 
 ##  F.A.Q.
 
-#### The tool seems to not pick the right stash tabs?
+#### The tool seems to not pick the right stash tabs
 
 Make sure you do NOT have "Remove-only Stash tabs" hidden. They will still be counted, even if you can't see them. That means the index will be off. 
 
@@ -273,11 +295,11 @@ https://www.pathofexile.com/character-window/get-stash-items?accountName=YOURACC
 
 It will output all your stash tabs currently available. 
 
-#### The tool cannot find my account?
+#### The tool cannot find my account
 
 If you are a steam user, make sure you have linked your steam account to your PoE account on the website
 
-#### The highlighting in Stash Tab Overlay seems off?
+#### The highlighting in Stash Tab Overlay seems off
 
 If you have changed your Display Scaling in Windows (Display Settings -> Scale and layout) it will not get the right mouse positions. Set it to 100%.
 
@@ -285,12 +307,12 @@ If you have changed your Display Scaling in Windows (Display Settings -> Scale a
 
 Make sure you do not close the overlay while selling. The data cannot be refreshed that fast, that means the tool calculates an order for picking the items out of your stash. This order will start from the beginning if you closed the overlay and did not fetch before. So just leave it open while selling.
 
-#### The Stash tab Overlay is not aligned?
+#### The Stash tab Overlay is not aligned
 
 You can align it yourself by going in edit mode. Press "Edit" on top of the Stash tab Overlay and drag the Stash tab Overlay (at the top) around. In the bottom right corner there is a grip to resize the Stash tab Overlay.
 
 #### Is this tool safe?
-You can check and compile the sourcecode for yourself, so it should be safe as long as you are downloading it from here.
+You can check and compile the sourcecode for yourself, so it should be safe as long as you are downloading it from here. DO NOT download from any other locations and ensure you're downloading from our original repository.
 
 #### Can I get banned for using this tool?
 Well, I contacted GGG but as usual they don't answer any questions regarding legality of 3rd party tools. As this tool does not interfere with any game files directly, the answer is: probably no!
