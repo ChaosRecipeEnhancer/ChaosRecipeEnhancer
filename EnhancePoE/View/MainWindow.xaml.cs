@@ -28,7 +28,7 @@ namespace EnhancePoE
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private static readonly string appVersion = "1.2.6.0";
+        private static readonly string appVersion = "1.3.0.0";
 
         public static ChaosRecipeEnhancer overlay = new ChaosRecipeEnhancer();
 

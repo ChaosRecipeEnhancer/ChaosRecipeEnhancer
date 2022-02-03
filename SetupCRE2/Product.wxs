@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?define ProductVersion = "1.2.6.0"?>
+<?define ProductVersion = "1.3.0.0"?>
 <?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define EnhancePoE_TargetDir=$(var.EnhancePoE.TargetDir)?>
-    <Product Id="*" Name="ChaosRecipeEnhancer" Language="1033" Version="$(var.ProductVersion)" Manufacturer="kosace"
+    <Product Id="*" Name="ChaosRecipeEnhancer" Language="1033" Version="$(var.ProductVersion)" Manufacturer="CRETeam"
              UpgradeCode="$(var.UpgradeCode)">
         <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
 

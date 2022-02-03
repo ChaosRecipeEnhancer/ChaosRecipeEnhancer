@@ -1325,7 +1325,7 @@
                     <TextBlock.Inlines>
                         <Run FontFamily="Segoe UI"
                              FontSize="12"
-                             Text="by kosace " />
+                             Text="by kosace &amp; friends" />
                     </TextBlock.Inlines>
                 </TextBlock>
                 <TextBlock
