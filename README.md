@@ -1,14 +1,14 @@
 # The PoE Chaos Recipe Enhancer
 
-This App fetches data from PoE servers and shows which items you need to pick up for the Chaos Recipe. Optionally it manipulates your loot filter, so you can go full brain-dead while farming! While selling your stuff it shows you what items to put in your inventory in which order. No more using your brain at all!
+This app fetches your stash data from the PoE servers and shows which items you need to pick up for the chaos recipe. Optionally, it can also manipulate your loot filter, so you can go full brain-dead while farming! While selling your stuff it shows you what items to put in your inventory in which order. No more using your brain at all! Great for some quick and easy chaos, specifically during league starts!
 
-For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
+For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or [open an Issue on GitHub](https://github.com/kosace/EnhancePoEApp/issues/new) (and please include as much detail as possible, with screenshots of your settings if you can!).
 
-#### Current Version 1.3.1
+#### Current Version 1.3.2 (February 4th, 2022; Pre-PoE 3.17)
 
 This product isn't affiliated with or endorsed by Grinding Gear Games in any way.
 
-For details on changes, check the Change Log at the bottom of this site.
+For details on changes, check out the CHANGELOG.md file, alternatively, every new version of the app has a copy of the changes included in that release.
 
 ## Support
 
@@ -24,13 +24,12 @@ DO NOT download the whole github repository, since it may include some new exper
 
 [Download the setup.msi here](https://github.com/kosace/EnhancePoEApp/releases) instead. 
 
-Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
+Since this app is not 'trusted' (i.e. we're not a corporation who has the money or clout to sign our installer), you will have to accept a few security prompts to install the program ('Keep' the file on browser, then click on "More info" when Windows wants to protect your PC). Apologies for the inconvenience there. If anyone knows a cheap and easy way to get our installer signed please let us know! 
 
 If you have updated your application to 1.2.0 please use a new item filter as some changes may break your existing one! Make sure to back up any custom filters you want our program to interact with in case of any [potentially unwanted behavior!](https://github.com/kosace/EnhancePoEApp/issues/106)
 
 ## Features
 
- - Easy to use
  - Multiple Stash Tabs
  - Hotkeys
  - Customizable Overlays
@@ -57,19 +56,19 @@ If you have updated your application to 1.2.0 please use a new item filter as so
 
 #### Compatibility
 
-The overlays will not work in Fullscreen Mode. They will only work in:
+The overlays will not work in full-screen Mode. They will only work in:
  - Windowed Mode
  - Fullscreen Windowed Mode
  
-The tool has been tested with Windows 10/11, we have no plans to officially support other operating systems.
+The tool has been tested with Windows 10/11, we have no plans to officially support other operating systems at this time. If you'd like to contribute towards a MacOS or Linux-compatible version of the app, please let us know!
 
-Overlay only works with Display Scaling 100% in Windows Settings (working on a fix). 
+The overlay only works with display scaling set to 100% in your Windows Settings. I'd say we're working on a fix, but it's relatively low priority. 
 
-#### Main Overlay
+#### Main In-Game Overlay
 
-The Main Overlay shows each item type with its color and while fetching data it shows a loading bar. When you have enough items of a specific item type the image will grey out. If you have loot filter manipulation activated, this is the time to refresh your loot filter manually in-game. Also if you have sound activated, it will play to remember you to refresh your loot filter.
+The main in-game overlay shows each item type with its color and while fetching data it shows a loading bar. When you have enough items of a specific item type the image will grey out. If you have loot filter manipulation activated, this is the time to refresh your loot filter manually in-game. Also, if you have sound activated, it will play to remind to refresh your loot filter.
 
-You can just drag the Main Overlay wherever you want, except if you set the opacity to 0 (better set it to 0.01).
+You can drag the main in-game overlay wherever you want, except in cases where you set the opacity to 0 (it's probably better to set it to 0.01 or some higher value).
 
  - Show Button: shows/ hides the Stash Tab Overlay
  - Fetch Button: starts fetching items from PoE servers periodically
@@ -80,25 +79,26 @@ There will be warning displayed in this overlay also:
  - Warning if you have full sets and need to sell them
  - Warning if you have full exalted shard recipe set
  - Warning if you are temporarily banned from fetching from PoE servers
- - Warning if you exceeded the rate limit
+ - Warning if you exceeded the rate limit (keep in mind rate-limits are enforced ACROSS ALL APPS AND WEBSITES for a given account; So if you query from PoE Trade Macro too many times, you will block your entire account for a fixed period, including this application)
+    - Note: We have a few restrictions built in to our app to keep it from fetching more often than is needed. If you run into any rate limit issues, please try and check for other sources of rate-limit including other PoE apps, your trade searches, etc.
 
 #### Stash Tab Overlay
 
-The stash tab Overlay highlights items in a specific order if you have full sets in a stash tab. No more wondering which part is missing when selling. Also this way you can put 2 sets in one inventory. Leave it open when selling! Otherwise the highlighting will start from beginning with items you already sold.
+The stash tab Overlay highlights items in a specific order if you have full sets in a stash tab. No more wondering which piece of gear you are missing when selling. Another added bit is with this feature, you should be able to fit 2 full sets in one inventory. Leave it open when selling! Otherwise the highlighting will start from beginning with items you already sold.
 
-If you want to change position or size of the stash tabs Overlay, you have to press the "Edit" button on the Main Overlay. Then you can drag the Stash tabs Overlay around and resize it (bottom right corner), except if you set the opacity to 0 (better set it to 0.01). The TabHeader position and sizes can be modified in the Settings Page.
+If you want to change position or size of the stash tab overlay, you have to press the "Edit" button on the stash tab overlay. Then you can drag the stash tabs overlay around and resize it (bottom right corner), except if you set the opacity to 0 (better set it to 0.01). The TabHeader position and sizes can be modified in the settings page.
 
-At the top of the overlay you can find the
+At the top of the stash tab overlay you can find the
 
  - Edit Button: makes the Stash Tab Overlay clickable and draggable
 
 #### Loot Filter
 
-You can use any loot filter you want. If you don't have the recognition phrase in your loot filter, the recipe rules will be added to the top of your existing loot filter (which overwrites some rules, working on a fix). When the recognition phrase is added, the app will only change the styles in within the phrases. That means you can decide where the recipe rules should be modified.
+You can use any loot filter you want, [but preferably an offline filter](https://github.com/kosace/EnhancePoEApp/pull/274#issuecomment-1030049058). If you don't have the recognition phrase in your loot filter, the recipe rules will be added to the top of your existing loot filter (which overwrites some rules, working on a fix). When the recognition phrase is added, the app will only change the styles in within the phrases. That means you can decide where the recipe rules should be modified.
 
 Don't forget to refresh your loot filter in-game everytime the item types change!
 
-Please make a copy of your loot filter before using it.
+Make sure to back up any custom filters you want our program to interact with in case of any [potentially unwanted behavior!](https://github.com/kosace/EnhancePoEApp/issues/106). I've said this before but just want to make it very clear. Don't want anyone to lose hours of their hard work due to a nasty bug!
 
 #### **_Notes on manipulation of Online Loot Filters_**
 
@@ -342,197 +342,12 @@ Although there are 2 points which could be problematic:
   
 ## Contributions
 
-If you want to contribute to the project you can push changes to the "patches"-branch. Do not push to master please.
+If you want to contribute to the project you can push changes to the "develop"-branch.
 
-Best thing would be to join the discord though especially if you want to make bigger changes. There we can discuss how to do what.
-Help is always appreciated since this is my starter project for WPF anyways.
+WIP: Making a guide to help folks get the project set-up on their machine for the first time.
 
-## Change Log
+Best thing would be to join the Discord, especially if you want to make bigger changes. There, we can discuss when and how to do what. 
 
-#### 1.3.1
+Help is always appreciated, and we can never get enough of it. Thanks again for everyone's support and contributions to the project.
 
-- fixing "Unable to parse parameter for Class Rule" issues with One-Handed and Two-Handed weapons
-
-#### 1.3.0
-
-Note: The project is now being actively maintained by [@HiMarioLopez](https://github.com/HiMarioLopez) (Discord: Meatbox#1607, PoE Account Name: [ClumsyParasite](https://www.pathofexile.com/account/view-profile/ClumsyParasite)).
-Feel free to hit me up on Discord or in-game! I'll be juicing it up for the first few days of 3.17.
-
-- fixing filter manipulation and reloading issues
-- adding rogue harbour as a valid 'home' location (thanks to [@Irfy](https://github.com/Irfy))
-- fixing clipboard set/reset error (thanks to [@Essyer](https://github.com/Essyer))
-
-#### 1.2.6
-
- - changed installer
- - added auto updater
- - added item filter reload button (thanks to [@kxc0re](https://github.com/kxc0re))
-
-#### 1.2.5
-
- - fixed bug where non-rare items would count into sets
- - added custom sound option (thanks to [@C64Gamer](https://github.com/C64Gamer))
-
-#### 1.2.4
-
- - added error message when online loot filter was not found
- - removed itemlog
-
-#### 1.2.3
-
- - fixed breaking bug where items could not be found anymore because GGG changed their Api (thanks to [@b0ykoe](https://github.com/b0ykoe))
- - added online filter functionality, this feature may need some testing (thanks to [@Zyertdox](https://github.com/Zyertdox) )
-
-#### 1.2.2
-
- - fixed bug from "fixed bug where amount of items owned/ missing got calculated too early" since it introduced another bug :D
-
-#### 1.2.1
-
- - added warning when no stash tabs were found
- - fixed bug where missing chaos items never showed (thanks to @ikogan)
- - added warning when no recipes selected
- - fixed bug where exalted recipe set could never be filled (it will show a warning now when you have an exalted set full)
- - added option for item icons on minimap (only little white stars atm)
- - added option to lock main overlay position (@hakfo ;))
- - fixed bug where you couldn't fetch anymore after connection got refused
- - clarified warning for refused connections (forbidden)
- - added option to show amount of items missing instead of items owned
- - fixed bug where amount of items owned/ missing got calculated too early
- - added auto fetch support for each language (except thai, need help there :D), this needs to be the same language your PoE client is in
-
-#### 1.2.0
-
- - removed check for refresh rate as it has been removed
-
-#### 1.1.9
-
- - added Regal Recipe (thanks to Immo)
- - removed refresh rate
- - added manual Fetch button (30 sec cooldown)
- - added auto-fetch on new map (120 sec cooldown)
- - added Log File Location dialog (specify your PoE log file location to enable auto-fetch)
-
-#### 1.1.8
-
- - fixed a "not enough new lines" bug (thanks to @MarcLandis)
-
-#### 1.1.7
-
- - fixed new lines bug in exalted shard recipe (which will also occur if you dont use this recipe)
-
-#### 1.1.6
-
- - fixed items not being activated and deactivated correctly
-
-#### 1.1.5
-
- - added Reset Settings button
- - fixed infinite spaces in loot filter bug
- - added Always Active Section
- - rearranged UI
- - added support for identified items
- - increased Tab Header Margin to 500 maximum
- - added Show Item Amounts support for Minified UI mode
- - added Contribution Section
- - separated Exalted recipe from Chaos Recipe. You can now turn both on and off individually.
-
-#### 1.1.4 
-
- - added user-agent to every request (thanks to @WhiteFang5)
- - changed minimum refresh rate to 45 seconds (this will change soon when I rework the fetching algorithm)
- - avoided InvalidCastException (thanks to @devinvisible)
- - removed "Hide" rules from loot filter, now your own rules kick in if you have enough items for the recipe
- - actual numbers of each item are now shown
- 
-#### 1.1.3
-
- - fixed fetching bug (thanks Immo)
-
-#### 1.1.2
-
- - fixed bug where highlight sound played with empty stash tabs
- - fixed bug where stash overlay showed item sets with no low item level item
- - loot filter now prevents hiding of 6 link and 6 socket items
- - added Save Button, the app will still save settings when you close it regularly
- - changed fetching, it is way faster now
- - added rate limit calculations, now it should be impossible to get request banned
- - added warnings for temporary bans and if you exceed the rate limit
- - crash reports should now appear correctly
- - now shows every item type in Overlay, including rings, belts and amulets
- - added Overlay modes
- - added Minified Overlay UI
- - added Buttons Only Overlay UI
- - added option to show item amounts (only in Standard mode)
- - updated Guide
- 
-#### 1.1.1
-
- - fixed bug where influenced items got hidden
- - (probably) fixed crash while fetching
- - fixed bug where exalted orb recipe rules did not write to item filter
- - fixed bug in item by item mode where sound was not playing on last item
- 
-
-#### 1.1.0
-
- - added warning when fetching failed
- - fixed a bug where Stash tab Overlay was not "through-clickable" after using the edit mode
- - changed Stash tab Overlay grid color to white
- - set minimum opacity of overlays to 0.01
- - fetching now automatically resumes when closing the Stash tab Overlay, if you were fetching before.
- - minor UI changes
-
-#### 1.0.9
-
- - fixed bug not showing item order in set by set highlight mode in quad tabs
- - fixed bug when entering account name or league with spaces
- - changed icon
- - fixed bug showing items item level < 60
-
-#### 1.0.8
-
- - grouped Settings by category
- - removed Save Button, everything should save automatically
- - removed individual stash tabs
- - added stash tab mode, for easier stash tab adding
- - now automatically detects quad tabs
- - now automatically detects stash tab names/ IDs
- - added distance algorithm, the tool prefers items close together
- - added highlight mode
- - added sound when full set is picked up for selling
- - added support for every item level, now you can mix higher and lower item level items
- - added fill greedy mode, you can decide if there should only be one lower item level item in your sets or more
- - removed bases, works with classes now
- - removed the option for 2 hand weapons, now every 2 hand weapon with size 2x3 and every 1 hand weapon with size 1x3 will be allowed
- - added initial position and size of Stash tab Overlay optimized for full hd
- - added password font in SessionID field, no more leaking your ID
- - updated guide
-
-#### 1.0.7
-
- - minor UI changes
- - added colors for jewellery
- - fixed crash occuring when sound notification is activated
-
-#### 1.0.6
-
- - fixed loot filter parsing bug (should recognize the phrases now correctly)
- - added default values
- - adjusted stash tab overlay highlighting sizes
- - added bows and 1h maces
- 
-#### 1.0.5
-
- - added Two-Hand Weapon support
- - added Custom Style support
- - added Exalted Shard Recipe (Read guide)
- - changed loot filter parsing
- - added sound when loot filter changes
- - added custom tab header width for aligning tab headers to game
-  
-  
-  
-  
-  
-  
+Cheers, and stay sane, exiles!
