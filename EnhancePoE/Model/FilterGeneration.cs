@@ -62,16 +62,16 @@ namespace EnhancePoE.Model
             else
                 result += "ItemLevel >= 60" + nl + tab;
 
-            if (itemClass == "Body Armours") result += "Sockets <= 5" + nl + tab + "LinkedSockets <= 5" + nl + tab;
+            if (itemClass == "\"Body Armours\"") result += "Sockets <= 5" + nl + tab + "LinkedSockets <= 5" + nl + tab;
 
             var baseType = "Class ";
 
-            if (itemClass == "OneHandWeapons")
+            if (itemClass == "\"One Hand\"")
             {
                 baseType += "\"Daggers\" \"One Hand Axes\" \"One Hand Maces\" \"One Hand Swords\" \"Rune Daggers\" \"Sceptres\" \"Thrusting One Hand Swords\" \"Wands\"";
                 baseType += nl + tab + "Width <= 1" + nl + tab + "Height <= 3";
             }
-            else if (itemClass == "TwoHandWeapons")
+            else if (itemClass == "\"Two Hand\"")
             {
                 baseType += "\"Two Hand Swords\" \"Two Hand Axes\" \"Two Hand Maces\" \"Staves\" \"Warstaves\" \"Bows\"";
                 baseType += nl + tab + "Width <= 2" + nl + tab + "Height <= 3";
@@ -116,11 +116,11 @@ namespace EnhancePoE.Model
             if (type == "\"Amulets\"") color = Settings.Default.ColorAmulet;
             if (type == "\"Belts\"") color = Settings.Default.ColorBelt;
             if (type == "\"Helmets\"") color = Settings.Default.ColorHelmet;
-            if (type == "\"OneHandWeapons\"") color = Settings.Default.ColorWeapon;
+            if (type == "\"One Hand\"") color = Settings.Default.ColorWeapon;
             if (type == "\"Gloves\"") color = Settings.Default.ColorGloves;
             if (type == "\"Boots\"") color = Settings.Default.ColorBoots;
             if (type == "\"Body Armours\"") color = Settings.Default.ColorChest;
-            if (type == "\"TwoHandWeapons\"") color = Settings.Default.ColorWeapon;
+            if (type == "\"Two Hand\"") color = Settings.Default.ColorWeapon;
             if (color != "")
             {
                 a = Convert.ToByte(color.Substring(1, 2), 16);
