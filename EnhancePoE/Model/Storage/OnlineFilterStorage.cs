@@ -117,7 +117,6 @@ namespace EnhancePoE.Model.Storage
             {
                 ["filter_name"] = document.DocumentNode.SelectSingleNode("//input[@name='filter_name']").GetAttributeValue("value", ""),
                 ["realm"] = document.DocumentNode.SelectSingleNode("//select[@name='realm']/option[@selected]").GetAttributeValue("value", null),
-                ["public"] = document.DocumentNode.SelectSingleNode("//input[@id='public']").Attributes.Any(a => a.Name == "checked") ? "1" : "0",
                 ["description"] = WebUtility.HtmlDecode(document.DocumentNode.SelectSingleNode("//textarea[@name='description']").InnerText.Trim()),
                 ["version"] = "",
                 ["should_validate"] = document.DocumentNode.SelectSingleNode("//input[@id='should_validate']").Attributes.Any(a => a.Name == "checked") ? "1" : "0",

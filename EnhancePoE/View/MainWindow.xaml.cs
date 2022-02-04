@@ -28,7 +28,7 @@ namespace EnhancePoE
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private static readonly string appVersion = "1.3.1.0";
+        private static readonly string appVersion = "1.3.2.0";
 
         public static ChaosRecipeEnhancer overlay = new ChaosRecipeEnhancer();
 
@@ -180,7 +180,7 @@ namespace EnhancePoE
 
             // Initialize menuItemUpdate
             menuItemUpdate.Index = 0;
-            menuItemUpdate.Text = "C&eck for Updates";
+            menuItemUpdate.Text = "C&heck for Updates";
             menuItemUpdate.Click += CheckForUpdates_Click;
 
 
