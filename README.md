@@ -4,7 +4,7 @@ This App fetches data from PoE servers and shows which items you need to pick up
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or open an Issue on github.
 
-#### Current Version 1.3.0
+#### Current Version 1.3.1
 
 This product isn't affiliated with or endorsed by Grinding Gear Games in any way.
 
@@ -348,6 +348,10 @@ Best thing would be to join the discord though especially if you want to make bi
 Help is always appreciated since this is my starter project for WPF anyways.
 
 ## Change Log
+
+#### 1.3.1
+
+- fixing "Unable to parse parameter for Class Rule" issues with One-Handed and Two-Handed weapons
 
 #### 1.3.0
 
