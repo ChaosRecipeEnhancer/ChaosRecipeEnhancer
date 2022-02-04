@@ -26,7 +26,7 @@ DO NOT download the whole github repository, since it may include some new exper
 
 Since this app is not trusted (too expensive), you will have to accept few times to install (Click on "More info" when Windows wants to protect your PC). 
 
-If you have updated your application to 1.2.0 please use a new item filter as some changes may break your existing one!
+If you have updated your application to 1.2.0 please use a new item filter as some changes may break your existing one! Make sure to back up any custom filters you want our program to interact with in case of any [potentially unwanted behavior!](https://github.com/kosace/EnhancePoEApp/issues/106)
 
 ## Features
 
