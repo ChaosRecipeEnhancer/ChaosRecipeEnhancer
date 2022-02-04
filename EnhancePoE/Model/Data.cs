@@ -375,9 +375,9 @@ namespace EnhancePoE
 
                         if (!Settings.Default.BootsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Boots\"", false, true));
 
-                        if (!Settings.Default.WeaponsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"OneHandWeapons\"", false, true));
+                        if (!Settings.Default.WeaponsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"One Hand\"", false, true));
 
-                        if (!Settings.Default.WeaponsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"TwoHandWeapons\"", false, true));
+                        if (!Settings.Default.WeaponsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Two Hand\"", false, true));
 
                         if (!Settings.Default.RingsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Rings\"", false, true));
 
@@ -460,8 +460,8 @@ namespace EnhancePoE
                             case "TwoHandWeapons":
                                 if (!Settings.Default.WeaponsAlwaysActive)
                                 {
-                                    sectionList.Add(FilterGeneration.GenerateSection(true, "\"TwoHandWeapons\""));
-                                    sectionList.Add(FilterGeneration.GenerateSection(true, "\"OneHandWeapons\""));
+                                    sectionList.Add(FilterGeneration.GenerateSection(true, "\"Two Hand\""));
+                                    sectionList.Add(FilterGeneration.GenerateSection(true, "\"One Hand\""));
                                 }
 
                                 ActiveItems.WeaponActive = true;
@@ -536,8 +536,8 @@ namespace EnhancePoE
 
                     if (Settings.Default.WeaponsAlwaysActive)
                     {
-                        sectionList.Add(FilterGeneration.GenerateSection(true, "\"OneHandWeapons\""));
-                        sectionList.Add(FilterGeneration.GenerateSection(true, "\"TwoHandWeapons\""));
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "\"One Hand\""));
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "\"Two Hand\""));
                     }
                 }
 
@@ -613,8 +613,8 @@ namespace EnhancePoE
                         sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "\"Gloves\"", true));
                         sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "\"Boots\"", true));
                         sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "\"Body Armours\"", true));
-                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "\"OneHandWeapons\"", true));
-                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "\"TwoHandWeapons\"", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "\"One Hand\"", true));
+                        sectionListInfluenced.Add(FilterGeneration.GenerateSection(true, "\"Two Hand\"", true));
 
                         newFilter = FilterGeneration.GenerateLootFilterInfluenced(oldFilter, sectionListInfluenced);
                     }
