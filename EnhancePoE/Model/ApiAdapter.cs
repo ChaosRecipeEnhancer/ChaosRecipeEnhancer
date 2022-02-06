@@ -50,6 +50,25 @@ namespace EnhancePoE
             return false;
         }
 
+        public static List<string> GetAllLeagueNames()
+        {
+            var leagueIds = new List<string>();
+
+            using (WebClient wc = new WebClient())
+            {
+                string json = wc.DownloadString("https://api.pathofexile.com/leagues?type=main&compact=1");
+                var document = JsonDocument.Parse(json);
+                var allLeagueData = document.RootElement.EnumerateArray();
+                foreach (var league in allLeagueData)
+                {
+                    string id = league.GetProperty("id").GetString();
+                    leagueIds.Add(id);
+                }
+            }
+
+            return leagueIds;
+        }
+
         private static void GenerateStashTabs()
         {
             var ret = new List<StashTab>();
