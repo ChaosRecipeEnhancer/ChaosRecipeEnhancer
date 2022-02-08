@@ -76,6 +76,9 @@ namespace EnhancePoE
             // initialize stashtabs
             //DataContext = stashTabsModel;
 
+            // Populate the league dropdown
+            LeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
+
             InitializeColors();
             InitializeHotkeys();
             InitializeTray();
