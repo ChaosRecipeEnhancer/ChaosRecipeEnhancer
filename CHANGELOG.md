@@ -1,5 +1,12 @@
 ## Change Log
 
+#### 1.4.0
+
+- removing online filter manipulation as a feature; **_you can still manipulate your offline filters_**
+- fixing rate limit exceeded error (thanks to [@catinsock](https://github.com/catinsock))
+- improved league selection (formerly a text input, now a selection list) (thanks to [@catinsock](https://github.com/catinsock))
+- fixing random typos in the settings screen
+
 #### 1.3.2
 
 - fixing NullPointerException when attempting to update online filters (thanks to [@devinvisible](https://github.com/kosace/EnhancePoEApp/commits?author=devinvisible))

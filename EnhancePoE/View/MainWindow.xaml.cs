@@ -25,7 +25,7 @@ namespace EnhancePoE
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
-        private const string AppVersion = "1.3.2.0";
+        private const string AppVersion = "1.4.0.0";
 
         public static ChaosRecipeEnhancer overlay = new ChaosRecipeEnhancer();
         public static StashTabWindow stashTabOverlay = new StashTabWindow();
@@ -59,6 +59,12 @@ namespace EnhancePoE
             //TESTING SETTINGS RESET
             //if (Debugger.IsAttached)
             //    Properties.Settings.Default.Reset();
+
+            // initialize stashtabs
+            //DataContext = stashTabsModel;
+
+            // Populate the league dropdown
+            LeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
 
             InitializeColors();
             InitializeHotkeys();
