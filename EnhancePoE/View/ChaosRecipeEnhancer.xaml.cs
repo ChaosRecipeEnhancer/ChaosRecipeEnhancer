@@ -387,14 +387,14 @@ namespace EnhancePoE
 
                 if (RateLimit.RateLimitExceeded)
                 {
-                    MainWindow.overlay.WarningMessage = "Rate Limit Exceeded! Waiting...";
+                    int secondsToWait = RateLimit.GetSecondsToWait();
+                    MainWindow.overlay.WarningMessage = $"Rate Limit Exceeded! Waiting {secondsToWait} seconds...";
                     MainWindow.overlay.ShadowOpacity = 1;
                     MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
                     
-                    await Task.Delay(RateLimit.GetSecondsToWait() * 1000);
-                    
-                    RateLimit.RequestCounter = 0;
-                    RateLimit.RateLimitExceeded = false;
+                    await Task.Delay(secondsToWait * 1000);
+
+                    RateLimit.Reset();
                 }
 
                 if (RateLimit.BanTime > 0)

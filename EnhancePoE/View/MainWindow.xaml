@@ -112,11 +112,12 @@
                                        Text="League:"
                                        ToolTipService.InitialShowDelay="50"
                                        ToolTip="The league you are playing in." />
-                            <TextBox x:Name="League"
-                                     Grid.Column="3"
-                                     Grid.Row="7"
-                                     Width="200"
-                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=League, Mode=TwoWay}" />
+                            <ComboBox Grid.Column="3"
+                                      Grid.Row="7"
+                                      Width="200"
+                                      VerticalContentAlignment="Center"
+                                      Name="LeagueComboBox"
+                                      SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=League, Mode=TwoWay}" />
                         </Grid>
                         <!-- RECIPES -->
                         <Grid Grid.Column="1"
