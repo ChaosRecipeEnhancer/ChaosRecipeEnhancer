@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="..\packages\WiX.3.11.2\build\wix.props" Condition="Exists('..\packages\WiX.3.11.2\build\wix.props')"/>
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <Import Project="..\packages\WiX.3.11.2\build\wix.props" Condition="Exists('..\packages\WiX.3.11.2\build\wix.props')" />
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -18,7 +18,7 @@
         <IsWebBootstrapper>false</IsWebBootstrapper>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
-        <TargetFrameworkProfile/>
+        <TargetFrameworkProfile />
         <PublishUrl>publish\</PublishUrl>
         <Install>true</Install>
         <InstallFrom>Disk</InstallFrom>
@@ -120,7 +120,7 @@
             <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
             <Private>True</Private>
         </Reference>
-        <Reference Include="System.Runtime.Serialization"/>
+        <Reference Include="System.Runtime.Serialization" />
         <Reference Include="System.Text.Encodings.Web, Version=5.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
             <HintPath>..\packages\System.Text.Encodings.Web.5.0.1\lib\net461\System.Text.Encodings.Web.dll</HintPath>
         </Reference>
@@ -193,25 +193,24 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
-        <Compile Include="Model\AutoFetch.cs"/>
-        <Compile Include="Model\Cell.cs"/>
-        <Compile Include="Model\Coordinates.cs"/>
-        <Compile Include="Model\FilterGeneration.cs"/>
-        <Compile Include="Model\NETAutoupdater.cs"/>
-        <Compile Include="Model\ReloadItemFilter.cs"/>
-        <Compile Include="Model\Storage\FileFilterStorage.cs"/>
-        <Compile Include="Model\Storage\FilterStorageFactory.cs"/>
-        <Compile Include="Model\ForegroundWindows.cs"/>
-        <Compile Include="Model\ItemSet.cs"/>
-        <Compile Include="Model\MouseHook.cs"/>
-        <Compile Include="Model\RateLimit.cs"/>
-        <Compile Include="Model\StashTabList.cs"/>
-        <Compile Include="Model\StashTabPropsList.cs"/>
-        <Compile Include="Model\Storage\IFilterStorage.cs"/>
-        <Compile Include="Model\Storage\OnlineFilterStorage.cs"/>
-        <Compile Include="Model\Utility.cs"/>
-        <Compile Include="Model\Utils\UserWarning.cs"/>
-        <Compile Include="Model\Win32.cs"/>
+        <Compile Include="Model\AutoFetch.cs" />
+        <Compile Include="Model\Cell.cs" />
+        <Compile Include="Model\Coordinates.cs" />
+        <Compile Include="Model\FilterGeneration.cs" />
+        <Compile Include="Model\NETAutoupdater.cs" />
+        <Compile Include="Model\ReloadItemFilter.cs" />
+        <Compile Include="Model\Storage\FileFilterStorage.cs" />
+        <Compile Include="Model\Storage\FilterStorageFactory.cs" />
+        <Compile Include="Model\ForegroundWindows.cs" />
+        <Compile Include="Model\ItemSet.cs" />
+        <Compile Include="Model\MouseHook.cs" />
+        <Compile Include="Model\RateLimit.cs" />
+        <Compile Include="Model\StashTabList.cs" />
+        <Compile Include="Model\StashTabPropsList.cs" />
+        <Compile Include="Model\Storage\IFilterStorage.cs" />
+        <Compile Include="Model\Utility.cs" />
+        <Compile Include="Model\Utils\UserWarning.cs" />
+        <Compile Include="Model\Win32.cs" />
         <Compile Include="Properties\Resources.Designer.cs">
             <AutoGen>True</AutoGen>
             <DesignTime>True</DesignTime>
@@ -271,29 +270,29 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </Page>
-        <Compile Include="Model\ApiAdapter.cs"/>
+        <Compile Include="Model\ApiAdapter.cs" />
         <Compile Include="App.xaml.cs">
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Include="Model\EventArgs.cs"/>
-        <Compile Include="Model\EventRaiser.cs"/>
-        <Compile Include="Model\RelayCommand.cs"/>
-        <Compile Include="Model\StashTab.cs"/>
+        <Compile Include="Model\EventArgs.cs" />
+        <Compile Include="Model\EventRaiser.cs" />
+        <Compile Include="Model\RelayCommand.cs" />
+        <Compile Include="Model\StashTab.cs" />
         <Compile Include="View\ChaosRecipeEnhancer.xaml.cs">
             <DependentUpon>ChaosRecipeEnhancer.xaml</DependentUpon>
         </Compile>
-        <Compile Include="Model\Data.cs"/>
-        <Compile Include="Model\GlobalHotkey.cs"/>
-        <Compile Include="Model\Hotkey.cs"/>
+        <Compile Include="Model\Data.cs" />
+        <Compile Include="Model\GlobalHotkey.cs" />
+        <Compile Include="Model\Hotkey.cs" />
         <Compile Include="UserControls\HotkeyEditorControl.xaml.cs">
             <DependentUpon>HotkeyEditorControl.xaml</DependentUpon>
         </Compile>
-        <Compile Include="Model\HotkeysManager.cs"/>
+        <Compile Include="Model\HotkeysManager.cs" />
         <Compile Include="View\HotkeyWindow.xaml.cs">
             <DependentUpon>HotkeyWindow.xaml</DependentUpon>
         </Compile>
-        <Compile Include="Model\Item.cs"/>
+        <Compile Include="Model\Item.cs" />
         <Compile Include="View\MainWindow.xaml.cs">
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
@@ -317,20 +316,20 @@
             <SubType>Designer</SubType>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-        <None Include="EnhancePoE_TemporaryKey.pfx"/>
-        <Resource Include="Fonts\password.ttf"/>
-        <None Include="packages.config"/>
-        <None Include="Properties\app.manifest"/>
+        <None Include="EnhancePoE_TemporaryKey.pfx" />
+        <Resource Include="Fonts\password.ttf" />
+        <None Include="packages.config" />
+        <None Include="Properties\app.manifest" />
         <None Include="Properties\Settings.settings">
             <Generator>SettingsSingleFileGenerator</Generator>
             <LastGenOutput>Settings.Designer.cs</LastGenOutput>
         </None>
     </ItemGroup>
     <ItemGroup>
-        <None Include="App.config"/>
+        <None Include="App.config" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="Resources\coin.ico"/>
+        <None Include="Resources\coin.ico" />
     </ItemGroup>
     <ItemGroup>
         <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -355,14 +354,14 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        <Resource Include="Assets\chest.png"/>
-        <Resource Include="Assets\boots.png"/>
-        <Resource Include="Assets\gloves.png"/>
-        <Resource Include="Assets\helmet.png"/>
-        <Resource Include="Assets\weapon.png"/>
+        <Resource Include="Assets\chest.png" />
+        <Resource Include="Assets\boots.png" />
+        <Resource Include="Assets\gloves.png" />
+        <Resource Include="Assets\helmet.png" />
+        <Resource Include="Assets\weapon.png" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="Resources\password.ttf"/>
+        <None Include="Resources\password.ttf" />
         <None Include="Sounds\filterchanged.mp3">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
@@ -371,21 +370,21 @@
         <Resource Include="coin.ico">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Resource>
-        <Resource Include="Assets\amulet.png"/>
-        <Resource Include="Assets\belt.png"/>
-        <Resource Include="Assets\ring.png"/>
+        <Resource Include="Assets\amulet.png" />
+        <Resource Include="Assets\belt.png" />
+        <Resource Include="Assets\ring.png" />
         <Content Include="Sounds\itemsPickedUp.mp3">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <WCFMetadata Include="Connected Services\"/>
+        <WCFMetadata Include="Connected Services\" />
     </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
         <PropertyGroup>
             <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
         </PropertyGroup>
-        <Error Condition="!Exists('..\packages\WiX.3.11.2\build\wix.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WiX.3.11.2\build\wix.props'))"/>
+        <Error Condition="!Exists('..\packages\WiX.3.11.2\build\wix.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WiX.3.11.2\build\wix.props'))" />
     </Target>
 </Project>

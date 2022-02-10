@@ -103,7 +103,7 @@ namespace EnhancePoE.Model
                 ? CustomStyleInfluenced.Aggregate(result, (current, cs) => current + cs + newLine + tab) 
                 : CustomStyle.Aggregate(result, (current, cs) => current + cs + newLine + tab);
 
-            if (Settings.Default.LootfilterIcons) result = result + "MinimapIcon 2 White Star" + newLine + tab;
+            if (Settings.Default.LootFilterIcons) result = result + "MinimapIcon 2 White Star" + newLine + tab;
 
             return result;
         }

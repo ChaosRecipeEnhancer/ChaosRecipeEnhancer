@@ -297,7 +297,7 @@ namespace EnhancePoE
                 }
                 
                 var exaltedActive = Settings.Default.ExaltedRecipe;
-                var filterActive = Settings.Default.LootfilterActive;
+                var filterActive = Settings.Default.LootFilterActive;
 
                 SetTargetAmount = 0;
                 

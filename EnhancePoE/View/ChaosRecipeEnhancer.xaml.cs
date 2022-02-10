@@ -427,13 +427,13 @@ namespace EnhancePoE
             
             if (!IsOpen) return;
             
-            switch (Settings.Default.StashtabMode)
+            switch (Settings.Default.StashTabMode)
             {
                 case 0 when Settings.Default.StashTabIndices == "":
-                    MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stashtab Indices.");
+                    MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stash Tab Indices.");
                     return;
                 case 1 when Settings.Default.StashTabName == "":
-                    MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stashtab Prefix.");
+                    MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stash Tab Prefix.");
                     return;
             }
 

@@ -55,7 +55,7 @@ namespace EnhancePoE
             var ret = new List<StashTab>();
 
             // mode = ID
-            if (Settings.Default.StashtabMode == 0)
+            if (Settings.Default.StashTabMode == 0)
             {
                 StashTabList.GetStashTabIndices();
                 if (PropsList != null)
