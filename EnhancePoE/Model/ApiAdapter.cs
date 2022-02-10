@@ -120,9 +120,13 @@ namespace EnhancePoE
         private static void GetAllTabNames()
         {
             foreach (var s in StashTabList.StashTabs)
-            foreach (var p in PropsList.tabs)
-                if (s.TabIndex == p.i)
-                    s.TabName = p.n;
+            {
+                foreach (var p in PropsList.tabs)
+                {
+                    if (s.TabIndex == p.i)
+                        s.TabName = p.n;
+                }
+            }
         }
 
         private static async Task<bool> GetProps(string accName, string league)
@@ -139,7 +143,7 @@ namespace EnhancePoE
             if (RateLimit.CheckForBan()) return false;
 
             // -1 for 1 request + 3 times if rate limit high exceeded
-            if (RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - 4)
+            if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - 4)
             {
                 RateLimit.RateLimitExceeded = true;
                 return false;
@@ -211,7 +215,7 @@ namespace EnhancePoE
             if (FetchError) return false;
 
             // check rate limit
-            if (RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - StashTabList.StashTabs.Count - 4)
+            if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - StashTabList.StashTabs.Count - 4) // TODO: can someone explain the -4 here? --cat
             {
                 RateLimit.RateLimitExceeded = true;
                 return false;
