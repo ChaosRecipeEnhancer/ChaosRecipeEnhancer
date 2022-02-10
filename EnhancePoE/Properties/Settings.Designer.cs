@@ -338,24 +338,24 @@ namespace EnhancePoE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LootfilterLocation {
+        public string LootFilterLocation {
             get {
-                return ((string)(this["LootfilterLocation"]));
+                return ((string)(this["LootFilterLocation"]));
             }
             set {
-                this["LootfilterLocation"] = value;
+                this["LootFilterLocation"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool LootfilterActive {
+        public bool LootFilterActive {
             get {
-                return ((bool)(this["LootfilterActive"]));
+                return ((bool)(this["LootFilterActive"]));
             }
             set {
-                this["LootfilterActive"] = value;
+                this["LootFilterActive"] = value;
             }
         }
         
@@ -422,7 +422,7 @@ namespace EnhancePoE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int StashtabMode {
+        public int StashTabMode {
             get {
                 return ((int)(this["StashtabMode"]));
             }
@@ -698,12 +698,12 @@ namespace EnhancePoE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool LootfilterIcons {
+        public bool LootFilterIcons {
             get {
-                return ((bool)(this["LootfilterIcons"]));
+                return ((bool)(this["LootFilterIcons"]));
             }
             set {
-                this["LootfilterIcons"] = value;
+                this["LootFilterIcons"] = value;
             }
         }
         
@@ -730,31 +730,7 @@ namespace EnhancePoE.Properties {
                 this["Language"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool LootfilterOnline {
-            get {
-                return ((bool)(this["LootfilterOnline"]));
-            }
-            set {
-                this["LootfilterOnline"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LootfilterOnlineName {
-            get {
-                return ((string)(this["LootfilterOnlineName"]));
-            }
-            set {
-                this["LootfilterOnlineName"] = value;
-            }
-        }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]

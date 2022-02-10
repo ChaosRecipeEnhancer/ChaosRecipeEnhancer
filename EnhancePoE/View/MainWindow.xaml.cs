@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Navigation;
 using EnhancePoE.Model;
 using EnhancePoE.Properties;
 using EnhancePoE.UserControls;
@@ -19,77 +18,64 @@ using ContextMenu = System.Windows.Forms.ContextMenu;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 
-//using EnhancePoE.TabItemViewModel;
-
 namespace EnhancePoE
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : INotifyPropertyChanged
     {
-        private static readonly string appVersion = "1.3.2.0";
+        private const string AppVersion = "1.3.2.0";
 
         public static ChaosRecipeEnhancer overlay = new ChaosRecipeEnhancer();
-
         public static StashTabWindow stashTabOverlay = new StashTabWindow();
-
         public static MainWindow instance;
+        public MenuItem menuItem;
 
         private Visibility _indicesVisible = Visibility.Hidden;
         private Visibility _nameVisible = Visibility.Hidden;
-        private IContainer components;
-        private ContextMenu contextMenu;
-        private MenuItem menuItem;
-        private MenuItem menuItemUpdate;
-
-        private readonly NotifyIcon ni = new NotifyIcon();
-
-
-        private bool trayClose;
+        private ContextMenu _contextMenu;
+        private MenuItem _menuItemUpdate;
+        private readonly NotifyIcon _notifyIcon = new NotifyIcon();
+        private bool _trayClose;
 
         public MainWindow()
         {
             instance = this;
-            //Properties.Settings.Default.Reset();
             InitializeComponent();
             DataContext = this;
-            NETAutoupdater.InitializeAutoupdater(appVersion);
+            NETAutoupdater.InitializeAutoupdater(AppVersion);
 
-            //Data.InitializeBases();
             if (!string.IsNullOrEmpty(Settings.Default.FilterChangeSoundFileLocation) && !FilterSoundLocationDialog.Content.Equals("Default Sound"))
                 Data.Player.Open(new Uri(Settings.Default.FilterChangeSoundFileLocation));
             else
-                //Data.Player.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\filterchanged.mp3")));
                 Data.Player.Open(new Uri(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Sounds\filterchanged.mp3")));
 
             if (!string.IsNullOrEmpty(Settings.Default.ItemPickupSoundFileLocation) && !ItemPickupLocationDialog.Content.Equals("Default Sound"))
                 Data.PlayerSet.Open(new Uri(Settings.Default.ItemPickupSoundFileLocation));
             else
-                //Data.PlayerSet.Open(new Uri(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ChaosRecipeEnhancer\Sounds\itemsPickedUp.mp3")));
                 Data.PlayerSet.Open(new Uri(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Sounds\itemsPickedUp.mp3")));
 
             //TESTING SETTINGS RESET
             //if (Debugger.IsAttached)
             //    Properties.Settings.Default.Reset();
 
-            // initialize stashtabs
-            //DataContext = stashTabsModel;
-
             InitializeColors();
             InitializeHotkeys();
             InitializeTray();
             LoadModeVisibility();
+
             // add Action to MouseHook
             MouseHook.MouseAction += Coordinates.Event;
-
-            //throw new NullReferenceException();
         }
-
-        public static string AppVersionText { get; set; } = "v." + appVersion;
 
         public static bool SettingsComplete { get; set; }
 
+        // ReSharper disable once UnusedMember.Global
+        public static string AppVersionText { get; set; } = "v." + AppVersion;
+
+
+        // ReSharper disable once UnusedMember.Local
         private static string RunButtonContent { get; set; } = "Run Overlay";
 
         public Visibility IndicesVisible
@@ -118,22 +104,14 @@ namespace EnhancePoE
             }
         }
 
-        public Visibility LootfilterFileDialogVisible => Settings.Default.LootfilterOnline
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-
-        public Visibility LootfilterOnlineFilterNameVisible => Settings.Default.LootfilterOnline
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+        public Visibility LootFilterFileDialogVisible = Visibility.Visible;
 
         private void InitializeHotkeys()
         {
             HotkeysManager.SetupSystemHook();
-            //HotkeysManager.RequiresModifierKey = false;
             HotkeysManager.GetRefreshHotkey();
             HotkeysManager.GetToggleHotkey();
             HotkeysManager.GetStashTabHotkey();
-            //HotkeysManager.GetReloadFilterHotkey();
             AddAllHotkeys();
         }
 
@@ -155,22 +133,22 @@ namespace EnhancePoE
         // creates tray icon with menu
         private void InitializeTray()
         {
-            ni.Icon = Properties.Resources.coin;
-            ni.Visible = true;
-            ni.DoubleClick +=
+            _notifyIcon.Icon = Properties.Resources.coin;
+            _notifyIcon.Visible = true;
+            _notifyIcon.DoubleClick +=
                 delegate
                 {
                     Show();
                     WindowState = WindowState.Normal;
                 };
 
-            components = new Container();
-            contextMenu = new ContextMenu();
+            new Container();
+            _contextMenu = new ContextMenu();
             menuItem = new MenuItem();
-            menuItemUpdate = new MenuItem();
+            _menuItemUpdate = new MenuItem();
 
             // Initialize contextMenu1
-            contextMenu.MenuItems.AddRange(new[] { menuItem, menuItemUpdate });
+            _contextMenu.MenuItems.AddRange(new[] { menuItem, _menuItemUpdate });
 
 
             // Initialize menuItem1
@@ -179,12 +157,12 @@ namespace EnhancePoE
             menuItem.Click += MenuItem_Click;
 
             // Initialize menuItemUpdate
-            menuItemUpdate.Index = 0;
-            menuItemUpdate.Text = "C&heck for Updates";
-            menuItemUpdate.Click += CheckForUpdates_Click;
+            _menuItemUpdate.Index = 0;
+            _menuItemUpdate.Text = "C&heck for Updates";
+            _menuItemUpdate.Click += CheckForUpdates_Click;
 
 
-            ni.ContextMenu = contextMenu;
+            _notifyIcon.ContextMenu = _contextMenu;
         }
 
         private void CheckForUpdates_Click(object Sender, EventArgs e)
@@ -195,7 +173,7 @@ namespace EnhancePoE
         // Close the form, which closes the application.
         private void MenuItem_Click(object Sender, EventArgs e)
         {
-            trayClose = true;
+            _trayClose = true;
             Close();
         }
 
@@ -206,22 +184,20 @@ namespace EnhancePoE
             // if hideOnClose
             // setting cancel to true will cancel the close request
             // so the application is not closed
-            if (Settings.Default.hideOnClose && !trayClose)
+            if (Settings.Default.hideOnClose && !_trayClose)
             {
                 e.Cancel = true;
                 Hide();
                 base.OnClosing(e);
             }
 
-            if (!Settings.Default.hideOnClose || trayClose)
+            if (!Settings.Default.hideOnClose || _trayClose)
             {
-                ni.Visible = false;
+                _notifyIcon.Visible = false;
                 MouseHook.Stop();
                 HotkeysManager.ShutdownSystemHook();
                 Settings.Default.Save();
                 if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive) LogWatcher.StopWatchingLogFile();
-                //overlay.Close();
-                //stashTabOverlay.Close();
                 Application.Current.Shutdown();
             }
         }
@@ -229,8 +205,6 @@ namespace EnhancePoE
 
         public void RunOverlay()
         {
-            //Trace.WriteLine(ForegroundWindows.GetForegroundProcessName(), "focused");
-
             if (overlay.IsOpen)
             {
                 overlay.Hide();
@@ -245,25 +219,6 @@ namespace EnhancePoE
                     RunButton.Content = "Stop Overlay";
                 }
             }
-            //bool ready = CheckAllSettings();
-            //if (ready)
-            //{
-
-            //    if (RunButton.Content.ToString() == "Run Overlay")
-            //    {
-            //        RunButton.Content = "Stop Overlay";
-            //        overlay.Show();
-            //    }
-            //    else
-            //    {
-            //        RunButton.Content = "Run Overlay";
-            //        overlay.Hide();
-            //        if (stashTabOverlay.IsOpen)
-            //        {
-            //            stashTabOverlay.Hide();
-            //        }
-            //    }
-            //}
         }
 
         private void RunButton_Click(object sender, RoutedEventArgs e)
@@ -277,14 +232,8 @@ namespace EnhancePoE
             if (ready)
             {
                 if (stashTabOverlay.IsOpen)
-                    //MouseHook.Stop();
                     stashTabOverlay.Hide();
                 else
-                    //if (ChaosRecipeEnhancer.FetchingActive == true)
-                    //{
-                    //    overlay.RunFetching();
-                    //}
-                    //MouseHook.Start();
                     stashTabOverlay.Show();
             }
         }
@@ -294,10 +243,6 @@ namespace EnhancePoE
             if (Settings.Default.HotkeyRefresh != "< not set >") HotkeysManager.AddHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey, overlay.RunFetching);
             if (Settings.Default.HotkeyToggle != "< not set >") HotkeysManager.AddHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay);
             if (Settings.Default.HotkeyStashTab != "< not set >") HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey, RunStashTabOverlay);
-            //if (Properties.Settings.Default.HotkeyReloadFilter != "< not set >")
-            //{
-            //    HotkeysManager.AddHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey, ReloadItemFilter);
-            //}
         }
 
         public void RemoveAllHotkeys()
@@ -305,7 +250,6 @@ namespace EnhancePoE
             HotkeysManager.RemoveRefreshHotkey();
             HotkeysManager.RemoveStashTabHotkey();
             HotkeysManager.RemoveToggleHotkey();
-            //HotkeysManager.RemoveReloadFilterHotkey();
         }
 
         private string GetSoundFilePath()
@@ -375,36 +319,37 @@ namespace EnhancePoE
             var accName = Settings.Default.accName;
             var sessId = Settings.Default.SessionId;
             var league = Settings.Default.League;
-            var lootfilterLocation = Settings.Default.LootfilterLocation;
-            var lootfilterOnline = Settings.Default.LootfilterOnline;
-            var lootfilterOnlineName = Settings.Default.LootfilterOnlineName;
-            var lootfilterActive = Settings.Default.LootfilterActive;
+            var lootFilterLocation = Settings.Default.LootFilterLocation;
+            var lootFilterActive = Settings.Default.LootFilterActive;
             var logLocation = Settings.Default.LogLocation;
             var autoFetch = Settings.Default.AutoFetch;
 
             var missingSettings = new List<string>();
-            var errorMessage = "Please add: \n";
 
             if (accName == "") missingSettings.Add("- Account Name \n");
             if (sessId == "") missingSettings.Add("- PoE Session ID \n");
             if (league == "") missingSettings.Add("- League \n");
-            if (lootfilterActive)
+            if (lootFilterActive)
             {
-                if (!lootfilterOnline && lootfilterLocation == "") missingSettings.Add("- Lootfilter Location \n");
-
-                if (lootfilterOnline && lootfilterOnlineName == "") missingSettings.Add("- Lootfilter Name \n");
+                if (lootFilterLocation == "") missingSettings.Add("- Loot Filter Location \n");
             }
 
             if (autoFetch)
                 if (logLocation == "")
                     missingSettings.Add("- Log File Location \n");
-            if (Settings.Default.StashtabMode == 0)
+
+            switch (Settings.Default.StashTabMode)
             {
-                if (Settings.Default.StashTabIndices == "") missingSettings.Add("- StashTab Index");
-            }
-            else if (Settings.Default.StashtabMode == 1)
-            {
-                if (Settings.Default.StashTabName == "") missingSettings.Add("- StashTab Name");
+                case 0:
+                {
+                    if (Settings.Default.StashTabIndices == "") missingSettings.Add("- StashTab Index");
+                    break;
+                }
+                case 1:
+                {
+                    if (Settings.Default.StashTabName == "") missingSettings.Add("- StashTab Name");
+                    break;
+                }
             }
 
             if (missingSettings.Count > 0)
@@ -417,7 +362,7 @@ namespace EnhancePoE
                 return true;
             }
 
-            foreach (var setting in missingSettings) errorMessage += setting;
+            var errorMessage = missingSettings.Aggregate("Please add: \n", (current, setting) => current + setting);
 
             MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
             return false;
@@ -440,11 +385,9 @@ namespace EnhancePoE
                 if (w is HotkeyWindow)
                     isWindowOpen = true;
 
-            if (!isWindowOpen)
-            {
-                var hotkeyDialog = new HotkeyWindow(this, "toggle");
-                hotkeyDialog.Show();
-            }
+            if (isWindowOpen) return;
+            var hotkeyDialog = new HotkeyWindow(this, "toggle");
+            hotkeyDialog.Show();
         }
 
         private void RefreshHotkey_Click(object sender, RoutedEventArgs e)
@@ -454,11 +397,9 @@ namespace EnhancePoE
                 if (w is HotkeyWindow)
                     isWindowOpen = true;
 
-            if (!isWindowOpen)
-            {
-                var hotkeyDialog = new HotkeyWindow(this, "refresh");
-                hotkeyDialog.Show();
-            }
+            if (isWindowOpen) return;
+            var hotkeyDialog = new HotkeyWindow(this, "refresh");
+            hotkeyDialog.Show();
         }
 
         private void StashTabHotkey_Click(object sender, RoutedEventArgs e)
@@ -482,26 +423,22 @@ namespace EnhancePoE
                 if (w is HotkeyWindow)
                     isWindowOpen = true;
 
-            if (!isWindowOpen)
-            {
-                var hotkeyDialog = new HotkeyWindow(this, "reloadFilter");
-                hotkeyDialog.Show();
-            }
+            if (isWindowOpen) return;
+            var hotkeyDialog = new HotkeyWindow(this, "reloadFilter");
+            hotkeyDialog.Show();
         }
 
-        private void LootfilterFileDialog_Click(object sender, RoutedEventArgs e)
+        private void LootFilterFileDialog_Click(object sender, RoutedEventArgs e)
         {
             var open = new OpenFileDialog();
-            open.Filter = "Lootfilter|*.filter";
+            open.Filter = "LootFilter|*.filter";
             var res = open.ShowDialog();
-            if (res == System.Windows.Forms.DialogResult.OK)
-            {
-                var filename = open.FileName;
-                //LootfilterFileDialog.Text = filename;
-                Settings.Default.LootfilterLocation = filename;
-                //LootfilterFileDialog.Select(LootfilterFileDialog.Text.Length, 0);
-                LootfilterFileDialog.Content = filename;
-            }
+
+            if (res != System.Windows.Forms.DialogResult.OK) return;
+
+            var filename = open.FileName;
+            Settings.Default.LootFilterLocation = filename;
+            LootFilterFileDialog.Content = filename;
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -511,7 +448,7 @@ namespace EnhancePoE
 
         private void LoadModeVisibility()
         {
-            if (Settings.Default.StashtabMode == 0)
+            if (Settings.Default.StashTabMode == 0)
             {
                 IndicesVisible = Visibility.Visible;
                 NameVisible = Visibility.Hidden;
@@ -530,9 +467,10 @@ namespace EnhancePoE
 
         private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (StashTabList.StashTabs.Count > 0)
-                foreach (var s in StashTabList.StashTabs)
-                    s.TabHeaderWidth = new Thickness(Settings.Default.TabHeaderWidth, 2, Settings.Default.TabHeaderWidth, 2);
+            if (StashTabList.StashTabs.Count <= 0) return;
+
+            foreach (var s in StashTabList.StashTabs)
+                s.TabHeaderWidth = new Thickness(Settings.Default.TabHeaderWidth, 2, Settings.Default.TabHeaderWidth, 2);
         }
 
         private void TabHeaderMarginSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -545,7 +483,7 @@ namespace EnhancePoE
             overlay = new ChaosRecipeEnhancer();
         }
 
-        public static void GenerateNewStashtabOverlay()
+        public static void GenerateNewStashTabOverlay()
         {
             stashTabOverlay = new StashTabWindow();
         }
@@ -557,11 +495,18 @@ namespace EnhancePoE
 
         private void OverlayModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Settings.Default.OverlayMode == 0)
-                overlay.MainOverlayContentControl.Content = new MainOverlayContent();
-            else if (Settings.Default.OverlayMode == 1)
-                overlay.MainOverlayContentControl.Content = new MainOverlayContentMinified();
-            else if (Settings.Default.OverlayMode == 2) overlay.MainOverlayContentControl.Content = new MainOverlayOnlyButtons();
+            switch (Settings.Default.OverlayMode)
+            {
+                case 0:
+                    overlay.MainOverlayContentControl.Content = new MainOverlayContent();
+                    break;
+                case 1:
+                    overlay.MainOverlayContentControl.Content = new MainOverlayContentMinified();
+                    break;
+                case 2:
+                    overlay.MainOverlayContentControl.Content = new MainOverlayOnlyButtons();
+                    break;
+            }
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
@@ -574,6 +519,14 @@ namespace EnhancePoE
                     break;
                 case MessageBoxResult.No:
                     break;
+                case MessageBoxResult.None:
+                    break;
+                case MessageBoxResult.OK:
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -592,14 +545,12 @@ namespace EnhancePoE
             var open = new OpenFileDialog();
             open.Filter = "Text|Client.txt";
             var res = open.ShowDialog();
-            if (res == System.Windows.Forms.DialogResult.OK)
-            {
-                var filename = open.FileName;
-                //LootfilterFileDialog.Text = filename;
-                Settings.Default.LogLocation = filename;
-                //LootfilterFileDialog.Select(LootfilterFileDialog.Text.Length, 0);
-                LogLocationDialog.Content = filename;
-            }
+
+            if (res != System.Windows.Forms.DialogResult.OK) return;
+
+            var filename = open.FileName;
+            Settings.Default.LogLocation = filename;
+            LogLocationDialog.Content = filename;
         }
 
         private void AutoFetchCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -613,69 +564,34 @@ namespace EnhancePoE
 
         private void ShowNumbersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Settings.Default.ShowItemAmount != 0)
-                overlay.AmountsVisibility = Visibility.Visible;
-            else
-                overlay.AmountsVisibility = Visibility.Hidden;
-        }
-
-        private void LootfilterOnlineCheckbox_Checked(object sender, RoutedEventArgs e)
-        {
-            OnPropertyChanged(nameof(LootfilterFileDialogVisible));
-            OnPropertyChanged(nameof(LootfilterOnlineFilterNameVisible));
-        }
-
-        private void Hyperlink_RequestNavigateByAccName(object sender, RequestNavigateEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(Settings.Default.accName))
-            {
-                const string messageBoxText = "You first need enter your account name";
-                MessageBox.Show(messageBoxText, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else
-            {
-                var url = string.Format(e.Uri.ToString(), Settings.Default.accName);
-                Process.Start(url);
-            }
+            overlay.AmountsVisibility = Settings.Default.ShowItemAmount != 0 ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void FilterSoundLocationDialog_OnClick(object sender, RoutedEventArgs e)
         {
             var soundFilePath = GetSoundFilePath();
 
-            if (soundFilePath != null)
-            {
-                Settings.Default.FilterChangeSoundFileLocation = soundFilePath;
-                FilterSoundLocationDialog.Content = soundFilePath;
-                Data.Player.Open(new Uri(soundFilePath));
+            if (soundFilePath == null) return;
 
-                Data.PlayNotificationSound();
-            }
+            Settings.Default.FilterChangeSoundFileLocation = soundFilePath;
+            FilterSoundLocationDialog.Content = soundFilePath;
+            Data.Player.Open(new Uri(soundFilePath));
+
+            Data.PlayNotificationSound();
         }
 
         private void ItemPickupLocationDialog_OnClick(object sender, RoutedEventArgs e)
         {
             var soundFilePath = GetSoundFilePath();
 
-            if (soundFilePath != null)
-            {
-                Settings.Default.ItemPickupSoundFileLocation = soundFilePath;
-                ItemPickupLocationDialog.Content = soundFilePath;
-                Data.PlayerSet.Open(new Uri(soundFilePath));
+            if (soundFilePath == null) return;
 
-                Data.PlayNotificationSoundSetPicked();
-            }
+            Settings.Default.ItemPickupSoundFileLocation = soundFilePath;
+            ItemPickupLocationDialog.Content = soundFilePath;
+            Data.PlayerSet.Open(new Uri(soundFilePath));
+
+            Data.PlayNotificationSoundSetPicked();
         }
-        //private void ReloadItemFilter()
-        //{
-        //    //hotkeys causing problems? 
-        //    RemoveAllHotkeys();
-        //    string filterName = GetFilterName();
-        //    //System.Diagnostics.Trace.WriteLine(filterName);
-        //    SendInputs.SendInsert(filterName);
-        //    //HotkeysManager.AddHotkey(HotkeysManager.reloadFilterModifier, HotkeysManager.reloadFilterKey, ReloadItemFilter);
-        //    AddAllHotkeys();
-        //}
 
         #region INotifyPropertyChanged implementation
 
