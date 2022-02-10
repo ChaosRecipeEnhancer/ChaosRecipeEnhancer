@@ -115,11 +115,7 @@ namespace EnhancePoE.Model
 
         private static string GetFilterName()
         {
-            return Settings.Default.LootfilterOnline
-                // If you've provided an online filter name, we'll use that
-                ? Settings.Default.LootfilterOnlineName.Trim()
-                // Else, we'll 'generate' a filter name from the file path you've provided
-                : Path.GetFileName(Settings.Default.LootfilterLocation).Replace(".filter", "");
+            return Path.GetFileName(Settings.Default.LootFilterLocation).Replace(".filter", "");
         }
     }
 }

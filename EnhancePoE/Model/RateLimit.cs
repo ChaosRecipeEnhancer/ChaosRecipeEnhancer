@@ -2,31 +2,38 @@
 {
     internal class RateLimit
     {
-        //public static int MaximumRequestsHigh { get; set; } = 240;
-        //public static int ResetTime { get; set; } = 60;
-        //public static int ResetTimeHigh { get; set; } = 240;
+        public struct RuleDefinition
+        {
+            public int HitCount { get; private set; }
+            public int Period { get; private set; }
+            public int RestrictionTime { get; private set; }
+
+            public RuleDefinition(int hits, int period, int restriction)
+            {
+                HitCount = hits;
+                Period = period;
+                RestrictionTime = restriction;
+            }
+
+            public void IncrementHitCounter() => HitCount++;
+
+            public void ClearHitCount() => HitCount = 0;
+        }
+
+        private static RuleDefinition _currentRateLimit;
+        private static RuleDefinition _maxRateLimit = new RuleDefinition(int.MaxValue, 0, 0); // initialize to max, this will be updated on our first fetch
 
         public static bool RateLimitExceeded = false;
-        //public static int[] RateLimitMax { get; set; } = new int[3];
-        //public static int[] RateLimitMaxHigh { get; set; } = new int[3];
 
-        public static int[] RateLimitState { get; set; } = new int[3];
-
-        //public static int[] RateLimitStateHigh { get; set; } = new int[3];
         public static bool HeaderParsingError { get; set; }
 
-        //public static System.Timers.Timer RateLimitTimer { get; set; } = new System.Timers.Timer();
-        //public static System.Timers.Timer RateLimitTimerHigh { get; set; } = new System.Timers.Timer();
-        public static int RequestCounter { get; set; } = 0;
+        public static int CurrentRequests { get => _currentRateLimit.HitCount; }
 
-        //public static int RequestCounterHigh { get; set; } = 0;
+        public static int MaximumRequests { get => _maxRateLimit.HitCount; }
 
-        // TODO: update this value if poe server response headers change
-        public static int MaximumRequests { get; set; } = 10;
         public static int BanTime { get; set; }
-        public static int ResponseSeconds { get; set; }
 
-        //public static int ResponseMinutes { get; set; } = 0;
+        public static int ResponseSeconds { get; set; }
 
         public static void DeserializeResponseSeconds(string responseTime)
         {
@@ -41,41 +48,58 @@
 
         public static void DeserializeRateLimits(string rateLimitMaxString, string rateLimitStateString)
         {
+            const int ExpectedRuleCount = 3; // defined by the PoE API
+
             HeaderParsingError = false;
 
+            // Store the dynamic maximum limit rules
             var maxSplits = rateLimitMaxString.Split(',');
             var maxSplitsLow = maxSplits[0].Split(':');
+            _maxRateLimit = new RuleDefinition(
+                int.Parse(maxSplitsLow[0]),
+                int.Parse(maxSplitsLow[1]),
+                int.Parse(maxSplitsLow[2]));
 
+            // Store the current limit rules
             var maxSplitsState = rateLimitStateString.Split(',');
             var maxSplitsLowState = maxSplitsState[0].Split(':');
-
-            for (var i = 0; i < maxSplitsLowState.Length; i++)
-                if (int.TryParse(maxSplitsLowState[i], out var splitInt))
-                    RateLimitState[i] = splitInt;
-                else
-                    HeaderParsingError = true;
+            if (maxSplitsLowState.Length >= ExpectedRuleCount)
+            {
+                _currentRateLimit = new RuleDefinition(
+                    int.Parse(maxSplitsLowState[0]),
+                    int.Parse(maxSplitsLowState[1]),
+                    int.Parse(maxSplitsLowState[2]));
+            }
+            else
+            {
+                // Something went wrong - our rule parsing did not match the API format
+                HeaderParsingError = true;
+            }
         }
 
         public static bool CheckForBan()
         {
-            if (RateLimitState[2] > 0)
+            if (_currentRateLimit.RestrictionTime > 0)
             {
-                BanTime = RateLimitState[2];
+                BanTime = _currentRateLimit.RestrictionTime;
                 return true;
             }
 
             return false;
         }
 
-        public static void IncreaseRequestCounter()
+        public static void IncreaseRequestCounter() => _currentRateLimit.IncrementHitCounter();
+
+        public static void Reset()
         {
-            RateLimitState[0]++;
+            _currentRateLimit.ClearHitCount();
+            RateLimitExceeded = false;
+
         }
 
         public static int GetSecondsToWait()
         {
-            // TODO: update this value if poe server response headers change
-            return 60 - ResponseSeconds;
+            return _maxRateLimit.RestrictionTime - ResponseSeconds;
         }
     }
 }
