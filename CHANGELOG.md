@@ -1,5 +1,10 @@
 ## Change Log
 
+#### 1.4.1
+
+- fixing random CLIPBRD_E_CANT_OPEN error being thrown
+- adding 'Custom League' check box that makes it so you can input a custom league name in lieu of the main league selectors
+
 #### 1.4.0
 
 - removing online filter manipulation as a feature; **_you can still manipulate your offline filters_**

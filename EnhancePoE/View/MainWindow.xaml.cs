@@ -25,7 +25,7 @@ namespace EnhancePoE
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
-        private const string AppVersion = "1.4.0.0";
+        private const string AppVersion = "1.4.1.0";
 
         public static readonly ChaosRecipeEnhancer Overlay = new ChaosRecipeEnhancer();
         public static readonly StashTabWindow StashTabOverlay = new StashTabWindow();
