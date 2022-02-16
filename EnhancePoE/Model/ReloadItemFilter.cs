@@ -71,8 +71,23 @@ namespace EnhancePoE.Model
             var chatCommand = BuildFilterReloadCommand();
             if (chatCommand is null) return;
 
-            Clipboard.SetDataObject(chatCommand);
-
+            // The reason for this 'retry' loop is issues caused by the .NET implementation of the clipboard
+            // A delay in opening the clipboard causes the error, which usually passes within a few milliseconds.
+            // REF: https://stackoverflow.com/a/69081
+            for (var i = 0; i < 10; i++)
+            {
+                try
+                {
+                    Clipboard.SetDataObject(chatCommand);
+                }
+                catch (COMException ex)
+                {
+                    const uint CLIPBRD_E_CANT_OPEN = 0x800401D0;  
+                    if ((uint)ex.ErrorCode != CLIPBRD_E_CANT_OPEN) throw;
+                }
+                System.Threading.Thread.Sleep(10);
+            } 
+            
             // Map all current window names to their associated "handle to a window" pointers (HWND)
             var openWindows = GetOpenWindows();
             foreach (var window in openWindows)

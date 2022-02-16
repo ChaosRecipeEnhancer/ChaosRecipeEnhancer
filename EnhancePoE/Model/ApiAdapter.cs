@@ -43,27 +43,24 @@ namespace EnhancePoE
             }
             else
             {
-                MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Accountname, Stash Tab and League.");
+                MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set account name, stash tab name/index and league.");
             }
 
             IsFetching = false;
             return false;
         }
 
-        public static List<string> GetAllLeagueNames()
+        public static IEnumerable<string> GetAllLeagueNames()
         {
             var leagueIds = new List<string>();
 
-            using (WebClient wc = new WebClient())
+            using (var wc = new WebClient())
             {
-                string json = wc.DownloadString("https://api.pathofexile.com/leagues?type=main&compact=1");
+                var json = wc.DownloadString("https://api.pathofexile.com/leagues?type=main");
                 var document = JsonDocument.Parse(json);
                 var allLeagueData = document.RootElement.EnumerateArray();
-                foreach (var league in allLeagueData)
-                {
-                    string id = league.GetProperty("id").GetString();
-                    leagueIds.Add(id);
-                }
+
+                leagueIds.AddRange(allLeagueData.Select(league => league.GetProperty("id").GetString()));
             }
 
             return leagueIds;
@@ -80,12 +77,15 @@ namespace EnhancePoE
                 if (PropsList != null)
                 {
                     foreach (var p in PropsList.tabs)
+                    {
                         for (var i = StashTabList.StashTabIndices.Count - 1; i > -1; i--)
-                            if (StashTabList.StashTabIndices[i] == p.i)
-                            {
-                                StashTabList.StashTabIndices.RemoveAt(i);
-                                ret.Add(new StashTab(p.n, p.i));
-                            }
+                        {
+                            if (StashTabList.StashTabIndices[i] != p.i) continue;
+
+                            StashTabList.StashTabIndices.RemoveAt(i);
+                            ret.Add(new StashTab(p.n, p.i));
+                        }
+                    }
 
                     StashTabList.StashTabs = ret;
                     GetAllTabNames();
@@ -97,9 +97,11 @@ namespace EnhancePoE
                 if (PropsList != null)
                 {
                     var stashName = Settings.Default.StashTabName;
+
                     foreach (var p in PropsList.tabs)
-                        if (p.n.StartsWith(stashName))
-                            ret.Add(new StashTab(p.n, p.i));
+                    {
+                        if (p.n.StartsWith(stashName)) ret.Add(new StashTab(p.n, p.i));
+                    }
 
                     StashTabList.StashTabs = ret;
                 }
@@ -123,8 +125,7 @@ namespace EnhancePoE
             {
                 foreach (var p in PropsList.tabs)
                 {
-                    if (s.TabIndex == p.i)
-                        s.TabName = p.n;
+                    if (s.TabIndex == p.i) s.TabName = p.n;
                 }
             }
         }
@@ -183,10 +184,9 @@ namespace EnhancePoE
                     }
                     else
                     {
-                        if (res.StatusCode == HttpStatusCode.Forbidden)
-                            MessageBox.Show("Connection forbidden. Please check your account name and POE Session ID. You may have to refresh your POE Session ID sometimes.", "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
-                        else
-                            MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(res.StatusCode == HttpStatusCode.Forbidden
+                            ? "Connection forbidden. Please check your account name and POE Session ID. You may have to refresh your POE Session ID sometimes."
+                            : res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
 
                         FetchError = true;
                         return false;
@@ -214,8 +214,9 @@ namespace EnhancePoE
 
             if (FetchError) return false;
 
+            // TODO: can someone explain the -4 here? --cat
             // check rate limit
-            if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - StashTabList.StashTabs.Count - 4) // TODO: can someone explain the -4 here? --cat
+            if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - StashTabList.StashTabs.Count - 4)
             {
                 RateLimit.RateLimitExceeded = true;
                 return false;
@@ -236,38 +237,41 @@ namespace EnhancePoE
                 {
                     // check rate limit ban
                     if (RateLimit.CheckForBan()) return false;
+                    if (usedUris.Contains(i.StashTabUri)) continue;
 
-                    if (!usedUris.Contains(i.StashTabUri))
+                    cookieContainer.Add(i.StashTabUri, new Cookie("POESESSID", sessionId));
+                    using (var res = await client.GetAsync(i.StashTabUri))
                     {
-                        cookieContainer.Add(i.StashTabUri, new Cookie("POESESSID", sessionId));
-                        using (var res = await client.GetAsync(i.StashTabUri))
+                        usedUris.Add(i.StashTabUri);
+                        if (res.IsSuccessStatusCode)
                         {
-                            usedUris.Add(i.StashTabUri);
-                            if (res.IsSuccessStatusCode)
+                            using (var content = res.Content)
                             {
-                                using (var content = res.Content)
-                                {
-                                    // get new rate limit values
-                                    var rateLimit = res.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
-                                    var rateLimitState = res.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
-                                    var responseTime = res.Headers.GetValues("Date").FirstOrDefault();
-                                    RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
-                                    RateLimit.DeserializeResponseSeconds(responseTime);
+                                // get new rate limit values
+                                var rateLimit = res.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
+                                var rateLimitState = res.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
+                                var responseTime = res.Headers.GetValues("Date").FirstOrDefault();
+                                RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
+                                RateLimit.DeserializeResponseSeconds(responseTime);
 
-                                    // deserialize response
-                                    var resContent = await content.ReadAsStringAsync();
-                                    var deserializedContent = JsonSerializer.Deserialize<ItemList>(resContent);
+                                // deserialize response
+                                var resContent = await content.ReadAsStringAsync();
+                                var deserializedContent = JsonSerializer.Deserialize<ItemList>(resContent);
+
+                                if (deserializedContent != null)
+                                {
                                     i.ItemList = deserializedContent.items;
                                     i.Quad = deserializedContent.quadLayout;
-                                    i.CleanItemList();
                                 }
+
+                                i.CleanItemList();
                             }
-                            else
-                            {
-                                FetchError = true;
-                                MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
-                                return false;
-                            }
+                        }
+                        else
+                        {
+                            FetchError = true;
+                            MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return false;
                         }
                     }
                 }

@@ -332,9 +332,9 @@ namespace EnhancePoE
 
         public static void DisableWarnings()
         {
-            MainWindow.overlay.WarningMessage = "";
-            MainWindow.overlay.ShadowOpacity = 0;
-            MainWindow.overlay.WarningMessageVisibility = Visibility.Hidden;
+            MainWindow.Overlay.WarningMessage = "";
+            MainWindow.Overlay.ShadowOpacity = 0;
+            MainWindow.Overlay.WarningMessageVisibility = Visibility.Hidden;
         }
 
         private async void FetchData()
@@ -388,9 +388,9 @@ namespace EnhancePoE
                 if (RateLimit.RateLimitExceeded)
                 {
                     int secondsToWait = RateLimit.GetSecondsToWait();
-                    MainWindow.overlay.WarningMessage = $"Rate Limit Exceeded! Waiting {secondsToWait} seconds...";
-                    MainWindow.overlay.ShadowOpacity = 1;
-                    MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
+                    MainWindow.Overlay.WarningMessage = $"Rate Limit Exceeded! Waiting {secondsToWait} seconds...";
+                    MainWindow.Overlay.ShadowOpacity = 1;
+                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
                     
                     await Task.Delay(secondsToWait * 1000);
 
@@ -399,9 +399,9 @@ namespace EnhancePoE
 
                 if (RateLimit.BanTime > 0)
                 {
-                    MainWindow.overlay.WarningMessage = "Temporary Ban! Waiting...";
-                    MainWindow.overlay.ShadowOpacity = 1;
-                    MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
+                    MainWindow.Overlay.WarningMessage = "Temporary Ban! Waiting...";
+                    MainWindow.Overlay.ShadowOpacity = 1;
+                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
                     
                     await Task.Delay(RateLimit.BanTime * 1000);
                     
@@ -448,7 +448,7 @@ namespace EnhancePoE
                 
                 Data.cs = new CancellationTokenSource();
                 Data.CancelationToken = Data.cs.Token;
-                if (MainWindow.stashTabOverlay.IsOpen) MainWindow.stashTabOverlay.Hide();
+                if (MainWindow.StashTabOverlay.IsOpen) MainWindow.StashTabOverlay.Hide();
                 FetchData();
                 FetchingActive = true;
             }

@@ -19,12 +19,12 @@ namespace EnhancePoE.UserControls
 
         private void FetchButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.overlay.RunFetching();
+            MainWindow.Overlay.RunFetching();
         }
 
         private void ReloadFilterButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.overlay.ReloadItemFilter();
+            MainWindow.Overlay.ReloadItemFilter();
         }
     }
 }

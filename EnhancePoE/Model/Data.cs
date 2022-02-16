@@ -267,17 +267,17 @@ namespace EnhancePoE
             {
                 if (ApiAdapter.FetchError)
                 {
-                    MainWindow.overlay.WarningMessage = "Fetching Error...";
-                    MainWindow.overlay.ShadowOpacity = 1;
-                    MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
+                    MainWindow.Overlay.WarningMessage = "Fetching Error...";
+                    MainWindow.Overlay.ShadowOpacity = 1;
+                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
                     return;
                 }
 
                 if (StashTabList.StashTabs.Count == 0)
                 {
-                    MainWindow.overlay.WarningMessage = "No Stashtabs found...";
-                    MainWindow.overlay.ShadowOpacity = 1;
-                    MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
+                    MainWindow.Overlay.WarningMessage = "No Stashtabs found...";
+                    MainWindow.Overlay.ShadowOpacity = 1;
+                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
                     return;
                 }
 
@@ -557,14 +557,14 @@ namespace EnhancePoE
 
 
                 //Trace.WriteLine(fullSets, "full sets");
-                MainWindow.overlay.Dispatcher.Invoke(() => { MainWindow.overlay.FullSetsText = fullSets.ToString(); });
+                MainWindow.Overlay.Dispatcher.Invoke(() => { MainWindow.Overlay.FullSetsText = fullSets.ToString(); });
 
                 // invoke chaos missing
                 if (missingGearPieceForChaosRecipe && !Settings.Default.RegalRecipe)
                 {
-                    MainWindow.overlay.WarningMessage = "Need lower level items!";
-                    MainWindow.overlay.ShadowOpacity = 1;
-                    MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
+                    MainWindow.Overlay.WarningMessage = "Need lower level items!";
+                    MainWindow.Overlay.ShadowOpacity = 1;
+                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
                 }
 
                 // invoke exalted recipe ready
@@ -576,17 +576,17 @@ namespace EnhancePoE
                         || ItemSetHunter.EmptyItemSlots.Count == 0
                         || ItemSetRedeemer.EmptyItemSlots.Count == 0)
                     {
-                        MainWindow.overlay.WarningMessage = "Exalted Recipe ready!";
-                        MainWindow.overlay.ShadowOpacity = 1;
-                        MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
+                        MainWindow.Overlay.WarningMessage = "Exalted Recipe ready!";
+                        MainWindow.Overlay.ShadowOpacity = 1;
+                        MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
                     }
 
                 // invoke set full
                 if (fullSets == SetTargetAmount && !missingGearPieceForChaosRecipe)
                 {
-                    MainWindow.overlay.WarningMessage = "Sets full!";
-                    MainWindow.overlay.ShadowOpacity = 1;
-                    MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
+                    MainWindow.Overlay.WarningMessage = "Sets full!";
+                    MainWindow.Overlay.ShadowOpacity = 1;
+                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
                 }
 
                 Trace.WriteLine(fullSets, "full sets");
@@ -723,26 +723,26 @@ namespace EnhancePoE
                     foreach (var a in amounts) Trace.WriteLine(a);
 
                     amounts[4] = weaponsSmall + weaponBig;
-                    MainWindow.overlay.RingsAmount = amounts[0];
-                    MainWindow.overlay.AmuletsAmount = amounts[1];
-                    MainWindow.overlay.BeltsAmount = amounts[2];
-                    MainWindow.overlay.ChestsAmount = amounts[3];
-                    MainWindow.overlay.WeaponsAmount = amounts[4];
-                    MainWindow.overlay.GlovesAmount = amounts[5];
-                    MainWindow.overlay.HelmetsAmount = amounts[6];
-                    MainWindow.overlay.BootsAmount = amounts[7];
+                    MainWindow.Overlay.RingsAmount = amounts[0];
+                    MainWindow.Overlay.AmuletsAmount = amounts[1];
+                    MainWindow.Overlay.BeltsAmount = amounts[2];
+                    MainWindow.Overlay.ChestsAmount = amounts[3];
+                    MainWindow.Overlay.WeaponsAmount = amounts[4];
+                    MainWindow.Overlay.GlovesAmount = amounts[5];
+                    MainWindow.Overlay.HelmetsAmount = amounts[6];
+                    MainWindow.Overlay.BootsAmount = amounts[7];
                 }
                 else if (Settings.Default.ShowItemAmount == 2)
                 {
                     amounts[4] = weaponsSmall + weaponBig;
-                    MainWindow.overlay.RingsAmount = SetTargetAmount * 2 - amounts[0];
-                    MainWindow.overlay.AmuletsAmount = SetTargetAmount - amounts[1];
-                    MainWindow.overlay.BeltsAmount = SetTargetAmount - amounts[2];
-                    MainWindow.overlay.ChestsAmount = SetTargetAmount - amounts[3];
-                    MainWindow.overlay.WeaponsAmount = SetTargetAmount * 2 - (weaponsSmall + weaponBig * 2);
-                    MainWindow.overlay.GlovesAmount = SetTargetAmount - amounts[5];
-                    MainWindow.overlay.HelmetsAmount = SetTargetAmount - amounts[6];
-                    MainWindow.overlay.BootsAmount = SetTargetAmount - amounts[7];
+                    MainWindow.Overlay.RingsAmount = SetTargetAmount * 2 - amounts[0];
+                    MainWindow.Overlay.AmuletsAmount = SetTargetAmount - amounts[1];
+                    MainWindow.Overlay.BeltsAmount = SetTargetAmount - amounts[2];
+                    MainWindow.Overlay.ChestsAmount = SetTargetAmount - amounts[3];
+                    MainWindow.Overlay.WeaponsAmount = SetTargetAmount * 2 - (weaponsSmall + weaponBig * 2);
+                    MainWindow.Overlay.GlovesAmount = SetTargetAmount - amounts[5];
+                    MainWindow.Overlay.HelmetsAmount = SetTargetAmount - amounts[6];
+                    MainWindow.Overlay.BootsAmount = SetTargetAmount - amounts[7];
                 }
             }
         }

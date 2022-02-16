@@ -21,12 +21,12 @@ namespace EnhancePoE.UserControls
 
         private void RefreshButton_Click_1(object sender, RoutedEventArgs e)
         {
-            MainWindow.overlay.RunFetching();
+            MainWindow.Overlay.RunFetching();
         }
 
         private void ReloadItemFilterButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.overlay.ReloadItemFilter();
+            MainWindow.Overlay.ReloadItemFilter();
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
