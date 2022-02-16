@@ -176,7 +176,7 @@ namespace EnhancePoE.Model
                 FetchAllowed = false;
                 try
                 {
-                    MainWindow.overlay.RunFetching();
+                    MainWindow.Overlay.RunFetching();
                     await Task.Delay(cooldown * 1000).ContinueWith(_ =>
                     {
                         FetchAllowed = true;

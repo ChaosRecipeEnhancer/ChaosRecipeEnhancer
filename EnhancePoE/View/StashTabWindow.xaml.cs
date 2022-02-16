@@ -16,16 +16,11 @@ namespace EnhancePoE.View
     /// <summary>
     ///     Interaction logic for StashTabWindow.xaml
     /// </summary>
-    public partial class StashTabWindow : Window, INotifyPropertyChanged
+    public partial class StashTabWindow : INotifyPropertyChanged
     {
-        //public double Gap { get; set; } = 0;
-
-        public static ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
-
+        private static readonly ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
         private Visibility _stashBorderVisibility = Visibility.Hidden;
-
         private Thickness _tabHeaderGap;
-
         private Thickness _tabMargin;
 
         public StashTabWindow()
@@ -36,7 +31,7 @@ namespace EnhancePoE.View
         }
 
         public bool IsOpen { get; set; }
-        public bool IsEditing { get; set; }
+        private bool IsEditing { get; set; }
 
         public Thickness TabHeaderGap
         {
@@ -64,7 +59,7 @@ namespace EnhancePoE.View
             }
         }
 
-        public Visibility StashBorderVisibility
+        private Visibility StashBorderVisibility
         {
             get => _stashBorderVisibility;
             set
@@ -74,11 +69,9 @@ namespace EnhancePoE.View
             }
         }
 
-
         public new virtual void Hide()
         {
             Transparentize();
-            //MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
             EditModeButton.Content = "Edit";
             IsEditing = false;
             MouseHook.Stop();
@@ -91,26 +84,14 @@ namespace EnhancePoE.View
 
             IsOpen = false;
             IsEditing = false;
-            MainWindow.overlay.OpenStashOverlayButtonContent = "Stash";
-            //MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
-            //TextBlockList.Clear();
-
-            //if (ChaosRecipeEnhancer.FetchingActive)
-            //{
-            //    ChaosRecipeEnhancer.aTimer.Enabled = true;
-            //}
-
+            MainWindow.Overlay.OpenStashOverlayButtonContent = "Stash";
 
             base.Hide();
         }
 
-        // TODO: rework tabitems, tabheaders
+        // TODO: rework tab items and tab headers
         public new virtual void Show()
         {
-            //if (ChaosRecipeEnhancer.FetchingActive)
-            //{
-            //    ChaosRecipeEnhancer.aTimer.Enabled = false;
-            //}
             if (StashTabList.StashTabs.Count != 0)
             {
                 IsOpen = true;
@@ -118,54 +99,21 @@ namespace EnhancePoE.View
                 _tabHeaderGap.Right = Settings.Default.TabHeaderGap;
                 _tabHeaderGap.Left = Settings.Default.TabHeaderGap;
                 TabMargin = new Thickness(Settings.Default.TabMargin, 0, 0, 0);
-                //TabHeaderWidth = new Thickness(Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2);
 
                 foreach (var i in StashTabList.StashTabs)
                 {
-                    //i.PrepareOverlayList();
-                    //i.ActivateNextCell(true);
                     TabItem newStashTabItem;
-                    var tbk = new TextBlock { Text = i.TabName };
+                    var tbk = new TextBlock
+                    {
+                        Text = i.TabName,
+                        DataContext = i
+                    };
 
-                    //TextBlock tbk = new TextBlock() { Text = i.TabName};
-                    //if (i.ItemOrderList.Count > 0)
-                    //{
-                    //    if (Properties.Settings.Default.ColorStash != "")
-                    //    {
-                    //        tbk.Background = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
-                    //    }
-                    //    else
-                    //    {
-                    //        tbk.Background = Brushes.Red;
-                    //    }
-                    //}
-
-                    //tbk.Background = i.TabHeaderColor;
-                    tbk.DataContext = i;
                     tbk.SetBinding(TextBlock.BackgroundProperty, new Binding("TabHeaderColor"));
                     tbk.SetBinding(TextBlock.PaddingProperty, new Binding("TabHeaderWidth"));
-
-                    //tbk.SetBinding(TextBlock.TextProperty, new System.Windows.Data.Binding("TabName"));
-
-                    //tbk.SetBinding(TextBlock.PaddingProperty, new System.Windows.Data.Binding("TabHeaderThickness"));
                     tbk.FontSize = 16;
-                    //if(i..Co > 0)
-                    //{
-                    //    if (Properties.Settings.Default.ColorStash != "")
-                    //    {
-                    //        i.TabHeaderColor = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Properties.Settings.Default.ColorStash));
-                    //    }
-                    //    else
-                    //    {
-                    //        i.TabHeaderColor = Brushes.Red;
-                    //    }
-                    //}
-
                     i.TabHeader = tbk;
 
-                    //TextBlockList.Add(tbk, i.TabIndex);
-
-                    //string name = i.TabName + "GridControl";
                     if (i.Quad)
                         newStashTabItem = new TabItem
                         {
@@ -200,7 +148,7 @@ namespace EnhancePoE.View
                         currTab.ActivateItemCells(i);
                     }
 
-                MainWindow.overlay.OpenStashOverlayButtonContent = "Hide";
+                MainWindow.Overlay.OpenStashOverlayButtonContent = "Hide";
 
                 MouseHook.Start();
                 base.Show();
@@ -214,7 +162,6 @@ namespace EnhancePoE.View
         public void StartEditMode()
         {
             MouseHook.Stop();
-            //MainWindow.overlay.EditStashTabOverlay.Content = "Save";
             EditModeButton.Content = "Save";
             StashBorderVisibility = Visibility.Visible;
             Normalize();
@@ -224,7 +171,6 @@ namespace EnhancePoE.View
         public void StopEditMode()
         {
             Transparentize();
-            //MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
             EditModeButton.Content = "Edit";
             StashBorderVisibility = Visibility.Hidden;
             MouseHook.Start();
@@ -265,16 +211,11 @@ namespace EnhancePoE.View
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            //if (IsOpen)
-            //{
-            //    ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
-
-            //}
         }
 
         public void HandleEditButton()
         {
-            if (MainWindow.stashTabOverlay.IsEditing)
+            if (MainWindow.StashTabOverlay.IsEditing)
                 StopEditMode();
             else
                 StartEditMode();
@@ -284,7 +225,6 @@ namespace EnhancePoE.View
         {
             HandleEditButton();
         }
-
 
         #region INotifyPropertyChanged implementation
 
@@ -299,13 +239,5 @@ namespace EnhancePoE.View
         }
 
         #endregion
-
-        //private void hook_MouseUp(object sender, MouseHookEventArgs e)
-        //{
-        //    Trace.WriteLine("Mouse clicked");
-        //    // do some stuff with your exciting new mouse hook data
-        //}
-
-        //private void Get
     }
 }

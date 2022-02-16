@@ -75,7 +75,7 @@
                                 <RowDefinition Height="25" />
                                 <RowDefinition Height="5" />
                                 <RowDefinition Height="25" />
-                                <RowDefinition Height="10" />
+                                <RowDefinition Height="25" />
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Column="1"
                                        Grid.Row="1"
@@ -112,12 +112,32 @@
                                        Text="League:"
                                        ToolTipService.InitialShowDelay="50"
                                        ToolTip="The league you are playing in." />
-                            <ComboBox Grid.Column="3"
+                            <TextBox x:Name="CustomLeagueInput"
+                                     Grid.Column="3"
+                                     Grid.Row="7"
+                                     Width="200"
+                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=League, Mode=TwoWay}"
+                                     Visibility="{Binding CustomLeagueVisible}" />
+                            <ComboBox x:Name="MainLeagueComboBox" 
+                                      Grid.Column="3"
                                       Grid.Row="7"
                                       Width="200"
                                       VerticalContentAlignment="Center"
-                                      Name="LeagueComboBox"
-                                      SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=League, Mode=TwoWay}" />
+                                      SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=League, Mode=TwoWay}"
+                                      Visibility="{Binding MainLeagueVisible}" />
+                            <TextBlock Grid.Column="1"
+                                       Grid.Row="8"
+                                       VerticalAlignment="Center"
+                                       Text="Custom League:"
+                                       ToolTipService.InitialShowDelay="50"
+                                       ToolTip="If you are playing in a custom league, check this box to input the league name manually." />
+                            <CheckBox x:Name="CustomLeagueCheckBox"
+                                      Grid.Column="3"
+                                      Grid.Row="8"
+                                      VerticalAlignment="Center"
+                                      Checked="CustomLeagueCheckBox_Checked"
+                                      Unchecked="CustomLeagueCheckBox_Unchecked"
+                                      IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=CustomLeague, Mode=TwoWay}" />
                         </Grid>
                         <!-- RECIPES -->
                         <Grid Grid.Column="1"
@@ -491,7 +511,7 @@
                                        VerticalAlignment="Center"
                                        Text="Full Set Threshold:"
                                        ToolTipService.InitialShowDelay="50"
-                                       ToolTip="Number of full sets you want. If you have collected this amount of items of an itemtype, itemtype will get deactivated. Leave at 0 for auto calculation, that means 4 sets for each normal tab and 16 sets for each quad tab.  " />
+                                       ToolTip="Number of full sets you want. If you have collected this amount of items of an item type, item type will get deactivated. Leave at 0 for auto calculation, that means 4 sets for each normal tab and 16 sets for each quad tab.  " />
                             <TextBox x:Name="Sets"
                                      Grid.Column="3"
                                      Grid.Row="3"

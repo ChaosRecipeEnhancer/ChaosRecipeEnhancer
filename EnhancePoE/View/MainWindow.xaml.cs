@@ -27,21 +27,21 @@ namespace EnhancePoE
     {
         private const string AppVersion = "1.4.0.0";
 
-        public static ChaosRecipeEnhancer overlay = new ChaosRecipeEnhancer();
-        public static StashTabWindow stashTabOverlay = new StashTabWindow();
-        public static MainWindow instance;
-        public MenuItem menuItem;
+        public static readonly ChaosRecipeEnhancer Overlay = new ChaosRecipeEnhancer();
+        public static readonly StashTabWindow StashTabOverlay = new StashTabWindow();
+        private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
         private Visibility _indicesVisible = Visibility.Hidden;
         private Visibility _nameVisible = Visibility.Hidden;
+        private Visibility _mainLeagueVisible = Visibility.Visible;
+        private Visibility _customLeagueVisible = Visibility.Hidden;
         private ContextMenu _contextMenu;
+        private MenuItem _menuItem;
         private MenuItem _menuItemUpdate;
-        private readonly NotifyIcon _notifyIcon = new NotifyIcon();
         private bool _trayClose;
 
         public MainWindow()
         {
-            instance = this;
             InitializeComponent();
             DataContext = this;
             NETAutoupdater.InitializeAutoupdater(AppVersion);
@@ -60,11 +60,14 @@ namespace EnhancePoE
             //if (Debugger.IsAttached)
             //    Properties.Settings.Default.Reset();
 
-            // initialize stashtabs
+            // initialize stash tabs
             //DataContext = stashTabsModel;
 
             // Populate the league dropdown
-            LeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
+            if (Settings.Default.MainLeague)
+            {
+                MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
+            }
 
             InitializeColors();
             InitializeHotkeys();
@@ -79,8 +82,7 @@ namespace EnhancePoE
 
         // ReSharper disable once UnusedMember.Global
         public static string AppVersionText { get; set; } = "v." + AppVersion;
-
-
+        
         // ReSharper disable once UnusedMember.Local
         private static string RunButtonContent { get; set; } = "Run Overlay";
 
@@ -97,6 +99,32 @@ namespace EnhancePoE
             }
         }
 
+        public Visibility MainLeagueVisible
+        {
+            get => _mainLeagueVisible;
+            set
+            {
+                if (_mainLeagueVisible != value)
+                {
+                    _mainLeagueVisible = value;
+                    OnPropertyChanged("MainLeagueVisible");
+                }
+            }
+        }
+        
+        public Visibility CustomLeagueVisible
+        {
+            get => _customLeagueVisible;
+            set
+            {
+                if (_customLeagueVisible != value)
+                {
+                    _customLeagueVisible = value;
+                    OnPropertyChanged("CustomLeagueVisible");
+                }
+            }
+        }
+
         public Visibility NameVisible
         {
             get => _nameVisible;
@@ -109,9 +137,7 @@ namespace EnhancePoE
                 }
             }
         }
-
-        public Visibility LootFilterFileDialogVisible = Visibility.Visible;
-
+        
         private void InitializeHotkeys()
         {
             HotkeysManager.SetupSystemHook();
@@ -135,7 +161,6 @@ namespace EnhancePoE
             if (Settings.Default.ColorBelt != "") ColorBeltPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorBelt);
         }
 
-
         // creates tray icon with menu
         private void InitializeTray()
         {
@@ -150,23 +175,21 @@ namespace EnhancePoE
 
             new Container();
             _contextMenu = new ContextMenu();
-            menuItem = new MenuItem();
+            _menuItem = new MenuItem();
             _menuItemUpdate = new MenuItem();
 
             // Initialize contextMenu1
-            _contextMenu.MenuItems.AddRange(new[] { menuItem, _menuItemUpdate });
-
-
+            _contextMenu.MenuItems.AddRange(new[] { _menuItem, _menuItemUpdate });
+            
             // Initialize menuItem1
-            menuItem.Index = 1;
-            menuItem.Text = "E&xit";
-            menuItem.Click += MenuItem_Click;
+            _menuItem.Index = 1;
+            _menuItem.Text = "E&xit";
+            _menuItem.Click += MenuItem_Click;
 
             // Initialize menuItemUpdate
             _menuItemUpdate.Index = 0;
             _menuItemUpdate.Text = "C&heck for Updates";
             _menuItemUpdate.Click += CheckForUpdates_Click;
-
 
             _notifyIcon.ContextMenu = _contextMenu;
         }
@@ -182,8 +205,7 @@ namespace EnhancePoE
             _trayClose = true;
             Close();
         }
-
-
+        
         // Minimize to system tray when application is closed.
         protected override void OnClosing(CancelEventArgs e)
         {
@@ -207,21 +229,20 @@ namespace EnhancePoE
                 Application.Current.Shutdown();
             }
         }
-
-
+        
         public void RunOverlay()
         {
-            if (overlay.IsOpen)
+            if (Overlay.IsOpen)
             {
-                overlay.Hide();
-                if (stashTabOverlay.IsOpen) stashTabOverlay.Hide();
+                Overlay.Hide();
+                if (StashTabOverlay.IsOpen) StashTabOverlay.Hide();
                 RunButton.Content = "Run Overlay";
             }
             else
             {
                 if (CheckAllSettings())
                 {
-                    overlay.Show();
+                    Overlay.Show();
                     RunButton.Content = "Stop Overlay";
                 }
             }
@@ -237,16 +258,16 @@ namespace EnhancePoE
             var ready = CheckAllSettings();
             if (ready)
             {
-                if (stashTabOverlay.IsOpen)
-                    stashTabOverlay.Hide();
+                if (StashTabOverlay.IsOpen)
+                    StashTabOverlay.Hide();
                 else
-                    stashTabOverlay.Show();
+                    StashTabOverlay.Show();
             }
         }
 
         public void AddAllHotkeys()
         {
-            if (Settings.Default.HotkeyRefresh != "< not set >") HotkeysManager.AddHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey, overlay.RunFetching);
+            if (Settings.Default.HotkeyRefresh != "< not set >") HotkeysManager.AddHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey, Overlay.RunFetching);
             if (Settings.Default.HotkeyToggle != "< not set >") HotkeysManager.AddHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay);
             if (Settings.Default.HotkeyStashTab != "< not set >") HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey, RunStashTabOverlay);
         }
@@ -268,8 +289,7 @@ namespace EnhancePoE
 
             return null;
         }
-
-
+        
         private void ColorBootsPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             Settings.Default.ColorBoots = ColorBootsPicker.SelectedColor.ToString();
@@ -421,19 +441,7 @@ namespace EnhancePoE
                 hotkeyDialog.Show();
             }
         }
-
-        private void ReloadFilterHotkey_Click(object sender, RoutedEventArgs e)
-        {
-            var isWindowOpen = false;
-            foreach (Window w in Application.Current.Windows)
-                if (w is HotkeyWindow)
-                    isWindowOpen = true;
-
-            if (isWindowOpen) return;
-            var hotkeyDialog = new HotkeyWindow(this, "reloadFilter");
-            hotkeyDialog.Show();
-        }
-
+        
         private void LootFilterFileDialog_Click(object sender, RoutedEventArgs e)
         {
             var open = new OpenFileDialog();
@@ -463,12 +471,24 @@ namespace EnhancePoE
             {
                 NameVisible = Visibility.Visible;
                 IndicesVisible = Visibility.Hidden;
+                CustomLeagueVisible = Visibility.Hidden;
+            }
+
+            if (Settings.Default.CustomLeague == false)
+            {
+                CustomLeagueVisible = Visibility.Hidden;
+                MainLeagueVisible = Visibility.Visible;
+            }
+            else
+            {
+                CustomLeagueVisible = Visibility.Visible;
+                MainLeagueVisible = Visibility.Hidden;
             }
         }
 
         private void TabHeaderGapSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            stashTabOverlay.TabHeaderGap = new Thickness(Settings.Default.TabHeaderGap, 0, Settings.Default.TabHeaderGap, 0);
+            StashTabOverlay.TabHeaderGap = new Thickness(Settings.Default.TabHeaderGap, 0, Settings.Default.TabHeaderGap, 0);
         }
 
         private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -481,19 +501,9 @@ namespace EnhancePoE
 
         private void TabHeaderMarginSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            stashTabOverlay.TabMargin = new Thickness(Settings.Default.TabMargin, 0, 0, 0);
+            StashTabOverlay.TabMargin = new Thickness(Settings.Default.TabMargin, 0, 0, 0);
         }
-
-        public static void GenerateNewOverlay()
-        {
-            overlay = new ChaosRecipeEnhancer();
-        }
-
-        public static void GenerateNewStashTabOverlay()
-        {
-            stashTabOverlay = new StashTabWindow();
-        }
-
+        
         private void SaveButton_Click_1(object sender, RoutedEventArgs e)
         {
             Settings.Default.Save();
@@ -504,13 +514,13 @@ namespace EnhancePoE
             switch (Settings.Default.OverlayMode)
             {
                 case 0:
-                    overlay.MainOverlayContentControl.Content = new MainOverlayContent();
+                    Overlay.MainOverlayContentControl.Content = new MainOverlayContent();
                     break;
                 case 1:
-                    overlay.MainOverlayContentControl.Content = new MainOverlayContentMinified();
+                    Overlay.MainOverlayContentControl.Content = new MainOverlayContentMinified();
                     break;
                 case 2:
-                    overlay.MainOverlayContentControl.Content = new MainOverlayOnlyButtons();
+                    Overlay.MainOverlayContentControl.Content = new MainOverlayOnlyButtons();
                     break;
             }
         }
@@ -541,6 +551,22 @@ namespace EnhancePoE
             Settings.Default.RegalRecipe = false;
         }
 
+        private void CustomLeagueCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Settings.Default.CustomLeague = true;
+            Settings.Default.MainLeague = false;
+            LoadModeVisibility();
+        }
+        
+        private void CustomLeagueCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Settings.Default.CustomLeague = false;
+            Settings.Default.MainLeague = true;
+            
+            MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
+            LoadModeVisibility();
+        }
+        
         private void RegalRecipeCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             Settings.Default.ChaosRecipe = false;
@@ -570,7 +596,7 @@ namespace EnhancePoE
 
         private void ShowNumbersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            overlay.AmountsVisibility = Settings.Default.ShowItemAmount != 0 ? Visibility.Visible : Visibility.Hidden;
+            Overlay.AmountsVisibility = Settings.Default.ShowItemAmount != 0 ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void FilterSoundLocationDialog_OnClick(object sender, RoutedEventArgs e)
@@ -599,6 +625,12 @@ namespace EnhancePoE
             Data.PlayNotificationSoundSetPicked();
         }
 
+        #region Event Handlers
+        
+        
+        
+        #endregion
+        
         #region INotifyPropertyChanged implementation
 
         // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
