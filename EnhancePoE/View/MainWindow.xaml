@@ -531,6 +531,7 @@
                                       SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabMode, Mode=TwoWay}">
                                 <ComboBoxItem Content="ID" />
                                 <ComboBoxItem Content="Prefix" />
+                                <ComboBoxItem Content="Suffix" />
                             </ComboBox>
                             <TextBlock Name="StashTabNameTextBlock"
                                        Grid.Column="1"
@@ -545,6 +546,20 @@
                                      Grid.Row="7"
                                      Width="200"
                                      Visibility="{Binding NameVisible}"
+                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabName, Mode=TwoWay}" />
+                            <TextBlock Name="StashTabNameSuffixTextBlock"
+                                       Grid.Column="1"
+                                       Grid.Row="7"
+                                       VerticalAlignment="Center"
+                                       Text="StashTab Suffix:"
+                                       ToolTipService.InitialShowDelay="50"
+                                       ToolTip="Every stash tab which name ends with this suffix will be added."
+                                       Visibility="{Binding NameSuffixVisible}" />
+                            <TextBox Name="StashTabNameSuffixTextBox"
+                                     Grid.Column="3"
+                                     Grid.Row="7"
+                                     Width="200"
+                                     Visibility="{Binding NameSuffixVisible}"
                                      Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabName, Mode=TwoWay}" />
                             <TextBlock Name="StashTabIndicesTextBlock"
                                        Grid.Column="1"

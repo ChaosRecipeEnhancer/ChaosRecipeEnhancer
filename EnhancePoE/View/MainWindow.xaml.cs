@@ -32,7 +32,8 @@ namespace EnhancePoE
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
         private Visibility _indicesVisible = Visibility.Hidden;
-        private Visibility _nameVisible = Visibility.Hidden;
+        private Visibility _nameVisible = Visibility.Hidden; 
+        private Visibility _nameSuffixVisible = Visibility.Hidden; 
         private Visibility _mainLeagueVisible = Visibility.Visible;
         private Visibility _customLeagueVisible = Visibility.Hidden;
         private ContextMenu _contextMenu;
@@ -137,7 +138,18 @@ namespace EnhancePoE
                 }
             }
         }
-        
+        public Visibility NameSuffixVisible
+        {
+            get => _nameSuffixVisible;
+            set
+            {
+                if (_nameSuffixVisible != value)
+                {
+                    _nameSuffixVisible = value;
+                    OnPropertyChanged("NameSuffixVisible");
+                }
+            }
+        }
         private void InitializeHotkeys()
         {
             HotkeysManager.SetupSystemHook();
@@ -367,15 +379,20 @@ namespace EnhancePoE
             switch (Settings.Default.StashTabMode)
             {
                 case 0:
-                {
-                    if (Settings.Default.StashTabIndices == "") missingSettings.Add("- StashTab Index");
-                    break;
-                }
-                case 1:
-                {
-                    if (Settings.Default.StashTabName == "") missingSettings.Add("- StashTab Name");
-                    break;
-                }
+                    {
+                        if (Settings.Default.StashTabIndices == "") missingSettings.Add("- StashTab Index");
+                        break;
+                    }
+                    case 1:
+                    {
+                        if (Settings.Default.StashTabName == "") missingSettings.Add("- StashTab Name");
+                        break;
+                    }
+                    case 2:
+                    {
+                        if (Settings.Default.StashTabName == "") missingSettings.Add("- StashTab Name");
+                        break;
+                    }
             }
 
             if (missingSettings.Count > 0)
@@ -462,16 +479,23 @@ namespace EnhancePoE
 
         private void LoadModeVisibility()
         {
-            if (Settings.Default.StashTabMode == 0)
+            switch (Settings.Default.StashTabMode)
             {
-                IndicesVisible = Visibility.Visible;
-                NameVisible = Visibility.Hidden;
-            }
-            else
-            {
-                NameVisible = Visibility.Visible;
-                IndicesVisible = Visibility.Hidden;
-                CustomLeagueVisible = Visibility.Hidden;
+                case 1:
+                    NameVisible = Visibility.Visible;
+                    NameSuffixVisible = Visibility.Hidden;
+                    IndicesVisible = Visibility.Hidden;
+                    break;
+                case 2:
+                    NameSuffixVisible = Visibility.Visible;
+                    NameVisible = Visibility.Hidden;
+                    IndicesVisible = Visibility.Hidden;
+                    break;
+                default:
+                    IndicesVisible = Visibility.Visible;
+                    NameVisible = Visibility.Hidden;
+                    NameSuffixVisible = Visibility.Hidden;
+                    break;
             }
 
             if (Settings.Default.CustomLeague == false)

@@ -100,7 +100,11 @@ namespace EnhancePoE
 
                     foreach (var p in PropsList.tabs)
                     {
-                        if (p.n.StartsWith(stashName)) ret.Add(new StashTab(p.n, p.i));
+                        if ((Settings.Default.StashTabMode == 1 && p.n.StartsWith(stashName))
+                            || (Settings.Default.StashTabMode == 2 && p.n.EndsWith(stashName)))
+                        {
+                            ret.Add(new StashTab(p.n, p.i));
+                        }
                     }
 
                     StashTabList.StashTabs = ret;
