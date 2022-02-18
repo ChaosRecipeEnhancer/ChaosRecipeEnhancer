@@ -38,7 +38,7 @@ namespace EnhancePoE.Model
             }
         }
 
-        public static string GenerateSection(bool show, string itemClass, bool influenced = false, bool onlyChaos = false)
+        public static string GenerateSection(bool show, string itemClass, bool influenced = false, bool alwaysActive = false)
         {
             var result = "";
             if (show)
@@ -60,7 +60,7 @@ namespace EnhancePoE.Model
             
             switch (influenced)
             {
-                case false when onlyChaos && !Settings.Default.RegalRecipe:
+                case false when !alwaysActive && !Settings.Default.RegalRecipe:
                     result += "ItemLevel >= 60" + newLine + tab + "ItemLevel <= 74" + newLine + tab;
                     break;
                 case false when Settings.Default.RegalRecipe:

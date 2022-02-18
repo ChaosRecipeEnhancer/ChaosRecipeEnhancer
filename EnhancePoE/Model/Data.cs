@@ -359,7 +359,7 @@ namespace EnhancePoE
                     FilterGeneration.LoadCustomStyle();
                     if (Settings.Default.ExaltedRecipe) FilterGeneration.LoadCustomStyleInfluenced();
                 }
-
+                //this never runs from what I can tell? hijacking onlyChaos since its used only here. Might as well romove it at some point?
                 if (fullSets == SetTargetAmount && missingGearPieceForChaosRecipe)
                 {
                     Trace.WriteLine("filter here 1");
@@ -520,24 +520,24 @@ namespace EnhancePoE
                 GetAlwaysActive();
                 if (filterActive)
                 {
-                    if (Settings.Default.RingsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Rings\""));
+                    if (Settings.Default.RingsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Rings\"", alwaysActive: true));
 
-                    if (Settings.Default.AmuletsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Amulets\""));
+                    if (Settings.Default.AmuletsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Amulets\"", alwaysActive: true));
 
-                    if (Settings.Default.BeltsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Belts\""));
+                    if (Settings.Default.BeltsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Belts\"", alwaysActive: true));
 
-                    if (Settings.Default.GlovesAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Gloves\""));
+                    if (Settings.Default.GlovesAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Gloves\"", alwaysActive: true));
 
-                    if (Settings.Default.BootsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Boots\""));
+                    if (Settings.Default.BootsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Boots\"", alwaysActive: true));
 
-                    if (Settings.Default.HelmetsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Helmets\""));
+                    if (Settings.Default.HelmetsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Helmets\"", alwaysActive: true));
 
-                    if (Settings.Default.ChestsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Body Armours\""));
+                    if (Settings.Default.ChestsAlwaysActive) sectionList.Add(FilterGeneration.GenerateSection(true, "\"Body Armours\"", alwaysActive: true));
 
                     if (Settings.Default.WeaponsAlwaysActive)
                     {
-                        sectionList.Add(FilterGeneration.GenerateSection(true, "\"One Hand\""));
-                        sectionList.Add(FilterGeneration.GenerateSection(true, "\"Two Hand\""));
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "\"One Hand\"", alwaysActive: true));
+                        sectionList.Add(FilterGeneration.GenerateSection(true, "\"Two Hand\"", alwaysActive: true));
                     }
                 }
 
