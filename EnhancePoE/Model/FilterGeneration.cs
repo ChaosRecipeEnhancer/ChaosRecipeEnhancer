@@ -38,17 +38,13 @@ namespace EnhancePoE.Model
             }
         }
 
-        public static string GenerateSection(bool show, string itemClass, bool influenced = false, bool alwaysActive = false)
+        public static string GenerateSection(string itemClass, bool influenced = false, bool alwaysActive = false)
         {
-            var result = "";
-            if (show)
-                result += "Show";
-            else
-                return "";
-            
+            var result = "Show";
+
             const string newLine = "\n";
             const string tab = "\t";
-            
+
             if (influenced)
                 result += newLine + tab + "HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord";
             else
@@ -57,7 +53,7 @@ namespace EnhancePoE.Model
 
             result = result + newLine + tab + "Rarity Rare" + newLine + tab;
             if (!Settings.Default.IncludeIdentified) result += "Identified False" + newLine + tab;
-            
+
             switch (influenced)
             {
                 case false when !alwaysActive && !Settings.Default.RegalRecipe:
@@ -99,8 +95,8 @@ namespace EnhancePoE.Model
             var bgColor = colors.Aggregate("SetBackgroundColor", (current, t) => current + " " + t);
 
             result = result + bgColor + newLine + tab;
-            result = influenced 
-                ? CustomStyleInfluenced.Aggregate(result, (current, cs) => current + cs + newLine + tab) 
+            result = influenced
+                ? CustomStyleInfluenced.Aggregate(result, (current, cs) => current + cs + newLine + tab)
                 : CustomStyle.Aggregate(result, (current, cs) => current + cs + newLine + tab);
 
             if (Settings.Default.LootFilterIcons) result = result + "MinimapIcon 2 White Star" + newLine + tab;
@@ -116,7 +112,7 @@ namespace EnhancePoE.Model
             int a;
             var color = "";
             var colorList = new List<int>();
-            
+
             switch (type)
             {
                 case "\"Rings\"":
@@ -169,92 +165,47 @@ namespace EnhancePoE.Model
             colorList.Add(a);
             return colorList;
         }
-
-
-        // refactor this shit
-        public static string GenerateLootFilter(string oldFilter, IEnumerable<string> sections)
+        public static string GenerateLootFilter(string oldFilter, IEnumerable<string> sections, bool isChaos = true)
         {
             // order has to be:
             // 1. exa start
             // 2. exa end
             // 3. chaos start
             // 4. chaos end
-
+            string sectionName = isChaos ? "Chaos" : "Exalted";
             const string newLine = "\n";
-            const string chaosStart = "#Chaos Recipe Enhancer by kosace Chaos Recipe Start";
-            const string chaosEnd = "#Chaos Recipe Enhancer by kosace Chaos Recipe End";
-            var chaosSection = "";
-            var beforeChaos = "";
-            string afterChaos;
+            string sectionStart = "#Chaos Recipe Enhancer by kosace " + sectionName + " Recipe Start";
+            string sectionEnd = "#Chaos Recipe Enhancer by kosace " + sectionName + " Recipe End";
+            var sectionBody = "";
+            var beforeSection = "";
+            string afterSection;
 
             // generate chaos recipe section
-            chaosSection += chaosStart + newLine + newLine;
-            chaosSection = sections.Aggregate(chaosSection, (current, s) => current + (s + newLine));
-            chaosSection += chaosEnd + newLine;
+            sectionBody += sectionStart + newLine + newLine;
+            sectionBody = sections.Aggregate(sectionBody, (current, s) => current + (s + newLine));
+            sectionBody += sectionEnd + newLine;
 
-            string[] sep = { chaosEnd + newLine };
+            string[] sep = { sectionEnd + newLine };
             var split = oldFilter.Split(sep, StringSplitOptions.None);
 
             if (split.Length > 1)
             {
-                afterChaos = split[1];
-                string[] sep2 = { chaosStart };
+                afterSection = split[1];
+
+                string[] sep2 = { sectionStart };
                 var split2 = split[0].Split(sep2, StringSplitOptions.None);
 
                 if (split2.Length > 1)
-                    beforeChaos = split2[0];
+                    beforeSection = split2[0];
                 else
-                    afterChaos = oldFilter;
+                    afterSection = oldFilter;
             }
             else
             {
-                afterChaos = oldFilter;
+                afterSection = oldFilter;
             }
-            
-            return beforeChaos + chaosSection + afterChaos;
-        }
 
-        public static string GenerateLootFilterInfluenced(string oldFilter, List<string> sections)
-        {
-            // order has to be:
-            // 1. exa start
-            // 2. exa end
-            // 3. chaos start
-            // 4. chaos end
-
-            const string newLine = "\n";
-            const string exaltedStart = "#Chaos Recipe Enhancer by kosace Exalted Recipe Start";
-            const string exaltedEnd = "#Chaos Recipe Enhancer by kosace Exalted Recipe End";
-            var exaltedSection = "";
-            var beforeExalted = "";
-            string afterExalted;
-
-            // generate chaos recipe section
-            exaltedSection += exaltedStart + newLine + newLine;
-            exaltedSection = sections.Aggregate(exaltedSection, (current, s) => current + (s + newLine));
-            exaltedSection += exaltedEnd + newLine;
-
-            string[] sep = { exaltedEnd + newLine };
-            var split = oldFilter.Split(sep, StringSplitOptions.None);
-
-            if (split.Length > 1)
-            {
-                afterExalted = split[1];
-
-                string[] sep2 = { exaltedStart };
-                var split2 = split[0].Split(sep2, StringSplitOptions.None);
-
-                if (split2.Length > 1)
-                    beforeExalted = split2[0];
-                else
-                    afterExalted = oldFilter;
-            }
-            else
-            {
-                afterExalted = oldFilter;
-            }
-            
-            return beforeExalted + exaltedSection + afterExalted;
+            return beforeSection + sectionBody + afterSection;
         }
     }
 }
