@@ -1,4 +1,7 @@
 ﻿using EnhancePoE.Const;
+using EnhancePoE.Enums;
+using EnhancePoE.Model;
+using EnhancePoE.Model.Storage;
 using EnhancePoE.Properties;
 using EnhancePoE.Visitors;
 using System;
@@ -13,28 +16,56 @@ namespace EnhancePoE.Filter
 {
     //add interfaces
     public class CFilterGenerationManager
-    {       
-        public readonly bool UseExalted = false;
-        public readonly bool UseChaosRecipe = false;
-        public readonly bool UseRegalRecipe = false;
-        public readonly bool FilterActive = false;
-
+    {
         public CBaseItemClassManager ItemClassManager;
         public CFilterGenerationManager()
         {
-            UseExalted = Settings.Default.ExaltedRecipe;
-            UseChaosRecipe = Settings.Default.ChaosRecipe;
-            UseRegalRecipe = Settings.Default.RegalRecipe;
-            FilterActive = Settings.Default.LootFilterActive;
             LoadCustomStyle();
-            if (UseExalted)
+            if (Settings.Default.ExaltedRecipe)
             {
                 LoadCustomStyleInfluenced();
             }
         }
         public readonly List<string> CustomStyle = new List<string>();
         public readonly List<string> CustomStyleInfluenced = new List<string>();
+        public ActiveItemTypes GenerateSectionsAndUpdateFilter(HashSet<string> missingItemClasses)
+        {
+            ActiveItemTypes res = new ActiveItemTypes();                      
 
+            if (Settings.Default.LootFilterActive)
+            {
+                CItemClassManagerFactory visitor = new CItemClassManagerFactory();
+                var sectionList = new HashSet<string>();
+                var sectionListExalted = new HashSet<string>(); 
+
+                foreach (EnumItemClass item in Enum.GetValues(typeof(EnumItemClass)))
+                {
+                    this.ItemClassManager = visitor.GetItemClassManager(item);
+
+                    var className = this.ItemClassManager.ClassName;
+                    var stillMissing = missingItemClasses.Contains(className);
+                    //weapons might be buggy, will try to do some testts
+                    if ((Settings.Default.ChaosRecipe || Settings.Default.RegalRecipe)
+                        && (this.ItemClassManager.AlwaysActive || stillMissing))
+                    {
+                        sectionList.Add(this.GenerateSection(false));
+                        //find better way to handle active items and sound notification on changes
+                        res = this.ItemClassManager.SetActiveTypes(res, true);
+                    }
+                    else
+                    {
+                        res = this.ItemClassManager.SetActiveTypes(res, false);
+                    }
+                    if (Settings.Default.ExaltedRecipe)
+                    {
+                        sectionListExalted.Add(this.GenerateSection(true));
+                    }
+                }
+                this.UpdateFilterAsync(sectionList, sectionListExalted);
+            }
+
+            return res;
+        }
         public string GenerateSection(bool isInfluenced)
         {
             var result = "Show";
@@ -50,10 +81,10 @@ namespace EnhancePoE.Filter
 
             switch (isInfluenced)
             {
-                case false when !ItemClassManager.AlwaysActive && !UseRegalRecipe:
+                case false when !ItemClassManager.AlwaysActive && !Settings.Default.RegalRecipe:
                     result += "ItemLevel >= 60" + CConst.newLine + CConst.tab + "ItemLevel <= 74" + CConst.newLine + CConst.tab;
                     break;
-                case false when UseRegalRecipe:
+                case false when Settings.Default.RegalRecipe:
                     result += "ItemLevel > 75" + CConst.newLine + CConst.tab;
                     break;
                 default:
@@ -78,7 +109,6 @@ namespace EnhancePoE.Filter
 
             return result;
         }
-
         public string GenerateLootFilter(string oldFilter, IEnumerable<string> sections, bool isChaos = true)
         {
             // order has to be:
@@ -121,6 +151,19 @@ namespace EnhancePoE.Filter
 
             return beforeSection + sectionBody + afterSection;
         }
+        private async Task UpdateFilterAsync(HashSet<string>  sectionList, HashSet<string> sectionListExalted)
+        {
+            var filterStorage = FilterStorageFactory.Create(Settings.Default);
+
+            var oldFilter = await filterStorage.ReadLootFilterAsync();
+            if (oldFilter == null) return;
+
+            var newFilter = this.GenerateLootFilter(oldFilter, sectionList);
+            oldFilter = newFilter;
+            newFilter = this.GenerateLootFilter(oldFilter, sectionListExalted, false);
+
+            await filterStorage.WriteLootFilterAsync(newFilter);
+        }
         private IEnumerable<int> GetRGB()
         {
             int r;
@@ -151,7 +194,6 @@ namespace EnhancePoE.Filter
             colorList.Add(a);
             return colorList;
         }
-
         private void LoadCustomStyle()
         {
             CustomStyle.Clear();

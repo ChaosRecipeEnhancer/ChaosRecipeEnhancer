@@ -1,4 +1,5 @@
-﻿using EnhancePoE.Properties;
+﻿using EnhancePoE.Model;
+using EnhancePoE.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;

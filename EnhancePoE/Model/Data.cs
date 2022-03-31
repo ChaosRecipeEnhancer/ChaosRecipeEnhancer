@@ -322,36 +322,7 @@ namespace EnhancePoE
                     }
                 }
                 CFilterGenerationManager filterManager = new CFilterGenerationManager();
-                CItemClassManagerFactory visitor = new CItemClassManagerFactory();
-                var sectionList = new HashSet<string>();
-                var sectionListExalted = new HashSet<string>();
-
-                if (filterManager.FilterActive)
-                {
-                    foreach (EnumItemClass item in Enum.GetValues(typeof(EnumItemClass)))
-                    {
-                        filterManager.ItemClassManager = visitor.GetItemClassManager(item);
-
-                        var className = filterManager.ItemClassManager.ClassName;
-                        var stillMissing = missingItemClasses.Contains(className);
-                        //weapons might be buggy, will try to do some testts
-                        if ((filterManager.UseChaosRecipe || filterManager.UseRegalRecipe)
-                            && (filterManager.ItemClassManager.AlwaysActive || stillMissing))
-                        {
-                            sectionList.Add(filterManager.GenerateSection(false));
-                            //find better way to handle active items and sound notification on changes
-                            ActiveItems = filterManager.ItemClassManager.SetActiveTypes(ActiveItems, true);
-                        }
-                        else
-                        {
-                            ActiveItems = filterManager.ItemClassManager.SetActiveTypes(ActiveItems, false);
-                        }
-                        if (filterManager.UseExalted)
-                        {
-                            sectionListExalted.Add(filterManager.GenerateSection(true));
-                        }
-                    }
-                }
+                ActiveItems = filterManager.GenerateSectionsAndUpdateFilter(missingItemClasses);
                                
                 //Trace.WriteLine(fullSets, "full sets");
                 MainWindow.Overlay.Dispatcher.Invoke(() => { MainWindow.Overlay.FullSetsText = fullSets.ToString(); });
@@ -387,21 +358,6 @@ namespace EnhancePoE
                 }
 
                 Trace.WriteLine(fullSets, "full sets");
-
-
-                if (filterManager.FilterActive)
-                {
-                    var filterStorage = FilterStorageFactory.Create(Settings.Default);
-
-                    var oldFilter = await filterStorage.ReadLootFilterAsync();
-                    if (oldFilter == null) return;
-
-                    var newFilter = filterManager.GenerateLootFilter(oldFilter, sectionList);
-                    oldFilter = newFilter;
-                    newFilter = filterManager.GenerateLootFilter(oldFilter, sectionListExalted, false);
-
-                    await filterStorage.WriteLootFilterAsync(newFilter);
-                }
 
                 // If the state of any gear slot changed, we play a sound               
                 if (Settings.Default.Sound)
@@ -752,18 +708,7 @@ namespace EnhancePoE
     }
 
 
-    public class ActiveItemTypes
-    {
-        public bool GlovesActive { get; set; } = true;
-        public bool HelmetActive { get; set; } = true;
-        public bool BootsActive { get; set; } = true;
-        public bool ChestActive { get; set; } = true;
-        public bool WeaponActive { get; set; } = true;
-        public bool RingActive { get; set; } = true;
-        public bool AmuletActive { get; set; } = true;
-        public bool BeltActive { get; set; } = true;
-        public bool ChaosMissing { get; set; } = true;
-    }
+    
 
     public class ItemTypeAmounts
     {
