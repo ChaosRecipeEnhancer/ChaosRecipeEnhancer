@@ -1,4 +1,5 @@
 ﻿using EnhancePoE.Properties;
+using EnhancePoE.Model;
 
 namespace EnhancePoE.Visitors
 {

@@ -256,17 +256,7 @@ namespace EnhancePoE
 
                 if (Settings.Default.Sound)
                 {
-                    PreviousActiveItems = new ActiveItemTypes
-                    {
-                        BootsActive = ActiveItems.BootsActive,
-                        GlovesActive = ActiveItems.GlovesActive,
-                        HelmetActive = ActiveItems.HelmetActive,
-                        WeaponActive = ActiveItems.WeaponActive,
-                        ChestActive = ActiveItems.ChestActive,
-                        RingActive = ActiveItems.RingActive,
-                        AmuletActive = ActiveItems.AmuletActive,
-                        BeltActive = ActiveItems.BeltActive
-                    };
+                    PreviousActiveItems = new ActiveItemTypes(ActiveItems);
                 }
 
 
@@ -322,7 +312,7 @@ namespace EnhancePoE
                     }
                 }
                 CFilterGenerationManager filterManager = new CFilterGenerationManager();
-                ActiveItems = filterManager.GenerateSectionsAndUpdateFilter(missingItemClasses);
+                ActiveItems = await filterManager.GenerateSectionsAndUpdateFilter(missingItemClasses);
                                
                 //Trace.WriteLine(fullSets, "full sets");
                 MainWindow.Overlay.Dispatcher.Invoke(() => { MainWindow.Overlay.FullSetsText = fullSets.ToString(); });

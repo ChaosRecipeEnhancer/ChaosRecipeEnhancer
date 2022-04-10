@@ -29,5 +29,10 @@ namespace EnhancePoE.Visitors
             return result;
         }
         public abstract ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue);
+
+        public virtual bool CheckIfMissing(HashSet<string> missingItemClasses)
+        {
+            return missingItemClasses.Contains(this.ClassName);
+        }
     }
 }

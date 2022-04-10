@@ -1,5 +1,7 @@
 ﻿using EnhancePoE.Const;
 using EnhancePoE.Properties;
+using EnhancePoE.Model;
+using System.Collections.Generic;
 
 namespace EnhancePoE.Visitors
 {
@@ -28,6 +30,10 @@ namespace EnhancePoE.Visitors
         {
             activeItems.WeaponActive = newValue;
             return activeItems;
+        }
+        public override bool CheckIfMissing(HashSet<string> missingItemClasses)
+        {
+            return missingItemClasses.Contains(this.ClassName) || missingItemClasses.Contains("TwoHandWeapons");//bad, dont like, no good ideas for now tho
         }
     }
 }

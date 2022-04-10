@@ -17,7 +17,7 @@ namespace EnhancePoE.Filter
     //add interfaces
     public class CFilterGenerationManager
     {
-        public CBaseItemClassManager ItemClassManager;
+        private CBaseItemClassManager ItemClassManager;
         public CFilterGenerationManager()
         {
             LoadCustomStyle();
@@ -26,9 +26,9 @@ namespace EnhancePoE.Filter
                 LoadCustomStyleInfluenced();
             }
         }
-        public readonly List<string> CustomStyle = new List<string>();
-        public readonly List<string> CustomStyleInfluenced = new List<string>();
-        public ActiveItemTypes GenerateSectionsAndUpdateFilter(HashSet<string> missingItemClasses)
+        private readonly List<string> CustomStyle = new List<string>();
+        private readonly List<string> CustomStyleInfluenced = new List<string>();
+        public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilter(HashSet<string> missingItemClasses)
         {
             ActiveItemTypes res = new ActiveItemTypes();                      
 
@@ -43,7 +43,7 @@ namespace EnhancePoE.Filter
                     this.ItemClassManager = visitor.GetItemClassManager(item);
 
                     var className = this.ItemClassManager.ClassName;
-                    var stillMissing = missingItemClasses.Contains(className);
+                    var stillMissing = this.ItemClassManager.CheckIfMissing(missingItemClasses);
                     //weapons might be buggy, will try to do some testts
                     if ((Settings.Default.ChaosRecipe || Settings.Default.RegalRecipe)
                         && (this.ItemClassManager.AlwaysActive || stillMissing))
@@ -61,7 +61,7 @@ namespace EnhancePoE.Filter
                         sectionListExalted.Add(this.GenerateSection(true));
                     }
                 }
-                this.UpdateFilterAsync(sectionList, sectionListExalted);
+                await this.UpdateFilterAsync(sectionList, sectionListExalted);
             }
 
             return res;
