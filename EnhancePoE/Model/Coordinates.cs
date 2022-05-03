@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using EnhancePoE.UserControls;
+using EnhancePoE.UI.UserControls;
+using EnhancePoE.UI.View;
 
-namespace EnhancePoE.Model
+namespace EnhancePoE.UI.Model
 {
     public static class Coordinates
     {

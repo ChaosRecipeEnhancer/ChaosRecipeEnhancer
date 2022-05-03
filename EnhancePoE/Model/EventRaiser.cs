@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI
 {
     public static class EventRaiser
     {

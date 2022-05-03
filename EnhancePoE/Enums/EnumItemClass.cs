@@ -1,4 +1,4 @@
-﻿namespace EnhancePoE.Enums
+﻿namespace EnhancePoE.UI.Enums
 {
     public enum EnumItemClass
     {

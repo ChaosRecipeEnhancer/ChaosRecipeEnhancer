@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI
 {
     public class RelayCommand<T> : ICommand
     {

@@ -1,187 +1,188 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?define ProductVersion = "1.4.1.0"?>
+<?define ProductVersion = "1.5.0.0"?>
 <?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
 
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define EnhancePoE_TargetDir=$(var.EnhancePoE.TargetDir)?>
-    <Product Id="*" Name="ChaosRecipeEnhancer" Language="1033" Version="$(var.ProductVersion)" Manufacturer="CRETeam"
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<?define EnhancePoE_TargetDir=$(var.EnhancePoE.TargetDir)?>
+	<Product Id="*" Name="ChaosRecipeEnhancer" Language="1033" Version="$(var.ProductVersion)" Manufacturer="CRETeam"
              UpgradeCode="$(var.UpgradeCode)">
-        <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
 
-        <MajorUpgrade AllowSameVersionUpgrades="no" Schedule="afterInstallInitialize"
+		<MajorUpgrade AllowSameVersionUpgrades="no" Schedule="afterInstallInitialize"
                       DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
-        <MediaTemplate EmbedCab="yes"/>
+		<MediaTemplate EmbedCab="yes"/>
 
-        <Icon Id="coin.ico" SourceFile="$(var.ProjectDir)coin.ico"/>
-        <Property Id="ARPPRODUCTICON" Value="coin.ico"/>
+		<Icon Id="coin.ico" SourceFile="$(var.ProjectDir)coin.ico"/>
+		<Property Id="ARPPRODUCTICON" Value="coin.ico"/>
 
-        <Feature Id="ProductFeature" Title="ChaosRecipeEnhancer" Level="1">
-            <ComponentGroupRef Id="ProductComponents"/>
-            <ComponentGroupRef Id="SoundsFolder_files"/>
-            <ComponentGroupRef Id="StylesFolder_files"/>
-            <ComponentRef Id="ApplicationShortcut"/>
-            <ComponentRef Id="ApplicationShortcutDesktop"/>
-        </Feature>
-    </Product>
+		<Feature Id="ProductFeature" Title="ChaosRecipeEnhancer" Level="1">
+			<ComponentGroupRef Id="ProductComponents"/>
+			<ComponentGroupRef Id="SoundsFolder_files"/>
+			<ComponentGroupRef Id="StylesFolder_files"/>
+			<ComponentRef Id="ApplicationShortcut"/>
+			<ComponentRef Id="ApplicationShortcutDesktop"/>
+		</Feature>
+	</Product>
 
-    <Fragment>
-        <Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="ProgramFilesFolder">
-                <Directory Id="INSTALLFOLDER" Name="ChaosRecipeEnhancer">
-                    <Directory Id="SoundsFolder" Name="Sounds"/>
-                    <Directory Id="StylesFolder" Name="Styles"/>
-                </Directory>
-            </Directory>
-            <Directory Id="ProgramMenuFolder">
-                <Directory Id="ApplicationProgramsFolder" Name="ChaosRecipeEnhancer"/>
-            </Directory>
-            <Directory Id="DesktopFolder" Name="Desktop"/>
-        </Directory>
-    </Fragment>
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="ChaosRecipeEnhancer">
+					<Directory Id="SoundsFolder" Name="Sounds"/>
+					<Directory Id="StylesFolder" Name="Styles"/>
+				</Directory>
+			</Directory>
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="ApplicationProgramsFolder" Name="ChaosRecipeEnhancer"/>
+			</Directory>
+			<Directory Id="DesktopFolder" Name="Desktop"/>
+		</Directory>
+	</Fragment>
 
-    <Fragment>
-        <DirectoryRef Id="ApplicationProgramsFolder">
-            <Component Id="ApplicationShortcut" Guid="1e4fafd1-872a-42b9-a479-8b46e988ae09">
-                <Shortcut Id="ApplicationStartMenuShortcut" Name="ChaosRecipeEnhancer" Description="ChaosRecipeEnhancer"
+	<Fragment>
+		<DirectoryRef Id="ApplicationProgramsFolder">
+			<Component Id="ApplicationShortcut" Guid="1e4fafd1-872a-42b9-a479-8b46e988ae09">
+				<Shortcut Id="ApplicationStartMenuShortcut" Name="ChaosRecipeEnhancer" Description="ChaosRecipeEnhancer"
                           Target="[INSTALLFOLDER]EnhancePoE.exe" WorkingDirectory="INSTALLFOLDER" Icon="coin.ico"/>
-                <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder"
+				<RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder"
                               On="uninstall"/>
-                <RegistryValue Root="HKCU" Key="Software\ChaosRecipeEnhancer" Name="installed" Type="integer" Value="1"
+				<RegistryValue Root="HKCU" Key="Software\ChaosRecipeEnhancer" Name="installed" Type="integer" Value="1"
                                KeyPath="yes"/>
-            </Component>
-        </DirectoryRef>
-        <DirectoryRef Id="DesktopFolder">
-            <Component Id="ApplicationShortcutDesktop" Guid="5686ed96-73f7-4aad-8742-a40f2e247bf6">
-                <Shortcut Id="ApplicationDesktopShortcut" Name="ChaosRecipeEnhancer" Description="ChaosRecipeEnhancer"
+			</Component>
+		</DirectoryRef>
+		<DirectoryRef Id="DesktopFolder">
+			<Component Id="ApplicationShortcutDesktop" Guid="5686ed96-73f7-4aad-8742-a40f2e247bf6">
+				<Shortcut Id="ApplicationDesktopShortcut" Name="ChaosRecipeEnhancer" Description="ChaosRecipeEnhancer"
                           Target="[INSTALLFOLDER]EnhancePoE.exe" WorkingDirectory="INSTALLFOLDER" Icon="coin.ico"/>
-                <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall"/>
-                <RegistryValue Root="HKCU" Key="Software\ChaosRecipeEnhancer" Name="installed" Type="integer" Value="1"
+				<RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall"/>
+				<RegistryValue Root="HKCU" Key="Software\ChaosRecipeEnhancer" Name="installed" Type="integer" Value="1"
                                KeyPath="yes"/>
-            </Component>
-        </DirectoryRef>
-    </Fragment>
+			</Component>
+		</DirectoryRef>
+	</Fragment>
 
-    <Fragment>
-        <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-            <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-            <!-- <Component Id="ProductComponent"> -->
-            <!-- TODO: Insert files, registry keys, and other resources here. -->
-            <!-- </Component> -->
-            <Component Id="System.ValueTuple.dll" Guid="61aff17a-3c19-4875-ae14-c7d8f5f6ad6a">
-                <File Id="System.ValueTuple.dll" Name="System.ValueTuple.dll"
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<!-- <Component Id="ProductComponent"> -->
+			<!-- TODO: Insert files, registry keys, and other resources here. -->
+			<!-- </Component> -->
+			<Component Id="System.ValueTuple.dll" Guid="61aff17a-3c19-4875-ae14-c7d8f5f6ad6a">
+				<File Id="System.ValueTuple.dll" Name="System.ValueTuple.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.ValueTuple.dll"/>
-            </Component>
-            <Component Id="System.Text.Encodings.Web.dll" Guid="f12085b4-e68e-46f7-b925-2ce72f45a0ba">
-                <File Id="System.Text.Encodings.Web.dll" Name="System.Text.Encodings.Web.dll"
+			</Component>
+			<Component Id="System.Text.Encodings.Web.dll" Guid="f12085b4-e68e-46f7-b925-2ce72f45a0ba">
+				<File Id="System.Text.Encodings.Web.dll" Name="System.Text.Encodings.Web.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.Text.Encodings.Web.dll"/>
-            </Component>
-            <Component Id="System.Buffers.dll" Guid="d7baaec3-2e5b-4462-8ceb-53fd3491888c">
-                <File Id="System.Buffers.dll" Name="System.Buffers.dll"
+			</Component>
+			<Component Id="System.Buffers.dll" Guid="d7baaec3-2e5b-4462-8ceb-53fd3491888c">
+				<File Id="System.Buffers.dll" Name="System.Buffers.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.Buffers.dll"/>
-            </Component>
-            <Component Id="System.Runtime.CompilerServices.Unsafe.dll" Guid="1e975719-20af-47e5-bb7a-f788b84796b3">
-                <File Id="System.Runtime.CompilerServices.Unsafe.dll" Name="System.Runtime.CompilerServices.Unsafe.dll"
+			</Component>
+			<Component Id="System.Runtime.CompilerServices.Unsafe.dll" Guid="1e975719-20af-47e5-bb7a-f788b84796b3">
+				<File Id="System.Runtime.CompilerServices.Unsafe.dll" Name="System.Runtime.CompilerServices.Unsafe.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.Runtime.CompilerServices.Unsafe.dll"/>
-            </Component>
-            <Component Id="System.Numerics.Vectors.dll" Guid="aa3633dd-cf3d-49b9-a2f6-5068082744c2">
-                <File Id="System.Numerics.Vectors.dll" Name="System.Numerics.Vectors.dll"
+			</Component>
+			<Component Id="System.Numerics.Vectors.dll" Guid="aa3633dd-cf3d-49b9-a2f6-5068082744c2">
+				<File Id="System.Numerics.Vectors.dll" Name="System.Numerics.Vectors.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.Numerics.Vectors.dll"/>
-            </Component>
-            <Component Id="System.Numerics.dll" Guid="db730ee1-b5c1-4b90-9d83-e69e37d9a83f">
-                <File Id="System.Numerics.dll" Name="System.Numerics.dll"
+			</Component>
+			<Component Id="System.Numerics.dll" Guid="db730ee1-b5c1-4b90-9d83-e69e37d9a83f">
+				<File Id="System.Numerics.dll" Name="System.Numerics.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.Numerics.dll"/>
-            </Component>
-            <Component Id="System.Memory.dll" Guid="dc73b13a-feb8-47e3-9686-ddccf521cbe6">
-                <File Id="System.Memory.dll" Name="System.Memory.dll"
+			</Component>
+			<Component Id="System.Memory.dll" Guid="dc73b13a-feb8-47e3-9686-ddccf521cbe6">
+				<File Id="System.Memory.dll" Name="System.Memory.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.Memory.dll"/>
-            </Component>
-            <Component Id="System.Xml.dll" Guid="0cc440db-bacc-4c40-b20b-73ef8ec8cd98">
-                <File Id="System.Xml.dll" Name="System.Xml.dll" Source="$(var.EnhancePoE_TargetDir)System.Xml.dll"/>
-            </Component>
-            <Component Id="System.Text.Json.dll" Guid="91d68907-e81a-4c1b-9c69-dac9817257c9">
-                <File Id="System.Text.Json.dll" Name="System.Text.Json.dll"
+			</Component>
+			<Component Id="System.Xml.dll" Guid="0cc440db-bacc-4c40-b20b-73ef8ec8cd98">
+				<File Id="System.Xml.dll" Name="System.Xml.dll" Source="$(var.EnhancePoE_TargetDir)System.Xml.dll"/>
+			</Component>
+			<Component Id="System.Text.Json.dll" Guid="91d68907-e81a-4c1b-9c69-dac9817257c9">
+				<File Id="System.Text.Json.dll" Name="System.Text.Json.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.Text.Json.dll"/>
-            </Component>
-            <Component Id="System.Drawing.dll" Guid="8ccbf427-5cff-49c0-a98b-c65f0851c8d0">
-                <File Id="System.Drawing.dll" Name="System.Drawing.dll"
+			</Component>
+			<Component Id="System.Drawing.dll" Guid="8ccbf427-5cff-49c0-a98b-c65f0851c8d0">
+				<File Id="System.Drawing.dll" Name="System.Drawing.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.Drawing.dll"/>
-            </Component>
-            <Component Id="HtmlAgilityPack.dll" Guid="74955a36-54c8-44aa-886a-648196b4f3a1">
-                <File Id="HtmlAgilityPack.dll" Name="HtmlAgilityPack.dll"
+			</Component>
+			<Component Id="HtmlAgilityPack.dll" Guid="74955a36-54c8-44aa-886a-648196b4f3a1">
+				<File Id="HtmlAgilityPack.dll" Name="HtmlAgilityPack.dll"
                       Source="$(var.EnhancePoE_TargetDir)HtmlAgilityPack.dll"/>
-            </Component>
-            <Component Id="System.Windows.Forms.dll" Guid="5f8b9b92-e32d-4b0e-b2b2-9df17b0338e6">
-                <File Id="System.Windows.Forms.dll" Name="System.Windows.Forms.dll"
+			</Component>
+			<Component Id="System.Windows.Forms.dll" Guid="5f8b9b92-e32d-4b0e-b2b2-9df17b0338e6">
+				<File Id="System.Windows.Forms.dll" Name="System.Windows.Forms.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.Windows.Forms.dll"/>
-            </Component>
-            <Component Id="System.Net.Http.dll" Guid="7003669a-6c16-43f8-b665-3edb8ccc27df">
-                <File Id="System.Net.Http.dll" Name="System.Net.Http.dll"
+			</Component>
+			<Component Id="System.Net.Http.dll" Guid="7003669a-6c16-43f8-b665-3edb8ccc27df">
+				<File Id="System.Net.Http.dll" Name="System.Net.Http.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.Net.Http.dll"/>
-            </Component>
-            <Component Id="System.dll" Guid="8da2b969-29e6-4965-84d6-dd62f10b7e42">
-                <File Id="System.dll" Name="System.dll" Source="$(var.EnhancePoE_TargetDir)System.dll"/>
-            </Component>
-            <Component Id="System.Xaml.dll" Guid="4bd42f54-1dfb-4a13-a94e-1a0cced1096c">
-                <File Id="System.Xaml.dll" Name="System.Xaml.dll" Source="$(var.EnhancePoE_TargetDir)System.Xaml.dll"/>
-            </Component>
-            <Component Id="Xceed.Wpf.Toolkit.dll" Guid="5559f185-9f0c-481b-afdf-510777a0ceab">
-                <File Id="Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll"
+			</Component>
+			<Component Id="System.dll" Guid="8da2b969-29e6-4965-84d6-dd62f10b7e42">
+				<File Id="System.dll" Name="System.dll" Source="$(var.EnhancePoE_TargetDir)System.dll"/>
+			</Component>
+			<Component Id="System.Xaml.dll" Guid="4bd42f54-1dfb-4a13-a94e-1a0cced1096c">
+				<File Id="System.Xaml.dll" Name="System.Xaml.dll" Source="$(var.EnhancePoE_TargetDir)System.Xaml.dll"/>
+			</Component>
+			<Component Id="Xceed.Wpf.Toolkit.dll" Guid="5559f185-9f0c-481b-afdf-510777a0ceab">
+				<File Id="Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll"
                       Source="$(var.EnhancePoE_TargetDir)Xceed.Wpf.Toolkit.dll"/>
-            </Component>
-            <Component Id="PresentationFramework.dll" Guid="4c1a32fc-a969-41f1-86ba-a2129f447e4f">
-                <File Id="PresentationFramework.dll" Name="PresentationFramework.dll"
+			</Component>
+			<Component Id="PresentationFramework.dll" Guid="4c1a32fc-a969-41f1-86ba-a2129f447e4f">
+				<File Id="PresentationFramework.dll" Name="PresentationFramework.dll"
                       Source="$(var.EnhancePoE_TargetDir)PresentationFramework.dll"/>
-            </Component>
-            <Component Id="PresentationCore.dll" Guid="99a88e6c-6a21-4e9b-84c5-12520dee33a0">
-                <File Id="PresentationCore.dll" Name="PresentationCore.dll"
+			</Component>
+			<Component Id="PresentationCore.dll" Guid="99a88e6c-6a21-4e9b-84c5-12520dee33a0">
+				<File Id="PresentationCore.dll" Name="PresentationCore.dll"
                       Source="$(var.EnhancePoE_TargetDir)PresentationCore.dll"/>
-            </Component>
-            <Component Id="EnhancePoE.exe.config" Guid="4d7cda8a-3585-4fe0-8f7a-17b433ba38a4">
-                <File Id="EnhancePoE.exe.config" Name="EnhancePoE.exe.config"
+			</Component>
+			<Component Id="EnhancePoE.exe.config" Guid="4d7cda8a-3585-4fe0-8f7a-17b433ba38a4">
+				<File Id="EnhancePoE.exe.config" Name="EnhancePoE.exe.config"
                       Source="$(var.EnhancePoE_TargetDir)EnhancePoE.exe.config"/>
-            </Component>
-            <Component Id="EnhancePoE.exe" Guid="e29704f1-d85f-4125-b7af-019642dd9c19">
-                <File Id="EnhancePoE.exe" Name="EnhancePoE.exe" Source="$(var.EnhancePoE_TargetDir)EnhancePoE.exe"/>
-            </Component>
-            <Component Id="WindowsBase.dll" Guid="31031c86-06d8-4fbf-ab11-939f8727e6c0">
-                <File Id="WindowsBase.dll" Name="WindowsBase.dll" Source="$(var.EnhancePoE_TargetDir)WindowsBase.dll"/>
-            </Component>
-            <Component Id="System.Threading.Tasks.Extensions.dll" Guid="55253283-64a5-4d64-bcdf-2d357a96942a">
-                <File Id="System.Threading.Tasks.Extensions.dll" Name="System.Threading.Tasks.Extensions.dll"
+			</Component>
+			<Component Id="EnhancePoE.exe" Guid="e29704f1-d85f-4125-b7af-019642dd9c19">
+				<File Id="EnhancePoE.exe" Name="EnhancePoE.exe" Source="$(var.EnhancePoE_TargetDir)EnhancePoE.exe"/>
+			</Component>
+			<Component Id="WindowsBase.dll" Guid="31031c86-06d8-4fbf-ab11-939f8727e6c0">
+				<File Id="WindowsBase.dll" Name="WindowsBase.dll" Source="$(var.EnhancePoE_TargetDir)WindowsBase.dll"/>
+			</Component>
+			<Component Id="System.Threading.Tasks.Extensions.dll" Guid="55253283-64a5-4d64-bcdf-2d357a96942a">
+				<File Id="System.Threading.Tasks.Extensions.dll" Name="System.Threading.Tasks.Extensions.dll"
                       Source="$(var.EnhancePoE_TargetDir)System.Threading.Tasks.Extensions.dll"/>
-            </Component>
-            <Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="e7696a4e-5159-4be6-a684-4fe4480d3c6c">
-                <File Id="Microsoft.Bcl.AsyncInterfaces.dll" Name="Microsoft.Bcl.AsyncInterfaces.dll"
+			</Component>
+			<Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="e7696a4e-5159-4be6-a684-4fe4480d3c6c">
+				<File Id="Microsoft.Bcl.AsyncInterfaces.dll" Name="Microsoft.Bcl.AsyncInterfaces.dll"
                       Source="$(var.EnhancePoE_TargetDir)Microsoft.Bcl.AsyncInterfaces.dll"/>
-            </Component>
-            <Component Id="AutoUpdater.NET.dll" Guid="15b2d54b-f608-418d-85e1-b2523a42fb7d">
-                <File Id="AutoUpdater.NET.dll" Name="AutoUpdater.NET.dll"
+			</Component>
+			<Component Id="AutoUpdater.NET.dll" Guid="15b2d54b-f608-418d-85e1-b2523a42fb7d">
+				<File Id="AutoUpdater.NET.dll" Name="AutoUpdater.NET.dll"
                       Source="$(var.EnhancePoE_TargetDir)AutoUpdater.NET.dll"/>
-            </Component>
-        </ComponentGroup>
-    </Fragment>
-    <Fragment>
-        <ComponentGroup Id="SoundsFolder_files" Directory="SoundsFolder">
-            <Component Id="Sounds_itemsPickedUp.mp3" Guid="c2762fc6-e9fd-4928-a1fa-4b0aaaf17905">
-                <File Id="Sounds_itemsPickedUp.mp3" Name="itemsPickedUp.mp3"
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+	<Fragment>
+		<ComponentGroup Id="SoundsFolder_files" Directory="SoundsFolder">
+			<Component Id="Sounds_itemsPickedUp.mp3" Guid="c2762fc6-e9fd-4928-a1fa-4b0aaaf17905">
+				<File Id="Sounds_itemsPickedUp.mp3" Name="itemsPickedUp.mp3"
                       Source="$(var.EnhancePoE_TargetDir)Sounds\itemsPickedUp.mp3"/>
-            </Component>
-            <Component Id="Sounds_filterchanged.mp3" Guid="a0ba0fba-5d38-4595-b44c-7beb03d1bbc8">
-                <File Id="Sounds_filterchanged.mp3" Name="filterchanged.mp3"
+			</Component>
+			<Component Id="Sounds_filterchanged.mp3" Guid="a0ba0fba-5d38-4595-b44c-7beb03d1bbc8">
+				<File Id="Sounds_filterchanged.mp3" Name="filterchanged.mp3"
                       Source="$(var.EnhancePoE_TargetDir)Sounds\filterchanged.mp3"/>
-            </Component>
-        </ComponentGroup>
-    </Fragment>
-    <Fragment>
-        <ComponentGroup Id="StylesFolder_files" Directory="StylesFolder">
-            <Component Id="Styles_InfluencedItemsStyle.txt" Guid="90bde904-697a-46e1-ac25-4ec221d7b904">
-                <File Id="Styles_InfluencedItemsStyle.txt" Name="InfluencedItemsStyle.txt"
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+	<Fragment>
+		<ComponentGroup Id="StylesFolder_files" Directory="StylesFolder">
+			<Component Id="Styles_InfluencedItemsStyle.txt" Guid="90bde904-697a-46e1-ac25-4ec221d7b904">
+				<File Id="Styles_InfluencedItemsStyle.txt" Name="InfluencedItemsStyle.txt"
                       Source="$(var.EnhancePoE_TargetDir)Styles\InfluencedItemsStyle.txt"/>
-            </Component>
-            <Component Id="Styles_NormalItemsStyle.txt" Guid="dcb2bb51-1d14-4681-8601-d4f563d4fe19">
-                <File Id="Styles_NormalItemsStyle.txt" Name="NormalItemsStyle.txt"
+			</Component>
+			<Component Id="Styles_NormalItemsStyle.txt" Guid="dcb2bb51-1d14-4681-8601-d4f563d4fe19">
+				<File Id="Styles_NormalItemsStyle.txt" Name="NormalItemsStyle.txt"
                       Source="$(var.EnhancePoE_TargetDir)Styles\NormalItemsStyle.txt"/>
-            </Component>
-        </ComponentGroup>
-    </Fragment>
+			</Component>
+		</ComponentGroup>
+	</Fragment>
 </Wix>

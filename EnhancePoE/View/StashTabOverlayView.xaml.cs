@@ -7,23 +7,23 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
-using EnhancePoE.Model;
-using EnhancePoE.Properties;
-using EnhancePoE.UserControls;
+using EnhancePoE.UI.Model;
+using EnhancePoE.UI.Properties;
+using EnhancePoE.UI.UserControls;
 
-namespace EnhancePoE.View
+namespace EnhancePoE.UI.View
 {
     /// <summary>
-    ///     Interaction logic for StashTabWindow.xaml
+    ///     Interaction logic for StashTabOverlayView.xaml
     /// </summary>
-    public partial class StashTabWindow : INotifyPropertyChanged
+    public partial class StashTabOverlayView : INotifyPropertyChanged
     {
         private static readonly ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
         private Visibility _stashBorderVisibility = Visibility.Hidden;
         private Thickness _tabHeaderGap;
         private Thickness _tabMargin;
 
-        public StashTabWindow()
+        public StashTabOverlayView()
         {
             InitializeComponent();
             DataContext = this;
@@ -142,11 +142,11 @@ namespace EnhancePoE.View
                 Data.ActivateNextCell(true, null);
                 if (Settings.Default.HighlightMode == 2)
                     foreach (var set in Data.ItemSetListHighlight)
-                    foreach (var i in set.ItemList)
-                    {
-                        var currTab = Data.GetStashTabFromItem(i);
-                        currTab.ActivateItemCells(i);
-                    }
+                        foreach (var i in set.ItemList)
+                        {
+                            var currTab = Data.GetStashTabFromItem(i);
+                            currTab.ActivateItemCells(i);
+                        }
 
                 MainWindow.Overlay.OpenStashOverlayButtonContent = "Hide";
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI
 {
     // names are from api
     public class Item

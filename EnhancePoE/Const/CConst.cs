@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EnhancePoE.Const
+﻿namespace EnhancePoE.UI.Const
 {
     //move all settings here possibly
     public class CConst

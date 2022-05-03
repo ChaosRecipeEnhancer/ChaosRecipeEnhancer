@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EnhancePoE.Model
+namespace EnhancePoE.UI.Model
 {
     public class ItemSet
     {
@@ -31,7 +31,7 @@ namespace EnhancePoE.Model
                 }
 
                 if (item.ilvl <= 74) SetCanProduceChaos = true;
-                
+
                 EmptyItemSlots.Remove(item.ItemType);
                 ItemList.Add(item);
                 CurrentPosition[0] = item.x;
@@ -61,7 +61,7 @@ namespace EnhancePoE.Model
             if (EmptyItemSlots.Contains(item.ItemType)) return true;
             return false;
         }
-        
+
         public string GetNextItemClass()
         {
             return EmptyItemSlots[0];

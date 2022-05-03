@@ -5,11 +5,11 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using EnhancePoE.Properties;
+using EnhancePoE.UI.Properties;
 
 //using System.Windows.Input;
 
-namespace EnhancePoE.Model
+namespace EnhancePoE.UI.Model
 {
     public class StashTab : INotifyPropertyChanged
     {
@@ -79,13 +79,13 @@ namespace EnhancePoE.Model
         private void Generate2dArr(int size)
         {
             for (var i = 0; i < size; i++)
-            for (var j = 0; j < size; j++)
-                OverlayCellsList.Add(new Cell
-                {
-                    Active = false,
-                    XIndex = j,
-                    YIndex = i
-                });
+                for (var j = 0; j < size; j++)
+                    OverlayCellsList.Add(new Cell
+                    {
+                        Active = false,
+                        XIndex = j,
+                        YIndex = i
+                    });
         }
 
         public void PrepareOverlayList()
@@ -234,13 +234,13 @@ namespace EnhancePoE.Model
             var AllCoordinates = new List<List<int>>();
 
             for (var i = 0; i < item.w; i++)
-            for (var j = 0; j < item.h; j++)
-                AllCoordinates.Add(new List<int> { item.x + i, item.y + j });
+                for (var j = 0; j < item.h; j++)
+                    AllCoordinates.Add(new List<int> { item.x + i, item.y + j });
 
             foreach (var cell in OverlayCellsList)
-            foreach (var coordinate in AllCoordinates)
-                if (coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
-                    cell.Active = false;
+                foreach (var coordinate in AllCoordinates)
+                    if (coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
+                        cell.Active = false;
         }
 
         public void ActivateItemCells(Item item)
@@ -248,16 +248,16 @@ namespace EnhancePoE.Model
             var AllCoordinates = new List<List<int>>();
 
             for (var i = 0; i < item.w; i++)
-            for (var j = 0; j < item.h; j++)
-                AllCoordinates.Add(new List<int> { item.x + i, item.y + j });
+                for (var j = 0; j < item.h; j++)
+                    AllCoordinates.Add(new List<int> { item.x + i, item.y + j });
             foreach (var cell in OverlayCellsList)
-            foreach (var coordinate in AllCoordinates)
-                if (coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
-                {
-                    cell.Active = true;
-                    cell.CellItem = item;
-                    cell.TabIndex = TabIndex;
-                }
+                foreach (var coordinate in AllCoordinates)
+                    if (coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
+                    {
+                        cell.Active = true;
+                        cell.CellItem = item;
+                        cell.TabIndex = TabIndex;
+                    }
         }
 
         public void MarkNextItem(Item item)

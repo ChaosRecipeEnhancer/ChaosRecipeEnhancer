@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 1.5.0
+
+- WIP
+
 #### 1.4.1
 
 - fixing random CLIPBRD_E_CANT_OPEN error being thrown

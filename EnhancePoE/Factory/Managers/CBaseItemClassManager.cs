@@ -1,5 +1,5 @@
-﻿using EnhancePoE.Model;
-using EnhancePoE.Properties;
+﻿using EnhancePoE.UI.Model;
+using EnhancePoE.UI.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EnhancePoE.Visitors
+namespace EnhancePoE.UI.Visitors
 {
     //add interfaces for everything
     public abstract class CBaseItemClassManager

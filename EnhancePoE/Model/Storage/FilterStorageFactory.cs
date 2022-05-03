@@ -1,6 +1,6 @@
-﻿using EnhancePoE.Properties;
+﻿using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE.Model.Storage
+namespace EnhancePoE.UI.Model.Storage
 {
     public static class FilterStorageFactory
     {

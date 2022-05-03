@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace EnhancePoE.Model.Utils
+namespace EnhancePoE.UI.Model.Utils
 {
     public static class UserWarning
     {

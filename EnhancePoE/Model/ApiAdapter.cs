@@ -8,10 +8,10 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using EnhancePoE.Model;
-using EnhancePoE.Properties;
+using EnhancePoE.UI.Model;
+using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI
 {
     public class ApiAdapter
     {

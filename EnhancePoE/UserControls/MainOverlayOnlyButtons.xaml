@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="EnhancePoE.UserControls.MainOverlayOnlyButtons"
+﻿<UserControl x:Class="EnhancePoE.UI.UserControls.MainOverlayOnlyButtons"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

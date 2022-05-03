@@ -1,7 +1,7 @@
-﻿using EnhancePoE.Properties;
-using EnhancePoE.Model;
+﻿using EnhancePoE.UI.Properties;
+using EnhancePoE.UI.Model;
 
-namespace EnhancePoE.Visitors
+namespace EnhancePoE.UI.Visitors
 {
     internal class CBootsManager : CBaseItemClassManager
     {
@@ -10,7 +10,7 @@ namespace EnhancePoE.Visitors
             ClassName = "Boots";
             ClassFilterName = "\"Boots\"";
             ClassColor = Settings.Default.ColorBoots;
-            AlwaysActive = Settings.Default.BootsAlwaysActive;            
+            AlwaysActive = Settings.Default.BootsAlwaysActive;
         }
         public override string ClassName { get; set; }
         public override string ClassColor { get; set; }

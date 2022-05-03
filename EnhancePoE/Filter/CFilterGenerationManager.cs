@@ -1,9 +1,9 @@
-﻿using EnhancePoE.Const;
-using EnhancePoE.Enums;
-using EnhancePoE.Model;
-using EnhancePoE.Model.Storage;
-using EnhancePoE.Properties;
-using EnhancePoE.Visitors;
+﻿using EnhancePoE.UI.Const;
+using EnhancePoE.UI.Enums;
+using EnhancePoE.UI.Model;
+using EnhancePoE.UI.Model.Storage;
+using EnhancePoE.UI.Properties;
+using EnhancePoE.UI.Visitors;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EnhancePoE.Filter
+namespace EnhancePoE.UI.Filter
 {
     //add interfaces
     public class CFilterGenerationManager
@@ -30,13 +30,13 @@ namespace EnhancePoE.Filter
         private readonly List<string> CustomStyleInfluenced = new List<string>();
         public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilter(HashSet<string> missingItemClasses)
         {
-            ActiveItemTypes res = new ActiveItemTypes();                      
+            ActiveItemTypes res = new ActiveItemTypes();
 
             if (Settings.Default.LootFilterActive)
             {
                 CItemClassManagerFactory visitor = new CItemClassManagerFactory();
                 var sectionList = new HashSet<string>();
-                var sectionListExalted = new HashSet<string>(); 
+                var sectionListExalted = new HashSet<string>();
 
                 foreach (EnumItemClass item in Enum.GetValues(typeof(EnumItemClass)))
                 {
@@ -151,7 +151,7 @@ namespace EnhancePoE.Filter
 
             return beforeSection + sectionBody + afterSection;
         }
-        private async Task UpdateFilterAsync(HashSet<string>  sectionList, HashSet<string> sectionListExalted)
+        private async Task UpdateFilterAsync(HashSet<string> sectionList, HashSet<string> sectionListExalted)
         {
             var filterStorage = FilterStorageFactory.Create(Settings.Default);
 

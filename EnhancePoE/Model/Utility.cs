@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace EnhancePoE.Model
+namespace EnhancePoE.UI.Model
 {
     internal class Utility
     {

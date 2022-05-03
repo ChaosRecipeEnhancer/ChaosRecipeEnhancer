@@ -1,9 +1,9 @@
-﻿using EnhancePoE.Const;
-using EnhancePoE.Properties;
-using EnhancePoE.Model;
+﻿using EnhancePoE.UI.Const;
+using EnhancePoE.UI.Properties;
+using EnhancePoE.UI.Model;
 using System.Collections.Generic;
 
-namespace EnhancePoE.Visitors
+namespace EnhancePoE.UI.Visitors
 {
     internal class CTwoHandWeaponsManager : CBaseItemClassManager
     {
@@ -12,7 +12,7 @@ namespace EnhancePoE.Visitors
             ClassName = "TwoHandWeapons";
             ClassFilterName = "\"Two Hand\"";
             ClassColor = Settings.Default.ColorWeapon;
-            AlwaysActive = Settings.Default.WeaponsAlwaysActive;            
+            AlwaysActive = Settings.Default.WeaponsAlwaysActive;
         }
         public override string ClassName { get; set; }
         public override string ClassColor { get; set; }

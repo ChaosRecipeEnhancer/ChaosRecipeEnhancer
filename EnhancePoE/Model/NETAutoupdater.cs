@@ -3,7 +3,7 @@ using System.Net;
 using System.Windows.Forms;
 using AutoUpdaterDotNET;
 
-namespace EnhancePoE.Model
+namespace EnhancePoE.UI.Model
 {
     internal static class NETAutoupdater
     {

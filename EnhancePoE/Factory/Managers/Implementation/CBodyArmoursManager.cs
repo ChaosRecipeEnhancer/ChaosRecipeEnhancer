@@ -1,7 +1,7 @@
-﻿using EnhancePoE.Properties;
-using EnhancePoE.Model;
+﻿using EnhancePoE.UI.Properties;
+using EnhancePoE.UI.Model;
 
-namespace EnhancePoE.Visitors
+namespace EnhancePoE.UI.Visitors
 {
     internal class CBodyArmoursManager : CBaseItemClassManager
     {
@@ -10,7 +10,7 @@ namespace EnhancePoE.Visitors
             ClassName = "BodyArmours";
             ClassFilterName = "\"Body Armours\"";
             ClassColor = Settings.Default.ColorChest;
-            AlwaysActive = Settings.Default.ChestsAlwaysActive;            
+            AlwaysActive = Settings.Default.ChestsAlwaysActive;
         }
         public override string ClassName { get; set; }
         public override string ClassColor { get; set; }

@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
+﻿using EnhancePoE.UI.Properties;
+using EnhancePoE.UI.View;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using EnhancePoE.Properties;
 
-namespace EnhancePoE.Model
+namespace EnhancePoE.UI.Model
 {
     public class LogWatcher
     {
@@ -43,7 +44,7 @@ namespace EnhancePoE.Model
                             var phrase = GetPhraseTranslation();
                             var hideout = GetHideoutTranslation();
                             var harbour = GetHarbourTranslation();
-                            
+
                             if (s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout) && !s.Contains(harbour))
                             {
                                 LastZone = NewZone;

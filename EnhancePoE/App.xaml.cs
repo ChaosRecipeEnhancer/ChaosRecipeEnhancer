@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI
 {
     /// <summary>
     ///     Interaction logic for App.xaml

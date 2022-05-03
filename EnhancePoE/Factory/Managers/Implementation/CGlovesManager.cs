@@ -1,7 +1,7 @@
-﻿using EnhancePoE.Properties;
-using EnhancePoE.Model;
+﻿using EnhancePoE.UI.Properties;
+using EnhancePoE.UI.Model;
 
-namespace EnhancePoE.Visitors
+namespace EnhancePoE.UI.Visitors
 {
     internal class CGlovesManager : CBaseItemClassManager
     {
@@ -10,7 +10,7 @@ namespace EnhancePoE.Visitors
             ClassName = "Gloves";
             ClassFilterName = "\"Gloves\"";
             ClassColor = Settings.Default.ColorGloves;
-            AlwaysActive = Settings.Default.GlovesAlwaysActive;            
+            AlwaysActive = Settings.Default.GlovesAlwaysActive;
         }
         public override string ClassName { get; set; }
         public override string ClassColor { get; set; }

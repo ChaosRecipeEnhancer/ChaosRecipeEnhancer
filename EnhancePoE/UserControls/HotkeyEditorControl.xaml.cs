@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI.UserControls
 {
     /// <summary>
     ///     Interaction logic for HotkeyEditorControl.xaml

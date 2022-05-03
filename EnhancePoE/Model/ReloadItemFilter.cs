@@ -5,14 +5,14 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using EnhancePoE.Model.Utils;
-using EnhancePoE.Properties;
+using EnhancePoE.UI.Model.Utils;
+using EnhancePoE.UI.Properties;
 using Clipboard = System.Windows.Clipboard;
 
 // REF: https://stackoverflow.com/a/1635680
 using HWND = System.IntPtr;
 
-namespace EnhancePoE.Model
+namespace EnhancePoE.UI.Model
 {
     public static class ReloadItemFilter
     {
@@ -44,7 +44,7 @@ namespace EnhancePoE.Model
             var shellWindow = GetShellWindow();
             var windows = new Dictionary<HWND, string>();
 
-            EnumWindows(delegate(HWND hWnd, int lParam)
+            EnumWindows(delegate (HWND hWnd, int lParam)
             {
                 if (hWnd == shellWindow) return true;
                 if (!IsWindowVisible(hWnd)) return true;
@@ -67,7 +67,7 @@ namespace EnhancePoE.Model
             // Saving state of current clipboard
             // TODO How does this work if you have non-text on your clipboard?
             var oldClipboard = Clipboard.GetText();
-            
+
             var chatCommand = BuildFilterReloadCommand();
             if (chatCommand is null) return;
 
@@ -82,12 +82,12 @@ namespace EnhancePoE.Model
                 }
                 catch (COMException ex)
                 {
-                    const uint CLIPBRD_E_CANT_OPEN = 0x800401D0;  
+                    const uint CLIPBRD_E_CANT_OPEN = 0x800401D0;
                     if ((uint)ex.ErrorCode != CLIPBRD_E_CANT_OPEN) throw;
                 }
                 System.Threading.Thread.Sleep(10);
-            } 
-            
+            }
+
             // Map all current window names to their associated "handle to a window" pointers (HWND)
             var openWindows = GetOpenWindows();
             foreach (var window in openWindows)

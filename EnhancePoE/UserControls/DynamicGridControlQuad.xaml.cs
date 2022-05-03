@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
-using EnhancePoE.Model;
+using EnhancePoE.UI.Model;
 
-namespace EnhancePoE.UserControls
+namespace EnhancePoE.UI.UserControls
 {
     /// <summary>
     ///     Interaction logic for DynamicGridControlQuad.xaml

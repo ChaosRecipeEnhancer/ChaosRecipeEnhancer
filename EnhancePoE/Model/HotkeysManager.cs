@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
-using EnhancePoE.Properties;
+using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI
 {
     /// <summary>
     ///     A class for adding/removing global hotkeys to and from your application,

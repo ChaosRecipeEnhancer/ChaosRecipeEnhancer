@@ -1,7 +1,7 @@
-﻿using EnhancePoE.Properties;
-using EnhancePoE.Model;
+﻿using EnhancePoE.UI.Properties;
+using EnhancePoE.UI.Model;
 
-namespace EnhancePoE.Visitors
+namespace EnhancePoE.UI.Visitors
 {
     internal class CHelmetManager : CBaseItemClassManager
     {
@@ -10,7 +10,7 @@ namespace EnhancePoE.Visitors
             ClassName = "Helmets";
             ClassFilterName = "\"Helmets\"";
             ClassColor = Settings.Default.ColorHelmet;
-            AlwaysActive = Settings.Default.HelmetsAlwaysActive;            
+            AlwaysActive = Settings.Default.HelmetsAlwaysActive;
         }
         public override string ClassName { get; set; }
         public override string ClassColor { get; set; }

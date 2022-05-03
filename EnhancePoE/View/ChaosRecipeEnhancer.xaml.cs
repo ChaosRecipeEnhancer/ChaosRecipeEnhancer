@@ -7,10 +7,10 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using EnhancePoE.Model;
-using EnhancePoE.Properties;
+using EnhancePoE.UI.Model;
+using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI.View
 {
     /// <summary>
     ///     Interaction logic for ChaosRecipeEnhancer.xaml
@@ -39,7 +39,7 @@ namespace EnhancePoE
         private int _bootsAmount;
         private int _chestsAmount;
         private int _weaponsAmount;
-        
+
         // Defines whether or not to 'Activate' a gear icon based on the full set threshold
         // Upon initialization, the icons are clearly visible (i.e. 'Activated', not translucent at all)
         private double _amuletsOpacity = ActivatedOpacity;
@@ -52,7 +52,7 @@ namespace EnhancePoE
         private double _weaponsOpacity = ActivatedOpacity;
 
         private string _fullSetsText = "0";
-        
+
         public ChaosRecipeEnhancer()
         {
             InitializeComponent();
@@ -67,7 +67,7 @@ namespace EnhancePoE
         // Tracks whether or not calculations are currently active
         // TODO What is a 'calculation'? 
         private static bool CalculationActive { get; set; }
-        
+
         private static LogWatcher Watcher { get; set; }
 
         public bool IsOpen { get; set; }
@@ -133,7 +133,7 @@ namespace EnhancePoE
         }
 
         #region Gear Icon Opacity Getters & Setters
-        
+
         public double AmuletsOpacity
         {
             get => _amuletsOpacity;
@@ -143,7 +143,7 @@ namespace EnhancePoE
                 OnPropertyChanged("AmuletsOpacity");
             }
         }
-        
+
         public double RingsOpacity
         {
             get => _ringsOpacity;
@@ -153,7 +153,7 @@ namespace EnhancePoE
                 OnPropertyChanged("RingsOpacity");
             }
         }
-        
+
         public double BeltsOpacity
         {
             get => _beltsOpacity;
@@ -163,7 +163,7 @@ namespace EnhancePoE
                 OnPropertyChanged("BeltsOpacity");
             }
         }
-        
+
         public double HelmetOpacity
         {
             get => _helmetOpacity;
@@ -173,7 +173,7 @@ namespace EnhancePoE
                 OnPropertyChanged("HelmetOpacity");
             }
         }
-        
+
         public double GlovesOpacity
         {
             get => _glovesOpacity;
@@ -193,7 +193,7 @@ namespace EnhancePoE
                 OnPropertyChanged("BootsOpacity");
             }
         }
-        
+
         public double ChestsOpacity
         {
             get => _chestsOpacity;
@@ -213,11 +213,11 @@ namespace EnhancePoE
                 OnPropertyChanged("WeaponsOpacity");
             }
         }
-        
+
         #endregion
 
         #region Gear Counter Getters & Setters
-        
+
         public int AmuletsAmount
         {
             get => _amuletsAmount;
@@ -227,7 +227,7 @@ namespace EnhancePoE
                 OnPropertyChanged("AmuletsAmount");
             }
         }
-        
+
         public int RingsAmount
         {
             get => _ringsAmount;
@@ -247,7 +247,7 @@ namespace EnhancePoE
                 OnPropertyChanged("BeltsAmount");
             }
         }
-        
+
         public int HelmetsAmount
         {
             get => _helmetsAmount;
@@ -267,7 +267,7 @@ namespace EnhancePoE
                 OnPropertyChanged("GlovesAmount");
             }
         }
-        
+
         public int BootsAmount
         {
             get => _bootsAmount;
@@ -277,7 +277,7 @@ namespace EnhancePoE
                 OnPropertyChanged("BootsAmount");
             }
         }
-        
+
         public int ChestsAmount
         {
             get => _chestsAmount;
@@ -299,7 +299,7 @@ namespace EnhancePoE
         }
 
         #endregion
-        
+
         public Visibility AmountsVisibility
         {
             get => _amountsVisibility;
@@ -319,7 +319,7 @@ namespace EnhancePoE
                 OnPropertyChanged("FetchButtonColor");
             }
         }
-        
+
         public bool FetchButtonEnabled
         {
             get => _fetchButtonEnabled;
@@ -366,7 +366,7 @@ namespace EnhancePoE
                             await Task.Run(async () =>
                             {
                                 await Data.CheckActives();
-                                
+
                                 SetOpacity();
                                 CalculationActive = false;
                                 Dispatcher.Invoke(() => { IsIndeterminate = false; });
@@ -391,7 +391,7 @@ namespace EnhancePoE
                     MainWindow.Overlay.WarningMessage = $"Rate Limit Exceeded! Waiting {secondsToWait} seconds...";
                     MainWindow.Overlay.ShadowOpacity = 1;
                     MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
-                    
+
                     await Task.Delay(secondsToWait * 1000);
 
                     RateLimit.Reset();
@@ -402,13 +402,13 @@ namespace EnhancePoE
                     MainWindow.Overlay.WarningMessage = "Temporary Ban! Waiting...";
                     MainWindow.Overlay.ShadowOpacity = 1;
                     MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
-                    
+
                     await Task.Delay(RateLimit.BanTime * 1000);
-                    
+
                     RateLimit.BanTime = 0;
                 }
             });
-            
+
             CalculationActive = false;
             FetchingActive = false;
             Dispatcher.Invoke(() =>
@@ -420,13 +420,13 @@ namespace EnhancePoE
             });
             Trace.WriteLine("end of fetch function reached");
         }
-        
+
         public void RunFetching()
         {
             if (!MainWindow.SettingsComplete) return;
-            
+
             if (!IsOpen) return;
-            
+
             switch (Settings.Default.StashTabMode)
             {
                 case 0 when Settings.Default.StashTabIndices == "":
@@ -445,7 +445,7 @@ namespace EnhancePoE
             else
             {
                 if (ApiAdapter.IsFetching) return;
-                
+
                 Data.cs = new CancellationTokenSource();
                 Data.CancelationToken = Data.cs.Token;
                 if (MainWindow.StashTabOverlay.IsOpen) MainWindow.StashTabOverlay.Hide();
@@ -453,7 +453,7 @@ namespace EnhancePoE
                 FetchingActive = true;
             }
         }
-        
+
         public void ReloadItemFilter()
         {
             Model.ReloadItemFilter.ReloadFilter();
@@ -479,37 +479,37 @@ namespace EnhancePoE
                     HelmetOpacity = DeactivatedOpacity;
                 else
                     HelmetOpacity = ActivatedOpacity;
-                
+
                 if (!Data.ActiveItems.GlovesActive)
                     GlovesOpacity = DeactivatedOpacity;
                 else
                     GlovesOpacity = ActivatedOpacity;
-                
+
                 if (!Data.ActiveItems.BootsActive)
                     BootsOpacity = DeactivatedOpacity;
                 else
                     BootsOpacity = ActivatedOpacity;
-                
+
                 if (!Data.ActiveItems.WeaponActive)
                     WeaponsOpacity = DeactivatedOpacity;
                 else
                     WeaponsOpacity = ActivatedOpacity;
-                
+
                 if (!Data.ActiveItems.ChestActive)
                     ChestsOpacity = DeactivatedOpacity;
                 else
                     ChestsOpacity = ActivatedOpacity;
-                
+
                 if (!Data.ActiveItems.RingActive)
                     RingsOpacity = DeactivatedOpacity;
                 else
                     RingsOpacity = ActivatedOpacity;
-                
+
                 if (!Data.ActiveItems.AmuletActive)
                     AmuletsOpacity = DeactivatedOpacity;
                 else
                     AmuletsOpacity = ActivatedOpacity;
-                
+
                 if (!Data.ActiveItems.BeltActive)
                     BeltsOpacity = DeactivatedOpacity;
                 else

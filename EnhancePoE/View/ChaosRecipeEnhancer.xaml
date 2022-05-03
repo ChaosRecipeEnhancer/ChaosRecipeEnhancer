@@ -1,4 +1,4 @@
-﻿<Window x:Class="EnhancePoE.ChaosRecipeEnhancer"
+﻿<Window x:Class="EnhancePoE.UI.View.ChaosRecipeEnhancer"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,7 +12,7 @@
         Topmost="True"
         MouseDown="Window_MouseDown"
         Background="Transparent"
-        xmlns:properties="clr-namespace:EnhancePoE.Properties"
+        xmlns:properties="clr-namespace:EnhancePoE.UI.Properties"
         Left="{Binding Source={x:Static properties:Settings.Default}, Path=LeftOverlay, Mode=TwoWay}"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=TopOverlay, Mode=TwoWay}">
     <Border BorderThickness="1"

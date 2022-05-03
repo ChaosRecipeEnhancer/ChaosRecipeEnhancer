@@ -1,4 +1,4 @@
-﻿namespace EnhancePoE.Model
+﻿namespace EnhancePoE.UI.Model
 {
     internal static class ForegroundWindows
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Controls;
 
-namespace EnhancePoE.Model
+namespace EnhancePoE.UI.Model
 {
     public class Cell : INotifyPropertyChanged
     {

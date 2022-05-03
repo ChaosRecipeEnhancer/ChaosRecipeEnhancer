@@ -1,7 +1,7 @@
-﻿using EnhancePoE.Enums;
+﻿using EnhancePoE.UI.Enums;
 using System;
 
-namespace EnhancePoE.Visitors
+namespace EnhancePoE.UI.Visitors
 {
     public class CItemClassManagerFactory
     {

@@ -5,14 +5,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using EnhancePoE.Enums;
-using EnhancePoE.Filter;
-using EnhancePoE.Model;
-using EnhancePoE.Model.Storage;
-using EnhancePoE.Properties;
-using EnhancePoE.Visitors;
+using EnhancePoE.UI.Enums;
+using EnhancePoE.UI.Filter;
+using EnhancePoE.UI.Model;
+using EnhancePoE.UI.Model.Storage;
+using EnhancePoE.UI.Properties;
+using EnhancePoE.UI.View;
+using EnhancePoE.UI.Visitors;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI
 {
     public static class Data
     {
@@ -313,7 +314,7 @@ namespace EnhancePoE
                 }
                 CFilterGenerationManager filterManager = new CFilterGenerationManager();
                 ActiveItems = await filterManager.GenerateSectionsAndUpdateFilter(missingItemClasses);
-                               
+
                 //Trace.WriteLine(fullSets, "full sets");
                 MainWindow.Overlay.Dispatcher.Invoke(() => { MainWindow.Overlay.FullSetsText = fullSets.ToString(); });
 
@@ -698,7 +699,7 @@ namespace EnhancePoE
     }
 
 
-    
+
 
     public class ItemTypeAmounts
     {

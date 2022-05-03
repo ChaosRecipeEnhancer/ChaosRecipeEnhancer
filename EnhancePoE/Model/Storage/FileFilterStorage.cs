@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-namespace EnhancePoE.Model.Storage
+namespace EnhancePoE.UI.Model.Storage
 {
     internal class FileFilterStorage : IFilterStorage
     {

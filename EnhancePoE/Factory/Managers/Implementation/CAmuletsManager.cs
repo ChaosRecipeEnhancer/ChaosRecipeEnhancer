@@ -1,7 +1,7 @@
-﻿using EnhancePoE.Model;
-using EnhancePoE.Properties;
+﻿using EnhancePoE.UI.Model;
+using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE.Visitors
+namespace EnhancePoE.UI.Visitors
 {
     public class CAmuletsManager : CBaseItemClassManager
     {
@@ -11,11 +11,11 @@ namespace EnhancePoE.Visitors
             ClassFilterName = "\"Amulets\"";
             ClassColor = Settings.Default.ColorAmulet;
             AlwaysActive = Settings.Default.AmuletsAlwaysActive;
-        }      
+        }
         public override string ClassName { get; set; }
         public override string ClassColor { get; set; }
         public override string ClassFilterName { get; set; }
-        public override bool AlwaysActive { get; set; }        
+        public override bool AlwaysActive { get; set; }
         public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
         {
             activeItems.AmuletActive = newValue;

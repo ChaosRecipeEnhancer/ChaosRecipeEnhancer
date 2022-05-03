@@ -1,7 +1,8 @@
-﻿using System.Windows;
+﻿using EnhancePoE.UI.View;
+using System.Windows;
 using System.Windows.Controls;
 
-namespace EnhancePoE.UserControls
+namespace EnhancePoE.UI.UserControls
 {
     /// <summary>
     ///     Interaction logic for MainOverlayOnlyButtons.xaml

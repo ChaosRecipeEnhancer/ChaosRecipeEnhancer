@@ -1,7 +1,7 @@
-﻿using EnhancePoE.Properties;
-using EnhancePoE.Model;
+﻿using EnhancePoE.UI.Properties;
+using EnhancePoE.UI.Model;
 
-namespace EnhancePoE.Visitors
+namespace EnhancePoE.UI.Visitors
 {
     internal class CBeltsManager : CBaseItemClassManager
     {
@@ -11,7 +11,7 @@ namespace EnhancePoE.Visitors
             ClassFilterName = "\"Belts\"";
             ClassColor = Settings.Default.ColorBelt;
             AlwaysActive = Settings.Default.BeltsAlwaysActive;
-            
+
         }
         public override string ClassName { get; set; }
         public override string ClassColor { get; set; }

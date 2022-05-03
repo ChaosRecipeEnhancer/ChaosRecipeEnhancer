@@ -1,8 +1,9 @@
-﻿using System.Windows;
+﻿using EnhancePoE.UI.View;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace EnhancePoE.UserControls
+namespace EnhancePoE.UI.UserControls
 {
     /// <summary>
     ///     Interaction logic for MainOverlayContentMinified.xaml

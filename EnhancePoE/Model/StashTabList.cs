@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using EnhancePoE.Properties;
+using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE.Model
+namespace EnhancePoE.UI.Model
 {
     internal static class StashTabList
     {

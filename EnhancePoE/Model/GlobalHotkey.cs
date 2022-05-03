@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI
 {
     /// <summary>
     ///     A hotkey containing a key combination (a key and modifier key) and a
