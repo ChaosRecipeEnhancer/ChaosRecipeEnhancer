@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>EnhancePoE</RootNamespace>
+    <RootNamespace>EnhancePoE.UI</RootNamespace>
     <AssemblyName>EnhancePoE</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
