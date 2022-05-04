@@ -1,38 +1,39 @@
-﻿using EnhancePoE.UI.Model;
-using EnhancePoE.UI.Properties;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using EnhancePoE.UI.Model;
 
-namespace EnhancePoE.UI.Visitors
+namespace EnhancePoE.UI.Factory.Managers
 {
-    //add interfaces for everything
     public abstract class CBaseItemClassManager
     {
-        //make a class for these properties
-        public abstract string ClassName { get; set; }
-        public abstract bool AlwaysActive { get; set; }
-        public abstract string ClassColor { get; set; }
-        public abstract string ClassFilterName { get; set; }
+        #region Properties
+
+        public string ClassName { get; set; }
+        public string ClassFilterName { get; set; }
+        public string ClassColor { get; set; }
+        public bool AlwaysActive { get; set; }
+
+        #endregion
+
+        #region Methods
 
         public virtual string SetBaseType()
         {
             var baseType = "Class " + ClassFilterName;
             return baseType;
         }
-        public virtual string SetSocketRules(string result)
+
+        public string SetSocketRules(string result)
         {
             return result;
         }
-        public abstract ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue);
 
         public virtual bool CheckIfMissing(HashSet<string> missingItemClasses)
         {
-            return missingItemClasses.Contains(this.ClassName);
+            return missingItemClasses.Contains(ClassName);
         }
+
+        public abstract ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue);
+
+        #endregion
     }
 }

@@ -1,10 +1,12 @@
-﻿using EnhancePoE.UI.Properties;
-using EnhancePoE.UI.Model;
+﻿using EnhancePoE.UI.Model;
+using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE.UI.Visitors
+namespace EnhancePoE.UI.Factory.Managers.Implementation
 {
     internal class CBootsManager : CBaseItemClassManager
     {
+        #region Constructors
+
         public CBootsManager()
         {
             ClassName = "Boots";
@@ -12,14 +14,17 @@ namespace EnhancePoE.UI.Visitors
             ClassColor = Settings.Default.ColorBoots;
             AlwaysActive = Settings.Default.BootsAlwaysActive;
         }
-        public override string ClassName { get; set; }
-        public override string ClassColor { get; set; }
-        public override string ClassFilterName { get; set; }
-        public override bool AlwaysActive { get; set; }
+
+        #endregion
+
+        #region Methods
+
         public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
         {
             activeItems.BootsActive = newValue;
             return activeItems;
         }
+
+        #endregion
     }
 }

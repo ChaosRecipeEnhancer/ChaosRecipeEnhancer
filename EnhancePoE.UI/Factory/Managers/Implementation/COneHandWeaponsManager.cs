@@ -1,12 +1,14 @@
-﻿using EnhancePoE.UI.Const;
-using EnhancePoE.UI.Properties;
+﻿using System.Collections.Generic;
+using EnhancePoE.UI.Const;
 using EnhancePoE.UI.Model;
-using System.Collections.Generic;
+using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE.UI.Visitors
+namespace EnhancePoE.UI.Factory.Managers.Implementation
 {
     internal class COneHandWeaponsManager : CBaseItemClassManager
     {
+        #region Constructors
+
         public COneHandWeaponsManager()
         {
             ClassName = "OneHandWeapons";
@@ -14,26 +16,33 @@ namespace EnhancePoE.UI.Visitors
             ClassColor = Settings.Default.ColorWeapon;
             AlwaysActive = Settings.Default.WeaponsAlwaysActive;
         }
-        public override string ClassName { get; set; }
-        public override string ClassColor { get; set; }
-        public override string ClassFilterName { get; set; }
-        public override bool AlwaysActive { get; set; }
+
+        #endregion
+
+        #region Methods
+
         public override string SetBaseType()
         {
-            // Seems like we omit claws by design as they don't fit the rule of 
+            // Seems like we omit claws by design as they don't fit the sizing rules (2 x 2 = 4 stash units)
             var baseType = "Class ";
-            baseType += "\"Daggers\" \"One Hand Axes\" \"One Hand Maces\" \"One Hand Swords\" \"Rune Daggers\" \"Sceptres\" \"Thrusting One Hand Swords\" \"Wands\"";
+            baseType +=
+                "\"Daggers\" \"One Hand Axes\" \"One Hand Maces\" \"One Hand Swords\" \"Rune Daggers\" \"Sceptres\" \"Thrusting One Hand Swords\" \"Wands\"";
             baseType += CConst.newLine + CConst.tab + "Width <= 1" + CConst.newLine + CConst.tab + "Height <= 3";
             return baseType;
         }
+
         public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
         {
             activeItems.WeaponActive = newValue;
             return activeItems;
         }
+
         public override bool CheckIfMissing(HashSet<string> missingItemClasses)
         {
-            return missingItemClasses.Contains(this.ClassName) || missingItemClasses.Contains("TwoHandWeapons");//bad, dont like, no good ideas for now tho
+            // bad, dont like, no good ideas for now tho
+            return missingItemClasses.Contains(ClassName) || missingItemClasses.Contains("TwoHandWeapons");
         }
+
+        #endregion
     }
 }

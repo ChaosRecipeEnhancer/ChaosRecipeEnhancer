@@ -1,10 +1,14 @@
-﻿using EnhancePoE.UI.Enums;
-using System;
+﻿using System;
+using EnhancePoE.UI.Enums;
+using EnhancePoE.UI.Factory.Managers;
+using EnhancePoE.UI.Factory.Managers.Implementation;
 
-namespace EnhancePoE.UI.Visitors
+namespace EnhancePoE.UI.Factory
 {
     public class CItemClassManagerFactory
     {
+        #region Methods
+
         public CBaseItemClassManager GetItemClassManager(EnumItemClass itemClass)
         {
             switch (itemClass)
@@ -31,5 +35,7 @@ namespace EnhancePoE.UI.Visitors
                     throw new Exception("Wrong item class.");
             }
         }
+
+        #endregion
     }
 }

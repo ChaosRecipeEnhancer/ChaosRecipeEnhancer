@@ -1,12 +1,14 @@
-﻿using EnhancePoE.UI.Const;
-using EnhancePoE.UI.Properties;
+﻿using System.Collections.Generic;
+using EnhancePoE.UI.Const;
 using EnhancePoE.UI.Model;
-using System.Collections.Generic;
+using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE.UI.Visitors
+namespace EnhancePoE.UI.Factory.Managers.Implementation
 {
     internal class CTwoHandWeaponsManager : CBaseItemClassManager
     {
+        #region Constructors
+
         public CTwoHandWeaponsManager()
         {
             ClassName = "TwoHandWeapons";
@@ -14,27 +16,33 @@ namespace EnhancePoE.UI.Visitors
             ClassColor = Settings.Default.ColorWeapon;
             AlwaysActive = Settings.Default.WeaponsAlwaysActive;
         }
-        public override string ClassName { get; set; }
-        public override string ClassColor { get; set; }
-        public override string ClassFilterName { get; set; }
-        public override bool AlwaysActive { get; set; }
+
+        #endregion
+
+        #region Methods
+
         public override string SetBaseType()
         {
-            // TODO: There have been issues reported with users not being able to fit 2 sets in their due to the size of some 2-handers, but looks like we have the WxH rules set here...
             var baseType = "Class ";
             baseType += "\"Two Hand Swords\" \"Two Hand Axes\" \"Two Hand Maces\" \"Staves\" \"Warstaves\" \"Bows\"";
             baseType += CConst.newLine + CConst.tab + "Width <= 2" + CConst.newLine + CConst.tab + "Height <= 3";
-            baseType += CConst.newLine + CConst.tab + "Sockets <= 5" + CConst.newLine + CConst.tab + "LinkedSockets <= 5";
+            baseType += CConst.newLine + CConst.tab + "Sockets <= 5" + CConst.newLine + CConst.tab +
+                        "LinkedSockets <= 5";
             return baseType;
         }
+
         public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
         {
             activeItems.WeaponActive = newValue;
             return activeItems;
         }
+
         public override bool CheckIfMissing(HashSet<string> missingItemClasses)
         {
-            return missingItemClasses.Contains(this.ClassName) || missingItemClasses.Contains("OneHandWeapons");//bad, dont like, no good ideas for now tho
+            // bad, dont like, no good ideas for now tho
+            return missingItemClasses.Contains(ClassName) || missingItemClasses.Contains("OneHandWeapons");
         }
+
+        #endregion
     }
 }

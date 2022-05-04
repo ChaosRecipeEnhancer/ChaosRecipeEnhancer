@@ -1,10 +1,12 @@
-﻿using EnhancePoE.UI.Properties;
-using EnhancePoE.UI.Model;
+﻿using EnhancePoE.UI.Model;
+using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE.UI.Visitors
+namespace EnhancePoE.UI.Factory.Managers.Implementation
 {
     internal class CGlovesManager : CBaseItemClassManager
     {
+        #region Constructors
+
         public CGlovesManager()
         {
             ClassName = "Gloves";
@@ -12,14 +14,17 @@ namespace EnhancePoE.UI.Visitors
             ClassColor = Settings.Default.ColorGloves;
             AlwaysActive = Settings.Default.GlovesAlwaysActive;
         }
-        public override string ClassName { get; set; }
-        public override string ClassColor { get; set; }
-        public override string ClassFilterName { get; set; }
-        public override bool AlwaysActive { get; set; }
+
+        #endregion
+
+        #region Methods
+
         public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
         {
             activeItems.GlovesActive = newValue;
             return activeItems;
         }
+
+        #endregion
     }
 }

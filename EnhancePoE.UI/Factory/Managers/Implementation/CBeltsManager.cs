@@ -1,26 +1,30 @@
-﻿using EnhancePoE.UI.Properties;
-using EnhancePoE.UI.Model;
+﻿using EnhancePoE.UI.Model;
+using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE.UI.Visitors
+namespace EnhancePoE.UI.Factory.Managers.Implementation
 {
     internal class CBeltsManager : CBaseItemClassManager
     {
+        #region Constructors
+
         public CBeltsManager()
         {
             ClassName = "Belts";
             ClassFilterName = "\"Belts\"";
             ClassColor = Settings.Default.ColorBelt;
             AlwaysActive = Settings.Default.BeltsAlwaysActive;
-
         }
-        public override string ClassName { get; set; }
-        public override string ClassColor { get; set; }
-        public override string ClassFilterName { get; set; }
-        public override bool AlwaysActive { get; set; }
+
+        #endregion
+
+        #region Methods
+
         public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
         {
             activeItems.BeltActive = newValue;
             return activeItems;
         }
+
+        #endregion
     }
 }
