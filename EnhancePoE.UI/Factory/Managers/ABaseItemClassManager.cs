@@ -3,7 +3,7 @@ using EnhancePoE.UI.Model;
 
 namespace EnhancePoE.UI.Factory.Managers
 {
-    public abstract class CBaseItemClassManager
+    public abstract class ABaseItemClassManager
     {
         #region Properties
 

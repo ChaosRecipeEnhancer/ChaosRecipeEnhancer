@@ -9,7 +9,7 @@ namespace EnhancePoE.UI.Factory
     {
         #region Methods
 
-        public CBaseItemClassManager GetItemClassManager(EnumItemClass itemClass)
+        public ABaseItemClassManager GetItemClassManager(EnumItemClass itemClass)
         {
             switch (itemClass)
             {

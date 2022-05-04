@@ -5,7 +5,7 @@ using EnhancePoE.UI.Properties;
 
 namespace EnhancePoE.UI.Factory.Managers.Implementation
 {
-    internal class CTwoHandWeaponsManager : CBaseItemClassManager
+    internal class CTwoHandWeaponsManager : ABaseItemClassManager
     {
         #region Constructors
 

@@ -3,7 +3,7 @@ using EnhancePoE.UI.Properties;
 
 namespace EnhancePoE.UI.Factory.Managers.Implementation
 {
-    internal class CBeltsManager : CBaseItemClassManager
+    internal class CBeltsManager : ABaseItemClassManager
     {
         #region Constructors
 

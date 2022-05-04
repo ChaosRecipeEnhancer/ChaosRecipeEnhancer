@@ -3,7 +3,7 @@ using EnhancePoE.UI.Properties;
 
 namespace EnhancePoE.UI.Factory.Managers.Implementation
 {
-    internal class CBodyArmoursManager : CBaseItemClassManager
+    internal class CBodyArmoursManager : ABaseItemClassManager
     {
         #region Constructors
 

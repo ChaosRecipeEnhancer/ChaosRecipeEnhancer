@@ -19,7 +19,7 @@ namespace EnhancePoE.UI.Filter
     {
         #region Fields
 
-        private CBaseItemClassManager _itemClassManager;
+        private ABaseItemClassManager _itemClassManager;
         private readonly List<string> _customStyle = new List<string>();
         private readonly List<string> _customStyleInfluenced = new List<string>();
 
@@ -37,6 +37,8 @@ namespace EnhancePoE.UI.Filter
         }
 
         #endregion
+
+        #region Methods
 
         public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses)
         {
@@ -248,5 +250,7 @@ namespace EnhancePoE.UI.Filter
                 _customStyleInfluenced.Add(line.Trim());
             }
         }
+
+        #endregion
     }
 }

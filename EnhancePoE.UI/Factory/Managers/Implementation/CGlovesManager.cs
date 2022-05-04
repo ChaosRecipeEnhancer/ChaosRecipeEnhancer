@@ -3,7 +3,7 @@ using EnhancePoE.UI.Properties;
 
 namespace EnhancePoE.UI.Factory.Managers.Implementation
 {
-    internal class CGlovesManager : CBaseItemClassManager
+    internal class CGlovesManager : ABaseItemClassManager
     {
         #region Constructors
 

@@ -3,7 +3,7 @@ using EnhancePoE.UI.Properties;
 
 namespace EnhancePoE.UI.Factory.Managers.Implementation
 {
-    internal class CHelmetManager : CBaseItemClassManager
+    internal class CHelmetManager : ABaseItemClassManager
     {
         #region Constructors
 
