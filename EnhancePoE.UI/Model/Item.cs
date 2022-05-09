@@ -52,7 +52,7 @@ namespace EnhancePoE.UI
 
             ItemType = itemClass;
 
-            //System.Diagnostics.Trace.WriteLine("item classe ", itemClass);
+            System.Diagnostics.Trace.WriteLine("item classe ", itemClass);
         }
     }
 

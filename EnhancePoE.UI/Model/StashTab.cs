@@ -97,51 +97,6 @@ namespace EnhancePoE.UI.Model
                 size = 12;
             Generate2dArr(size);
         }
-        //private static string GetItemClass(Item item, Dictionary<string, string> mappingContentDict)
-        //{
-        //    List<string> iconParts = new List<string>(item.icon.Split('/'));
-        //    String lastPart = iconParts[iconParts.Count - 1];
-
-        //    foreach (var itemMapping in mappingContentDict)
-        //    {
-        //        if (lastPart.ToLower().Contains(itemMapping.Key))
-        //        {
-        //            return itemMapping.Value;
-        //        }
-        //    }
-
-        //    MainWindow.instance.addItemLog(lastPart, item.icon);
-        //    return null;
-        //}
-
-        //private static string GetItemClass(Item item)
-        //{
-        //    //https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldFN0ckRleDciLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/0884b27765/HelmetStrDex7.png
-        //    var urlParts = item.icon.Split("/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-        //    string encodedPart = urlParts[4];
-        //    while (encodedPart.Length % 4 != 0)
-        //    {
-        //        encodedPart += "=";
-        //    }
-        //    string decodedItemData = Encoding.UTF8.GetString(Convert.FromBase64String(encodedPart));
-        //    var iconParts = decodedItemData.Split('/');
-        //    String itemClass = iconParts[1];
-        //    switch (itemClass)
-        //    {
-        //        case "Weapons":
-        //        case "Armours":
-        //            itemClass = iconParts[2];
-        //            break;
-        //        case "Rings":
-        //        case "Amulets":
-        //        case "Belts":
-        //            break;
-        //        default:
-        //            return null;
-        //    }
-        //    //Trace.WriteLine("item classe ", itemClass);
-        //    return itemClass;
-        //}
 
         public void CleanItemList()
         {

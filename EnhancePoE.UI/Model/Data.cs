@@ -5,37 +5,28 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using EnhancePoE.UI.Enums;
 using EnhancePoE.UI.Filter;
-using EnhancePoE.UI.Model;
-using EnhancePoE.UI.Model.Storage;
 using EnhancePoE.UI.Properties;
 using EnhancePoE.UI.View;
-using EnhancePoE.UI.Visitors;
 
-namespace EnhancePoE.UI
+namespace EnhancePoE.UI.Model
 {
     public static class Data
     {
         public static ActiveItemTypes ActiveItems { get; set; } = new ActiveItemTypes();
         public static ActiveItemTypes PreviousActiveItems { get; set; }
         public static MediaPlayer Player { get; set; } = new MediaPlayer();
-
         public static MediaPlayer PlayerSet { get; set; } = new MediaPlayer();
-
         public static int SetAmount { get; set; } = 0;
         public static int SetTargetAmount { get; set; } = 0;
-
         public static List<ItemSet> ItemSetList { get; set; }
         public static List<ItemSet> ItemSetListHighlight { get; set; } = new List<ItemSet>();
-
         public static ItemSet ItemSetShaper { get; set; }
         public static ItemSet ItemSetElder { get; set; }
         public static ItemSet ItemSetWarlord { get; set; }
         public static ItemSet ItemSetCrusader { get; set; }
         public static ItemSet ItemSetRedeemer { get; set; }
         public static ItemSet ItemSetHunter { get; set; }
-
         public static CancellationTokenSource cs { get; set; } = new CancellationTokenSource();
         public static CancellationToken CancelationToken { get; set; } = cs.Token;
 
@@ -313,7 +304,7 @@ namespace EnhancePoE.UI
                     }
                 }
                 CFilterGenerationManager filterManager = new CFilterGenerationManager();
-                ActiveItems = await filterManager.GenerateSectionsAndUpdateFilter(missingItemClasses);
+                ActiveItems = await filterManager.GenerateSectionsAndUpdateFilterAsync(missingItemClasses);
 
                 //Trace.WriteLine(fullSets, "full sets");
                 MainWindow.Overlay.Dispatcher.Invoke(() => { MainWindow.Overlay.FullSetsText = fullSets.ToString(); });
@@ -697,9 +688,6 @@ namespace EnhancePoE.UI
                     });
         }
     }
-
-
-
 
     public class ItemTypeAmounts
     {

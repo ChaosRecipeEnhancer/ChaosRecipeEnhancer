@@ -3,17 +3,18 @@ using System.Net;
 using System.Windows.Forms;
 using AutoUpdaterDotNET;
 
-namespace EnhancePoE.UI.Model
+namespace EnhancePoE.App.Helpers
 {
-    internal static class NETAutoupdater
+    public static class AutoUpdateHelper
     {
-        private static bool firstTry = true;
+        private static bool _firstTry = true;
 
-        public static void InitializeAutoupdater(string appVersion)
+        public static void InitializeAutoUpdater(string appVersion)
         {
             AutoUpdater.ShowSkipButton = false;
             AutoUpdater.InstalledVersion = new Version(appVersion);
             AutoUpdater.RunUpdateAsAdmin = true;
+            
             CheckForUpdates();
         }
 
@@ -22,19 +23,23 @@ namespace EnhancePoE.UI.Model
             AutoUpdater.Start("https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/EnhancePoE.Installer/autoupdate.xml");
         }
 
-
+        /// <summary>
+        /// TODO [Remove] [Refactor] Do we even need this? Maybe this is something we could refactor and use for better update UI?
+        /// </summary>
+        /// <param name="args"></param>
         private static void AutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)
         {
             if (args.Error == null)
             {
                 if (args.IsUpdateAvailable)
                 {
-                    firstTry = false;
+                    _firstTry = false;
                     DialogResult dialogResult;
                     if (args.Mandatory.Value)
                         dialogResult =
                             MessageBox.Show(
-                                $@"There is new version {args.CurrentVersion} available. You are using version {args.InstalledVersion}. This is required update. Press Ok to begin updating the application.", @"Update Available",
+                                $@"There is new version {args.CurrentVersion} available. You are using version {args.InstalledVersion}. This is required update. Press Ok to begin updating the application.",
+                                @"Update Available",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
                     else
@@ -52,7 +57,11 @@ namespace EnhancePoE.UI.Model
                     if (dialogResult.Equals(DialogResult.Yes) || dialogResult.Equals(DialogResult.OK))
                         try
                         {
-                            if (AutoUpdater.DownloadUpdate(args)) Application.Exit();
+                            if (AutoUpdater.DownloadUpdate(args))
+                            {
+                                // TODO: [Move] Feels weird to call UI stuff here, idk
+                                System.Windows.Forms.Application.Exit();
+                            }
                         }
                         catch (Exception exception)
                         {
@@ -62,8 +71,10 @@ namespace EnhancePoE.UI.Model
                 }
                 else
                 {
-                    if (!firstTry) MessageBox.Show(@"There is no update available please try again later.", @"No update available", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    firstTry = false;
+                    if (!_firstTry)
+                        MessageBox.Show(@"There is no update available please try again later.", @"No update available",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    _firstTry = false;
                 }
             }
             else

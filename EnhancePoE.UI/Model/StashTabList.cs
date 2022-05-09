@@ -18,7 +18,9 @@ namespace EnhancePoE.UI.Model
                 var indices = Settings.Default.StashTabIndices;
                 string[] sep = { "," };
                 var split = indices.Split(sep, StringSplitOptions.None);
+
                 foreach (var s in split)
+                {
                     if (int.TryParse(s.Trim(), out var parsedIndex))
                     {
                         if (!ret.Contains(parsedIndex)) ret.Add(parsedIndex);
@@ -27,9 +29,12 @@ namespace EnhancePoE.UI.Model
                     {
                         MessageBox.Show("Stashtab Index has to be a number!", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
+                }
 
                 if (ret.Count == 0) MessageBox.Show("Stashtab Indices empty!", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
                 StashTabIndices = ret;
+
                 //Trace.WriteLine(ret, "ret");
                 //foreach(int i in StashTabIndices)
                 //{

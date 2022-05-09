@@ -8,10 +8,10 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using EnhancePoE.UI.Model;
+using EnhancePoE.DataModels.GGGModels;
 using EnhancePoE.UI.Properties;
 
-namespace EnhancePoE.UI
+namespace EnhancePoE.UI.Model
 {
     public class ApiAdapter
     {
@@ -70,20 +70,21 @@ namespace EnhancePoE.UI
         {
             var ret = new List<StashTab>();
 
+            StashTabList.GetStashTabIndices();
+
             // mode = ID
             if (Settings.Default.StashTabMode == 0)
             {
-                StashTabList.GetStashTabIndices();
                 if (PropsList != null)
                 {
-                    foreach (var p in PropsList.tabs)
+                    foreach (var tab in PropsList.tabs)
                     {
-                        for (var i = StashTabList.StashTabIndices.Count - 1; i > -1; i--)
+                        for (var index = StashTabList.StashTabIndices.Count - 1; index > -1; index--)
                         {
-                            if (StashTabList.StashTabIndices[i] != p.i) continue;
+                            if (StashTabList.StashTabIndices[index] != tab.Index) continue;
 
-                            StashTabList.StashTabIndices.RemoveAt(i);
-                            ret.Add(new StashTab(p.n, p.i));
+                            StashTabList.StashTabIndices.RemoveAt(index);
+                            ret.Add(new StashTab(tab.Name, tab.Index));
                         }
                     }
 
@@ -98,12 +99,14 @@ namespace EnhancePoE.UI
                 {
                     var stashName = Settings.Default.StashTabName;
 
-                    foreach (var p in PropsList.tabs)
+                    GetAllTabNames();
+
+                    foreach (var tab in PropsList.tabs)
                     {
-                        if ((Settings.Default.StashTabMode == 1 && p.n.StartsWith(stashName))
-                            || (Settings.Default.StashTabMode == 2 && p.n.EndsWith(stashName)))
+                        if ((Settings.Default.StashTabMode == 1 && tab.Name.StartsWith(stashName))
+                            || (Settings.Default.StashTabMode == 2 && tab.Name.EndsWith(stashName)))
                         {
-                            ret.Add(new StashTab(p.n, p.i));
+                            ret.Add(new StashTab(tab.Name, tab.Index));
                         }
                     }
 
@@ -127,9 +130,9 @@ namespace EnhancePoE.UI
         {
             foreach (var s in StashTabList.StashTabs)
             {
-                foreach (var p in PropsList.tabs)
+                foreach (var props in PropsList.tabs)
                 {
-                    if (s.TabIndex == p.i) s.TabName = p.n;
+                    if (s.TabIndex == props.Index) s.TabName = props.Name;
                 }
             }
         }

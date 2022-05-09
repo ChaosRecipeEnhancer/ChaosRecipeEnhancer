@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
+using EnhancePoE.App;
 using EnhancePoE.UI.Model;
 using EnhancePoE.UI.Properties;
 using EnhancePoE.UI.UserControls;

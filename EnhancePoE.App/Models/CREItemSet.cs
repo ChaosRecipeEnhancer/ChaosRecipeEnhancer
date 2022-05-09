@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EnhancePoE.Models
+namespace EnhancePoE.App.Models
 {
     /// <summary>
     /// Used to track complete item sets for currency turn-in

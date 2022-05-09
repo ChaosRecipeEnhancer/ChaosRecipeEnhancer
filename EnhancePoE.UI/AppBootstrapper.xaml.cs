@@ -8,10 +8,10 @@ namespace EnhancePoE.UI
     /// <summary>
     ///     Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public class AppBootstrapper : Application
     {
         // TODO: make app single instance 
-        public App()
+        public AppBootstrapper()
         {
             SetupUnhandledExceptionHandling();
         }
@@ -20,7 +20,8 @@ namespace EnhancePoE.UI
         {
             // Catch exceptions from all threads in the AppDomain.
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-                ShowUnhandledException(args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException", false);
+                ShowUnhandledException(args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException",
+                    false);
 
             // Catch exceptions from each AppDomain that uses a task scheduler for async operations.
             TaskScheduler.UnobservedTaskException += (sender, args) =>
@@ -65,7 +66,8 @@ namespace EnhancePoE.UI
             }
 
             // Let the user decide if the app should die or not (if applicable).
-            if (MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons) == MessageBoxResult.Yes) Current.Shutdown();
+            if (MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons) == MessageBoxResult.Yes)
+                Current.Shutdown();
         }
     }
 }

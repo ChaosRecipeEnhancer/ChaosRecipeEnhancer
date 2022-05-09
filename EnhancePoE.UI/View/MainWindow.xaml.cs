@@ -9,10 +9,10 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using EnhancePoE.App.Helpers;
 using EnhancePoE.UI.Model;
 using EnhancePoE.UI.Properties;
 using EnhancePoE.UI.UserControls;
-using Application = System.Windows.Application;
 using ContextMenu = System.Windows.Forms.ContextMenu;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
@@ -44,7 +44,7 @@ namespace EnhancePoE.UI.View
         {
             InitializeComponent();
             DataContext = this;
-            NETAutoupdater.InitializeAutoupdater(AppVersion);
+            AutoUpdateHelper.InitializeAutoUpdater(AppVersion);
 
             if (!string.IsNullOrEmpty(Settings.Default.FilterChangeSoundFileLocation) && !FilterSoundLocationDialog.Content.Equals("Default Sound"))
                 Data.Player.Open(new Uri(Settings.Default.FilterChangeSoundFileLocation));
@@ -207,7 +207,7 @@ namespace EnhancePoE.UI.View
 
         private void CheckForUpdates_Click(object Sender, EventArgs e)
         {
-            NETAutoupdater.CheckForUpdates();
+            AutoUpdateHelper.CheckForUpdates();
         }
 
         // Close the form, which closes the application.
@@ -237,7 +237,7 @@ namespace EnhancePoE.UI.View
                 HotkeysManager.ShutdownSystemHook();
                 Settings.Default.Save();
                 if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive) LogWatcher.StopWatchingLogFile();
-                Application.Current.Shutdown();
+                System.Windows.Application.Current.Shutdown();
             }
         }
 
@@ -423,7 +423,7 @@ namespace EnhancePoE.UI.View
         private void CustomHotkeyToggle_Click(object sender, RoutedEventArgs e)
         {
             var isWindowOpen = false;
-            foreach (Window w in Application.Current.Windows)
+            foreach (Window w in System.Windows.Application.Current.Windows)
                 if (w is HotkeyWindow)
                     isWindowOpen = true;
 
@@ -435,7 +435,7 @@ namespace EnhancePoE.UI.View
         private void RefreshHotkey_Click(object sender, RoutedEventArgs e)
         {
             var isWindowOpen = false;
-            foreach (Window w in Application.Current.Windows)
+            foreach (Window w in System.Windows.Application.Current.Windows)
                 if (w is HotkeyWindow)
                     isWindowOpen = true;
 
@@ -447,7 +447,7 @@ namespace EnhancePoE.UI.View
         private void StashTabHotkey_Click(object sender, RoutedEventArgs e)
         {
             var isWindowOpen = false;
-            foreach (Window w in Application.Current.Windows)
+            foreach (Window w in System.Windows.Application.Current.Windows)
                 if (w is HotkeyWindow)
                     isWindowOpen = true;
 

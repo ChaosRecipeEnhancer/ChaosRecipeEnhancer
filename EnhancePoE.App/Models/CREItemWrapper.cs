@@ -2,7 +2,7 @@
 using System.Text;
 using EnhancePoE.DataModels.GGGModels;
 
-namespace EnhancePoE.Models
+namespace EnhancePoE.App.Models
 {
     /// <summary>
     /// TODO

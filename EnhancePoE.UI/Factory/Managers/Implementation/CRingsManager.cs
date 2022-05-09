@@ -3,7 +3,7 @@ using EnhancePoE.UI.Properties;
 
 namespace EnhancePoE.UI.Factory.Managers.Implementation
 {
-    internal class CRingsManager : CBaseItemClassManager
+    internal class CRingsManager : ABaseItemClassManager
     {
         #region Constructors
 

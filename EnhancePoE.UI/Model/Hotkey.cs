@@ -12,7 +12,6 @@ namespace EnhancePoE.UI
         }
 
         public Key Key { get; }
-
         public ModifierKeys Modifiers { get; }
 
         public override string ToString()
