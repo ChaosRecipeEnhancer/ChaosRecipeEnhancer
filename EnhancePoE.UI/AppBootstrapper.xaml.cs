@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EnhancePoE.UI.View;
+using Serilog;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,10 +12,27 @@ namespace EnhancePoE.UI
     /// </summary>
     public class AppBootstrapper : Application
     {
-        // TODO: make app single instance 
+        // TODO: make app single instance
         public AppBootstrapper()
         {
             SetupUnhandledExceptionHandling();
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            Log.Debug("Test");
+
+            MainWindow = new MainWindow();
+
+            MainWindow.Show();
+
+            base.OnStartup(e);
         }
 
         private void SetupUnhandledExceptionHandling()
