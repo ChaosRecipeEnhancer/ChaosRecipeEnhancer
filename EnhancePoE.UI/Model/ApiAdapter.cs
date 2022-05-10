@@ -70,7 +70,10 @@ namespace EnhancePoE.UI.Model
         {
             var ret = new List<StashTab>();
 
-            StashTabList.GetStashTabIndices();
+            if (Settings.Default.StashTabIndices != null)
+            {
+                StashTabList.GetStashTabIndices();
+            }
 
             // mode = ID
             if (Settings.Default.StashTabMode == 0)
@@ -84,7 +87,14 @@ namespace EnhancePoE.UI.Model
                             if (StashTabList.StashTabIndices[index] != tab.Index) continue;
 
                             StashTabList.StashTabIndices.RemoveAt(index);
-                            ret.Add(new StashTab(tab.Name, tab.Index));
+                            
+                            if (tab.Type ==  "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
+                                ret.Add(new StashTab(tab.Name, tab.Index));
+                            else
+                            {
+                                Console.WriteLine("Bad tab type");
+                                MessageBox.Show("Your selected stash tabs should only include normal tabs, premium tabs, and quad tabs. Please remove any Currency Tabs, Fragment Tabs, Unique Tabs, etc.", "Invalid Stash Tab(s)", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
                     }
 
@@ -106,7 +116,13 @@ namespace EnhancePoE.UI.Model
                         if ((Settings.Default.StashTabMode == 1 && tab.Name.StartsWith(stashName))
                             || (Settings.Default.StashTabMode == 2 && tab.Name.EndsWith(stashName)))
                         {
-                            ret.Add(new StashTab(tab.Name, tab.Index));
+                            if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
+                                ret.Add(new StashTab(tab.Name, tab.Index));
+                            else
+                            {
+                                Console.WriteLine("Bad tab type");
+                                MessageBox.Show("Your selected stash tabs should only include normal tabs, premium tabs, and quad tabs. Please remove any Currency Tabs, Fragment Tabs, Unique Tabs, etc.", "Invalid Stash Tab(s)", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
                     }
 
