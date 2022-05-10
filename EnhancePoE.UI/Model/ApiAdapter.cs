@@ -87,8 +87,8 @@ namespace EnhancePoE.UI.Model
                             if (StashTabList.StashTabIndices[index] != tab.Index) continue;
 
                             StashTabList.StashTabIndices.RemoveAt(index);
-                            
-                            if (tab.Type ==  "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
+
+                            if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
                                 ret.Add(new StashTab(tab.Name, tab.Index));
                             else
                             {
