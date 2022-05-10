@@ -19,12 +19,14 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <!-- This will be your default file -->
     <Compile Include="Product.wxs" />
+    <!-- This is the Heat created one -->
+    <!--<Compile Include="HeatGeneratedFileList.wxs" />-->
   </ItemGroup>
   <ItemGroup>
     <Content Include="autoupdate.xml" />
     <Content Include="coin.ico" />
-    <Content Include="CRE-Setup.msi" />
     <Content Include="EnhancePoE.Installer.wax" />
   </ItemGroup>
   <ItemGroup>
@@ -50,4 +52,32 @@
       <Target Name="AfterBuild">
       </Target>
       -->
+  <!--Long story short, we can't get this to autoamted quite yet. There's issues targetting an x86 process using the new x64 MSBuild architecture.
+	I'll have to revisit this at a later date, but to push out the release in time for 3.18 I'll have to generate "HeatGeneratedFileList.wxs" manually-->
+  <!--Here's the command I ran to generate the HeatGeneratedFileList.wxs manually (Included directory path to show where you have to run it):
+	PS C:\Users\mario\source\repos\EnhancePoEApp\EnhancePoE.UI\bin\Release> 
+	heat dir "." -gg -sfrag -srd -sreg -dr INSTALLFOLDER -out HeatGeneratedFileList.wxs-->
+  <!--<Target Name="SGENBeforeBuild" BeforeTargets="PrepareForBuild">
+		<PropertyGroup>
+			-->
+  <!--  workaround for VS2022 x64 building serialization assemblies for x86 targets, see
+			https://stackoverflow.com/questions/70770918/forcing-vs2022-to-use-32-bit-version-of-msbuild -->
+  <!--
+			<SGenToolPath>$(TargetFrameworkSDKToolsDirectory)</SGenToolPath>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="BeforeBuild">
+		<HeatDirectory Directory="..\EnhancePoE.UI\bin\Release"
+		  PreprocessorVariable="var.HarvestPath"
+		  OutputFile="HeatGeneratedFileList.wxs"
+		  ComponentGroupName="HeatGenerated"
+		  DirectoryRefId="INSTALLFOLDER"
+		  AutogenerateGuids="true"
+		  ToolPath="$(WixToolPath)"
+		  SuppressFragments="true"
+		  SuppressRegistry="true"
+		  SuppressRootDirectory="true"
+		  RunAsSeparateProcess="$(RunWixToolsOutOfProc)" />
+	</Target>-->
 </Project>
