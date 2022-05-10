@@ -18,7 +18,11 @@ With Kosace's permission, I will be changing the PayPal link and all donations w
 
 ## Installation
 
-_**_NOTE: We will be updating the installation / setup guides in the near future to ensure you're up and running quicker._**_
+### Pre-requisites
+
+The only pre-requisite for this app is to install the [.NET Framework Runtime](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
+
+### Downloads
 
 DO NOT download the whole GitHub repository, since it may include some new experimental features.
 
@@ -53,10 +57,6 @@ If you have updated your application to 1.2.0 please use a new item filter as so
 <img src="https://github.com/kosace/EnhancePoEApp/blob/master/DocumentationAssets/Settings-Screenshot.png" width="500" alt="Settings Page">
 
 ## Guide
-
-#### Pre-requisites
-
-The only pre-requisite for this app is to install the [.NET Framework Runtime](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
 
 #### Compatibility
 
