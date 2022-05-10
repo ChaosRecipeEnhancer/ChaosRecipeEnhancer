@@ -14,7 +14,9 @@ namespace EnhancePoE.UI
         public string baseType { get; set; }
         public string name { get; set; }
         public bool identified { get; set; }
-        public int ilvl { get; set; }
+        
+        // Marked as "Deprecated" by GGG; they'll be using a new "itemLevel" property Soon (TM)
+        public int? ilvl { get; set; }
         public int frameType { get; set; }
         public int x { get; set; }
         public int y { get; set; }
