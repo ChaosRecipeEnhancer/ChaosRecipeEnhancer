@@ -137,6 +137,7 @@ namespace EnhancePoE.UI.View
                 }
             }
         }
+
         public Visibility NameSuffixVisible
         {
             get => _nameSuffixVisible;
@@ -604,8 +605,16 @@ namespace EnhancePoE.UI.View
             if (res != System.Windows.Forms.DialogResult.OK) return;
 
             var filename = open.FileName;
-            Settings.Default.LogLocation = filename;
-            LogLocationDialog.Content = filename;
+
+            if (filename.EndsWith("Client.txt"))
+            {
+                Settings.Default.LogLocation = filename;
+                LogLocationDialog.Content = filename;
+            }
+            else
+            {
+                MessageBox.Show("Invalid file selected. Make sure you're selecting the \"Client.txt\" file located in your main Path of Exile installation folder.", "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void AutoFetchCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -647,12 +656,6 @@ namespace EnhancePoE.UI.View
 
             Data.PlayNotificationSoundSetPicked();
         }
-
-        #region Event Handlers
-
-
-
-        #endregion
 
         #region INotifyPropertyChanged implementation
 
