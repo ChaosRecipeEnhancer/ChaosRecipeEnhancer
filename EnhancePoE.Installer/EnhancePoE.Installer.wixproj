@@ -6,7 +6,7 @@
     <ProductVersion>1.5.0</ProductVersion>
     <ProjectGuid>1e01e3d3-9a5b-4869-9762-2ac5c8122c25</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>CRE-Setup</OutputName>
+    <OutputName>CRESetup</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -27,6 +27,7 @@
   <ItemGroup>
     <Content Include="autoupdate.xml" />
     <Content Include="coin.ico" />
+    <Content Include="CRESetup.msi" />
     <Content Include="EnhancePoE.Installer.wax" />
   </ItemGroup>
   <ItemGroup>
