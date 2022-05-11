@@ -5,6 +5,7 @@
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<?define EnhancePoE_TargetDir=$(var.EnhancePoE.UI.TargetDir)?>
+	<?define EnhancePoE_ProjectDir=$(var.EnhancePoE.UI.ProjectDir)?>
 
 	<Product Id="*" Name="ChaosRecipeEnhancer" Language="1033" Version="$(var.ProductVersion)" Manufacturer="CRETeam" UpgradeCode="$(var.UpgradeCode)">
 
@@ -13,7 +14,7 @@
 		<MajorUpgrade AllowSameVersionUpgrades="no" Schedule="afterInstallInitialize" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate EmbedCab="yes" />
 
-		<Icon Id="coin.ico" SourceFile="$(var.ProjectDir)coin.ico" />
+		<Icon Id="coin.ico" SourceFile="$(var.EnhancePoE_ProjectDir)Assets\Icons\coin.ico" />
 
 		<Property Id="ARPPRODUCTICON" Value="coin.ico" />
 
@@ -243,11 +244,11 @@
 		<ComponentGroup Id="SoundsFolder_files" Directory="SoundsFolder">
 
 			<Component Id="Sounds_itemsPickedUp.mp3" Guid="c2762fc6-e9fd-4928-a1fa-4b0aaaf17905">
-				<File Id="Sounds_itemsPickedUp.mp3" Name="itemsPickedUp.mp3" Source="$(var.EnhancePoE_TargetDir)Sounds\itemsPickedUp.mp3" />
+				<File Id="Sounds_itemsPickedUp.mp3" Name="itemsPickedUp.mp3" Source="$(var.EnhancePoE_ProjectDir)Assets\Sounds\itemsPickedUp.mp3" />
 			</Component>
 
 			<Component Id="Sounds_filterchanged.mp3" Guid="a0ba0fba-5d38-4595-b44c-7beb03d1bbc8">
-				<File Id="Sounds_filterchanged.mp3" Name="filterchanged.mp3" Source="$(var.EnhancePoE_TargetDir)Sounds\filterchanged.mp3" />
+				<File Id="Sounds_filterchanged.mp3" Name="filterchanged.mp3" Source="$(var.EnhancePoE_ProjectDir)Assets\Sounds\filterchanged.mp3" />
 			</Component>
 
 		</ComponentGroup>
@@ -259,11 +260,11 @@
 		<ComponentGroup Id="StylesFolder_files" Directory="StylesFolder">
 
 			<Component Id="Styles_InfluencedItemsStyle.txt" Guid="90bde904-697a-46e1-ac25-4ec221d7b904">
-				<File Id="Styles_InfluencedItemsStyle.txt" Name="InfluencedItemsStyle.txt" Source="$(var.EnhancePoE_TargetDir)Styles\InfluencedItemsStyle.txt" />
+				<File Id="Styles_InfluencedItemsStyle.txt" Name="InfluencedItemsStyle.txt" Source="$(var.EnhancePoE_ProjectDir)Assets\FilterStyles\InfluencedItemsStyle.txt" />
 			</Component>
 
 			<Component Id="Styles_NormalItemsStyle.txt" Guid="dcb2bb51-1d14-4681-8601-d4f563d4fe19">
-				<File Id="Styles_NormalItemsStyle.txt" Name="NormalItemsStyle.txt" Source="$(var.EnhancePoE_TargetDir)Styles\NormalItemsStyle.txt" />
+				<File Id="Styles_NormalItemsStyle.txt" Name="NormalItemsStyle.txt" Source="$(var.EnhancePoE_ProjectDir)Assets\FilterStyles\NormalItemsStyle.txt" />
 			</Component>
 
 		</ComponentGroup>
