@@ -1,5 +1,13 @@
 ## Change Log
 
+#### 1.5.0
+
+- adding new 'Suffix' stash tab selection mode (thanks to [@george-delchev](https://github.com/george-delchev))
+- fixing app crashing when finding items without an ilvl in stash tabs (e.g. compasses)
+- adding check for selected tab types; users can no longer query from tabs other than Normal or Quad tabs (i.e. no querying from Currency / Divination / Fragment tabs, etc.)
+- modifying default settings that ship with the app to make things more intuitive (based on community feedback)
+- modifying a lot of code under the hood in an effort to improve project structure and make future maintenance easier (thanks to [@george-delchev](https://github.com/george-delchev))
+
 #### 1.4.1
 
 - fixing random CLIPBRD_E_CANT_OPEN error being thrown

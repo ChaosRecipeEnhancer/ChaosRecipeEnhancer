@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?define ProductVersion = "1.5.0.0"?>
+<?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<?define EnhancePoE_TargetDir=$(var.EnhancePoE.UI.TargetDir)?>
+
+	<Product Id="*" Name="ChaosRecipeEnhancer" Language="1033" Version="$(var.ProductVersion)" Manufacturer="CRETeam" UpgradeCode="$(var.UpgradeCode)">
+
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade AllowSameVersionUpgrades="no" Schedule="afterInstallInitialize" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Icon Id="coin.ico" SourceFile="$(var.ProjectDir)coin.ico" />
+
+		<Property Id="ARPPRODUCTICON" Value="coin.ico" />
+
+		<Feature Id="ProductFeature" Title="ChaosRecipeEnhancer" Level="1">
+
+			<ComponentGroupRef Id="FirstPartyProductComponents" />
+			<ComponentGroupRef Id="ThirdPartyDependencies" />
+
+			<ComponentGroupRef Id="SoundsFolder_files" />
+			<ComponentGroupRef Id="StylesFolder_files" />
+
+			<ComponentRef Id="app.publish.EnhancePoE.exe" />
+
+			<!-- Localization -->
+			<ComponentRef Id="cs_CZ.Xceed.Wpf.AvalonDock.resources.dll" />
+			<ComponentRef Id="de.Xceed.Wpf.AvalonDock.resources.dll" />
+			<ComponentRef Id="es.Xceed.Wpf.AvalonDock.resources.dll" />
+			<ComponentRef Id="fr.Xceed.Wpf.AvalonDock.resources.dll" />
+			<ComponentRef Id="hu.Xceed.Wpf.AvalonDock.resources.dll" />
+			<ComponentRef Id="it.Xceed.Wpf.AvalonDock.resources.dll" />
+			<ComponentRef Id="ja_JP.Xceed.Wpf.AvalonDock.resources.dll" />
+			<ComponentRef Id="pt_BR.Xceed.Wpf.AvalonDock.resources.dll" />
+			<ComponentRef Id="ro.Xceed.Wpf.AvalonDock.resources.dll" />
+			<ComponentRef Id="ru.Xceed.Wpf.AvalonDock.resources.dll" />
+			<ComponentRef Id="sv.Xceed.Wpf.AvalonDock.resources.dll" />
+			<ComponentRef Id="zh_Hans.Xceed.Wpf.AvalonDock.resources.dll" />
+
+			<ComponentRef Id="ApplicationShortcut" />
+			<ComponentRef Id="ApplicationShortcutDesktop" />
+
+		</Feature>
+	</Product>
+
+	<Fragment>
+
+		<Directory Id="TARGETDIR" Name="SourceDir">
+
+			<Directory Id="ProgramFilesFolder">
+
+				<Directory Id="INSTALLFOLDER" Name="ChaosRecipeEnhancer">
+
+					<Directory Id="SoundsFolder" Name="Sounds" />
+					<Directory Id="StylesFolder" Name="Styles" />
+
+					<Directory Id="AppPublishFolder" Name="app.publish" />
+
+					<!-- Localization -->
+					<Directory Id="CzechDirectory" Name="cs-CZ" />
+					<Directory Id="GermanDirectory" Name="de" />
+					<Directory Id="SpanishDirectory" Name="es" />
+					<Directory Id="FrenchDirectory" Name="fr" />
+					<Directory Id="HungarianDirectory" Name="hu" />
+					<Directory Id="ItalianDirectory" Name="it" />
+					<Directory Id="JapaneseDirectory" Name="ja-JP" />
+					<Directory Id="PortugueseDirectory" Name="pt-BR" />
+					<Directory Id="RomanianDirectory" Name="ro" />
+					<Directory Id="RussianDirectory" Name="ru" />
+					<Directory Id="SwedishDirectory" Name="sv" />
+					<Directory Id="MandarinChineseDirectory" Name="zh-Hans" />
+
+				</Directory>
+
+			</Directory>
+
+			<Directory Id="ProgramMenuFolder">
+
+				<Directory Id="ApplicationProgramsFolder" Name="ChaosRecipeEnhancer" />
+
+			</Directory>
+
+			<Directory Id="DesktopFolder" Name="Desktop" />
+
+		</Directory>
+
+	</Fragment>
+
+	<Fragment>
+
+		<DirectoryRef Id="ApplicationProgramsFolder">
+
+			<Component Id="ApplicationShortcut" Guid="1e4fafd1-872a-42b9-a479-8b46e988ae09">
+
+				<Shortcut Id="ApplicationStartMenuShortcut" Name="ChaosRecipeEnhancer" Description="ChaosRecipeEnhancer" Target="[INSTALLFOLDER]EnhancePoE.exe" WorkingDirectory="INSTALLFOLDER" Icon="coin.ico" />
+
+				<RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+
+				<RegistryValue Root="HKCU" Key="Software\ChaosRecipeEnhancer" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+
+			</Component>
+
+		</DirectoryRef>
+
+		<DirectoryRef Id="DesktopFolder">
+			<Component Id="ApplicationShortcutDesktop" Guid="5686ed96-73f7-4aad-8742-a40f2e247bf6">
+
+				<Shortcut Id="ApplicationDesktopShortcut" Name="ChaosRecipeEnhancer" Description="ChaosRecipeEnhancer" Target="[INSTALLFOLDER]EnhancePoE.exe" WorkingDirectory="INSTALLFOLDER" Icon="coin.ico" />
+
+				<RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+
+				<RegistryValue Root="HKCU" Key="Software\ChaosRecipeEnhancer" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+
+			</Component>
+		</DirectoryRef>
+
+	</Fragment>
+
+	<Fragment>
+
+		<!--1st Party Dependencies-->
+		<ComponentGroup Id="FirstPartyProductComponents" Directory="INSTALLFOLDER">
+
+			<Component Id="EnhancePoE.App.dll" Guid="{F9A931A5-E538-4E5B-BB2F-9EE4A8B076F5}">
+				<File Id="EnhancePoE.App.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)EnhancePoE.App.dll" />
+			</Component>
+
+			<Component Id="EnhancePoE.application" Guid="{3AA4DC58-B9FA-43D1-B4FC-8F8C0BD771C8}">
+				<File Id="EnhancePoE.application" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)EnhancePoE.application" />
+			</Component>
+
+			<Component Id="EnhancePoE.DataModels.dll" Guid="{0193B726-74F2-4913-9813-8542DDE2F38C}">
+				<File Id="EnhancePoE.DataModels.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)EnhancePoE.DataModels.dll" />
+			</Component>
+
+			<Component Id="EnhancePoE.exe" Guid="{556320E0-FC9A-4E38-88AC-150BA97EFC21}">
+				<File Id="EnhancePoE.exe" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)EnhancePoE.exe" />
+			</Component>
+
+			<Component Id="EnhancePoE.exe.config" Guid="{E6EF01C6-FCEF-4DDF-A5BF-A4C2019CEFC4}">
+				<File Id="EnhancePoE.exe.config" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)EnhancePoE.exe.config" />
+			</Component>
+
+			<Component Id="EnhancePoE.exe.manifest" Guid="{D1C2E6D7-5120-45A1-8C30-B95586B8BC9C}">
+				<File Id="EnhancePoE.exe.manifest" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)EnhancePoE.exe.manifest" />
+			</Component>
+
+		</ComponentGroup>
+
+		<!--3rd Party Dependencies -->
+		<ComponentGroup Id="ThirdPartyDependencies" Directory="INSTALLFOLDER">
+
+			<Component Id="AutoUpdater.NET.dll" Guid="{F8579D83-C655-4460-8B2D-A7F4297EC319}">
+				<File Id="AutoUpdater.NET.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)AutoUpdater.NET.dll" />
+			</Component>
+
+			<Component Id="HtmlAgilityPack.dll" Guid="{FC639B92-E5C9-4554-B325-3AEEE9B7032F}">
+				<File Id="HtmlAgilityPack.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)HtmlAgilityPack.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="{9DAEE128-2CD1-4790-BF97-40CD9E157692}">
+				<File Id="Microsoft.Bcl.AsyncInterfaces.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
+			</Component>
+
+			<Component Id="PresentationCore.dll" Guid="{FAEB28BF-4546-4342-B07F-26F558D8FBE6}">
+				<File Id="PresentationCore.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)PresentationCore.dll" />
+			</Component>
+
+			<Component Id="System.Buffers.dll" Guid="{E958500F-49C9-4119-8DEA-EE9DBC6244CE}">
+				<File Id="System.Buffers.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Buffers.dll" />
+			</Component>
+
+			<Component Id="System.Data.DataSetExtensions.dll" Guid="{2C272EAA-69FF-431B-9A7D-E57DDC91E636}">
+				<File Id="System.Data.DataSetExtensions.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Data.DataSetExtensions.dll" />
+			</Component>
+
+			<Component Id="System.Memory.dll" Guid="{4A09884F-9E30-42D2-936B-2BB0F5A7C9DB}">
+				<File Id="System.Memory.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Memory.dll" />
+			</Component>
+
+			<Component Id="System.Numerics.Vectors.dll" Guid="{75AB55CD-6C7C-46D4-A2E1-5B96945302D5}">
+				<File Id="System.Numerics.Vectors.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Numerics.Vectors.dll" />
+			</Component>
+
+			<Component Id="System.Runtime.CompilerServices.Unsafe.dll" Guid="{91C1EE82-FC59-49DD-A24F-577A597920EE}">
+				<File Id="System.Runtime.CompilerServices.Unsafe.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Runtime.CompilerServices.Unsafe.dll" />
+			</Component>
+
+			<Component Id="System.Text.Encodings.Web.dll" Guid="{27106E67-B885-455E-9D20-16C1E6E06EBB}">
+				<File Id="System.Text.Encodings.Web.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Text.Encodings.Web.dll" />
+			</Component>
+
+			<Component Id="System.Text.Json.dll" Guid="{A71ACA0C-678C-4B58-B1C2-492467E27F81}">
+				<File Id="System.Text.Json.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Text.Json.dll" />
+			</Component>
+
+			<Component Id="System.Threading.Tasks.Extensions.dll" Guid="{0655275D-6EF4-40F6-84B0-DB36740D5C91}">
+				<File Id="System.Threading.Tasks.Extensions.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Threading.Tasks.Extensions.dll" />
+			</Component>
+
+			<Component Id="System.ValueTuple.dll" Guid="{85D871FE-4459-42A1-8C6A-3D1B6443D8E8}">
+				<File Id="System.ValueTuple.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.ValueTuple.dll" />
+			</Component>
+
+			<Component Id="System.Web.Extensions.dll" Guid="{C2647081-A46D-4F44-9DF3-55827D096952}">
+				<File Id="System.Web.Extensions.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Web.Extensions.dll" />
+			</Component>
+
+			<Component Id="System.Xml.Linq.dll" Guid="{F5111B36-E620-4A90-98C7-EEDCF1884260}">
+				<File Id="System.Xml.Linq.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Xml.Linq.dll" />
+			</Component>
+
+			<Component Id="Xceed.Wpf.AvalonDock.dll" Guid="{84BBB1D3-E09F-4E48-8831-7868A7CC5118}">
+				<File Id="Xceed.Wpf.AvalonDock.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Xceed.Wpf.AvalonDock.dll" />
+			</Component>
+
+			<Component Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Guid="{23AC3E55-B950-4610-BAF6-546B7E28C28A}">
+				<File Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Xceed.Wpf.AvalonDock.Themes.Aero.dll" />
+			</Component>
+
+			<Component Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Guid="{9F40BB1F-3A29-40FB-9908-FE5F8E7982E9}">
+				<File Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Xceed.Wpf.AvalonDock.Themes.Metro.dll" />
+			</Component>
+
+			<Component Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Guid="{5206B497-4E9B-4AC7-8C1A-6699840438EF}">
+				<File Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Xceed.Wpf.AvalonDock.Themes.VS2010.dll" />
+			</Component>
+
+			<Component Id="Xceed.Wpf.Toolkit.dll" Guid="{A40ED51D-3245-4E51-8E58-0FC9CAAB15DC}">
+				<File Id="Xceed.Wpf.Toolkit.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Xceed.Wpf.Toolkit.dll" />
+			</Component>
+
+		</ComponentGroup>
+
+	</Fragment>
+
+	<Fragment>
+
+		<ComponentGroup Id="SoundsFolder_files" Directory="SoundsFolder">
+
+			<Component Id="Sounds_itemsPickedUp.mp3" Guid="c2762fc6-e9fd-4928-a1fa-4b0aaaf17905">
+				<File Id="Sounds_itemsPickedUp.mp3" Name="itemsPickedUp.mp3" Source="$(var.EnhancePoE_TargetDir)Sounds\itemsPickedUp.mp3" />
+			</Component>
+
+			<Component Id="Sounds_filterchanged.mp3" Guid="a0ba0fba-5d38-4595-b44c-7beb03d1bbc8">
+				<File Id="Sounds_filterchanged.mp3" Name="filterchanged.mp3" Source="$(var.EnhancePoE_TargetDir)Sounds\filterchanged.mp3" />
+			</Component>
+
+		</ComponentGroup>
+
+	</Fragment>
+
+	<Fragment>
+
+		<ComponentGroup Id="StylesFolder_files" Directory="StylesFolder">
+
+			<Component Id="Styles_InfluencedItemsStyle.txt" Guid="90bde904-697a-46e1-ac25-4ec221d7b904">
+				<File Id="Styles_InfluencedItemsStyle.txt" Name="InfluencedItemsStyle.txt" Source="$(var.EnhancePoE_TargetDir)Styles\InfluencedItemsStyle.txt" />
+			</Component>
+
+			<Component Id="Styles_NormalItemsStyle.txt" Guid="dcb2bb51-1d14-4681-8601-d4f563d4fe19">
+				<File Id="Styles_NormalItemsStyle.txt" Name="NormalItemsStyle.txt" Source="$(var.EnhancePoE_TargetDir)Styles\NormalItemsStyle.txt" />
+			</Component>
+
+		</ComponentGroup>
+
+	</Fragment>
+
+	<Fragment>
+
+		<Component Id="app.publish.EnhancePoE.exe" Directory="AppPublishFolder" Guid="">
+			<File Id="app.publish.EnhancePoE.exe" Name="EnhancePoE.exe" Source="$(var.EnhancePoE_TargetDir)app.publish\EnhancePoE.exe" />
+		</Component>
+
+	</Fragment>
+
+	<!-- Localization -->
+	<Fragment>
+
+		<Component Id="cs_CZ.Xceed.Wpf.AvalonDock.resources.dll" Directory="CzechDirectory" Guid="7e9b5aa4-90b2-4fcd-a31a-f7cf22ba8e41">
+			<File Id="cs_CZ.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)cs-CZ\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+		<Component Id="de.Xceed.Wpf.AvalonDock.resources.dll" Directory="GermanDirectory" Guid="3d4299c6-7d68-4fb1-9daa-be2ce2a3b285">
+			<File Id="de.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)de\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+		<Component Id="es.Xceed.Wpf.AvalonDock.resources.dll" Directory="SpanishDirectory" Guid="0fc969bc-efda-46d2-9ab3-f3691832b29d">
+			<File Id="es.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)es\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+		<Component Id="fr.Xceed.Wpf.AvalonDock.resources.dll" Directory="FrenchDirectory" Guid="9979cda5-97f1-4363-92c6-92b507853cc0">
+			<File Id="fr.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)fr\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+		<Component Id="hu.Xceed.Wpf.AvalonDock.resources.dll" Directory="HungarianDirectory" Guid="f3200b10-4d80-4c59-854a-99993fdd28a0">
+			<File Id="hu.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)hu\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+		<Component Id="it.Xceed.Wpf.AvalonDock.resources.dll" Directory="ItalianDirectory" Guid="db12b4c2-e1ea-48cf-b9a5-2ba9e9009b04">
+			<File Id="it.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)it\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+		<Component Id="ja_JP.Xceed.Wpf.AvalonDock.resources.dll" Directory="JapaneseDirectory" Guid="8c9a8644-d340-4607-884f-87e7dac30ed2">
+			<File Id="ja_JP.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)ja-JP\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+		<Component Id="pt_BR.Xceed.Wpf.AvalonDock.resources.dll" Directory="PortugueseDirectory" Guid="02c9fb3d-4789-4e50-afb7-db0b0e87d091">
+			<File Id="pt_BR.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)pt-BR\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+		<Component Id="ro.Xceed.Wpf.AvalonDock.resources.dll" Directory="RomanianDirectory" Guid="344c357b-38ae-4582-91af-971ad736924a">
+			<File Id="ro.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)ro\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+		<Component Id="ru.Xceed.Wpf.AvalonDock.resources.dll" Directory="RussianDirectory" Guid="3dcd983d-f249-48e6-b80a-7d86f9f3fa60">
+			<File Id="ru.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)ru\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+		<Component Id="sv.Xceed.Wpf.AvalonDock.resources.dll" Directory="SwedishDirectory" Guid="63c6f5f9-2ca8-4029-91ab-27fc4ed26889">
+			<File Id="sv.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)sv\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+		<Component Id="zh_Hans.Xceed.Wpf.AvalonDock.resources.dll" Directory="MandarinChineseDirectory" Guid="2c88cb03-964d-48c9-9df3-eec6833d7a05">
+			<File Id="zh_Hans.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)zh-Hans\Xceed.Wpf.AvalonDock.resources.dll" />
+		</Component>
+
+	</Fragment>
+
+</Wix>
