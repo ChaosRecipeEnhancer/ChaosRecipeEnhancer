@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?define ProductVersion = "1.5.0.0"?>
+<?define ProductVersion = "1.5.1.0"?>
 <?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<?define EnhancePoE_TargetDir=$(var.EnhancePoE.UI.TargetDir)?>
+	<?define EnhancePoE_ProjectDir=$(var.EnhancePoE.UI.ProjectDir)?>
 
 	<Product Id="*" Name="ChaosRecipeEnhancer" Language="1033" Version="$(var.ProductVersion)" Manufacturer="CRETeam" UpgradeCode="$(var.UpgradeCode)">
 
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade AllowSameVersionUpgrades="no" Schedule="afterInstallInitialize" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
 		<MediaTemplate EmbedCab="yes" />
 
-		<Icon Id="coin.ico" SourceFile="$(var.ProjectDir)coin.ico" />
+		<Icon Id="coin.ico" SourceFile="$(var.EnhancePoE_ProjectDir)Assets\Icons\coin.ico" />
 
 		<Property Id="ARPPRODUCTICON" Value="coin.ico" />
 
@@ -92,29 +94,21 @@
 
 	<Fragment>
 
+		<!-- Start Menu Shortcut Gets Created -->
 		<DirectoryRef Id="ApplicationProgramsFolder">
-
 			<Component Id="ApplicationShortcut" Guid="1e4fafd1-872a-42b9-a479-8b46e988ae09">
-
 				<Shortcut Id="ApplicationStartMenuShortcut" Name="ChaosRecipeEnhancer" Description="ChaosRecipeEnhancer" Target="[INSTALLFOLDER]EnhancePoE.exe" WorkingDirectory="INSTALLFOLDER" Icon="coin.ico" />
-
 				<RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
-
 				<RegistryValue Root="HKCU" Key="Software\ChaosRecipeEnhancer" Name="installed" Type="integer" Value="1" KeyPath="yes" />
-
 			</Component>
-
 		</DirectoryRef>
 
+		<!-- Desktop Shortcut Gets Created -->
 		<DirectoryRef Id="DesktopFolder">
 			<Component Id="ApplicationShortcutDesktop" Guid="5686ed96-73f7-4aad-8742-a40f2e247bf6">
-
 				<Shortcut Id="ApplicationDesktopShortcut" Name="ChaosRecipeEnhancer" Description="ChaosRecipeEnhancer" Target="[INSTALLFOLDER]EnhancePoE.exe" WorkingDirectory="INSTALLFOLDER" Icon="coin.ico" />
-
 				<RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
-
 				<RegistryValue Root="HKCU" Key="Software\ChaosRecipeEnhancer" Name="installed" Type="integer" Value="1" KeyPath="yes" />
-
 			</Component>
 		</DirectoryRef>
 
@@ -122,7 +116,7 @@
 
 	<Fragment>
 
-		<!--1st Party Dependencies-->
+		<!--1st Party Dependencies (DLLs and related files) -->
 		<ComponentGroup Id="FirstPartyProductComponents" Directory="INSTALLFOLDER">
 
 			<Component Id="EnhancePoE.App.dll" Guid="{F9A931A5-E538-4E5B-BB2F-9EE4A8B076F5}">
@@ -151,7 +145,7 @@
 
 		</ComponentGroup>
 
-		<!--3rd Party Dependencies -->
+		<!--3rd Party Dependencies (DLLs) -->
 		<ComponentGroup Id="ThirdPartyDependencies" Directory="INSTALLFOLDER">
 
 			<Component Id="AutoUpdater.NET.dll" Guid="{F8579D83-C655-4460-8B2D-A7F4297EC319}">
@@ -240,45 +234,42 @@
 
 	<Fragment>
 
+		<!-- Sound Assets Get Added to Main Installation Folder -->
 		<ComponentGroup Id="SoundsFolder_files" Directory="SoundsFolder">
-
 			<Component Id="Sounds_itemsPickedUp.mp3" Guid="c2762fc6-e9fd-4928-a1fa-4b0aaaf17905">
-				<File Id="Sounds_itemsPickedUp.mp3" Name="itemsPickedUp.mp3" Source="$(var.EnhancePoE_TargetDir)Sounds\itemsPickedUp.mp3" />
+				<File Id="Sounds_itemsPickedUp.mp3" Name="itemsPickedUp.mp3" Source="$(var.EnhancePoE_ProjectDir)Assets\Sounds\itemsPickedUp.mp3" />
 			</Component>
-
 			<Component Id="Sounds_filterchanged.mp3" Guid="a0ba0fba-5d38-4595-b44c-7beb03d1bbc8">
-				<File Id="Sounds_filterchanged.mp3" Name="filterchanged.mp3" Source="$(var.EnhancePoE_TargetDir)Sounds\filterchanged.mp3" />
+				<File Id="Sounds_filterchanged.mp3" Name="filterchanged.mp3" Source="$(var.EnhancePoE_ProjectDir)Assets\Sounds\filterchanged.mp3" />
 			</Component>
-
 		</ComponentGroup>
 
 	</Fragment>
 
 	<Fragment>
 
+		<!-- Filter Style Assets Get Added to Main Installation Folder -->
 		<ComponentGroup Id="StylesFolder_files" Directory="StylesFolder">
-
 			<Component Id="Styles_InfluencedItemsStyle.txt" Guid="90bde904-697a-46e1-ac25-4ec221d7b904">
-				<File Id="Styles_InfluencedItemsStyle.txt" Name="InfluencedItemsStyle.txt" Source="$(var.EnhancePoE_TargetDir)Styles\InfluencedItemsStyle.txt" />
+				<File Id="Styles_InfluencedItemsStyle.txt" Name="InfluencedItemsStyle.txt" Source="$(var.EnhancePoE_ProjectDir)Assets\FilterStyles\InfluencedItemsStyle.txt" />
 			</Component>
-
 			<Component Id="Styles_NormalItemsStyle.txt" Guid="dcb2bb51-1d14-4681-8601-d4f563d4fe19">
-				<File Id="Styles_NormalItemsStyle.txt" Name="NormalItemsStyle.txt" Source="$(var.EnhancePoE_TargetDir)Styles\NormalItemsStyle.txt" />
+				<File Id="Styles_NormalItemsStyle.txt" Name="NormalItemsStyle.txt" Source="$(var.EnhancePoE_ProjectDir)Assets\FilterStyles\NormalItemsStyle.txt" />
 			</Component>
-
 		</ComponentGroup>
 
 	</Fragment>
 
 	<Fragment>
 
+		<!-- App.Publish Folder -->
 		<Component Id="app.publish.EnhancePoE.exe" Directory="AppPublishFolder" Guid="">
 			<File Id="app.publish.EnhancePoE.exe" Name="EnhancePoE.exe" Source="$(var.EnhancePoE_TargetDir)app.publish\EnhancePoE.exe" />
 		</Component>
 
 	</Fragment>
 
-	<!-- Localization -->
+	<!-- Localized 3rd Party Dependencies (DLLs) -->
 	<Fragment>
 
 		<Component Id="cs_CZ.Xceed.Wpf.AvalonDock.resources.dll" Directory="CzechDirectory" Guid="7e9b5aa4-90b2-4fcd-a31a-f7cf22ba8e41">
