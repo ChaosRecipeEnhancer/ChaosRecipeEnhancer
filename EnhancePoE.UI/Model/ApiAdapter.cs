@@ -56,11 +56,18 @@ namespace EnhancePoE.UI.Model
 
             using (var wc = new WebClient())
             {
-                var json = wc.DownloadString("https://api.pathofexile.com/leagues?type=main");
-                var document = JsonDocument.Parse(json);
-                var allLeagueData = document.RootElement.EnumerateArray();
+                try
+                {
+                    var json = wc.DownloadString("https://api.pathofexile.com/leagues?type=main");
+                    var document = JsonDocument.Parse(json);
+                    var allLeagueData = document.RootElement.EnumerateArray();
 
-                leagueIds.AddRange(allLeagueData.Select(league => league.GetProperty("id").GetString()));
+                    leagueIds.AddRange(allLeagueData.Select(league => league.GetProperty("id").GetString()));
+                }
+                catch (WebException e)
+                {
+                    MessageBox.Show("Error: " + e.Message);
+                }
             }
 
             return leagueIds;
