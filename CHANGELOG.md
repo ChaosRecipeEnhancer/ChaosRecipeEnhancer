@@ -1,5 +1,10 @@
 ## Change Log
 
+#### 1.5.1
+
+- fixing cre client crash that would happen when upgrading from any version to 1.5.0
+- renaming "Fill Greedy" mode to "Preserve Low Item Level Gear" mode with a better description of what it does
+
 #### 1.5.0
 
 - adding new 'Suffix' stash tab selection mode (thanks to [@george-delchev](https://github.com/george-delchev))

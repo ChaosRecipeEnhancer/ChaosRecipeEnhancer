@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?define ProductVersion = "1.5.0.0"?>
+<?define ProductVersion = "1.5.1.0"?>
 <?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
@@ -12,6 +12,7 @@
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade AllowSameVersionUpgrades="no" Schedule="afterInstallInitialize" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
 		<MediaTemplate EmbedCab="yes" />
 
 		<Icon Id="coin.ico" SourceFile="$(var.EnhancePoE_ProjectDir)Assets\Icons\coin.ico" />
@@ -242,7 +243,7 @@
 				<File Id="Sounds_filterchanged.mp3" Name="filterchanged.mp3" Source="$(var.EnhancePoE_ProjectDir)Assets\Sounds\filterchanged.mp3" />
 			</Component>
 		</ComponentGroup>
-		
+
 	</Fragment>
 
 	<Fragment>
