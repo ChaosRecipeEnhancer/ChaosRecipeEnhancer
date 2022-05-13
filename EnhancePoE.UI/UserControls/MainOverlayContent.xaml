@@ -39,7 +39,7 @@
                 Opacity="{Binding GlovesOpacity}"
                 x:Name="Gloves">
             <Grid>
-                <Image Source="/Assets/gloves.png"
+                <Image Source="../Assets/Images/gloves.png"
                        MaxWidth="50"
                        MaxHeight="50" />
                 <Border Width="20"
@@ -74,7 +74,7 @@
             <Grid>
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="/Assets/boots.png" />
+                       Source="../Assets/Images/boots.png" />
                 <Border Width="20"
                         Height="20"
                         Visibility="{Binding AmountsVisibility}"
@@ -106,7 +106,7 @@
             <Grid>
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="/Assets/chest.png" />
+                       Source="../Assets/Images/chest.png" />
                 <Border Width="20"
                         Height="20"
                         Visibility="{Binding AmountsVisibility}"
@@ -139,7 +139,7 @@
             <Grid>
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="/Assets/weapon.png" />
+                       Source="../Assets/Images/weapon.png" />
                 <Border Width="20"
                         Height="20"
                         Visibility="{Binding AmountsVisibility}"
@@ -172,7 +172,7 @@
             <Grid>
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="/Assets/helmet.png" />
+                       Source="../Assets/Images/helmet.png" />
                 <Border Width="20"
                         Height="20"
                         Visibility="{Binding AmountsVisibility}"
@@ -205,7 +205,7 @@
             <Grid>
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="/Assets/ring.png" />
+                       Source="../Assets/Images/ring.png" />
                 <Border Width="20"
                         Height="20"
                         Visibility="{Binding AmountsVisibility}"
@@ -237,7 +237,7 @@
             <Grid>
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="/Assets/amulet.png" />
+                       Source="../Assets/Images/amulet.png" />
                 <Border Width="20"
                         Height="20"
                         Visibility="{Binding AmountsVisibility}"
@@ -269,7 +269,7 @@
             <Grid>
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="/Assets/belt.png" />
+                       Source="../Assets/Images/belt.png" />
                 <Border Width="20" Height="20"
                         Visibility="{Binding AmountsVisibility}"
                         VerticalAlignment="Top" HorizontalAlignment="Right" CornerRadius="50" Background="White">

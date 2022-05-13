@@ -226,7 +226,7 @@ namespace EnhancePoE.UI.Filter
             _customStyle.Clear();
             var pathNormalItemsStyle =
                 Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
-                    @"Styles\NormalItemsStyle.txt");
+                    @"Assets\FilterStyles\NormalItemsStyle.txt");
             var style = File.ReadAllLines(pathNormalItemsStyle);
             foreach (var line in style)
             {
@@ -241,7 +241,7 @@ namespace EnhancePoE.UI.Filter
             _customStyleInfluenced.Clear();
             var pathInfluencedItemsStyle =
                 Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
-                    @"Styles\InfluencedItemsStyle.txt");
+                    @"Assets\FilterStyles\InfluencedItemsStyle.txt");
             var style = File.ReadAllLines(pathInfluencedItemsStyle);
             foreach (var line in style)
             {
