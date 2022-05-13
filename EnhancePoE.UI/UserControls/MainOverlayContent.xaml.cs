@@ -1,0 +1,31 @@
+﻿using EnhancePoE.UI.View;
+using System.Windows;
+
+namespace EnhancePoE.UI.UserControls
+{
+    /// <summary>
+    ///     Interaction logic for MainOverlayContent.xaml
+    /// </summary>
+    public partial class MainOverlayContent
+    {
+        public MainOverlayContent()
+        {
+            InitializeComponent();
+        }
+
+        private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.RunStashTabOverlay();
+        }
+
+        private void FetchButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.Overlay.RunFetching();
+        }
+
+        private void ReloadFilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.Overlay.ReloadItemFilter();
+        }
+    }
+}
