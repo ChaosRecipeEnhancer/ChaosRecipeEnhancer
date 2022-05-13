@@ -1,5 +1,10 @@
 ## Change Log
 
+#### 1.5.2
+
+- Hotfix: Fixing Icons not showing up
+- Hotfix: Fixing crash related to filter styles
+
 #### 1.5.1
 
 - fixing cre client crash that would happen when upgrading from any version to 1.5.0

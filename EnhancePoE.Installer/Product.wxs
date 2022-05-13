@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?define ProductVersion = "1.5.1.0"?>
+<?define ProductVersion = "1.5.2.0"?>
 <?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
@@ -57,8 +57,10 @@
 
 				<Directory Id="INSTALLFOLDER" Name="ChaosRecipeEnhancer">
 
-					<Directory Id="SoundsFolder" Name="Sounds" />
-					<Directory Id="StylesFolder" Name="Styles" />
+					<Directory Id="Assets" Name="Assets">
+						<Directory Id="SoundsFolder" Name="Sounds" />
+						<Directory Id="StylesFolder" Name="FilterStyles" />
+					</Directory>
 
 					<Directory Id="AppPublishFolder" Name="app.publish" />
 
