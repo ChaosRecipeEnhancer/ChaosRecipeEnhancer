@@ -282,9 +282,6 @@
 		<WCFMetadata Include="Connected Services\" />
 	</ItemGroup>
 	<ItemGroup>
-		<Folder Include="ViewModel\" />
-	</ItemGroup>
-	<ItemGroup>
 		<ProjectReference Include="..\EnhancePoE.App\EnhancePoE.App.csproj">
 			<Project>{4395b43e-64ec-45ea-8637-929769567799}</Project>
 			<Name>EnhancePoE.App</Name>
