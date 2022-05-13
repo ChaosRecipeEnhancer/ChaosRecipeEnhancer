@@ -24,7 +24,7 @@ namespace EnhancePoE.UI.View
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
-        private const string AppVersion = "1.5.1.0";
+        private const string AppVersion = "1.5.2.0";
 
         public static readonly ChaosRecipeEnhancer Overlay = new ChaosRecipeEnhancer();
         public static readonly StashTabOverlayView StashTabOverlay = new StashTabOverlayView();
@@ -49,12 +49,12 @@ namespace EnhancePoE.UI.View
             if (!string.IsNullOrEmpty(Settings.Default.FilterChangeSoundFileLocation) && !FilterSoundLocationDialog.Content.Equals("Default Sound"))
                 Data.Player.Open(new Uri(Settings.Default.FilterChangeSoundFileLocation));
             else
-                Data.Player.Open(new Uri(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Sounds\filterchanged.mp3")));
+                Data.Player.Open(new Uri(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Assets\Sounds\filterchanged.mp3")));
 
             if (!string.IsNullOrEmpty(Settings.Default.ItemPickupSoundFileLocation) && !ItemPickupLocationDialog.Content.Equals("Default Sound"))
                 Data.PlayerSet.Open(new Uri(Settings.Default.ItemPickupSoundFileLocation));
             else
-                Data.PlayerSet.Open(new Uri(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Sounds\itemsPickedUp.mp3")));
+                Data.PlayerSet.Open(new Uri(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Assets\Sounds\itemsPickedUp.mp3")));
 
             //TESTING SETTINGS RESET
             //if (Debugger.IsAttached)

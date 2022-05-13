@@ -259,7 +259,9 @@
     <Resource Include="Assets\Images\ring.png" />
     <Resource Include="Assets\Images\weapon.png" />
     <None Include="Assets\Icons\coin.ico" />
-    <None Include="Assets\Sounds\filterchanged.mp3" />
+    <None Include="Assets\Sounds\filterchanged.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Assets\FilterStyles\InfluencedItemsStyle.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -339,7 +341,9 @@
     <PackageReference Include="WiX" Version="3.11.2" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Sounds\itemsPickedUp.mp3" />
+    <Content Include="Assets\Sounds\itemsPickedUp.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

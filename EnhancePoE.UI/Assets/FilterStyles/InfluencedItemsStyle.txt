@@ -1,18 +1,18 @@
 ﻿# DO NOT REMOVE INITIAL COMMENTS
 
-# You can add any itemstyle you want except for the initial commented stuff. 
+# You can add any itemstyle you want except for the initial commented stuff.
 # The commented stuff will be automatically set by the application.
 
 # To comment you have to make sure the '#' sign is at the beginning of the line, no in-line comments allowed
 
-#Show 
+#Show
 #   HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord
-#   ItemLevel >= 60 
-# 	ItemLevel <= 74 
-# 	Rarity Rare 
-# 	Identified False 
+#   ItemLevel >= 60
+# 	ItemLevel <= 74
+# 	Rarity Rare
+# 	Identified False
 # 	BaseType --- MODIFY THIS IN THE BASES FOLDER
 # 	SetBackgroundColor 0 251 238 255 --- MODIFY THIS IN THE APPLICATION
- 	SetFontSize 100 
- 	SetTextColor 255 255 255 255 
- 	SetBorderColor 0 0 0 
+ 	SetFontSize 100
+ 	SetTextColor 255 255 255 255
+ 	SetBorderColor 0 0 0
