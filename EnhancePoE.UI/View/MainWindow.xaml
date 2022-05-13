@@ -209,9 +209,9 @@
                             <TextBlock Grid.Column="1"
                                        Grid.Row="9"
                                        VerticalAlignment="Center"
-                                       Text="Fill Greedy Mode:"
+                                       Text="Preserve Low Item Level Gear:"
                                        ToolTipService.InitialShowDelay="50"
-                                       ToolTip="Sets will be filled with more than 1 low item level item. Deactivate to only allow 1 low item level item." />
+                                       ToolTip="The Chaos Orb recipe only requires a single item level 60 - 75 item out of every set you turn in. As you get further into maps and out-level those items (i.e. zone level is higher than 74), you'll start to notice the amount of items you have for the chaos recipe will rapidly diminish. This lets you preserve those lower item level pieces and net more chaos in the long run." />
                             <CheckBox x:Name="LimitChaosCheckBox"
                                       Grid.Column="3"
                                       Grid.Row="9"

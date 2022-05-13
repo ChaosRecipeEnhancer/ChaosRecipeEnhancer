@@ -90,11 +90,6 @@ namespace EnhancePoE.UI.Model
 
                             if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
                                 ret.Add(new StashTab(tab.Name, tab.Index));
-                            else
-                            {
-                                Console.WriteLine("Bad tab type");
-                                MessageBox.Show("Your selected stash tabs should only include normal tabs, premium tabs, and quad tabs. Please remove any Currency Tabs, Fragment Tabs, Unique Tabs, etc.", "Invalid Stash Tab(s)", MessageBoxButton.OK, MessageBoxImage.Error);
-                            }
                         }
                     }
 
@@ -118,11 +113,6 @@ namespace EnhancePoE.UI.Model
                         {
                             if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
                                 ret.Add(new StashTab(tab.Name, tab.Index));
-                            else
-                            {
-                                Console.WriteLine("Bad tab type");
-                                MessageBox.Show("Your selected stash tabs should only include normal tabs, premium tabs, and quad tabs. Please remove any Currency Tabs, Fragment Tabs, Unique Tabs, etc.", "Invalid Stash Tab(s)", MessageBoxButton.OK, MessageBoxImage.Error);
-                            }
                         }
                     }
 
