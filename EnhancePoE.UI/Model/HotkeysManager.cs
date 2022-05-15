@@ -114,22 +114,24 @@ namespace EnhancePoE.UI
             {
                 if (Keyboard.Modifiers != ModifierKeys.None)
                     foreach (var hotkey in Hotkeys)
+                        if(hotkey.Key != Key.None)
+                            if (Keyboard.Modifiers == hotkey.Modifier && Keyboard.IsKeyDown(hotkey.Key))
+                                if (hotkey.CanExecute)
+                                {
+                                    hotkey.Callback?.Invoke();
+                                    HotkeyFired?.Invoke(hotkey);
+                                }
+            }
+            else
+            {
+                foreach (var hotkey in Hotkeys)
+                    if (hotkey.Key != Key.None)
                         if (Keyboard.Modifiers == hotkey.Modifier && Keyboard.IsKeyDown(hotkey.Key))
                             if (hotkey.CanExecute)
                             {
                                 hotkey.Callback?.Invoke();
                                 HotkeyFired?.Invoke(hotkey);
                             }
-            }
-            else
-            {
-                foreach (var hotkey in Hotkeys)
-                    if (Keyboard.Modifiers == hotkey.Modifier && Keyboard.IsKeyDown(hotkey.Key))
-                        if (hotkey.CanExecute)
-                        {
-                            hotkey.Callback?.Invoke();
-                            HotkeyFired?.Invoke(hotkey);
-                        }
             }
         }
 
