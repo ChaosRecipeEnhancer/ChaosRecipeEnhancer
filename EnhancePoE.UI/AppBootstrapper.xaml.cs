@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -6,8 +7,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using AutofacSerilogIntegration;
+using EnhancePoE.UI.Properties;
 using EnhancePoE.UI.View;
 using Serilog;
+using Serilog.Context;
 using Serilog.Exceptions;
 
 namespace EnhancePoE.UI
@@ -52,11 +55,11 @@ namespace EnhancePoE.UI
             builder.RegisterType<MainWindow>()
                 .SingleInstance()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
-            
+
             builder.RegisterType<ChaosRecipeEnhancer>()
                 .SingleInstance()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
-            
+
             builder.RegisterType<StashTabOverlayView>();
             builder.RegisterLogger();
 
@@ -72,7 +75,7 @@ namespace EnhancePoE.UI
                 // Opens our MainWindow and doesn't return until it has been closed
                 logger.Debug("App initialized, starting up MainWindow");
                 mainWindow.ShowDialog();
-                
+
                 // Anything after this should just be clean up if needed
             }
         }
@@ -81,12 +84,11 @@ namespace EnhancePoE.UI
         {
             // Catch exceptions from all threads in the AppDomain.
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-                ShowUnhandledException(args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException",
-                    false);
+                ShowUnhandledException(args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException");
 
             // Catch exceptions from each AppDomain that uses a task scheduler for async operations.
             TaskScheduler.UnobservedTaskException += (sender, args) =>
-                ShowUnhandledException(args.Exception, "TaskScheduler.UnobservedTaskException", false);
+                ShowUnhandledException(args.Exception, "TaskScheduler.UnobservedTaskException");
 
             // Catch exceptions from a single specific UI dispatcher thread.
             Dispatcher.UnhandledException += (sender, args) =>
@@ -95,7 +97,7 @@ namespace EnhancePoE.UI
                 if (!Debugger.IsAttached)
                 {
                     args.Handled = true;
-                    ShowUnhandledException(args.Exception, "Dispatcher.UnhandledException", true);
+                    ShowUnhandledException(args.Exception, "Dispatcher.UnhandledException");
                 }
             };
         }
@@ -105,23 +107,58 @@ namespace EnhancePoE.UI
         /// </summary>
         /// <param name="e"></param>
         /// <param name="unhandledExceptionType"></param>
-        /// <param name="promptUserForShutdown"></param>
-        private void ShowUnhandledException(Exception e, string unhandledExceptionType, bool promptUserForShutdown)
+        /// <seealso href="https://www.codeproject.com/Articles/30216/Handling-Corrupt-user-config-Settings"/>
+        private void ShowUnhandledException(Exception e, string unhandledExceptionType)
         {
+            Log.Error(e.Demystify(), "Unexpected Error Occured");
+
             var messageBoxTitle = $"Unexpected Error Occurred: {unhandledExceptionType}";
-            var messageBoxMessage = $"The following exception occurred:\n\n{e}";
-            var messageBoxButtons = MessageBoxButton.OK;
+            var messageBoxMessage = "The following exception occurred:\n\n" +
+                                    $"{e.Demystify()}\n\n\n" +
+                                    "Please report this issue on GitHub or in our Discord :^)\n\n";
+            const MessageBoxButton messageBoxButtons = MessageBoxButton.YesNo;
+            
+            messageBoxMessage +=
+                "Sometimes, NUKING 💣💥🧨 your settings can help resolve certain issues.\n\n" +
+                "Press 'YES' if you want to try deleting your settings to fix your issue, and the app will restart automatically with the default settings loaded.";
 
-            if (promptUserForShutdown)
-            {
-                messageBoxMessage += "\n\n\nPlease report this issue on github or discord :)";
-                messageBoxButtons = MessageBoxButton.OK;
-            }
+            var result = MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons);
 
-            // Let the user decide if the app should die or not (if applicable).
-            if (MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons) == MessageBoxResult.Yes)
+            switch (result)
             {
-                Current.Shutdown();
+                case MessageBoxResult.Yes:
+                    
+                    // REF: https://stackoverflow.com/a/64767842/10072406
+                    var fullFilePath = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+                    var versionDirectoryFilePath = Path.GetFullPath(Path.Combine(fullFilePath, @"..\..\"));
+                    var fileEntries = Directory.GetDirectories(versionDirectoryFilePath);
+                    
+                    foreach (var fileName in fileEntries)
+                    {
+                        if (fileName == versionDirectoryFilePath + Assembly.GetEntryAssembly()?.GetName().Version)
+                        {
+                            using (LogContext.PushProperty("SettingsFileLocation", fileName))
+                            {
+                                Log.Debug("Found user settings file, proceeding with a delete");
+                            }
+                            
+                            Directory.Delete(fileName, true);
+                        }
+                    }
+                    
+                    Settings.Default.Reset();
+                    
+                    Current.Shutdown();
+                    System.Windows.Forms.Application.Restart();
+                    break;
+                
+                case MessageBoxResult.Cancel:
+                case MessageBoxResult.None:
+                case MessageBoxResult.OK:
+                case MessageBoxResult.No:
+                default:
+                    Current.Shutdown();
+                    break;
             }
         }
     }
