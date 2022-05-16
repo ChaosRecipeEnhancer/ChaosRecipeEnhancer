@@ -66,7 +66,7 @@ namespace EnhancePoE.UI.Model
         }
 
 
-        // tries to add item, if item added returns
+        // tries to add item, if item added returns true
         private static bool AddItemToItemSet(ItemSet set, bool chaosItems = false, bool honorOrder = true)
         {
             string listName = chaosItems ? "ItemListChaos" : "ItemList";

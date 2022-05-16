@@ -49,5 +49,10 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
+
+// It's worth noting that if you bump any of the versions (major or minor), the settings file will get regenerated
+// and user will have to input that information again. Be mindful of that when creating new releases. Try to limit how
+// many times your doing that.
+
 [assembly: AssemblyVersion("1.5.2.0")]
 [assembly: AssemblyFileVersion("1.5.2.0")]
