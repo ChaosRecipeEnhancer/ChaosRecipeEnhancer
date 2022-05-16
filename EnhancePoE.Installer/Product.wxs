@@ -3,22 +3,32 @@
 <?define ProductVersion = "1.5.3.0"?>
 <?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
 
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+	 xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
 	<?define EnhancePoE_TargetDir=$(var.EnhancePoE.UI.TargetDir)?>
 	<?define EnhancePoE_ProjectDir=$(var.EnhancePoE.UI.ProjectDir)?>
 
 	<Product Id="*" Name="ChaosRecipeEnhancer" Language="1033" Version="$(var.ProductVersion)" Manufacturer="CRETeam" UpgradeCode="$(var.UpgradeCode)">
-
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-
 		<MajorUpgrade AllowSameVersionUpgrades="no" Schedule="afterInstallInitialize" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-
 		<MediaTemplate EmbedCab="yes" />
+		<!-- We can't do 4.8 check because Wix is garbage -->
+		<PropertyRef Id="WIX_IS_NETFRAMEWORK_462_OR_LATER_INSTALLED"/>
+		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+		<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)StandardLicense.rtf" />
+		<UIRef Id="WixUI_InstallDir" />
 
+		<!-- Check for .NET Framework Installed -->
+		<!-- REF: https://wixtoolset.org/documentation/manual/v3/howtos/redistributables_and_install_checks/check_for_dotnet.html -->
+		<Condition Message="This application requires the.NET Framework Runtime. Please install the .NET Framework then run this installer again.">
+			<![CDATA[Installed OR WIX_IS_NETFRAMEWORK_462_OR_LATER_INSTALLED]]>
+		</Condition>
+
+		<!-- Add Installer Icon -->
 		<Icon Id="coin.ico" SourceFile="$(var.EnhancePoE_ProjectDir)Assets\Icons\coin.ico" />
-
 		<Property Id="ARPPRODUCTICON" Value="coin.ico" />
 
+		<!-- Step 3: Direct WiX on Which Components to Install -->
 		<Feature Id="ProductFeature" Title="ChaosRecipeEnhancer" Level="1">
 
 			<ComponentGroupRef Id="FirstPartyProductComponents" />
@@ -49,6 +59,7 @@
 		</Feature>
 	</Product>
 
+	<!-- Step 1: Define Directories -->
 	<Fragment>
 
 		<Directory Id="TARGETDIR" Name="SourceDir">
@@ -94,6 +105,7 @@
 
 	</Fragment>
 
+	<!-- Step 2: Define Windows Shortcuts / Program References -->
 	<Fragment>
 
 		<!-- Start Menu Shortcut Gets Created -->
@@ -116,6 +128,7 @@
 
 	</Fragment>
 
+	<!-- Step 3: Add Required Files To Package Directory -->
 	<Fragment>
 
 		<!--1st Party Dependencies (DLLs and related files) -->
@@ -378,6 +391,7 @@
 
 	</Fragment>
 
+	<!-- TODO: [Verify] Do I even need to include this?-->
 	<Fragment>
 
 		<!-- App.Publish Folder -->
@@ -387,8 +401,9 @@
 
 	</Fragment>
 
-	<!-- Localized 3rd Party Dependencies (DLLs) -->
 	<Fragment>
+
+		<!-- Localized 3rd Party Dependencies (DLLs) -->
 
 		<Component Id="cs_CZ.Xceed.Wpf.AvalonDock.resources.dll" Directory="CzechDirectory" Guid="7e9b5aa4-90b2-4fcd-a31a-f7cf22ba8e41">
 			<File Id="cs_CZ.Xceed.Wpf.AvalonDock.resources.dll" Name="Xceed.Wpf.AvalonDock.resources.dll" Source="$(var.EnhancePoE_TargetDir)cs-CZ\Xceed.Wpf.AvalonDock.resources.dll" />
