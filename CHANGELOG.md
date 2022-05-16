@@ -2,7 +2,13 @@
 
 #### 1.5.3
 
-- WIP
+- fixing crash that would occur when pressing certain keys on the hotkey window (thanks to [@Nyxion](https://github.com/Nyxion))
+- adding message box to show when app is having issues connecting to the GGG API for fetching league info (thanks to [@coffeehouse](https://github.com/coffeehouse))
+- added error logging to a file (will tie this to a 'Debug Mode' setting; for now I'll leave it on)
+- added option to nuke settings after CRE client crash (thanks to Edwo#1770 on Discord for the idea)
+- fixing incorrect name for "Do Not Preserve Low Item Level Gear" and further added info the tooltip (continues to confused folks on what it does)
+- fixing clipboard access issue that will hopefully resolve filter reload issues (thanks to [@InsanityPrelude](https://github.com/InsanityPrelude) for pointing me to the solution)
+- continued project refactors (tons of improvements under the hood that make my life easier, and your general experience much smoother)
 
 #### 1.5.2
 
