@@ -1,30 +1,39 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace EnhancePoE.UI.UserControls
 {
     /// <summary>
-    ///     Interaction logic for HotkeyEditorControl.xaml
+    /// Interaction logic for HotkeyEditorControl.xaml
     /// </summary>
-    public partial class HotkeyEditorControl : UserControl
+    public partial class HotkeyEditorControl
     {
-        public static readonly DependencyProperty HotkeyProperty =
-            DependencyProperty.Register(nameof(Hotkey), typeof(Hotkey),
-                typeof(HotkeyEditorControl),
-                new FrameworkPropertyMetadata(default(Hotkey),
-                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+        #region Constructors
 
         public HotkeyEditorControl()
         {
             InitializeComponent();
         }
 
+        #endregion
+
+        #region Properties
+
+        public static readonly DependencyProperty HotkeyProperty =
+            DependencyProperty.Register(nameof(Hotkey), typeof(Hotkey),
+                typeof(HotkeyEditorControl),
+                new FrameworkPropertyMetadata(default(Hotkey),
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
         public Hotkey Hotkey
         {
             get => (Hotkey)GetValue(HotkeyProperty);
             set => SetValue(HotkeyProperty, value);
         }
+
+        #endregion
+
+        #region Event Handlers
 
         private void HotkeyTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -64,5 +73,7 @@ namespace EnhancePoE.UI.UserControls
             // Update the value
             Hotkey = new Hotkey(key, modifiers);
         }
+
+        #endregion
     }
 }

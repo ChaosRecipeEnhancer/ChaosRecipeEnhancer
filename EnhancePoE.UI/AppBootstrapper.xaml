@@ -1,8 +1,12 @@
-﻿<Application x:Class="EnhancePoE.ApplicationBootstrapper"
+﻿<Application x:Class="EnhancePoE.UI.AppBootstrapper"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="View/MainWindow.xaml">
+             Startup="OnApplicationStartup">
+
     <Application.Resources>
+
         <FontFamily x:Key="PasswordFont">pack://application:,,,./Assets/Fonts/#password</FontFamily>
+
     </Application.Resources>
+
 </Application>

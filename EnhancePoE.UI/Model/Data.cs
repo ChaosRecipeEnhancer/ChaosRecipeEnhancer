@@ -226,23 +226,23 @@ namespace EnhancePoE.UI.Model
             }
         }
 
-        public static async Task CheckActives()
+        public static async Task CheckActives(ChaosRecipeEnhancer chaosRecipeEnhancer)
         {
             try
             {
                 if (ApiAdapter.FetchError)
                 {
-                    MainWindow.Overlay.WarningMessage = "Fetching Error...";
-                    MainWindow.Overlay.ShadowOpacity = 1;
-                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
+                    chaosRecipeEnhancer.WarningMessage = "Fetching Error...";
+                    chaosRecipeEnhancer.ShadowOpacity = 1;
+                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
                     return;
                 }
 
                 if (StashTabList.StashTabs.Count == 0)
                 {
-                    MainWindow.Overlay.WarningMessage = "No Stashtabs found...";
-                    MainWindow.Overlay.ShadowOpacity = 1;
-                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
+                    chaosRecipeEnhancer.WarningMessage = "No Stashtabs found...";
+                    chaosRecipeEnhancer.ShadowOpacity = 1;
+                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
                     return;
                 }
 
@@ -265,7 +265,7 @@ namespace EnhancePoE.UI.Model
                 if (Settings.Default.ShowItemAmount != 0)
                 {
                     Trace.WriteLine("Calculating Items");
-                    CalculateItemAmounts();
+                    CalculateItemAmounts(chaosRecipeEnhancer);
                 }
 
                 GenerateItemSetList();
@@ -307,14 +307,14 @@ namespace EnhancePoE.UI.Model
                 ActiveItems = await filterManager.GenerateSectionsAndUpdateFilterAsync(missingItemClasses);
 
                 //Trace.WriteLine(fullSets, "full sets");
-                MainWindow.Overlay.Dispatcher.Invoke(() => { MainWindow.Overlay.FullSetsText = fullSets.ToString(); });
+                chaosRecipeEnhancer.Dispatcher.Invoke(() => { chaosRecipeEnhancer.FullSetsText = fullSets.ToString(); });
 
                 // invoke chaos missing
                 if (missingGearPieceForChaosRecipe && !Settings.Default.RegalRecipe)
                 {
-                    MainWindow.Overlay.WarningMessage = "Need lower level items!";
-                    MainWindow.Overlay.ShadowOpacity = 1;
-                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
+                    chaosRecipeEnhancer.WarningMessage = "Need lower level items!";
+                    chaosRecipeEnhancer.ShadowOpacity = 1;
+                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
                 }
 
                 // invoke exalted recipe ready
@@ -326,17 +326,17 @@ namespace EnhancePoE.UI.Model
                         || ItemSetHunter.EmptyItemSlots.Count == 0
                         || ItemSetRedeemer.EmptyItemSlots.Count == 0)
                     {
-                        MainWindow.Overlay.WarningMessage = "Exalted Recipe ready!";
-                        MainWindow.Overlay.ShadowOpacity = 1;
-                        MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
+                        chaosRecipeEnhancer.WarningMessage = "Exalted Recipe ready!";
+                        chaosRecipeEnhancer.ShadowOpacity = 1;
+                        chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
                     }
 
                 // invoke set full
                 if (fullSets == SetTargetAmount && !missingGearPieceForChaosRecipe)
                 {
-                    MainWindow.Overlay.WarningMessage = "Sets full!";
-                    MainWindow.Overlay.ShadowOpacity = 1;
-                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
+                    chaosRecipeEnhancer.WarningMessage = "Sets full!";
+                    chaosRecipeEnhancer.ShadowOpacity = 1;
+                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
                 }
 
                 Trace.WriteLine(fullSets, "full sets");
@@ -359,7 +359,7 @@ namespace EnhancePoE.UI.Model
             }
         }
 
-        public static void CalculateItemAmounts()
+        public static void CalculateItemAmounts(ChaosRecipeEnhancer chaosRecipeEnhancer)
         {
             if (StashTabList.StashTabs != null)
             {
@@ -438,26 +438,26 @@ namespace EnhancePoE.UI.Model
                     foreach (var a in amounts) Trace.WriteLine(a);
 
                     amounts[4] = weaponsSmall + weaponBig;
-                    MainWindow.Overlay.RingsAmount = amounts[0];
-                    MainWindow.Overlay.AmuletsAmount = amounts[1];
-                    MainWindow.Overlay.BeltsAmount = amounts[2];
-                    MainWindow.Overlay.ChestsAmount = amounts[3];
-                    MainWindow.Overlay.WeaponsAmount = amounts[4];
-                    MainWindow.Overlay.GlovesAmount = amounts[5];
-                    MainWindow.Overlay.HelmetsAmount = amounts[6];
-                    MainWindow.Overlay.BootsAmount = amounts[7];
+                    chaosRecipeEnhancer.RingsAmount = amounts[0];
+                    chaosRecipeEnhancer.AmuletsAmount = amounts[1];
+                    chaosRecipeEnhancer.BeltsAmount = amounts[2];
+                    chaosRecipeEnhancer.ChestsAmount = amounts[3];
+                    chaosRecipeEnhancer.WeaponsAmount = amounts[4];
+                    chaosRecipeEnhancer.GlovesAmount = amounts[5];
+                    chaosRecipeEnhancer.HelmetsAmount = amounts[6];
+                    chaosRecipeEnhancer.BootsAmount = amounts[7];
                 }
                 else if (Settings.Default.ShowItemAmount == 2)
                 {
                     amounts[4] = weaponsSmall + weaponBig;
-                    MainWindow.Overlay.RingsAmount = SetTargetAmount * 2 - amounts[0];
-                    MainWindow.Overlay.AmuletsAmount = SetTargetAmount - amounts[1];
-                    MainWindow.Overlay.BeltsAmount = SetTargetAmount - amounts[2];
-                    MainWindow.Overlay.ChestsAmount = SetTargetAmount - amounts[3];
-                    MainWindow.Overlay.WeaponsAmount = SetTargetAmount * 2 - (weaponsSmall + weaponBig * 2);
-                    MainWindow.Overlay.GlovesAmount = SetTargetAmount - amounts[5];
-                    MainWindow.Overlay.HelmetsAmount = SetTargetAmount - amounts[6];
-                    MainWindow.Overlay.BootsAmount = SetTargetAmount - amounts[7];
+                    chaosRecipeEnhancer.RingsAmount = SetTargetAmount * 2 - amounts[0];
+                    chaosRecipeEnhancer.AmuletsAmount = SetTargetAmount - amounts[1];
+                    chaosRecipeEnhancer.BeltsAmount = SetTargetAmount - amounts[2];
+                    chaosRecipeEnhancer.ChestsAmount = SetTargetAmount - amounts[3];
+                    chaosRecipeEnhancer.WeaponsAmount = SetTargetAmount * 2 - (weaponsSmall + weaponBig * 2);
+                    chaosRecipeEnhancer.GlovesAmount = SetTargetAmount - amounts[5];
+                    chaosRecipeEnhancer.HelmetsAmount = SetTargetAmount - amounts[6];
+                    chaosRecipeEnhancer.BootsAmount = SetTargetAmount - amounts[7];
                 }
             }
         }

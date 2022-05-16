@@ -1,32 +1,56 @@
-﻿using EnhancePoE.UI.View;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
+using EnhancePoE.UI.View;
+using Serilog;
 
 namespace EnhancePoE.UI.UserControls
 {
     /// <summary>
-    ///     Interaction logic for MainOverlayOnlyButtons.xaml
+    /// Interaction logic for MainOverlayOnlyButtons.xaml
     /// </summary>
-    public partial class MainOverlayOnlyButtons : UserControl
+    public partial class MainOverlayOnlyButtons
     {
-        public MainOverlayOnlyButtons()
+        #region Fields
+
+        private ILogger _logger;
+        private readonly ChaosRecipeEnhancer _chaosRecipeEnhancer;
+        private readonly MainWindow _mainWindow;
+
+        #endregion
+
+        #region Constructors
+
+        public MainOverlayOnlyButtons(MainWindow mainWindow, ChaosRecipeEnhancer chaosRecipeEnhancer)
         {
+            _logger = Log.ForContext<MainOverlayContentMinified>();
+            _logger.Debug("Initializing MainOverlayOnlyButtons");
+
+            _mainWindow = mainWindow;
+            _chaosRecipeEnhancer = chaosRecipeEnhancer;
+
             InitializeComponent();
+
+            _logger.Debug("MainOverlayOnlyButtons initialized");
         }
+
+        #endregion
+
+        #region Event Handlers
 
         private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.RunStashTabOverlay();
+            _mainWindow.RunStashTabOverlay();
         }
 
         private void RefreshButton_Click_1(object sender, RoutedEventArgs e)
         {
-            MainWindow.Overlay.RunFetching();
+            _chaosRecipeEnhancer.RunFetching();
         }
 
         private void ReloadFilterButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.Overlay.ReloadItemFilter();
+            _chaosRecipeEnhancer.ReloadItemFilter();
         }
+
+        #endregion
     }
 }

@@ -3,20 +3,24 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using EnhancePoE.UI.Model;
 using EnhancePoE.UI.Properties;
+using Serilog;
 
 namespace EnhancePoE.UI.View
 {
     /// <summary>
-    ///     Interaction logic for ChaosRecipeEnhancer.xaml
+    /// Interaction logic for ChaosRecipeEnhancer.xaml
     /// </summary>
     public partial class ChaosRecipeEnhancer : INotifyPropertyChanged
     {
+        #region Fields
+
+        private readonly ILogger _logger;
+
         private const double DeactivatedOpacity = .1;
         private const double ActivatedOpacity = 1;
         private const int FetchCooldown = 30;
@@ -53,13 +57,6 @@ namespace EnhancePoE.UI.View
 
         private string _fullSetsText = "0";
 
-        public ChaosRecipeEnhancer()
-        {
-            InitializeComponent();
-            DataContext = this;
-            FullSetsText = "0";
-        }
-
         // Tracks whether or not we're currently fetching (i.e. If the 'Fetch' button was pressed recently)
         // This is to avoid fetching multiple times in quick succession and causing rate limit exceeded problems
         private static bool FetchingActive { get; set; }
@@ -69,6 +66,27 @@ namespace EnhancePoE.UI.View
         private static bool CalculationActive { get; set; }
 
         private static LogWatcher Watcher { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        public ChaosRecipeEnhancer()
+        {
+            _logger = Log.ForContext<ChaosRecipeEnhancer>();
+            _logger.Debug("Initializing ChaosRecipeEnhancer");
+
+            InitializeComponent();
+
+            DataContext = this;
+            FullSetsText = "0";
+
+            _logger.Debug("ChaosRecipeEnhancer initialized");
+        }
+
+        #endregion
+
+        #region Properties
 
         public bool IsOpen { get; set; }
 
@@ -330,11 +348,54 @@ namespace EnhancePoE.UI.View
             }
         }
 
-        public static void DisableWarnings()
+        #endregion
+
+        #region Event Handlers
+
+        public new virtual void Hide()
         {
-            MainWindow.Overlay.WarningMessage = "";
-            MainWindow.Overlay.ShadowOpacity = 0;
-            MainWindow.Overlay.WarningMessageVisibility = Visibility.Hidden;
+            IsOpen = false;
+            if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive) LogWatcher.StopWatchingLogFile();
+            base.Hide();
+        }
+
+        public new virtual void Show()
+        {
+            IsOpen = true;
+            if (Settings.Default.AutoFetch) Watcher = new LogWatcher(this);
+            base.Show();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handler for a 'Mouse Down' event on our {ChaosRecipeEnhancer} to move the window around.
+        /// </summary>
+        /// <param name="sender">MouseDown event that triggers our method</param>
+        /// <param name="e">Arguments related to the event that we can access when handling it</param>
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // If the user has locked the {ChaosRecipeEnhancer} in their settings, we ignore the event
+            if (e.ChangedButton != MouseButton.Left || Settings.Default.LockOverlayPosition) return;
+
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                // Native method to move a Window object on the screen
+                DragMove();
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public static void DisableWarnings(ChaosRecipeEnhancer chaosRecipeEnhancer)
+        {
+            chaosRecipeEnhancer.WarningMessage = "";
+            chaosRecipeEnhancer.ShadowOpacity = 0;
+            chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Hidden;
         }
 
         private async void FetchData()
@@ -343,11 +404,14 @@ namespace EnhancePoE.UI.View
 
             if (!Settings.Default.ChaosRecipe && !Settings.Default.RegalRecipe && !Settings.Default.ExaltedRecipe)
             {
-                MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
                 return;
             }
 
-            DisableWarnings();
+            // TODO: [Validate] Find some other way to ensure warnings are disabled on the ChaosRecipeEnhancerOverlay
+            DisableWarnings(this);
+
             FetchingActive = true;
             CalculationActive = true;
 
@@ -365,7 +429,7 @@ namespace EnhancePoE.UI.View
                         {
                             await Task.Run(async () =>
                             {
-                                await Data.CheckActives();
+                                await Data.CheckActives(this);
 
                                 SetOpacity();
                                 CalculationActive = false;
@@ -388,9 +452,11 @@ namespace EnhancePoE.UI.View
                 if (RateLimit.RateLimitExceeded)
                 {
                     int secondsToWait = RateLimit.GetSecondsToWait();
-                    MainWindow.Overlay.WarningMessage = $"Rate Limit Exceeded! Waiting {secondsToWait} seconds...";
-                    MainWindow.Overlay.ShadowOpacity = 1;
-                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
+
+                    // TODO: [Refactor] Remove dependency on MainWindow for displaying these warning messages
+                    // MainWindow.Overlay.WarningMessage = $"Rate Limit Exceeded! Waiting {secondsToWait} seconds...";
+                    // MainWindow.Overlay.ShadowOpacity = 1;
+                    // MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
 
                     await Task.Delay(secondsToWait * 1000);
 
@@ -399,9 +465,10 @@ namespace EnhancePoE.UI.View
 
                 if (RateLimit.BanTime > 0)
                 {
-                    MainWindow.Overlay.WarningMessage = "Temporary Ban! Waiting...";
-                    MainWindow.Overlay.ShadowOpacity = 1;
-                    MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
+                    // TODO: [Refactor] Remove dependency on MainWindow for displaying these warning messages
+                    // MainWindow.Overlay.WarningMessage = "Temporary Ban! Waiting...";
+                    // MainWindow.Overlay.ShadowOpacity = 1;
+                    // MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
 
                     await Task.Delay(RateLimit.BanTime * 1000);
 
@@ -448,7 +515,10 @@ namespace EnhancePoE.UI.View
 
                 Data.cs = new CancellationTokenSource();
                 Data.CancelationToken = Data.cs.Token;
-                if (MainWindow.StashTabOverlay.IsOpen) MainWindow.StashTabOverlay.Hide();
+
+                // TODO: [Refactor] Remove dependency on stashTabOverlayView and make sure we hide BEFORE or AFTER calling this (?)
+                // if (_stashTabOverlayView.IsOpen) _stashTabOverlayView.Hide();
+
                 FetchData();
                 FetchingActive = true;
             }
@@ -457,18 +527,6 @@ namespace EnhancePoE.UI.View
         public void ReloadItemFilter()
         {
             Model.ReloadItemFilter.ReloadFilter();
-        }
-
-        private void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-            FetchData();
-        }
-
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left && !Settings.Default.LockOverlayPosition)
-                if (Mouse.LeftButton == MouseButtonState.Pressed)
-                    DragMove();
         }
 
         private void SetOpacity()
@@ -517,59 +575,6 @@ namespace EnhancePoE.UI.View
             });
         }
 
-        public new virtual void Hide()
-        {
-            IsOpen = false;
-            if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive) LogWatcher.StopWatchingLogFile();
-            //aTimer.Enabled = false;
-
-            //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Run Overlay";
-            base.Hide();
-        }
-
-        public new virtual void Show()
-        {
-            IsOpen = true;
-            if (Settings.Default.AutoFetch) Watcher = new LogWatcher();
-            //FetchButtonBottomText = "Start";
-            //if (FetchingActive)
-            //{
-            //    aTimer.Enabled = true;
-            //    //FetchData();
-            //    //FetchButtonBottomText = "Stop";
-            //}
-            //((MainWindow)System.Windows.Application.Current.MainWindow).RunButtonContent = "Stop Overlay";
-
-            base.Show();
-        }
-
-
-        //private void EditStashTabOverlay_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (MainWindow.stashTabOverlay.IsOpen)
-        //    {
-        //        HandleEditButton();
-        //    }
-        //    else
-        //    {
-        //        MainWindow.RunStashTabOverlay();
-        //        if (MainWindow.stashTabOverlay.IsOpen)
-        //        {
-        //            HandleEditButton();
-        //        }
-        //    }
-        //}
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-        }
-
-        //private void Window_Deactivated(object sender, EventArgs e)
-        //{
-        //    // The Window was deactivated 
-        //    MainWindow.overlay.Topmost = true;
-        //}
-
         #region INotifyPropertyChanged implementation
 
         // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
@@ -581,6 +586,8 @@ namespace EnhancePoE.UI.View
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
 
         #endregion
     }

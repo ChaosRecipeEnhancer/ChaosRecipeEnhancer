@@ -19,7 +19,7 @@ namespace EnhancePoE.UI.Model
 
         private static bool FetchAllowed { get; set; } = true;
 
-        public LogWatcher()
+        public LogWatcher(ChaosRecipeEnhancer chaosRecipeEnhancer)
         {
             Trace.WriteLine("logwatcher created");
 
@@ -53,7 +53,7 @@ namespace EnhancePoE.UI.Model
                                 Trace.WriteLine("entered new zone");
 
                                 Trace.WriteLine(NewZone);
-                                FetchIfPossible();
+                                FetchIfPossible(chaosRecipeEnhancer);
                             }
                         }
 
@@ -170,14 +170,14 @@ namespace EnhancePoE.UI.Model
             Trace.WriteLine("stop watch");
         }
 
-        public async void FetchIfPossible()
+        public async void FetchIfPossible(ChaosRecipeEnhancer chaosRecipeEnhancer)
         {
             if (FetchAllowed)
             {
                 FetchAllowed = false;
                 try
                 {
-                    MainWindow.Overlay.RunFetching();
+                    chaosRecipeEnhancer.RunFetching();
                     await Task.Delay(cooldown * 1000).ContinueWith(_ =>
                     {
                         FetchAllowed = true;

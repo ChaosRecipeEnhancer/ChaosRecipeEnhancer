@@ -4,14 +4,20 @@ using EnhancePoE.UI.Model;
 namespace EnhancePoE.UI.UserControls
 {
     /// <summary>
-    ///     Interaction logic for DynamicGridControlQuad.xaml
+    /// Interaction logic for DynamicGridControlQuad.xaml
     /// </summary>
-    public partial class DynamicGridControlQuad : ItemsControl
+    public partial class DynamicGridControlQuad
     {
+        #region Constructors
+
         public DynamicGridControlQuad()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Methods
 
         public Button GetButtonFromCell(object cell)
         {
@@ -27,5 +33,7 @@ namespace EnhancePoE.UI.UserControls
 
             return null;
         }
+
+        #endregion
     }
 }

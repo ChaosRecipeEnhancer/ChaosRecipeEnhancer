@@ -11,25 +11,46 @@ using EnhancePoE.App;
 using EnhancePoE.UI.Model;
 using EnhancePoE.UI.Properties;
 using EnhancePoE.UI.UserControls;
+using Serilog;
 
 namespace EnhancePoE.UI.View
 {
     /// <summary>
-    ///     Interaction logic for StashTabOverlayView.xaml
+    /// Interaction logic for StashTabOverlayView.xaml
     /// </summary>
     public partial class StashTabOverlayView : INotifyPropertyChanged
     {
+        #region Fields
+
+        private readonly ILogger _logger;
+        private readonly ChaosRecipeEnhancer _chaosRecipeEnhancer;
+
         private static readonly ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
         private Visibility _stashBorderVisibility = Visibility.Hidden;
         private Thickness _tabHeaderGap;
         private Thickness _tabMargin;
 
-        public StashTabOverlayView()
+        #endregion
+
+        #region Constructors
+
+        public StashTabOverlayView(ChaosRecipeEnhancer chaosRecipeEnhancer)
         {
+            _logger = Log.ForContext<StashTabOverlayView>();
+            _logger.Debug("Initializing StashTabOverlayView");
+
+            _chaosRecipeEnhancer = chaosRecipeEnhancer;
+
             InitializeComponent();
             DataContext = this;
             StashTabOverlayTabControl.ItemsSource = OverlayStashTabList;
+
+            _logger.Debug("StashTabOverlayView initializing");
         }
+
+        #endregion
+
+        #region Properties
 
         public bool IsOpen { get; set; }
         private bool IsEditing { get; set; }
@@ -70,6 +91,10 @@ namespace EnhancePoE.UI.View
             }
         }
 
+        #endregion
+
+        #region Event Handlers
+
         public new virtual void Hide()
         {
             Transparentize();
@@ -85,7 +110,8 @@ namespace EnhancePoE.UI.View
 
             IsOpen = false;
             IsEditing = false;
-            MainWindow.Overlay.OpenStashOverlayButtonContent = "Stash";
+
+            _chaosRecipeEnhancer.OpenStashOverlayButtonContent = "Stash";
 
             base.Hide();
         }
@@ -143,22 +169,52 @@ namespace EnhancePoE.UI.View
                 Data.ActivateNextCell(true, null);
                 if (Settings.Default.HighlightMode == 2)
                     foreach (var set in Data.ItemSetListHighlight)
-                        foreach (var i in set.ItemList)
-                        {
-                            var currTab = Data.GetStashTabFromItem(i);
-                            currTab.ActivateItemCells(i);
-                        }
+                    foreach (var i in set.ItemList)
+                    {
+                        var currTab = Data.GetStashTabFromItem(i);
+                        currTab.ActivateItemCells(i);
+                    }
 
-                MainWindow.Overlay.OpenStashOverlayButtonContent = "Hide";
+                _chaosRecipeEnhancer.OpenStashOverlayButtonContent = "Hide";
 
                 MouseHook.Start();
                 base.Show();
             }
             else
             {
-                MessageBox.Show("No StashTabs Available! Fetch before opening Overlay.", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("No StashTabs Available! Fetch before opening Overlay.", "Stashtab Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+
+            // Get this window's handle
+            var hwnd = new WindowInteropHelper(this).Handle;
+
+            Win32.makeTransparent(hwnd);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                DragMove();
+        }
+
+        private void EditModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            HandleEditButton(this);
+        }
+
+        #endregion
+
+        #region Methods
 
         public void StartEditMode()
         {
@@ -178,22 +234,6 @@ namespace EnhancePoE.UI.View
             IsEditing = false;
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-                DragMove();
-        }
-
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-
-            // Get this window's handle
-            var hwnd = new WindowInteropHelper(this).Handle;
-
-            Win32.makeTransparent(hwnd);
-        }
-
         public void Transparentize()
         {
             Trace.WriteLine("make transparent");
@@ -210,21 +250,12 @@ namespace EnhancePoE.UI.View
             Win32.makeNormal(hwnd);
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        public void HandleEditButton(StashTabOverlayView stashTabOverlayView)
         {
-        }
-
-        public void HandleEditButton()
-        {
-            if (MainWindow.StashTabOverlay.IsEditing)
+            if (stashTabOverlayView.IsEditing)
                 StopEditMode();
             else
                 StartEditMode();
-        }
-
-        private void EditModeButton_Click(object sender, RoutedEventArgs e)
-        {
-            HandleEditButton();
         }
 
         #region INotifyPropertyChanged implementation
@@ -238,6 +269,8 @@ namespace EnhancePoE.UI.View
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
 
         #endregion
     }

@@ -9,7 +9,9 @@
         Topmost="True"
         WindowStartupLocation="CenterScreen"
         Title="HotkeyWindow" Height="200" Width="200">
+
     <Grid>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
             <ColumnDefinition Width="*" />
@@ -35,4 +37,5 @@
             Click="SaveHotkeyButton_Click" />
 
     </Grid>
+
 </Window>

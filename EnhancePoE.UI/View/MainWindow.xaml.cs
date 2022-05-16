@@ -13,6 +13,8 @@ using EnhancePoE.App.Helpers;
 using EnhancePoE.UI.Model;
 using EnhancePoE.UI.Properties;
 using EnhancePoE.UI.UserControls;
+using Serilog;
+using Application = System.Windows.Application;
 using ContextMenu = System.Windows.Forms.ContextMenu;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
@@ -20,15 +22,22 @@ using MessageBox = System.Windows.MessageBox;
 namespace EnhancePoE.UI.View
 {
     /// <summary>
-    ///     Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
-        private const string AppVersion = "1.5.2.0";
+        #region Fields
 
-        public static readonly ChaosRecipeEnhancer Overlay = new ChaosRecipeEnhancer();
-        public static readonly StashTabOverlayView StashTabOverlay = new StashTabOverlayView();
+        private readonly ILogger _logger;
+
+        private readonly ChaosRecipeEnhancer _chaosRecipeEnhancer;
+        private readonly StashTabOverlayView _stashTabOverlayView;
+
+        private const string AppVersion = "1.5.2.0";
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
+
+        // ReSharper disable once UnusedMember.Local
+        private static string RunButtonContent { get; set; } = "Run Overlay";
 
         private Visibility _indicesVisible = Visibility.Hidden;
         private Visibility _nameVisible = Visibility.Hidden;
@@ -40,28 +49,37 @@ namespace EnhancePoE.UI.View
         private MenuItem _menuItemUpdate;
         private bool _trayClose;
 
-        public MainWindow()
+        #endregion
+
+        #region Constructors
+
+        public MainWindow(ChaosRecipeEnhancer chaosRecipeEnhancer, StashTabOverlayView stashTabOverlayView)
         {
+            _logger = Log.ForContext<MainWindow>();
+            _logger.Debug("Initializing MainWindow");
+
+            _chaosRecipeEnhancer = chaosRecipeEnhancer;
+            _stashTabOverlayView = stashTabOverlayView;
+
             InitializeComponent();
             DataContext = this;
             AutoUpdateHelper.InitializeAutoUpdater(AppVersion);
 
-            if (!string.IsNullOrEmpty(Settings.Default.FilterChangeSoundFileLocation) && !FilterSoundLocationDialog.Content.Equals("Default Sound"))
+            if (!string.IsNullOrEmpty(Settings.Default.FilterChangeSoundFileLocation) &&
+                !FilterSoundLocationDialog.Content.Equals("Default Sound"))
                 Data.Player.Open(new Uri(Settings.Default.FilterChangeSoundFileLocation));
             else
-                Data.Player.Open(new Uri(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Assets\Sounds\filterchanged.mp3")));
+                Data.Player.Open(new Uri(Path.Combine(
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
+                    @"Assets\Sounds\filterchanged.mp3")));
 
-            if (!string.IsNullOrEmpty(Settings.Default.ItemPickupSoundFileLocation) && !ItemPickupLocationDialog.Content.Equals("Default Sound"))
+            if (!string.IsNullOrEmpty(Settings.Default.ItemPickupSoundFileLocation) &&
+                !ItemPickupLocationDialog.Content.Equals("Default Sound"))
                 Data.PlayerSet.Open(new Uri(Settings.Default.ItemPickupSoundFileLocation));
             else
-                Data.PlayerSet.Open(new Uri(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Assets\Sounds\itemsPickedUp.mp3")));
-
-            //TESTING SETTINGS RESET
-            //if (Debugger.IsAttached)
-            //    Properties.Settings.Default.Reset();
-
-            // initialize stash tabs
-            //DataContext = stashTabsModel;
+                Data.PlayerSet.Open(new Uri(Path.Combine(
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
+                    @"Assets\Sounds\itemsPickedUp.mp3")));
 
             // Populate the league dropdown
             if (Settings.Default.MainLeague)
@@ -75,16 +93,19 @@ namespace EnhancePoE.UI.View
             LoadModeVisibility();
 
             // add Action to MouseHook
-            MouseHook.MouseAction += Coordinates.Event;
+            MouseHook.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayView);
+
+            _logger.Debug("MainWindow initialized");
         }
+
+        #endregion
+
+        #region Properties
 
         public static bool SettingsComplete { get; set; }
 
         // ReSharper disable once UnusedMember.Global
         public static string AppVersionText { get; set; } = "v." + AppVersion;
-
-        // ReSharper disable once UnusedMember.Local
-        private static string RunButtonContent { get; set; } = "Run Overlay";
 
         public Visibility IndicesVisible
         {
@@ -150,73 +171,10 @@ namespace EnhancePoE.UI.View
                 }
             }
         }
-        private void InitializeHotkeys()
-        {
-            HotkeysManager.SetupSystemHook();
-            HotkeysManager.GetRefreshHotkey();
-            HotkeysManager.GetToggleHotkey();
-            HotkeysManager.GetStashTabHotkey();
-            AddAllHotkeys();
-        }
 
-        private void InitializeColors()
-        {
-            if (Settings.Default.ColorBoots != "") ColorBootsPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorBoots);
-            if (Settings.Default.ColorChest != "") ColorChestPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorChest);
-            if (Settings.Default.ColorWeapon != "") ColorWeaponsPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorWeapon);
-            if (Settings.Default.ColorGloves != "") ColorGlovesPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorGloves);
-            if (Settings.Default.ColorHelmet != "") ColorHelmetPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorHelmet);
-            if (Settings.Default.ColorStash != "") ColorStashPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorStash);
-            if (Settings.Default.StashTabBackgroundColor != "") ColorStashBackgroundPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabBackgroundColor);
-            if (Settings.Default.ColorRing != "") ColorRingPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorRing);
-            if (Settings.Default.ColorAmulet != "") ColorAmuletPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorAmulet);
-            if (Settings.Default.ColorBelt != "") ColorBeltPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorBelt);
-        }
+        #endregion
 
-        // creates tray icon with menu
-        private void InitializeTray()
-        {
-            _notifyIcon.Icon = Properties.Resources.coin;
-            _notifyIcon.Visible = true;
-            _notifyIcon.DoubleClick +=
-                delegate
-                {
-                    Show();
-                    WindowState = WindowState.Normal;
-                };
-
-            new Container();
-            _contextMenu = new ContextMenu();
-            _menuItem = new MenuItem();
-            _menuItemUpdate = new MenuItem();
-
-            // Initialize contextMenu1
-            _contextMenu.MenuItems.AddRange(new[] { _menuItem, _menuItemUpdate });
-
-            // Initialize menuItem1
-            _menuItem.Index = 1;
-            _menuItem.Text = "E&xit";
-            _menuItem.Click += MenuItem_Click;
-
-            // Initialize menuItemUpdate
-            _menuItemUpdate.Index = 0;
-            _menuItemUpdate.Text = "C&heck for Updates";
-            _menuItemUpdate.Click += CheckForUpdates_Click;
-
-            _notifyIcon.ContextMenu = _contextMenu;
-        }
-
-        private void CheckForUpdates_Click(object Sender, EventArgs e)
-        {
-            AutoUpdateHelper.CheckForUpdates();
-        }
-
-        // Close the form, which closes the application.
-        private void MenuItem_Click(object Sender, EventArgs e)
-        {
-            _trayClose = true;
-            Close();
-        }
+        #region Event Handlers
 
         // Minimize to system tray when application is closed.
         protected override void OnClosing(CancelEventArgs e)
@@ -237,69 +195,27 @@ namespace EnhancePoE.UI.View
                 MouseHook.Stop();
                 HotkeysManager.ShutdownSystemHook();
                 Settings.Default.Save();
-                if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive) LogWatcher.StopWatchingLogFile();
-                System.Windows.Application.Current.Shutdown();
+                if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
+                    LogWatcher.StopWatchingLogFile();
+                Application.Current.Shutdown();
             }
         }
 
-        public void RunOverlay()
+        private void CheckForUpdates_Click(object Sender, EventArgs e)
         {
-            if (Overlay.IsOpen)
-            {
-                Overlay.Hide();
-                if (StashTabOverlay.IsOpen) StashTabOverlay.Hide();
-                RunButton.Content = "Run Overlay";
-            }
-            else
-            {
-                if (CheckAllSettings())
-                {
-                    Overlay.Show();
-                    RunButton.Content = "Stop Overlay";
-                }
-            }
+            AutoUpdateHelper.CheckForUpdates();
+        }
+
+        // Close the form, which closes the application.
+        private void MenuItem_Click(object Sender, EventArgs e)
+        {
+            _trayClose = true;
+            Close();
         }
 
         private void RunButton_Click(object sender, RoutedEventArgs e)
         {
             RunOverlay();
-        }
-
-        public static void RunStashTabOverlay()
-        {
-            var ready = CheckAllSettings();
-            if (ready)
-            {
-                if (StashTabOverlay.IsOpen)
-                    StashTabOverlay.Hide();
-                else
-                    StashTabOverlay.Show();
-            }
-        }
-
-        public void AddAllHotkeys()
-        {
-            if (Settings.Default.HotkeyRefresh != "< not set >") HotkeysManager.AddHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey, Overlay.RunFetching);
-            if (Settings.Default.HotkeyToggle != "< not set >") HotkeysManager.AddHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay);
-            if (Settings.Default.HotkeyStashTab != "< not set >") HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey, RunStashTabOverlay);
-        }
-
-        public void RemoveAllHotkeys()
-        {
-            HotkeysManager.RemoveRefreshHotkey();
-            HotkeysManager.RemoveStashTabHotkey();
-            HotkeysManager.RemoveToggleHotkey();
-        }
-
-        private string GetSoundFilePath()
-        {
-            var open = new OpenFileDialog();
-            open.Filter = "MP3|*.mp3";
-            var res = open.ShowDialog();
-
-            if (res == System.Windows.Forms.DialogResult.OK) return open.FileName;
-
-            return null;
         }
 
         private void ColorBootsPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
@@ -352,71 +268,13 @@ namespace EnhancePoE.UI.View
             MainGrid.Focus();
         }
 
-        public static bool CheckAllSettings()
-        {
-            var accName = Settings.Default.accName;
-            var sessId = Settings.Default.SessionId;
-            var league = Settings.Default.League;
-            var lootFilterLocation = Settings.Default.LootFilterLocation;
-            var lootFilterActive = Settings.Default.LootFilterActive;
-            var logLocation = Settings.Default.LogLocation;
-            var autoFetch = Settings.Default.AutoFetch;
-
-            var missingSettings = new List<string>();
-
-            if (accName == "") missingSettings.Add("- Account Name \n");
-            if (sessId == "") missingSettings.Add("- PoE Session ID \n");
-            if (league == "") missingSettings.Add("- League \n");
-            if (lootFilterActive)
-            {
-                if (lootFilterLocation == "") missingSettings.Add("- Loot Filter Location \n");
-            }
-
-            if (autoFetch)
-                if (logLocation == "")
-                    missingSettings.Add("- Log File Location \n");
-
-            switch (Settings.Default.StashTabMode)
-            {
-                case 0:
-                    {
-                        if (Settings.Default.StashTabIndices == "") missingSettings.Add("- StashTab Index");
-                        break;
-                    }
-                case 1:
-                    {
-                        if (Settings.Default.StashTabName == "") missingSettings.Add("- StashTab Name");
-                        break;
-                    }
-                case 2:
-                    {
-                        if (Settings.Default.StashTabName == "") missingSettings.Add("- StashTab Name");
-                        break;
-                    }
-            }
-
-            if (missingSettings.Count > 0)
-            {
-                SettingsComplete = false;
-            }
-            else
-            {
-                SettingsComplete = true;
-                return true;
-            }
-
-            var errorMessage = missingSettings.Aggregate("Please add: \n", (current, setting) => current + setting);
-
-            MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
-            return false;
-        }
-
         private void VolumeSlider_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             Data.PlayNotificationSound();
         }
 
-        private void ColorStashBackgroundPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        private void ColorStashBackgroundPicker_SelectedColorChanged(object sender,
+            RoutedPropertyChangedEventArgs<Color?> e)
         {
             Settings.Default.StashTabBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
         }
@@ -424,7 +282,7 @@ namespace EnhancePoE.UI.View
         private void CustomHotkeyToggle_Click(object sender, RoutedEventArgs e)
         {
             var isWindowOpen = false;
-            foreach (Window w in System.Windows.Application.Current.Windows)
+            foreach (Window w in Application.Current.Windows)
                 if (w is HotkeyWindow)
                     isWindowOpen = true;
 
@@ -436,7 +294,7 @@ namespace EnhancePoE.UI.View
         private void RefreshHotkey_Click(object sender, RoutedEventArgs e)
         {
             var isWindowOpen = false;
-            foreach (Window w in System.Windows.Application.Current.Windows)
+            foreach (Window w in Application.Current.Windows)
                 if (w is HotkeyWindow)
                     isWindowOpen = true;
 
@@ -448,7 +306,7 @@ namespace EnhancePoE.UI.View
         private void StashTabHotkey_Click(object sender, RoutedEventArgs e)
         {
             var isWindowOpen = false;
-            foreach (Window w in System.Windows.Application.Current.Windows)
+            foreach (Window w in Application.Current.Windows)
                 if (w is HotkeyWindow)
                     isWindowOpen = true;
 
@@ -477,42 +335,10 @@ namespace EnhancePoE.UI.View
             LoadModeVisibility();
         }
 
-        private void LoadModeVisibility()
-        {
-            switch (Settings.Default.StashTabMode)
-            {
-                case 1:
-                    NameVisible = Visibility.Visible;
-                    NameSuffixVisible = Visibility.Hidden;
-                    IndicesVisible = Visibility.Hidden;
-                    break;
-                case 2:
-                    NameSuffixVisible = Visibility.Visible;
-                    NameVisible = Visibility.Hidden;
-                    IndicesVisible = Visibility.Hidden;
-                    break;
-                default:
-                    IndicesVisible = Visibility.Visible;
-                    NameVisible = Visibility.Hidden;
-                    NameSuffixVisible = Visibility.Hidden;
-                    break;
-            }
-
-            if (Settings.Default.CustomLeague == false)
-            {
-                CustomLeagueVisible = Visibility.Hidden;
-                MainLeagueVisible = Visibility.Visible;
-            }
-            else
-            {
-                CustomLeagueVisible = Visibility.Visible;
-                MainLeagueVisible = Visibility.Hidden;
-            }
-        }
-
         private void TabHeaderGapSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            StashTabOverlay.TabHeaderGap = new Thickness(Settings.Default.TabHeaderGap, 0, Settings.Default.TabHeaderGap, 0);
+            _stashTabOverlayView.TabHeaderGap =
+                new Thickness(Settings.Default.TabHeaderGap, 0, Settings.Default.TabHeaderGap, 0);
         }
 
         private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -520,12 +346,13 @@ namespace EnhancePoE.UI.View
             if (StashTabList.StashTabs.Count <= 0) return;
 
             foreach (var s in StashTabList.StashTabs)
-                s.TabHeaderWidth = new Thickness(Settings.Default.TabHeaderWidth, 2, Settings.Default.TabHeaderWidth, 2);
+                s.TabHeaderWidth =
+                    new Thickness(Settings.Default.TabHeaderWidth, 2, Settings.Default.TabHeaderWidth, 2);
         }
 
         private void TabHeaderMarginSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            StashTabOverlay.TabMargin = new Thickness(Settings.Default.TabMargin, 0, 0, 0);
+            _stashTabOverlayView.TabMargin = new Thickness(Settings.Default.TabMargin, 0, 0, 0);
         }
 
         private void SaveButton_Click_1(object sender, RoutedEventArgs e)
@@ -538,20 +365,24 @@ namespace EnhancePoE.UI.View
             switch (Settings.Default.OverlayMode)
             {
                 case 0:
-                    Overlay.MainOverlayContentControl.Content = new MainOverlayContent();
+                    _chaosRecipeEnhancer.MainOverlayContentControl.Content =
+                        new MainOverlayContent(this, _chaosRecipeEnhancer);
                     break;
                 case 1:
-                    Overlay.MainOverlayContentControl.Content = new MainOverlayContentMinified();
+                    _chaosRecipeEnhancer.MainOverlayContentControl.Content =
+                        new MainOverlayContentMinified(this, _chaosRecipeEnhancer);
                     break;
                 case 2:
-                    Overlay.MainOverlayContentControl.Content = new MainOverlayOnlyButtons();
+                    _chaosRecipeEnhancer.MainOverlayContentControl.Content =
+                        new MainOverlayOnlyButtons(this, _chaosRecipeEnhancer);
                     break;
             }
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show("This will reset all of your settings!", "Reset Settings", MessageBoxButton.YesNo);
+            var result = MessageBox.Show("This will reset all of your settings!", "Reset Settings",
+                MessageBoxButton.YesNo);
             switch (result)
             {
                 case MessageBoxResult.Yes:
@@ -613,7 +444,9 @@ namespace EnhancePoE.UI.View
             }
             else
             {
-                MessageBox.Show("Invalid file selected. Make sure you're selecting the \"Client.txt\" file located in your main Path of Exile installation folder.", "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    "Invalid file selected. Make sure you're selecting the \"Client.txt\" file located in your main Path of Exile installation folder.",
+                    "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -628,7 +461,9 @@ namespace EnhancePoE.UI.View
 
         private void ShowNumbersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Overlay.AmountsVisibility = Settings.Default.ShowItemAmount != 0 ? Visibility.Visible : Visibility.Hidden;
+            _chaosRecipeEnhancer.AmountsVisibility = Settings.Default.ShowItemAmount != 0
+                ? Visibility.Visible
+                : Visibility.Hidden;
         }
 
         private void FilterSoundLocationDialog_OnClick(object sender, RoutedEventArgs e)
@@ -657,6 +492,230 @@ namespace EnhancePoE.UI.View
             Data.PlayNotificationSoundSetPicked();
         }
 
+        #endregion
+
+        #region Methods
+
+        private void InitializeHotkeys()
+        {
+            HotkeysManager.SetupSystemHook();
+            HotkeysManager.GetRefreshHotkey();
+            HotkeysManager.GetToggleHotkey();
+            HotkeysManager.GetStashTabHotkey();
+            AddAllHotkeys();
+        }
+
+        private void InitializeColors()
+        {
+            if (Settings.Default.ColorBoots != "")
+                ColorBootsPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorBoots);
+            if (Settings.Default.ColorChest != "")
+                ColorChestPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorChest);
+            if (Settings.Default.ColorWeapon != "")
+                ColorWeaponsPicker.SelectedColor =
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.ColorWeapon);
+            if (Settings.Default.ColorGloves != "")
+                ColorGlovesPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorGloves);
+            if (Settings.Default.ColorHelmet != "")
+                ColorHelmetPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorHelmet);
+            if (Settings.Default.ColorStash != "")
+                ColorStashPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorStash);
+            if (Settings.Default.StashTabBackgroundColor != "")
+                ColorStashBackgroundPicker.SelectedColor =
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabBackgroundColor);
+            if (Settings.Default.ColorRing != "")
+                ColorRingPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorRing);
+            if (Settings.Default.ColorAmulet != "")
+                ColorAmuletPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorAmulet);
+            if (Settings.Default.ColorBelt != "")
+                ColorBeltPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorBelt);
+        }
+
+        // creates tray icon with menu
+        private void InitializeTray()
+        {
+            _notifyIcon.Icon = Properties.Resources.coin;
+            _notifyIcon.Visible = true;
+            _notifyIcon.DoubleClick +=
+                delegate
+                {
+                    Show();
+                    WindowState = WindowState.Normal;
+                };
+
+            new Container();
+            _contextMenu = new ContextMenu();
+            _menuItem = new MenuItem();
+            _menuItemUpdate = new MenuItem();
+
+            // Initialize contextMenu1
+            _contextMenu.MenuItems.AddRange(new[] { _menuItem, _menuItemUpdate });
+
+            // Initialize menuItem1
+            _menuItem.Index = 1;
+            _menuItem.Text = "E&xit";
+            _menuItem.Click += MenuItem_Click;
+
+            // Initialize menuItemUpdate
+            _menuItemUpdate.Index = 0;
+            _menuItemUpdate.Text = "C&heck for Updates";
+            _menuItemUpdate.Click += CheckForUpdates_Click;
+
+            _notifyIcon.ContextMenu = _contextMenu;
+        }
+
+        public void RunOverlay()
+        {
+            if (_chaosRecipeEnhancer.IsOpen)
+            {
+                _chaosRecipeEnhancer.Hide();
+                if (_stashTabOverlayView.IsOpen) _stashTabOverlayView.Hide();
+                RunButton.Content = "Run Overlay";
+            }
+            else
+            {
+                if (CheckAllSettings())
+                {
+                    _chaosRecipeEnhancer.Show();
+                    RunButton.Content = "Stop Overlay";
+                }
+            }
+        }
+
+        public void RunStashTabOverlay()
+        {
+            var ready = CheckAllSettings();
+            if (ready)
+            {
+                if (_stashTabOverlayView.IsOpen)
+                    _stashTabOverlayView.Hide();
+                else
+                    _stashTabOverlayView.Show();
+            }
+        }
+
+        public void AddAllHotkeys()
+        {
+            if (Settings.Default.HotkeyRefresh != "< not set >")
+                HotkeysManager.AddHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey,
+                    _chaosRecipeEnhancer.RunFetching);
+            if (Settings.Default.HotkeyToggle != "< not set >")
+                HotkeysManager.AddHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay);
+            if (Settings.Default.HotkeyStashTab != "< not set >")
+                HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey,
+                    RunStashTabOverlay);
+        }
+
+        public void RemoveAllHotkeys()
+        {
+            HotkeysManager.RemoveRefreshHotkey();
+            HotkeysManager.RemoveStashTabHotkey();
+            HotkeysManager.RemoveToggleHotkey();
+        }
+
+        private string GetSoundFilePath()
+        {
+            var open = new OpenFileDialog();
+            open.Filter = "MP3|*.mp3";
+            var res = open.ShowDialog();
+
+            if (res == System.Windows.Forms.DialogResult.OK) return open.FileName;
+
+            return null;
+        }
+
+        public static bool CheckAllSettings()
+        {
+            var accName = Settings.Default.accName;
+            var sessId = Settings.Default.SessionId;
+            var league = Settings.Default.League;
+            var lootFilterLocation = Settings.Default.LootFilterLocation;
+            var lootFilterActive = Settings.Default.LootFilterActive;
+            var logLocation = Settings.Default.LogLocation;
+            var autoFetch = Settings.Default.AutoFetch;
+
+            var missingSettings = new List<string>();
+
+            if (accName == "") missingSettings.Add("- Account Name \n");
+            if (sessId == "") missingSettings.Add("- PoE Session ID \n");
+            if (league == "") missingSettings.Add("- League \n");
+            if (lootFilterActive)
+            {
+                if (lootFilterLocation == "") missingSettings.Add("- Loot Filter Location \n");
+            }
+
+            if (autoFetch)
+                if (logLocation == "")
+                    missingSettings.Add("- Log File Location \n");
+
+            switch (Settings.Default.StashTabMode)
+            {
+                case 0:
+                {
+                    if (Settings.Default.StashTabIndices == "") missingSettings.Add("- StashTab Index");
+                    break;
+                }
+                case 1:
+                {
+                    if (Settings.Default.StashTabName == "") missingSettings.Add("- StashTab Name");
+                    break;
+                }
+                case 2:
+                {
+                    if (Settings.Default.StashTabName == "") missingSettings.Add("- StashTab Name");
+                    break;
+                }
+            }
+
+            if (missingSettings.Count > 0)
+            {
+                SettingsComplete = false;
+            }
+            else
+            {
+                SettingsComplete = true;
+                return true;
+            }
+
+            var errorMessage = missingSettings.Aggregate("Please add: \n", (current, setting) => current + setting);
+
+            MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+            return false;
+        }
+
+        private void LoadModeVisibility()
+        {
+            switch (Settings.Default.StashTabMode)
+            {
+                case 1:
+                    NameVisible = Visibility.Visible;
+                    NameSuffixVisible = Visibility.Hidden;
+                    IndicesVisible = Visibility.Hidden;
+                    break;
+                case 2:
+                    NameSuffixVisible = Visibility.Visible;
+                    NameVisible = Visibility.Hidden;
+                    IndicesVisible = Visibility.Hidden;
+                    break;
+                default:
+                    IndicesVisible = Visibility.Visible;
+                    NameVisible = Visibility.Hidden;
+                    NameSuffixVisible = Visibility.Hidden;
+                    break;
+            }
+
+            if (Settings.Default.CustomLeague == false)
+            {
+                CustomLeagueVisible = Visibility.Hidden;
+                MainLeagueVisible = Visibility.Visible;
+            }
+            else
+            {
+                CustomLeagueVisible = Visibility.Visible;
+                MainLeagueVisible = Visibility.Hidden;
+            }
+        }
+
         #region INotifyPropertyChanged implementation
 
         // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
@@ -668,6 +727,8 @@ namespace EnhancePoE.UI.View
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
 
         #endregion
     }
