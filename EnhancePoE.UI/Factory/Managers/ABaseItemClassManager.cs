@@ -22,6 +22,7 @@ namespace EnhancePoE.UI.Factory.Managers
             return baseType;
         }
 
+        // TODO: [Remove] I don't think we need this
         public string SetSocketRules(string result)
         {
             return result;

@@ -250,10 +250,11 @@ namespace EnhancePoE.UI.Model
                 {
                     PreviousActiveItems = new ActiveItemTypes(ActiveItems);
                 }
-
-
+                
+                // calculate target amount if user has 0 set in it
+                // (e.g. 2 quad tabs queried w 0 set threshold = 24 set threshold)
+                // else just stick to the default amount (their defined in settings)
                 SetTargetAmount = 0;
-
                 if (StashTabList.StashTabs.Count > 0)
                 {
                     foreach (var s in StashTabList.StashTabs)
@@ -268,7 +269,10 @@ namespace EnhancePoE.UI.Model
                     CalculateItemAmounts(chaosRecipeEnhancer);
                 }
 
+                // generate {SetThreshold} empty sets to be filled
                 GenerateItemSetList();
+                
+                // proceed to fill those newly created empty sets
                 FillItemSets();
 
                 // check for full sets/ missing items
@@ -278,6 +282,7 @@ namespace EnhancePoE.UI.Model
                 // unique missing item classes
                 var missingItemClasses = new HashSet<string>();
 
+                // for every set in our itemsetlist check if their EmptyItemSlots is 0 if not add to our full set count
                 foreach (var set in ItemSetList)
                 {
                     if (set.EmptyItemSlots.Count == 0)
@@ -287,15 +292,6 @@ namespace EnhancePoE.UI.Model
                         fullSets++;
 
                         if (!set.SetCanProduceChaos && !Settings.Default.RegalRecipe) missingGearPieceForChaosRecipe = true;
-
-                        //if (set.HasChaos || Properties.Settings.Default.RegalRecipe)
-                        //{
-                        //    fullSets++;
-                        //}
-                        //else
-                        //{
-                        //    missingChaos = true;
-                        //}
                     }
                     else
                     {
@@ -303,8 +299,11 @@ namespace EnhancePoE.UI.Model
                         foreach (var itemClass in set.EmptyItemSlots) missingItemClasses.Add(itemClass);
                     }
                 }
+                
                 CFilterGenerationManager filterManager = new CFilterGenerationManager();
-                ActiveItems = await filterManager.GenerateSectionsAndUpdateFilterAsync(missingItemClasses);
+                
+                // i need to pass in the missingGearPieceForChaosRecipe
+                ActiveItems = await filterManager.GenerateSectionsAndUpdateFilterAsync(missingItemClasses, missingGearPieceForChaosRecipe);
 
                 //Trace.WriteLine(fullSets, "full sets");
                 chaosRecipeEnhancer.Dispatcher.Invoke(() => { chaosRecipeEnhancer.FullSetsText = fullSets.ToString(); });
