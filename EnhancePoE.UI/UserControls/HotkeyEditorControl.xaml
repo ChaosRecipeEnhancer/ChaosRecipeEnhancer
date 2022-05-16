@@ -7,6 +7,7 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
+
     <TextBox x:Name="HotkeyTextBox"
              HorizontalContentAlignment="Center"
              VerticalContentAlignment="Center"
@@ -15,8 +16,13 @@
              IsUndoEnabled="False"
              PreviewKeyDown="HotkeyTextBox_PreviewKeyDown"
              Text="{Binding Hotkey, ElementName=UserControl, Mode=OneWay, TargetNullValue=&lt; not set &gt;}">
+
         <TextBox.ContextMenu>
+
             <ContextMenu Visibility="Collapsed" />
+
         </TextBox.ContextMenu>
+
     </TextBox>
+
 </UserControl>

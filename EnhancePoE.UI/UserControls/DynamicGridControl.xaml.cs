@@ -1,17 +1,35 @@
 ﻿using System.Windows.Controls;
 using EnhancePoE.UI.Model;
+using Serilog;
 
 namespace EnhancePoE.UI.UserControls
 {
     /// <summary>
-    ///     Interaction logic for DynamicGridControl.xaml
+    /// Interaction logic for DynamicGridControl.xaml
     /// </summary>
-    public partial class DynamicGridControl : ItemsControl
+    public partial class DynamicGridControl
     {
+        #region Fields
+
+        private ILogger _logger;
+
+        #endregion
+        
+        #region Constructors
+
         public DynamicGridControl()
         {
+            _logger = Log.ForContext<HotkeyEditorControl>();
+            _logger.Debug("Constructing DynamicGridControl");
+
             InitializeComponent();
+            
+            _logger.Debug("DynamicGridControl constructed successfully");
         }
+
+        #endregion
+
+        #region Methods
 
         public Button GetButtonFromCell(object cell)
         {
@@ -25,5 +43,7 @@ namespace EnhancePoE.UI.UserControls
 
             return null;
         }
+
+        #endregion
     }
 }

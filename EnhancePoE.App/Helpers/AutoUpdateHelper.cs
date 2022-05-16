@@ -14,7 +14,7 @@ namespace EnhancePoE.App.Helpers
             AutoUpdater.ShowSkipButton = false;
             AutoUpdater.InstalledVersion = new Version(appVersion);
             AutoUpdater.RunUpdateAsAdmin = true;
-            
+
             CheckForUpdates();
         }
 
@@ -45,9 +45,7 @@ namespace EnhancePoE.App.Helpers
                     else
                         dialogResult =
                             MessageBox.Show(
-                                $@"There is new version {args.CurrentVersion} available. You are using version {
-                                    args.InstalledVersion
-                                }. Do you want to update the application now?", @"Update Available",
+                                $@"There is new version {args.CurrentVersion} available. You are using version {args.InstalledVersion}. Do you want to update the application now?", @"Update Available",
                                 MessageBoxButtons.YesNo,
                                 MessageBoxIcon.Information);
 

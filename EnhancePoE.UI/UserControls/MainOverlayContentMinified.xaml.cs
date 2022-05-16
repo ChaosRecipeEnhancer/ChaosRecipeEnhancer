@@ -1,38 +1,55 @@
-﻿using EnhancePoE.UI.View;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.Windows;
+using EnhancePoE.UI.View;
+using Serilog;
 
 namespace EnhancePoE.UI.UserControls
 {
     /// <summary>
-    ///     Interaction logic for MainOverlayContentMinified.xaml
+    /// Interaction logic for MainOverlayContentMinified.xaml
     /// </summary>
-    public partial class MainOverlayContentMinified : UserControl
+    public partial class MainOverlayContentMinified
     {
-        public MainOverlayContentMinified()
+        #region Fields
+
+        private ILogger _logger;
+        private readonly ChaosRecipeEnhancer _chaosRecipeEnhancer;
+        private readonly MainWindow _mainWindow;
+
+        #endregion
+
+        #region Constructors
+
+        public MainOverlayContentMinified(MainWindow mainWindow, ChaosRecipeEnhancer chaosRecipeEnhancer)
         {
+            _logger = Log.ForContext<MainOverlayContentMinified>();
+            _logger.Debug("Constructing MainOverlayContentMinified");
+
+            _mainWindow = mainWindow;
+            _chaosRecipeEnhancer = chaosRecipeEnhancer;
             InitializeComponent();
+
+            _logger.Debug("MainOverlayContentMinified  constructed successfully");
         }
+
+        #endregion
+
+        #region Event Handlers
 
         private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.RunStashTabOverlay();
+            _mainWindow.RunStashTabOverlay();
         }
 
-        private void RefreshButton_Click_1(object sender, RoutedEventArgs e)
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.Overlay.RunFetching();
+            _chaosRecipeEnhancer.RunFetching();
         }
 
         private void ReloadItemFilterButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.Overlay.ReloadItemFilter();
+            _chaosRecipeEnhancer.ReloadItemFilter();
         }
 
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            MainWindow.RunStashTabOverlay();
-        }
+        #endregion
     }
 }

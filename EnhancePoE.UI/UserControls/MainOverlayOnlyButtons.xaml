@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              FontSize="16">
+
     <Grid>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="auto" />
@@ -20,6 +22,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
+
         <Button x:Name="RefreshButton"
                 Click="RefreshButton_Click_1"
                 IsEnabled="{Binding FetchButtonEnabled}"
@@ -29,6 +32,7 @@
                 Grid.Row="1"
                 Content="Fetch"
                 Margin="3,0" />
+
         <Button x:Name="ReloadFilterButton"
                 Click="ReloadFilterButton_Click"
                 Width="50"
@@ -36,8 +40,11 @@
                 Grid.Column="4"
                 Grid.Row="1"
                 Margin="5,0">
+
             <TextBlock FontSize="14" TextAlignment="Center">Reload<LineBreak />Filter</TextBlock>
+
         </Button>
+
         <Button x:Name="OpenStashTabOverlay"
                 Click="OpenStashTabOverlay_Click"
                 Width="50"
@@ -46,6 +53,7 @@
                 Grid.Row="1"
                 Content="{Binding OpenStashOverlayButtonContent}"
                 Margin="3,0" />
+
         <UniformGrid Grid.Row="1"
                      Grid.Column="2"
                      Height="30"
@@ -54,12 +62,15 @@
                      Rows="1"
                      Margin="15,0"
                      Background="White">
+
             <TextBlock x:Name="FullSetsTextBlock"
                        Text="{Binding FullSetsText}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        TextAlignment="Center" />
+
         </UniformGrid>
+
         <ProgressBar Grid.Column="1"
                      Grid.ColumnSpan="4"
                      Grid.Row="2"
@@ -72,6 +83,7 @@
                      Background="AntiqueWhite"
                      BorderThickness="0,0,0,0"
                      x:Name="OverlayProgressBar" />
+
         <Border Grid.Column="1"
                 Grid.ColumnSpan="4"
                 Grid.Row="0"
@@ -79,9 +91,13 @@
                 Background="White"
                 Margin="0,3,0,3"
                 Visibility="{Binding WarningMessageVisibility}">
+
             <TextBlock VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Text="{Binding WarningMessage}" />
+
         </Border>
+
     </Grid>
+
 </UserControl>

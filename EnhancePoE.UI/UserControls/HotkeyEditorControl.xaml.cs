@@ -1,30 +1,51 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
+using Serilog;
 
 namespace EnhancePoE.UI.UserControls
 {
     /// <summary>
-    ///     Interaction logic for HotkeyEditorControl.xaml
+    /// Interaction logic for HotkeyEditorControl.xaml
     /// </summary>
-    public partial class HotkeyEditorControl : UserControl
+    public partial class HotkeyEditorControl
     {
+        #region Fields
+
+        private ILogger _logger;
+
+        #endregion
+        
+        #region Constructors
+
+        public HotkeyEditorControl()
+        {
+            _logger = Log.ForContext<HotkeyEditorControl>();
+            _logger.Debug("Constructing HotkeyEditorControl");
+            
+            InitializeComponent();
+            
+            _logger.Debug("HotkeyEditorControl constructed successfully");
+        }
+
+        #endregion
+
+        #region Properties
+
         public static readonly DependencyProperty HotkeyProperty =
             DependencyProperty.Register(nameof(Hotkey), typeof(Hotkey),
                 typeof(HotkeyEditorControl),
                 new FrameworkPropertyMetadata(default(Hotkey),
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-        public HotkeyEditorControl()
-        {
-            InitializeComponent();
-        }
-
         public Hotkey Hotkey
         {
             get => (Hotkey)GetValue(HotkeyProperty);
             set => SetValue(HotkeyProperty, value);
         }
+
+        #endregion
+
+        #region Event Handlers
 
         private void HotkeyTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -64,5 +85,7 @@ namespace EnhancePoE.UI.UserControls
             // Update the value
             Hotkey = new Hotkey(key, modifiers);
         }
+
+        #endregion
     }
 }
