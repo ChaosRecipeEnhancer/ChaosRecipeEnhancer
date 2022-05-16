@@ -33,7 +33,7 @@ namespace EnhancePoE.UI.View
         private readonly ChaosRecipeEnhancer _chaosRecipeEnhancer;
         private readonly StashTabOverlayView _stashTabOverlayView;
 
-        private const string AppVersion = "1.5.3.0";
+        private const string AppVersion = "1.5.4.0";
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
         // ReSharper disable once UnusedMember.Local
