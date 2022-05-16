@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using EnhancePoE.App.Native;
 using EnhancePoE.UI.Model.Utils;
 using EnhancePoE.UI.Properties;
 using Clipboard = System.Windows.Clipboard;
@@ -70,23 +71,8 @@ namespace EnhancePoE.UI.Model
 
             var chatCommand = BuildFilterReloadCommand();
             if (chatCommand is null) return;
-
-            // The reason for this 'retry' loop is issues caused by the .NET implementation of the clipboard
-            // A delay in opening the clipboard causes the error, which usually passes within a few milliseconds.
-            // REF: https://stackoverflow.com/a/69081
-            for (var i = 0; i < 10; i++)
-            {
-                try
-                {
-                    Clipboard.SetDataObject(chatCommand);
-                }
-                catch (COMException ex)
-                {
-                    const uint CLIPBRD_E_CANT_OPEN = 0x800401D0;
-                    if ((uint)ex.ErrorCode != CLIPBRD_E_CANT_OPEN) throw;
-                }
-                System.Threading.Thread.Sleep(10);
-            }
+            
+            ClipboardNative.CopyTextToClipboard(chatCommand);
 
             // Map all current window names to their associated "handle to a window" pointers (HWND)
             var openWindows = GetOpenWindows();
