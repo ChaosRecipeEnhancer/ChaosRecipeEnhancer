@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using EnhancePoE.UI.Model;
+using Serilog;
 
 namespace EnhancePoE.UI.UserControls
 {
@@ -8,11 +9,22 @@ namespace EnhancePoE.UI.UserControls
     /// </summary>
     public partial class DynamicGridControlQuad
     {
+        #region Fields
+
+        private ILogger _logger;
+
+        #endregion
+        
         #region Constructors
 
         public DynamicGridControlQuad()
         {
+            _logger = Log.ForContext<HotkeyEditorControl>();
+            _logger.Debug("Constructing DynamicGridControlQuad");
+            
             InitializeComponent();
+            
+            _logger.Debug("DynamicGridControlQuad constructed successfully");
         }
 
         #endregion

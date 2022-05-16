@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 1.5.3
+
+- WIP
+
 #### 1.5.2
 
 - Hotfix: Fixing Icons not showing up

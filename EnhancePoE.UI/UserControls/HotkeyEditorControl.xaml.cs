@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using Serilog;
 
 namespace EnhancePoE.UI.UserControls
 {
@@ -8,11 +9,22 @@ namespace EnhancePoE.UI.UserControls
     /// </summary>
     public partial class HotkeyEditorControl
     {
+        #region Fields
+
+        private ILogger _logger;
+
+        #endregion
+        
         #region Constructors
 
         public HotkeyEditorControl()
         {
+            _logger = Log.ForContext<HotkeyEditorControl>();
+            _logger.Debug("Constructing HotkeyEditorControl");
+            
             InitializeComponent();
+            
+            _logger.Debug("HotkeyEditorControl constructed successfully");
         }
 
         #endregion

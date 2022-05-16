@@ -33,7 +33,7 @@ namespace EnhancePoE.UI.View
         private readonly ChaosRecipeEnhancer _chaosRecipeEnhancer;
         private readonly StashTabOverlayView _stashTabOverlayView;
 
-        private const string AppVersion = "1.5.2.0";
+        private const string AppVersion = "1.5.3.0";
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
         // ReSharper disable once UnusedMember.Local
@@ -56,7 +56,7 @@ namespace EnhancePoE.UI.View
         public MainWindow(ChaosRecipeEnhancer chaosRecipeEnhancer, StashTabOverlayView stashTabOverlayView)
         {
             _logger = Log.ForContext<MainWindow>();
-            _logger.Debug("Initializing MainWindow");
+            _logger.Debug("Constructing MainWindow");
 
             _chaosRecipeEnhancer = chaosRecipeEnhancer;
             _stashTabOverlayView = stashTabOverlayView;
@@ -95,7 +95,7 @@ namespace EnhancePoE.UI.View
             // add Action to MouseHook
             MouseHook.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayView);
 
-            _logger.Debug("MainWindow initialized");
+            _logger.Debug("MainWindow constructed successfully");
         }
 
         #endregion
@@ -185,18 +185,25 @@ namespace EnhancePoE.UI.View
             if (Settings.Default.hideOnClose && !_trayClose)
             {
                 e.Cancel = true;
+                
                 Hide();
+                
                 base.OnClosing(e);
             }
 
             if (!Settings.Default.hideOnClose || _trayClose)
             {
                 _notifyIcon.Visible = false;
+                
                 MouseHook.Stop();
+                
                 HotkeysManager.ShutdownSystemHook();
+                
                 Settings.Default.Save();
+                
                 if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
                     LogWatcher.StopWatchingLogFile();
+                
                 Application.Current.Shutdown();
             }
         }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?define ProductVersion = "1.5.2.0"?>
+<?define ProductVersion = "1.5.3.0"?>
 <?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
@@ -150,83 +150,199 @@
 		<!--3rd Party Dependencies (DLLs) -->
 		<ComponentGroup Id="ThirdPartyDependencies" Directory="INSTALLFOLDER">
 
-			<Component Id="AutoUpdater.NET.dll" Guid="{F8579D83-C655-4460-8B2D-A7F4297EC319}">
+			<Component Id="Autofac.dll" Guid="{FC02761E-2CE3-4807-8C76-BF8945727F34}">
+				<File Id="Autofac.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Autofac.dll" />
+			</Component>
+
+			<Component Id="AutofacSerilogIntegration.dll" Guid="{3FE05E96-EA27-4B6D-9D53-CF73172E9208}">
+				<File Id="AutofacSerilogIntegration.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)AutofacSerilogIntegration.dll" />
+			</Component>
+
+			<Component Id="AutoUpdater.NET.dll" Guid="{C1CBDC38-D505-43E7-893E-C9523937F275}">
 				<File Id="AutoUpdater.NET.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)AutoUpdater.NET.dll" />
 			</Component>
 
-			<Component Id="HtmlAgilityPack.dll" Guid="{FC639B92-E5C9-4554-B325-3AEEE9B7032F}">
+			<Component Id="Ben.Demystifier.dll" Guid="{363FBC7F-6F4E-417E-B617-A0108AC3C2D2}">
+				<File Id="Ben.Demystifier.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Ben.Demystifier.dll" />
+			</Component>
+
+			<Component Id="HtmlAgilityPack.dll" Guid="{339A7F27-05A2-4EB7-83CD-A289007655CD}">
 				<File Id="HtmlAgilityPack.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)HtmlAgilityPack.dll" />
 			</Component>
 
-			<Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="{9DAEE128-2CD1-4790-BF97-40CD9E157692}">
+			<Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="{8A8094DF-FC5C-4167-BF2E-E04919594566}">
 				<File Id="Microsoft.Bcl.AsyncInterfaces.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
 			</Component>
 
-			<Component Id="PresentationCore.dll" Guid="{FAEB28BF-4546-4342-B07F-26F558D8FBE6}">
+			<Component Id="Microsoft.Extensions.Configuration.Abstractions.dll" Guid="{3545D1E1-9FA9-4E81-83A2-D2A8666C3330}">
+				<File Id="Microsoft.Extensions.Configuration.Abstractions.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.Configuration.Abstractions.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.Configuration.Binder.dll" Guid="{FA5FFDAD-9755-4FC7-BB14-81E2E4B6BA93}">
+				<File Id="Microsoft.Extensions.Configuration.Binder.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.Configuration.Binder.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.Configuration.dll" Guid="{E954BB97-E68A-4C02-861A-7BF823F79F8D}">
+				<File Id="Microsoft.Extensions.Configuration.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.Configuration.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Guid="{10FB73E5-9B47-492E-9FA9-FF24BA517D53}">
+				<File Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.DependencyInjection.dll" Guid="{BB0650AF-EAC2-4DDE-9668-0C33F56AAF0A}">
+				<File Id="Microsoft.Extensions.DependencyInjection.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.DependencyInjection.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.Logging.Abstractions.dll" Guid="{5CBE7714-86FC-4A75-B1B9-FAF71AD768AB}">
+				<File Id="Microsoft.Extensions.Logging.Abstractions.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.Logging.Abstractions.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.Logging.Configuration.dll" Guid="{14324FBD-8F2F-4179-9FE3-0B463410CEEB}">
+				<File Id="Microsoft.Extensions.Logging.Configuration.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.Logging.Configuration.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.Logging.Console.dll" Guid="{207C3BD6-0E22-4DE4-B461-644693E1E360}">
+				<File Id="Microsoft.Extensions.Logging.Console.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.Logging.Console.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.Logging.Debug.dll" Guid="{7A15B700-A5A1-4A4E-98C4-45DAE3934EF1}">
+				<File Id="Microsoft.Extensions.Logging.Debug.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.Logging.Debug.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.Logging.dll" Guid="{1A4A84F3-A6A2-44EE-A9AD-15278D77BF4F}">
+				<File Id="Microsoft.Extensions.Logging.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.Logging.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.Options.ConfigurationExtensions.dll" Guid="{AF9A5131-4883-459B-A301-D46204D67714}">
+				<File Id="Microsoft.Extensions.Options.ConfigurationExtensions.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.Options.ConfigurationExtensions.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.Options.dll" Guid="{56A06EAD-497A-4459-87EF-6D70F2B625F6}">
+				<File Id="Microsoft.Extensions.Options.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.Options.dll" />
+			</Component>
+
+			<Component Id="Microsoft.Extensions.Primitives.dll" Guid="{BD42F946-DA09-4337-B5D9-DA400E4D65D9}">
+				<File Id="Microsoft.Extensions.Primitives.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Microsoft.Extensions.Primitives.dll" />
+			</Component>
+
+			<Component Id="Newtonsoft.Json.dll" Guid="{64DBDD41-0BE4-4FD2-AF11-B8CF15F0C8DB}">
+				<File Id="Newtonsoft.Json.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Newtonsoft.Json.dll" />
+			</Component>
+
+			<Component Id="PresentationCore.dll" Guid="{0BDDD86A-DB71-4573-B716-204199ED9775}">
 				<File Id="PresentationCore.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)PresentationCore.dll" />
 			</Component>
 
-			<Component Id="System.Buffers.dll" Guid="{E958500F-49C9-4119-8DEA-EE9DBC6244CE}">
+			<Component Id="Serilog.dll" Guid="{43F1E03A-19BC-4606-95C5-46CDCCC9DC50}">
+				<File Id="Serilog.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Serilog.dll" />
+			</Component>
+
+			<Component Id="Serilog.Enrichers.Context.dll" Guid="{F662B332-F62B-40FF-AE65-10C9A44D8913}">
+				<File Id="Serilog.Enrichers.Context.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Serilog.Enrichers.Context.dll" />
+			</Component>
+
+			<Component Id="Serilog.Enrichers.Environment.dll" Guid="{2C854F55-11A0-4149-887D-508DD566C25B}">
+				<File Id="Serilog.Enrichers.Environment.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Serilog.Enrichers.Environment.dll" />
+			</Component>
+
+			<Component Id="Serilog.Enrichers.Thread.dll" Guid="{6EAD149F-D8A6-4408-8720-C10E4EFE16A7}">
+				<File Id="Serilog.Enrichers.Thread.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Serilog.Enrichers.Thread.dll" />
+			</Component>
+
+			<Component Id="Serilog.Exceptions.dll" Guid="{1EDD1178-D785-4CF7-8D80-0AE9E9732CDC}">
+				<File Id="Serilog.Exceptions.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Serilog.Exceptions.dll" />
+			</Component>
+
+			<Component Id="Serilog.Sinks.Console.dll" Guid="{2C7842B5-792C-40E2-8517-077AD80DE2F5}">
+				<File Id="Serilog.Sinks.Console.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Serilog.Sinks.Console.dll" />
+			</Component>
+
+			<Component Id="Serilog.Sinks.Debug.dll" Guid="{662FB6BC-5D3A-47C3-B604-A6B799FFCF75}">
+				<File Id="Serilog.Sinks.Debug.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Serilog.Sinks.Debug.dll" />
+			</Component>
+
+			<Component Id="Serilog.Sinks.File.dll" Guid="{E700F982-9CC1-42FA-B302-6FC40B7CB2FC}">
+				<File Id="Serilog.Sinks.File.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Serilog.Sinks.File.dll" />
+			</Component>
+
+			<Component Id="Serilog.Sinks.Trace.dll" Guid="{A6327E7E-C9D2-46FA-8FC2-FA354118928B}">
+				<File Id="Serilog.Sinks.Trace.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Serilog.Sinks.Trace.dll" />
+			</Component>
+
+			<Component Id="System.Buffers.dll" Guid="{24FFABCE-5FF6-49C3-9CAC-43CCC3DCF2C9}">
 				<File Id="System.Buffers.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Buffers.dll" />
 			</Component>
 
-			<Component Id="System.Data.DataSetExtensions.dll" Guid="{2C272EAA-69FF-431B-9A7D-E57DDC91E636}">
+			<Component Id="System.Collections.Immutable.dll" Guid="{53DD4C4F-7F67-4B39-B30D-1448C02B264D}">
+				<File Id="System.Collections.Immutable.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Collections.Immutable.dll" />
+			</Component>
+
+			<Component Id="System.Data.DataSetExtensions.dll" Guid="{DBC53135-FFAB-4968-A020-1AF12F5178A5}">
 				<File Id="System.Data.DataSetExtensions.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Data.DataSetExtensions.dll" />
 			</Component>
 
-			<Component Id="System.Memory.dll" Guid="{4A09884F-9E30-42D2-936B-2BB0F5A7C9DB}">
+			<Component Id="System.Diagnostics.DiagnosticSource.dll" Guid="{8BB60809-6216-4E20-BF39-6600447E0945}">
+				<File Id="System.Diagnostics.DiagnosticSource.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Diagnostics.DiagnosticSource.dll" />
+			</Component>
+
+			<Component Id="System.Memory.dll" Guid="{F2EE6CF5-F91A-4C18-8770-864604C9DE56}">
 				<File Id="System.Memory.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Memory.dll" />
 			</Component>
 
-			<Component Id="System.Numerics.Vectors.dll" Guid="{75AB55CD-6C7C-46D4-A2E1-5B96945302D5}">
+			<Component Id="System.Numerics.Vectors.dll" Guid="{506AAAE9-5012-4284-817A-5BB371AE96E6}">
 				<File Id="System.Numerics.Vectors.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Numerics.Vectors.dll" />
 			</Component>
 
-			<Component Id="System.Runtime.CompilerServices.Unsafe.dll" Guid="{91C1EE82-FC59-49DD-A24F-577A597920EE}">
+			<Component Id="System.Reflection.Metadata.dll" Guid="{4D073898-FC3C-438A-9251-C667CB812F72}">
+				<File Id="System.Reflection.Metadata.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Reflection.Metadata.dll" />
+			</Component>
+
+			<Component Id="System.Runtime.CompilerServices.Unsafe.dll" Guid="{5D683684-AAF3-4FE6-BC9C-9B93CE3B393B}">
 				<File Id="System.Runtime.CompilerServices.Unsafe.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Runtime.CompilerServices.Unsafe.dll" />
 			</Component>
 
-			<Component Id="System.Text.Encodings.Web.dll" Guid="{27106E67-B885-455E-9D20-16C1E6E06EBB}">
+			<Component Id="System.Text.Encodings.Web.dll" Guid="{9864F1DD-623B-4771-835E-3E02ADDA2B6F}">
 				<File Id="System.Text.Encodings.Web.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Text.Encodings.Web.dll" />
 			</Component>
 
-			<Component Id="System.Text.Json.dll" Guid="{A71ACA0C-678C-4B58-B1C2-492467E27F81}">
+			<Component Id="System.Text.Json.dll" Guid="{7A4E59DB-6BBA-414C-83A3-0ACE97D5B739}">
 				<File Id="System.Text.Json.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Text.Json.dll" />
 			</Component>
 
-			<Component Id="System.Threading.Tasks.Extensions.dll" Guid="{0655275D-6EF4-40F6-84B0-DB36740D5C91}">
+			<Component Id="System.Threading.Tasks.Extensions.dll" Guid="{3ADCE26C-D20A-4E37-AEB5-9A9013E360A6}">
 				<File Id="System.Threading.Tasks.Extensions.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Threading.Tasks.Extensions.dll" />
 			</Component>
 
-			<Component Id="System.ValueTuple.dll" Guid="{85D871FE-4459-42A1-8C6A-3D1B6443D8E8}">
+			<Component Id="System.ValueTuple.dll" Guid="{AABCBDC7-1E7C-41D7-AAE6-DC41EA83B98D}">
 				<File Id="System.ValueTuple.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.ValueTuple.dll" />
 			</Component>
 
-			<Component Id="System.Web.Extensions.dll" Guid="{C2647081-A46D-4F44-9DF3-55827D096952}">
+			<Component Id="System.Web.Extensions.dll" Guid="{35FA5083-B944-4AB5-B5A0-98447BB0F6FA}">
 				<File Id="System.Web.Extensions.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Web.Extensions.dll" />
 			</Component>
 
-			<Component Id="System.Xml.Linq.dll" Guid="{F5111B36-E620-4A90-98C7-EEDCF1884260}">
+			<Component Id="System.Xml.Linq.dll" Guid="{AF661DB8-3D4A-4EF9-A635-6046010CA0A2}">
 				<File Id="System.Xml.Linq.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)System.Xml.Linq.dll" />
 			</Component>
 
-			<Component Id="Xceed.Wpf.AvalonDock.dll" Guid="{84BBB1D3-E09F-4E48-8831-7868A7CC5118}">
+			<Component Id="Xceed.Wpf.AvalonDock.dll" Guid="{5E9D9747-C634-4B2C-8B99-76EFA46D5707}">
 				<File Id="Xceed.Wpf.AvalonDock.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Xceed.Wpf.AvalonDock.dll" />
 			</Component>
 
-			<Component Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Guid="{23AC3E55-B950-4610-BAF6-546B7E28C28A}">
+			<Component Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" Guid="{F686F8EC-CE83-4357-A708-DFCB4605C68D}">
 				<File Id="Xceed.Wpf.AvalonDock.Themes.Aero.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Xceed.Wpf.AvalonDock.Themes.Aero.dll" />
 			</Component>
 
-			<Component Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Guid="{9F40BB1F-3A29-40FB-9908-FE5F8E7982E9}">
+			<Component Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" Guid="{BB7A9FA3-FCC8-4486-AE2F-9776EF68B5F4}">
 				<File Id="Xceed.Wpf.AvalonDock.Themes.Metro.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Xceed.Wpf.AvalonDock.Themes.Metro.dll" />
 			</Component>
 
-			<Component Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Guid="{5206B497-4E9B-4AC7-8C1A-6699840438EF}">
+			<Component Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" Guid="{AA4F499F-9BC3-494C-9D6F-09972D43CE37}">
 				<File Id="Xceed.Wpf.AvalonDock.Themes.VS2010.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Xceed.Wpf.AvalonDock.Themes.VS2010.dll" />
 			</Component>
 
-			<Component Id="Xceed.Wpf.Toolkit.dll" Guid="{A40ED51D-3245-4E51-8E58-0FC9CAAB15DC}">
+			<Component Id="Xceed.Wpf.Toolkit.dll" Guid="{B861A7FC-4A04-416D-B355-878611BFFE50}">
 				<File Id="Xceed.Wpf.Toolkit.dll" KeyPath="yes" Source="$(var.EnhancePoE_TargetDir)Xceed.Wpf.Toolkit.dll" />
 			</Component>
 

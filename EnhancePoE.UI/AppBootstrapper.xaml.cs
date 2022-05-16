@@ -13,7 +13,7 @@ using Serilog.Exceptions;
 namespace EnhancePoE.UI
 {
     /// <summary>
-    ///     Interaction logic for App.xaml
+    /// Interaction logic for App.xaml
     /// </summary>
     public partial class AppBootstrapper
     {
@@ -28,7 +28,7 @@ namespace EnhancePoE.UI
             const string outputTemplate =
                 "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} | Level:{Level} | ThreadId:{ThreadId} | ContextValue:{ContextValue} | SourceContext:{SourceContext}] {Message}{NewLine}{Exception}";
             const string debugOutputTemplate =
-                "EnhancePoEApp Serilogger: [{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} | Level:{Level} | ThreadId:{ThreadId} | ContextValue:{ContextValue} | SourceContext:{SourceContext}] {Message}{NewLine}{Exception}";
+                "EnhancePoEApp Logger: [{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} | Level:{Level} | ThreadId:{ThreadId} | ContextValue:{ContextValue} | SourceContext:{SourceContext}] {Message}{NewLine}{Exception}";
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -48,16 +48,16 @@ namespace EnhancePoE.UI
 
             var builder = new ContainerBuilder();
 
+            // Registering some of our main view components that depend on each-other
             builder.RegisterType<MainWindow>()
                 .SingleInstance()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
-
+            
             builder.RegisterType<ChaosRecipeEnhancer>()
                 .SingleInstance()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
-
+            
             builder.RegisterType<StashTabOverlayView>();
-
             builder.RegisterLogger();
 
             var container = builder.Build();
@@ -66,17 +66,14 @@ namespace EnhancePoE.UI
             {
                 var logger = scope.Resolve<ILogger>();
 
-                logger.Debug("Initializing app views");
-
+                // Resolving our previously defined dependency from our DI container
                 var mainWindow = scope.Resolve<MainWindow>();
-                var chaosRecipeEnhancer = scope.Resolve<ChaosRecipeEnhancer>();
-                var stashTabOverlayView = scope.Resolve<StashTabOverlayView>();
 
+                // Opens our MainWindow and doesn't return until it has been closed
+                logger.Debug("App initialized, starting up MainWindow");
                 mainWindow.ShowDialog();
-                chaosRecipeEnhancer.ShowDialog();
-                stashTabOverlayView.ShowDialog();
-
-                logger.Debug("App views successfully initialized");
+                
+                // Anything after this should just be clean up if needed
             }
         }
 

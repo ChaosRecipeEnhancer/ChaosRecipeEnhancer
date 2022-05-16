@@ -74,14 +74,14 @@ namespace EnhancePoE.UI.View
         public ChaosRecipeEnhancer()
         {
             _logger = Log.ForContext<ChaosRecipeEnhancer>();
-            _logger.Debug("Initializing ChaosRecipeEnhancer");
+            _logger.Debug("Constructing ChaosRecipeEnhancer");
 
             InitializeComponent();
 
             DataContext = this;
             FullSetsText = "0";
 
-            _logger.Debug("ChaosRecipeEnhancer initialized");
+            _logger.Debug("ChaosRecipeEnhancer constructed successfully");
         }
 
         #endregion
@@ -364,10 +364,6 @@ namespace EnhancePoE.UI.View
             IsOpen = true;
             if (Settings.Default.AutoFetch) Watcher = new LogWatcher(this);
             base.Show();
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
         }
 
         /// <summary>

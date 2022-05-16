@@ -23,13 +23,13 @@ namespace EnhancePoE.UI.View
         public HotkeyWindow(MainWindow mainWindow, string hotkeyType)
         {
             _logger = Log.ForContext<HotkeyWindow>();
-            _logger.Debug("Initializing HotkeyWindow");
+            _logger.Debug("Constructing HotkeyWindow");
 
             _mainWindow = mainWindow;
             _type = hotkeyType;
             InitializeComponent();
 
-            _logger.Debug("HotkeyWindow initialized");
+            _logger.Debug("HotkeyWindow constructed successfully");
         }
 
         #endregion

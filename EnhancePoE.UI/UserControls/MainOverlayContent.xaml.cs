@@ -22,13 +22,13 @@ namespace EnhancePoE.UI.UserControls
         public MainOverlayContent(MainWindow mainWindow, ChaosRecipeEnhancer chaosRecipeEnhancer)
         {
             _logger = Log.ForContext<MainOverlayContentMinified>();
-            _logger.Debug("Initializing MainOverlayContent");
+            _logger.Debug("Constructing MainOverlayContent");
 
             _mainWindow = mainWindow;
             _chaosRecipeEnhancer = chaosRecipeEnhancer;
             InitializeComponent();
 
-            _logger.Debug("MainOverlayContent initialized");
+            _logger.Debug("MainOverlayContent constructed successfully");
         }
 
         #endregion

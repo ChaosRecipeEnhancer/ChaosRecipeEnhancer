@@ -22,14 +22,14 @@ namespace EnhancePoE.UI.UserControls
         public MainOverlayOnlyButtons(MainWindow mainWindow, ChaosRecipeEnhancer chaosRecipeEnhancer)
         {
             _logger = Log.ForContext<MainOverlayContentMinified>();
-            _logger.Debug("Initializing MainOverlayOnlyButtons");
+            _logger.Debug("Constructing MainOverlayOnlyButtons");
 
             _mainWindow = mainWindow;
             _chaosRecipeEnhancer = chaosRecipeEnhancer;
 
             InitializeComponent();
 
-            _logger.Debug("MainOverlayOnlyButtons initialized");
+            _logger.Debug("MainOverlayOnlyButtons constructed successfully");
         }
 
         #endregion

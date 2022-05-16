@@ -37,7 +37,7 @@ namespace EnhancePoE.UI.View
         public StashTabOverlayView(ChaosRecipeEnhancer chaosRecipeEnhancer)
         {
             _logger = Log.ForContext<StashTabOverlayView>();
-            _logger.Debug("Initializing StashTabOverlayView");
+            _logger.Debug("Constructing StashTabOverlayView");
 
             _chaosRecipeEnhancer = chaosRecipeEnhancer;
 
@@ -45,7 +45,7 @@ namespace EnhancePoE.UI.View
             DataContext = this;
             StashTabOverlayTabControl.ItemsSource = OverlayStashTabList;
 
-            _logger.Debug("StashTabOverlayView initializing");
+            _logger.Debug("StashTabOverlayView constructed successfully");
         }
 
         #endregion
