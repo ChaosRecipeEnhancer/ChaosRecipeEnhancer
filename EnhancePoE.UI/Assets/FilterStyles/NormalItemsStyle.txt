@@ -12,6 +12,8 @@
 # 	Identified False 
 # 	BaseType --- MODIFY THIS IN THE BASES FOLDER
 # 	SetBackgroundColor 0 251 238 255 --- MODIFY THIS IN THE APPLICATION
+	Sockets < 6
+	LinkedSockets < 5
  	SetFontSize 40 
  	SetTextColor 255 255 255 255 
  	SetBorderColor 0 0 0 
