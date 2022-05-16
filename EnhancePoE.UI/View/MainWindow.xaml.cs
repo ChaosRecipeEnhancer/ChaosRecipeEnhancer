@@ -60,7 +60,7 @@ namespace EnhancePoE.UI.View
 
             _chaosRecipeEnhancer = chaosRecipeEnhancer;
             _stashTabOverlayView = stashTabOverlayView;
-
+            
             InitializeComponent();
             DataContext = this;
             AutoUpdateHelper.InitializeAutoUpdater(AppVersion);
