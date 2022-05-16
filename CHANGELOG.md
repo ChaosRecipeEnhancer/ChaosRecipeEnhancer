@@ -1,5 +1,11 @@
 ## Change Log
 
+#### 1.5.4
+
+- new installer UI that allows for custom installer location (also gives you progress on installation and notifies you when it's complete)
+- fixing filter manipulation not including higher item level items (i75+) when running chaos recipe, should now add higher item level items to filter if able
+- introduced more limited filtering on items to ensure we don't overwrite any of your loot filter's rules (e.g. 6-socket items, 5-link items, 6-link items, etc.)
+
 #### 1.5.3
 
 - fixing crash that would occur when pressing certain keys on the hotkey window (thanks to [@Nyxion](https://github.com/Nyxion))

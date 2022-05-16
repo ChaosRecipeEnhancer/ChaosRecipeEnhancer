@@ -26,8 +26,6 @@ namespace EnhancePoE.UI.Factory.Managers.Implementation
             var baseType = "Class ";
             baseType += "\"Two Hand Swords\" \"Two Hand Axes\" \"Two Hand Maces\" \"Staves\" \"Warstaves\" \"Bows\"";
             baseType += CConst.newLine + CConst.tab + "Width <= 2" + CConst.newLine + CConst.tab + "Height <= 3";
-            baseType += CConst.newLine + CConst.tab + "Sockets <= 5" + CConst.newLine + CConst.tab +
-                        "LinkedSockets <= 5";
             return baseType;
         }
 

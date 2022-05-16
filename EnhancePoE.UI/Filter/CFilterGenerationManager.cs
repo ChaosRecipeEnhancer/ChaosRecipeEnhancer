@@ -40,13 +40,13 @@ namespace EnhancePoE.UI.Filter
 
         #region Methods
 
-        public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses)
+        public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem)
         {
-            ActiveItemTypes activeItemTypes = new ActiveItemTypes();
+            var activeItemTypes = new ActiveItemTypes();
 
             if (Settings.Default.LootFilterActive)
             {
-                CItemClassManagerFactory visitor = new CItemClassManagerFactory();
+                var visitor = new CItemClassManagerFactory();
                 var sectionList = new HashSet<string>();
                 var sectionListExalted = new HashSet<string>();
 
@@ -60,7 +60,17 @@ namespace EnhancePoE.UI.Filter
                     if ((Settings.Default.ChaosRecipe || Settings.Default.RegalRecipe)
                         && (_itemClassManager.AlwaysActive || stillMissing))
                     {
-                        sectionList.Add(this.GenerateSection(false));
+
+                        // if we need chaos only gear to complete a set (60-74), add that to our filter section
+                        if (missingChaosItem)
+                        {
+                            sectionList.Add(GenerateSection(false, true));
+                        }
+                        // else add any gear piece 60+ to our section for that item class
+                        else
+                        {
+                            sectionList.Add(GenerateSection(false));
+                        }
 
                         // find better way to handle active items and sound notification on changes
                         activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
@@ -82,7 +92,7 @@ namespace EnhancePoE.UI.Filter
             return activeItemTypes;
         }
 
-        public string GenerateSection(bool isInfluenced)
+        public string GenerateSection(bool isInfluenced, bool onlyChaos = false)
         {
             var result = "Show";
 
@@ -100,7 +110,7 @@ namespace EnhancePoE.UI.Filter
 
             switch (isInfluenced)
             {
-                case false when !_itemClassManager.AlwaysActive && !Settings.Default.RegalRecipe:
+                case false when !_itemClassManager.AlwaysActive && onlyChaos && !Settings.Default.RegalRecipe:
                     result += "ItemLevel >= 60" + CConst.newLine + CConst.tab + "ItemLevel <= 74" + CConst.newLine +
                               CConst.tab;
                     break;
@@ -112,7 +122,8 @@ namespace EnhancePoE.UI.Filter
                     break;
             }
 
-            result = _itemClassManager.SetSocketRules(result);
+            // TODO: [Remove] I don't think we need this
+            // result = _itemClassManager.SetSocketRules(result);
 
             var baseType = _itemClassManager.SetBaseType();
 
@@ -126,8 +137,11 @@ namespace EnhancePoE.UI.Filter
                 ? _customStyleInfluenced.Aggregate(result, (current, cs) => current + cs + CConst.newLine + CConst.tab)
                 : _customStyle.Aggregate(result, (current, cs) => current + cs + CConst.newLine + CConst.tab);
 
+            // Map Icon setting enabled
             if (Settings.Default.LootFilterIcons)
+            {
                 result = result + "MinimapIcon 2 White Star" + CConst.newLine + CConst.tab;
+            }
 
             return result;
         }

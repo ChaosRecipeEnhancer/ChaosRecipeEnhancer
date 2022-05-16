@@ -4,7 +4,7 @@ This app fetches your stash data from the PoE servers and shows which items you 
 
 For Feedback or Bug Reports spam this [discord](https://discord.gg/KgVsUdSSrR) or [open an Issue on GitHub](https://github.com/kosace/EnhancePoEApp/issues/new) (and please include as much detail as possible, with screenshots of your settings if you can!).
 
-#### Current Version 1.5.3 (May 15th, 2022; Path of Exile v3.18)
+#### Current Version 1.5.4 (May 15th, 2022; Path of Exile v3.18)
 
 This product isn't affiliated with or endorsed by Grinding Gear Games in any way.
 

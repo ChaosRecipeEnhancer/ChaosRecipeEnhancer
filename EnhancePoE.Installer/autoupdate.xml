@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
-	<version>1.5.3.0</version>
+	<version>1.5.4.0</version>
 	<url>https://github.com/kosace/EnhancePoEApp/blob/master/EnhancePoE.Installer/CRESetup.msi?raw=true</url>
 	<mandatory>false</mandatory>
 </item>
