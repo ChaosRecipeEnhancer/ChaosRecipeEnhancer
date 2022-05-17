@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using EnhancePoE.UI.Properties;
+using Serilog;
 
 namespace EnhancePoE.UI
 {
@@ -29,17 +30,25 @@ namespace EnhancePoE.UI
         public static Key refreshKey;
 
         public static ModifierKeys toggleModifier;
+        public static List<ModifierKeys> toggleModifiers;
         public static Key toggleKey;
 
         public static ModifierKeys stashTabModifier;
         public static Key stashTabKey;
 
+        private static readonly ILogger _logger;
+
         //public static ModifierKeys reloadFilterModifier;
         //public static Key reloadFilterKey;
 
+        private static bool isPressed { get; set; }
+
         static HotkeysManager()
         {
+            _logger = Log.Logger;
             Hotkeys = new List<GlobalHotkey>();
+            if (toggleModifiers == null)
+                toggleModifiers = new List<ModifierKeys>();
             RequiresModifierKey = false;
         }
 
@@ -75,6 +84,7 @@ namespace EnhancePoE.UI
         {
             HookID = SetHook(LowLevelProc);
             IsHookSetup = true;
+            _logger.Debug("System hooks setup successfully");
         }
 
         /// <summary>
@@ -104,34 +114,111 @@ namespace EnhancePoE.UI
         }
 
         /// <summary>
+        ///     Too replace all the shit if statments in CheckHotKeys with more than one modifier
+        /// </summary>
+        public static bool ValidKeyCombo(GlobalHotkey hotkey)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         ///     Checks if there are any modifiers are pressed. If so, it checks through every
         ///     Hotkey and matches their Modifier/Key. If they both match, and the hotkey allows
         ///     the callback method to be called, it is called.
         /// </summary>
         private static void CheckHotkeys()
         {
-            if (RequiresModifierKey)
+            if (toggleModifiers.Count > 1)
             {
                 if (Keyboard.Modifiers != ModifierKeys.None)
+                {
                     foreach (var hotkey in Hotkeys)
-                        if(hotkey.Key != Key.None)
-                            if (Keyboard.Modifiers == hotkey.Modifier && Keyboard.IsKeyDown(hotkey.Key))
+                    {
+                        if (hotkey.Modifiers != null)
+                        {
+                            var ctrl_alt_shift = hotkey.Modifiers.Contains(ModifierKeys.Control) && 
+                                hotkey.Modifiers.Contains(ModifierKeys.Shift) && 
+                                hotkey.Modifiers.Contains(ModifierKeys.Alt);
+                            var ctrl_alt = hotkey.Modifiers.Contains(ModifierKeys.Control) &&
+                                hotkey.Modifiers.Contains(ModifierKeys.Alt) && !hotkey.Modifiers.Contains(ModifierKeys.Shift);
+                            var ctrl_shift = hotkey.Modifiers.Contains(ModifierKeys.Control) &&
+                                hotkey.Modifiers.Contains(ModifierKeys.Shift) && !hotkey.Modifiers.Contains(ModifierKeys.Alt);
+                            var shift_alt = hotkey.Modifiers.Contains(ModifierKeys.Shift) &&
+                                hotkey.Modifiers.Contains(ModifierKeys.Alt) && !hotkey.Modifiers.Contains(ModifierKeys.Control);
+
+                            if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt | ModifierKeys.Shift) &&
+                                ctrl_alt_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            {
+                                isPressed = true;
                                 if (hotkey.CanExecute)
                                 {
                                     hotkey.Callback?.Invoke();
                                     HotkeyFired?.Invoke(hotkey);
                                 }
+                            }
+                            else if(Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) &&
+                                ctrl_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            {
+                                isPressed = true;
+                                if (hotkey.CanExecute)
+                                {
+                                    hotkey.Callback?.Invoke();
+                                    HotkeyFired?.Invoke(hotkey);
+                                }
+                            }
+                            else if(Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Shift) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) &&
+                                ctrl_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            {
+                                isPressed = true;
+                                if (hotkey.CanExecute)
+                                {
+                                    hotkey.Callback?.Invoke();
+                                    HotkeyFired?.Invoke(hotkey);
+                                }
+                            }
+                            else if(Keyboard.Modifiers.HasFlag(ModifierKeys.Shift | ModifierKeys.Alt) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control) &&
+                                shift_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            {
+                                isPressed = true;
+                                if (hotkey.CanExecute)
+                                {
+                                    hotkey.Callback?.Invoke();
+                                    HotkeyFired?.Invoke(hotkey);
+                                }
+                            }
+
+                            if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
+                            {
+                                isPressed = false;
+                            }
+                        }
+                        
+                    }
+                    
+                }
             }
             else
             {
                 foreach (var hotkey in Hotkeys)
+                {
                     if (hotkey.Key != Key.None)
-                        if (Keyboard.Modifiers == hotkey.Modifier && Keyboard.IsKeyDown(hotkey.Key))
+                    {
+                        if (Keyboard.Modifiers.HasFlag(hotkey.Modifier) && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                        {
+                            isPressed = true;
                             if (hotkey.CanExecute)
                             {
                                 hotkey.Callback?.Invoke();
                                 HotkeyFired?.Invoke(hotkey);
                             }
+                        }
+
+                        if(Keyboard.IsKeyUp(hotkey.Key) && isPressed)
+                        {
+                            isPressed = false;
+                        }
+                    }
+                }
             }
         }
 
@@ -151,6 +238,15 @@ namespace EnhancePoE.UI
 
             return hotkeys;
         }
+        public static List<GlobalHotkey> FindHotkeys(List<ModifierKeys> modifiers, Key key)
+        {
+            var hotkeys = new List<GlobalHotkey>();
+            foreach (var hotkey in Hotkeys)
+                if (hotkey.Key == key && hotkey.Modifiers == modifiers)
+                    hotkeys.Add(hotkey);
+
+            return hotkeys;
+        }
 
         /// <summary>
         ///     Creates and adds a new hotkey to the hotkeys list.
@@ -162,6 +258,10 @@ namespace EnhancePoE.UI
         public static void AddHotkey(ModifierKeys modifier, Key key, Action callbackMethod, bool canExecute = true)
         {
             AddHotkey(new GlobalHotkey(modifier, key, callbackMethod, canExecute));
+        }
+        public static void AddHotkey(List<ModifierKeys> modifiers, Key key, Action callbackMethod, bool canExecute = true)
+        {
+            AddHotkey(new GlobalHotkey(modifiers, key, callbackMethod, canExecute));
         }
 
         /// <summary>
@@ -179,6 +279,25 @@ namespace EnhancePoE.UI
         {
             var originalHotkeys = Hotkeys;
             var toBeRemoved = FindHotkeys(modifier, key);
+
+            if (toBeRemoved.Count > 0)
+            {
+                if (removeAllOccourances)
+                {
+                    foreach (var hotkey in toBeRemoved) originalHotkeys.Remove(hotkey);
+
+                    Hotkeys = originalHotkeys;
+                }
+                else
+                {
+                    RemoveHotkey(toBeRemoved[0]);
+                }
+            }
+        }
+        public static void RemoveHotkey(List<ModifierKeys> modifiers, Key key, bool removeAllOccourances = false)
+        {
+            var originalHotkeys = Hotkeys;
+            var toBeRemoved = FindHotkeys(modifiers, key);
 
             if (toBeRemoved.Count > 0)
             {
@@ -269,8 +388,9 @@ namespace EnhancePoE.UI
             if (Settings.Default.HotkeyToggle != "< not set >")
             {
                 var toggleString = Settings.Default.HotkeyToggle.Split('+');
+                toggleModifiers = new List<ModifierKeys>();
 
-                if (toggleString.Length > 1)
+                if (toggleString.Length > 1 && toggleString.Length < 3)
                 {
                     if (toggleString[0].Trim() == "Ctrl")
                         toggleModifier = ModifierKeys.Control;
@@ -284,6 +404,31 @@ namespace EnhancePoE.UI
                         toggleModifier = ModifierKeys.None;
 
                     Enum.TryParse(toggleString[1].Trim(), out toggleKey);
+                }
+                else if (toggleString.Length > 2)
+                {
+                    
+                    for (int i = 0; i < toggleString.Length; i++)
+                    {
+                        if (toggleString[i].Trim().ToLower().Contains("alt"))
+                        {
+                            toggleModifiers.Add(ModifierKeys.Alt);
+                        }
+                        else if (toggleString[i].Trim().ToLower().Contains("ctrl"))
+                        {
+                            toggleModifiers.Add(ModifierKeys.Control);
+                        }
+                        else if (toggleString[i].Trim().ToLower().Contains("shift"))
+                        {
+                            toggleModifiers.Add(ModifierKeys.Shift);
+                        }
+                        else if (toggleString[i].Trim().ToLower().Contains("win"))
+                        {
+                            toggleModifiers.Add(ModifierKeys.Windows);
+                        }
+                    }
+
+                    Enum.TryParse(toggleString[toggleString.Length - 1], out toggleKey);
                 }
                 else
                 {
@@ -363,7 +508,14 @@ namespace EnhancePoE.UI
 
         public static void RemoveToggleHotkey()
         {
-            RemoveHotkey(toggleModifier, toggleKey);
+            if(toggleModifier != ModifierKeys.None)
+            {
+                RemoveHotkey(toggleModifier, toggleKey);
+            }
+            else if(toggleModifiers.Count > 1)
+            {
+                RemoveHotkey(toggleModifiers, toggleKey);
+            }
         }
 
         public static void RemoveStashTabHotkey()

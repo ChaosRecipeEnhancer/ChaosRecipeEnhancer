@@ -604,13 +604,23 @@ namespace EnhancePoE.UI.View
         public void AddAllHotkeys()
         {
             if (Settings.Default.HotkeyRefresh != "< not set >")
-                HotkeysManager.AddHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey,
-                    _chaosRecipeEnhancer.RunFetching);
+                HotkeysManager.AddHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey, _chaosRecipeEnhancer.RunFetching);
+
             if (Settings.Default.HotkeyToggle != "< not set >")
-                HotkeysManager.AddHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay);
+            {
+                var toggleString = Settings.Default.HotkeyToggle.Split('+');
+                if (toggleString.Length > 2)
+                {
+                    HotkeysManager.AddHotkey(HotkeysManager.toggleModifiers, HotkeysManager.toggleKey, RunOverlay);
+                }
+                else
+                {
+                    HotkeysManager.AddHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay);
+                }
+            } 
+
             if (Settings.Default.HotkeyStashTab != "< not set >")
-                HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey,
-                    RunStashTabOverlay);
+                HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey, RunStashTabOverlay);
         }
 
         public void RemoveAllHotkeys()

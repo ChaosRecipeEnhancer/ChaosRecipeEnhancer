@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace EnhancePoE.UI
@@ -28,6 +29,16 @@ namespace EnhancePoE.UI
             Callback = callbackMethod;
             CanExecute = canExecute;
         }
+        public GlobalHotkey(List<ModifierKeys> modifiers, Key key, Action callbackMethod,  bool canExecute = true)
+        {
+            if (modifiers.Count == 0)
+                Modifiers = new List<ModifierKeys>();
+            else
+                Modifiers = modifiers;
+            Key = key;
+            Callback = callbackMethod;
+            CanExecute = canExecute;
+        }
 
         /// <summary>
         ///     The modifier key required to be pressed for the hotkey to be
@@ -50,5 +61,7 @@ namespace EnhancePoE.UI
         ///     States if the method can be executed.
         /// </summary>
         public bool CanExecute { get; set; }
+
+        public List<ModifierKeys> Modifiers { get; set; }
     }
 }
