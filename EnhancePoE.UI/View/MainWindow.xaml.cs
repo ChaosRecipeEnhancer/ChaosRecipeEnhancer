@@ -506,9 +506,12 @@ namespace EnhancePoE.UI.View
         private void InitializeHotkeys()
         {
             HotkeysManager.SetupSystemHook();
-            HotkeysManager.GetRefreshHotkey();
+/*            HotkeysManager.GetRefreshHotkey();
             HotkeysManager.GetToggleHotkey();
-            HotkeysManager.GetStashTabHotkey();
+            HotkeysManager.GetStashTabHotkey();*/
+            HotkeysManager.RefreshHotkey(Settings.Default.HotkeyRefresh);
+            HotkeysManager.RefreshHotkey(Settings.Default.HotkeyToggle);
+            HotkeysManager.RefreshHotkey(Settings.Default.HotkeyStashTab);
             AddAllHotkeys();
         }
 

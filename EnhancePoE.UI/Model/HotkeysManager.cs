@@ -27,6 +27,7 @@ namespace EnhancePoE.UI
         private static IntPtr HookID = IntPtr.Zero;
 
         public static ModifierKeys refreshModifier;
+        public static List<ModifierKeys> refreshModifiers;
         public static Key refreshKey;
 
         public static ModifierKeys toggleModifier;
@@ -34,6 +35,7 @@ namespace EnhancePoE.UI
         public static Key toggleKey;
 
         public static ModifierKeys stashTabModifier;
+        public static List<ModifierKeys> stashTabModifiers;
         public static Key stashTabKey;
 
         private static readonly ILogger _logger;
@@ -128,7 +130,109 @@ namespace EnhancePoE.UI
         /// </summary>
         private static void CheckHotkeys()
         {
-            if (toggleModifiers.Count > 1)
+            foreach (var hotkey in Hotkeys)
+            {
+                if (hotkey.reqModifiers && Keyboard.Modifiers != ModifierKeys.None)
+                {
+                    if (hotkey.Modifiers != null)
+                    {
+                        var ctrl_alt_shift = hotkey.Modifiers.Contains(ModifierKeys.Control) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Shift) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Alt);
+                        var ctrl_alt = hotkey.Modifiers.Contains(ModifierKeys.Control) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Alt) && !hotkey.Modifiers.Contains(ModifierKeys.Shift);
+                        var ctrl_shift = hotkey.Modifiers.Contains(ModifierKeys.Control) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Shift) && !hotkey.Modifiers.Contains(ModifierKeys.Alt);
+                        var shift_alt = hotkey.Modifiers.Contains(ModifierKeys.Shift) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Alt) && !hotkey.Modifiers.Contains(ModifierKeys.Control);
+
+                        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt | ModifierKeys.Shift) &&
+                            ctrl_alt_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                        {
+                            isPressed = true;
+                            if (hotkey.CanExecute)
+                            {
+                                hotkey.Callback?.Invoke();
+                                HotkeyFired?.Invoke(hotkey);
+                            }
+                        }
+                        else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) &&
+                            ctrl_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                        {
+                            isPressed = true;
+                            if (hotkey.CanExecute)
+                            {
+                                hotkey.Callback?.Invoke();
+                                HotkeyFired?.Invoke(hotkey);
+                            }
+                        }
+                        else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Shift) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) &&
+                            ctrl_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                        {
+                            isPressed = true;
+                            if (hotkey.CanExecute)
+                            {
+                                hotkey.Callback?.Invoke();
+                                HotkeyFired?.Invoke(hotkey);
+                            }
+                        }
+                        else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift | ModifierKeys.Alt) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control) &&
+                            shift_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                        {
+                            isPressed = true;
+                            if (hotkey.CanExecute)
+                            {
+                                hotkey.Callback?.Invoke();
+                                HotkeyFired?.Invoke(hotkey);
+                            }
+                        }
+
+                        if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
+                        {
+                            isPressed = false;
+                        }
+                    }
+                    else if (hotkey.Modifiers == null && hotkey.Modifier != ModifierKeys.None)
+                    {
+                        if (hotkey.Key != Key.None)
+                        {
+                            if (Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            {
+                                isPressed = true;
+                                if (hotkey.CanExecute)
+                                {
+                                    hotkey.Callback?.Invoke();
+                                    HotkeyFired?.Invoke(hotkey);
+                                }
+                            }
+                            if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
+                            {
+                                isPressed = false;
+                            }
+                        }
+                    }
+                }
+                else if (!hotkey.reqModifiers && Keyboard.Modifiers == ModifierKeys.None)
+                {
+                    if (hotkey.Key != Key.None)
+                    {
+                        if (Keyboard.Modifiers.HasFlag(hotkey.Modifier) && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                        {
+                            isPressed = true;
+                            if (hotkey.CanExecute)
+                            {
+                                hotkey.Callback?.Invoke();
+                                HotkeyFired?.Invoke(hotkey);
+                            }
+                        }
+                        if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
+                        {
+                            isPressed = false;
+                        }
+                    }
+                }
+            }
+            /*if (RequiresModifierKey)
             {
                 if (Keyboard.Modifiers != ModifierKeys.None)
                 {
@@ -199,6 +303,7 @@ namespace EnhancePoE.UI
             }
             else
             {
+                Debug.WriteLine("I was here");
                 foreach (var hotkey in Hotkeys)
                 {
                     if (hotkey.Key != Key.None)
@@ -219,7 +324,7 @@ namespace EnhancePoE.UI
                         }
                     }
                 }
-            }
+            }*/
         }
 
         /// <summary>
@@ -255,9 +360,10 @@ namespace EnhancePoE.UI
         /// <param name="key"></param>
         /// <param name="callbackMethod"></param>
         /// <param name="canExecute"></param>
-        public static void AddHotkey(ModifierKeys modifier, Key key, Action callbackMethod, bool canExecute = true)
+        public static void AddHotkey(ModifierKeys modifier, Key key, Action callbackMethod,bool reqModifiers = false, bool canExecute = true)
         {
-            AddHotkey(new GlobalHotkey(modifier, key, callbackMethod, canExecute));
+            if(modifier != ModifierKeys.None) reqModifiers = true;
+            AddHotkey(new GlobalHotkey(modifier, key, callbackMethod, reqModifiers, canExecute));
         }
         public static void AddHotkey(List<ModifierKeys> modifiers, Key key, Action callbackMethod, bool canExecute = true)
         {
@@ -353,7 +459,7 @@ namespace EnhancePoE.UI
             return CallNextHookEx(HookID, nCode, wParam, lParam);
         }
 
-        public static void GetRefreshHotkey()
+/*        public static void GetRefreshHotkey()
         {
             if (Settings.Default.HotkeyRefresh != "< not set >")
             {
@@ -380,10 +486,154 @@ namespace EnhancePoE.UI
                     refreshModifier = ModifierKeys.None;
                 }
             }
+        }*/
+
+        public static void RefreshHotkey(string hotkey)
+        {
+            if (hotkey != "< not set >")
+            {
+                string[] split_string = hotkey.Split('+');
+                
+                if (split_string.Length > 1 && split_string.Length < 3)
+                {
+                    string compare_string = split_string[0].Trim().ToLower();
+                    ModifierKeys temp_key;
+                    if (compare_string.Equals("ctrl"))
+                    {
+                        temp_key = ModifierKeys.Control;
+                    }
+                    else if (compare_string.Equals("alt"))
+                    {
+                        temp_key = ModifierKeys.Alt;
+                    }
+                    else if (compare_string.Equals("shift"))
+                    {
+                        temp_key = ModifierKeys.Shift;
+                    }
+                    else if (compare_string.Equals("win"))
+                    {
+                        temp_key = ModifierKeys.Windows;
+                    }
+                    else
+                    {
+                        temp_key = ModifierKeys.None;
+                    }
+
+                    SetModifier(hotkey, temp_key);
+                    SetKey(hotkey);
+                }
+                else if (split_string.Length > 2)
+                {
+                    List<ModifierKeys> temp = new List<ModifierKeys>();
+                    for (int i = 0; i < split_string.Length; i++)
+                    {
+                        string cmp = split_string[i].Trim().ToLower();
+                        if (cmp.Contains("alt"))
+                        {
+                            temp.Add(ModifierKeys.Alt);
+                        }
+                        else if (cmp.Contains("ctrl"))
+                        {
+                            temp.Add(ModifierKeys.Control);
+                        }
+                        else if (cmp.Contains("shift"))
+                        {
+                            temp.Add(ModifierKeys.Shift);
+                        }
+                        else if (cmp.Contains("win"))
+                        {
+                            temp.Add(ModifierKeys.Windows);
+                        }
+                    }
+
+                    SetModifier(hotkey, temp);
+                    SetKey(hotkey);
+                }
+                else
+                {
+                    SetModifier(hotkey, ModifierKeys.None);
+                    SetKey(hotkey);
+                }
+            }
+        }
+
+        private static void SetModifier(string hotkey, ModifierKeys mod)
+        {
+            string typeOfHotKey = GetHotkeyType(hotkey);
+            if (typeOfHotKey == "") return;
+
+            if (typeOfHotKey == "refresh")
+            {
+                refreshModifier = mod;
+            }
+            else if (typeOfHotKey == "toggle")
+            {
+                toggleModifier = mod;
+            }
+            else if (typeOfHotKey == "stashtab")
+            {
+                stashTabModifier = mod;
+            }
+        }
+        private static void SetModifier(string hotkey, List<ModifierKeys> mods)
+        {
+            string typeOfHotKey = GetHotkeyType(hotkey);
+            if (typeOfHotKey == "") return;
+
+            if (typeOfHotKey == "refresh")
+            {
+                refreshModifiers = mods;
+            }
+            else if (typeOfHotKey == "toggle")
+            {
+                toggleModifiers = mods;
+            }
+            else if (typeOfHotKey == "stashtab")
+            {
+                stashTabModifiers = mods;
+            }
+            RequiresModifierKey = true;
+        }
+
+        private static string GetHotkeyType(string hotkey)
+        {
+            if (hotkey.Equals(Settings.Default.HotkeyRefresh))
+            {
+                return "refresh";
+            }
+            else if (hotkey.Equals(Settings.Default.HotkeyToggle))
+            {
+                return "toggle";
+            }
+            else if (hotkey.Equals(Settings.Default.HotkeyStashTab))
+            {
+                return "stashtab";
+            }
+            return "";
+        }
+
+        private static void SetKey(string hotkey)
+        {
+            string[] split_string = hotkey.Split('+');
+            string last_element = split_string[split_string.Length - 1].Trim();
+            string typeOfHotKey = GetHotkeyType(hotkey);
+
+            if (typeOfHotKey == "refresh")
+            {
+                Enum.TryParse(last_element, out refreshKey);
+            }
+            else if (typeOfHotKey == "toggle")
+            {
+                Enum.TryParse(last_element, out toggleKey);
+            }
+            else if (typeOfHotKey == "stashtab")
+            {
+                Enum.TryParse(last_element, out stashTabKey);
+            }
         }
 
 
-        public static void GetToggleHotkey()
+/*        public static void GetToggleHotkey()
         {
             if (Settings.Default.HotkeyToggle != "< not set >")
             {
@@ -436,9 +686,9 @@ namespace EnhancePoE.UI
                     toggleModifier = ModifierKeys.None;
                 }
             }
-        }
+        }*/
 
-        public static void GetStashTabHotkey()
+/*        public static void GetStashTabHotkey()
         {
             if (Settings.Default.HotkeyStashTab != "< not set >")
             {
@@ -465,7 +715,7 @@ namespace EnhancePoE.UI
                     stashTabModifier = ModifierKeys.None;
                 }
             }
-        }
+        }*/
 
         //public static void GetReloadFilterHotkey()
         //{

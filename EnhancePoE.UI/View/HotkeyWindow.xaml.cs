@@ -50,7 +50,7 @@ namespace EnhancePoE.UI.View
                     else
                     {
                         Settings.Default.HotkeyRefresh = CustomHotkeyToggle.Hotkey.ToString();
-                        HotkeysManager.GetRefreshHotkey();
+                        HotkeysManager.RefreshHotkey(Settings.Default.HotkeyRefresh);
                     }
 
                     ReApplyHotkeys();
@@ -66,7 +66,7 @@ namespace EnhancePoE.UI.View
                     else
                     {
                         Settings.Default.HotkeyToggle = CustomHotkeyToggle.Hotkey.ToString();
-                        HotkeysManager.GetToggleHotkey();
+                        HotkeysManager.RefreshHotkey(Settings.Default.HotkeyToggle);
                     }
 
                     ReApplyHotkeys();
@@ -82,7 +82,7 @@ namespace EnhancePoE.UI.View
                     else
                     {
                         Settings.Default.HotkeyStashTab = CustomHotkeyToggle.Hotkey.ToString();
-                        HotkeysManager.GetStashTabHotkey();
+                        HotkeysManager.RefreshHotkey(Settings.Default.HotkeyStashTab);
                     }
 
                     ReApplyHotkeys();

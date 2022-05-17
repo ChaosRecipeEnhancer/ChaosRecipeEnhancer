@@ -22,14 +22,15 @@ namespace EnhancePoE.UI
         ///     States whether the callback can be run
         ///     (can be changed, see <see cref="CanExecute" />)
         /// </param>
-        public GlobalHotkey(ModifierKeys modifier, Key key, Action callbackMethod, bool canExecute = true)
+        public GlobalHotkey(ModifierKeys modifier, Key key, Action callbackMethod, bool reqModifiers = false, bool canExecute = true)
         {
             Modifier = modifier;
             Key = key;
             Callback = callbackMethod;
+            this.reqModifiers = reqModifiers;
             CanExecute = canExecute;
         }
-        public GlobalHotkey(List<ModifierKeys> modifiers, Key key, Action callbackMethod,  bool canExecute = true)
+        public GlobalHotkey(List<ModifierKeys> modifiers, Key key, Action callbackMethod, bool canExecute = true)
         {
             if (modifiers.Count == 0)
                 Modifiers = new List<ModifierKeys>();
@@ -37,6 +38,7 @@ namespace EnhancePoE.UI
                 Modifiers = modifiers;
             Key = key;
             Callback = callbackMethod;
+            reqModifiers = true;
             CanExecute = canExecute;
         }
 
@@ -45,6 +47,7 @@ namespace EnhancePoE.UI
         /// </summary>
         public ModifierKeys Modifier { get; set; }
 
+        public List<ModifierKeys> Modifiers { get; set; }
         /// <summary>
         ///     The key required to be pressed for the hotkey to be fired
         /// </summary>
@@ -62,6 +65,10 @@ namespace EnhancePoE.UI
         /// </summary>
         public bool CanExecute { get; set; }
 
-        public List<ModifierKeys> Modifiers { get; set; }
+        /// <summary>
+        ///     Does current hotkey need modifiers to run?
+        /// </summary>
+        public bool reqModifiers { get; set; }
+
     }
 }
