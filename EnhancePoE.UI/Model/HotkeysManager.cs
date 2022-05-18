@@ -115,9 +115,7 @@ namespace EnhancePoE.UI
             Hotkeys.Remove(hotkey);
         }
 
-        /// <summary>
-        ///     Too replace all the shit if statments in CheckHotKeys with more than one modifier
-        /// </summary>
+        // TODO: Replace if statments inside CheckHotkeys
         public static bool ValidKeyCombo(GlobalHotkey hotkey)
         {
             throw new NotImplementedException();
@@ -291,6 +289,13 @@ namespace EnhancePoE.UI
 
             return hotkeys;
         }
+        /// <summary>
+        ///     Finds and returns all hotkeys in the hotkeys list that have matching modifiers and keys given
+        /// </summary>
+        /// <param name="modifier"></param>
+        /// <param name="key"></param>
+        /// <param name="callbackMethod">If this is not null, the callback method will be checked</param>
+        /// <returns></returns>
         public static List<GlobalHotkey> FindHotkeys(List<ModifierKeys> modifiers, Key key)
         {
             var hotkeys = new List<GlobalHotkey>();
@@ -304,7 +309,7 @@ namespace EnhancePoE.UI
         /// <summary>
         ///     Creates and adds a new hotkey to the hotkeys list.
         /// </summary>
-        /// <param name="modifier">The modifier key. ALT Does not work.</param>
+        /// <param name="modifier">Single modifier ALT,CTRL,SHIFT</param>
         /// <param name="key"></param>
         /// <param name="callbackMethod"></param>
         /// <param name="canExecute"></param>
@@ -313,6 +318,13 @@ namespace EnhancePoE.UI
             if(modifier != ModifierKeys.None) reqModifiers = true;
             AddHotkey(new GlobalHotkey(modifier, key, callbackMethod, reqModifiers, canExecute));
         }
+        /// <summary>
+        ///     Creates and adds a new hotkey to the hotkeys list.
+        /// </summary>
+        /// <param name="modifier">Can use any combinations of modifiers out of CTRL+ALT+SHIFT for now.</param>
+        /// <param name="key"></param>
+        /// <param name="callbackMethod"></param>
+        /// <param name="canExecute"></param>
         public static void AddHotkey(List<ModifierKeys> modifiers, Key key, Action callbackMethod, bool canExecute = true)
         {
             AddHotkey(new GlobalHotkey(modifiers, key, callbackMethod, canExecute));
@@ -383,7 +395,6 @@ namespace EnhancePoE.UI
                 }
             }
         }
-
         /// <summary>
         ///     The method called when a key up/down occours across the system.
         /// </summary>
@@ -406,36 +417,19 @@ namespace EnhancePoE.UI
             // handled the key events and now other apps can handle it next.
             return CallNextHookEx(HookID, nCode, wParam, lParam);
         }
-
-/*        public static void GetRefreshHotkey()
-        {
-            if (Settings.Default.HotkeyRefresh != "< not set >")
-            {
-                var refreshString = Settings.Default.HotkeyRefresh.Split('+');
-
-                if (refreshString.Length > 1)
-                {
-                    if (refreshString[0].Trim() == "Ctrl")
-                        refreshModifier = ModifierKeys.Control;
-                    else if (refreshString[0].Trim() == "Alt")
-                        refreshModifier = ModifierKeys.Alt;
-                    else if (refreshString[0].Trim() == "Win")
-                        refreshModifier = ModifierKeys.Windows;
-                    else if (refreshString[0].Trim() == "Shift")
-                        refreshModifier = ModifierKeys.Shift;
-                    else
-                        refreshModifier = ModifierKeys.None;
-
-                    Enum.TryParse(refreshString[1].Trim(), out refreshKey);
-                }
-                else
-                {
-                    Enum.TryParse(refreshString[0].Trim(), out refreshKey);
-                    refreshModifier = ModifierKeys.None;
-                }
-            }
-        }*/
-
+        /// <summary>
+        /// <para>
+        /// This method will refresh the fields with a new key and modifier(s).
+        /// </para>
+        /// <example>
+        /// Example:
+        /// <code>
+        /// RefreshHotKey("CTRL + ALT + SHIFT + F1")
+        /// </code>
+        /// Sets corresponding fields with correct key and modifier(s).
+        /// </example>
+        /// </summary>
+        /// <param name="hotkey">the string containing a new key and modifier(s).</param>
         public static void RefreshHotkey(string hotkey)
         {
             if (hotkey != "< not set >")
@@ -504,7 +498,13 @@ namespace EnhancePoE.UI
                 }
             }
         }
-
+        /// <summary> 
+        /// <para>
+        /// Sets the field of the given parameter.
+        /// </para>
+        /// </summary>
+        /// <param name="hotkey">the new hotkey.</param>
+        /// <param name="mod">the new modifier.</param>
         private static void SetModifier(string hotkey, ModifierKeys mod)
         {
             string typeOfHotKey = GetHotkeyType(hotkey);
@@ -523,6 +523,17 @@ namespace EnhancePoE.UI
                 stashTabModifier = mod;
             }
         }
+        /// <summary> 
+        /// List containing modifiers version of 
+        /// <c>
+        /// SetModifier
+        /// </c>
+        /// <para>
+        /// Sets the field of the given parameter. 
+        /// </para>
+        /// </summary>
+        /// <param name="hotkey">the new hotkey.</param>
+        /// <param name="mods">the new modifiers.</param>
         private static void SetModifier(string hotkey, List<ModifierKeys> mods)
         {
             string typeOfHotKey = GetHotkeyType(hotkey);
@@ -542,7 +553,14 @@ namespace EnhancePoE.UI
             }
             RequiresModifierKey = true;
         }
-
+        /// <summary>
+        /// Checks what type the current hotkey is and returns a string.
+        /// </summary>
+        /// <param name="hotkey">used to get type of hotkey</param>
+        /// <returns>
+        /// A string corresponding to the given <paramref name="hotkey"/>,
+        /// if it fails - returns an empty string.
+        /// </returns>
         private static string GetHotkeyType(string hotkey)
         {
             if (hotkey.Equals(Settings.Default.HotkeyRefresh))
@@ -559,7 +577,10 @@ namespace EnhancePoE.UI
             }
             return "";
         }
-
+        /// <summary>
+        /// It will set the hotkey to be used for the corresponding type of hotkey.
+        /// </summary>
+        /// <param name="hotkey">used to get type of hotkey and extract key from</param>
         private static void SetKey(string hotkey)
         {
             string[] split_string = hotkey.Split('+');
@@ -579,130 +600,6 @@ namespace EnhancePoE.UI
                 Enum.TryParse(last_element, out stashTabKey);
             }
         }
-
-
-/*        public static void GetToggleHotkey()
-        {
-            if (Settings.Default.HotkeyToggle != "< not set >")
-            {
-                var toggleString = Settings.Default.HotkeyToggle.Split('+');
-                toggleModifiers = new List<ModifierKeys>();
-
-                if (toggleString.Length > 1 && toggleString.Length < 3)
-                {
-                    if (toggleString[0].Trim() == "Ctrl")
-                        toggleModifier = ModifierKeys.Control;
-                    else if (toggleString[0].Trim() == "Alt")
-                        toggleModifier = ModifierKeys.Alt;
-                    else if (toggleString[0].Trim() == "Win")
-                        toggleModifier = ModifierKeys.Windows;
-                    else if (toggleString[0].Trim() == "Shift")
-                        toggleModifier = ModifierKeys.Shift;
-                    else
-                        toggleModifier = ModifierKeys.None;
-
-                    Enum.TryParse(toggleString[1].Trim(), out toggleKey);
-                }
-                else if (toggleString.Length > 2)
-                {
-                    
-                    for (int i = 0; i < toggleString.Length; i++)
-                    {
-                        if (toggleString[i].Trim().ToLower().Contains("alt"))
-                        {
-                            toggleModifiers.Add(ModifierKeys.Alt);
-                        }
-                        else if (toggleString[i].Trim().ToLower().Contains("ctrl"))
-                        {
-                            toggleModifiers.Add(ModifierKeys.Control);
-                        }
-                        else if (toggleString[i].Trim().ToLower().Contains("shift"))
-                        {
-                            toggleModifiers.Add(ModifierKeys.Shift);
-                        }
-                        else if (toggleString[i].Trim().ToLower().Contains("win"))
-                        {
-                            toggleModifiers.Add(ModifierKeys.Windows);
-                        }
-                    }
-
-                    Enum.TryParse(toggleString[toggleString.Length - 1], out toggleKey);
-                }
-                else
-                {
-                    Enum.TryParse(toggleString[0].Trim(), out toggleKey);
-                    toggleModifier = ModifierKeys.None;
-                }
-            }
-        }*/
-
-/*        public static void GetStashTabHotkey()
-        {
-            if (Settings.Default.HotkeyStashTab != "< not set >")
-            {
-                var stashTabString = Settings.Default.HotkeyStashTab.Split('+');
-
-                if (stashTabString.Length > 1)
-                {
-                    if (stashTabString[0].Trim() == "Ctrl")
-                        stashTabModifier = ModifierKeys.Control;
-                    else if (stashTabString[0].Trim() == "Alt")
-                        stashTabModifier = ModifierKeys.Alt;
-                    else if (stashTabString[0].Trim() == "Win")
-                        stashTabModifier = ModifierKeys.Windows;
-                    else if (stashTabString[0].Trim() == "Shift")
-                        stashTabModifier = ModifierKeys.Shift;
-                    else
-                        stashTabModifier = ModifierKeys.None;
-
-                    Enum.TryParse(stashTabString[1].Trim(), out stashTabKey);
-                }
-                else
-                {
-                    Enum.TryParse(stashTabString[0].Trim(), out stashTabKey);
-                    stashTabModifier = ModifierKeys.None;
-                }
-            }
-        }*/
-
-        //public static void GetReloadFilterHotkey()
-        //{
-        //    if (Properties.Settings.Default.HotkeyReloadFilter != "< not set >")
-        //    {
-        //        string[] reloadFilterString = Properties.Settings.Default.HotkeyReloadFilter.Split('+');
-
-        //        if (reloadFilterString.Length > 1)
-        //        {
-        //            if (reloadFilterString[0].Trim() == "Ctrl")
-        //            {
-        //                reloadFilterModifier = ModifierKeys.Control;
-        //            }
-        //            else if (reloadFilterString[0].Trim() == "Alt")
-        //            {
-        //                reloadFilterModifier = ModifierKeys.Alt;
-        //            }
-        //            else if (reloadFilterString[0].Trim() == "Win")
-        //            {
-        //                reloadFilterModifier = ModifierKeys.Windows;
-        //            }
-        //            else if (reloadFilterString[0].Trim() == "Shift")
-        //            {
-        //                reloadFilterModifier = ModifierKeys.Shift;
-        //            }
-        //            else
-        //            {
-        //                reloadFilterModifier = ModifierKeys.None;
-        //            }
-
-        //            Enum.TryParse(reloadFilterString[1].Trim(), out reloadFilterKey);
-        //        }
-        //        else
-        //        {
-        //            Enum.TryParse(reloadFilterString[0].Trim(), out reloadFilterKey);
-        //            reloadFilterModifier = ModifierKeys.None;
-        //        }
-        //    }
-        //}
 
         public static void RemoveToggleHotkey()
         {
