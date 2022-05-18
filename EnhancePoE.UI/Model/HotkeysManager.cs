@@ -115,10 +115,18 @@ namespace EnhancePoE.UI
             Hotkeys.Remove(hotkey);
         }
 
-        // TODO: Replace if statments inside CheckHotkeys
-        public static bool ValidKeyCombo(GlobalHotkey hotkey)
+        /// <summary>
+        /// Its self explanatory.
+        /// </summary>
+        /// <param name="hotkey">all the information needed for this too function lul</param>
+        public static void HandleKey(GlobalHotkey hotkey)
         {
-            throw new NotImplementedException();
+            if(Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+            {
+                isPressed = true;
+                if(hotkey.CanExecute)
+                    hotkey.Callback?.Invoke();
+            }
         }
 
         /// <summary>
@@ -153,41 +161,21 @@ namespace EnhancePoE.UI
 
                         if(hotkey.Key != Key.None)
                         {
-                            if (ctrl_alt_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            if(ctrl_alt_shift)
                             {
-                                isPressed = true;
-                                if (hotkey.CanExecute)
-                                {
-                                    hotkey.Callback?.Invoke();
-                                    HotkeyFired?.Invoke(hotkey);
-                                }
+                                HandleKey(hotkey);
                             }
-                            else if (ctrl_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            else if (ctrl_alt)
                             {
-                                isPressed = true;
-                                if (hotkey.CanExecute)
-                                {
-                                    hotkey.Callback?.Invoke();
-                                    HotkeyFired?.Invoke(hotkey);
-                                }
+                                HandleKey(hotkey);
                             }
-                            else if (ctrl_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            else if (ctrl_shift)
                             {
-                                isPressed = true;
-                                if (hotkey.CanExecute)
-                                {
-                                    hotkey.Callback?.Invoke();
-                                    HotkeyFired?.Invoke(hotkey);
-                                }
+                                HandleKey(hotkey);
                             }
-                            else if (shift_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            else if (shift_alt)
                             {
-                                isPressed = true;
-                                if (hotkey.CanExecute)
-                                {
-                                    hotkey.Callback?.Invoke();
-                                    HotkeyFired?.Invoke(hotkey);
-                                }
+                                HandleKey(hotkey);
                             }
 
                             if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
@@ -214,34 +202,20 @@ namespace EnhancePoE.UI
                             hotkey.Modifier.HasFlag(ModifierKeys.Shift) &&
                             !Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) &&
                             !Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+
                         if(hotkey.Key != Key.None)
                         {
-                            if (alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            if (alt)
                             {
-                                isPressed = true;
-                                if (hotkey.CanExecute)
-                                {
-                                    hotkey.Callback?.Invoke();
-                                    HotkeyFired?.Invoke(hotkey);
-                                }
+                                HandleKey(hotkey);
                             }
-                            else if (control && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            else if (control)
                             {
-                                isPressed = true;
-                                if (hotkey.CanExecute)
-                                {
-                                    hotkey.Callback?.Invoke();
-                                    HotkeyFired?.Invoke(hotkey);
-                                }
+                                HandleKey(hotkey);
                             }
-                            else if (shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            else if (shift)
                             {
-                                isPressed = true;
-                                if (hotkey.CanExecute)
-                                {
-                                    hotkey.Callback?.Invoke();
-                                    HotkeyFired?.Invoke(hotkey);
-                                }
+                                HandleKey(hotkey);
                             }
                             if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
                             {
@@ -255,15 +229,8 @@ namespace EnhancePoE.UI
                 {
                     if (hotkey.Key != Key.None)
                     {
-                        if (Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
-                        {
-                            isPressed = true;
-                            if (hotkey.CanExecute)
-                            {
-                                hotkey.Callback?.Invoke();
-                                HotkeyFired?.Invoke(hotkey);
-                            }
-                        }
+                        HandleKey(hotkey);
+
                         if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
                         {
                             isPressed = false;
