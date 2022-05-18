@@ -138,7 +138,7 @@ namespace EnhancePoE.UI
         {
             foreach (var hotkey in Hotkeys)
             {
-                if (hotkey.reqModifiers)
+                if (hotkey.ReqModifiers)
                 {
                     if (hotkey.Modifiers != null && hotkey.Modifiers.Count > 1)
                     {
@@ -225,7 +225,7 @@ namespace EnhancePoE.UI
                     }
                 }
 
-                if (!hotkey.reqModifiers && Keyboard.Modifiers == ModifierKeys.None)
+                if (!hotkey.ReqModifiers && Keyboard.Modifiers == ModifierKeys.None)
                 {
                     if (hotkey.Key != Key.None)
                     {
