@@ -132,71 +132,30 @@ namespace EnhancePoE.UI
         {
             foreach (var hotkey in Hotkeys)
             {
-                if (hotkey.reqModifiers && Keyboard.Modifiers != ModifierKeys.None)
+                if (hotkey.reqModifiers)
                 {
-                    if (hotkey.Modifiers != null)
+                    if (hotkey.Modifiers != null && hotkey.Modifiers.Count > 1)
                     {
-                        var ctrl_alt_shift = hotkey.Modifiers.Contains(ModifierKeys.Control) &&
+                        var ctrl_alt_shift = Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt | ModifierKeys.Shift) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Control) &&
                             hotkey.Modifiers.Contains(ModifierKeys.Shift) &&
                             hotkey.Modifiers.Contains(ModifierKeys.Alt);
-                        var ctrl_alt = hotkey.Modifiers.Contains(ModifierKeys.Control) &&
-                            hotkey.Modifiers.Contains(ModifierKeys.Alt) && !hotkey.Modifiers.Contains(ModifierKeys.Shift);
-                        var ctrl_shift = hotkey.Modifiers.Contains(ModifierKeys.Control) &&
-                            hotkey.Modifiers.Contains(ModifierKeys.Shift) && !hotkey.Modifiers.Contains(ModifierKeys.Alt);
-                        var shift_alt = hotkey.Modifiers.Contains(ModifierKeys.Shift) &&
-                            hotkey.Modifiers.Contains(ModifierKeys.Alt) && !hotkey.Modifiers.Contains(ModifierKeys.Control);
+                        var ctrl_alt = Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt | ModifierKeys.Shift) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Control) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Alt) && 
+                            !hotkey.Modifiers.Contains(ModifierKeys.Shift);
+                        var ctrl_shift = Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt | ModifierKeys.Shift) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Control) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Shift) && 
+                            !hotkey.Modifiers.Contains(ModifierKeys.Alt);
+                        var shift_alt = Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt | ModifierKeys.Shift) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Shift) &&
+                            hotkey.Modifiers.Contains(ModifierKeys.Alt) && 
+                            !hotkey.Modifiers.Contains(ModifierKeys.Control);
 
-                        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt | ModifierKeys.Shift) &&
-                            ctrl_alt_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                        if(hotkey.Key != Key.None)
                         {
-                            isPressed = true;
-                            if (hotkey.CanExecute)
-                            {
-                                hotkey.Callback?.Invoke();
-                                HotkeyFired?.Invoke(hotkey);
-                            }
-                        }
-                        else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) &&
-                            ctrl_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
-                        {
-                            isPressed = true;
-                            if (hotkey.CanExecute)
-                            {
-                                hotkey.Callback?.Invoke();
-                                HotkeyFired?.Invoke(hotkey);
-                            }
-                        }
-                        else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Shift) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) &&
-                            ctrl_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
-                        {
-                            isPressed = true;
-                            if (hotkey.CanExecute)
-                            {
-                                hotkey.Callback?.Invoke();
-                                HotkeyFired?.Invoke(hotkey);
-                            }
-                        }
-                        else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift | ModifierKeys.Alt) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control) &&
-                            shift_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
-                        {
-                            isPressed = true;
-                            if (hotkey.CanExecute)
-                            {
-                                hotkey.Callback?.Invoke();
-                                HotkeyFired?.Invoke(hotkey);
-                            }
-                        }
-
-                        if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
-                        {
-                            isPressed = false;
-                        }
-                    }
-                    else if (hotkey.Modifiers == null && hotkey.Modifier != ModifierKeys.None)
-                    {
-                        if (hotkey.Key != Key.None)
-                        {
-                            if (Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            if (ctrl_alt_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
                             {
                                 isPressed = true;
                                 if (hotkey.CanExecute)
@@ -205,53 +164,7 @@ namespace EnhancePoE.UI
                                     HotkeyFired?.Invoke(hotkey);
                                 }
                             }
-                            if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
-                            {
-                                isPressed = false;
-                            }
-                        }
-                    }
-                }
-                else if (!hotkey.reqModifiers && Keyboard.Modifiers == ModifierKeys.None)
-                {
-                    if (hotkey.Key != Key.None)
-                    {
-                        if (Keyboard.Modifiers.HasFlag(hotkey.Modifier) && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
-                        {
-                            isPressed = true;
-                            if (hotkey.CanExecute)
-                            {
-                                hotkey.Callback?.Invoke();
-                                HotkeyFired?.Invoke(hotkey);
-                            }
-                        }
-                        if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
-                        {
-                            isPressed = false;
-                        }
-                    }
-                }
-            }
-            /*if (RequiresModifierKey)
-            {
-                if (Keyboard.Modifiers != ModifierKeys.None)
-                {
-                    foreach (var hotkey in Hotkeys)
-                    {
-                        if (hotkey.Modifiers != null)
-                        {
-                            var ctrl_alt_shift = hotkey.Modifiers.Contains(ModifierKeys.Control) && 
-                                hotkey.Modifiers.Contains(ModifierKeys.Shift) && 
-                                hotkey.Modifiers.Contains(ModifierKeys.Alt);
-                            var ctrl_alt = hotkey.Modifiers.Contains(ModifierKeys.Control) &&
-                                hotkey.Modifiers.Contains(ModifierKeys.Alt) && !hotkey.Modifiers.Contains(ModifierKeys.Shift);
-                            var ctrl_shift = hotkey.Modifiers.Contains(ModifierKeys.Control) &&
-                                hotkey.Modifiers.Contains(ModifierKeys.Shift) && !hotkey.Modifiers.Contains(ModifierKeys.Alt);
-                            var shift_alt = hotkey.Modifiers.Contains(ModifierKeys.Shift) &&
-                                hotkey.Modifiers.Contains(ModifierKeys.Alt) && !hotkey.Modifiers.Contains(ModifierKeys.Control);
-
-                            if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt | ModifierKeys.Shift) &&
-                                ctrl_alt_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            else if (ctrl_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
                             {
                                 isPressed = true;
                                 if (hotkey.CanExecute)
@@ -260,8 +173,7 @@ namespace EnhancePoE.UI
                                     HotkeyFired?.Invoke(hotkey);
                                 }
                             }
-                            else if(Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Alt) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) &&
-                                ctrl_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            else if (ctrl_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
                             {
                                 isPressed = true;
                                 if (hotkey.CanExecute)
@@ -270,18 +182,7 @@ namespace EnhancePoE.UI
                                     HotkeyFired?.Invoke(hotkey);
                                 }
                             }
-                            else if(Keyboard.Modifiers.HasFlag(ModifierKeys.Control | ModifierKeys.Shift) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) &&
-                                ctrl_shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
-                            {
-                                isPressed = true;
-                                if (hotkey.CanExecute)
-                                {
-                                    hotkey.Callback?.Invoke();
-                                    HotkeyFired?.Invoke(hotkey);
-                                }
-                            }
-                            else if(Keyboard.Modifiers.HasFlag(ModifierKeys.Shift | ModifierKeys.Alt) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control) &&
-                                shift_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            else if (shift_alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
                             {
                                 isPressed = true;
                                 if (hotkey.CanExecute)
@@ -296,19 +197,67 @@ namespace EnhancePoE.UI
                                 isPressed = false;
                             }
                         }
-                        
                     }
                     
+                    if (hotkey.Modifiers == null && hotkey.Modifier != ModifierKeys.None)
+                    {
+                        var alt =
+                            Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) &&
+                            hotkey.Modifier.HasFlag(ModifierKeys.Alt) &&
+                            !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) &&
+                            !Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+                        var control =
+                            Keyboard.Modifiers.HasFlag(ModifierKeys.Control) &&
+                            hotkey.Modifier.HasFlag(ModifierKeys.Control) &&
+                            !Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) &&
+                            !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
+                        var shift =
+                            Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) &&
+                            hotkey.Modifier.HasFlag(ModifierKeys.Shift) &&
+                            !Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) &&
+                            !Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+                        if(hotkey.Key != Key.None)
+                        {
+                            if (alt && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            {
+                                isPressed = true;
+                                if (hotkey.CanExecute)
+                                {
+                                    hotkey.Callback?.Invoke();
+                                    HotkeyFired?.Invoke(hotkey);
+                                }
+                            }
+                            else if (control && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            {
+                                isPressed = true;
+                                if (hotkey.CanExecute)
+                                {
+                                    hotkey.Callback?.Invoke();
+                                    HotkeyFired?.Invoke(hotkey);
+                                }
+                            }
+                            else if (shift && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                            {
+                                isPressed = true;
+                                if (hotkey.CanExecute)
+                                {
+                                    hotkey.Callback?.Invoke();
+                                    HotkeyFired?.Invoke(hotkey);
+                                }
+                            }
+                            if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
+                            {
+                                isPressed = false;
+                            }
+                        }
+                    }
                 }
-            }
-            else
-            {
-                Debug.WriteLine("I was here");
-                foreach (var hotkey in Hotkeys)
+
+                if (!hotkey.reqModifiers && Keyboard.Modifiers == ModifierKeys.None)
                 {
                     if (hotkey.Key != Key.None)
                     {
-                        if (Keyboard.Modifiers.HasFlag(hotkey.Modifier) && Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
+                        if (Keyboard.IsKeyDown(hotkey.Key) && !isPressed)
                         {
                             isPressed = true;
                             if (hotkey.CanExecute)
@@ -317,14 +266,13 @@ namespace EnhancePoE.UI
                                 HotkeyFired?.Invoke(hotkey);
                             }
                         }
-
-                        if(Keyboard.IsKeyUp(hotkey.Key) && isPressed)
+                        if (Keyboard.IsKeyUp(hotkey.Key) && isPressed)
                         {
                             isPressed = false;
                         }
                     }
                 }
-            }*/
+            }
         }
 
         /// <summary>
