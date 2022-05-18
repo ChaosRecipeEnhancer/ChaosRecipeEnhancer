@@ -53,15 +53,19 @@ namespace EnhancePoE.UI.Model
             pt.X -= 1;
             pt.Y -= 1;
 
-            var tabX = Convert.ToInt32(Math.Floor(pt.X + s.TabHeader.ActualWidth + 1));
-            var tabY = Convert.ToInt32(Math.Floor(pt.Y + s.TabHeader.ActualHeight + 1));
+           // can be null if user closes overlay while fetching with stash tab overlay open
+           if (s.TabHeader != null)
+           {
+                var tabX = Convert.ToInt32(Math.Floor(pt.X + s.TabHeader.ActualWidth + 1));
+                var tabY = Convert.ToInt32(Math.Floor(pt.Y + s.TabHeader.ActualHeight + 1));
 
-            if (clickX > pt.X
-                && clickY > pt.Y
-                && clickX < tabX
-                && clickY < tabY)
-                return true;
 
+                if (clickX > pt.X
+                    && clickY > pt.Y
+                    && clickX < tabX
+                    && clickY < tabY)
+                    return true;
+           }
             return false;
         }
 
