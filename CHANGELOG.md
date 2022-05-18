@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 1.5.5
+
+- fixing crash that could occur if user closes overlay while fetching with the stash tab overlay open (thanks to [@ttgx1000](https://github.com/ttgx1000))
+
 #### 1.5.4
 
 - new installer UI that allows for custom installer location (also gives you progress on installation and notifies you when it's complete)
