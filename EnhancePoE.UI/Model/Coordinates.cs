@@ -100,7 +100,7 @@ namespace EnhancePoE.UI.Model
         }
 
         private static List<Cell> GetAllActiveCells(int index) =>
-            StashTabList.StashTabs[index].OverlayCellsList.Where(x => x.Active);
+            StashTabList.StashTabs[index].OverlayCellsList.Where(x => x.Active).ToList();
 
         public static void OverlayClickEvent(StashTabOverlayView stashTabOverlayView)
         {
