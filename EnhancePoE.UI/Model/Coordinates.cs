@@ -23,20 +23,17 @@ namespace EnhancePoE.UI.Model
             var btnX = Convert.ToInt32(Math.Ceiling(pt.X + btn.ActualWidth + 1));
             var btnY = Convert.ToInt32(Math.Ceiling(pt.Y + btn.ActualHeight + 1));
 
-            if (clickX > pt.X
+            return (clickX > pt.X
                 && clickY > pt.Y
                 && clickX < btnX
-                && clickY < btnY)
-                return true;
-
-            return false;
+                && clickY < btnY);
         }
 
         private static Point GetCoordinates(Button item)
         {
             if (item == null) 
                 return new Point(0, 0);
-                
+
             var locationFromScreen = item.PointToScreen(new Point(0, 0));
             return locationFromScreen;
         }
@@ -78,13 +75,10 @@ namespace EnhancePoE.UI.Model
             var btnX = Convert.ToInt32(Math.Floor(pt.X + btn.ActualWidth + 1));
             var btnY = Convert.ToInt32(Math.Floor(pt.Y + btn.ActualHeight + 1));
 
-            if (clickX > pt.X
+            return (clickX > pt.X
                 && clickY > pt.Y
                 && clickX < btnX
-                && clickY < btnY)
-                return true;
-
-            return false;
+                && clickY < btnY);
         }
 
         private static Point GetTabHeaderCoordinates(TextBlock item)
