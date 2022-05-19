@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using EnhancePoE.UI.UserControls;
@@ -33,17 +34,18 @@ namespace EnhancePoE.UI.Model
 
         private static Point GetCoordinates(Button item)
         {
-            if (item != null)
-            {
-                var locationFromScreen = item.PointToScreen(new Point(0, 0));
-                return locationFromScreen;
-            }
-
-            return new Point(0, 0);
+            if (item == null) 
+                return new Point(0, 0);
+                
+            var locationFromScreen = item.PointToScreen(new Point(0, 0));
+            return locationFromScreen;
         }
 
         private static bool CheckForHeaderHit(StashTab s)
         {
+            if (s.TabHeader == null) 
+                return false;
+
             var clickX = MouseHook.ClickLocationX;
             var clickY = MouseHook.ClickLocationY;
 
@@ -53,20 +55,13 @@ namespace EnhancePoE.UI.Model
             pt.X -= 1;
             pt.Y -= 1;
 
-           // can be null if user closes overlay while fetching with stash tab overlay open
-           if (s.TabHeader != null)
-           {
-                var tabX = Convert.ToInt32(Math.Floor(pt.X + s.TabHeader.ActualWidth + 1));
-                var tabY = Convert.ToInt32(Math.Floor(pt.Y + s.TabHeader.ActualHeight + 1));
+            var tabX = Convert.ToInt32(Math.Floor(pt.X + s.TabHeader.ActualWidth + 1));
+            var tabY = Convert.ToInt32(Math.Floor(pt.Y + s.TabHeader.ActualHeight + 1));
 
-
-                if (clickX > pt.X
-                    && clickY > pt.Y
-                    && clickX < tabX
-                    && clickY < tabY)
-                    return true;
-           }
-            return false;
+            return (clickX > pt.X
+                && clickY > pt.Y
+                && clickX < tabX
+                && clickY < tabY);
         }
 
         private static bool CheckForEditButtonHit(Button btn)
@@ -94,104 +89,87 @@ namespace EnhancePoE.UI.Model
 
         private static Point GetTabHeaderCoordinates(TextBlock item)
         {
-            if (item != null)
-            {
-                var locationFromScreen = item.PointToScreen(new Point(0, 0));
-                return locationFromScreen;
-            }
+            if (item == null)
+                return new Point(0, 0);
 
-            return new Point(0, 0);
+            var locationFromScreen = item.PointToScreen(new Point(0, 0));
+            return locationFromScreen;
         }
 
         private static Point GetEditButtonCoordinates(Button button)
         {
-            if (button != null)
-            {
-                var locationFromScreen = button.PointToScreen(new Point(0, 0));
-                return locationFromScreen;
-            }
+            if (button == null)
+                return new Point(0, 0);
 
-            return new Point(0, 0);
+            var locationFromScreen = button.PointToScreen(new Point(0, 0));
+            return locationFromScreen;
         }
 
-        private static List<Cell> GetAllActiveCells(int index)
-        {
-            var activeCells = new List<Cell>();
-
-            foreach (var cell in StashTabList.StashTabs[index].OverlayCellsList)
-                if (cell.Active)
-                    activeCells.Add(cell);
-
-            return activeCells;
-        }
-
-        // mouse hook action
-        // public static void Event(object sender, EventArgs e)
-        // {
-        //     OverlayClickEvent();
-        // }
+        private static List<Cell> GetAllActiveCells(int index) =>
+            StashTabList.StashTabs[index].OverlayCellsList.Where(x => x.Active);
 
         public static void OverlayClickEvent(StashTabOverlayView stashTabOverlayView)
         {
-            if (stashTabOverlayView.IsOpen)
+            if (!stashTabOverlayView.IsOpen)
             {
-                var selectedIndex = stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex;
-                var isHit = false;
-                var hitIndex = -1;
+                return;
+            }
+            var selectedIndex = stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex;
+            var isHit = false;
+            var hitIndex = -1;
 
-                var activeCells = GetAllActiveCells(selectedIndex);
+            var activeCells = GetAllActiveCells(selectedIndex);
 
-                var buttonList = new List<ButtonAndCell>();
+            var buttonList = new List<ButtonAndCell>();
 
-                if (CheckForEditButtonHit(stashTabOverlayView.EditModeButton)) stashTabOverlayView.HandleEditButton(stashTabOverlayView);
+            if (CheckForEditButtonHit(stashTabOverlayView.EditModeButton)) stashTabOverlayView.HandleEditButton(stashTabOverlayView);
 
-                if (StashTabList.StashTabs[selectedIndex].Quad)
-                {
-                    var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as DynamicGridControlQuad;
+            if (StashTabList.StashTabs[selectedIndex].Quad)
+            {
+                var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as DynamicGridControlQuad;
 
-                    foreach (var cell in activeCells)
-                        buttonList.Add(new ButtonAndCell
-                        {
-                            Button = ctrl.GetButtonFromCell(cell),
-                            Cell = cell
-                        });
+                foreach (var cell in activeCells)
+                    buttonList.Add(new ButtonAndCell
+                    {
+                        Button = ctrl.GetButtonFromCell(cell),
+                        Cell = cell
+                    });
 
-                    for (var b = 0; b < buttonList.Count; b++)
-                        if (CheckForHit(GetCoordinates(buttonList[b].Button), buttonList[b].Button))
-                        {
-                            isHit = true;
-                            hitIndex = b;
-                        }
+                for (var b = 0; b < buttonList.Count; b++)
+                    if (CheckForHit(GetCoordinates(buttonList[b].Button), buttonList[b].Button))
+                    {
+                        isHit = true;
+                        hitIndex = b;
+                    }
 
-                    if (isHit) Data.ActivateNextCell(true, buttonList[hitIndex].Cell);
+                if (isHit) Data.ActivateNextCell(true, buttonList[hitIndex].Cell);
 
-                    for (var stash = 0; stash < StashTabList.StashTabs.Count; stash++)
-                        if (CheckForHeaderHit(StashTabList.StashTabs[stash]))
-                            stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex = stash;
-                }
-                else
-                {
-                    var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as DynamicGridControl;
-                    foreach (var cell in activeCells)
-                        buttonList.Add(new ButtonAndCell
-                        {
-                            Button = ctrl.GetButtonFromCell(cell),
-                            Cell = cell
-                        });
+                for (var stash = 0; stash < StashTabList.StashTabs.Count; stash++)
+                    if (CheckForHeaderHit(StashTabList.StashTabs[stash]))
+                        stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex = stash;
+            }
+            else
+            {
+                var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as DynamicGridControl;
+                foreach (var cell in activeCells)
+                    buttonList.Add(new ButtonAndCell
+                    {
+                        Button = ctrl.GetButtonFromCell(cell),
+                        Cell = cell
+                    });
 
-                    for (var b = 0; b < buttonList.Count; b++)
-                        if (CheckForHit(GetCoordinates(buttonList[b].Button), buttonList[b].Button))
-                        {
-                            isHit = true;
-                            hitIndex = b;
-                        }
+                for (var b = 0; b < buttonList.Count; b++)
+                    if (CheckForHit(GetCoordinates(buttonList[b].Button), buttonList[b].Button))
+                    {
+                        isHit = true;
+                        hitIndex = b;
+                    }
 
-                    if (isHit) Data.ActivateNextCell(true, buttonList[hitIndex].Cell);
+                if (isHit) Data.ActivateNextCell(true, buttonList[hitIndex].Cell);
 
-                    for (var stash = 0; stash < StashTabList.StashTabs.Count; stash++)
-                        if (CheckForHeaderHit(StashTabList.StashTabs[stash]))
-                            stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex = stash;
-                }
+                for (var stash = 0; stash < StashTabList.StashTabs.Count; stash++)
+                    if (CheckForHeaderHit(StashTabList.StashTabs[stash]))
+                        stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex = stash;
             }
         }
     }
