@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace EnhancePoE.UI.Model
 {
@@ -11,8 +12,8 @@ namespace EnhancePoE.UI.Model
         private static readonly LowLevelMouseProc _proc = HookCallback;
         private static IntPtr _hookID = IntPtr.Zero;
 
-        public static int ClickLocationX { get; set; }
-        public static int ClickLocationY { get; set; }
+        public static Point ClickLocation { get; set; }
+
         public static event EventHandler MouseAction = delegate { };
 
         public static void Start()
@@ -23,6 +24,15 @@ namespace EnhancePoE.UI.Model
         public static void Stop()
         {
             UnhookWindowsHookEx(_hookID);
+        }
+
+        public static bool IsInside(Rect rect)
+        {
+            return 
+                ClickLocation.X > rect.Left &&
+                ClickLocation.X < rect.Right &&
+                ClickLocation.Y > rect.Top &&
+                ClickLocation.Y < rect.Bottom;
         }
 
         private static IntPtr SetHook(LowLevelMouseProc proc)
@@ -45,8 +55,7 @@ namespace EnhancePoE.UI.Model
             {
                 var hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
                 //Trace.WriteLine(hookStruct.pt.x + "x");
-                ClickLocationX = hookStruct.pt.x;
-                ClickLocationY = hookStruct.pt.y;
+                ClickLocation = new Point(hookStruct.pt.x, hookStruct.pt.y);
 
                 MouseAction(null, new EventArgs());
             }

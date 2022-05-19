@@ -7,7 +7,7 @@ namespace EnhancePoE.UI.UserControls
     /// <summary>
     /// Interaction logic for DynamicGridControl.xaml
     /// </summary>
-    public partial class DynamicGridControl
+    public partial class DynamicGridControl : IDynamicGridControl
     {
         #region Fields
 

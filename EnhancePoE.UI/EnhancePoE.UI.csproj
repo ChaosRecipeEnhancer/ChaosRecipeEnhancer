@@ -120,7 +120,7 @@
     <Compile Include="Model\ActiveItemTypes.cs" />
     <Compile Include="Model\AutoFetch.cs" />
     <Compile Include="Model\Cell.cs" />
-    <Compile Include="Model\Coordinates.cs" />
+    <Compile Include="Model\ElementCollisionDetector.cs" />
     <Compile Include="Model\ReloadItemFilter.cs" />
     <Compile Include="Model\Storage\FileFilterStorage.cs" />
     <Compile Include="Model\Storage\FilterStorageFactory.cs" />
@@ -143,6 +143,7 @@
     <Compile Include="UserControls\DynamicGridControlQuad.xaml.cs">
       <DependentUpon>DynamicGridControlQuad.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\IDynamicGridControl.cs" />
     <Compile Include="UserControls\MainOverlayContent.xaml.cs">
       <DependentUpon>MainOverlayContent.xaml</DependentUpon>
     </Compile>

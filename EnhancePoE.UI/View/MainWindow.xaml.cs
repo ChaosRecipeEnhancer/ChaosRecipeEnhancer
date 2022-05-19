@@ -93,7 +93,7 @@ namespace EnhancePoE.UI.View
             LoadModeVisibility();
 
             // add Action to MouseHook
-            MouseHook.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayView);
+            MouseHook.MouseAction += (s, e) => ElementCollisionDetector.OverlayClickEvent(_stashTabOverlayView);
 
             _logger.Debug("MainWindow constructed successfully");
         }
