@@ -15,6 +15,7 @@
              IsReadOnlyCaretVisible="False"
              IsUndoEnabled="False"
              PreviewKeyDown="HotkeyTextBox_PreviewKeyDown"
+             Loaded="TextBox_Loaded"
              Text="{Binding Hotkey, ElementName=UserControl, Mode=OneWay, TargetNullValue=&lt; not set &gt;}">
 
         <TextBox.ContextMenu>
