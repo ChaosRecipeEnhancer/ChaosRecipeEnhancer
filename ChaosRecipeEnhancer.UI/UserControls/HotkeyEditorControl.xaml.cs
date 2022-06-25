@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using ChaosRecipeEnhancer.UI.Model;
 using Serilog;
 
@@ -85,6 +87,12 @@ namespace ChaosRecipeEnhancer.UI.UserControls
 
             // Update the value
             Hotkey = new Hotkey(key, modifiers);
+        }
+
+        private void TextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input,
+                new Action(delegate() { Keyboard.Focus((IInputElement)sender); }));
         }
 
         #endregion
