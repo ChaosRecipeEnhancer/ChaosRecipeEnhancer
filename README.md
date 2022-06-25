@@ -6,9 +6,9 @@
 
 **This product isn't affiliated with or officially endorsed by Grinding Gear Games in any way.**
 
-This app fetches your stash data from the PoE servers and shows which items you need to pick up for the chaos, regal, or exalted shard recipe. 
+This app fetches your stash data from the PoE servers and shows which items you need to pick up for the chaos, regal, or exalted shard recipe. When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs. 
 
-Optionally, it can also manipulate your loot filter, so you can fully streamline your farm. When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs. Great for some quick and easy chaos, specifically during league starts.
+Optionally, it can also manipulate your offline loot filter, so you can fully streamline your farm.
 
 ![downloads][downloads-badge]
 [![release][releases-badge]][releases-link]
