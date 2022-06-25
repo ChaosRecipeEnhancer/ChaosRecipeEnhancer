@@ -21,17 +21,14 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 1. Make sure you've installed the latest [.NET Framework Runtime](https://dotnet.microsoft.com/en-us/download/dotnet-framework)
 2. Download and install the [latest the ChaosRecipeEnhancerSetup.msi](https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/releases)
 
-## Features
+## Additional Features
 
- - Multiple Stash Tabs
- - Hotkeys
- - Customizable Overlays
- - Stash Tab Overlay for easy selling
- - Chaos Recipe
- - Regal Recipe
- - Exalted Shard Recipe
- - Loot filter Manipulation (optional)
- - Automatically fetches when you join a new map
+ - Query multiple stash tabs by ID, prefix, and suffix (Folder searches coming soon!)
+ - Customizable hotkeys
+ - Customizable overlay position & sizes for different screen resolutions
+ - Support for regal & exalted shard recipes
+ - Offline loot filter manipulation
+ - Automatically fetch remaining items when you join a new instance
 
 #### Stash Tab Overlay
 
