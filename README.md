@@ -4,7 +4,7 @@
 
 # Chaos Recipe Enhancer
 
-_This product isn't affiliated with or officially endorsed by Grinding Gear Games._
+_This app isn't affiliated with or officially endorsed by Grinding Gear Games._
 
 This app fetches your stash data from the PoE servers and shows which items you need to pick up for the chaos, regal, or exalted shard recipe. When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs. 
 
