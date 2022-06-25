@@ -2,7 +2,7 @@
 
 ---
 
-# The PoE Chaos Recipe Enhancer
+# Chaos Recipe Enhancer
 
 **This product isn't affiliated with or officially endorsed by Grinding Gear Games in any way.**
 
