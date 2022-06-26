@@ -1,3 +1,5 @@
+### _Migration is a WIP_ (We may keep this repo, we may transfer over the old repo and merge changes into original repo)
+
 #### _July 2022 Note: This is a newly created repo for all things Chaos Recipe Enhancer! We're moving development to this one moving forward. Feel free to unwatch the [old repo](https://github.com/kosace/EnhancePoEApp). If you've forked from the old repo, you may want to change your upstream repo to this one._
 
 ---
