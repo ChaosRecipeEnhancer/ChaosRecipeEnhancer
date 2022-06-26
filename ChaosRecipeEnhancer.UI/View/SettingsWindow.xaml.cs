@@ -24,14 +24,14 @@ namespace ChaosRecipeEnhancer.UI.View
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : INotifyPropertyChanged
+    public partial class SettingsWindow : INotifyPropertyChanged
     {
         #region Fields
 
         private readonly ILogger _logger;
 
-        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancerWindow;
-        private readonly StashTabOverlayView _stashTabOverlayView;
+        private readonly SetTrackerOverlayWindow _setTrackerOverlayWindow;
+        private readonly StashTabOverlayWindow _stashTabOverlayWindow;
 
         private const string AppVersion = "1.5.5.0";
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
@@ -53,14 +53,14 @@ namespace ChaosRecipeEnhancer.UI.View
 
         #region Constructors
 
-        public MainWindow(ChaosRecipeEnhancerWindow chaosRecipeEnhancerWindow,
-            StashTabOverlayView stashTabOverlayView)
+        public SettingsWindow(SetTrackerOverlayWindow setTrackerOverlayWindow,
+            StashTabOverlayWindow stashTabOverlayWindow)
         {
-            _logger = Log.ForContext<MainWindow>();
+            _logger = Log.ForContext<SettingsWindow>();
             _logger.Debug("Constructing MainWindow");
 
-            _chaosRecipeEnhancerWindow = chaosRecipeEnhancerWindow;
-            _stashTabOverlayView = stashTabOverlayView;
+            _setTrackerOverlayWindow = setTrackerOverlayWindow;
+            _stashTabOverlayWindow = stashTabOverlayWindow;
 
             InitializeComponent();
             DataContext = this;
@@ -94,7 +94,7 @@ namespace ChaosRecipeEnhancer.UI.View
             LoadModeVisibility();
 
             // add Action to MouseHook
-            MouseHook.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayView);
+            MouseHook.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayWindow);
 
             _logger.Debug("MainWindow constructed successfully");
         }
@@ -345,7 +345,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void TabHeaderGapSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            _stashTabOverlayView.TabHeaderGap =
+            _stashTabOverlayWindow.TabHeaderGap =
                 new Thickness(Settings.Default.TabHeaderGap, 0, Settings.Default.TabHeaderGap, 0);
         }
 
@@ -360,7 +360,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void TabHeaderMarginSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            _stashTabOverlayView.TabMargin = new Thickness(Settings.Default.TabMargin, 0, 0, 0);
+            _stashTabOverlayWindow.TabMargin = new Thickness(Settings.Default.TabMargin, 0, 0, 0);
         }
 
         private void SaveButton_Click_1(object sender, RoutedEventArgs e)
@@ -373,16 +373,16 @@ namespace ChaosRecipeEnhancer.UI.View
             switch (Settings.Default.OverlayMode)
             {
                 case 0:
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
-                        new MainOverlayContent(this, _chaosRecipeEnhancerWindow);
+                    _setTrackerOverlayWindow.MainOverlayContentControl.Content =
+                        new MainOverlayContent(this, _setTrackerOverlayWindow);
                     break;
                 case 1:
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
-                        new MainOverlayContentMinified(this, _chaosRecipeEnhancerWindow);
+                    _setTrackerOverlayWindow.MainOverlayContentControl.Content =
+                        new MainOverlayContentMinified(this, _setTrackerOverlayWindow);
                     break;
                 case 2:
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
-                        new MainOverlayOnlyButtons(this, _chaosRecipeEnhancerWindow);
+                    _setTrackerOverlayWindow.MainOverlayContentControl.Content =
+                        new MainOverlayOnlyButtons(this, _setTrackerOverlayWindow);
                     break;
             }
         }
@@ -469,7 +469,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void ShowNumbersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _chaosRecipeEnhancerWindow.AmountsVisibility = Settings.Default.ShowItemAmount != 0
+            _setTrackerOverlayWindow.AmountsVisibility = Settings.Default.ShowItemAmount != 0
                 ? Visibility.Visible
                 : Visibility.Hidden;
         }
@@ -574,17 +574,17 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public void RunOverlay()
         {
-            if (_chaosRecipeEnhancerWindow.IsOpen)
+            if (_setTrackerOverlayWindow.IsOpen)
             {
-                _chaosRecipeEnhancerWindow.Hide();
-                if (_stashTabOverlayView.IsOpen) _stashTabOverlayView.Hide();
+                _setTrackerOverlayWindow.Hide();
+                if (_stashTabOverlayWindow.IsOpen) _stashTabOverlayWindow.Hide();
                 RunButton.Content = "Run Overlay";
             }
             else
             {
                 if (CheckAllSettings())
                 {
-                    _chaosRecipeEnhancerWindow.Show();
+                    _setTrackerOverlayWindow.Show();
                     RunButton.Content = "Stop Overlay";
                 }
             }
@@ -595,10 +595,10 @@ namespace ChaosRecipeEnhancer.UI.View
             var ready = CheckAllSettings();
             if (ready)
             {
-                if (_stashTabOverlayView.IsOpen)
-                    _stashTabOverlayView.Hide();
+                if (_stashTabOverlayWindow.IsOpen)
+                    _stashTabOverlayWindow.Hide();
                 else
-                    _stashTabOverlayView.Show();
+                    _stashTabOverlayWindow.Show();
             }
         }
 
@@ -606,7 +606,7 @@ namespace ChaosRecipeEnhancer.UI.View
         {
             if (Settings.Default.HotkeyRefresh != "< not set >")
                 HotkeysManager.AddHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey,
-                    _chaosRecipeEnhancerWindow.RunFetching);
+                    _setTrackerOverlayWindow.RunFetching);
             if (Settings.Default.HotkeyToggle != "< not set >")
                 HotkeysManager.AddHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay);
             if (Settings.Default.HotkeyStashTab != "< not set >")

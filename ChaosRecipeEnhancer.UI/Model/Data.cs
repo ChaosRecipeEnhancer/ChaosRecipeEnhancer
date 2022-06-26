@@ -226,23 +226,23 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
         }
 
-        public static async Task CheckActives(ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
+        public static async Task CheckActives(SetTrackerOverlayWindow setTrackerOverlay)
         {
             try
             {
                 if (ApiAdapter.FetchError)
                 {
-                    chaosRecipeEnhancer.WarningMessage = "Fetching Error...";
-                    chaosRecipeEnhancer.ShadowOpacity = 1;
-                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
+                    setTrackerOverlay.WarningMessage = "Fetching Error...";
+                    setTrackerOverlay.ShadowOpacity = 1;
+                    setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                     return;
                 }
 
                 if (StashTabList.StashTabs.Count == 0)
                 {
-                    chaosRecipeEnhancer.WarningMessage = "No Stashtabs found...";
-                    chaosRecipeEnhancer.ShadowOpacity = 1;
-                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
+                    setTrackerOverlay.WarningMessage = "No Stashtabs found...";
+                    setTrackerOverlay.ShadowOpacity = 1;
+                    setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                     return;
                 }
 
@@ -266,7 +266,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                 if (Settings.Default.ShowItemAmount != 0)
                 {
                     Trace.WriteLine("Calculating Items");
-                    CalculateItemAmounts(chaosRecipeEnhancer);
+                    CalculateItemAmounts(setTrackerOverlay);
                 }
 
                 // generate {SetThreshold} empty sets to be filled
@@ -309,17 +309,17 @@ namespace ChaosRecipeEnhancer.UI.Model
                         missingGearPieceForChaosRecipe);
 
                 //Trace.WriteLine(fullSets, "full sets");
-                chaosRecipeEnhancer.Dispatcher.Invoke(() =>
+                setTrackerOverlay.Dispatcher.Invoke(() =>
                 {
-                    chaosRecipeEnhancer.FullSetsText = fullSets.ToString();
+                    setTrackerOverlay.FullSetsText = fullSets.ToString();
                 });
 
                 // invoke chaos missing
                 if (missingGearPieceForChaosRecipe && !Settings.Default.RegalRecipe)
                 {
-                    chaosRecipeEnhancer.WarningMessage = "Need lower level items!";
-                    chaosRecipeEnhancer.ShadowOpacity = 1;
-                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
+                    setTrackerOverlay.WarningMessage = "Need lower level items!";
+                    setTrackerOverlay.ShadowOpacity = 1;
+                    setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                 }
 
                 // invoke exalted recipe ready
@@ -331,17 +331,17 @@ namespace ChaosRecipeEnhancer.UI.Model
                         || ItemSetHunter.EmptyItemSlots.Count == 0
                         || ItemSetRedeemer.EmptyItemSlots.Count == 0)
                     {
-                        chaosRecipeEnhancer.WarningMessage = "Exalted Recipe ready!";
-                        chaosRecipeEnhancer.ShadowOpacity = 1;
-                        chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
+                        setTrackerOverlay.WarningMessage = "Exalted Recipe ready!";
+                        setTrackerOverlay.ShadowOpacity = 1;
+                        setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                     }
 
                 // invoke set full
                 if (fullSets == SetTargetAmount && !missingGearPieceForChaosRecipe)
                 {
-                    chaosRecipeEnhancer.WarningMessage = "Sets full!";
-                    chaosRecipeEnhancer.ShadowOpacity = 1;
-                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
+                    setTrackerOverlay.WarningMessage = "Sets full!";
+                    setTrackerOverlay.ShadowOpacity = 1;
+                    setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                 }
 
                 Trace.WriteLine(fullSets, "full sets");
@@ -364,7 +364,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
         }
 
-        public static void CalculateItemAmounts(ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
+        public static void CalculateItemAmounts(SetTrackerOverlayWindow setTrackerOverlay)
         {
             if (StashTabList.StashTabs != null)
             {
@@ -443,26 +443,26 @@ namespace ChaosRecipeEnhancer.UI.Model
                     foreach (var a in amounts) Trace.WriteLine(a);
 
                     amounts[4] = weaponsSmall + weaponBig;
-                    chaosRecipeEnhancer.RingsAmount = amounts[0];
-                    chaosRecipeEnhancer.AmuletsAmount = amounts[1];
-                    chaosRecipeEnhancer.BeltsAmount = amounts[2];
-                    chaosRecipeEnhancer.ChestsAmount = amounts[3];
-                    chaosRecipeEnhancer.WeaponsAmount = amounts[4];
-                    chaosRecipeEnhancer.GlovesAmount = amounts[5];
-                    chaosRecipeEnhancer.HelmetsAmount = amounts[6];
-                    chaosRecipeEnhancer.BootsAmount = amounts[7];
+                    setTrackerOverlay.RingsAmount = amounts[0];
+                    setTrackerOverlay.AmuletsAmount = amounts[1];
+                    setTrackerOverlay.BeltsAmount = amounts[2];
+                    setTrackerOverlay.ChestsAmount = amounts[3];
+                    setTrackerOverlay.WeaponsAmount = amounts[4];
+                    setTrackerOverlay.GlovesAmount = amounts[5];
+                    setTrackerOverlay.HelmetsAmount = amounts[6];
+                    setTrackerOverlay.BootsAmount = amounts[7];
                 }
                 else if (Settings.Default.ShowItemAmount == 2)
                 {
                     amounts[4] = weaponsSmall + weaponBig;
-                    chaosRecipeEnhancer.RingsAmount = SetTargetAmount * 2 - amounts[0];
-                    chaosRecipeEnhancer.AmuletsAmount = SetTargetAmount - amounts[1];
-                    chaosRecipeEnhancer.BeltsAmount = SetTargetAmount - amounts[2];
-                    chaosRecipeEnhancer.ChestsAmount = SetTargetAmount - amounts[3];
-                    chaosRecipeEnhancer.WeaponsAmount = SetTargetAmount * 2 - (weaponsSmall + weaponBig * 2);
-                    chaosRecipeEnhancer.GlovesAmount = SetTargetAmount - amounts[5];
-                    chaosRecipeEnhancer.HelmetsAmount = SetTargetAmount - amounts[6];
-                    chaosRecipeEnhancer.BootsAmount = SetTargetAmount - amounts[7];
+                    setTrackerOverlay.RingsAmount = SetTargetAmount * 2 - amounts[0];
+                    setTrackerOverlay.AmuletsAmount = SetTargetAmount - amounts[1];
+                    setTrackerOverlay.BeltsAmount = SetTargetAmount - amounts[2];
+                    setTrackerOverlay.ChestsAmount = SetTargetAmount - amounts[3];
+                    setTrackerOverlay.WeaponsAmount = SetTargetAmount * 2 - (weaponsSmall + weaponBig * 2);
+                    setTrackerOverlay.GlovesAmount = SetTargetAmount - amounts[5];
+                    setTrackerOverlay.HelmetsAmount = SetTargetAmount - amounts[6];
+                    setTrackerOverlay.BootsAmount = SetTargetAmount - amounts[7];
                 }
             }
         }

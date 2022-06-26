@@ -148,8 +148,8 @@
 		<Compile Include="UserControls\MainOverlayOnlyButtons.xaml.cs">
 			<DependentUpon>MainOverlayOnlyButtons.xaml</DependentUpon>
 		</Compile>
-		<Compile Include="View\StashTabOverlayView.xaml.cs">
-			<DependentUpon>StashTabOverlayView.xaml</DependentUpon>
+		<Compile Include="View\StashTabOverlayWindow.xaml.cs">
+			<DependentUpon>StashTabOverlayWindow.xaml</DependentUpon>
 		</Compile>
 		<Compile Include="Factory\Managers\ABaseItemClassManager.cs" />
 		<Compile Include="Factory\Managers\Implementation\CAmuletsManager.cs" />
@@ -182,7 +182,7 @@
 			<SubType>Designer</SubType>
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
-		<Page Include="View\ChaosRecipeEnhancerWindow.xaml">
+		<Page Include="View\SetTrackerOverlayWindow.xaml">
 			<SubType>Designer</SubType>
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
@@ -194,7 +194,7 @@
 			<SubType>Designer</SubType>
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
-		<Page Include="View\MainWindow.xaml">
+		<Page Include="View\SettingsWindow.xaml">
 			<Generator>MSBuild:Compile</Generator>
 			<SubType>Designer</SubType>
 		</Page>
@@ -207,8 +207,8 @@
 		<Compile Include="Model\EventRaiser.cs" />
 		<Compile Include="Model\RelayCommand.cs" />
 		<Compile Include="Model\StashTab.cs" />
-		<Compile Include="View\ChaosRecipeEnhancerWindow.xaml.cs">
-			<DependentUpon>ChaosRecipeEnhancerWindow.xaml</DependentUpon>
+		<Compile Include="View\SetTrackerOverlayWindow.xaml.cs">
+			<DependentUpon>SetTrackerOverlayWindow.xaml</DependentUpon>
 		</Compile>
 		<Compile Include="Model\Data.cs" />
 		<Compile Include="Model\GlobalHotkey.cs" />
@@ -221,11 +221,11 @@
 			<DependentUpon>HotkeyWindow.xaml</DependentUpon>
 		</Compile>
 		<Compile Include="Model\Item.cs" />
-		<Compile Include="View\MainWindow.xaml.cs">
-			<DependentUpon>MainWindow.xaml</DependentUpon>
+		<Compile Include="View\SettingsWindow.xaml.cs">
+			<DependentUpon>SettingsWindow.xaml</DependentUpon>
 			<SubType>Code</SubType>
 		</Compile>
-		<Page Include="View\StashTabOverlayView.xaml">
+		<Page Include="View\StashTabOverlayWindow.xaml">
 			<SubType>Designer</SubType>
 			<Generator>MSBuild:Compile</Generator>
 		</Page>

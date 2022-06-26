@@ -15,7 +15,7 @@ namespace ChaosRecipeEnhancer.UI.View
     /// <summary>
     /// Interaction logic for ChaosRecipeEnhancer.xaml
     /// </summary>
-    public partial class ChaosRecipeEnhancerWindow : INotifyPropertyChanged
+    public partial class SetTrackerOverlayWindow : INotifyPropertyChanged
     {
         #region Fields
 
@@ -71,9 +71,9 @@ namespace ChaosRecipeEnhancer.UI.View
 
         #region Constructors
 
-        public ChaosRecipeEnhancerWindow()
+        public SetTrackerOverlayWindow()
         {
-            _logger = Log.ForContext<ChaosRecipeEnhancerWindow>();
+            _logger = Log.ForContext<SetTrackerOverlayWindow>();
             _logger.Debug("Constructing ChaosRecipeEnhancer");
 
             InitializeComponent();
@@ -387,11 +387,11 @@ namespace ChaosRecipeEnhancer.UI.View
 
         #region Methods
 
-        public static void DisableWarnings(ChaosRecipeEnhancerWindow chaosRecipeEnhancerWindow)
+        public static void DisableWarnings(SetTrackerOverlayWindow setTrackerOverlayWindow)
         {
-            chaosRecipeEnhancerWindow.WarningMessage = "";
-            chaosRecipeEnhancerWindow.ShadowOpacity = 0;
-            chaosRecipeEnhancerWindow.WarningMessageVisibility = Visibility.Hidden;
+            setTrackerOverlayWindow.WarningMessage = "";
+            setTrackerOverlayWindow.ShadowOpacity = 0;
+            setTrackerOverlayWindow.WarningMessageVisibility = Visibility.Hidden;
         }
 
         private async void FetchData()
@@ -486,7 +486,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public void RunFetching()
         {
-            if (!MainWindow.SettingsComplete) return;
+            if (!SettingsWindow.SettingsComplete) return;
 
             if (!IsOpen) return;
 

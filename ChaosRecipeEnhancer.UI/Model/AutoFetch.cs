@@ -19,7 +19,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         private static bool FetchAllowed { get; set; } = true;
 
-        public LogWatcher(ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
+        public LogWatcher(SetTrackerOverlayWindow setTrackerOverlay)
         {
             Trace.WriteLine("logwatcher created");
 
@@ -54,7 +54,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                                 Trace.WriteLine("entered new zone");
 
                                 Trace.WriteLine(NewZone);
-                                FetchIfPossible(chaosRecipeEnhancer);
+                                FetchIfPossible(setTrackerOverlay);
                             }
                         }
 
@@ -171,14 +171,14 @@ namespace ChaosRecipeEnhancer.UI.Model
             Trace.WriteLine("stop watch");
         }
 
-        public async void FetchIfPossible(ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
+        public async void FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
         {
             if (FetchAllowed)
             {
                 FetchAllowed = false;
                 try
                 {
-                    chaosRecipeEnhancer.RunFetching();
+                    setTrackerOverlay.RunFetching();
                     await Task.Delay(cooldown * 1000).ContinueWith(_ =>
                     {
                         FetchAllowed = true;

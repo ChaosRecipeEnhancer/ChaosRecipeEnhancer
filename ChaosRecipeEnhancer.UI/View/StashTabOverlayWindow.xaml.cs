@@ -18,12 +18,12 @@ namespace ChaosRecipeEnhancer.UI.View
     /// <summary>
     /// Interaction logic for StashTabOverlayView.xaml
     /// </summary>
-    public partial class StashTabOverlayView : INotifyPropertyChanged
+    public partial class StashTabOverlayWindow : INotifyPropertyChanged
     {
         #region Fields
 
         private readonly ILogger _logger;
-        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancerWindow;
+        private readonly SetTrackerOverlayWindow _setTrackerOverlayWindow;
 
         private static readonly ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
         private Visibility _stashBorderVisibility = Visibility.Hidden;
@@ -34,12 +34,12 @@ namespace ChaosRecipeEnhancer.UI.View
 
         #region Constructors
 
-        public StashTabOverlayView(ChaosRecipeEnhancerWindow chaosRecipeEnhancerWindow)
+        public StashTabOverlayWindow(SetTrackerOverlayWindow setTrackerOverlayWindow)
         {
-            _logger = Log.ForContext<StashTabOverlayView>();
+            _logger = Log.ForContext<StashTabOverlayWindow>();
             _logger.Debug("Constructing StashTabOverlayView");
 
-            _chaosRecipeEnhancerWindow = chaosRecipeEnhancerWindow;
+            _setTrackerOverlayWindow = setTrackerOverlayWindow;
 
             InitializeComponent();
             DataContext = this;
@@ -111,7 +111,7 @@ namespace ChaosRecipeEnhancer.UI.View
             IsOpen = false;
             IsEditing = false;
 
-            _chaosRecipeEnhancerWindow.OpenStashOverlayButtonContent = "Stash";
+            _setTrackerOverlayWindow.OpenStashOverlayButtonContent = "Stash";
 
             base.Hide();
         }
@@ -175,7 +175,7 @@ namespace ChaosRecipeEnhancer.UI.View
                         currTab.ActivateItemCells(i);
                     }
 
-                _chaosRecipeEnhancerWindow.OpenStashOverlayButtonContent = "Hide";
+                _setTrackerOverlayWindow.OpenStashOverlayButtonContent = "Hide";
 
                 MouseHook.Start();
                 base.Show();
@@ -250,9 +250,9 @@ namespace ChaosRecipeEnhancer.UI.View
             Win32.makeNormal(hwnd);
         }
 
-        public void HandleEditButton(StashTabOverlayView stashTabOverlayView)
+        public void HandleEditButton(StashTabOverlayWindow stashTabOverlayWindow)
         {
-            if (stashTabOverlayView.IsEditing)
+            if (stashTabOverlayWindow.IsEditing)
                 StopEditMode();
             else
                 StartEditMode();

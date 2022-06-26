@@ -14,19 +14,19 @@ namespace ChaosRecipeEnhancer.UI.View
         #region Fields
 
         private readonly ILogger _logger;
-        private readonly MainWindow _mainWindow;
+        private readonly SettingsWindow _settingsWindow;
         private readonly string _type;
 
         #endregion
 
         #region Constructors
 
-        public HotkeyWindow(MainWindow mainWindow, string hotkeyType)
+        public HotkeyWindow(SettingsWindow settingsWindow, string hotkeyType)
         {
             _logger = Log.ForContext<HotkeyWindow>();
             _logger.Debug("Constructing HotkeyWindow");
 
-            _mainWindow = mainWindow;
+            _settingsWindow = settingsWindow;
             _type = hotkeyType;
             InitializeComponent();
 
@@ -100,8 +100,8 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void ReApplyHotkeys()
         {
-            _mainWindow.RemoveAllHotkeys();
-            _mainWindow.AddAllHotkeys();
+            _settingsWindow.RemoveAllHotkeys();
+            _settingsWindow.AddAllHotkeys();
         }
 
         #endregion

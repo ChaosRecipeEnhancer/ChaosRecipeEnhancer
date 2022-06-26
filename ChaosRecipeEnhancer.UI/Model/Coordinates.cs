@@ -132,11 +132,11 @@ namespace ChaosRecipeEnhancer.UI.Model
         //     OverlayClickEvent();
         // }
 
-        public static void OverlayClickEvent(StashTabOverlayView stashTabOverlayView)
+        public static void OverlayClickEvent(StashTabOverlayWindow stashTabOverlayWindow)
         {
-            if (stashTabOverlayView.IsOpen)
+            if (stashTabOverlayWindow.IsOpen)
             {
-                var selectedIndex = stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex;
+                var selectedIndex = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex;
                 var isHit = false;
                 var hitIndex = -1;
 
@@ -144,12 +144,12 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                 var buttonList = new List<ButtonAndCell>();
 
-                if (CheckForEditButtonHit(stashTabOverlayView.EditModeButton))
-                    stashTabOverlayView.HandleEditButton(stashTabOverlayView);
+                if (CheckForEditButtonHit(stashTabOverlayWindow.EditModeButton))
+                    stashTabOverlayWindow.HandleEditButton(stashTabOverlayWindow);
 
                 if (StashTabList.StashTabs[selectedIndex].Quad)
                 {
-                    var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as DynamicGridControlQuad;
+                    var ctrl = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedContent as DynamicGridControlQuad;
 
                     foreach (var cell in activeCells)
                         buttonList.Add(new ButtonAndCell
@@ -169,11 +169,11 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                     for (var stash = 0; stash < StashTabList.StashTabs.Count; stash++)
                         if (CheckForHeaderHit(StashTabList.StashTabs[stash]))
-                            stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex = stash;
+                            stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex = stash;
                 }
                 else
                 {
-                    var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as DynamicGridControl;
+                    var ctrl = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedContent as DynamicGridControl;
                     foreach (var cell in activeCells)
                         buttonList.Add(new ButtonAndCell
                         {
@@ -192,7 +192,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                     for (var stash = 0; stash < StashTabList.StashTabs.Count; stash++)
                         if (CheckForHeaderHit(StashTabList.StashTabs[stash]))
-                            stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex = stash;
+                            stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex = stash;
                 }
             }
         }
