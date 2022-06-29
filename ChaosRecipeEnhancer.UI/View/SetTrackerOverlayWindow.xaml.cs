@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using ChaosRecipeEnhancer.App;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using Serilog;
@@ -522,7 +523,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public void ReloadItemFilter()
         {
-            Model.ReloadItemFilter.ReloadFilter();
+            App.ReloadItemFilter.ReloadFilter();
         }
 
         private void SetOpacity()

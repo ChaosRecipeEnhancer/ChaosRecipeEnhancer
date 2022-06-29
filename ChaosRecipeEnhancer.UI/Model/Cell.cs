@@ -27,13 +27,6 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public int XIndex { get; set; }
         public int YIndex { get; set; }
-
-        public string ItemID { get; set; }
-
-        //public ICommand ToggleCellCommand { get; set; }
-
-        public string CellName { get; set; }
-
         private string _buttonName { get; set; }
 
         public string ButtonName

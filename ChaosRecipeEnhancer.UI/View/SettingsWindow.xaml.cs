@@ -9,7 +9,9 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using ChaosRecipeEnhancer.App;
 using ChaosRecipeEnhancer.App.Helpers;
+using ChaosRecipeEnhancer.App.Native;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.UserControls;
@@ -94,7 +96,7 @@ namespace ChaosRecipeEnhancer.UI.View
             LoadModeVisibility();
 
             // add Action to MouseHook
-            MouseHook.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayWindow);
+            OldMouseHook.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayWindow);
 
             _logger.Debug("MainWindow constructed successfully");
         }
@@ -196,7 +198,7 @@ namespace ChaosRecipeEnhancer.UI.View
             {
                 _notifyIcon.Visible = false;
 
-                MouseHook.Stop();
+                OldMouseHook.Stop();
 
                 HotkeysManager.ShutdownSystemHook();
 

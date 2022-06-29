@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using ChaosRecipeEnhancer.UI.Model;
+using ChaosRecipeEnhancer.App.Models;
 using Serilog;
 
 namespace ChaosRecipeEnhancer.UI.UserControls
@@ -53,7 +53,7 @@ namespace ChaosRecipeEnhancer.UI.UserControls
         private void HotkeyTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             // Don't let the event pass further
-            // because we don't want standard textbox shortcuts working
+            // because we don't want standard text box shortcuts working
             e.Handled = true;
 
             // Get modifiers and key data
@@ -92,7 +92,7 @@ namespace ChaosRecipeEnhancer.UI.UserControls
         private void TextBox_Loaded(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input,
-                new Action(delegate() { Keyboard.Focus((IInputElement)sender); }));
+                new Action(delegate { Keyboard.Focus((IInputElement)sender); }));
         }
 
         #endregion

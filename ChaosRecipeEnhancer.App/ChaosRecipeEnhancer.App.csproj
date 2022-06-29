@@ -44,12 +44,47 @@
 		<Reference Include="WindowsBase" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="ApiAdapter.cs" />
+		<Compile Include="AutoFetch.cs" />
+		<Compile Include="Data.cs" />
+		<Compile Include="FilterManipulation\CFilterGenerationManager.cs" />
+		<Compile Include="FilterManipulation\Factory\CItemClassManagerFactory.cs" />
+		<Compile Include="FilterManipulation\Factory\Managers\ABaseItemClassManager.cs" />
+		<Compile Include="FilterManipulation\Factory\Managers\Implementation\CAmuletsManager.cs" />
+		<Compile Include="FilterManipulation\Factory\Managers\Implementation\CBeltsManager.cs" />
+		<Compile Include="FilterManipulation\Factory\Managers\Implementation\CBodyArmoursManager.cs" />
+		<Compile Include="FilterManipulation\Factory\Managers\Implementation\CBootsManager.cs" />
+		<Compile Include="FilterManipulation\Factory\Managers\Implementation\CGlovesManager.cs" />
+		<Compile Include="FilterManipulation\Factory\Managers\Implementation\CHelmetManager.cs" />
+		<Compile Include="FilterManipulation\Factory\Managers\Implementation\COneHandWeaponsManager.cs" />
+		<Compile Include="FilterManipulation\Factory\Managers\Implementation\CRingsManager.cs" />
+		<Compile Include="FilterManipulation\Factory\Managers\Implementation\CTwoHandWeaponsManager.cs" />
 		<Compile Include="Helpers\AutoUpdateHelper.cs" />
+		<Compile Include="Item.cs" />
+		<Compile Include="ItemSet.cs" />
+		<Compile Include="Models\ActiveItemTypes.cs" />
 		<Compile Include="Models\CREItemSet.cs" />
 		<Compile Include="Models\CREItemWrapper.cs" />
+		<Compile Include="Models\GlobalHotkey.cs" />
+		<Compile Include="Models\Hotkey.cs" />
+		<Compile Include="Models\Settings\Settings.cs" />
+		<Compile Include="Models\Settings\FilterStyleSettings.cs" />
+		<Compile Include="Models\Settings\HotkeySettings.cs" />
+		<Compile Include="Models\Settings\UISettings.cs" />
+		<Compile Include="Models\Settings\UserAccountSettings.cs" />
 		<Compile Include="Native\ClipboardNative.cs" />
+		<Compile Include="Native\HotkeysManager.cs" />
+		<Compile Include="Native\KeyboardManager.cs" />
+		<Compile Include="Native\OldMouseHook.cs" />
+		<Compile Include="Native\MouseManager.cs" />
+		<Compile Include="Native\Win32Native.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
-		<Compile Include="Win32.cs" />
+		<Compile Include="RateLimit.cs" />
+		<Compile Include="ReloadItemFilter.cs" />
+		<Compile Include="Services\SettingsService.cs" />
+		<Compile Include="Storage\FileFilterStorage.cs" />
+		<Compile Include="Storage\FilterStorageFactory.cs" />
+		<Compile Include="Storage\IFilterStorage.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ChaosRecipeEnhancer.DataModels\ChaosRecipeEnhancer.DataModels.csproj">
@@ -59,6 +94,8 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Autoupdater.NET.Official" Version="1.7.0" />
+		<PackageReference Include="ConfOxide" Version="1.4.2" />
+		<PackageReference Include="Winook" Version="1.3.2" />
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it.

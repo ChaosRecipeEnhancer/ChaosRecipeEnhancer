@@ -1,138 +1,139 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using ChaosRecipeEnhancer.App.Native;
 using ChaosRecipeEnhancer.UI.UserControls;
 using ChaosRecipeEnhancer.UI.View;
 
 namespace ChaosRecipeEnhancer.UI.Model
 {
-    public static class Coordinates
+    public class Coordinates
     {
-        private static bool CheckForHit(Point pt, Button btn)
+        #region Fields
+
+        private MouseManager _mouseManager;
+        private int _x;
+        private int _y;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Coordinates"/> class.
+        /// </summary>
+        /// <param name="mouseManager"></param>
+        public Coordinates(MouseManager mouseManager)
         {
-            var clickX = MouseHook.ClickLocationX;
-            var clickY = MouseHook.ClickLocationY;
+            _mouseManager = mouseManager;
+        }
+
+        #endregion
+
+        private bool CheckForHit(Point point, FrameworkElement frameworkElement)
+        {
+            var clickX = _mouseManager.X;
+            var clickY = _mouseManager.Y;
 
             // adjust btn x,y position a bit
-            pt.X -= 1;
-            pt.Y -= 1;
+            point.X -= 1;
+            point.Y -= 1;
 
             // +1 border thickness
-            var btnX = Convert.ToInt32(Math.Ceiling(pt.X + btn.ActualWidth + 1));
-            var btnY = Convert.ToInt32(Math.Ceiling(pt.Y + btn.ActualHeight + 1));
+            var btnX = Convert.ToInt32(Math.Ceiling(point.X + frameworkElement.ActualWidth + 1));
+            var btnY = Convert.ToInt32(Math.Ceiling(point.Y + frameworkElement.ActualHeight + 1));
 
-            if (clickX > pt.X
-                && clickY > pt.Y
-                && clickX < btnX
-                && clickY < btnY)
-                return true;
-
-            return false;
+            return clickX > point.X
+                   && clickY > point.Y
+                   && clickX < btnX
+                   && clickY < btnY;
         }
 
-        private static Point GetCoordinates(Button item)
+        private static Point GetCoordinates(Visual visual)
         {
-            if (item != null)
-            {
-                var locationFromScreen = item.PointToScreen(new Point(0, 0));
-                return locationFromScreen;
-            }
+            if (visual == null) return new Point(0, 0);
 
-            return new Point(0, 0);
+            var locationFromScreen = visual.PointToScreen(new Point(0, 0));
+            return locationFromScreen;
         }
 
-        private static bool CheckForHeaderHit(StashTab s)
+        /// <summary>
+        /// Checks if the <see cref="StashTabOverlayWindow"/> header was clicked (to move it)
+        /// </summary>
+        /// <param name="stashTab"></param>
+        /// <returns></returns>
+        private bool CheckForHeaderHit(StashTab stashTab)
         {
-            var clickX = MouseHook.ClickLocationX;
-            var clickY = MouseHook.ClickLocationY;
-
-            var pt = GetTabHeaderCoordinates(s.TabHeader);
-
-            // adjust btn x,y position a bit
-            pt.X -= 1;
-            pt.Y -= 1;
-
             // can be null if user closes overlay while fetching with stash tab overlay open
-            if (s.TabHeader != null)
-            {
-                var tabX = Convert.ToInt32(Math.Floor(pt.X + s.TabHeader.ActualWidth + 1));
-                var tabY = Convert.ToInt32(Math.Floor(pt.Y + s.TabHeader.ActualHeight + 1));
+            if (stashTab.TabHeader == null) return false;
 
+            var clickX = _mouseManager.X;
+            var clickY = _mouseManager.Y;
 
-                if (clickX > pt.X
-                    && clickY > pt.Y
-                    && clickX < tabX
-                    && clickY < tabY)
-                    return true;
-            }
+            var point = GetTabHeaderCoordinates(stashTab.TabHeader);
 
-            return false;
+            // adjust btn x,y position a bit
+            point.X -= 1;
+            point.Y -= 1;
+
+            var tabX = Convert.ToInt32(Math.Floor(point.X + stashTab.TabHeader.ActualWidth + 1));
+            var tabY = Convert.ToInt32(Math.Floor(point.Y + stashTab.TabHeader.ActualHeight + 1));
+
+            return clickX > point.X
+                   && clickY > point.Y
+                   && clickX < tabX
+                   && clickY < tabY;
         }
 
-        private static bool CheckForEditButtonHit(Button btn)
+        private bool CheckForEditButtonHit(FrameworkElement frameworkElement)
         {
-            var clickX = MouseHook.ClickLocationX;
-            var clickY = MouseHook.ClickLocationY;
+            var clickX = _mouseManager.X;
+            var clickY = _mouseManager.Y;
 
-            var pt = GetEditButtonCoordinates(btn);
+            var pt = GetEditButtonCoordinates(frameworkElement);
 
             // adjust btn x,y position a bit
             pt.X -= 1;
             pt.Y -= 1;
 
-            var btnX = Convert.ToInt32(Math.Floor(pt.X + btn.ActualWidth + 1));
-            var btnY = Convert.ToInt32(Math.Floor(pt.Y + btn.ActualHeight + 1));
+            var btnX = Convert.ToInt32(Math.Floor(pt.X + frameworkElement.ActualWidth + 1));
+            var btnY = Convert.ToInt32(Math.Floor(pt.Y + frameworkElement.ActualHeight + 1));
 
-            if (clickX > pt.X
-                && clickY > pt.Y
-                && clickX < btnX
-                && clickY < btnY)
-                return true;
-
-            return false;
+            return clickX > pt.X
+                   && clickY > pt.Y
+                   && clickX < btnX
+                   && clickY < btnY;
         }
 
-        private static Point GetTabHeaderCoordinates(TextBlock item)
+        private static Point GetTabHeaderCoordinates(Visual visual)
         {
-            if (item != null)
-            {
-                var locationFromScreen = item.PointToScreen(new Point(0, 0));
-                return locationFromScreen;
-            }
+            if (visual == null) return new Point(0, 0);
 
-            return new Point(0, 0);
+            var locationFromScreen = visual.PointToScreen(new Point(0, 0));
+            return locationFromScreen;
         }
 
-        private static Point GetEditButtonCoordinates(Button button)
+        private static Point GetEditButtonCoordinates(Visual visual)
         {
-            if (button != null)
-            {
-                var locationFromScreen = button.PointToScreen(new Point(0, 0));
-                return locationFromScreen;
-            }
+            if (visual == null) return new Point(0, 0);
 
-            return new Point(0, 0);
+            var locationFromScreen = visual.PointToScreen(new Point(0, 0));
+            return locationFromScreen;
         }
 
         private static List<Cell> GetAllActiveCells(int index)
         {
-            var activeCells = new List<Cell>();
-
-            foreach (var cell in StashTabList.StashTabs[index].OverlayCellsList)
-                if (cell.Active)
-                    activeCells.Add(cell);
-
-            return activeCells;
+            return StashTabList
+                .StashTabs[index]
+                .OverlayCellsList
+                .Where(cell => cell.Active)
+                .ToList();
         }
 
-        // mouse hook action
-        // public static void Event(object sender, EventArgs e)
-        // {
-        //     OverlayClickEvent();
-        // }
-
-        public static void OverlayClickEvent(StashTabOverlayWindow stashTabOverlayWindow)
+        public void OverlayClickEvent(StashTabOverlayWindow stashTabOverlayWindow)
         {
             if (stashTabOverlayWindow.IsOpen)
             {
@@ -149,7 +150,8 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                 if (StashTabList.StashTabs[selectedIndex].Quad)
                 {
-                    var ctrl = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedContent as DynamicGridControlQuad;
+                    var ctrl = stashTabOverlayWindow.StashTabOverlayTabControl
+                        .SelectedContent as DynamicGridControlQuad;
 
                     foreach (var cell in activeCells)
                         buttonList.Add(new ButtonAndCell
@@ -174,19 +176,24 @@ namespace ChaosRecipeEnhancer.UI.Model
                 else
                 {
                     var ctrl = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedContent as DynamicGridControl;
+
                     foreach (var cell in activeCells)
+                    {
                         buttonList.Add(new ButtonAndCell
                         {
                             Button = ctrl.GetButtonFromCell(cell),
                             Cell = cell
                         });
+                    }
 
                     for (var b = 0; b < buttonList.Count; b++)
+                    {
                         if (CheckForHit(GetCoordinates(buttonList[b].Button), buttonList[b].Button))
                         {
                             isHit = true;
                             hitIndex = b;
                         }
+                    }
 
                     if (isHit) Data.ActivateNextCell(true, buttonList[hitIndex].Cell);
 

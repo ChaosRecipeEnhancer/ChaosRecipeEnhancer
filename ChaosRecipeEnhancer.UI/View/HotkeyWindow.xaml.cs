@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using ChaosRecipeEnhancer.UI.Model;
+using ChaosRecipeEnhancer.App.Native;
 using ChaosRecipeEnhancer.UI.Properties;
 using Serilog;
 

@@ -41,6 +41,9 @@
 		<Reference Include="WindowsBase" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="Constants\FilterConstants.cs" />
+		<Compile Include="Constants\GGGConstants.cs" />
+		<Compile Include="Enums\EnumItemClass.cs" />
 		<Compile Include="GGGModels\Item.cs" />
 		<Compile Include="GGGModels\ItemInfluenceModel.cs" />
 		<Compile Include="GGGModels\ItemPropertyModel.cs" />

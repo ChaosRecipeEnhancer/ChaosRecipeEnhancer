@@ -111,21 +111,9 @@
 			<Generator>MSBuild:Compile</Generator>
 			<SubType>Designer</SubType>
 		</ApplicationDefinition>
-		<Compile Include="Const\CConst.cs" />
-		<Compile Include="Enums\EnumItemClass.cs" />
-		<Compile Include="Filter\CFilterGenerationManager.cs" />
-		<Compile Include="Model\ActiveItemTypes.cs" />
-		<Compile Include="Model\AutoFetch.cs" />
 		<Compile Include="Model\Cell.cs" />
 		<Compile Include="Model\Coordinates.cs" />
-		<Compile Include="Model\ReloadItemFilter.cs" />
-		<Compile Include="Model\Storage\FileFilterStorage.cs" />
-		<Compile Include="Model\Storage\FilterStorageFactory.cs" />
-		<Compile Include="Model\ItemSet.cs" />
-		<Compile Include="Model\MouseHook.cs" />
-		<Compile Include="Model\RateLimit.cs" />
 		<Compile Include="Model\StashTabList.cs" />
-		<Compile Include="Model\Storage\IFilterStorage.cs" />
 		<Compile Include="Model\Utility.cs" />
 		<Compile Include="Model\Utils\UserWarning.cs" />
 		<Compile Include="Properties\Resources.Designer.cs">
@@ -151,17 +139,6 @@
 		<Compile Include="View\StashTabOverlayWindow.xaml.cs">
 			<DependentUpon>StashTabOverlayWindow.xaml</DependentUpon>
 		</Compile>
-		<Compile Include="Factory\Managers\ABaseItemClassManager.cs" />
-		<Compile Include="Factory\Managers\Implementation\CAmuletsManager.cs" />
-		<Compile Include="Factory\Managers\Implementation\CBeltsManager.cs" />
-		<Compile Include="Factory\Managers\Implementation\CBodyArmoursManager.cs" />
-		<Compile Include="Factory\Managers\Implementation\CBootsManager.cs" />
-		<Compile Include="Factory\Managers\Implementation\CGlovesManager.cs" />
-		<Compile Include="Factory\Managers\Implementation\CHelmetManager.cs" />
-		<Compile Include="Factory\Managers\Implementation\COneHandWeaponsManager.cs" />
-		<Compile Include="Factory\Managers\Implementation\CRingsManager.cs" />
-		<Compile Include="Factory\Managers\Implementation\CTwoHandWeaponsManager.cs" />
-		<Compile Include="Factory\CItemClassManagerFactory.cs" />
 		<Page Include="UserControls\DynamicGridControl.xaml">
 			<SubType>Designer</SubType>
 			<Generator>MSBuild:Compile</Generator>
@@ -198,29 +175,20 @@
 			<Generator>MSBuild:Compile</Generator>
 			<SubType>Designer</SubType>
 		</Page>
-		<Compile Include="Model\ApiAdapter.cs" />
 		<Compile Include="AppBootstrapper.xaml.cs">
 			<DependentUpon>AppBootstrapper.xaml</DependentUpon>
 			<SubType>Code</SubType>
 		</Compile>
-		<Compile Include="Model\EventArgs.cs" />
-		<Compile Include="Model\EventRaiser.cs" />
-		<Compile Include="Model\RelayCommand.cs" />
 		<Compile Include="Model\StashTab.cs" />
 		<Compile Include="View\SetTrackerOverlayWindow.xaml.cs">
 			<DependentUpon>SetTrackerOverlayWindow.xaml</DependentUpon>
 		</Compile>
-		<Compile Include="Model\Data.cs" />
-		<Compile Include="Model\GlobalHotkey.cs" />
-		<Compile Include="Model\Hotkey.cs" />
 		<Compile Include="UserControls\HotkeyEditorControl.xaml.cs">
 			<DependentUpon>HotkeyEditorControl.xaml</DependentUpon>
 		</Compile>
-		<Compile Include="Model\HotkeysManager.cs" />
 		<Compile Include="View\HotkeyWindow.xaml.cs">
 			<DependentUpon>HotkeyWindow.xaml</DependentUpon>
 		</Compile>
-		<Compile Include="Model\Item.cs" />
 		<Compile Include="View\SettingsWindow.xaml.cs">
 			<DependentUpon>SettingsWindow.xaml</DependentUpon>
 			<SubType>Code</SubType>
