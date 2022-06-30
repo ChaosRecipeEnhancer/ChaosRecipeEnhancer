@@ -1,8 +1,11 @@
 ## Change Log
 
-#### 2.0.0-alpha (WIP)
+### 1.5.6 (Hotfix)
 
+- updating stash api request urls
+- removing references in code to old repository; adding updated references (incorrect references were causing issues with the auto-update feature)
 - documentation overhaul (including slimmer readme & new wiki pages)
+- updating solution / project names (EnhancePoeApp -> ChaosRecipeEnhancer); an actual repository name change will happen soon (before PoE 3.19 league launch, along with a major 2.0 update to the app)
 
 #### 1.5.5
 
@@ -24,10 +27,10 @@
 - fixing clipboard access issue that will hopefully resolve filter reload issues (thanks to [@InsanityPrelude](https://github.com/InsanityPrelude) for pointing me to the solution)
 - continued project refactors (tons of improvements under the hood that make my life easier, and your general experience much smoother)
 
-#### 1.5.2
+#### 1.5.2 (Hotfix)
 
-- Hotfix: Fixing Icons not showing up
-- Hotfix: Fixing crash related to filter styles
+- fixing Icons not showing up
+- fixing crash related to filter styles
 
 #### 1.5.1
 
@@ -56,8 +59,8 @@
 
 #### 1.3.2
 
-- fixing NullPointerException when attempting to update online filters (thanks to [@devinvisible](https://github.com/kosace/EnhancePoEApp/commits?author=devinvisible))
-- fixing typo 'Ceck for Updates' -> 'Check For Updates' (thanks to [@devinvisible](https://github.com/kosace/EnhancePoEApp/commits?author=devinvisible))
+- fixing NullPointerException when attempting to update online filters (thanks to [@devinvisible](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/commits?author=devinvisible))
+- fixing typo 'Ceck for Updates' -> 'Check For Updates' (thanks to [@devinvisible](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/commits?author=devinvisible))
 - fixing some of the weapon 
 
 #### 1.3.1

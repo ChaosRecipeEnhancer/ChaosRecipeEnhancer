@@ -1,0 +1,1 @@
+This is a work-around for a hotfix we had to put in during our repository migration. This directory and the included MSI will be removed prior to our CRE v2.0 release.
