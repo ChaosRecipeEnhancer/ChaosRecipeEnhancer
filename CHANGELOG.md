@@ -2,6 +2,7 @@
 
 ### 1.5.6 (Hotfix)
 
+- updating stash api request urls
 - removing references in code to old repository; adding updated references (incorrect references were causing issues with the auto-update feature)
 - documentation overhaul (including slimmer readme & new wiki pages)
 - updating solution / project names (EnhancePoeApp -> ChaosRecipeEnhancer); an actual repository name change will happen soon (before PoE 3.19 league launch, along with a major 2.0 update to the app)
