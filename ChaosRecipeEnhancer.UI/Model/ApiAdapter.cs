@@ -138,7 +138,8 @@ namespace ChaosRecipeEnhancer.UI.Model
                 var stashTab = i.TabIndex.ToString();
                 i.StashTabUri =
                     new Uri(
-                        $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabIndex={stashTab}&league={league}");
+                        $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}");
+                // https://www.pathofexile.com/character-window/get-stash-items?accountName=ClumsyParasite&realm=pc&league=Standard&tabs=1&tabIndex=0
             }
         }
 
@@ -176,7 +177,8 @@ namespace ChaosRecipeEnhancer.UI.Model
             IsFetching = true;
             var propsUri =
                 new Uri(
-                    $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabs=1&league={league}");
+                    $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
+            // https://www.pathofexile.com/character-window/get-stash-items?accountName=ClumsyParasite&realm=pc&league=Standard&tabs=1&tabIndex=0
 
             var sessionId = Settings.Default.SessionId;
 
@@ -214,6 +216,12 @@ namespace ChaosRecipeEnhancer.UI.Model
                             ? "Connection forbidden. Please check your account name and POE Session ID. You may have to refresh your POE Session ID sometimes."
                             : res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
 
+                        Trace.WriteLine($"[ApiAdapter:GetProps] Response Headers ${res.Headers}");
+                        Trace.WriteLine($"[ApiAdapter:GetProps] Response Content ${res.Content}");
+                        Trace.WriteLine($"[ApiAdapter:GetProps] Response Status Code ${res.StatusCode}");
+                        Trace.WriteLine($"[ApiAdapter:GetProps] Response Reason Phrase ${res.ReasonPhrase}");
+                        Trace.WriteLine($"[ApiAdapter:GetProps] Response Request Message ${res.RequestMessage}");
+                        
                         FetchError = true;
                         return false;
                     }
