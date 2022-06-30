@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
-	<version>1.5.5.0</version>
-	<!-- TODO: Change installer URL -->
-	<url>https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/ChaosRecipeEnhancer.Installer/CRESetup.msi?raw=true</url>
+	<version>1.5.6.0</version>
+	<url>https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/ChaosRecipeEnhancer.Installer/ChaosRecipeEnhancerSetup.msi?raw=true</url>
 	<mandatory>false</mandatory>
 </item>

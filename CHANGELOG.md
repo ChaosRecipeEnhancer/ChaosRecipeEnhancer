@@ -1,8 +1,10 @@
 ## Change Log
 
-#### 2.0.0-alpha (WIP)
+### 1.5.6 (Hotfix)
 
+- removing references in code to old repository; adding updated references (incorrect references were causing issues with the auto-update feature)
 - documentation overhaul (including slimmer readme & new wiki pages)
+- updating solution / project names (EnhancePoeApp -> ChaosRecipeEnhancer); an actual repository name change will happen soon (before PoE 3.19 league launch, along with a major 2.0 update to the app)
 
 #### 1.5.5
 
@@ -24,10 +26,10 @@
 - fixing clipboard access issue that will hopefully resolve filter reload issues (thanks to [@InsanityPrelude](https://github.com/InsanityPrelude) for pointing me to the solution)
 - continued project refactors (tons of improvements under the hood that make my life easier, and your general experience much smoother)
 
-#### 1.5.2
+#### 1.5.2 (Hotfix)
 
-- Hotfix: Fixing Icons not showing up
-- Hotfix: Fixing crash related to filter styles
+- fixing Icons not showing up
+- fixing crash related to filter styles
 
 #### 1.5.1
 
