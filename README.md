@@ -20,8 +20,8 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 ## Installation
 
-1. Make sure you've installed the latest [.NET Framework Runtime](https://dotnet.microsoft.com/en-us/download/dotnet-framework)
-2. Download and install the [latest the ChaosRecipeEnhancerSetup.msi](https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/releases)
+1. Make sure you've installed the latest [.NET Framework Runtime][dotnet-framework-link]
+2. Download and install the [latest the ChaosRecipeEnhancerSetup.msi][releases-link]
 
 ## Additional Features
 
@@ -34,18 +34,19 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 #### Stash Tab Overlay
 
-<img src="https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/blob/master/DocumentationAssets/Stash-Tab-Overlay.gif" width="500" alt="Stash Tab Overlay">
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/Stash-Tab-Overlay.gif" width="500" alt="Stash Tab Overlay">
 
 #### Main Overlay & Loot Filter Manipulation
 
-<img src="https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/blob/master/DocumentationAssets/Main-Overlay.png" width="500" alt="Main Overlay">
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/Main-Overlay.png" width="500" alt="Main Overlay">
 
 [downloads-badge]: https://img.shields.io/github/downloads/kosace/EnhancePoEApp/total?style=for-the-badge&logo=github
 [discord-badge]: https://img.shields.io/discord/786617230879883307?color=5865f2&label=Discord&style=for-the-badge&logo=discord&link
 [discord-link]: https://discord.gg/TcVCJD8w
 [releases-badge]: https://img.shields.io/github/v/release/kosace/EnhancePoEApp?style=for-the-badge&logo=github
-[releases-link]: https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/releases
+[releases-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases
 [issues-badge]: https://img.shields.io/github/issues-raw/kosace/EnhancePoEApp?style=for-the-badge
-[issues-link]: https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/issues
+[issues-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues
 [support-badge]: https://img.shields.io/badge/Paypal-Support-<COLOR>?style=for-the-badge&logo=paypal&color=ffae29
 [support-link]: https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS
+[dotnet-framework-link]: https://dotnet.microsoft.com/en-us/download/dotnet-framework
