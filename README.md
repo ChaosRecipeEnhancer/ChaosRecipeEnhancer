@@ -1,12 +1,6 @@
-### _Migration is a WIP_ (We may keep this repo, we may transfer over the old repo and merge changes into original repo)
-
-#### _July 2022 Note: This is a newly created repo for all things Chaos Recipe Enhancer! We're moving development to this one moving forward. Feel free to unwatch the [old repo](https://github.com/kosace/EnhancePoEApp). If you've forked from the old repo, you may want to change your upstream repo to this one._
-
----
-
 # Chaos Recipe Enhancer
 
-_This app isn't affiliated with or officially endorsed by Grinding Gear Games._
+``` This app isn't affiliated with or officially endorsed by Grinding Gear Games. ```
 
 This app fetches your stash data from the PoE servers and shows which items you need to pick up to complete the chaos, regal, or exalted shard recipe. When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs. 
 
