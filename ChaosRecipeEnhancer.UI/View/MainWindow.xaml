@@ -113,7 +113,7 @@
                                        VerticalAlignment="Center"
                                        Text="PoE Session ID:"
                                        ToolTipService.InitialShowDelay="50"
-                                       ToolTip="PoE Session ID. Visit https://github.com/kosace/EnhancePoEApp for more information." />
+                                       ToolTip="PoE Session ID. Visit https://github.com/ChaosRecipeEnhancer/EnhancePoEApp for more information." />
                             
                             <TextBox x:Name="SessionId"
                                      Grid.Column="3"

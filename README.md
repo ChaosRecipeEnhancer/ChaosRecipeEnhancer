@@ -40,12 +40,12 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/Main-Overlay.png" width="500" alt="Main Overlay">
 
-[downloads-badge]: https://img.shields.io/github/downloads/kosace/EnhancePoEApp/total?style=for-the-badge&logo=github
+[downloads-badge]: https://img.shields.io/github/downloads/ChaosRecipeEnhancer/EnhancePoEApp/total?style=for-the-badge&logo=github
 [discord-badge]: https://img.shields.io/discord/786617230879883307?color=5865f2&label=Discord&style=for-the-badge&logo=discord&link
 [discord-link]: https://discord.gg/TcVCJD8w
-[releases-badge]: https://img.shields.io/github/v/release/kosace/EnhancePoEApp?style=for-the-badge&logo=github
+[releases-badge]: https://img.shields.io/github/v/release/ChaosRecipeEnhancer/EnhancePoEApp?style=for-the-badge&logo=github
 [releases-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases
-[issues-badge]: https://img.shields.io/github/issues-raw/kosace/EnhancePoEApp?style=for-the-badge
+[issues-badge]: https://img.shields.io/github/issues-raw/ChaosRecipeEnhancer/EnhancePoEApp?style=for-the-badge
 [issues-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues
 [support-badge]: https://img.shields.io/badge/Paypal-Support-<COLOR>?style=for-the-badge&logo=paypal&color=ffae29
 [support-link]: https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS

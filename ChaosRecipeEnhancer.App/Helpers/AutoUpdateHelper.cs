@@ -21,7 +21,7 @@ namespace ChaosRecipeEnhancer.App.Helpers
         public static void CheckForUpdates()
         {
             AutoUpdater.Start(
-                "https://raw.githubusercontent.com/kosace/EnhancePoEApp/master/EnhancePoE.Installer/autoupdate.xml");
+                "https://raw.githubusercontent.com/ChaosRecipeEnhancer/EnhancePoEApp/master/EnhancePoE.Installer/autoupdate.xml");
         }
 
         /// <summary>

@@ -56,8 +56,8 @@
 
 #### 1.3.2
 
-- fixing NullPointerException when attempting to update online filters (thanks to [@devinvisible](https://github.com/kosace/EnhancePoEApp/commits?author=devinvisible))
-- fixing typo 'Ceck for Updates' -> 'Check For Updates' (thanks to [@devinvisible](https://github.com/kosace/EnhancePoEApp/commits?author=devinvisible))
+- fixing NullPointerException when attempting to update online filters (thanks to [@devinvisible](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/commits?author=devinvisible))
+- fixing typo 'Ceck for Updates' -> 'Check For Updates' (thanks to [@devinvisible](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/commits?author=devinvisible))
 - fixing some of the weapon 
 
 #### 1.3.1
