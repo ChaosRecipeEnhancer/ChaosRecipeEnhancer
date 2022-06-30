@@ -6,7 +6,7 @@ This app fetches your stash data from the PoE servers and shows which items you 
 
 Optionally, it can also manipulate your offline loot filter, so you can fully streamline your farm.
 
-![downloads][downloads-badge]
+[![downloads][downloads-badge]][releases-link]
 [![release][releases-badge]][releases-link]
 [![issues][issues-badge]][issues-link]
 [![Discord][discord-badge]][discord-link]
