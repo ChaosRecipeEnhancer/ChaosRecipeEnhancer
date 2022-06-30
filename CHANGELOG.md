@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 2.0.0-alpha (WIP)
+
+- documentation overhaul (including slimmer readme & new wiki pages)
+
 #### 1.5.5
 
 - fixing crash that could occur if user closes overlay while fetching with the stash tab overlay open (thanks to [@ttgx1000](https://github.com/ttgx1000))
