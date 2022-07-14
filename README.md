@@ -36,7 +36,7 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 [downloads-badge]: https://img.shields.io/github/downloads/ChaosRecipeEnhancer/EnhancePoEApp/total?style=for-the-badge&logo=github
 [discord-badge]: https://img.shields.io/discord/786617230879883307?color=5865f2&label=Discord&style=for-the-badge&logo=discord&link
-[discord-link]: https://discord.gg/TcVCJD8w
+[discord-link]: https://discord.gg/ryss9jnRkZ
 [releases-badge]: https://img.shields.io/github/v/release/ChaosRecipeEnhancer/EnhancePoEApp?style=for-the-badge&logo=github
 [releases-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases
 [issues-badge]: https://img.shields.io/github/issues-raw/ChaosRecipeEnhancer/EnhancePoEApp?style=for-the-badge
