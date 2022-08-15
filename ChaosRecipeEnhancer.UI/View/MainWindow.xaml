@@ -237,23 +237,9 @@
                                       Grid.Row="7"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedShardRecipeTrackingEnabled, Mode=TwoWay}" />
-
+                            
                             <TextBlock Grid.Column="1"
                                        Grid.Row="9"
-                                       VerticalAlignment="Center"
-                                       Text="Do Not Preserve Low Item Level Gear:"
-                                       ToolTipService.InitialShowDelay="50"
-                                       ToolTipService.ShowDuration="24000"
-                                       ToolTip="With this checked on, you'll be able to include more than 1 lower item level &#x0a;piece of gear in your Chaos recipes. &#x0a; &#x0a;If you de-select this, the tool will try its best to only include 1 piece of &#x0a;lower item level gear so that it'll last you longer into higher tier maps. &#x0a; &#x0a;The Chaos Orb recipe only requires a single item level 60 - 75 item out of every &#x0a;set you turn in. As you get further into maps and out-level those items (i.e. &#x0a;zone level is higher than 74), you'll start to notice the amount of items you &#x0a;have for the chaos recipe will rapidly diminish. &#x0a; &#x0a;This lets you decide if you want to take a more greedy approach and use up as &#x0a;many items as possible, or potentially save some lower-level items for potentially &#x0a;more chaos in the long run." />
-
-                            <CheckBox x:Name="LimitChaosCheckBox"
-                                      Grid.Column="3"
-                                      Grid.Row="9"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=DoNotPreserveLowItemLevelGear, Mode=TwoWay}" />
-
-                            <TextBlock Grid.Column="1"
-                                       Grid.Row="11"
                                        VerticalAlignment="Center"
                                        Text="Include Identified Items:"
                                        ToolTipService.InitialShowDelay="50"
@@ -261,7 +247,7 @@
 
                             <CheckBox x:Name="IncludeIdentifiedCheckBox"
                                       Grid.Column="3"
-                                      Grid.Row="11"
+                                      Grid.Row="9"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IncludeIdentifiedItemsEnabled, Mode=TwoWay}" />
 
@@ -1570,6 +1556,75 @@
                     </Grid>
                 </TabItem>
                 <!-- Loot Filter Settings Tab End -->
+
+                <!-- Advanced Settings Tab Start -->
+                <TabItem Header="Advanced">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        
+                        <!-- GENERAL -->
+                        <Grid Grid.Column="1"
+                              Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="10" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="5" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="10" />
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Column="1"
+                                       Grid.Row="1"
+                                       VerticalAlignment="Center"
+                                       Text="Make sure you know what you're doing when modifying these settings." />
+                            
+                            <TextBlock Grid.Column="1"
+                                       Grid.Row="3"
+                                       Grid.ColumnSpan="2"
+                                       Text="Recipes"
+                                       FontSize="24"
+                                       VerticalAlignment="Center"
+                                       FontWeight="Bold" />
+                            
+                            <TextBlock Grid.Column="1"
+                                       Grid.Row="5"
+                                       VerticalAlignment="Center"
+                                       Text="Do Not Preserve Low Item Level Gear:"
+                                       ToolTipService.InitialShowDelay="50"
+                                       ToolTipService.ShowDuration="24000"
+                                       ToolTip="With this checked on, you'll be able to include more than 1 lower item level &#x0a;piece of gear in your Chaos recipes. &#x0a; &#x0a;If you de-select this, the tool will try its best to only include 1 piece of &#x0a;lower item level gear so that it'll last you longer into higher tier maps. &#x0a; &#x0a;The Chaos Orb recipe only requires a single item level 60 - 75 item out of every &#x0a;set you turn in. As you get further into maps and out-level those items (i.e. &#x0a;zone level is higher than 74), you'll start to notice the amount of items you &#x0a;have for the chaos recipe will rapidly diminish. &#x0a; &#x0a;This lets you decide if you want to take a more greedy approach and use up as &#x0a;many items as possible, or potentially save some lower-level items for potentially &#x0a;more chaos in the long run." />
+
+                            <CheckBox x:Name="LimitChaosCheckBox"
+                                      Grid.Column="3"
+                                      Grid.Row="5"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=DoNotPreserveLowItemLevelGear, Mode=TwoWay}" />
+                            
+                        </Grid>
+
+                    </Grid>
+                    
+                </TabItem>
+                <!-- Advanced Settings Tab End -->
 
             </TabControl>
             <!-- Tab Container End -->
