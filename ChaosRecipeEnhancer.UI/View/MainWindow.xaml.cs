@@ -358,6 +358,10 @@ namespace ChaosRecipeEnhancer.UI.View
             LootFilterFileDialog.Content = filename;
         }
 
+        private void StashTargetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
+        
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadModeVisibility();

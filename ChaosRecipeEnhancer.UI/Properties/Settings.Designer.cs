@@ -133,12 +133,24 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int Sets {
+        public int FullSetThreshold {
             get {
-                return ((int)(this["Sets"]));
+                return ((int)(this["FullSetThreshold"]));
             }
             set {
-                this["Sets"] = value;
+                this["FullSetThreshold"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int TargetStash {
+            get {
+                return ((int)(this["TargetStash"]));
+            }
+            set {
+                this["TargetStash"] = value;
             }
         }
         
