@@ -32,7 +32,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private bool _fetchButtonEnabled = true;
         private SolidColorBrush _fetchButtonColor = Brushes.Green;
         private Visibility _amountsVisibility = Visibility.Hidden;
-        private Visibility _warningMessageVisibility = Visibility.Hidden;
+        private Visibility _warningMessageVisibility = Visibility.Collapsed;
 
         // Defines the number of a given piece of gear you currently have
         private int _amuletsAmount;

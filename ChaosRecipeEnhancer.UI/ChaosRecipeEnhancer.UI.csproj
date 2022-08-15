@@ -148,6 +148,12 @@
     <Compile Include="UserControls\MainOverlayOnlyButtons.xaml.cs">
       <DependentUpon>MainOverlayOnlyButtons.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\VerticalMainOverlayContent.xaml.cs">
+      <DependentUpon>VerticalMainOverlayContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VerticalMainOverlayContentMinified.xaml.cs">
+      <DependentUpon>VerticalMainOverlayContentMinified.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\StashTabOverlayView.xaml.cs">
       <DependentUpon>StashTabOverlayView.xaml</DependentUpon>
     </Compile>
@@ -182,6 +188,8 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\VerticalMainOverlayContent.xaml" />
+    <Page Include="UserControls\VerticalMainOverlayContentMinified.xaml" />
     <Page Include="View\ChaosRecipeEnhancerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

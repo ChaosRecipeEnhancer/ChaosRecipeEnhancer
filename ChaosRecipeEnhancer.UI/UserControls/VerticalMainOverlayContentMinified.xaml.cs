@@ -5,9 +5,9 @@ using Serilog;
 namespace ChaosRecipeEnhancer.UI.UserControls
 {
     /// <summary>
-    /// Interaction logic for MainOverlayContent.xaml
+    /// Interaction logic for VerticalMainOverlayContentMinified.xaml
     /// </summary>
-    public partial class MainOverlayContent
+    public partial class VerticalMainOverlayContentMinified
     {
         #region Fields
 
@@ -19,16 +19,16 @@ namespace ChaosRecipeEnhancer.UI.UserControls
 
         #region Constructors
 
-        public MainOverlayContent(MainWindow mainWindow, ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
+        public VerticalMainOverlayContentMinified(MainWindow mainWindow, ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
         {
-            _logger = Log.ForContext<MainOverlayContent>();
-            _logger.Debug("Constructing MainOverlayContent");
+            _logger = Log.ForContext<VerticalMainOverlayContentMinified>();
+            _logger.Debug("Constructing VerticalMainOverlayContentMinified");
 
             _mainWindow = mainWindow;
             _chaosRecipeEnhancer = chaosRecipeEnhancer;
             InitializeComponent();
 
-            _logger.Debug("MainOverlayContent constructed successfully");
+            _logger.Debug("MainOverlayContentMinified  constructed successfully");
         }
 
         #endregion
@@ -40,12 +40,12 @@ namespace ChaosRecipeEnhancer.UI.UserControls
             _mainWindow.RunStashTabOverlay();
         }
 
-        private void FetchButton_Click(object sender, RoutedEventArgs e)
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             _chaosRecipeEnhancer.RunFetching();
         }
 
-        private void ReloadFilterButton_Click(object sender, RoutedEventArgs e)
+        private void ReloadItemFilterButton_Click(object sender, RoutedEventArgs e)
         {
             _chaosRecipeEnhancer.ReloadItemFilter();
         }

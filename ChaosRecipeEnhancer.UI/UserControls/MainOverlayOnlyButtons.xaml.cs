@@ -21,7 +21,7 @@ namespace ChaosRecipeEnhancer.UI.UserControls
 
         public MainOverlayOnlyButtons(MainWindow mainWindow, ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
         {
-            _logger = Log.ForContext<MainOverlayContentMinified>();
+            _logger = Log.ForContext<MainOverlayOnlyButtons>();
             _logger.Debug("Constructing MainOverlayOnlyButtons");
 
             _mainWindow = mainWindow;

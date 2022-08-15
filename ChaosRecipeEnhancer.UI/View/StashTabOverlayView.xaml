@@ -10,7 +10,7 @@
         Topmost="True"
         MouseDown="Window_MouseDown"
         ResizeMode="CanResizeWithGrip"
-        Title="StashTabOverlayView"
+        Title="CRE Stash Tab Overlay"
         Padding="0,0,0,0"
         Margin="0,0,0,0"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayTopPosition, Mode=TwoWay}"

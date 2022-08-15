@@ -408,6 +408,14 @@ namespace ChaosRecipeEnhancer.UI.View
                     Trace.WriteLine($"OverlayModeComboBox_SelectionChanged: Case 2 {Settings.Default.SetTrackerOverlayDisplayMode}");
                     _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content = new MainOverlayOnlyButtons(this, _chaosRecipeEnhancerWindow);
                     break;
+                case 3:
+                    Trace.WriteLine($"OverlayModeComboBox_SelectionChanged: Case 3 {Settings.Default.SetTrackerOverlayDisplayMode}");
+                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content = new VerticalMainOverlayContent(this, _chaosRecipeEnhancerWindow);
+                    break;
+                case 4:
+                    Trace.WriteLine($"OverlayModeComboBox_SelectionChanged: Case 4 {Settings.Default.SetTrackerOverlayDisplayMode}");
+                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content = new VerticalMainOverlayContentMinified(this, _chaosRecipeEnhancerWindow);
+                    break;
             }
         }
 
