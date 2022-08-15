@@ -404,6 +404,18 @@
                 BorderThickness="3"
                 BorderBrush="DarkSlateGray">
 
+            <!-- Conditional rendering for 'Reload Filter' 'button' -->
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            
             <TextBlock Text="R"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
