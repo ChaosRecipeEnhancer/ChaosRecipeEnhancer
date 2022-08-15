@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
              mc:Ignorable="d"
              FontSize="16">
 
@@ -41,7 +42,21 @@
                 Grid.Row="1"
                 Margin="5,0">
 
-            <TextBlock FontSize="14" TextAlignment="Center">Reload<LineBreak />Filter</TextBlock>
+            <!-- Conditional rendering for 'Reload Filter' button -->
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            
+            <TextBlock FontSize="14" TextAlignment="Center">Reload<LineBreak />
+                Filter
+            </TextBlock>
 
         </Button>
 
