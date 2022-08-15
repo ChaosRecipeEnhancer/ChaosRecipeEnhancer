@@ -10,18 +10,18 @@
         Topmost="True"
         MouseDown="Window_MouseDown"
         ResizeMode="CanResizeWithGrip"
-        Left="{Binding Source={x:Static properties:Settings.Default}, Path=LeftStashTabOverlay, Mode=TwoWay}"
-        Top="{Binding Source={x:Static properties:Settings.Default}, Path=TopStashTabOverlay, Mode=TwoWay}"
         Title="StashTabOverlayView"
         Padding="0,0,0,0"
         Margin="0,0,0,0"
-        Height="{Binding Source={x:Static properties:Settings.Default}, Path=YStashTabOverlay, Mode=TwoWay}"
-        Width="{Binding Source={x:Static properties:Settings.Default}, Path=XStashTabOverlay, Mode=TwoWay}">
+        Top="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayTopPosition, Mode=TwoWay}"
+        Left="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayLeftPosition, Mode=TwoWay}"
+        Height="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayHeight, Mode=TwoWay}"
+        Width="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayWidth, Mode=TwoWay}">
 
     <Window.Background>
 
-        <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab}"
-                         Color="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabBackgroundColor}" />
+        <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayOpacity}"
+                         Color="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayBackgroundColor}" />
 
     </Window.Background>
 
@@ -129,7 +129,7 @@
                                 <Grid>
 
                                     <Border Name="Border"
-                                            Margin="{Binding TabHeaderGap}"
+                                            Margin="{Binding StashTabOverlayIndividualTabHeaderGap}"
                                             BorderThickness="1,1,1,1"
                                             BorderBrush="Gainsboro"
                                             CornerRadius="2,12,0,0">
@@ -220,7 +220,7 @@
                                     <TabPanel x:Name="HeaderPanel"
                                               Grid.Row="0"
                                               Panel.ZIndex="1"
-                                              Margin="{Binding TabMargin}"
+                                              Margin="{Binding StashTabOverlayIndividualTabMargin}"
                                               IsItemsHost="True"
                                               KeyboardNavigation.TabIndex="1"
                                               Background="Transparent" />
