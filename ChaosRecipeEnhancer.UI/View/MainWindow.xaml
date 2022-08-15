@@ -1064,7 +1064,7 @@
                             <TextBlock Grid.Column="1"
                                        Grid.Row="3"
                                        VerticalAlignment="Center"
-                                       Text="Opacity Stash Tab Overlay:"
+                                       Text="Stash Tab Overlay Opacity:"
                                        ToolTipService.InitialShowDelay="50"
                                        ToolTip="The background opacity of the stash Tabs overlay from 0 (0%) to 1 (100%)." />
 
