@@ -1,201 +1,239 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EnhancePoE.UI.Properties" GeneratedClassName="Settings">
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ChaosRecipeEnhancer.UI.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="accName" Type="System.String" Scope="User">
+    <!--General Tab Start-->
+    <!--Path of Exile (Account) Settings Start-->
+    <Setting Name="PathOfExileAccountName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="hideOnClose" Type="System.Boolean" Scope="User">
+    <Setting Name="PathOfExileWebsiteSessionId" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LeagueName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="CustomLeagueEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="TopMain" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <!--Path of Exile (Account) Settings End-->
+    <!--Recipes Settings Start-->
+    <!--TODO: [Refactor] Rename this setting and/or nuke it to oblivion! It's caused so much confusion.-->
+    <Setting Name="DoNotPreserveLowItemLevelGear" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="LeftMain" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="TopOverlay" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="LeftOverlay" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="Opacity" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1</Value>
-    </Setting>
-    <Setting Name="HotkeyToggle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
-    </Setting>
-    <Setting Name="HotkeyRefresh" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
-    </Setting>
-    <Setting Name="Sets" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="ColorBoots" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FF0018FF</Value>
-    </Setting>
-    <Setting Name="ColorGloves" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FF04FF00</Value>
-    </Setting>
-    <Setting Name="ColorHelmet" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFF8FF04</Value>
-    </Setting>
-    <Setting Name="ColorChest" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFDD00FF</Value>
-    </Setting>
-    <Setting Name="ColorWeapon" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FF00DCFF</Value>
-    </Setting>
-    <Setting Name="SessionId" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="League" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="HotkeyStashTab" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
-    </Setting>
-    <Setting Name="TopStashTabOverlay" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">74</Value>
-    </Setting>
-    <Setting Name="LeftStashTabOverlay" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">12</Value>
-    </Setting>
-    <Setting Name="XStashTabOverlay" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">641</Value>
-    </Setting>
-    <Setting Name="YStashTabOverlay" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">690</Value>
-    </Setting>
-    <Setting Name="OpacityStashTab" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1</Value>
-    </Setting>
-    <Setting Name="ColorRing" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFFF0303</Value>
-    </Setting>
-    <Setting Name="ColorStash" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#96F90000</Value>
-    </Setting>
-    <Setting Name="ColorBelt" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFFF0303</Value>
-    </Setting>
-    <Setting Name="LootFilterLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="LootFilterActive" Type="System.Boolean" Scope="User">
+    <Setting Name="IncludeIdentifiedItemsEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ExaltedRecipe" Type="System.Boolean" Scope="User">
+    <Setting Name="ChaosRecipeTrackingEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="RegalRecipeTrackingEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Sound" Type="System.Boolean" Scope="User">
+    <Setting Name="ExaltedShardRecipeTrackingEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <!--Recipes Settings End-->
+    <!--General Settings Start-->
+    <Setting Name="FullSetThreshold" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="TargetStash" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="StashTabQueryMode" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="StashTabIndices" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="StashFolderName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="StashTabPrefix" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="StashTabSuffix" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AutoFetchOnRezoneEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="PathOfExileClientLogLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Language" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="CloseToTrayEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <!--General Settings End-->
+    <!--Hotkeys Setting Start-->
+    <Setting Name="FetchStashHotkey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt; not set &gt;</Value>
+    </Setting>
+    <Setting Name="ToggleSetTrackerOverlayHotkey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt; not set &gt;</Value>
+    </Setting>
+    <Setting Name="ToggleStashTabOverlayHotkey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt; not set &gt;</Value>
+    </Setting>
+    <!--Hotkeys Setting End-->
+    <!--Sound Setting Start-->
+    <Setting Name="SoundEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Volume" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
-    <Setting Name="StashTabBackgroundColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#14FFFFFF</Value>
+    <Setting Name="ItemSetCompletedSoundFileLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Default Sound</Value>
     </Setting>
-    <Setting Name="ColorAmulet" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFFF0303</Value>
+    <Setting Name="FilterModificationPendingSoundFileLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Default Sound</Value>
     </Setting>
-    <Setting Name="StashTabMode" Type="System.Int32" Scope="User">
+    <!--Sound Setting End-->
+    <!--General Tab End-->
+    <!--Overlay Tab Start-->
+    <!--Set Tracker Overlay Settings Start-->
+    <Setting Name="SetTrackerOverlayDisplayMode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="StashTabName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="StashTabIndices" Type="System.String" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="TabHeaderWidth" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">20.4</Value>
-    </Setting>
-    <Setting Name="TabHeaderGap" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">5</Value>
-    </Setting>
-    <Setting Name="TabMargin" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">23</Value>
-    </Setting>
-    <Setting Name="HighlightMode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="FillWithChaos" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="OverlayMode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="ShowItemAmount" Type="System.Int32" Scope="User">
+    <Setting Name="SetTrackerOverlayOpacity" Type="System.Single" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="RingsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="SetTrackerOverlayItemCounterDisplayMode" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="AmuletsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="BeltsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="BootsAlwaysActive" Type="System.Boolean" Scope="User">
+    <Setting Name="SetTrackerOverlayOverlayLockPositionEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="GlovesAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <!--Set Tracker Overlay Settings End-->
+    <!--Stash Tab Overlay Settings Start-->
+    <Setting Name="StashTabOverlayOpacity" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="HelmetsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="StashTabOverlayBackgroundColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#14FFFFFF</Value>
     </Setting>
-    <Setting Name="ChestsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="WeaponsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="IncludeIdentified" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="ChaosRecipe" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="RegalRecipe" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="AutoFetch" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="LogLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="LootFilterIcons" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="LockOverlayPosition" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="Language" Type="System.Int32" Scope="User">
+    <Setting Name="StashTabOverlayHighlightMode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="ItemPickupSoundFileLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Default Sound</Value>
+    <Setting Name="StashTabOverlayHighlightColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#96F90000</Value>
     </Setting>
-    <Setting Name="FilterChangeSoundFileLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Default Sound</Value>
+    <Setting Name="StashTabOverlayIndividualTabMargin" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">23</Value>
     </Setting>
-    <Setting Name="HotkeyReloadFilter" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
+    <Setting Name="StashTabOverlayIndividualTabHeaderWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">20.4</Value>
     </Setting>
-    <Setting Name="CustomLeague" Type="System.Boolean" Scope="User">
+    <Setting Name="StashTabOverlayIndividualTabHeaderGap" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <!--Stash Tab Overlay Settings End-->
+    <!--Overlay Tab End-->
+    <!--Loot Filter Tab Start-->
+    <!--General Settings Start-->
+    <Setting Name="LootFilterManipulationEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="MainLeague" Type="System.Boolean" Scope="User">
+    <Setting Name="LootFilterFileLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LootFilterIconsEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <!--General Settings End-->
+    <!--Colors Settings Start-->
+    <Setting Name="LootFilterRingColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFF0303</Value>
+    </Setting>
+    <Setting Name="LootFilterAmuletColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFF0303</Value>
+    </Setting>
+    <Setting Name="LootFilterBeltColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFF0303</Value>
+    </Setting>
+    <Setting Name="LootFilterBootsColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF0018FF</Value>
+    </Setting>
+    <Setting Name="LootFilterGlovesColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF04FF00</Value>
+    </Setting>
+    <Setting Name="LootFilterHelmetColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFF8FF04</Value>
+    </Setting>
+    <Setting Name="LootFilterBodyArmourColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFDD00FF</Value>
+    </Setting>
+    <Setting Name="LootFilterWeaponColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF00DCFF</Value>
+    </Setting>
+    <!--Colors Settings End-->
+    <!--Always Active Settings Start-->
+    <Setting Name="LootFilterRingsAlwaysActive" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="LootFilterAmuletsAlwaysActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LootFilterBeltsAlwaysActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LootFilterBootsAlwaysActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LootFilterGlovesAlwaysActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LootFilterHelmetsAlwaysActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LootFilterBodyArmourAlwaysActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LootFilterWeaponsAlwaysActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <!--Always Active Settings End-->
+    <!--Loot Filter Tab End-->
+    <!--Settings Window Position Start-->
+    <Setting Name="SettingsWindowTopPosition" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="SettingsWindowLeftPosition" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <!--Settings Window Position End-->
+    <!--Set Tracker Overlay Position Start-->
+    <Setting Name="SetTrackerOverlayTopPosition" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="SetTrackerOverlayLeftPosition" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <!--Set Tracker Overlay Position End-->
+    <!--Stash Tab Overlay Position Start-->
+    <Setting Name="StashTabOverlayTopPosition" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">74</Value>
+    </Setting>
+    <Setting Name="StashTabOverlayLeftPosition" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="StashTabOverlayHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">690</Value>
+    </Setting>
+    <Setting Name="StashTabOverlayWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">641</Value>
+    </Setting>
+    <!--Stash Tab Overlay Position End-->
+    <!--Experimental Settings-->
     <Setting Name="DebugMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
+

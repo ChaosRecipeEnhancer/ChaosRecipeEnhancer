@@ -62,7 +62,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private static bool FetchingActive { get; set; }
 
         // Tracks whether or not calculations are currently active
-        // TODO What is a 'calculation'? 
+        // TODO What is a 'calculation'?
         private static bool CalculationActive { get; set; }
 
         private static LogWatcher Watcher { get; set; }
@@ -362,7 +362,7 @@ namespace ChaosRecipeEnhancer.UI.View
         public new virtual void Show()
         {
             IsOpen = true;
-            if (Settings.Default.AutoFetch) Watcher = new LogWatcher(this);
+            if (Settings.Default.AutoFetchOnRezoneEnabled) Watcher = new LogWatcher(this);
             base.Show();
         }
 
@@ -374,7 +374,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // If the user has locked the {ChaosRecipeEnhancer} in their settings, we ignore the event
-            if (e.ChangedButton != MouseButton.Left || Settings.Default.LockOverlayPosition) return;
+            if (e.ChangedButton != MouseButton.Left || Settings.Default.SetTrackerOverlayOverlayLockPositionEnabled) return;
 
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
@@ -398,7 +398,7 @@ namespace ChaosRecipeEnhancer.UI.View
         {
             if (FetchingActive) return;
 
-            if (!Settings.Default.ChaosRecipe && !Settings.Default.RegalRecipe && !Settings.Default.ExaltedRecipe)
+            if (!Settings.Default.ChaosRecipeTrackingEnabled && !Settings.Default.RegalRecipeTrackingEnabled && !Settings.Default.ExaltedShardRecipeTrackingEnabled)
             {
                 MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -490,14 +490,22 @@ namespace ChaosRecipeEnhancer.UI.View
 
             if (!IsOpen) return;
 
-            switch (Settings.Default.StashTabMode)
+            switch (Settings.Default.StashTabQueryMode)
             {
                 case 0 when Settings.Default.StashTabIndices == "":
-                    MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stash Tab Indices.");
+                    MessageBox.Show("Missing Stash Query Settings!" + Environment.NewLine + "Please set stash tab indices.");
                     return;
-                case 1 when Settings.Default.StashTabName == "":
-                    MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stash Tab Prefix.");
+                case 1 when Settings.Default.StashTabPrefix == "":
+                    MessageBox.Show("Missing Stash Query Settings!" + Environment.NewLine + "Please set stash tab prefix.");
                     return;
+                case 2 when Settings.Default.StashTabSuffix == "":
+                    MessageBox.Show("Missing Stash Query Settings!" + Environment.NewLine + "Please set stash tab suffix.");
+                    return;
+                
+                // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
+                // case 3 when Settings.Default.StashFolderName == "":
+                //     MessageBox.Show("Missing Stash Query Settings!" + Environment.NewLine + "Please set stash tab folder name.");
+                //     return;
             }
 
             if (CalculationActive)
@@ -527,6 +535,8 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void SetOpacity()
         {
+            Trace.Write("Setting new item opacity");
+
             Dispatcher.Invoke(() =>
             {
                 if (!Data.ActiveItems.HelmetActive)

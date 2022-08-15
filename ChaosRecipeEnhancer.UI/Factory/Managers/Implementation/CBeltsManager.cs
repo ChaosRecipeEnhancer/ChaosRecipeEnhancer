@@ -11,8 +11,8 @@ namespace ChaosRecipeEnhancer.UI.Factory.Managers.Implementation
         {
             ClassName = "Belts";
             ClassFilterName = "\"Belts\"";
-            ClassColor = Settings.Default.ColorBelt;
-            AlwaysActive = Settings.Default.BeltsAlwaysActive;
+            ClassColor = Settings.Default.LootFilterBeltColor;
+            AlwaysActive = Settings.Default.LootFilterBeltsAlwaysActive;
         }
 
         #endregion
