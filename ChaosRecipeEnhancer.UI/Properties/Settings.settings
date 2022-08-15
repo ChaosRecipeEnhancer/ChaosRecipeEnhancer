@@ -41,7 +41,10 @@
             <!--Recipes Settings End-->
     
             <!--General Settings Start-->
-            <Setting Name="Sets" Type="System.Int32" Scope="User">
+            <Setting Name="FullSetThreshold" Type="System.Int32" Scope="User">
+                <Value Profile="(Default)">0</Value>
+            </Setting>
+            <Setting Name="TargetStash" Type="System.Int32" Scope="User">
                 <Value Profile="(Default)">0</Value>
             </Setting>
             <Setting Name="StashTabQueryMode" Type="System.Int32" Scope="User">
