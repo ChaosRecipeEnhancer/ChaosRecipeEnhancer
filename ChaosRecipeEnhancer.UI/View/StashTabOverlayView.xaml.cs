@@ -27,8 +27,8 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private static readonly ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
         private Visibility _stashBorderVisibility = Visibility.Hidden;
-        private Thickness _tabHeaderGap;
-        private Thickness _tabMargin;
+        private Thickness _stashTabOverlayIndividualTabHeaderGap;
+        private Thickness _stashTabOverlayIndividualTabMargin;
 
         #endregion
 
@@ -55,28 +55,28 @@ namespace ChaosRecipeEnhancer.UI.View
         public bool IsOpen { get; set; }
         private bool IsEditing { get; set; }
 
-        public Thickness TabHeaderGap
+        public Thickness StashTabOverlayIndividualTabHeaderGap
         {
-            get => _tabHeaderGap;
+            get => _stashTabOverlayIndividualTabHeaderGap;
             set
             {
-                if (value != _tabHeaderGap)
+                if (value != _stashTabOverlayIndividualTabHeaderGap)
                 {
-                    _tabHeaderGap = value;
-                    OnPropertyChanged("TabHeaderGap");
+                    _stashTabOverlayIndividualTabHeaderGap = value;
+                    OnPropertyChanged("StashTabOverlayIndividualTabHeaderGap");
                 }
             }
         }
 
-        public Thickness TabMargin
+        public Thickness StashTabOverlayIndividualTabMargin
         {
-            get => _tabMargin;
+            get => _stashTabOverlayIndividualTabMargin;
             set
             {
-                if (value != _tabMargin)
+                if (value != _stashTabOverlayIndividualTabMargin)
                 {
-                    _tabMargin = value;
-                    OnPropertyChanged("TabMargin");
+                    _stashTabOverlayIndividualTabMargin = value;
+                    OnPropertyChanged("StashTabOverlayIndividualTabMargin");
                 }
             }
         }
@@ -123,9 +123,9 @@ namespace ChaosRecipeEnhancer.UI.View
             {
                 IsOpen = true;
                 OverlayStashTabList.Clear();
-                _tabHeaderGap.Right = Settings.Default.TabHeaderGap;
-                _tabHeaderGap.Left = Settings.Default.TabHeaderGap;
-                TabMargin = new Thickness(Settings.Default.TabMargin, 0, 0, 0);
+                _stashTabOverlayIndividualTabHeaderGap.Right = Settings.Default.StashTabOverlayIndividualTabHeaderGap;
+                _stashTabOverlayIndividualTabHeaderGap.Left = Settings.Default.StashTabOverlayIndividualTabHeaderGap;
+                StashTabOverlayIndividualTabMargin = new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
 
                 foreach (var i in StashTabList.StashTabs)
                 {
@@ -167,7 +167,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
                 Data.PrepareSelling();
                 Data.ActivateNextCell(true, null);
-                if (Settings.Default.HighlightMode == 2)
+                if (Settings.Default.StashTabOverlayHighlightMode == 2)
                     foreach (var set in Data.ItemSetListHighlight)
                     foreach (var i in set.ItemList)
                     {
