@@ -640,19 +640,40 @@
                                      Grid.Column="3"
                                      Grid.Row="3"
                                      Width="200"
-                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=Sets, Mode=TwoWay}" />
+                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=FullSetThreshold, Mode=TwoWay}" />
                             <!-- Full Set Threshold Setting (Row 3) Start -->
 
-                            <!-- StashTab Mode Setting (Row 5) Start -->
+                            <!-- Target StashTab Setting (Row 5) Start -->
                             <TextBlock Grid.Column="1"
                                        Grid.Row="5"
+                                       VerticalAlignment="Center"
+                                       Text="Target Stash:"
+                                       ToolTipService.InitialShowDelay="50"
+                                       ToolTip="The stash tab you want to use, your individual stash tab or your guild stash." />
+
+                            <ComboBox Grid.Column="3"
+                                      Grid.Row="5"
+                                      Width="200"
+                                      VerticalContentAlignment="Center"
+                                      SelectionChanged="StashTargetComboBox_SelectionChanged"
+                                      SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=TargetStashTab, Mode=TwoWay}">
+
+                                <ComboBoxItem Content="My Stash" />
+                                <ComboBoxItem Content="Guild Stash" />
+
+                            </ComboBox>
+                            <!-- StashTab Mode Setting (Row 5) End -->
+
+                            <!-- StashTab Mode Setting (Row 7) Start -->
+                            <TextBlock Grid.Column="1"
+                                       Grid.Row="7"
                                        VerticalAlignment="Center"
                                        Text="Stash Tab Query Mode:"
                                        ToolTipService.InitialShowDelay="50"
                                        ToolTip="The stash tab fetching mode. Stash tabs will automatically be added." />
 
                             <ComboBox Grid.Column="3"
-                                      Grid.Row="5"
+                                      Grid.Row="7"
                                       Width="200"
                                       VerticalContentAlignment="Center"
                                       SelectionChanged="ComboBox_SelectionChanged"
@@ -665,14 +686,14 @@
                                 <!-- <ComboBoxItem Content="Folder Name" /> -->
 
                             </ComboBox>
-                            <!-- StashTab Mode Setting (Row 5) End -->
+                            <!-- StashTab Mode Setting (Row 7) End -->
 
                             <!-- StashTab Query [Index / String] Setting (Row 7) Start -->
                             
                             <!-- Individual Stash Tab Indices Start -->
                             <TextBlock Name="StashTabIndicesTextBlock"
                                        Grid.Column="1"
-                                       Grid.Row="7"
+                                       Grid.Row="9"
                                        VerticalAlignment="Center"
                                        Text="Stash Tab Indices:"
                                        ToolTipService.InitialShowDelay="50"
@@ -681,7 +702,7 @@
 
                             <TextBox Name="StashTabIndicesTextBox"
                                      Grid.Column="3"
-                                     Grid.Row="7"
+                                     Grid.Row="9"
                                      Width="200"
                                      Visibility="{Binding TabIndicesVisible}"
                                      Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabIndices, Mode=TwoWay}" />
@@ -690,7 +711,7 @@
                             <!-- Individual Stash Tab Name Prefix Start -->
                             <TextBlock Name="StashTabNamePrefixTextBlock"
                                        Grid.Column="1"
-                                       Grid.Row="7"
+                                       Grid.Row="9"
                                        VerticalAlignment="Center"
                                        Text="Stash Tab Prefix:"
                                        ToolTipService.InitialShowDelay="50"
@@ -699,7 +720,7 @@
 
                             <TextBox Name="StashTabNamePrefixTextBox"
                                      Grid.Column="3"
-                                     Grid.Row="7"
+                                     Grid.Row="9"
                                      Width="200"
                                      Visibility="{Binding TabNamePrefixVisible}"
                                      Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabPrefix, Mode=TwoWay}" />
@@ -708,7 +729,7 @@
                             <!-- Individual Stash Tab Name Suffix Start -->
                             <TextBlock Name="StashTabNameSuffixTextBlock"
                                        Grid.Column="1"
-                                       Grid.Row="7"
+                                       Grid.Row="9"
                                        VerticalAlignment="Center"
                                        Text="Stash Tab Suffix:"
                                        ToolTipService.InitialShowDelay="50"
@@ -717,7 +738,7 @@
 
                             <TextBox Name="StashTabNameSuffixTextBox"
                                      Grid.Column="3"
-                                     Grid.Row="7"
+                                     Grid.Row="9"
                                      Width="200"
                                      Visibility="{Binding TabNameSuffixVisible}"
                                      Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabSuffix, Mode=TwoWay}" />
@@ -727,7 +748,7 @@
                             <!-- Stash Tab Folder Name Start -->
                             <!-- <TextBlock Name="FolderNameTextBlock" -->
                             <!--            Grid.Column="1" -->
-                            <!--            Grid.Row="7" -->
+                            <!--            Grid.Row="9" -->
                             <!--            VerticalAlignment="Center" -->
                             <!--            Text="Folder Name:" -->
                             <!--            ToolTipService.InitialShowDelay="50" -->
@@ -736,18 +757,18 @@
                             <!-- -->
                             <!-- <TextBox Name="FolderNameTextBox" -->
                             <!--          Grid.Column="3" -->
-                            <!--          Grid.Row="7" -->
+                            <!--          Grid.Row="9" -->
                             <!--          Width="200" -->
                             <!--          Visibility="{Binding FolderNameVisible}" -->
                             <!--          Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashFolderName, Mode=TwoWay}" /> -->
                             <!-- Stash Tab Folder Name End -->
                             
-                            <!-- StashTab Query [Index / String] Setting (Row 7) End -->
+                            <!-- StashTab Query [Index / String] Setting (Row 9) End -->
 
-                            <!-- Fetch on New Map Setting (Row 9) Start -->
+                            <!-- Fetch on New Map Setting (Row 11) Start -->
                             <!-- TODO: [Refactor] Enforce reload when this setting is changed (or at the very least, notify users it's required) -->
                             <TextBlock Grid.Column="1"
-                                       Grid.Row="9"
+                                       Grid.Row="11"
                                        VerticalAlignment="Center"
                                        Text="Fetch on New Map:"
                                        ToolTipService.InitialShowDelay="50"
@@ -755,24 +776,24 @@
 
                             <CheckBox x:Name="AutoFetchCheckBox"
                                       Grid.Column="3"
-                                      Grid.Row="9"
+                                      Grid.Row="11"
                                       VerticalAlignment="Center"
                                       Checked="AutoFetchCheckBox_Checked"
                                       Unchecked="AutoFetchCheckBox_Unchecked"
                                       IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=AutoFetchOnRezoneEnabled, Mode=TwoWay}" />
-                            <!-- Fetch on New Map Setting (Row 9) End -->
+                            <!-- Fetch on New Map Setting (Row 11) End -->
 
-                            <!-- Client Log File Location Setting (Row 11) Start -->
+                            <!-- Client Log File Location Setting (Row 13) Start -->
                             <!-- TODO: [Refactor] Hide this setting if 'Fetch on New Map' setting isn't enabled -->
                             <TextBlock Grid.Column="1"
-                                       Grid.Row="11"
+                                       Grid.Row="13"
                                        VerticalAlignment="Center"
                                        Text="PoE Client.txt File Location:"
                                        ToolTipService.InitialShowDelay="50"
-                                       ToolTip="The standard path is: C:/Programs/Grinding Gear Games/Path of Exile/logs/Client.txt; it will be different for steam users." />
+                                       ToolTip="The standard path is: `C:/Programs/Grinding Gear Games/Path of Exile/logs/Client.txt`; it will be different for steam users." />
 
                             <Button Grid.Column="3"
-                                    Grid.Row="11"
+                                    Grid.Row="13"
                                     x:Name="LogLocationDialog"
                                     Width="200"
                                     Click="LogLocationDialog_Click"
@@ -804,18 +825,18 @@
                                 </Button.Style>
 
                             </Button>
-                            <!-- Client Log File Location Setting (Row 11) End -->
+                            <!-- Client Log File Location Setting (Row 13) End -->
 
-                            <!-- Language Setting (Row 13) Start -->
+                            <!-- Language Setting (Row 15) Start -->
                             <TextBlock Grid.Column="1"
-                                       Grid.Row="13"
+                                       Grid.Row="15"
                                        VerticalAlignment="Center"
                                        Text="Language:"
                                        ToolTipService.InitialShowDelay="50"
                                        ToolTip="Fetch on new Map only works in the correct language. Set it to the same as your PoE client." />
 
                             <ComboBox Grid.Column="3"
-                                      Grid.Row="13"
+                                      Grid.Row="15"
                                       Width="200"
                                       VerticalContentAlignment="Center"
                                       Name="LanguageComboBox"
@@ -830,11 +851,11 @@
                                 <ComboBoxItem Content="Chinese" />
 
                             </ComboBox>
-                            <!-- Language Setting (Row 13) End -->
+                            <!-- Language Setting (Row 15) End -->
 
-                            <!-- Close to Tray Setting (Row 15) Start -->
+                            <!-- Close to Tray Setting (Row 17) Start -->
                             <TextBlock Grid.Column="1"
-                                       Grid.Row="15"
+                                       Grid.Row="17"
                                        VerticalAlignment="Center"
                                        Text="Close to Tray:"
                                        ToolTipService.InitialShowDelay="50"
@@ -842,13 +863,13 @@
 
                             <CheckBox x:Name="HideOnClose"
                                       Grid.Column="3"
-                                      Grid.Row="15"
+                                      Grid.Row="17"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=CloseToTrayEnabled, Mode=TwoWay}" />
-                            <!-- Close to Tray Setting (Row 15) End -->
+                            <!-- Close to Tray Setting (Row 17) End -->
 
                             <!-- TODO DebugMode setting to toggle logging for file (for now, it's always enabled) -->
-                            <!-- Debug Mode Setting (Row 17) Start -->
+                            <!-- Debug Mode Setting (Row 19) Start -->
                             <!-- <TextBlock Grid.Column="1" -->
                             <!--            Grid.Row="17" -->
                             <!--            VerticalAlignment="Center" -->
@@ -858,10 +879,10 @@
 
                             <!-- <CheckBox x:Name="DebugMode" -->
                             <!--           Grid.Column="3" -->
-                            <!--           Grid.Row="17" -->
+                            <!--           Grid.Row="19" -->
                             <!--           VerticalAlignment="Center" -->
                             <!--           IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=DebugMode, Mode=TwoWay}" /> -->
-                            <!-- Debug Mode Setting (Row 17) End -->
+                            <!-- Debug Mode Setting (Row 19) End -->
 
                         </Grid>
                         <!-- General Settings Section End -->
