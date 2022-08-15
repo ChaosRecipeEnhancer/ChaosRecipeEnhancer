@@ -34,7 +34,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancerWindow;
         private readonly StashTabOverlayView _stashTabOverlayView;
 
-        private const string AppVersion = "1.5.6.0";
+        private const string AppVersion = "1.6.0";
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
         // ReSharper disable once UnusedMember.Local
