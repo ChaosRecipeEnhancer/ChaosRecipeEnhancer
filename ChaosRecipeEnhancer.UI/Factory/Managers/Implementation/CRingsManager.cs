@@ -11,8 +11,8 @@ namespace ChaosRecipeEnhancer.UI.Factory.Managers.Implementation
         {
             ClassName = "Rings";
             ClassFilterName = "\"Rings\"";
-            ClassColor = Settings.Default.LootFilterRingColor;
-            AlwaysActive = Settings.Default.LootFilterRingsAlwaysActive;
+            ClassColor = Settings.Default.ColorRing;
+            AlwaysActive = Settings.Default.RingsAlwaysActive;
         }
 
         #endregion

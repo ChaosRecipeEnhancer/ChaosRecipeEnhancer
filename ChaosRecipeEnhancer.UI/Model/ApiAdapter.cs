@@ -26,10 +26,10 @@ namespace ChaosRecipeEnhancer.UI.Model
             FetchingDone = false;
             Trace.WriteLine("generating uris!!");
 
-            if (Settings.Default.PathOfExileAccountName != "" && Settings.Default.LeagueName != "")
+            if (Settings.Default.accName != "" && Settings.Default.League != "")
             {
-                var accName = Settings.Default.PathOfExileAccountName.Trim();
-                var league = Settings.Default.LeagueName.Trim();
+                var accName = Settings.Default.accName.Trim();
+                var league = Settings.Default.League.Trim();
 
                 if (await GetProps(accName, league))
                     if (!FetchError)
@@ -38,6 +38,8 @@ namespace ChaosRecipeEnhancer.UI.Model
                         GenerateStashTabUris(accName, league);
                         return true;
                     }
+
+                // https://www.pathofexile.com/character-window/get-stash-items?accountName=kosace&tabIndex=0&league=Heist
             }
             else
             {
@@ -80,9 +82,9 @@ namespace ChaosRecipeEnhancer.UI.Model
             {
                 StashTabList.GetStashTabIndices();
             }
-            
-            // mode = Individual Stash Tab Indices
-            if (Settings.Default.StashTabQueryMode == 0)
+
+            // mode = ID
+            if (Settings.Default.StashTabMode == 0)
             {
                 if (PropsList != null)
                 {
@@ -103,18 +105,19 @@ namespace ChaosRecipeEnhancer.UI.Model
                     GetAllTabNames();
                 }
             }
-            // mode = Individual Stash Tab Prefix
-            else if (Settings.Default.StashTabQueryMode == 1)
+            // mode = Name
+            else
             {
                 if (PropsList != null)
                 {
-                    var individualStashTabPrefix = Settings.Default.StashTabPrefix;
+                    var stashName = Settings.Default.StashTabName;
 
                     GetAllTabNames();
 
                     foreach (var tab in PropsList.tabs)
                     {
-                        if (tab.Name.StartsWith(individualStashTabPrefix))
+                        if ((Settings.Default.StashTabMode == 1 && tab.Name.StartsWith(stashName))
+                            || (Settings.Default.StashTabMode == 2 && tab.Name.EndsWith(stashName)))
                         {
                             if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
                                 ret.Add(new StashTab(tab.Name, tab.Index));
@@ -124,79 +127,6 @@ namespace ChaosRecipeEnhancer.UI.Model
                     StashTabList.StashTabs = ret;
                 }
             }
-            // mode = Individual Stash Tab Suffix
-            else if (Settings.Default.StashTabQueryMode == 2)
-            {
-                if (PropsList != null)
-                {
-                    var individualStashTabSuffix = Settings.Default.StashTabSuffix;
-
-                    GetAllTabNames();
-
-                    foreach (var tab in PropsList.tabs)
-                    {
-                        if (tab.Name.EndsWith(individualStashTabSuffix))
-                        {
-                            if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
-                                ret.Add(new StashTab(tab.Name, tab.Index));
-                        }
-                    }
-
-                    StashTabList.StashTabs = ret;
-                }
-            }
-            
-            /**
-             * TODO: [Refactor] Repurpose the code below for searching by stash tab folder name
-             *
-             * So, the API we're using for querying items doesn't support the 'Parent' field for stash tabs.
-             *
-             * The sample response we get back is as follows:
-             * 
-             *      {
-             *         "numTabs": 58,
-             *         "tabs": [
-             *           {
-             *             "n": "Test 1 High iLvl",
-             *             "i": 0,
-             *             "id": "6a2da4a0dc12c816974f129864667fee59f652fcdc5980bfb62b1736a6e92917",
-             *             "type": "PremiumStash",
-             *             "selected": true,
-             *             "colour": { "r": 221, "g": 221, "b": 221 },
-             *             "srcL": "https://web.poecdn.com/gen/image/WzIzLDEseyJ0IjoibCIsImMiOi0yMjM2OTYzfV0/839620a564/Stash_TabL.png",
-             *             "srcC": "https://web.poecdn.com/gen/image/WzIzLDEseyJ0IjoibSIsImMiOi0yMjM2OTYzfV0/e6a1df0898/Stash_TabL.png",
-             *             "srcR": "https://web.poecdn.com/gen/image/WzIzLDEseyJ0IjoiciIsImMiOi0yMjM2OTYzfV0/1cc0d93243/Stash_TabL.png"
-             *           },
-             *          {...}
-             *      }
-             *
-             * As you can see, no sort of 'Parent' field exists, so we aren't able to do select by folder quite yet...
-             *
-             * Below is the code I had written for search by parent mode. We may reuse it at some point later. But it
-             * currently won't work.
-             */
-            
-            // mode = Folder Name
-            // if (Settings.Default.StashTabQueryMode == 3)
-            // {
-            //     if (PropsList != null)
-            //     {
-            //         var stashTabFolderName = Settings.Default.StashFolderName;
-            //
-            //         GetAllTabNames();
-            //
-            //         foreach (var tab in PropsList.tabs)
-            //         {
-            //             if (tab.Parent == stashTabFolderName)
-            //             {
-            //                 if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
-            //                     ret.Add(new StashTab(tab.Name, tab.Index));
-            //             }
-            //         }
-            //
-            //         StashTabList.StashTabs = ret;
-            //     }
-            // }
 
             Trace.WriteLine(StashTabList.StashTabs.Count, "stash tab count");
         }
@@ -206,12 +136,10 @@ namespace ChaosRecipeEnhancer.UI.Model
             foreach (var i in StashTabList.StashTabs)
             {
                 var stashTab = i.TabIndex.ToString();
-
-                i.StashTabUri = Settings.Default.TargetStash == 0 
-                    // URL for accessing personal stash
-                    ? new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}") 
-                    // URL for accessing guild stash
-                    : new Uri($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}");
+                i.StashTabUri =
+                    new Uri(
+                        $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}");
+                // https://www.pathofexile.com/character-window/get-stash-items?accountName=ClumsyParasite&realm=pc&league=Standard&tabs=1&tabIndex=0
             }
         }
 
@@ -230,7 +158,7 @@ namespace ChaosRecipeEnhancer.UI.Model
         {
             if (IsFetching) return false;
 
-            if (Settings.Default.PathOfExileWebsiteSessionId == "")
+            if (Settings.Default.SessionId == "")
             {
                 MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set PoE Session Id.");
                 return false;
@@ -247,34 +175,12 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
 
             IsFetching = true;
+            var propsUri =
+                new Uri(
+                    $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
+            // https://www.pathofexile.com/character-window/get-stash-items?accountName=ClumsyParasite&realm=pc&league=Standard&tabs=1&tabIndex=0
 
-            Uri propsUri = null;
-                
-            // If accessing personal stash
-            if (Settings.Default.TargetStash == 0)
-            {
-                Trace.WriteLine("[ApiAdapter:GetProps()] Generating propsUri for My Stash");
-
-                propsUri = new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
-                
-                Trace.WriteLine($"[ApiAdapter:GetProps()] ${propsUri}");
-            }
-            // Else if accessing guild stash
-            else if (Settings.Default.TargetStash == 1)
-            {
-                Trace.WriteLine("[ApiAdapter:GetProps()] Generating propsUri for Guild Stash");
-                
-                propsUri = new Uri($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
-                
-                Trace.WriteLine($"[ApiAdapter:GetProps()] ${propsUri}");
-            }
-            // Else error out
-            else
-            {
-                throw new ArgumentException("Invalid TargetStash settings provided; please check your user settings");
-            }
-
-            var sessionId = Settings.Default.PathOfExileWebsiteSessionId;
+            var sessionId = Settings.Default.SessionId;
 
             var cC = new CookieContainer();
             cC.Add(propsUri, new Cookie("POESESSID", sessionId));
@@ -315,7 +221,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                         Trace.WriteLine($"[ApiAdapter:GetProps] Response Status Code ${res.StatusCode}");
                         Trace.WriteLine($"[ApiAdapter:GetProps] Response Reason Phrase ${res.ReasonPhrase}");
                         Trace.WriteLine($"[ApiAdapter:GetProps] Response Request Message ${res.RequestMessage}");
-
+                        
                         FetchError = true;
                         return false;
                     }
@@ -334,7 +240,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                 return false;
             }
 
-            if (Settings.Default.PathOfExileWebsiteSessionId == "")
+            if (Settings.Default.SessionId == "")
             {
                 MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set PoE Session Id.");
                 return false;
@@ -353,7 +259,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             IsFetching = true;
             var usedUris = new List<Uri>();
 
-            var sessionId = Settings.Default.PathOfExileWebsiteSessionId;
+            var sessionId = Settings.Default.SessionId;
 
             var cookieContainer = new CookieContainer();
             using (var handler = new HttpClientHandler { CookieContainer = cookieContainer })

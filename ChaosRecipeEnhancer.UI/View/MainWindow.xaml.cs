@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -40,16 +39,11 @@ namespace ChaosRecipeEnhancer.UI.View
         // ReSharper disable once UnusedMember.Local
         private static string RunButtonContent { get; set; } = "Run Overlay";
 
-        private Visibility _tabIndicesVisible = Visibility.Hidden;
-        private Visibility _tabNamePrefixVisible = Visibility.Hidden;
-        private Visibility _tabNameSuffixVisible = Visibility.Hidden;
-        
-        // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-        // private Visibility _folderNameVisible = Visibility.Hidden;
-        
+        private Visibility _indicesVisible = Visibility.Hidden;
+        private Visibility _nameVisible = Visibility.Hidden;
+        private Visibility _nameSuffixVisible = Visibility.Hidden;
         private Visibility _mainLeagueVisible = Visibility.Visible;
         private Visibility _customLeagueVisible = Visibility.Hidden;
-        
         private ContextMenu _contextMenu;
         private MenuItem _menuItem;
         private MenuItem _menuItemUpdate;
@@ -72,24 +66,24 @@ namespace ChaosRecipeEnhancer.UI.View
             DataContext = this;
             AutoUpdateHelper.InitializeAutoUpdater(AppVersion);
 
-            if (!string.IsNullOrEmpty(Settings.Default.FilterModificationPendingSoundFileLocation) &&
+            if (!string.IsNullOrEmpty(Settings.Default.FilterChangeSoundFileLocation) &&
                 !FilterSoundLocationDialog.Content.Equals("Default Sound"))
-                Data.Player.Open(new Uri(Settings.Default.FilterModificationPendingSoundFileLocation));
+                Data.Player.Open(new Uri(Settings.Default.FilterChangeSoundFileLocation));
             else
                 Data.Player.Open(new Uri(Path.Combine(
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
                     @"Assets\Sounds\filterchanged.mp3")));
 
-            if (!string.IsNullOrEmpty(Settings.Default.ItemSetCompletedSoundFileLocation) &&
+            if (!string.IsNullOrEmpty(Settings.Default.ItemPickupSoundFileLocation) &&
                 !ItemPickupLocationDialog.Content.Equals("Default Sound"))
-                Data.PlayerSet.Open(new Uri(Settings.Default.ItemSetCompletedSoundFileLocation));
+                Data.PlayerSet.Open(new Uri(Settings.Default.ItemPickupSoundFileLocation));
             else
                 Data.PlayerSet.Open(new Uri(Path.Combine(
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
                     @"Assets\Sounds\itemsPickedUp.mp3")));
 
             // Populate the league dropdown
-            if (!Settings.Default.CustomLeagueEnabled)
+            if (Settings.Default.MainLeague)
             {
                 MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
             }
@@ -114,58 +108,18 @@ namespace ChaosRecipeEnhancer.UI.View
         // ReSharper disable once UnusedMember.Global
         public static string AppVersionText { get; set; } = "v." + AppVersion;
 
-        public Visibility TabIndicesVisible
+        public Visibility IndicesVisible
         {
-            get => _tabIndicesVisible;
+            get => _indicesVisible;
             set
             {
-                if (_tabIndicesVisible != value)
+                if (_indicesVisible != value)
                 {
-                    _tabIndicesVisible = value;
-                    OnPropertyChanged("TabIndicesVisible");
+                    _indicesVisible = value;
+                    OnPropertyChanged("IndicesVisible");
                 }
             }
         }
-        
-        public Visibility TabNamePrefixVisible
-        {
-            get => _tabNamePrefixVisible;
-            set
-            {
-                if (_tabNamePrefixVisible != value)
-                {
-                    _tabNamePrefixVisible = value;
-                    OnPropertyChanged("TabNamePrefixVisible");
-                }
-            }
-        }
-
-        public Visibility TabNameSuffixVisible
-        {
-            get => _tabNameSuffixVisible;
-            set
-            {
-                if (_tabNameSuffixVisible != value)
-                {
-                    _tabNameSuffixVisible = value;
-                    OnPropertyChanged("TabNameSuffixVisible");
-                }
-            }
-        }
-
-        // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-        // public Visibility FolderNameVisible
-        // {
-        //     get => _folderNameVisible;
-        //     set
-        //     {
-        //         if (_folderNameVisible != value)
-        //         {
-        //             _folderNameVisible = value;
-        //             OnPropertyChanged("FolderNameVisible");
-        //         }
-        //     }
-        // }
 
         public Visibility MainLeagueVisible
         {
@@ -193,6 +147,32 @@ namespace ChaosRecipeEnhancer.UI.View
             }
         }
 
+        public Visibility NameVisible
+        {
+            get => _nameVisible;
+            set
+            {
+                if (_nameVisible != value)
+                {
+                    _nameVisible = value;
+                    OnPropertyChanged("NameVisible");
+                }
+            }
+        }
+
+        public Visibility NameSuffixVisible
+        {
+            get => _nameSuffixVisible;
+            set
+            {
+                if (_nameSuffixVisible != value)
+                {
+                    _nameSuffixVisible = value;
+                    OnPropertyChanged("NameSuffixVisible");
+                }
+            }
+        }
+
         #endregion
 
         #region Event Handlers
@@ -203,7 +183,7 @@ namespace ChaosRecipeEnhancer.UI.View
             // if hideOnClose
             // setting cancel to true will cancel the close request
             // so the application is not closed
-            if (Settings.Default.CloseToTrayEnabled && !_trayClose)
+            if (Settings.Default.hideOnClose && !_trayClose)
             {
                 e.Cancel = true;
 
@@ -212,7 +192,7 @@ namespace ChaosRecipeEnhancer.UI.View
                 base.OnClosing(e);
             }
 
-            if (!Settings.Default.CloseToTrayEnabled || _trayClose)
+            if (!Settings.Default.hideOnClose || _trayClose)
             {
                 _notifyIcon.Visible = false;
 
@@ -248,47 +228,47 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void ColorBootsPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Settings.Default.LootFilterBootsColor = ColorBootsPicker.SelectedColor.ToString();
+            Settings.Default.ColorBoots = ColorBootsPicker.SelectedColor.ToString();
         }
 
         private void ColorGlovesPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Settings.Default.LootFilterGlovesColor = ColorGlovesPicker.SelectedColor.ToString();
+            Settings.Default.ColorGloves = ColorGlovesPicker.SelectedColor.ToString();
         }
 
         private void ColorHelmetPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Settings.Default.LootFilterHelmetColor = ColorHelmetPicker.SelectedColor.ToString();
+            Settings.Default.ColorHelmet = ColorHelmetPicker.SelectedColor.ToString();
         }
 
         private void ColorChestPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Settings.Default.LootFilterBodyArmourColor = ColorChestPicker.SelectedColor.ToString();
+            Settings.Default.ColorChest = ColorChestPicker.SelectedColor.ToString();
         }
 
         private void ColorWeaponsPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Settings.Default.LootFilterWeaponColor = ColorWeaponsPicker.SelectedColor.ToString();
+            Settings.Default.ColorWeapon = ColorWeaponsPicker.SelectedColor.ToString();
         }
 
         private void ColorStashPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Settings.Default.StashTabOverlayHighlightColor = ColorStashPicker.SelectedColor.ToString();
+            Settings.Default.ColorStash = ColorStashPicker.SelectedColor.ToString();
         }
 
         private void ColorRingPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Settings.Default.LootFilterRingColor = ColorRingPicker.SelectedColor.ToString();
+            Settings.Default.ColorRing = ColorRingPicker.SelectedColor.ToString();
         }
 
         private void ColorAmuletPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Settings.Default.LootFilterAmuletColor = ColorAmuletPicker.SelectedColor.ToString();
+            Settings.Default.ColorAmulet = ColorAmuletPicker.SelectedColor.ToString();
         }
 
         private void ColorBeltPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Settings.Default.LootFilterBeltColor = ColorBeltPicker.SelectedColor.ToString();
+            Settings.Default.ColorBelt = ColorBeltPicker.SelectedColor.ToString();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -304,7 +284,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private void ColorStashBackgroundPicker_SelectedColorChanged(object sender,
             RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Settings.Default.StashTabOverlayBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
+            Settings.Default.StashTabBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
         }
 
         private void CustomHotkeyToggle_Click(object sender, RoutedEventArgs e)
@@ -354,14 +334,10 @@ namespace ChaosRecipeEnhancer.UI.View
             if (res != System.Windows.Forms.DialogResult.OK) return;
 
             var filename = open.FileName;
-            Settings.Default.LootFilterFileLocation = filename;
+            Settings.Default.LootFilterLocation = filename;
             LootFilterFileDialog.Content = filename;
         }
 
-        private void StashTargetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-        
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadModeVisibility();
@@ -369,8 +345,8 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void TabHeaderGapSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            _stashTabOverlayView.StashTabOverlayIndividualTabHeaderGap =
-                new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderGap, 0, Settings.Default.StashTabOverlayIndividualTabHeaderGap, 0);
+            _stashTabOverlayView.TabHeaderGap =
+                new Thickness(Settings.Default.TabHeaderGap, 0, Settings.Default.TabHeaderGap, 0);
         }
 
         private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -379,12 +355,12 @@ namespace ChaosRecipeEnhancer.UI.View
 
             foreach (var s in StashTabList.StashTabs)
                 s.TabHeaderWidth =
-                    new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2, Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2);
+                    new Thickness(Settings.Default.TabHeaderWidth, 2, Settings.Default.TabHeaderWidth, 2);
         }
 
         private void TabHeaderMarginSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            _stashTabOverlayView.StashTabOverlayIndividualTabMargin = new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
+            _stashTabOverlayView.TabMargin = new Thickness(Settings.Default.TabMargin, 0, 0, 0);
         }
 
         private void SaveButton_Click_1(object sender, RoutedEventArgs e)
@@ -392,21 +368,21 @@ namespace ChaosRecipeEnhancer.UI.View
             Settings.Default.Save();
         }
 
-        private void SetTrackerOverlayDisplayModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OverlayModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (Settings.Default.SetTrackerOverlayDisplayMode)
+            switch (Settings.Default.OverlayMode)
             {
                 case 0:
-                    Trace.WriteLine($"OverlayModeComboBox_SelectionChanged: Case 0 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content = new MainOverlayContent(this, _chaosRecipeEnhancerWindow);
+                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
+                        new MainOverlayContent(this, _chaosRecipeEnhancerWindow);
                     break;
                 case 1:
-                    Trace.WriteLine($"OverlayModeComboBox_SelectionChanged: Case 1 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content = new MainOverlayContentMinified(this, _chaosRecipeEnhancerWindow);
+                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
+                        new MainOverlayContentMinified(this, _chaosRecipeEnhancerWindow);
                     break;
                 case 2:
-                    Trace.WriteLine($"OverlayModeComboBox_SelectionChanged: Case 2 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content = new MainOverlayOnlyButtons(this, _chaosRecipeEnhancerWindow);
+                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
+                        new MainOverlayOnlyButtons(this, _chaosRecipeEnhancerWindow);
                     break;
             }
         }
@@ -435,18 +411,20 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void ChaosRecipeCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Settings.Default.RegalRecipeTrackingEnabled = false;
+            Settings.Default.RegalRecipe = false;
         }
 
         private void CustomLeagueCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Settings.Default.CustomLeagueEnabled = true;
+            Settings.Default.CustomLeague = true;
+            Settings.Default.MainLeague = false;
             LoadModeVisibility();
         }
 
         private void CustomLeagueCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            Settings.Default.CustomLeagueEnabled = false;
+            Settings.Default.CustomLeague = false;
+            Settings.Default.MainLeague = true;
 
             MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
             LoadModeVisibility();
@@ -454,7 +432,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void RegalRecipeCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Settings.Default.ChaosRecipeTrackingEnabled = false;
+            Settings.Default.ChaosRecipe = false;
         }
 
         private void LogLocationDialog_Click(object sender, RoutedEventArgs e)
@@ -469,7 +447,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
             if (filename.EndsWith("Client.txt"))
             {
-                Settings.Default.PathOfExileClientLogLocation = filename;
+                Settings.Default.LogLocation = filename;
                 LogLocationDialog.Content = filename;
             }
             else
@@ -491,7 +469,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void ShowNumbersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _chaosRecipeEnhancerWindow.AmountsVisibility = Settings.Default.SetTrackerOverlayItemCounterDisplayMode != 0
+            _chaosRecipeEnhancerWindow.AmountsVisibility = Settings.Default.ShowItemAmount != 0
                 ? Visibility.Visible
                 : Visibility.Hidden;
         }
@@ -502,7 +480,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
             if (soundFilePath == null) return;
 
-            Settings.Default.FilterModificationPendingSoundFileLocation = soundFilePath;
+            Settings.Default.FilterChangeSoundFileLocation = soundFilePath;
             FilterSoundLocationDialog.Content = soundFilePath;
             Data.Player.Open(new Uri(soundFilePath));
 
@@ -515,7 +493,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
             if (soundFilePath == null) return;
 
-            Settings.Default.FilterModificationPendingSoundFileLocation = soundFilePath;
+            Settings.Default.ItemPickupSoundFileLocation = soundFilePath;
             ItemPickupLocationDialog.Content = soundFilePath;
             Data.PlayerSet.Open(new Uri(soundFilePath));
 
@@ -537,28 +515,28 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void InitializeColors()
         {
-            if (Settings.Default.LootFilterBootsColor != "")
-                ColorBootsPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterBootsColor);
-            if (Settings.Default.LootFilterBodyArmourColor != "")
-                ColorChestPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterBodyArmourColor);
-            if (Settings.Default.LootFilterWeaponColor != "")
+            if (Settings.Default.ColorBoots != "")
+                ColorBootsPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorBoots);
+            if (Settings.Default.ColorChest != "")
+                ColorChestPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorChest);
+            if (Settings.Default.ColorWeapon != "")
                 ColorWeaponsPicker.SelectedColor =
-                    (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterWeaponColor);
-            if (Settings.Default.LootFilterGlovesColor != "")
-                ColorGlovesPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterGlovesColor);
-            if (Settings.Default.LootFilterHelmetColor != "")
-                ColorHelmetPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterHelmetColor);
-            if (Settings.Default.StashTabOverlayHighlightColor != "")
-                ColorStashPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor);
-            if (Settings.Default.StashTabOverlayBackgroundColor != "")
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.ColorWeapon);
+            if (Settings.Default.ColorGloves != "")
+                ColorGlovesPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorGloves);
+            if (Settings.Default.ColorHelmet != "")
+                ColorHelmetPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorHelmet);
+            if (Settings.Default.ColorStash != "")
+                ColorStashPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorStash);
+            if (Settings.Default.StashTabBackgroundColor != "")
                 ColorStashBackgroundPicker.SelectedColor =
-                    (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayBackgroundColor);
-            if (Settings.Default.LootFilterRingColor != "")
-                ColorRingPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterRingColor);
-            if (Settings.Default.LootFilterAmuletColor != "")
-                ColorAmuletPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterAmuletColor);
-            if (Settings.Default.LootFilterBeltColor != "")
-                ColorBeltPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterBeltColor);
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabBackgroundColor);
+            if (Settings.Default.ColorRing != "")
+                ColorRingPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorRing);
+            if (Settings.Default.ColorAmulet != "")
+                ColorAmuletPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorAmulet);
+            if (Settings.Default.ColorBelt != "")
+                ColorBeltPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.ColorBelt);
         }
 
         // creates tray icon with menu
@@ -626,12 +604,12 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public void AddAllHotkeys()
         {
-            if (Settings.Default.FetchStashHotkey != "< not set >")
+            if (Settings.Default.HotkeyRefresh != "< not set >")
                 HotkeysManager.AddHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey,
                     _chaosRecipeEnhancerWindow.RunFetching);
-            if (Settings.Default.ToggleSetTrackerOverlayHotkey != "< not set >")
+            if (Settings.Default.HotkeyToggle != "< not set >")
                 HotkeysManager.AddHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay);
-            if (Settings.Default.ToggleStashTabOverlayHotkey != "< not set >")
+            if (Settings.Default.HotkeyStashTab != "< not set >")
                 HotkeysManager.AddHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey,
                     RunStashTabOverlay);
         }
@@ -656,13 +634,13 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public static bool CheckAllSettings()
         {
-            var accName = Settings.Default.PathOfExileAccountName;
-            var sessId = Settings.Default.PathOfExileWebsiteSessionId;
-            var league = Settings.Default.LeagueName;
-            var lootFilterLocation = Settings.Default.LootFilterFileLocation;
-            var lootFilterActive = Settings.Default.LootFilterManipulationEnabled;
-            var logLocation = Settings.Default.PathOfExileClientLogLocation;
-            var autoFetch = Settings.Default.AutoFetchOnRezoneEnabled;
+            var accName = Settings.Default.accName;
+            var sessId = Settings.Default.SessionId;
+            var league = Settings.Default.League;
+            var lootFilterLocation = Settings.Default.LootFilterLocation;
+            var lootFilterActive = Settings.Default.LootFilterActive;
+            var logLocation = Settings.Default.LogLocation;
+            var autoFetch = Settings.Default.AutoFetch;
 
             var missingSettings = new List<string>();
 
@@ -678,29 +656,23 @@ namespace ChaosRecipeEnhancer.UI.View
                 if (logLocation == "")
                     missingSettings.Add("- Log File Location \n");
 
-            switch (Settings.Default.StashTabQueryMode)
+            switch (Settings.Default.StashTabMode)
             {
                 case 0:
-                    {
-                        if (Settings.Default.StashTabIndices == "") missingSettings.Add("- StashTab Index");
-                        break;
-                    }
+                {
+                    if (Settings.Default.StashTabIndices == "") missingSettings.Add("- StashTab Index");
+                    break;
+                }
                 case 1:
-                    {
-                        if (Settings.Default.StashTabPrefix == "") missingSettings.Add("- StashTab Prefix");
-                        break;
-                    }
+                {
+                    if (Settings.Default.StashTabName == "") missingSettings.Add("- StashTab Name");
+                    break;
+                }
                 case 2:
-                    {
-                        if (Settings.Default.StashTabSuffix == "") missingSettings.Add("- StashTab Suffix");
-                        break;
-                    }
-                // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-                // case 3:
-                //     {
-                //         if (Settings.Default.StashFolderName == "") missingSettings.Add("- StashFolder Name");
-                //         break;
-                //     }
+                {
+                    if (Settings.Default.StashTabName == "") missingSettings.Add("- StashTab Name");
+                    break;
+                }
             }
 
             if (missingSettings.Count > 0)
@@ -721,36 +693,26 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void LoadModeVisibility()
         {
-            switch (Settings.Default.StashTabQueryMode)
+            switch (Settings.Default.StashTabMode)
             {
                 case 1:
-                    TabIndicesVisible = Visibility.Hidden;
-                    TabNamePrefixVisible = Visibility.Visible;
-                    TabNameSuffixVisible = Visibility.Hidden;
-                    // FolderNameVisible = Visibility.Hidden;
+                    NameVisible = Visibility.Visible;
+                    NameSuffixVisible = Visibility.Hidden;
+                    IndicesVisible = Visibility.Hidden;
                     break;
                 case 2:
-                    TabIndicesVisible = Visibility.Hidden;
-                    TabNamePrefixVisible = Visibility.Hidden;
-                    TabNameSuffixVisible = Visibility.Visible;
-                    // FolderNameVisible = Visibility.Hidden;
+                    NameSuffixVisible = Visibility.Visible;
+                    NameVisible = Visibility.Hidden;
+                    IndicesVisible = Visibility.Hidden;
                     break;
-                // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-                // case 3:
-                //     TabIndicesVisible = Visibility.Hidden;
-                //     TabNamePrefixVisible = Visibility.Hidden;
-                //     TabNameSuffixVisible = Visibility.Hidden;
-                //     FolderNameVisible = Visibility.Visible;
-                //     break;
                 default:
-                    TabIndicesVisible = Visibility.Visible;
-                    TabNamePrefixVisible = Visibility.Hidden;
-                    TabNameSuffixVisible = Visibility.Hidden;
-                    // FolderNameVisible = Visibility.Hidden;
+                    IndicesVisible = Visibility.Visible;
+                    NameVisible = Visibility.Hidden;
+                    NameSuffixVisible = Visibility.Hidden;
                     break;
             }
 
-            if (!Settings.Default.CustomLeagueEnabled)
+            if (Settings.Default.CustomLeague == false)
             {
                 CustomLeagueVisible = Visibility.Hidden;
                 MainLeagueVisible = Visibility.Visible;

@@ -46,11 +46,11 @@ namespace ChaosRecipeEnhancer.UI.View
                     HotkeysManager.RemoveHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey);
                     if (CustomHotkeyToggle.Hotkey == null)
                     {
-                        Settings.Default.FetchStashHotkey = "< not set >";
+                        Settings.Default.HotkeyRefresh = "< not set >";
                     }
                     else
                     {
-                        Settings.Default.FetchStashHotkey = CustomHotkeyToggle.Hotkey.ToString();
+                        Settings.Default.HotkeyRefresh = CustomHotkeyToggle.Hotkey.ToString();
                         HotkeysManager.GetRefreshHotkey();
                     }
 
@@ -62,11 +62,11 @@ namespace ChaosRecipeEnhancer.UI.View
                     HotkeysManager.RemoveHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey);
                     if (CustomHotkeyToggle.Hotkey == null)
                     {
-                        Settings.Default.ToggleSetTrackerOverlayHotkey = "< not set >";
+                        Settings.Default.HotkeyToggle = "< not set >";
                     }
                     else
                     {
-                        Settings.Default.ToggleSetTrackerOverlayHotkey = CustomHotkeyToggle.Hotkey.ToString();
+                        Settings.Default.HotkeyToggle = CustomHotkeyToggle.Hotkey.ToString();
                         HotkeysManager.GetToggleHotkey();
                     }
 
@@ -78,11 +78,11 @@ namespace ChaosRecipeEnhancer.UI.View
                     HotkeysManager.RemoveHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey);
                     if (CustomHotkeyToggle.Hotkey == null)
                     {
-                        Settings.Default.ToggleStashTabOverlayHotkey = "< not set >";
+                        Settings.Default.HotkeyStashTab = "< not set >";
                     }
                     else
                     {
-                        Settings.Default.ToggleStashTabOverlayHotkey = CustomHotkeyToggle.Hotkey.ToString();
+                        Settings.Default.HotkeyStashTab = CustomHotkeyToggle.Hotkey.ToString();
                         HotkeysManager.GetStashTabHotkey();
                     }
 

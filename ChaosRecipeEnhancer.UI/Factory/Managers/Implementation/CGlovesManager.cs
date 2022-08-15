@@ -11,8 +11,8 @@ namespace ChaosRecipeEnhancer.UI.Factory.Managers.Implementation
         {
             ClassName = "Gloves";
             ClassFilterName = "\"Gloves\"";
-            ClassColor = Settings.Default.LootFilterGlovesColor;
-            AlwaysActive = Settings.Default.LootFilterGlovesAlwaysActive;
+            ClassColor = Settings.Default.ColorGloves;
+            AlwaysActive = Settings.Default.GlovesAlwaysActive;
         }
 
         #endregion

@@ -13,8 +13,8 @@
         MouseDown="Window_MouseDown"
         Background="Transparent"
         xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
-        Top="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayTopPosition, Mode=TwoWay}"
-        Left="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayLeftPosition, Mode=TwoWay}">
+        Left="{Binding Source={x:Static properties:Settings.Default}, Path=LeftOverlay, Mode=TwoWay}"
+        Top="{Binding Source={x:Static properties:Settings.Default}, Path=TopOverlay, Mode=TwoWay}">
 
     <Border BorderThickness="1"
             CornerRadius="5"
@@ -22,14 +22,14 @@
 
         <Border.BorderBrush>
 
-            <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayOpacity}"
+            <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=Opacity}"
                              Color="White" />
 
         </Border.BorderBrush>
 
         <Border.Background>
 
-            <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayOpacity}"
+            <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=Opacity}"
                              Color="White" />
 
         </Border.Background>

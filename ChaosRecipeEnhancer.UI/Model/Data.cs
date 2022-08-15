@@ -32,9 +32,9 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static void GetSetTargetAmount(StashTab stash)
         {
-            if (Settings.Default.FullSetThreshold > 0)
+            if (Settings.Default.Sets > 0)
             {
-                SetTargetAmount = Settings.Default.FullSetThreshold;
+                SetTargetAmount = Settings.Default.Sets;
             }
             else
             {
@@ -62,7 +62,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
             ItemSetList = ret;
             Trace.WriteLine(ItemSetList.Count, "item set list count");
-            if (Settings.Default.ExaltedShardRecipeTrackingEnabled) GenerateInfluencedItemSets();
+            if (Settings.Default.ExaltedRecipe) GenerateInfluencedItemSets();
         }
 
 
@@ -134,22 +134,22 @@ namespace ChaosRecipeEnhancer.UI.Model
                 while (i.EmptyItemSlots.Count > 0 && lastEmptySlots != i.EmptyItemSlots.Count)
                 {
                     lastEmptySlots = i.EmptyItemSlots.Count;
-                    if (i.SetCanProduceChaos == false && !Settings.Default.RegalRecipeTrackingEnabled)
+                    if (i.SetCanProduceChaos == false && !Settings.Default.RegalRecipe)
                         if (AddItemToItemSet(i, true))
                             continue;
 
                     if (!AddItemToItemSet(i))
-                        if (Settings.Default.DoNotPreserveLowItemLevelGear && !Settings.Default.RegalRecipeTrackingEnabled)
+                        if (Settings.Default.FillWithChaos && !Settings.Default.RegalRecipe)
                             AddItemToItemSet(i, true);
                 }
 
                 /* At this point in time the following conditions may be met, exclusively
                  * 1.) We obtained a full set and it contains one chaos item
                  * 1.1) We obtained a full set and it contains multiple chaos items (only if filling with chaos items is allowed)
-                 * 2.) We obtained a full set without a chaos item -> We aren't lacking a regal item in this set but we don't have enough chaos items.
+                 * 2.) We obtained a full set without a chaos item -> We aren't lacking a regal item in this set but we don't have enough chaos items. 
                  * 3.) We couldn't obtain a full set. That means that at least one item slot is missing. We need to check which of the remaining slots we can still fill. We could still be missing a chaos item.
                  */
-                if (i.EmptyItemSlots.Count == 0 && (i.SetCanProduceChaos || Settings.Default.RegalRecipeTrackingEnabled))
+                if (i.EmptyItemSlots.Count == 0 && (i.SetCanProduceChaos || Settings.Default.RegalRecipe))
                     // Set full, continue
                     continue;
 
@@ -159,23 +159,23 @@ namespace ChaosRecipeEnhancer.UI.Model
                     while (i.EmptyItemSlots.Count > 0 && i.EmptyItemSlots.Count != lastEmptySlots)
                     {
                         lastEmptySlots = i.EmptyItemSlots.Count;
-                        if (!i.SetCanProduceChaos && !Settings.Default.RegalRecipeTrackingEnabled)
+                        if (!i.SetCanProduceChaos && !Settings.Default.RegalRecipe)
                             if (AddItemToItemSet(i, true, false))
                                 continue;
 
                         if (!AddItemToItemSet(i, false, false))
                             // couldn't add a regal item. Try chaos item if filling with chaos is allowed
-                            if (Settings.Default.DoNotPreserveLowItemLevelGear && !Settings.Default.RegalRecipeTrackingEnabled)
+                            if (Settings.Default.FillWithChaos && !Settings.Default.RegalRecipe)
                                 AddItemToItemSet(i, true, false);
                     }
                     // At this point the set will contain a chaos item as long as we had at least one left. If not we didn't have any chaos items left.
-                    // If the set is not full at this time we're missing at least one regal item. If it has not chaos item we're also missing chaos items.
-                    // Technically it could be only the chaos item that's missing but that can be neglected since when mixing you'll always be short on chaos items.
+                    // If the set is not full at this time we're missing at least one regal item. If it has not chaos item we're also missing chaos items. 
+                    // Technically it could be only the chaos item that's missing but that can be neglected since when mixing you'll always be short on chaos items. 
                     // If not in "endgame" mode (always show chaos) have the loot filter apply to chaos and regal items the same way.
                 }
             }
 
-            if (Settings.Default.ExaltedShardRecipeTrackingEnabled) FillItemSetsInfluenced();
+            if (Settings.Default.ExaltedRecipe) FillItemSetsInfluenced();
         }
 
         private static void FillItemSetsInfluenced()
@@ -245,12 +245,12 @@ namespace ChaosRecipeEnhancer.UI.Model
                     chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
                     return;
                 }
-                
-                if (Settings.Default.SoundEnabled)
+
+                if (Settings.Default.Sound)
                 {
                     PreviousActiveItems = new ActiveItemTypes(ActiveItems);
                 }
-                
+
                 // calculate target amount if user has 0 set in it
                 // (e.g. 2 quad tabs queried w 0 set threshold = 24 set threshold)
                 // else just stick to the default amount (their defined in settings)
@@ -263,7 +263,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                     }
                 }
 
-                if (Settings.Default.SetTrackerOverlayItemCounterDisplayMode != 0)
+                if (Settings.Default.ShowItemAmount != 0)
                 {
                     Trace.WriteLine("Calculating Items");
                     CalculateItemAmounts(chaosRecipeEnhancer);
@@ -291,7 +291,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                         // never true cause fullsets < settargetamount when missingChaos @ikogan
                         fullSets++;
 
-                        if (!set.SetCanProduceChaos && !Settings.Default.RegalRecipeTrackingEnabled)
+                        if (!set.SetCanProduceChaos && !Settings.Default.RegalRecipe)
                             missingGearPieceForChaosRecipe = true;
                     }
                     else
@@ -315,7 +315,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                 });
 
                 // invoke chaos missing
-                if (missingGearPieceForChaosRecipe && !Settings.Default.RegalRecipeTrackingEnabled)
+                if (missingGearPieceForChaosRecipe && !Settings.Default.RegalRecipe)
                 {
                     chaosRecipeEnhancer.WarningMessage = "Need lower level items!";
                     chaosRecipeEnhancer.ShadowOpacity = 1;
@@ -323,8 +323,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                 }
 
                 // invoke exalted recipe ready
-                if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
-                {
+                if (Settings.Default.ExaltedRecipe)
                     if (ItemSetShaper.EmptyItemSlots.Count == 0
                         || ItemSetElder.EmptyItemSlots.Count == 0
                         || ItemSetCrusader.EmptyItemSlots.Count == 0
@@ -336,7 +335,6 @@ namespace ChaosRecipeEnhancer.UI.Model
                         chaosRecipeEnhancer.ShadowOpacity = 1;
                         chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
                     }
-                }
 
                 // invoke set full
                 if (fullSets == SetTargetAmount && !missingGearPieceForChaosRecipe)
@@ -348,9 +346,8 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                 Trace.WriteLine(fullSets, "full sets");
 
-                // If the state of any gear slot changed, we play a sound
-                if (Settings.Default.SoundEnabled)
-                {
+                // If the state of any gear slot changed, we play a sound               
+                if (Settings.Default.Sound)
                     if (!(PreviousActiveItems.GlovesActive == ActiveItems.GlovesActive
                           && PreviousActiveItems.BootsActive == ActiveItems.BootsActive
                           && PreviousActiveItems.HelmetActive == ActiveItems.HelmetActive
@@ -359,14 +356,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                           && PreviousActiveItems.RingActive == ActiveItems.RingActive
                           && PreviousActiveItems.AmuletActive == ActiveItems.AmuletActive
                           && PreviousActiveItems.BeltActive == ActiveItems.BeltActive))
-                    {
-                        Player.Dispatcher.Invoke(() =>
-                        {
-                            Trace.WriteLine("Gear Slot State Changed; Playing sound!");
-                            PlayNotificationSound();
-                        });
-                    }
-                }
+                        Player.Dispatcher.Invoke(() => { PlayNotificationSound(); });
             }
             catch (OperationCanceledException ex) when (ex.CancellationToken == CancelationToken)
             {
@@ -444,7 +434,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                         }
                 }
 
-                if (Settings.Default.SetTrackerOverlayItemCounterDisplayMode == 1)
+                if (Settings.Default.ShowItemAmount == 1)
                 {
                     Trace.WriteLine("we are here");
 
@@ -462,7 +452,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                     chaosRecipeEnhancer.HelmetsAmount = amounts[6];
                     chaosRecipeEnhancer.BootsAmount = amounts[7];
                 }
-                else if (Settings.Default.SetTrackerOverlayItemCounterDisplayMode == 2)
+                else if (Settings.Default.ShowItemAmount == 2)
                 {
                     amounts[4] = weaponsSmall + weaponBig;
                     chaosRecipeEnhancer.RingsAmount = SetTargetAmount * 2 - amounts[0];
@@ -506,7 +496,7 @@ namespace ChaosRecipeEnhancer.UI.Model
         {
             if (active)
             {
-                if (Settings.Default.StashTabOverlayHighlightMode == 0)
+                if (Settings.Default.HighlightMode == 0)
                 {
                     //activate cell by cell
                     foreach (var s in StashTabList.StashTabs)
@@ -540,9 +530,9 @@ namespace ChaosRecipeEnhancer.UI.Model
                             if (currentTab != null)
                             {
                                 currentTab.ActivateItemCells(highlightItem);
-                                if (Settings.Default.StashTabOverlayHighlightColor != "")
+                                if (Settings.Default.ColorStash != "")
                                     currentTab.TabHeaderColor = new SolidColorBrush(
-                                        (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                                        (Color)ColorConverter.ConvertFromString(Settings.Default.ColorStash));
                                 else
                                     currentTab.TabHeaderColor = Brushes.Red;
 
@@ -554,9 +544,9 @@ namespace ChaosRecipeEnhancer.UI.Model
                             //}
                         }
                 }
-                else if (Settings.Default.StashTabOverlayHighlightMode == 1)
+                else if (Settings.Default.HighlightMode == 1)
                 {
-                    // activate whole set
+                    // activate whole set 
                     if (ItemSetListHighlight.Count > 0)
                     {
                         Trace.WriteLine(ItemSetListHighlight[0].ItemList.Count, "item list count");
@@ -584,10 +574,10 @@ namespace ChaosRecipeEnhancer.UI.Model
                                 var currTab = GetStashTabFromItem(i);
                                 currTab.ActivateItemCells(i);
                                 //currTab.ShowNumbersOnActiveCells();
-                                if (Settings.Default.StashTabOverlayHighlightColor != "")
+                                if (Settings.Default.ColorStash != "")
                                     currTab.TabHeaderColor =
                                         new SolidColorBrush(
-                                            (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                                            (Color)ColorConverter.ConvertFromString(Settings.Default.ColorStash));
                                 else
                                     currTab.TabHeaderColor = Brushes.Red;
                             }
@@ -611,7 +601,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                         }
                     }
                 }
-                else if (Settings.Default.StashTabOverlayHighlightMode == 2)
+                else if (Settings.Default.HighlightMode == 2)
                 {
                     //activate all cells at once
                     if (ItemSetListHighlight.Count > 0)
@@ -647,7 +637,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                 itemSet.OrderItems();
             //GlobalItemOrderList.AddRange(itemSet.ItemList);
 
-            if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
+            if (Settings.Default.ExaltedRecipe)
             {
                 ItemSetShaper.OrderItems();
                 ItemSetElder.OrderItems();
@@ -700,7 +690,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
             //ItemSetListHighlight = new List<ItemSet>(ItemSetList);
             foreach (var set in ItemSetList)
-                if (set.SetCanProduceChaos || Settings.Default.RegalRecipeTrackingEnabled)
+                if (set.SetCanProduceChaos || Settings.Default.RegalRecipe)
                     ItemSetListHighlight.Add(new ItemSet
                     {
                         ItemList = new List<Item>(set.ItemList),

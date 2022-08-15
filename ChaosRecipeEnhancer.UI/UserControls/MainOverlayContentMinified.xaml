@@ -37,7 +37,7 @@
                 Grid.Column="3"
                 Grid.Row="1"
                 CornerRadius="50"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterGlovesColor}"
+                Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorGloves}"
                 Margin="3,0"
                 Opacity="{Binding GlovesOpacity}"
                 x:Name="Gloves">
@@ -80,7 +80,7 @@
                 Margin="3,0"
                 Opacity="{Binding BootsOpacity}"
                 x:Name="Boots"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBootsColor}">
+                Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBoots}">
 
             <Grid>
 
@@ -120,7 +120,7 @@
                 CornerRadius="50"
                 x:Name="Chest"
                 Opacity="{Binding ChestsOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBodyArmourColor}">
+                Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorChest}">
 
             <Grid>
 
@@ -160,7 +160,7 @@
                 CornerRadius="50"
                 x:Name="Weapon"
                 Opacity="{Binding WeaponsOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterWeaponColor}">
+                Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorWeapon}">
 
             <Grid>
 
@@ -199,7 +199,7 @@
                 Margin="3,0"
                 CornerRadius="50"
                 Opacity="{Binding HelmetOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterHelmetColor}"
+                Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorHelmet}"
                 x:Name="Helmet">
 
             <Grid>
@@ -239,7 +239,7 @@
                 CornerRadius="50"
                 Margin="3,0"
                 Opacity="{Binding RingsOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterRingColor}"
+                Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorRing}"
                 x:Name="Rings">
 
             <Grid>
@@ -279,7 +279,7 @@
                 Margin="3,0"
                 CornerRadius="50"
                 Opacity="{Binding AmuletsOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterAmuletColor}"
+                Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorAmulet}"
                 x:Name="Amulet">
 
             <Grid>
@@ -319,7 +319,7 @@
                 Margin="3,0"
                 CornerRadius="50"
                 Opacity="{Binding BeltsOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBeltColor}"
+                Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBelt}"
                 x:Name="Belt">
 
             <Grid>

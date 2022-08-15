@@ -64,7 +64,7 @@
                                 Value="Transparent" />
 
                         <Setter Property="Opacity"
-                                Value="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayOpacity}" />
+                                Value="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab}" />
 
                         <Style.Triggers>
 
@@ -80,7 +80,7 @@
                                          Value="True">
 
                                 <Setter Property="Background"
-                                        Value="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayHighlightColor}" />
+                                        Value="{Binding Source={x:Static properties:Settings.Default}, Path=ColorStash}" />
 
                                 <Setter Property="Opacity"
                                         Value="1" />

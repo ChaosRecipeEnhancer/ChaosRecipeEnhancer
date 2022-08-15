@@ -115,7 +115,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         private static string GetFilterName()
         {
-            return Path.GetFileName(Settings.Default.LootFilterFileLocation).Replace(".filter", "");
+            return Path.GetFileName(Settings.Default.LootFilterLocation).Replace(".filter", "");
         }
     }
 }
