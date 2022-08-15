@@ -661,7 +661,8 @@
                                 <ComboBoxItem Content="ID" />
                                 <ComboBoxItem Content="Prefix" />
                                 <ComboBoxItem Content="Suffix" />
-                                <ComboBoxItem Content="Folder Name" />
+                                <!-- TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API) -->
+                                <!-- <ComboBoxItem Content="Folder Name" /> -->
 
                             </ComboBox>
                             <!-- StashTab Mode Setting (Row 5) End -->
@@ -722,23 +723,24 @@
                                      Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabSuffix, Mode=TwoWay}" />
                             <!-- Individual Stash Tab Name Suffix End -->
                             
-                            <!-- Individual Stash Tab Name Suffix Start -->
-                            <TextBlock Name="FolderNameTextBlock"
-                                       Grid.Column="1"
-                                       Grid.Row="7"
-                                       VerticalAlignment="Center"
-                                       Text="Folder Name:"
-                                       ToolTipService.InitialShowDelay="50"
-                                       ToolTip="Every stash tab inside a specified folder (folder name must match exactly)."
-                                       Visibility="{Binding FolderNameVisible}" />
-
-                            <TextBox Name="FolderNameTextBox"
-                                     Grid.Column="3"
-                                     Grid.Row="7"
-                                     Width="200"
-                                     Visibility="{Binding FolderNameVisible}"
-                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashFolderName, Mode=TwoWay}" />
-                            <!-- Individual Stash Tab Name Suffix End -->
+                            <!-- TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API) -->
+                            <!-- Stash Tab Folder Name Start -->
+                            <!-- <TextBlock Name="FolderNameTextBlock" -->
+                            <!--            Grid.Column="1" -->
+                            <!--            Grid.Row="7" -->
+                            <!--            VerticalAlignment="Center" -->
+                            <!--            Text="Folder Name:" -->
+                            <!--            ToolTipService.InitialShowDelay="50" -->
+                            <!--            ToolTip="Every stash tab inside a specified folder (folder name must match exactly)." -->
+                            <!--            Visibility="{Binding FolderNameVisible}" /> -->
+                            <!-- -->
+                            <!-- <TextBox Name="FolderNameTextBox" -->
+                            <!--          Grid.Column="3" -->
+                            <!--          Grid.Row="7" -->
+                            <!--          Width="200" -->
+                            <!--          Visibility="{Binding FolderNameVisible}" -->
+                            <!--          Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashFolderName, Mode=TwoWay}" /> -->
+                            <!-- Stash Tab Folder Name End -->
                             
                             <!-- StashTab Query [Index / String] Setting (Row 7) End -->
 
