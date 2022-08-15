@@ -38,8 +38,6 @@ namespace ChaosRecipeEnhancer.UI.Model
                         GenerateStashTabUris(accName, league);
                         return true;
                     }
-
-                // https://www.pathofexile.com/character-window/get-stash-items?accountName=kosace&tabIndex=0&league=Heist
             }
             else
             {
@@ -208,10 +206,12 @@ namespace ChaosRecipeEnhancer.UI.Model
             foreach (var i in StashTabList.StashTabs)
             {
                 var stashTab = i.TabIndex.ToString();
-                i.StashTabUri =
-                    new Uri(
-                        $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}");
-                // https://www.pathofexile.com/character-window/get-stash-items?accountName=ClumsyParasite&realm=pc&league=Standard&tabs=1&tabIndex=0
+
+                i.StashTabUri = Settings.Default.TargetStash == 0 
+                    // URL for accessing personal stash
+                    ? new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}") 
+                    // URL for accessing guild stash
+                    : new Uri($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}");
             }
         }
 
@@ -247,10 +247,32 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
 
             IsFetching = true;
-            var propsUri =
-                new Uri(
-                    $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
-            // https://www.pathofexile.com/character-window/get-stash-items?accountName=ClumsyParasite&realm=pc&league=Standard&tabs=1&tabIndex=0
+
+            Uri propsUri = null;
+                
+            // If accessing personal stash
+            if (Settings.Default.TargetStash == 0)
+            {
+                Trace.WriteLine("[ApiAdapter:GetProps()] Generating propsUri for My Stash");
+
+                propsUri = new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
+                
+                Trace.WriteLine($"[ApiAdapter:GetProps()] ${propsUri}");
+            }
+            // Else if accessing guild stash
+            else if (Settings.Default.TargetStash == 1)
+            {
+                Trace.WriteLine("[ApiAdapter:GetProps()] Generating propsUri for Guild Stash");
+                
+                propsUri = new Uri($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
+                
+                Trace.WriteLine($"[ApiAdapter:GetProps()] ${propsUri}");
+            }
+            // Else error out
+            else
+            {
+                throw new ArgumentException("Invalid TargetStash settings provided; please check your user settings");
+            }
 
             var sessionId = Settings.Default.PathOfExileWebsiteSessionId;
 
