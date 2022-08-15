@@ -11,8 +11,8 @@ namespace ChaosRecipeEnhancer.UI.Factory.Managers.Implementation
         {
             ClassName = "Helmets";
             ClassFilterName = "\"Helmets\"";
-            ClassColor = Settings.Default.ColorHelmet;
-            AlwaysActive = Settings.Default.HelmetsAlwaysActive;
+            ClassColor = Settings.Default.LootFilterHelmetColor;
+            AlwaysActive = Settings.Default.LootFilterHelmetsAlwaysActive;
         }
 
         #endregion
