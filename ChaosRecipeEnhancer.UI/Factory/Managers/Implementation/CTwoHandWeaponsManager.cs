@@ -13,8 +13,8 @@ namespace ChaosRecipeEnhancer.UI.Factory.Managers.Implementation
         {
             ClassName = "TwoHandWeapons";
             ClassFilterName = "\"Two Hand\"";
-            ClassColor = Settings.Default.ColorWeapon;
-            AlwaysActive = Settings.Default.WeaponsAlwaysActive;
+            ClassColor = Settings.Default.LootFilterWeaponColor;
+            AlwaysActive = Settings.Default.LootFilterWeaponsAlwaysActive;
         }
 
         #endregion
