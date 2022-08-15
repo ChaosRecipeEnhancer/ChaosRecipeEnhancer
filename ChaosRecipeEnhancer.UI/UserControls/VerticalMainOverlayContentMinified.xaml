@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.MainOverlayContentMinified"
+﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.VerticalMainOverlayContentMinified"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,35 +10,35 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="5" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="5" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="3" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="5" />
         </Grid.RowDefinitions>
 
         <Border Height="30"
                 Width="30"
-                Grid.Column="3"
-                Grid.Row="1"
+                Grid.Column="1"
+                Grid.Row="3"
                 CornerRadius="50"
                 Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterGlovesColor}"
-                Margin="3,6, 3, 0"
+                Margin="0,3"
                 Opacity="{Binding GlovesOpacity}"
                 x:Name="Gloves">
 
@@ -72,12 +72,12 @@
 
         </Border>
 
-        <Border Grid.Column="4"
-                Grid.Row="1"
+        <Border Grid.Column="1"
+                Grid.Row="4"
                 Height="30"
                 Width="30"
                 CornerRadius="50"
-                Margin="3, 3, 3, 0"
+                Margin="0,3"
                 Opacity="{Binding BootsOpacity}"
                 x:Name="Boots"
                 Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBootsColor}">
@@ -112,11 +112,11 @@
 
         </Border>
 
-        <Border Grid.Column="6"
-                Grid.Row="1"
+        <Border Grid.Column="1"
+                Grid.Row="6"
                 Height="30"
                 Width="30"
-                Margin="3,6, 3, 0"
+                Margin="0,3"
                 CornerRadius="50"
                 x:Name="Chest"
                 Opacity="{Binding ChestsOpacity}"
@@ -152,11 +152,11 @@
 
         </Border>
 
-        <Border Grid.Column="7"
-                Grid.Row="1"
+        <Border Grid.Column="1"
+                Grid.Row="7"
                 Height="30"
                 Width="30"
-                Margin="3,6, 3, 0"
+                Margin="0,3"
                 CornerRadius="50"
                 x:Name="Weapon"
                 Opacity="{Binding WeaponsOpacity}"
@@ -192,11 +192,11 @@
 
         </Border>
 
-        <Border Grid.Column="5"
-                Grid.Row="1"
+        <Border Grid.Column="1"
+                Grid.Row="5"
                 Height="30"
                 Width="30"
-                Margin="3,6, 3, 0"
+                Margin="0,3"
                 CornerRadius="50"
                 Opacity="{Binding HelmetOpacity}"
                 Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterHelmetColor}"
@@ -232,12 +232,12 @@
 
         </Border>
 
-        <Border Grid.Column="8"
-                Grid.Row="1"
+        <Border Grid.Column="1"
+                Grid.Row="8"
                 Height="30"
                 Width="30"
                 CornerRadius="50"
-                Margin="3,6, 3, 0"
+                Margin="0,3"
                 Opacity="{Binding RingsOpacity}"
                 Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterRingColor}"
                 x:Name="Rings">
@@ -272,11 +272,11 @@
 
         </Border>
 
-        <Border Grid.Column="9"
-                Grid.Row="1"
+        <Border Grid.Column="1"
+                Grid.Row="9"
                 Height="30"
                 Width="30"
-                Margin="3,6, 3, 0"
+                Margin="0,3"
                 CornerRadius="50"
                 Opacity="{Binding AmuletsOpacity}"
                 Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterAmuletColor}"
@@ -312,11 +312,11 @@
 
         </Border>
 
-        <Border Grid.Column="10"
-                Grid.Row="1"
+        <Border Grid.Column="1"
+                Grid.Row="10"
                 Height="30"
                 Width="30"
-                Margin="3,6, 3, 0"
+                Margin="0,3"
                 CornerRadius="50"
                 Opacity="{Binding BeltsOpacity}"
                 Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBeltColor}"
@@ -352,34 +352,34 @@
 
         </Border>
 
-        <Border Grid.Row="1"
-                Grid.Column="2"
+        <Border Grid.Row="2"
+                Grid.Column="1"
                 Height="30"
                 Width="30"
                 CornerRadius="50"
-                Margin="3,6, 3, 0"
+                Margin="0,3"
                 PreviewMouseDown="OpenStashTabOverlay_Click"
                 Background="White"
                 BorderThickness="3"
-                BorderBrush="DarkSlateGray"
-                ToolTip="Completed Item Sets">
+                BorderBrush="DarkSlateGray">
 
             <TextBlock x:Name="FullSetsTextBlock"
                        Text="{Binding FullSetsText}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       TextAlignment="Center" />
+                       TextAlignment="Center"
+                       ToolTip="Completed Item Sets" />
 
         </Border>
 
-        <Border Grid.Row="1"
-                Name="RefreshButton"
+        <Border Name="RefreshButton"
                 IsEnabled="{Binding FetchButtonEnabled}"
-                Grid.Column="11"
+                Grid.Row="11"
+                Grid.Column="1"
                 Height="30"
                 Width="30"
                 CornerRadius="50"
-                Margin="3,6, 3, 0"
+                Margin="0,3"
                 PreviewMouseDown="RefreshButton_Click"
                 Background="White"
                 BorderThickness="3"
@@ -394,13 +394,13 @@
 
         </Border>
 
-        <Border Grid.Row="1"
+        <Border Grid.Row="12"
                 Name="ReloadItemFilterButton"
-                Grid.Column="12"
+                Grid.Column="1"
                 Height="30"
                 Width="30"
                 CornerRadius="50"
-                Margin="3,6, 3, 0"
+                Margin="0,3"
                 PreviewMouseDown="ReloadItemFilterButton_Click"
                 Background="White"
                 BorderThickness="3"
@@ -425,34 +425,7 @@
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        TextAlignment="Center"
-                       Foreground="Black" />
-
-        </Border>
-
-        <ProgressBar Grid.Column="1"
-                     Grid.ColumnSpan="12"
-                     Grid.Row="2"
-                     Height="3"
-                     Minimum="0"
-                     Maximum="10"
-                     IsIndeterminate="{Binding IsIndeterminate}"
-                     Margin="3,5,3,0"
-                     Foreground="Aqua"
-                     Background="AntiqueWhite"
-                     BorderThickness="0,0,0,0"
-                     x:Name="OverlayProgressBar" />
-
-        <Border Grid.Column="3"
-                Grid.ColumnSpan="9"
-                Grid.Row="0"
-                CornerRadius="5"
-                Background="White"
-                Margin="0,10,0,3"
-                Visibility="{Binding WarningMessageVisibility}">
-
-            <TextBlock VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       Text="{Binding WarningMessage}" />
+                       Foreground="Black"/>
 
         </Border>
 
