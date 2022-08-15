@@ -30,7 +30,7 @@ namespace ChaosRecipeEnhancer.UI.Filter
         public CFilterGenerationManager()
         {
             LoadCustomStyle();
-            if (Settings.Default.ExaltedRecipe)
+            if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
             {
                 LoadCustomStyleInfluenced();
             }
@@ -45,7 +45,7 @@ namespace ChaosRecipeEnhancer.UI.Filter
         {
             var activeItemTypes = new ActiveItemTypes();
 
-            if (Settings.Default.LootFilterActive)
+            if (Settings.Default.LootFilterManipulationEnabled)
             {
                 var visitor = new CItemClassManagerFactory();
                 var sectionList = new HashSet<string>();
@@ -58,7 +58,7 @@ namespace ChaosRecipeEnhancer.UI.Filter
                     var stillMissing = _itemClassManager.CheckIfMissing(missingItemClasses);
 
                     // weapons might be buggy, will try to do some tests
-                    if ((Settings.Default.ChaosRecipe || Settings.Default.RegalRecipe)
+                    if ((Settings.Default.ChaosRecipeTrackingEnabled || Settings.Default.RegalRecipeTrackingEnabled)
                         && (_itemClassManager.AlwaysActive || stillMissing))
                     {
                         // if we need chaos only gear to complete a set (60-74), add that to our filter section
@@ -80,7 +80,7 @@ namespace ChaosRecipeEnhancer.UI.Filter
                         activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, false);
                     }
 
-                    if (Settings.Default.ExaltedRecipe)
+                    if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
                     {
                         sectionListExalted.Add(GenerateSection(true));
                     }
@@ -106,15 +106,15 @@ namespace ChaosRecipeEnhancer.UI.Filter
             }
 
             result = result + CConst.newLine + CConst.tab + "Rarity Rare" + CConst.newLine + CConst.tab;
-            if (!Settings.Default.IncludeIdentified) result += "Identified False" + CConst.newLine + CConst.tab;
+            if (!Settings.Default.IncludeIdentifiedItemsEnabled) result += "Identified False" + CConst.newLine + CConst.tab;
 
             switch (isInfluenced)
             {
-                case false when !_itemClassManager.AlwaysActive && onlyChaos && !Settings.Default.RegalRecipe:
+                case false when !_itemClassManager.AlwaysActive && onlyChaos && !Settings.Default.RegalRecipeTrackingEnabled:
                     result += "ItemLevel >= 60" + CConst.newLine + CConst.tab + "ItemLevel <= 74" + CConst.newLine +
                               CConst.tab;
                     break;
-                case false when Settings.Default.RegalRecipe:
+                case false when Settings.Default.RegalRecipeTrackingEnabled:
                     result += "ItemLevel > 75" + CConst.newLine + CConst.tab;
                     break;
                 default:
@@ -138,7 +138,7 @@ namespace ChaosRecipeEnhancer.UI.Filter
                 : _customStyle.Aggregate(result, (current, cs) => current + cs + CConst.newLine + CConst.tab);
 
             // Map Icon setting enabled
-            if (Settings.Default.LootFilterIcons)
+            if (Settings.Default.LootFilterIconsEnabled)
             {
                 result = result + "MinimapIcon 2 White Star" + CConst.newLine + CConst.tab;
             }

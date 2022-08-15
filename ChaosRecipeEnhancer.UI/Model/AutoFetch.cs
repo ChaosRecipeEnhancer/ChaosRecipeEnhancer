@@ -24,12 +24,12 @@ namespace ChaosRecipeEnhancer.UI.Model
             Trace.WriteLine("logwatcher created");
 
             var wh = new AutoResetEvent(false);
-            var fsw = new FileSystemWatcher(Path.GetDirectoryName(@"" + Settings.Default.LogLocation));
+            var fsw = new FileSystemWatcher(Path.GetDirectoryName(@"" + Settings.Default.PathOfExileClientLogLocation));
             fsw.Filter = "Client.txt";
             fsw.EnableRaisingEvents = true;
             fsw.Changed += (s, e) => wh.Set();
 
-            var fs = new FileStream(Settings.Default.LogLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var fs = new FileStream(Settings.Default.PathOfExileClientLogLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             fs.Position = fs.Length;
             WorkerThread = new Thread(() =>
             {
