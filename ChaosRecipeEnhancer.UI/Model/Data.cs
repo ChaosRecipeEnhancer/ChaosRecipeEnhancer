@@ -32,9 +32,9 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static void GetSetTargetAmount(StashTab stash)
         {
-            if (Settings.Default.Sets > 0)
+            if (Settings.Default.FullSetThreshold > 0)
             {
-                SetTargetAmount = Settings.Default.Sets;
+                SetTargetAmount = Settings.Default.FullSetThreshold;
             }
             else
             {
