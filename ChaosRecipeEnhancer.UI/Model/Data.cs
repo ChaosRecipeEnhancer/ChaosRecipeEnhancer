@@ -18,7 +18,7 @@ namespace ChaosRecipeEnhancer.UI.Model
         public static MediaPlayer Player { get; set; } = new MediaPlayer();
         public static MediaPlayer PlayerSet { get; set; } = new MediaPlayer();
         public static int SetAmount { get; set; } = 0;
-        public static int SetTargetAmount { get; set; } = 0;
+        public static int SetTargetAmount { get; set; }
         public static List<ItemSet> ItemSetList { get; set; }
         public static List<ItemSet> ItemSetListHighlight { get; set; } = new List<ItemSet>();
         public static ItemSet ItemSetShaper { get; set; }
@@ -69,7 +69,7 @@ namespace ChaosRecipeEnhancer.UI.Model
         // tries to add item, if item added returns true
         private static bool AddItemToItemSet(ItemSet set, bool chaosItems = false, bool honorOrder = true)
         {
-            string listName = chaosItems ? "ItemListChaos" : "ItemList";
+            var listName = chaosItems ? "ItemListChaos" : "ItemList";
 
             Item minItem = null;
             var minDistance = double.PositiveInfinity;
@@ -77,7 +77,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             // TODO: crashes here after some time
             foreach (var s in StashTabList.StashTabs)
             foreach (var i in (List<Item>)Utility.GetPropertyValue(s, listName))
-                if (set.GetNextItemClass() == i.ItemType || !honorOrder && set.IsValidItem(i))
+                if (set.GetNextItemClass() == i.ItemType || (!honorOrder && set.IsValidItem(i)))
                     if (set.GetItemDistance(i) < minDistance)
                     {
                         //Trace.WriteLine(minDistance, "minDistance");
@@ -139,7 +139,8 @@ namespace ChaosRecipeEnhancer.UI.Model
                             continue;
 
                     if (!AddItemToItemSet(i))
-                        if (Settings.Default.DoNotPreserveLowItemLevelGear && !Settings.Default.RegalRecipeTrackingEnabled)
+                        if (Settings.Default.DoNotPreserveLowItemLevelGear &&
+                            !Settings.Default.RegalRecipeTrackingEnabled)
                             AddItemToItemSet(i, true);
                 }
 
@@ -149,7 +150,8 @@ namespace ChaosRecipeEnhancer.UI.Model
                  * 2.) We obtained a full set without a chaos item -> We aren't lacking a regal item in this set but we don't have enough chaos items.
                  * 3.) We couldn't obtain a full set. That means that at least one item slot is missing. We need to check which of the remaining slots we can still fill. We could still be missing a chaos item.
                  */
-                if (i.EmptyItemSlots.Count == 0 && (i.SetCanProduceChaos || Settings.Default.RegalRecipeTrackingEnabled))
+                if (i.EmptyItemSlots.Count == 0 &&
+                    (i.SetCanProduceChaos || Settings.Default.RegalRecipeTrackingEnabled))
                     // Set full, continue
                     continue;
 
@@ -165,7 +167,8 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                         if (!AddItemToItemSet(i, false, false))
                             // couldn't add a regal item. Try chaos item if filling with chaos is allowed
-                            if (Settings.Default.DoNotPreserveLowItemLevelGear && !Settings.Default.RegalRecipeTrackingEnabled)
+                            if (Settings.Default.DoNotPreserveLowItemLevelGear &&
+                                !Settings.Default.RegalRecipeTrackingEnabled)
                                 AddItemToItemSet(i, true, false);
                     }
                     // At this point the set will contain a chaos item as long as we had at least one left. If not we didn't have any chaos items left.
@@ -226,47 +229,40 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
         }
 
-        public static async Task CheckActives(ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
+        public static async Task CheckActives(SetTrackerOverlayView setTrackerOverlay)
         {
             try
             {
                 if (ApiAdapter.FetchError)
                 {
-                    chaosRecipeEnhancer.WarningMessage = "Fetching Error...";
-                    chaosRecipeEnhancer.ShadowOpacity = 1;
-                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
+                    setTrackerOverlay.WarningMessage = "Fetching Error...";
+                    setTrackerOverlay.ShadowOpacity = 1;
+                    setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                     return;
                 }
 
                 if (StashTabList.StashTabs.Count == 0)
                 {
-                    chaosRecipeEnhancer.WarningMessage = "No Stashtabs found...";
-                    chaosRecipeEnhancer.ShadowOpacity = 1;
-                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
+                    setTrackerOverlay.WarningMessage = "No Stashtabs found...";
+                    setTrackerOverlay.ShadowOpacity = 1;
+                    setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                     return;
                 }
-                
-                if (Settings.Default.SoundEnabled)
-                {
-                    PreviousActiveItems = new ActiveItemTypes(ActiveItems);
-                }
-                
+
+                if (Settings.Default.SoundEnabled) PreviousActiveItems = new ActiveItemTypes(ActiveItems);
+
                 // calculate target amount if user has 0 set in it
                 // (e.g. 2 quad tabs queried w 0 set threshold = 24 set threshold)
                 // else just stick to the default amount (their defined in settings)
                 SetTargetAmount = 0;
                 if (StashTabList.StashTabs.Count > 0)
-                {
                     foreach (var s in StashTabList.StashTabs)
-                    {
                         GetSetTargetAmount(s);
-                    }
-                }
 
                 if (Settings.Default.SetTrackerOverlayItemCounterDisplayMode != 0)
                 {
                     Trace.WriteLine("Calculating Items");
-                    CalculateItemAmounts(chaosRecipeEnhancer);
+                    CalculateItemAmounts(setTrackerOverlay);
                 }
 
                 // generate {SetThreshold} empty sets to be filled
@@ -284,7 +280,6 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                 // for every set in our itemsetlist check if their EmptyItemSlots is 0 if not add to our full set count
                 foreach (var set in ItemSetList)
-                {
                     if (set.EmptyItemSlots.Count == 0)
                     {
                         // fix for: condition (fullSets == SetTargetAmount && missingChaos)
@@ -299,9 +294,8 @@ namespace ChaosRecipeEnhancer.UI.Model
                         // all classes which are active over all ilvls
                         foreach (var itemClass in set.EmptyItemSlots) missingItemClasses.Add(itemClass);
                     }
-                }
 
-                CFilterGenerationManager filterManager = new CFilterGenerationManager();
+                var filterManager = new CFilterGenerationManager();
 
                 // i need to pass in the missingGearPieceForChaosRecipe
                 ActiveItems =
@@ -309,22 +303,21 @@ namespace ChaosRecipeEnhancer.UI.Model
                         missingGearPieceForChaosRecipe);
 
                 //Trace.WriteLine(fullSets, "full sets");
-                chaosRecipeEnhancer.Dispatcher.Invoke(() =>
+                setTrackerOverlay.Dispatcher.Invoke(() =>
                 {
-                    chaosRecipeEnhancer.FullSetsText = fullSets.ToString();
+                    setTrackerOverlay.FullSetsText = fullSets.ToString();
                 });
 
                 // invoke chaos missing
                 if (missingGearPieceForChaosRecipe && !Settings.Default.RegalRecipeTrackingEnabled)
                 {
-                    chaosRecipeEnhancer.WarningMessage = "Need lower level items!";
-                    chaosRecipeEnhancer.ShadowOpacity = 1;
-                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
+                    setTrackerOverlay.WarningMessage = "Need lower level items!";
+                    setTrackerOverlay.ShadowOpacity = 1;
+                    setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                 }
 
                 // invoke exalted recipe ready
                 if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
-                {
                     if (ItemSetShaper.EmptyItemSlots.Count == 0
                         || ItemSetElder.EmptyItemSlots.Count == 0
                         || ItemSetCrusader.EmptyItemSlots.Count == 0
@@ -332,25 +325,23 @@ namespace ChaosRecipeEnhancer.UI.Model
                         || ItemSetHunter.EmptyItemSlots.Count == 0
                         || ItemSetRedeemer.EmptyItemSlots.Count == 0)
                     {
-                        chaosRecipeEnhancer.WarningMessage = "Exalted Recipe ready!";
-                        chaosRecipeEnhancer.ShadowOpacity = 1;
-                        chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
+                        setTrackerOverlay.WarningMessage = "Exalted Recipe ready!";
+                        setTrackerOverlay.ShadowOpacity = 1;
+                        setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                     }
-                }
 
                 // invoke set full
                 if (fullSets == SetTargetAmount && !missingGearPieceForChaosRecipe)
                 {
-                    chaosRecipeEnhancer.WarningMessage = "Sets full!";
-                    chaosRecipeEnhancer.ShadowOpacity = 1;
-                    chaosRecipeEnhancer.WarningMessageVisibility = Visibility.Visible;
+                    setTrackerOverlay.WarningMessage = "Sets full!";
+                    setTrackerOverlay.ShadowOpacity = 1;
+                    setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                 }
 
                 Trace.WriteLine(fullSets, "full sets");
 
                 // If the state of any gear slot changed, we play a sound
                 if (Settings.Default.SoundEnabled)
-                {
                     if (!(PreviousActiveItems.GlovesActive == ActiveItems.GlovesActive
                           && PreviousActiveItems.BootsActive == ActiveItems.BootsActive
                           && PreviousActiveItems.HelmetActive == ActiveItems.HelmetActive
@@ -359,14 +350,11 @@ namespace ChaosRecipeEnhancer.UI.Model
                           && PreviousActiveItems.RingActive == ActiveItems.RingActive
                           && PreviousActiveItems.AmuletActive == ActiveItems.AmuletActive
                           && PreviousActiveItems.BeltActive == ActiveItems.BeltActive))
-                    {
                         Player.Dispatcher.Invoke(() =>
                         {
                             Trace.WriteLine("Gear Slot State Changed; Playing sound!");
                             PlayNotificationSound();
                         });
-                    }
-                }
             }
             catch (OperationCanceledException ex) when (ex.CancellationToken == CancelationToken)
             {
@@ -374,7 +362,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
         }
 
-        public static void CalculateItemAmounts(ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
+        public static void CalculateItemAmounts(SetTrackerOverlayView setTrackerOverlay)
         {
             if (StashTabList.StashTabs != null)
             {
@@ -453,26 +441,26 @@ namespace ChaosRecipeEnhancer.UI.Model
                     foreach (var a in amounts) Trace.WriteLine(a);
 
                     amounts[4] = weaponsSmall + weaponBig;
-                    chaosRecipeEnhancer.RingsAmount = amounts[0];
-                    chaosRecipeEnhancer.AmuletsAmount = amounts[1];
-                    chaosRecipeEnhancer.BeltsAmount = amounts[2];
-                    chaosRecipeEnhancer.ChestsAmount = amounts[3];
-                    chaosRecipeEnhancer.WeaponsAmount = amounts[4];
-                    chaosRecipeEnhancer.GlovesAmount = amounts[5];
-                    chaosRecipeEnhancer.HelmetsAmount = amounts[6];
-                    chaosRecipeEnhancer.BootsAmount = amounts[7];
+                    setTrackerOverlay.RingsAmount = amounts[0];
+                    setTrackerOverlay.AmuletsAmount = amounts[1];
+                    setTrackerOverlay.BeltsAmount = amounts[2];
+                    setTrackerOverlay.ChestsAmount = amounts[3];
+                    setTrackerOverlay.WeaponsAmount = amounts[4];
+                    setTrackerOverlay.GlovesAmount = amounts[5];
+                    setTrackerOverlay.HelmetsAmount = amounts[6];
+                    setTrackerOverlay.BootsAmount = amounts[7];
                 }
                 else if (Settings.Default.SetTrackerOverlayItemCounterDisplayMode == 2)
                 {
                     amounts[4] = weaponsSmall + weaponBig;
-                    chaosRecipeEnhancer.RingsAmount = SetTargetAmount * 2 - amounts[0];
-                    chaosRecipeEnhancer.AmuletsAmount = SetTargetAmount - amounts[1];
-                    chaosRecipeEnhancer.BeltsAmount = SetTargetAmount - amounts[2];
-                    chaosRecipeEnhancer.ChestsAmount = SetTargetAmount - amounts[3];
-                    chaosRecipeEnhancer.WeaponsAmount = SetTargetAmount * 2 - (weaponsSmall + weaponBig * 2);
-                    chaosRecipeEnhancer.GlovesAmount = SetTargetAmount - amounts[5];
-                    chaosRecipeEnhancer.HelmetsAmount = SetTargetAmount - amounts[6];
-                    chaosRecipeEnhancer.BootsAmount = SetTargetAmount - amounts[7];
+                    setTrackerOverlay.RingsAmount = SetTargetAmount * 2 - amounts[0];
+                    setTrackerOverlay.AmuletsAmount = SetTargetAmount - amounts[1];
+                    setTrackerOverlay.BeltsAmount = SetTargetAmount - amounts[2];
+                    setTrackerOverlay.ChestsAmount = SetTargetAmount - amounts[3];
+                    setTrackerOverlay.WeaponsAmount = SetTargetAmount * 2 - (weaponsSmall + weaponBig * 2);
+                    setTrackerOverlay.GlovesAmount = SetTargetAmount - amounts[5];
+                    setTrackerOverlay.HelmetsAmount = SetTargetAmount - amounts[6];
+                    setTrackerOverlay.BootsAmount = SetTargetAmount - amounts[7];
                 }
             }
         }
@@ -542,7 +530,8 @@ namespace ChaosRecipeEnhancer.UI.Model
                                 currentTab.ActivateItemCells(highlightItem);
                                 if (Settings.Default.StashTabOverlayHighlightColor != "")
                                     currentTab.TabHeaderColor = new SolidColorBrush(
-                                        (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                                        (Color)ColorConverter.ConvertFromString(Settings.Default
+                                            .StashTabOverlayHighlightColor));
                                 else
                                     currentTab.TabHeaderColor = Brushes.Red;
 
@@ -587,7 +576,8 @@ namespace ChaosRecipeEnhancer.UI.Model
                                 if (Settings.Default.StashTabOverlayHighlightColor != "")
                                     currTab.TabHeaderColor =
                                         new SolidColorBrush(
-                                            (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                                            (Color)ColorConverter.ConvertFromString(Settings.Default
+                                                .StashTabOverlayHighlightColor));
                                 else
                                     currTab.TabHeaderColor = Brushes.Red;
                             }

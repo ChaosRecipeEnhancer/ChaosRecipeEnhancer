@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using ChaosRecipeEnhancer.UI.UserControls;
+using ChaosRecipeEnhancer.UI.UserControls.StashTabOverlayDisplays;
 using ChaosRecipeEnhancer.UI.View;
 
 namespace ChaosRecipeEnhancer.UI.Model
@@ -126,12 +126,6 @@ namespace ChaosRecipeEnhancer.UI.Model
             return activeCells;
         }
 
-        // mouse hook action
-        // public static void Event(object sender, EventArgs e)
-        // {
-        //     OverlayClickEvent();
-        // }
-
         public static void OverlayClickEvent(StashTabOverlayView stashTabOverlayView)
         {
             if (stashTabOverlayView.IsOpen)
@@ -149,7 +143,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                 if (StashTabList.StashTabs[selectedIndex].Quad)
                 {
-                    var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as DynamicGridControlQuad;
+                    var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as QuadStashGrid;
 
                     foreach (var cell in activeCells)
                         buttonList.Add(new ButtonAndCell
@@ -173,7 +167,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                 }
                 else
                 {
-                    var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as DynamicGridControl;
+                    var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as NormalStashGrid;
                     foreach (var cell in activeCells)
                         buttonList.Add(new ButtonAndCell
                         {

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.MainOverlayContent"
+﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays.StandardDisplay"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -44,7 +44,7 @@
 
             <Grid>
 
-                <Image Source="../Assets/Images/gloves.png"
+                <Image Source="../../Assets/Images/gloves.png"
                        MaxWidth="50"
                        MaxHeight="50" />
 
@@ -86,7 +86,7 @@
 
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="../Assets/Images/boots.png" />
+                       Source="../../Assets/Images/boots.png" />
 
                 <Border Width="20"
                         Height="20"
@@ -126,7 +126,7 @@
 
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="../Assets/Images/chest.png" />
+                       Source="../../Assets/Images/chest.png" />
 
                 <Border Width="20"
                         Height="20"
@@ -166,7 +166,7 @@
 
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="../Assets/Images/weapon.png" />
+                       Source="../../Assets/Images/weapon.png" />
 
                 <Border Width="20"
                         Height="20"
@@ -206,7 +206,7 @@
 
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="../Assets/Images/helmet.png" />
+                       Source="../../Assets/Images/helmet.png" />
 
                 <Border Width="20"
                         Height="20"
@@ -246,7 +246,7 @@
 
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="../Assets/Images/ring.png" />
+                       Source="../../Assets/Images/ring.png" />
 
                 <Border Width="20"
                         Height="20"
@@ -286,7 +286,7 @@
 
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="../Assets/Images/amulet.png" />
+                       Source="../../Assets/Images/amulet.png" />
 
                 <Border Width="20"
                         Height="20"
@@ -326,7 +326,7 @@
 
                 <Image MaxHeight="50"
                        MaxWidth="50"
-                       Source="../Assets/Images/belt.png" />
+                       Source="../../Assets/Images/belt.png" />
 
                 <Border Width="20" Height="20"
                         Visibility="{Binding AmountsVisibility}"
@@ -363,19 +363,21 @@
                 Grid.Column="12"
                 Grid.Row="1"
                 Margin="5,0">
-            
+
             <!-- Conditional rendering for 'Reload Filter' button -->
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Visibility" Value="Visible" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}" Value="False">
+                        <DataTrigger
+                            Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}"
+                            Value="False">
                             <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Button.Style>
-            
+
             <TextBlock TextAlignment="Center">Reload<LineBreak />Filter</TextBlock>
 
         </Button>

@@ -8,13 +8,13 @@ using Serilog;
 namespace ChaosRecipeEnhancer.UI.UserControls
 {
     /// <summary>
-    /// Interaction logic for HotkeyEditorControl.xaml
+    ///     Interaction logic for HotkeyEditorControl.xaml
     /// </summary>
     public partial class HotkeyEditorControl
     {
         #region Fields
 
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         #endregion
 
@@ -92,7 +92,7 @@ namespace ChaosRecipeEnhancer.UI.UserControls
         private void TextBox_Loaded(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input,
-                new Action(delegate() { Keyboard.Focus((IInputElement)sender); }));
+                new Action(delegate { Keyboard.Focus((IInputElement)sender); }));
         }
 
         #endregion

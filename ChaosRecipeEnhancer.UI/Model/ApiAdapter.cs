@@ -76,18 +76,14 @@ namespace ChaosRecipeEnhancer.UI.Model
         {
             var ret = new List<StashTab>();
 
-            if (Settings.Default.StashTabIndices != null)
-            {
-                StashTabList.GetStashTabIndices();
-            }
-            
+            if (Settings.Default.StashTabIndices != null) StashTabList.GetStashTabIndices();
+
             // mode = Individual Stash Tab Indices
             if (Settings.Default.StashTabQueryMode == 0)
             {
                 if (PropsList != null)
                 {
                     foreach (var tab in PropsList.tabs)
-                    {
                         for (var index = StashTabList.StashTabIndices.Count - 1; index > -1; index--)
                         {
                             if (StashTabList.StashTabIndices[index] != tab.Index) continue;
@@ -97,7 +93,6 @@ namespace ChaosRecipeEnhancer.UI.Model
                             if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
                                 ret.Add(new StashTab(tab.Name, tab.Index));
                         }
-                    }
 
                     StashTabList.StashTabs = ret;
                     GetAllTabNames();
@@ -113,13 +108,9 @@ namespace ChaosRecipeEnhancer.UI.Model
                     GetAllTabNames();
 
                     foreach (var tab in PropsList.tabs)
-                    {
                         if (tab.Name.StartsWith(individualStashTabPrefix))
-                        {
                             if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
                                 ret.Add(new StashTab(tab.Name, tab.Index));
-                        }
-                    }
 
                     StashTabList.StashTabs = ret;
                 }
@@ -134,18 +125,14 @@ namespace ChaosRecipeEnhancer.UI.Model
                     GetAllTabNames();
 
                     foreach (var tab in PropsList.tabs)
-                    {
                         if (tab.Name.EndsWith(individualStashTabSuffix))
-                        {
                             if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
                                 ret.Add(new StashTab(tab.Name, tab.Index));
-                        }
-                    }
 
                     StashTabList.StashTabs = ret;
                 }
             }
-            
+
             /**
              * TODO: [Refactor] Repurpose the code below for searching by stash tab folder name
              *
@@ -175,7 +162,7 @@ namespace ChaosRecipeEnhancer.UI.Model
              * Below is the code I had written for search by parent mode. We may reuse it at some point later. But it
              * currently won't work.
              */
-            
+
             // mode = Folder Name
             // if (Settings.Default.StashTabQueryMode == 3)
             // {
@@ -207,23 +194,22 @@ namespace ChaosRecipeEnhancer.UI.Model
             {
                 var stashTab = i.TabIndex.ToString();
 
-                i.StashTabUri = Settings.Default.TargetStash == 0 
+                i.StashTabUri = Settings.Default.TargetStash == 0
                     // URL for accessing personal stash
-                    ? new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}") 
+                    ? new Uri(
+                        $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}")
                     // URL for accessing guild stash
-                    : new Uri($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}");
+                    : new Uri(
+                        $"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}");
             }
         }
 
         private static void GetAllTabNames()
         {
             foreach (var s in StashTabList.StashTabs)
-            {
-                foreach (var props in PropsList.tabs)
-                {
-                    if (s.TabIndex == props.Index) s.TabName = props.Name;
-                }
-            }
+            foreach (var props in PropsList.tabs)
+                if (s.TabIndex == props.Index)
+                    s.TabName = props.Name;
         }
 
         private static async Task<bool> GetProps(string accName, string league)
@@ -249,23 +235,25 @@ namespace ChaosRecipeEnhancer.UI.Model
             IsFetching = true;
 
             Uri propsUri = null;
-                
+
             // If accessing personal stash
             if (Settings.Default.TargetStash == 0)
             {
                 Trace.WriteLine("[ApiAdapter:GetProps()] Generating propsUri for My Stash");
 
-                propsUri = new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
-                
+                propsUri = new Uri(
+                    $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
+
                 Trace.WriteLine($"[ApiAdapter:GetProps()] ${propsUri}");
             }
             // Else if accessing guild stash
             else if (Settings.Default.TargetStash == 1)
             {
                 Trace.WriteLine("[ApiAdapter:GetProps()] Generating propsUri for Guild Stash");
-                
-                propsUri = new Uri($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
-                
+
+                propsUri = new Uri(
+                    $"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
+
                 Trace.WriteLine($"[ApiAdapter:GetProps()] ${propsUri}");
             }
             // Else error out

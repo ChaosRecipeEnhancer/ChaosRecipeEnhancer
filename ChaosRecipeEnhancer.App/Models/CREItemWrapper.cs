@@ -5,22 +5,14 @@ using ChaosRecipeEnhancer.DataModels.GGGModels;
 namespace ChaosRecipeEnhancer.App.Models
 {
     /// <summary>
-    /// TODO
+    ///     TODO
     /// </summary>
     public class CREItemWrapper
     {
-        #region Properties
-
-        public Item Item { get; set; }
-        public string ItemType { get; set; }
-        public int StashTabIndex { get; set; }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
-        /// For some reason, we're using the Icon supplied by GGG's API response to figure out what ItemClass our item is.
+        ///     For some reason, we're using the Icon supplied by GGG's API response to figure out what ItemClass our item is.
         /// </summary>
         public void GetItemClass()
         {
@@ -34,10 +26,7 @@ namespace ChaosRecipeEnhancer.App.Models
 
             // We have to pad the end of the string to decode properly further down
             // See: https://stackoverflow.com/a/18518605/10072406
-            while (encodedPart.Length % 4 != 0)
-            {
-                encodedPart += "=";
-            }
+            while (encodedPart.Length % 4 != 0) encodedPart += "=";
 
             // Sample decoded data below
             // 
@@ -78,6 +67,14 @@ namespace ChaosRecipeEnhancer.App.Models
             // Does this method need to exist? I'm not 100% sure. It can definitely be refactored, at least I hope.
             //System.Diagnostics.Trace.WriteLine("item class ", itemClass);
         }
+
+        #endregion
+
+        #region Properties
+
+        public Item Item { get; set; }
+        public string ItemType { get; set; }
+        public int StashTabIndex { get; set; }
 
         #endregion
     }

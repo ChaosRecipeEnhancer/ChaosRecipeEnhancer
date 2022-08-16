@@ -20,11 +20,13 @@ namespace ChaosRecipeEnhancer.App.Helpers
 
         public static void CheckForUpdates()
         {
-            AutoUpdater.Start("https://raw.githubusercontent.com/ChaosRecipeEnhancer/EnhancePoEApp/master/ChaosRecipeEnhancer.Installer/autoupdate.xml");
+            AutoUpdater.Start(
+                "https://raw.githubusercontent.com/ChaosRecipeEnhancer/EnhancePoEApp/master/ChaosRecipeEnhancer.Installer/autoupdate.xml");
         }
 
         /// <summary>
-        /// TODO [Remove] [Refactor] Do we even need this? Maybe this is something we could refactor and use for better update UI?
+        ///     TODO [Remove] [Refactor] Do we even need this? Maybe this is something we could refactor and use for better update
+        ///     UI?
         /// </summary>
         /// <param name="args"></param>
         private static void AutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)
@@ -57,10 +59,8 @@ namespace ChaosRecipeEnhancer.App.Helpers
                         try
                         {
                             if (AutoUpdater.DownloadUpdate(args))
-                            {
                                 // TODO: [Move] Feels weird to call UI stuff here, idk
                                 Application.Exit();
-                            }
                         }
                         catch (Exception exception)
                         {

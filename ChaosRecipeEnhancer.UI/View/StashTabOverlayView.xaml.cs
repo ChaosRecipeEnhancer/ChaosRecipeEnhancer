@@ -10,36 +10,24 @@ using System.Windows.Interop;
 using ChaosRecipeEnhancer.App;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.UserControls;
+using ChaosRecipeEnhancer.UI.UserControls.StashTabOverlayDisplays;
 using Serilog;
 
 namespace ChaosRecipeEnhancer.UI.View
 {
     /// <summary>
-    /// Interaction logic for StashTabOverlayView.xaml
+    ///     Interaction logic for StashTabOverlayView.xaml
     /// </summary>
     public partial class StashTabOverlayView : INotifyPropertyChanged
     {
-        #region Fields
-
-        private readonly ILogger _logger;
-        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancerWindow;
-
-        private static readonly ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
-        private Visibility _stashBorderVisibility = Visibility.Hidden;
-        private Thickness _stashTabOverlayIndividualTabHeaderGap;
-        private Thickness _stashTabOverlayIndividualTabMargin;
-
-        #endregion
-
         #region Constructors
 
-        public StashTabOverlayView(ChaosRecipeEnhancerWindow chaosRecipeEnhancerWindow)
+        public StashTabOverlayView(SetTrackerOverlayView setTrackerOverlayView)
         {
             _logger = Log.ForContext<StashTabOverlayView>();
             _logger.Debug("Constructing StashTabOverlayView");
 
-            _chaosRecipeEnhancerWindow = chaosRecipeEnhancerWindow;
+            _setTrackerOverlayView = setTrackerOverlayView;
 
             InitializeComponent();
             DataContext = this;
@@ -47,6 +35,18 @@ namespace ChaosRecipeEnhancer.UI.View
 
             _logger.Debug("StashTabOverlayView constructed successfully");
         }
+
+        #endregion
+
+        #region Fields
+
+        private readonly ILogger _logger;
+        private readonly SetTrackerOverlayView _setTrackerOverlayView;
+
+        private static readonly ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
+        private Visibility _stashBorderVisibility = Visibility.Hidden;
+        private Thickness _stashTabOverlayIndividualTabHeaderGap;
+        private Thickness _stashTabOverlayIndividualTabMargin;
 
         #endregion
 
@@ -111,7 +111,7 @@ namespace ChaosRecipeEnhancer.UI.View
             IsOpen = false;
             IsEditing = false;
 
-            _chaosRecipeEnhancerWindow.OpenStashOverlayButtonContent = "Stash";
+            _setTrackerOverlayView.OpenStashOverlayButtonContent = "Stash";
 
             base.Hide();
         }
@@ -125,7 +125,8 @@ namespace ChaosRecipeEnhancer.UI.View
                 OverlayStashTabList.Clear();
                 _stashTabOverlayIndividualTabHeaderGap.Right = Settings.Default.StashTabOverlayIndividualTabHeaderGap;
                 _stashTabOverlayIndividualTabHeaderGap.Left = Settings.Default.StashTabOverlayIndividualTabHeaderGap;
-                StashTabOverlayIndividualTabMargin = new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
+                StashTabOverlayIndividualTabMargin =
+                    new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
 
                 foreach (var i in StashTabList.StashTabs)
                 {
@@ -145,7 +146,7 @@ namespace ChaosRecipeEnhancer.UI.View
                         newStashTabItem = new TabItem
                         {
                             Header = tbk,
-                            Content = new DynamicGridControlQuad
+                            Content = new QuadStashGrid
                             {
                                 ItemsSource = i.OverlayCellsList
                             }
@@ -154,7 +155,7 @@ namespace ChaosRecipeEnhancer.UI.View
                         newStashTabItem = new TabItem
                         {
                             Header = tbk,
-                            Content = new DynamicGridControl
+                            Content = new NormalStashGrid
                             {
                                 ItemsSource = i.OverlayCellsList
                             }
@@ -175,7 +176,7 @@ namespace ChaosRecipeEnhancer.UI.View
                         currTab.ActivateItemCells(i);
                     }
 
-                _chaosRecipeEnhancerWindow.OpenStashOverlayButtonContent = "Hide";
+                _setTrackerOverlayView.OpenStashOverlayButtonContent = "Hide";
 
                 MouseHook.Start();
                 base.Show();
