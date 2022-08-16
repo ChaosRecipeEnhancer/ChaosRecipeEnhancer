@@ -6,7 +6,7 @@
 - new option to query from guild stash
 - new vertical layouts for set tracker (standard and minified)
 - 'Reload Filter' button is how hidden on the set tracker if you don't have the feature enabled
-- moved 'Do Not Preserve Low Item Level Gear' setting to a new 'Advanced' setting tab
+- moved 'Do Not Preserve Low Item Level Gear' setting to a new 'Advanced' setting tab (caused a lot of confusion with completed set #'s, comes on by default - do not turn it off unless you know what you're doing)
 - disabled resizing on set tracker overlay as their layouts are fixed (if you dragged it to the corners windows would try to resize it, causing bugs)
 - [fixed issue where inaccurate values displayed on set tracker when loot filter manipulation is disabled](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues/409)
 - [fixed issue with resizing of the settings window (resizing flag was enabled by mistake)](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues/416)

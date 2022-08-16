@@ -19,11 +19,12 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 ## Additional Features
 
- - Query multiple stash tabs by ID, prefix, and suffix (Folder searches coming soon!)
+ - Query from your personal stash or from your guild stash
+ - Query multiple stash tabs by ID, prefix, and suffix
  - Customizable hotkeys
  - Customizable overlay position & sizes for different screen resolutions
- - Support for regal & exalted shard recipes
- - Offline loot filter manipulation
+ - Support for chaos, regal & exalted shard recipes
+ - *Offline* loot filter manipulation (online filter syncing not supported)
  - Automatically fetch remaining items when you join a new instance
 
 #### Stash Tab Overlay

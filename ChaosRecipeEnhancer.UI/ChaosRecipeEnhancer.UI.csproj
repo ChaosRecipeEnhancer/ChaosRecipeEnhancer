@@ -133,6 +133,9 @@
             <DesignTime>True</DesignTime>
             <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
+        <Compile Include="UserControls\AppFooter.xaml.cs">
+          <DependentUpon>AppFooter.xaml</DependentUpon>
+        </Compile>
         <Compile Include="UserControls\SettingsForms\GeneralForms\GeneralForm.xaml.cs">
           <DependentUpon>GeneralForm.xaml</DependentUpon>
         </Compile>
@@ -180,6 +183,7 @@
         <Compile Include="Factory\Managers\Implementation\CRingsManager.cs" />
         <Compile Include="Factory\Managers\Implementation\CTwoHandWeaponsManager.cs" />
         <Compile Include="Factory\CItemClassManagerFactory.cs" />
+        <Page Include="UserControls\AppFooter.xaml" />
         <Page Include="UserControls\SettingsForms\GeneralForms\GeneralForm.xaml" />
         <Page Include="UserControls\SettingsForms\GeneralForms\PathOfExileForm.xaml" />
         <Page Include="UserControls\SettingsForms\GeneralForms\RecipesForm.xaml" />
