@@ -11,13 +11,13 @@ namespace ChaosRecipeEnhancer.UI.UserControls
     {
         #region Constructors
 
-        public MainOverlayOnlyButtons(MainWindow mainWindow, ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
+        public MainOverlayOnlyButtons(SettingsView settingsView, SetTrackerOverlayView setTrackerOverlay)
         {
             _logger = Log.ForContext<MainOverlayOnlyButtons>();
             _logger.Debug("Constructing MainOverlayOnlyButtons");
 
-            _mainWindow = mainWindow;
-            _chaosRecipeEnhancer = chaosRecipeEnhancer;
+            _settingsView = settingsView;
+            _setTrackerOverlay = setTrackerOverlay;
 
             InitializeComponent();
 
@@ -29,8 +29,8 @@ namespace ChaosRecipeEnhancer.UI.UserControls
         #region Fields
 
         private readonly ILogger _logger;
-        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancer;
-        private readonly MainWindow _mainWindow;
+        private readonly SetTrackerOverlayView _setTrackerOverlay;
+        private readonly SettingsView _settingsView;
 
         #endregion
 
@@ -38,17 +38,17 @@ namespace ChaosRecipeEnhancer.UI.UserControls
 
         private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
         {
-            _mainWindow.RunStashTabOverlay();
+            _settingsView.RunStashTabOverlay();
         }
 
         private void RefreshButton_Click_1(object sender, RoutedEventArgs e)
         {
-            _chaosRecipeEnhancer.RunFetching();
+            _setTrackerOverlay.RunFetching();
         }
 
         private void ReloadFilterButton_Click(object sender, RoutedEventArgs e)
         {
-            _chaosRecipeEnhancer.ReloadItemFilter();
+            _setTrackerOverlay.ReloadItemFilter();
         }
 
         #endregion

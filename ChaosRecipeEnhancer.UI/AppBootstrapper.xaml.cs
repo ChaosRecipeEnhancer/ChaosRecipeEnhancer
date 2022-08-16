@@ -53,11 +53,11 @@ namespace ChaosRecipeEnhancer.UI
             var builder = new ContainerBuilder();
 
             // Registering some of our main view components that depend on each-other
-            builder.RegisterType<MainWindow>()
+            builder.RegisterType<SettingsView>()
                 .SingleInstance()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
-            builder.RegisterType<ChaosRecipeEnhancerWindow>()
+            builder.RegisterType<SetTrackerOverlayView>()
                 .SingleInstance()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
@@ -71,7 +71,7 @@ namespace ChaosRecipeEnhancer.UI
                 var logger = scope.Resolve<ILogger>();
 
                 // Resolving our previously defined dependency from our DI container
-                var mainWindow = scope.Resolve<MainWindow>();
+                var mainWindow = scope.Resolve<SettingsView>();
 
                 // Opens our MainWindow and doesn't return until it has been closed
                 logger.Debug("App initialized, starting up MainWindow");

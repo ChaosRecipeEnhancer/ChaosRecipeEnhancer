@@ -23,19 +23,19 @@ using MessageBox = System.Windows.MessageBox;
 namespace ChaosRecipeEnhancer.UI.View
 {
     /// <summary>
-    ///     Interaction logic for MainWindow.xaml
+    ///     Interaction logic for SettingsWindow.xaml
     /// </summary>
-    public partial class MainWindow : INotifyPropertyChanged
+    public partial class SettingsView : INotifyPropertyChanged
     {
         #region Constructors
 
-        public MainWindow(ChaosRecipeEnhancerWindow chaosRecipeEnhancerWindow,
+        public SettingsView(SetTrackerOverlayView setTrackerOverlayView,
             StashTabOverlayView stashTabOverlayView)
         {
-            _logger = Log.ForContext<MainWindow>();
+            _logger = Log.ForContext<SettingsView>();
             _logger.Debug("Constructing MainWindow");
 
-            _chaosRecipeEnhancerWindow = chaosRecipeEnhancerWindow;
+            _setTrackerOverlayView = setTrackerOverlayView;
             _stashTabOverlayView = stashTabOverlayView;
 
             InitializeComponent();
@@ -78,7 +78,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private readonly ILogger _logger;
 
-        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancerWindow;
+        private readonly SetTrackerOverlayView _setTrackerOverlayView;
         private readonly StashTabOverlayView _stashTabOverlayView;
 
         private const string AppVersion = "1.6.0";
@@ -308,11 +308,11 @@ namespace ChaosRecipeEnhancer.UI.View
         {
             var isWindowOpen = false;
             foreach (Window w in Application.Current.Windows)
-                if (w is HotkeyWindow)
+                if (w is HotkeyView)
                     isWindowOpen = true;
 
             if (isWindowOpen) return;
-            var hotkeyDialog = new HotkeyWindow(this, "toggle");
+            var hotkeyDialog = new HotkeyView(this, "toggle");
             hotkeyDialog.Show();
         }
 
@@ -320,11 +320,11 @@ namespace ChaosRecipeEnhancer.UI.View
         {
             var isWindowOpen = false;
             foreach (Window w in Application.Current.Windows)
-                if (w is HotkeyWindow)
+                if (w is HotkeyView)
                     isWindowOpen = true;
 
             if (isWindowOpen) return;
-            var hotkeyDialog = new HotkeyWindow(this, "refresh");
+            var hotkeyDialog = new HotkeyView(this, "refresh");
             hotkeyDialog.Show();
         }
 
@@ -332,12 +332,12 @@ namespace ChaosRecipeEnhancer.UI.View
         {
             var isWindowOpen = false;
             foreach (Window w in Application.Current.Windows)
-                if (w is HotkeyWindow)
+                if (w is HotkeyView)
                     isWindowOpen = true;
 
             if (!isWindowOpen)
             {
-                var hotkeyDialog = new HotkeyWindow(this, "stashtab");
+                var hotkeyDialog = new HotkeyView(this, "stashtab");
                 hotkeyDialog.Show();
             }
         }
@@ -399,32 +399,32 @@ namespace ChaosRecipeEnhancer.UI.View
                 case 0:
                     Trace.WriteLine(
                         $"OverlayModeComboBox_SelectionChanged: Case 0 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
-                        new MainOverlayContent(this, _chaosRecipeEnhancerWindow);
+                    _setTrackerOverlayView.MainOverlayContentControl.Content =
+                        new MainOverlayContent(this, _setTrackerOverlayView);
                     break;
                 case 1:
                     Trace.WriteLine(
                         $"OverlayModeComboBox_SelectionChanged: Case 1 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
-                        new MainOverlayContentMinified(this, _chaosRecipeEnhancerWindow);
+                    _setTrackerOverlayView.MainOverlayContentControl.Content =
+                        new MainOverlayContentMinified(this, _setTrackerOverlayView);
                     break;
                 case 2:
                     Trace.WriteLine(
                         $"OverlayModeComboBox_SelectionChanged: Case 2 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
-                        new MainOverlayOnlyButtons(this, _chaosRecipeEnhancerWindow);
+                    _setTrackerOverlayView.MainOverlayContentControl.Content =
+                        new MainOverlayOnlyButtons(this, _setTrackerOverlayView);
                     break;
                 case 3:
                     Trace.WriteLine(
                         $"OverlayModeComboBox_SelectionChanged: Case 3 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
-                        new VerticalMainOverlayContent(this, _chaosRecipeEnhancerWindow);
+                    _setTrackerOverlayView.MainOverlayContentControl.Content =
+                        new VerticalMainOverlayContent(this, _setTrackerOverlayView);
                     break;
                 case 4:
                     Trace.WriteLine(
                         $"OverlayModeComboBox_SelectionChanged: Case 4 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
-                        new VerticalMainOverlayContentMinified(this, _chaosRecipeEnhancerWindow);
+                    _setTrackerOverlayView.MainOverlayContentControl.Content =
+                        new VerticalMainOverlayContentMinified(this, _setTrackerOverlayView);
                     break;
             }
         }
@@ -509,7 +509,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void ShowNumbersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _chaosRecipeEnhancerWindow.AmountsVisibility = Settings.Default.SetTrackerOverlayItemCounterDisplayMode != 0
+            _setTrackerOverlayView.AmountsVisibility = Settings.Default.SetTrackerOverlayItemCounterDisplayMode != 0
                 ? Visibility.Visible
                 : Visibility.Hidden;
         }
@@ -622,9 +622,9 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public void RunOverlay()
         {
-            if (_chaosRecipeEnhancerWindow.IsOpen)
+            if (_setTrackerOverlayView.IsOpen)
             {
-                _chaosRecipeEnhancerWindow.Hide();
+                _setTrackerOverlayView.Hide();
                 if (_stashTabOverlayView.IsOpen) _stashTabOverlayView.Hide();
                 RunButton.Content = "Run Overlay";
             }
@@ -632,7 +632,7 @@ namespace ChaosRecipeEnhancer.UI.View
             {
                 if (CheckAllSettings())
                 {
-                    _chaosRecipeEnhancerWindow.Show();
+                    _setTrackerOverlayView.Show();
                     RunButton.Content = "Stop Overlay";
                 }
             }
@@ -654,7 +654,7 @@ namespace ChaosRecipeEnhancer.UI.View
         {
             if (Settings.Default.FetchStashHotkey != "< not set >")
                 HotkeysManager.AddHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey,
-                    _chaosRecipeEnhancerWindow.RunFetching);
+                    _setTrackerOverlayView.RunFetching);
             if (Settings.Default.ToggleSetTrackerOverlayHotkey != "< not set >")
                 HotkeysManager.AddHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay);
             if (Settings.Default.ToggleStashTabOverlayHotkey != "< not set >")

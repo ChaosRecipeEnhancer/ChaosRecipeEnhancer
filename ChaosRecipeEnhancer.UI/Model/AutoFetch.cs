@@ -12,7 +12,7 @@ namespace ChaosRecipeEnhancer.UI.Model
         private static readonly int cooldown = 120;
         private FileSystemWatcher watcher = new FileSystemWatcher();
 
-        public LogWatcher(ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
+        public LogWatcher(SetTrackerOverlayView setTrackerOverlay)
         {
             Trace.WriteLine("logwatcher created");
 
@@ -48,7 +48,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                                 Trace.WriteLine("entered new zone");
 
                                 Trace.WriteLine(NewZone);
-                                FetchIfPossible(chaosRecipeEnhancer);
+                                FetchIfPossible(setTrackerOverlay);
                             }
                         }
 
@@ -171,14 +171,14 @@ namespace ChaosRecipeEnhancer.UI.Model
             Trace.WriteLine("stop watch");
         }
 
-        public async void FetchIfPossible(ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
+        public async void FetchIfPossible(SetTrackerOverlayView setTrackerOverlay)
         {
             if (FetchAllowed)
             {
                 FetchAllowed = false;
                 try
                 {
-                    chaosRecipeEnhancer.RunFetching();
+                    setTrackerOverlay.RunFetching();
                     await Task.Delay(cooldown * 1000).ContinueWith(_ =>
                     {
                         FetchAllowed = true;

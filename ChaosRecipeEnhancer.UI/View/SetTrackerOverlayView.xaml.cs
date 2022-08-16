@@ -13,15 +13,15 @@ using Serilog;
 namespace ChaosRecipeEnhancer.UI.View
 {
     /// <summary>
-    ///     Interaction logic for ChaosRecipeEnhancer.xaml
+    ///     Interaction logic for SetTrackerOverlayView.xaml
     /// </summary>
-    public partial class ChaosRecipeEnhancerWindow : INotifyPropertyChanged
+    public partial class SetTrackerOverlayView : INotifyPropertyChanged
     {
         #region Constructors
 
-        public ChaosRecipeEnhancerWindow()
+        public SetTrackerOverlayView()
         {
-            _logger = Log.ForContext<ChaosRecipeEnhancerWindow>();
+            _logger = Log.ForContext<SetTrackerOverlayView>();
             _logger.Debug("Constructing ChaosRecipeEnhancer");
 
             InitializeComponent();
@@ -386,11 +386,11 @@ namespace ChaosRecipeEnhancer.UI.View
 
         #region Methods
 
-        public static void DisableWarnings(ChaosRecipeEnhancerWindow chaosRecipeEnhancerWindow)
+        public static void DisableWarnings(SetTrackerOverlayView setTrackerOverlayView)
         {
-            chaosRecipeEnhancerWindow.WarningMessage = "";
-            chaosRecipeEnhancerWindow.ShadowOpacity = 0;
-            chaosRecipeEnhancerWindow.WarningMessageVisibility = Visibility.Hidden;
+            setTrackerOverlayView.WarningMessage = "";
+            setTrackerOverlayView.ShadowOpacity = 0;
+            setTrackerOverlayView.WarningMessageVisibility = Visibility.Hidden;
         }
 
         private async void FetchData()
@@ -486,7 +486,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public void RunFetching()
         {
-            if (!MainWindow.SettingsComplete) return;
+            if (!SettingsView.SettingsComplete) return;
 
             if (!IsOpen) return;
 
