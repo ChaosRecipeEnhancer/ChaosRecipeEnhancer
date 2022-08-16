@@ -14,7 +14,7 @@
     SizeToContent="WidthAndHeight"
     WindowStyle="SingleBorderWindow"
     MouseDown="Window_MouseDown"
-    ResizeMode="NoResize"
+    ResizeMode="CanMinimize"
     Top="{Binding Source={x:Static properties:Settings.Default}, Path=SettingsWindowTopPosition, Mode=TwoWay}"
     Left="{Binding Source={x:Static properties:Settings.Default}, Path=SettingsWindowLeftPosition, Mode=TwoWay}">
 

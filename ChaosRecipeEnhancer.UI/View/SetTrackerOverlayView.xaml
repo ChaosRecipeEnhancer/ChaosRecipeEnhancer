@@ -12,6 +12,7 @@
         Topmost="True"
         MouseDown="Window_MouseDown"
         Background="Transparent"
+        ResizeMode="NoResize"
         xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayTopPosition, Mode=TwoWay}"
         Left="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayLeftPosition, Mode=TwoWay}">
