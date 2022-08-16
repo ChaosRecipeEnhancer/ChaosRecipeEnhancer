@@ -10,7 +10,7 @@ using System.Windows.Interop;
 using ChaosRecipeEnhancer.App;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.UserControls;
+using ChaosRecipeEnhancer.UI.UserControls.StashTabOverlayDisplays;
 using Serilog;
 
 namespace ChaosRecipeEnhancer.UI.View
@@ -146,7 +146,7 @@ namespace ChaosRecipeEnhancer.UI.View
                         newStashTabItem = new TabItem
                         {
                             Header = tbk,
-                            Content = new DynamicGridControlQuad
+                            Content = new QuadStashGrid
                             {
                                 ItemsSource = i.OverlayCellsList
                             }
@@ -155,7 +155,7 @@ namespace ChaosRecipeEnhancer.UI.View
                         newStashTabItem = new TabItem
                         {
                             Header = tbk,
-                            Content = new DynamicGridControl
+                            Content = new NormalStashGrid
                             {
                                 ItemsSource = i.OverlayCellsList
                             }

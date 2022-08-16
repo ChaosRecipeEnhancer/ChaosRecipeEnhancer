@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -13,7 +12,7 @@ using System.Windows.Media;
 using ChaosRecipeEnhancer.App.Helpers;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.UserControls;
+using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using Serilog;
 using Application = System.Windows.Application;
 using ContextMenu = System.Windows.Forms.ContextMenu;
@@ -29,11 +28,10 @@ namespace ChaosRecipeEnhancer.UI.View
     {
         #region Constructors
 
-        public SettingsView(SetTrackerOverlayView setTrackerOverlayView,
-            StashTabOverlayView stashTabOverlayView)
+        public SettingsView(SetTrackerOverlayView setTrackerOverlayView, StashTabOverlayView stashTabOverlayView)
         {
             _logger = Log.ForContext<SettingsView>();
-            _logger.Debug("Constructing MainWindow");
+            _logger.Debug("Constructing SettingsView");
 
             _setTrackerOverlayView = setTrackerOverlayView;
             _stashTabOverlayView = stashTabOverlayView;
@@ -41,35 +39,15 @@ namespace ChaosRecipeEnhancer.UI.View
             InitializeComponent();
             DataContext = this;
             AutoUpdateHelper.InitializeAutoUpdater(AppVersion);
-
-            if (!string.IsNullOrEmpty(Settings.Default.FilterModificationPendingSoundFileLocation) &&
-                !FilterSoundLocationDialog.Content.Equals("Default Sound"))
-                Data.Player.Open(new Uri(Settings.Default.FilterModificationPendingSoundFileLocation));
-            else
-                Data.Player.Open(new Uri(Path.Combine(
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
-                    @"Assets\Sounds\filterchanged.mp3")));
-
-            if (!string.IsNullOrEmpty(Settings.Default.ItemSetCompletedSoundFileLocation) &&
-                !ItemPickupLocationDialog.Content.Equals("Default Sound"))
-                Data.PlayerSet.Open(new Uri(Settings.Default.ItemSetCompletedSoundFileLocation));
-            else
-                Data.PlayerSet.Open(new Uri(Path.Combine(
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
-                    @"Assets\Sounds\itemsPickedUp.mp3")));
-
-            // Populate the league dropdown
-            if (!Settings.Default.CustomLeagueEnabled) MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
-
+            
             InitializeColors();
             InitializeHotkeys();
             InitializeTray();
-            LoadModeVisibility();
 
             // add Action to MouseHook
             MouseHook.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayView);
 
-            _logger.Debug("MainWindow constructed successfully");
+            _logger.Debug("SettingsView constructed successfully");
         }
 
         #endregion
@@ -87,16 +65,6 @@ namespace ChaosRecipeEnhancer.UI.View
         // ReSharper disable once UnusedMember.Local
         private static string RunButtonContent { get; set; } = "Run Overlay";
 
-        private Visibility _tabIndicesVisible = Visibility.Hidden;
-        private Visibility _tabNamePrefixVisible = Visibility.Hidden;
-        private Visibility _tabNameSuffixVisible = Visibility.Hidden;
-
-        // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-        // private Visibility _folderNameVisible = Visibility.Hidden;
-
-        private Visibility _mainLeagueVisible = Visibility.Visible;
-        private Visibility _customLeagueVisible = Visibility.Hidden;
-
         private ContextMenu _contextMenu;
         private MenuItem _menuItem;
         private MenuItem _menuItemUpdate;
@@ -111,45 +79,6 @@ namespace ChaosRecipeEnhancer.UI.View
         // ReSharper disable once UnusedMember.Global
         public static string AppVersionText { get; set; } = "v." + AppVersion;
 
-        public Visibility TabIndicesVisible
-        {
-            get => _tabIndicesVisible;
-            set
-            {
-                if (_tabIndicesVisible != value)
-                {
-                    _tabIndicesVisible = value;
-                    OnPropertyChanged("TabIndicesVisible");
-                }
-            }
-        }
-
-        public Visibility TabNamePrefixVisible
-        {
-            get => _tabNamePrefixVisible;
-            set
-            {
-                if (_tabNamePrefixVisible != value)
-                {
-                    _tabNamePrefixVisible = value;
-                    OnPropertyChanged("TabNamePrefixVisible");
-                }
-            }
-        }
-
-        public Visibility TabNameSuffixVisible
-        {
-            get => _tabNameSuffixVisible;
-            set
-            {
-                if (_tabNameSuffixVisible != value)
-                {
-                    _tabNameSuffixVisible = value;
-                    OnPropertyChanged("TabNameSuffixVisible");
-                }
-            }
-        }
-
         // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
         // public Visibility FolderNameVisible
         // {
@@ -163,32 +92,6 @@ namespace ChaosRecipeEnhancer.UI.View
         //         }
         //     }
         // }
-
-        public Visibility MainLeagueVisible
-        {
-            get => _mainLeagueVisible;
-            set
-            {
-                if (_mainLeagueVisible != value)
-                {
-                    _mainLeagueVisible = value;
-                    OnPropertyChanged("MainLeagueVisible");
-                }
-            }
-        }
-
-        public Visibility CustomLeagueVisible
-        {
-            get => _customLeagueVisible;
-            set
-            {
-                if (_customLeagueVisible != value)
-                {
-                    _customLeagueVisible = value;
-                    OnPropertyChanged("CustomLeagueVisible");
-                }
-            }
-        }
 
         #endregion
 
@@ -355,15 +258,6 @@ namespace ChaosRecipeEnhancer.UI.View
             LootFilterFileDialog.Content = filename;
         }
 
-        private void StashTargetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            LoadModeVisibility();
-        }
-
         private void TabHeaderGapSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             _stashTabOverlayView.StashTabOverlayIndividualTabHeaderGap =
@@ -400,31 +294,31 @@ namespace ChaosRecipeEnhancer.UI.View
                     Trace.WriteLine(
                         $"OverlayModeComboBox_SelectionChanged: Case 0 {Settings.Default.SetTrackerOverlayDisplayMode}");
                     _setTrackerOverlayView.MainOverlayContentControl.Content =
-                        new MainOverlayContent(this, _setTrackerOverlayView);
+                        new StandardDisplay(this, _setTrackerOverlayView);
                     break;
                 case 1:
                     Trace.WriteLine(
                         $"OverlayModeComboBox_SelectionChanged: Case 1 {Settings.Default.SetTrackerOverlayDisplayMode}");
                     _setTrackerOverlayView.MainOverlayContentControl.Content =
-                        new MainOverlayContentMinified(this, _setTrackerOverlayView);
+                        new MinifiedDisplay(this, _setTrackerOverlayView);
                     break;
                 case 2:
                     Trace.WriteLine(
                         $"OverlayModeComboBox_SelectionChanged: Case 2 {Settings.Default.SetTrackerOverlayDisplayMode}");
                     _setTrackerOverlayView.MainOverlayContentControl.Content =
-                        new MainOverlayOnlyButtons(this, _setTrackerOverlayView);
+                        new OnlyButtonsDisplay(this, _setTrackerOverlayView);
                     break;
                 case 3:
                     Trace.WriteLine(
                         $"OverlayModeComboBox_SelectionChanged: Case 3 {Settings.Default.SetTrackerOverlayDisplayMode}");
                     _setTrackerOverlayView.MainOverlayContentControl.Content =
-                        new VerticalMainOverlayContent(this, _setTrackerOverlayView);
+                        new VerticalStandardDisplay(this, _setTrackerOverlayView);
                     break;
                 case 4:
                     Trace.WriteLine(
                         $"OverlayModeComboBox_SelectionChanged: Case 4 {Settings.Default.SetTrackerOverlayDisplayMode}");
                     _setTrackerOverlayView.MainOverlayContentControl.Content =
-                        new VerticalMainOverlayContentMinified(this, _setTrackerOverlayView);
+                        new VerticalMinifiedDisplay(this, _setTrackerOverlayView);
                     break;
             }
         }
@@ -451,95 +345,13 @@ namespace ChaosRecipeEnhancer.UI.View
             }
         }
 
-        private void ChaosRecipeCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            Settings.Default.RegalRecipeTrackingEnabled = false;
-        }
-
-        private void CustomLeagueCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            Settings.Default.CustomLeagueEnabled = true;
-            LoadModeVisibility();
-        }
-
-        private void CustomLeagueCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Settings.Default.CustomLeagueEnabled = false;
-
-            MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
-            LoadModeVisibility();
-        }
-
-        private void RegalRecipeCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            Settings.Default.ChaosRecipeTrackingEnabled = false;
-        }
-
-        private void LogLocationDialog_Click(object sender, RoutedEventArgs e)
-        {
-            var open = new OpenFileDialog();
-            open.Filter = "Text|Client.txt";
-            var res = open.ShowDialog();
-
-            if (res != System.Windows.Forms.DialogResult.OK) return;
-
-            var filename = open.FileName;
-
-            if (filename.EndsWith("Client.txt"))
-            {
-                Settings.Default.PathOfExileClientLogLocation = filename;
-                LogLocationDialog.Content = filename;
-            }
-            else
-            {
-                MessageBox.Show(
-                    "Invalid file selected. Make sure you're selecting the \"Client.txt\" file located in your main Path of Exile installation folder.",
-                    "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void AutoFetchCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void AutoFetchCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive) LogWatcher.WorkerThread.Abort();
-        }
-
         private void ShowNumbersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _setTrackerOverlayView.AmountsVisibility = Settings.Default.SetTrackerOverlayItemCounterDisplayMode != 0
                 ? Visibility.Visible
                 : Visibility.Hidden;
         }
-
-        private void FilterSoundLocationDialog_OnClick(object sender, RoutedEventArgs e)
-        {
-            var soundFilePath = GetSoundFilePath();
-
-            if (soundFilePath == null) return;
-
-            Settings.Default.FilterModificationPendingSoundFileLocation = soundFilePath;
-            FilterSoundLocationDialog.Content = soundFilePath;
-            Data.Player.Open(new Uri(soundFilePath));
-
-            Data.PlayNotificationSound();
-        }
-
-        private void ItemPickupLocationDialog_OnClick(object sender, RoutedEventArgs e)
-        {
-            var soundFilePath = GetSoundFilePath();
-
-            if (soundFilePath == null) return;
-
-            Settings.Default.FilterModificationPendingSoundFileLocation = soundFilePath;
-            ItemPickupLocationDialog.Content = soundFilePath;
-            Data.PlayerSet.Open(new Uri(soundFilePath));
-
-            Data.PlayNotificationSoundSetPicked();
-        }
-
+        
         #endregion
 
         #region Methods
@@ -742,49 +554,6 @@ namespace ChaosRecipeEnhancer.UI.View
 
             MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
             return false;
-        }
-
-        private void LoadModeVisibility()
-        {
-            switch (Settings.Default.StashTabQueryMode)
-            {
-                case 1:
-                    TabIndicesVisible = Visibility.Hidden;
-                    TabNamePrefixVisible = Visibility.Visible;
-                    TabNameSuffixVisible = Visibility.Hidden;
-                    // FolderNameVisible = Visibility.Hidden;
-                    break;
-                case 2:
-                    TabIndicesVisible = Visibility.Hidden;
-                    TabNamePrefixVisible = Visibility.Hidden;
-                    TabNameSuffixVisible = Visibility.Visible;
-                    // FolderNameVisible = Visibility.Hidden;
-                    break;
-                // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-                // case 3:
-                //     TabIndicesVisible = Visibility.Hidden;
-                //     TabNamePrefixVisible = Visibility.Hidden;
-                //     TabNameSuffixVisible = Visibility.Hidden;
-                //     FolderNameVisible = Visibility.Visible;
-                //     break;
-                default:
-                    TabIndicesVisible = Visibility.Visible;
-                    TabNamePrefixVisible = Visibility.Hidden;
-                    TabNameSuffixVisible = Visibility.Hidden;
-                    // FolderNameVisible = Visibility.Hidden;
-                    break;
-            }
-
-            if (!Settings.Default.CustomLeagueEnabled)
-            {
-                CustomLeagueVisible = Visibility.Hidden;
-                MainLeagueVisible = Visibility.Visible;
-            }
-            else
-            {
-                CustomLeagueVisible = Visibility.Visible;
-                MainLeagueVisible = Visibility.Hidden;
-            }
         }
 
         #region INotifyPropertyChanged implementation
