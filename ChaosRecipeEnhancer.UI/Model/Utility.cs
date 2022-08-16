@@ -44,10 +44,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                 for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
                 {
                     child = VisualTreeHelper.GetChild(obj, i);
-                    if (child != null && child.GetType() == typeof(T))
-                    {
-                        break;
-                    }
+                    if (child != null && child.GetType() == typeof(T)) break;
 
                     if (child != null)
                     {

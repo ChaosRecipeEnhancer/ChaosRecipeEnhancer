@@ -3,9 +3,9 @@
 namespace ChaosRecipeEnhancer.DataModels.GGGModels
 {
     /// <summary>
-    /// TODO
+    ///     TODO
     /// </summary>
-    /// <seealso cref="https://www.pathofexile.com/developer/docs/reference#type-Item"/>
+    /// <seealso cref="https://www.pathofexile.com/developer/docs/reference#type-Item" />
     public class ItemInfluenceModel
     {
         [JsonPropertyName("shaper")] public bool Shaper { get; set; } = false;

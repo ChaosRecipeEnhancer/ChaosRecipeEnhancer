@@ -5,18 +5,10 @@ using Serilog;
 namespace ChaosRecipeEnhancer.UI.UserControls
 {
     /// <summary>
-    /// Interaction logic for MainOverlayContentMinified.xaml
+    ///     Interaction logic for MainOverlayContentMinified.xaml
     /// </summary>
     public partial class MainOverlayContentMinified
     {
-        #region Fields
-
-        private ILogger _logger;
-        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancer;
-        private readonly MainWindow _mainWindow;
-
-        #endregion
-
         #region Constructors
 
         public MainOverlayContentMinified(MainWindow mainWindow, ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
@@ -30,6 +22,14 @@ namespace ChaosRecipeEnhancer.UI.UserControls
 
             _logger.Debug("MainOverlayContentMinified  constructed successfully");
         }
+
+        #endregion
+
+        #region Fields
+
+        private readonly ILogger _logger;
+        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancer;
+        private readonly MainWindow _mainWindow;
 
         #endregion
 

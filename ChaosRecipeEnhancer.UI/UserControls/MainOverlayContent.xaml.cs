@@ -5,18 +5,10 @@ using Serilog;
 namespace ChaosRecipeEnhancer.UI.UserControls
 {
     /// <summary>
-    /// Interaction logic for MainOverlayContent.xaml
+    ///     Interaction logic for MainOverlayContent.xaml
     /// </summary>
     public partial class MainOverlayContent
     {
-        #region Fields
-
-        private ILogger _logger;
-        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancer;
-        private readonly MainWindow _mainWindow;
-
-        #endregion
-
         #region Constructors
 
         public MainOverlayContent(MainWindow mainWindow, ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
@@ -30,6 +22,14 @@ namespace ChaosRecipeEnhancer.UI.UserControls
 
             _logger.Debug("MainOverlayContent constructed successfully");
         }
+
+        #endregion
+
+        #region Fields
+
+        private readonly ILogger _logger;
+        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancer;
+        private readonly MainWindow _mainWindow;
 
         #endregion
 

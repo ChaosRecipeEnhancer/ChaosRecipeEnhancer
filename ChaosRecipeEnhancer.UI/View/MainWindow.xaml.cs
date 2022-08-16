@@ -23,40 +23,10 @@ using MessageBox = System.Windows.MessageBox;
 namespace ChaosRecipeEnhancer.UI.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
-        #region Fields
-
-        private readonly ILogger _logger;
-
-        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancerWindow;
-        private readonly StashTabOverlayView _stashTabOverlayView;
-
-        private const string AppVersion = "1.6.0";
-        private readonly NotifyIcon _notifyIcon = new NotifyIcon();
-
-        // ReSharper disable once UnusedMember.Local
-        private static string RunButtonContent { get; set; } = "Run Overlay";
-
-        private Visibility _tabIndicesVisible = Visibility.Hidden;
-        private Visibility _tabNamePrefixVisible = Visibility.Hidden;
-        private Visibility _tabNameSuffixVisible = Visibility.Hidden;
-        
-        // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-        // private Visibility _folderNameVisible = Visibility.Hidden;
-        
-        private Visibility _mainLeagueVisible = Visibility.Visible;
-        private Visibility _customLeagueVisible = Visibility.Hidden;
-        
-        private ContextMenu _contextMenu;
-        private MenuItem _menuItem;
-        private MenuItem _menuItemUpdate;
-        private bool _trayClose;
-
-        #endregion
-
         #region Constructors
 
         public MainWindow(ChaosRecipeEnhancerWindow chaosRecipeEnhancerWindow,
@@ -89,10 +59,7 @@ namespace ChaosRecipeEnhancer.UI.View
                     @"Assets\Sounds\itemsPickedUp.mp3")));
 
             // Populate the league dropdown
-            if (!Settings.Default.CustomLeagueEnabled)
-            {
-                MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
-            }
+            if (!Settings.Default.CustomLeagueEnabled) MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
 
             InitializeColors();
             InitializeHotkeys();
@@ -104,6 +71,36 @@ namespace ChaosRecipeEnhancer.UI.View
 
             _logger.Debug("MainWindow constructed successfully");
         }
+
+        #endregion
+
+        #region Fields
+
+        private readonly ILogger _logger;
+
+        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancerWindow;
+        private readonly StashTabOverlayView _stashTabOverlayView;
+
+        private const string AppVersion = "1.6.0";
+        private readonly NotifyIcon _notifyIcon = new NotifyIcon();
+
+        // ReSharper disable once UnusedMember.Local
+        private static string RunButtonContent { get; set; } = "Run Overlay";
+
+        private Visibility _tabIndicesVisible = Visibility.Hidden;
+        private Visibility _tabNamePrefixVisible = Visibility.Hidden;
+        private Visibility _tabNameSuffixVisible = Visibility.Hidden;
+
+        // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
+        // private Visibility _folderNameVisible = Visibility.Hidden;
+
+        private Visibility _mainLeagueVisible = Visibility.Visible;
+        private Visibility _customLeagueVisible = Visibility.Hidden;
+
+        private ContextMenu _contextMenu;
+        private MenuItem _menuItem;
+        private MenuItem _menuItemUpdate;
+        private bool _trayClose;
 
         #endregion
 
@@ -126,7 +123,7 @@ namespace ChaosRecipeEnhancer.UI.View
                 }
             }
         }
-        
+
         public Visibility TabNamePrefixVisible
         {
             get => _tabNamePrefixVisible;
@@ -361,7 +358,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private void StashTargetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
         }
-        
+
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadModeVisibility();
@@ -370,7 +367,8 @@ namespace ChaosRecipeEnhancer.UI.View
         private void TabHeaderGapSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             _stashTabOverlayView.StashTabOverlayIndividualTabHeaderGap =
-                new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderGap, 0, Settings.Default.StashTabOverlayIndividualTabHeaderGap, 0);
+                new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderGap, 0,
+                    Settings.Default.StashTabOverlayIndividualTabHeaderGap, 0);
         }
 
         private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -379,12 +377,14 @@ namespace ChaosRecipeEnhancer.UI.View
 
             foreach (var s in StashTabList.StashTabs)
                 s.TabHeaderWidth =
-                    new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2, Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2);
+                    new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2,
+                        Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2);
         }
 
         private void TabHeaderMarginSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            _stashTabOverlayView.StashTabOverlayIndividualTabMargin = new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
+            _stashTabOverlayView.StashTabOverlayIndividualTabMargin =
+                new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
         }
 
         private void SaveButton_Click_1(object sender, RoutedEventArgs e)
@@ -397,24 +397,34 @@ namespace ChaosRecipeEnhancer.UI.View
             switch (Settings.Default.SetTrackerOverlayDisplayMode)
             {
                 case 0:
-                    Trace.WriteLine($"OverlayModeComboBox_SelectionChanged: Case 0 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content = new MainOverlayContent(this, _chaosRecipeEnhancerWindow);
+                    Trace.WriteLine(
+                        $"OverlayModeComboBox_SelectionChanged: Case 0 {Settings.Default.SetTrackerOverlayDisplayMode}");
+                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
+                        new MainOverlayContent(this, _chaosRecipeEnhancerWindow);
                     break;
                 case 1:
-                    Trace.WriteLine($"OverlayModeComboBox_SelectionChanged: Case 1 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content = new MainOverlayContentMinified(this, _chaosRecipeEnhancerWindow);
+                    Trace.WriteLine(
+                        $"OverlayModeComboBox_SelectionChanged: Case 1 {Settings.Default.SetTrackerOverlayDisplayMode}");
+                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
+                        new MainOverlayContentMinified(this, _chaosRecipeEnhancerWindow);
                     break;
                 case 2:
-                    Trace.WriteLine($"OverlayModeComboBox_SelectionChanged: Case 2 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content = new MainOverlayOnlyButtons(this, _chaosRecipeEnhancerWindow);
+                    Trace.WriteLine(
+                        $"OverlayModeComboBox_SelectionChanged: Case 2 {Settings.Default.SetTrackerOverlayDisplayMode}");
+                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
+                        new MainOverlayOnlyButtons(this, _chaosRecipeEnhancerWindow);
                     break;
                 case 3:
-                    Trace.WriteLine($"OverlayModeComboBox_SelectionChanged: Case 3 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content = new VerticalMainOverlayContent(this, _chaosRecipeEnhancerWindow);
+                    Trace.WriteLine(
+                        $"OverlayModeComboBox_SelectionChanged: Case 3 {Settings.Default.SetTrackerOverlayDisplayMode}");
+                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
+                        new VerticalMainOverlayContent(this, _chaosRecipeEnhancerWindow);
                     break;
                 case 4:
-                    Trace.WriteLine($"OverlayModeComboBox_SelectionChanged: Case 4 {Settings.Default.SetTrackerOverlayDisplayMode}");
-                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content = new VerticalMainOverlayContentMinified(this, _chaosRecipeEnhancerWindow);
+                    Trace.WriteLine(
+                        $"OverlayModeComboBox_SelectionChanged: Case 4 {Settings.Default.SetTrackerOverlayDisplayMode}");
+                    _chaosRecipeEnhancerWindow.MainOverlayContentControl.Content =
+                        new VerticalMainOverlayContentMinified(this, _chaosRecipeEnhancerWindow);
                     break;
             }
         }
@@ -546,27 +556,35 @@ namespace ChaosRecipeEnhancer.UI.View
         private void InitializeColors()
         {
             if (Settings.Default.LootFilterBootsColor != "")
-                ColorBootsPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterBootsColor);
+                ColorBootsPicker.SelectedColor =
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterBootsColor);
             if (Settings.Default.LootFilterBodyArmourColor != "")
-                ColorChestPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterBodyArmourColor);
+                ColorChestPicker.SelectedColor =
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterBodyArmourColor);
             if (Settings.Default.LootFilterWeaponColor != "")
                 ColorWeaponsPicker.SelectedColor =
                     (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterWeaponColor);
             if (Settings.Default.LootFilterGlovesColor != "")
-                ColorGlovesPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterGlovesColor);
+                ColorGlovesPicker.SelectedColor =
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterGlovesColor);
             if (Settings.Default.LootFilterHelmetColor != "")
-                ColorHelmetPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterHelmetColor);
+                ColorHelmetPicker.SelectedColor =
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterHelmetColor);
             if (Settings.Default.StashTabOverlayHighlightColor != "")
-                ColorStashPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor);
+                ColorStashPicker.SelectedColor =
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor);
             if (Settings.Default.StashTabOverlayBackgroundColor != "")
                 ColorStashBackgroundPicker.SelectedColor =
                     (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayBackgroundColor);
             if (Settings.Default.LootFilterRingColor != "")
-                ColorRingPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterRingColor);
+                ColorRingPicker.SelectedColor =
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterRingColor);
             if (Settings.Default.LootFilterAmuletColor != "")
-                ColorAmuletPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterAmuletColor);
+                ColorAmuletPicker.SelectedColor =
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterAmuletColor);
             if (Settings.Default.LootFilterBeltColor != "")
-                ColorBeltPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterBeltColor);
+                ColorBeltPicker.SelectedColor =
+                    (Color)ColorConverter.ConvertFromString(Settings.Default.LootFilterBeltColor);
         }
 
         // creates tray icon with menu
@@ -678,9 +696,8 @@ namespace ChaosRecipeEnhancer.UI.View
             if (sessId == "") missingSettings.Add("- PoE Session ID \n");
             if (league == "") missingSettings.Add("- League \n");
             if (lootFilterActive)
-            {
-                if (lootFilterLocation == "") missingSettings.Add("- Loot Filter Location \n");
-            }
+                if (lootFilterLocation == "")
+                    missingSettings.Add("- Loot Filter Location \n");
 
             if (autoFetch)
                 if (logLocation == "")
@@ -689,20 +706,20 @@ namespace ChaosRecipeEnhancer.UI.View
             switch (Settings.Default.StashTabQueryMode)
             {
                 case 0:
-                    {
-                        if (Settings.Default.StashTabIndices == "") missingSettings.Add("- StashTab Index");
-                        break;
-                    }
+                {
+                    if (Settings.Default.StashTabIndices == "") missingSettings.Add("- StashTab Index");
+                    break;
+                }
                 case 1:
-                    {
-                        if (Settings.Default.StashTabPrefix == "") missingSettings.Add("- StashTab Prefix");
-                        break;
-                    }
+                {
+                    if (Settings.Default.StashTabPrefix == "") missingSettings.Add("- StashTab Prefix");
+                    break;
+                }
                 case 2:
-                    {
-                        if (Settings.Default.StashTabSuffix == "") missingSettings.Add("- StashTab Suffix");
-                        break;
-                    }
+                {
+                    if (Settings.Default.StashTabSuffix == "") missingSettings.Add("- StashTab Suffix");
+                    break;
+                }
                 // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
                 // case 3:
                 //     {

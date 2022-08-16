@@ -7,18 +7,10 @@ using Serilog;
 namespace ChaosRecipeEnhancer.UI.View
 {
     /// <summary>
-    /// Interaction logic for HotkeyWindow.xaml
+    ///     Interaction logic for HotkeyWindow.xaml
     /// </summary>
     public partial class HotkeyWindow
     {
-        #region Fields
-
-        private readonly ILogger _logger;
-        private readonly MainWindow _mainWindow;
-        private readonly string _type;
-
-        #endregion
-
         #region Constructors
 
         public HotkeyWindow(MainWindow mainWindow, string hotkeyType)
@@ -103,6 +95,14 @@ namespace ChaosRecipeEnhancer.UI.View
             _mainWindow.RemoveAllHotkeys();
             _mainWindow.AddAllHotkeys();
         }
+
+        #endregion
+
+        #region Fields
+
+        private readonly ILogger _logger;
+        private readonly MainWindow _mainWindow;
+        private readonly string _type;
 
         #endregion
     }

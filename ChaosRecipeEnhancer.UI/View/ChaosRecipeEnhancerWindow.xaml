@@ -22,15 +22,17 @@
 
         <Border.BorderBrush>
 
-            <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayOpacity}"
-                             Color="White" />
+            <SolidColorBrush
+                Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayOpacity}"
+                Color="White" />
 
         </Border.BorderBrush>
 
         <Border.Background>
 
-            <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayOpacity}"
-                             Color="White" />
+            <SolidColorBrush
+                Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayOpacity}"
+                Color="White" />
 
         </Border.Background>
 

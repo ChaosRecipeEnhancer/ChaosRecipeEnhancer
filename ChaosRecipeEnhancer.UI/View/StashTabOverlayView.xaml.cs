@@ -16,22 +16,10 @@ using Serilog;
 namespace ChaosRecipeEnhancer.UI.View
 {
     /// <summary>
-    /// Interaction logic for StashTabOverlayView.xaml
+    ///     Interaction logic for StashTabOverlayView.xaml
     /// </summary>
     public partial class StashTabOverlayView : INotifyPropertyChanged
     {
-        #region Fields
-
-        private readonly ILogger _logger;
-        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancerWindow;
-
-        private static readonly ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
-        private Visibility _stashBorderVisibility = Visibility.Hidden;
-        private Thickness _stashTabOverlayIndividualTabHeaderGap;
-        private Thickness _stashTabOverlayIndividualTabMargin;
-
-        #endregion
-
         #region Constructors
 
         public StashTabOverlayView(ChaosRecipeEnhancerWindow chaosRecipeEnhancerWindow)
@@ -47,6 +35,18 @@ namespace ChaosRecipeEnhancer.UI.View
 
             _logger.Debug("StashTabOverlayView constructed successfully");
         }
+
+        #endregion
+
+        #region Fields
+
+        private readonly ILogger _logger;
+        private readonly ChaosRecipeEnhancerWindow _chaosRecipeEnhancerWindow;
+
+        private static readonly ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
+        private Visibility _stashBorderVisibility = Visibility.Hidden;
+        private Thickness _stashTabOverlayIndividualTabHeaderGap;
+        private Thickness _stashTabOverlayIndividualTabMargin;
 
         #endregion
 
@@ -125,7 +125,8 @@ namespace ChaosRecipeEnhancer.UI.View
                 OverlayStashTabList.Clear();
                 _stashTabOverlayIndividualTabHeaderGap.Right = Settings.Default.StashTabOverlayIndividualTabHeaderGap;
                 _stashTabOverlayIndividualTabHeaderGap.Left = Settings.Default.StashTabOverlayIndividualTabHeaderGap;
-                StashTabOverlayIndividualTabMargin = new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
+                StashTabOverlayIndividualTabMargin =
+                    new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
 
                 foreach (var i in StashTabList.StashTabs)
                 {

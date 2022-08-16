@@ -9,15 +9,8 @@ namespace ChaosRecipeEnhancer.UI.Model
 {
     public class LogWatcher
     {
-        private FileSystemWatcher watcher = new FileSystemWatcher();
-
-        public static Thread WorkerThread { get; set; }
-        public static string LastZone { get; set; } = "";
-        public static string NewZone { get; set; } = "";
-
         private static readonly int cooldown = 120;
-
-        private static bool FetchAllowed { get; set; } = true;
+        private FileSystemWatcher watcher = new FileSystemWatcher();
 
         public LogWatcher(ChaosRecipeEnhancerWindow chaosRecipeEnhancer)
         {
@@ -29,7 +22,8 @@ namespace ChaosRecipeEnhancer.UI.Model
             fsw.EnableRaisingEvents = true;
             fsw.Changed += (s, e) => wh.Set();
 
-            var fs = new FileStream(Settings.Default.PathOfExileClientLogLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var fs = new FileStream(Settings.Default.PathOfExileClientLogLocation, FileMode.Open, FileAccess.Read,
+                FileShare.ReadWrite);
             fs.Position = fs.Length;
             WorkerThread = new Thread(() =>
             {
@@ -70,6 +64,12 @@ namespace ChaosRecipeEnhancer.UI.Model
 
             //wh.Close();
         }
+
+        public static Thread WorkerThread { get; set; }
+        public static string LastZone { get; set; } = "";
+        public static string NewZone { get; set; } = "";
+
+        private static bool FetchAllowed { get; set; } = true;
 
         //Ihr habt 'Sonnenspitze-Versteck' betreten.
 

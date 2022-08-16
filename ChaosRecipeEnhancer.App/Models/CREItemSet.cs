@@ -5,7 +5,7 @@ using System.Linq;
 namespace ChaosRecipeEnhancer.App.Models
 {
     /// <summary>
-    /// Used to track complete item sets for currency turn-in
+    ///     Used to track complete item sets for currency turn-in
     /// </summary>
     public class CREItemSet
     {

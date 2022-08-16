@@ -3,9 +3,9 @@
 namespace ChaosRecipeEnhancer.DataModels.GGGModels
 {
     /// <summary>
-    /// TODO
+    ///     TODO
     /// </summary>
-    /// <seealso cref="https://www.pathofexile.com/developer/docs/reference#type-ItemProperty"/>
+    /// <seealso cref="https://www.pathofexile.com/developer/docs/reference#type-ItemProperty" />
     public class ItemPropertyModel
     {
         [JsonPropertyName("name")] public string Name { get; set; }

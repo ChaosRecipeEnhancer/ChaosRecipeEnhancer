@@ -366,19 +366,21 @@
                 Grid.Column="1"
                 Grid.Row="12"
                 Margin="0,5">
-            
+
             <!-- Conditional rendering for 'Reload Filter' button -->
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Visibility" Value="Visible" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}" Value="False">
+                        <DataTrigger
+                            Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}"
+                            Value="False">
                             <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Button.Style>
-            
+
             <TextBlock TextAlignment="Center">
                 Reload
                 <LineBreak />
@@ -422,7 +424,7 @@
                 Height="Auto"
                 Margin="0,5"
                 Visibility="{Binding WarningMessageVisibility}">
-            
+
             <TextBlock VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        TextWrapping="WrapWithOverflow"
@@ -431,7 +433,7 @@
                        Foreground="White" />
 
         </Border>
-        
+
     </Grid>
 
 </UserControl>

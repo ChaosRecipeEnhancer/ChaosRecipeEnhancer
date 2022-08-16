@@ -237,7 +237,7 @@
                                       Grid.Row="7"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedShardRecipeTrackingEnabled, Mode=TwoWay}" />
-                            
+
                             <TextBlock Grid.Column="1"
                                        Grid.Row="9"
                                        VerticalAlignment="Center"
@@ -479,7 +479,7 @@
                                 </Button.Style>
 
                             </Button>
-                            
+
                             <TextBlock Grid.Column="1"
                                        Grid.Row="5"
                                        VerticalAlignment="Center"
@@ -521,7 +521,7 @@
                                 </Button.Style>
 
                             </Button>
-                            
+
                             <TextBlock Grid.Column="1"
                                        Grid.Row="7"
                                        VerticalAlignment="Center"
@@ -675,7 +675,7 @@
                             <!-- StashTab Mode Setting (Row 7) End -->
 
                             <!-- StashTab Query [Index / String] Setting (Row 7) Start -->
-                            
+
                             <!-- Individual Stash Tab Indices Start -->
                             <TextBlock Name="StashTabIndicesTextBlock"
                                        Grid.Column="1"
@@ -693,7 +693,7 @@
                                      Visibility="{Binding TabIndicesVisible}"
                                      Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabIndices, Mode=TwoWay}" />
                             <!-- Individual Stash Tab Indices End -->
-                            
+
                             <!-- Individual Stash Tab Name Prefix Start -->
                             <TextBlock Name="StashTabNamePrefixTextBlock"
                                        Grid.Column="1"
@@ -729,7 +729,7 @@
                                      Visibility="{Binding TabNameSuffixVisible}"
                                      Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabSuffix, Mode=TwoWay}" />
                             <!-- Individual Stash Tab Name Suffix End -->
-                            
+
                             <!-- TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API) -->
                             <!-- Stash Tab Folder Name Start -->
                             <!-- <TextBlock Name="FolderNameTextBlock" -->
@@ -748,7 +748,7 @@
                             <!--          Visibility="{Binding FolderNameVisible}" -->
                             <!--          Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashFolderName, Mode=TwoWay}" /> -->
                             <!-- Stash Tab Folder Name End -->
-                            
+
                             <!-- StashTab Query [Index / String] Setting (Row 9) End -->
 
                             <!-- Fetch on New Map Setting (Row 11) Start -->
@@ -1573,7 +1573,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        
+
                         <!-- GENERAL -->
                         <Grid Grid.Column="1"
                               Grid.Row="1">
@@ -1593,12 +1593,12 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="10" />
                             </Grid.RowDefinitions>
-                            
+
                             <TextBlock Grid.Column="1"
                                        Grid.Row="1"
                                        VerticalAlignment="Center"
                                        Text="Make sure you know what you're doing when modifying these settings." />
-                            
+
                             <TextBlock Grid.Column="1"
                                        Grid.Row="3"
                                        Grid.ColumnSpan="2"
@@ -1606,7 +1606,7 @@
                                        FontSize="24"
                                        VerticalAlignment="Center"
                                        FontWeight="Bold" />
-                            
+
                             <TextBlock Grid.Column="1"
                                        Grid.Row="5"
                                        VerticalAlignment="Center"
@@ -1620,11 +1620,11 @@
                                       Grid.Row="5"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=DoNotPreserveLowItemLevelGear, Mode=TwoWay}" />
-                            
+
                         </Grid>
 
                     </Grid>
-                    
+
                 </TabItem>
                 <!-- Advanced Settings Tab End -->
 

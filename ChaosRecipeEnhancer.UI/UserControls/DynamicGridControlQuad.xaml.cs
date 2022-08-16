@@ -5,13 +5,13 @@ using Serilog;
 namespace ChaosRecipeEnhancer.UI.UserControls
 {
     /// <summary>
-    /// Interaction logic for DynamicGridControlQuad.xaml
+    ///     Interaction logic for DynamicGridControlQuad.xaml
     /// </summary>
     public partial class DynamicGridControlQuad
     {
         #region Fields
 
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         #endregion
 

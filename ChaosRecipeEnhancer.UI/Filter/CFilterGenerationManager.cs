@@ -17,24 +17,21 @@ namespace ChaosRecipeEnhancer.UI.Filter
     //add interfaces
     public class CFilterGenerationManager
     {
-        #region Fields
-
-        private ABaseItemClassManager _itemClassManager;
-        private readonly List<string> _customStyle = new List<string>();
-        private readonly List<string> _customStyleInfluenced = new List<string>();
-
-        #endregion
-
         #region Constructors
 
         public CFilterGenerationManager()
         {
             LoadCustomStyle();
-            if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
-            {
-                LoadCustomStyleInfluenced();
-            }
+            if (Settings.Default.ExaltedShardRecipeTrackingEnabled) LoadCustomStyleInfluenced();
         }
+
+        #endregion
+
+        #region Fields
+
+        private ABaseItemClassManager _itemClassManager;
+        private readonly List<string> _customStyle = new List<string>();
+        private readonly List<string> _customStyleInfluenced = new List<string>();
 
         #endregion
 
@@ -44,50 +41,40 @@ namespace ChaosRecipeEnhancer.UI.Filter
             bool missingChaosItem)
         {
             var activeItemTypes = new ActiveItemTypes();
+            var visitor = new CItemClassManagerFactory();
+            var sectionList = new HashSet<string>();
+            var sectionListExalted = new HashSet<string>();
 
-            if (Settings.Default.LootFilterManipulationEnabled)
+            foreach (EnumItemClass item in Enum.GetValues(typeof(EnumItemClass)))
             {
-                var visitor = new CItemClassManagerFactory();
-                var sectionList = new HashSet<string>();
-                var sectionListExalted = new HashSet<string>();
+                _itemClassManager = visitor.GetItemClassManager(item);
 
-                foreach (EnumItemClass item in Enum.GetValues(typeof(EnumItemClass)))
+                var stillMissing = _itemClassManager.CheckIfMissing(missingItemClasses);
+
+                // weapons might be buggy, will try to do some tests
+                if ((Settings.Default.ChaosRecipeTrackingEnabled || Settings.Default.RegalRecipeTrackingEnabled)
+                    && (_itemClassManager.AlwaysActive || stillMissing))
                 {
-                    _itemClassManager = visitor.GetItemClassManager(item);
-
-                    var stillMissing = _itemClassManager.CheckIfMissing(missingItemClasses);
-
-                    // weapons might be buggy, will try to do some tests
-                    if ((Settings.Default.ChaosRecipeTrackingEnabled || Settings.Default.RegalRecipeTrackingEnabled)
-                        && (_itemClassManager.AlwaysActive || stillMissing))
-                    {
-                        // if we need chaos only gear to complete a set (60-74), add that to our filter section
-                        if (missingChaosItem)
-                        {
-                            sectionList.Add(GenerateSection(false, true));
-                        }
-                        // else add any gear piece 60+ to our section for that item class
-                        else
-                        {
-                            sectionList.Add(GenerateSection(false));
-                        }
-
-                        // find better way to handle active items and sound notification on changes
-                        activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
-                    }
+                    // if we need chaos only gear to complete a set (60-74), add that to our filter section
+                    if (missingChaosItem)
+                        sectionList.Add(GenerateSection(false, true));
+                    // else add any gear piece 60+ to our section for that item class
                     else
-                    {
-                        activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, false);
-                    }
+                        sectionList.Add(GenerateSection(false));
 
-                    if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
-                    {
-                        sectionListExalted.Add(GenerateSection(true));
-                    }
+                    // find better way to handle active items and sound notification on changes
+                    activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
+                }
+                else
+                {
+                    activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, false);
                 }
 
-                await UpdateFilterAsync(sectionList, sectionListExalted);
+                if (Settings.Default.ExaltedShardRecipeTrackingEnabled) sectionListExalted.Add(GenerateSection(true));
             }
+
+            if (Settings.Default.LootFilterManipulationEnabled)
+                await UpdateFilterAsync(sectionList, sectionListExalted);
 
             return activeItemTypes;
         }
@@ -97,20 +84,18 @@ namespace ChaosRecipeEnhancer.UI.Filter
             var result = "Show";
 
             if (isInfluenced)
-            {
                 result += CConst.newLine + CConst.tab + "HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord";
-            }
             else
-            {
                 result += CConst.newLine + CConst.tab + "HasInfluence None";
-            }
 
             result = result + CConst.newLine + CConst.tab + "Rarity Rare" + CConst.newLine + CConst.tab;
-            if (!Settings.Default.IncludeIdentifiedItemsEnabled) result += "Identified False" + CConst.newLine + CConst.tab;
+            if (!Settings.Default.IncludeIdentifiedItemsEnabled)
+                result += "Identified False" + CConst.newLine + CConst.tab;
 
             switch (isInfluenced)
             {
-                case false when !_itemClassManager.AlwaysActive && onlyChaos && !Settings.Default.RegalRecipeTrackingEnabled:
+                case false when !_itemClassManager.AlwaysActive && onlyChaos &&
+                                !Settings.Default.RegalRecipeTrackingEnabled:
                     result += "ItemLevel >= 60" + CConst.newLine + CConst.tab + "ItemLevel <= 74" + CConst.newLine +
                               CConst.tab;
                     break;
@@ -139,9 +124,7 @@ namespace ChaosRecipeEnhancer.UI.Filter
 
             // Map Icon setting enabled
             if (Settings.Default.LootFilterIconsEnabled)
-            {
                 result = result + "MinimapIcon 2 White Star" + CConst.newLine + CConst.tab;
-            }
 
             return result;
         }
@@ -153,10 +136,10 @@ namespace ChaosRecipeEnhancer.UI.Filter
             // 2. exa end
             // 3. chaos start
             // 4. chaos end
-            string sectionName = isChaos ? "Chaos" : "Exalted";
+            var sectionName = isChaos ? "Chaos" : "Exalted";
             const string newLine = "\n";
-            string sectionStart = "#Chaos Recipe Enhancer by kosace " + sectionName + " Recipe Start";
-            string sectionEnd = "#Chaos Recipe Enhancer by kosace " + sectionName + " Recipe End";
+            var sectionStart = "#Chaos Recipe Enhancer by kosace " + sectionName + " Recipe Start";
+            var sectionEnd = "#Chaos Recipe Enhancer by kosace " + sectionName + " Recipe End";
             var sectionBody = "";
             var beforeSection = "";
             string afterSection;

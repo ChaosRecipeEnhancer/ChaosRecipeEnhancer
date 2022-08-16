@@ -47,14 +47,17 @@
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Visibility" Value="Visible" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}" Value="False">
+                        <DataTrigger
+                            Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}"
+                            Value="False">
                             <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Button.Style>
-            
-            <TextBlock FontSize="14" TextAlignment="Center">Reload<LineBreak />
+
+            <TextBlock FontSize="14" TextAlignment="Center">
+                Reload<LineBreak />
                 Filter
             </TextBlock>
 
