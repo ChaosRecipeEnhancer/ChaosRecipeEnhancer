@@ -7,10 +7,12 @@
 - 'Reload Filter' button is how hidden on the set tracker if you don't have the feature enabled
 - moved 'Do Not Preserve Low Item Level Gear' setting to a new 'Advanced' setting tab
 - lots of changes to the settings under the hood; you will most likely have to redo your settings (sorry)
+- disabled resizing on set tracker overlay as their layouts are fixed (if you dragged it to the corners windows would try to resize it, causing bugs)
+- [fixed issue where inaccurate values displayed on set tracker when loot filter manipulation is disabled](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues/409)
+- [fixed issue with resizing of the settings window (resizing flag was enabled by mistake)](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues/416)
 
 ##### Known Bugs:
 
-- [issues with inaccurate values displayed on set tracker when loot filter manipulation is disabled](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues/409)
 - [sometimes the incorrect loot filter loaded when pressing the 'Reload Filter' button (Need help reproducing this one)](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues/407)
 
 #### 1.5.6 (Hotfix)
