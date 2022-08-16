@@ -133,26 +133,38 @@
             <DesignTime>True</DesignTime>
             <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
-        <Compile Include="UserControls\DynamicGridControl.xaml.cs">
-            <DependentUpon>DynamicGridControl.xaml</DependentUpon>
+        <Compile Include="UserControls\SettingsForms\GeneralForms\GeneralForm.xaml.cs">
+          <DependentUpon>GeneralForm.xaml</DependentUpon>
         </Compile>
-        <Compile Include="UserControls\DynamicGridControlQuad.xaml.cs">
-            <DependentUpon>DynamicGridControlQuad.xaml</DependentUpon>
+        <Compile Include="UserControls\SettingsForms\GeneralForms\PathOfExileForm.xaml.cs">
+          <DependentUpon>PathOfExileForm.xaml</DependentUpon>
         </Compile>
-        <Compile Include="UserControls\MainOverlayContent.xaml.cs">
-            <DependentUpon>MainOverlayContent.xaml</DependentUpon>
+        <Compile Include="UserControls\SettingsForms\GeneralForms\RecipesForm.xaml.cs">
+          <DependentUpon>RecipesForm.xaml</DependentUpon>
         </Compile>
-        <Compile Include="UserControls\MainOverlayContentMinified.xaml.cs">
-            <DependentUpon>MainOverlayContentMinified.xaml</DependentUpon>
+        <Compile Include="UserControls\SettingsForms\GeneralForms\SoundForm.xaml.cs">
+          <DependentUpon>SoundForm.xaml</DependentUpon>
         </Compile>
-        <Compile Include="UserControls\MainOverlayOnlyButtons.xaml.cs">
-            <DependentUpon>MainOverlayOnlyButtons.xaml</DependentUpon>
+        <Compile Include="UserControls\SetTrackerOverlayDisplays\StandardDisplay.xaml.cs">
+          <DependentUpon>StandardDisplay.xaml</DependentUpon>
         </Compile>
-        <Compile Include="UserControls\VerticalMainOverlayContent.xaml.cs">
-            <DependentUpon>VerticalMainOverlayContent.xaml</DependentUpon>
+        <Compile Include="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs">
+          <DependentUpon>MinifiedDisplay.xaml</DependentUpon>
         </Compile>
-        <Compile Include="UserControls\VerticalMainOverlayContentMinified.xaml.cs">
-            <DependentUpon>VerticalMainOverlayContentMinified.xaml</DependentUpon>
+        <Compile Include="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs">
+          <DependentUpon>OnlyButtonsDisplay.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs">
+          <DependentUpon>VerticalStandardDisplay.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs">
+          <DependentUpon>VerticalMinifiedDisplay.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="UserControls\StashTabOverlayDisplays\NormalStashGrid.xaml.cs">
+          <DependentUpon>NormalStashGrid.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="UserControls\StashTabOverlayDisplays\QuadStashGrid.xaml.cs">
+          <DependentUpon>QuadStashGrid.xaml</DependentUpon>
         </Compile>
         <Compile Include="View\StashTabOverlayView.xaml.cs">
             <DependentUpon>StashTabOverlayView.xaml</DependentUpon>
@@ -168,28 +180,32 @@
         <Compile Include="Factory\Managers\Implementation\CRingsManager.cs" />
         <Compile Include="Factory\Managers\Implementation\CTwoHandWeaponsManager.cs" />
         <Compile Include="Factory\CItemClassManagerFactory.cs" />
-        <Page Include="UserControls\DynamicGridControl.xaml">
-            <SubType>Designer</SubType>
-            <Generator>MSBuild:Compile</Generator>
+        <Page Include="UserControls\SettingsForms\GeneralForms\GeneralForm.xaml" />
+        <Page Include="UserControls\SettingsForms\GeneralForms\PathOfExileForm.xaml" />
+        <Page Include="UserControls\SettingsForms\GeneralForms\RecipesForm.xaml" />
+        <Page Include="UserControls\SettingsForms\GeneralForms\SoundForm.xaml" />
+        <Page Include="UserControls\SetTrackerOverlayDisplays\StandardDisplay.xaml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:Compile</Generator>
         </Page>
-        <Page Include="UserControls\DynamicGridControlQuad.xaml">
-            <SubType>Designer</SubType>
-            <Generator>MSBuild:Compile</Generator>
+        <Page Include="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:Compile</Generator>
         </Page>
-        <Page Include="UserControls\MainOverlayContent.xaml">
-            <SubType>Designer</SubType>
-            <Generator>MSBuild:Compile</Generator>
+        <Page Include="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:Compile</Generator>
         </Page>
-        <Page Include="UserControls\MainOverlayContentMinified.xaml">
-            <SubType>Designer</SubType>
-            <Generator>MSBuild:Compile</Generator>
+        <Page Include="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml" />
+        <Page Include="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml" />
+        <Page Include="UserControls\StashTabOverlayDisplays\NormalStashGrid.xaml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:Compile</Generator>
         </Page>
-        <Page Include="UserControls\MainOverlayOnlyButtons.xaml">
-            <SubType>Designer</SubType>
-            <Generator>MSBuild:Compile</Generator>
+        <Page Include="UserControls\StashTabOverlayDisplays\QuadStashGrid.xaml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:Compile</Generator>
         </Page>
-        <Page Include="UserControls\VerticalMainOverlayContent.xaml" />
-        <Page Include="UserControls\VerticalMainOverlayContentMinified.xaml" />
         <Page Include="View\SetTrackerOverlayView.xaml">
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
