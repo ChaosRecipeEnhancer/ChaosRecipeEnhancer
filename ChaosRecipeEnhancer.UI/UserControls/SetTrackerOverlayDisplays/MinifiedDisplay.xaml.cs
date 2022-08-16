@@ -2,25 +2,25 @@
 using ChaosRecipeEnhancer.UI.View;
 using Serilog;
 
-namespace ChaosRecipeEnhancer.UI.UserControls
+namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays
 {
     /// <summary>
-    ///     Interaction logic for MainOverlayContent.xaml
+    ///     Interaction logic for MinifiedDisplay.xaml
     /// </summary>
-    public partial class MainOverlayContent
+    public partial class MinifiedDisplay
     {
         #region Constructors
 
-        public MainOverlayContent(SettingsView settingsView, SetTrackerOverlayView setTrackerOverlay)
+        public MinifiedDisplay(SettingsView settingsView, SetTrackerOverlayView setTrackerOverlay)
         {
-            _logger = Log.ForContext<MainOverlayContent>();
-            _logger.Debug("Constructing MainOverlayContent");
+            _logger = Log.ForContext<MinifiedDisplay>();
+            _logger.Debug("Constructing MinifiedDisplay");
 
             _settingsView = settingsView;
             _setTrackerOverlay = setTrackerOverlay;
             InitializeComponent();
 
-            _logger.Debug("MainOverlayContent constructed successfully");
+            _logger.Debug("MinifiedDisplay  constructed successfully");
         }
 
         #endregion
@@ -40,12 +40,12 @@ namespace ChaosRecipeEnhancer.UI.UserControls
             _settingsView.RunStashTabOverlay();
         }
 
-        private void FetchButton_Click(object sender, RoutedEventArgs e)
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             _setTrackerOverlay.RunFetching();
         }
 
-        private void ReloadFilterButton_Click(object sender, RoutedEventArgs e)
+        private void ReloadItemFilterButton_Click(object sender, RoutedEventArgs e)
         {
             _setTrackerOverlay.ReloadItemFilter();
         }

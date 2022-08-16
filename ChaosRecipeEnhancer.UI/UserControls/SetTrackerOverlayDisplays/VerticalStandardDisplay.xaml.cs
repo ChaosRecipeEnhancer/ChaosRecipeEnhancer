@@ -2,25 +2,25 @@
 using ChaosRecipeEnhancer.UI.View;
 using Serilog;
 
-namespace ChaosRecipeEnhancer.UI.UserControls
+namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays
 {
     /// <summary>
-    ///     Interaction logic for VerticalMainOverlayContent.xaml
+    ///     Interaction logic for VerticalStandardDisplay.xaml
     /// </summary>
-    public partial class VerticalMainOverlayContent
+    public partial class VerticalStandardDisplay
     {
         #region Constructors
 
-        public VerticalMainOverlayContent(SettingsView settingsView, SetTrackerOverlayView setTrackerOverlay)
+        public VerticalStandardDisplay(SettingsView settingsView, SetTrackerOverlayView setTrackerOverlay)
         {
-            _logger = Log.ForContext<VerticalMainOverlayContent>();
-            _logger.Debug("Constructing VerticalMainOverlayContent");
+            _logger = Log.ForContext<VerticalStandardDisplay>();
+            _logger.Debug("Constructing VerticalStandardDisplay");
 
             _settingsView = settingsView;
             _setTrackerOverlay = setTrackerOverlay;
             InitializeComponent();
 
-            _logger.Debug("MainOverlayContent constructed successfully");
+            _logger.Debug("VerticalStandardDisplay constructed successfully");
         }
 
         #endregion
