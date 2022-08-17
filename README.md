@@ -14,7 +14,7 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 ## Installation
 
-1. Make sure you've installed the latest [.NET Framework Runtime][dotnet-framework-link]
+1. Make sure you've installed the [.NET Framework Runtime (Version 4.8)][dotnet-framework-link]
 2. Download and install the [latest the ChaosRecipeEnhancerSetup.msi][releases-link]
 
 ## Additional Features
