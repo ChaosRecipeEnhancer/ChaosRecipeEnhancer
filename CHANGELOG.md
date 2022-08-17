@@ -15,6 +15,8 @@ Bug Fixes:
 - fixed some small display issues with the 'Only Buttons' set tracker overlay display mode
 - fixed some small display issues with the 'Standard' set tracker overlay display mode
 - added missing dependencies in newest version of installer (Thanks to grinder on Discord for reporting this bug!)
+- fixed issues where users weren't able to input custom league names
+- fixed issues with the tabs for the stash tab overlay not being highlighted when the next piece of gear was in another tab
 
 Changes Under The Hood:
 - lots of changes to the settings under the hood; you will most likely have to redo your settings (sorry)
