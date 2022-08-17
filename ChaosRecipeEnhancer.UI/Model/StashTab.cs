@@ -21,7 +21,8 @@ namespace ChaosRecipeEnhancer.UI.Model
             TabName = name;
             TabIndex = index;
             TabHeaderColor = Brushes.Transparent;
-            TabHeaderWidth = new Thickness(Settings.Default.TabHeaderWidth, 2, Settings.Default.TabHeaderWidth, 2);
+            TabHeaderWidth = new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2,
+                Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2);
         }
 
         public Uri StashTabUri { get; set; }
@@ -98,7 +99,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public void CleanItemList()
         {
-            if (Settings.Default.ExaltedRecipe)
+            if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
             {
                 ItemListShaper.Clear();
                 ItemListElder.Clear();
@@ -111,7 +112,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             // for loop backwards for deleting from list 
             for (var i = ItemList.Count - 1; i > -1; i--)
             {
-                if (ItemList[i].identified && !Settings.Default.IncludeIdentified)
+                if (ItemList[i].identified && !Settings.Default.IncludeIdentifiedItemsEnabled)
                 {
                     ItemList.RemoveAt(i);
                     continue;
@@ -132,7 +133,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                 ItemList[i].StashTabIndex = TabIndex;
                 //exalted recipe every ilvl allowed, same bases, sort in itemlists
-                if (Settings.Default.ExaltedRecipe)
+                if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
                     if (ItemList[i].influences != null)
                     {
                         if (ItemList[i].influences.shaper)
@@ -151,7 +152,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                         continue;
                     }
 
-                if (!Settings.Default.ChaosRecipe && !Settings.Default.RegalRecipe)
+                if (!Settings.Default.ChaosRecipeTrackingEnabled && !Settings.Default.RegalRecipeTrackingEnabled)
                 {
                     ItemList.RemoveAt(i);
                     continue;
@@ -163,7 +164,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                     continue;
                 }
 
-                if (Settings.Default.RegalRecipe && ItemList[i].ilvl < 75)
+                if (Settings.Default.RegalRecipeTrackingEnabled && ItemList[i].ilvl < 75)
                 {
                     ItemList.RemoveAt(i);
                     continue;

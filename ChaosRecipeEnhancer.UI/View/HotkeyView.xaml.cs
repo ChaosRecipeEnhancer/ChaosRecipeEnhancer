@@ -7,26 +7,18 @@ using Serilog;
 namespace ChaosRecipeEnhancer.UI.View
 {
     /// <summary>
-    /// Interaction logic for HotkeyWindow.xaml
+    ///     Interaction logic for HotkeyView.xaml
     /// </summary>
-    public partial class HotkeyWindow
+    public partial class HotkeyView
     {
-        #region Fields
-
-        private readonly ILogger _logger;
-        private readonly MainWindow _mainWindow;
-        private readonly string _type;
-
-        #endregion
-
         #region Constructors
 
-        public HotkeyWindow(MainWindow mainWindow, string hotkeyType)
+        public HotkeyView(SettingsView settingsView, string hotkeyType)
         {
-            _logger = Log.ForContext<HotkeyWindow>();
-            _logger.Debug("Constructing HotkeyWindow");
+            _logger = Log.ForContext<HotkeyView>();
+            _logger.Debug("Constructing HotkeyView");
 
-            _mainWindow = mainWindow;
+            _settingsView = settingsView;
             _type = hotkeyType;
             InitializeComponent();
 
@@ -46,11 +38,11 @@ namespace ChaosRecipeEnhancer.UI.View
                     HotkeysManager.RemoveHotkey(HotkeysManager.refreshModifier, HotkeysManager.refreshKey);
                     if (CustomHotkeyToggle.Hotkey == null)
                     {
-                        Settings.Default.HotkeyRefresh = "< not set >";
+                        Settings.Default.FetchStashHotkey = "< not set >";
                     }
                     else
                     {
-                        Settings.Default.HotkeyRefresh = CustomHotkeyToggle.Hotkey.ToString();
+                        Settings.Default.FetchStashHotkey = CustomHotkeyToggle.Hotkey.ToString();
                         HotkeysManager.GetRefreshHotkey();
                     }
 
@@ -62,11 +54,11 @@ namespace ChaosRecipeEnhancer.UI.View
                     HotkeysManager.RemoveHotkey(HotkeysManager.toggleModifier, HotkeysManager.toggleKey);
                     if (CustomHotkeyToggle.Hotkey == null)
                     {
-                        Settings.Default.HotkeyToggle = "< not set >";
+                        Settings.Default.ToggleSetTrackerOverlayHotkey = "< not set >";
                     }
                     else
                     {
-                        Settings.Default.HotkeyToggle = CustomHotkeyToggle.Hotkey.ToString();
+                        Settings.Default.ToggleSetTrackerOverlayHotkey = CustomHotkeyToggle.Hotkey.ToString();
                         HotkeysManager.GetToggleHotkey();
                     }
 
@@ -78,11 +70,11 @@ namespace ChaosRecipeEnhancer.UI.View
                     HotkeysManager.RemoveHotkey(HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey);
                     if (CustomHotkeyToggle.Hotkey == null)
                     {
-                        Settings.Default.HotkeyStashTab = "< not set >";
+                        Settings.Default.ToggleStashTabOverlayHotkey = "< not set >";
                     }
                     else
                     {
-                        Settings.Default.HotkeyStashTab = CustomHotkeyToggle.Hotkey.ToString();
+                        Settings.Default.ToggleStashTabOverlayHotkey = CustomHotkeyToggle.Hotkey.ToString();
                         HotkeysManager.GetStashTabHotkey();
                     }
 
@@ -100,9 +92,17 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void ReApplyHotkeys()
         {
-            _mainWindow.RemoveAllHotkeys();
-            _mainWindow.AddAllHotkeys();
+            _settingsView.RemoveAllHotkeys();
+            _settingsView.AddAllHotkeys();
         }
+
+        #endregion
+
+        #region Fields
+
+        private readonly ILogger _logger;
+        private readonly SettingsView _settingsView;
+        private readonly string _type;
 
         #endregion
     }

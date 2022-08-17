@@ -11,8 +11,8 @@ namespace ChaosRecipeEnhancer.UI.Factory.Managers.Implementation
         {
             ClassName = "BodyArmours";
             ClassFilterName = "\"Body Armours\"";
-            ClassColor = Settings.Default.ColorChest;
-            AlwaysActive = Settings.Default.ChestsAlwaysActive;
+            ClassColor = Settings.Default.LootFilterBodyArmourColor;
+            AlwaysActive = Settings.Default.LootFilterBodyArmourAlwaysActive;
         }
 
         #endregion

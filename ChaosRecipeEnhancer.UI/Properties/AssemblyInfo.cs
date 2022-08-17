@@ -31,11 +31,11 @@ using System.Windows;
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
-                                     //(used if a resource is not found in the page,
-                                     // or application resource dictionaries)
+    //(used if a resource is not found in the page,
+    // or application resource dictionaries)
     ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
-                                              //(used if a resource is not found in the page,
-                                              // app, or any theme specific resource dictionaries)
+    //(used if a resource is not found in the page,
+    // app, or any theme specific resource dictionaries)
 )]
 
 
@@ -54,5 +54,5 @@ using System.Windows;
 // and user will have to input that information again. Be mindful of that when creating new releases. Try to limit how
 // many times your doing that.
 
-[assembly: AssemblyVersion("1.5.6.0")]
-[assembly: AssemblyFileVersion("1.5.6.0")]
+[assembly: AssemblyVersion("1.6.0.0")]
+[assembly: AssemblyFileVersion("1.6.0.0")]

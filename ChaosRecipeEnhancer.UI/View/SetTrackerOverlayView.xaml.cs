@@ -13,10 +13,27 @@ using Serilog;
 namespace ChaosRecipeEnhancer.UI.View
 {
     /// <summary>
-    /// Interaction logic for ChaosRecipeEnhancer.xaml
+    ///     Interaction logic for SetTrackerOverlayView.xaml
     /// </summary>
-    public partial class ChaosRecipeEnhancerWindow : INotifyPropertyChanged
+    public partial class SetTrackerOverlayView : INotifyPropertyChanged
     {
+        #region Constructors
+
+        public SetTrackerOverlayView()
+        {
+            _logger = Log.ForContext<SetTrackerOverlayView>();
+            _logger.Debug("Constructing ChaosRecipeEnhancer");
+
+            InitializeComponent();
+
+            DataContext = this;
+            FullSetsText = "0";
+
+            _logger.Debug("ChaosRecipeEnhancer constructed successfully");
+        }
+
+        #endregion
+
         #region Fields
 
         private readonly ILogger _logger;
@@ -32,7 +49,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private bool _fetchButtonEnabled = true;
         private SolidColorBrush _fetchButtonColor = Brushes.Green;
         private Visibility _amountsVisibility = Visibility.Hidden;
-        private Visibility _warningMessageVisibility = Visibility.Hidden;
+        private Visibility _warningMessageVisibility = Visibility.Collapsed;
 
         // Defines the number of a given piece of gear you currently have
         private int _amuletsAmount;
@@ -62,27 +79,10 @@ namespace ChaosRecipeEnhancer.UI.View
         private static bool FetchingActive { get; set; }
 
         // Tracks whether or not calculations are currently active
-        // TODO What is a 'calculation'? 
+        // TODO What is a 'calculation'?
         private static bool CalculationActive { get; set; }
 
         private static LogWatcher Watcher { get; set; }
-
-        #endregion
-
-        #region Constructors
-
-        public ChaosRecipeEnhancerWindow()
-        {
-            _logger = Log.ForContext<ChaosRecipeEnhancerWindow>();
-            _logger.Debug("Constructing ChaosRecipeEnhancer");
-
-            InitializeComponent();
-
-            DataContext = this;
-            FullSetsText = "0";
-
-            _logger.Debug("ChaosRecipeEnhancer constructed successfully");
-        }
 
         #endregion
 
@@ -362,43 +362,43 @@ namespace ChaosRecipeEnhancer.UI.View
         public new virtual void Show()
         {
             IsOpen = true;
-            if (Settings.Default.AutoFetch) Watcher = new LogWatcher(this);
+            if (Settings.Default.AutoFetchOnRezoneEnabled) Watcher = new LogWatcher(this);
             base.Show();
         }
 
         /// <summary>
-        /// Handler for a 'Mouse Down' event on our {ChaosRecipeEnhancer} to move the window around.
+        ///     Handler for a 'Mouse Down' event on our {ChaosRecipeEnhancer} to move the window around.
         /// </summary>
         /// <param name="sender">MouseDown event that triggers our method</param>
         /// <param name="e">Arguments related to the event that we can access when handling it</param>
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // If the user has locked the {ChaosRecipeEnhancer} in their settings, we ignore the event
-            if (e.ChangedButton != MouseButton.Left || Settings.Default.LockOverlayPosition) return;
+            if (e.ChangedButton != MouseButton.Left ||
+                Settings.Default.SetTrackerOverlayOverlayLockPositionEnabled) return;
 
             if (Mouse.LeftButton == MouseButtonState.Pressed)
-            {
                 // Native method to move a Window object on the screen
                 DragMove();
-            }
         }
 
         #endregion
 
         #region Methods
 
-        public static void DisableWarnings(ChaosRecipeEnhancerWindow chaosRecipeEnhancerWindow)
+        public static void DisableWarnings(SetTrackerOverlayView setTrackerOverlayView)
         {
-            chaosRecipeEnhancerWindow.WarningMessage = "";
-            chaosRecipeEnhancerWindow.ShadowOpacity = 0;
-            chaosRecipeEnhancerWindow.WarningMessageVisibility = Visibility.Hidden;
+            setTrackerOverlayView.WarningMessage = "";
+            setTrackerOverlayView.ShadowOpacity = 0;
+            setTrackerOverlayView.WarningMessageVisibility = Visibility.Hidden;
         }
 
         private async void FetchData()
         {
             if (FetchingActive) return;
 
-            if (!Settings.Default.ChaosRecipe && !Settings.Default.RegalRecipe && !Settings.Default.ExaltedRecipe)
+            if (!Settings.Default.ChaosRecipeTrackingEnabled && !Settings.Default.RegalRecipeTrackingEnabled &&
+                !Settings.Default.ExaltedShardRecipeTrackingEnabled)
             {
                 MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -447,7 +447,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
                 if (RateLimit.RateLimitExceeded)
                 {
-                    int secondsToWait = RateLimit.GetSecondsToWait();
+                    var secondsToWait = RateLimit.GetSecondsToWait();
 
                     // TODO: [Refactor] Remove dependency on MainWindow for displaying these warning messages
                     // MainWindow.Overlay.WarningMessage = $"Rate Limit Exceeded! Waiting {secondsToWait} seconds...";
@@ -486,18 +486,29 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public void RunFetching()
         {
-            if (!MainWindow.SettingsComplete) return;
+            if (!SettingsView.SettingsComplete) return;
 
             if (!IsOpen) return;
 
-            switch (Settings.Default.StashTabMode)
+            switch (Settings.Default.StashTabQueryMode)
             {
                 case 0 when Settings.Default.StashTabIndices == "":
-                    MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stash Tab Indices.");
+                    MessageBox.Show("Missing Stash Query Settings!" + Environment.NewLine +
+                                    "Please set stash tab indices.");
                     return;
-                case 1 when Settings.Default.StashTabName == "":
-                    MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set Stash Tab Prefix.");
+                case 1 when Settings.Default.StashTabPrefix == "":
+                    MessageBox.Show("Missing Stash Query Settings!" + Environment.NewLine +
+                                    "Please set stash tab prefix.");
                     return;
+                case 2 when Settings.Default.StashTabSuffix == "":
+                    MessageBox.Show("Missing Stash Query Settings!" + Environment.NewLine +
+                                    "Please set stash tab suffix.");
+                    return;
+
+                // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
+                // case 3 when Settings.Default.StashFolderName == "":
+                //     MessageBox.Show("Missing Stash Query Settings!" + Environment.NewLine + "Please set stash tab folder name.");
+                //     return;
             }
 
             if (CalculationActive)
@@ -527,6 +538,8 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void SetOpacity()
         {
+            Trace.Write("Setting new item opacity");
+
             Dispatcher.Invoke(() =>
             {
                 if (!Data.ActiveItems.HelmetActive)

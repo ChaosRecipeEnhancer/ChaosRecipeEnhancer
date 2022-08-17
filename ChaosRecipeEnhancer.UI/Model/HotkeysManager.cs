@@ -236,9 +236,9 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static void GetRefreshHotkey()
         {
-            if (Settings.Default.HotkeyRefresh != "< not set >")
+            if (Settings.Default.FetchStashHotkey != "< not set >")
             {
-                var refreshString = Settings.Default.HotkeyRefresh.Split('+');
+                var refreshString = Settings.Default.FetchStashHotkey.Split('+');
 
                 if (refreshString.Length > 1)
                 {
@@ -266,9 +266,9 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static void GetToggleHotkey()
         {
-            if (Settings.Default.HotkeyToggle != "< not set >")
+            if (Settings.Default.ToggleSetTrackerOverlayHotkey != "< not set >")
             {
-                var toggleString = Settings.Default.HotkeyToggle.Split('+');
+                var toggleString = Settings.Default.ToggleSetTrackerOverlayHotkey.Split('+');
 
                 if (toggleString.Length > 1)
                 {
@@ -295,9 +295,9 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static void GetStashTabHotkey()
         {
-            if (Settings.Default.HotkeyStashTab != "< not set >")
+            if (Settings.Default.ToggleStashTabOverlayHotkey != "< not set >")
             {
-                var stashTabString = Settings.Default.HotkeyStashTab.Split('+');
+                var stashTabString = Settings.Default.ToggleStashTabOverlayHotkey.Split('+');
 
                 if (stashTabString.Length > 1)
                 {

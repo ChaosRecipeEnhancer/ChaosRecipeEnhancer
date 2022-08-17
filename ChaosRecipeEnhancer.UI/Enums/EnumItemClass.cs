@@ -10,6 +10,6 @@
         Amulets = 6,
         Belts = 7,
         OneHandWeapons = 8,
-        TwoHandWeapons = 9,
+        TwoHandWeapons = 9
     }
 }

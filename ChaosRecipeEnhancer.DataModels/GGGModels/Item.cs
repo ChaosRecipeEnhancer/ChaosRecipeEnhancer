@@ -4,10 +4,10 @@ using System.Text.Json.Serialization;
 namespace ChaosRecipeEnhancer.DataModels.GGGModels
 {
     /// <summary>
-    /// TODO
+    ///     TODO
     /// </summary>
-    /// <seealso cref="https://www.pathofexile.com/developer/docs/reference#type-Item"/>
-    public partial class Item
+    /// <seealso cref="https://www.pathofexile.com/developer/docs/reference#type-Item" />
+    public class Item
     {
         [JsonPropertyName("w")] public int Width { get; set; }
 

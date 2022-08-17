@@ -2,29 +2,29 @@
 using ChaosRecipeEnhancer.UI.Model;
 using Serilog;
 
-namespace ChaosRecipeEnhancer.UI.UserControls
+namespace ChaosRecipeEnhancer.UI.UserControls.StashTabOverlayDisplays
 {
     /// <summary>
-    /// Interaction logic for DynamicGridControlQuad.xaml
+    ///     Interaction logic for NormalStashGrid.xaml
     /// </summary>
-    public partial class DynamicGridControlQuad
+    public partial class NormalStashGrid
     {
         #region Fields
 
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         #endregion
 
         #region Constructors
 
-        public DynamicGridControlQuad()
+        public NormalStashGrid()
         {
             _logger = Log.ForContext<HotkeyEditorControl>();
-            _logger.Debug("Constructing DynamicGridControlQuad");
+            _logger.Debug("Constructing NormalStashGrid");
 
             InitializeComponent();
 
-            _logger.Debug("DynamicGridControlQuad constructed successfully");
+            _logger.Debug("NormalStashGrid constructed successfully");
         }
 
         #endregion
@@ -36,8 +36,6 @@ namespace ChaosRecipeEnhancer.UI.UserControls
             for (var i = 0; i < Items.Count; i++)
                 if (Items[i] == cell)
                 {
-                    //Trace.WriteLine(cell.XIndex + " x " + cell.YIndex + " y");
-
                     var container = ItemContainerGenerator.ContainerFromIndex(i);
                     var t = Utility.GetChild<Button>(container);
                     return t;

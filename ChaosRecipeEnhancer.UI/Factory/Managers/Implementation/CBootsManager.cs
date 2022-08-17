@@ -11,8 +11,8 @@ namespace ChaosRecipeEnhancer.UI.Factory.Managers.Implementation
         {
             ClassName = "Boots";
             ClassFilterName = "\"Boots\"";
-            ClassColor = Settings.Default.ColorBoots;
-            AlwaysActive = Settings.Default.BootsAlwaysActive;
+            ClassColor = Settings.Default.LootFilterBootsColor;
+            AlwaysActive = Settings.Default.LootFilterBootsAlwaysActive;
         }
 
         #endregion

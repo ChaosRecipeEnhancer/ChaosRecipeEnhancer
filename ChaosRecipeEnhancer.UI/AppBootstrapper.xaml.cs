@@ -17,7 +17,7 @@ using Application = System.Windows.Forms.Application;
 namespace ChaosRecipeEnhancer.UI
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    ///     Interaction logic for App.xaml
     /// </summary>
     public partial class AppBootstrapper
     {
@@ -53,11 +53,11 @@ namespace ChaosRecipeEnhancer.UI
             var builder = new ContainerBuilder();
 
             // Registering some of our main view components that depend on each-other
-            builder.RegisterType<MainWindow>()
+            builder.RegisterType<SettingsView>()
                 .SingleInstance()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
-            builder.RegisterType<ChaosRecipeEnhancerWindow>()
+            builder.RegisterType<SetTrackerOverlayView>()
                 .SingleInstance()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
@@ -71,7 +71,7 @@ namespace ChaosRecipeEnhancer.UI
                 var logger = scope.Resolve<ILogger>();
 
                 // Resolving our previously defined dependency from our DI container
-                var mainWindow = scope.Resolve<MainWindow>();
+                var mainWindow = scope.Resolve<SettingsView>();
 
                 // Opens our MainWindow and doesn't return until it has been closed
                 logger.Debug("App initialized, starting up MainWindow");
@@ -104,11 +104,11 @@ namespace ChaosRecipeEnhancer.UI
         }
 
         /// <summary>
-        /// Showing an unhandled exception in a 'Warning' window.
+        ///     Showing an unhandled exception in a 'Warning' window.
         /// </summary>
         /// <param name="e"></param>
         /// <param name="unhandledExceptionType"></param>
-        /// <seealso href="https://www.codeproject.com/Articles/30216/Handling-Corrupt-user-config-Settings"/>
+        /// <seealso href="https://www.codeproject.com/Articles/30216/Handling-Corrupt-user-config-Settings" />
         private void ShowUnhandledException(Exception e, string unhandledExceptionType)
         {
             Log.Error(e.Demystify(), "Unexpected Error Occured");
@@ -136,7 +136,6 @@ namespace ChaosRecipeEnhancer.UI
                     var fileEntries = Directory.GetDirectories(versionDirectoryFilePath);
 
                     foreach (var fileName in fileEntries)
-                    {
                         if (fileName == versionDirectoryFilePath + Assembly.GetEntryAssembly()?.GetName().Version)
                         {
                             using (LogContext.PushProperty("SettingsFileLocation", fileName))
@@ -146,7 +145,6 @@ namespace ChaosRecipeEnhancer.UI
 
                             Directory.Delete(fileName, true);
                         }
-                    }
 
                     Settings.Default.Reset();
 

@@ -16,8 +16,6 @@ namespace ChaosRecipeEnhancer.UI.Model
 {
     public static class ReloadItemFilter
     {
-        private delegate bool EnumWindowsProc(HWND hWnd, int lParam);
-
         [DllImport("USER32.DLL")]
         private static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
 
@@ -115,7 +113,9 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         private static string GetFilterName()
         {
-            return Path.GetFileName(Settings.Default.LootFilterLocation).Replace(".filter", "");
+            return Path.GetFileName(Settings.Default.LootFilterFileLocation).Replace(".filter", "");
         }
+
+        private delegate bool EnumWindowsProc(HWND hWnd, int lParam);
     }
 }

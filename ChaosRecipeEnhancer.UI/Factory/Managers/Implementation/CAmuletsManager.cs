@@ -11,8 +11,8 @@ namespace ChaosRecipeEnhancer.UI.Factory.Managers.Implementation
         {
             ClassName = "Amulets";
             ClassFilterName = "\"Amulets\"";
-            ClassColor = Settings.Default.ColorAmulet;
-            AlwaysActive = Settings.Default.AmuletsAlwaysActive;
+            ClassColor = Settings.Default.LootFilterAmuletColor;
+            AlwaysActive = Settings.Default.LootFilterAmuletsAlwaysActive;
         }
 
         #endregion

@@ -12,7 +12,7 @@ namespace ChaosRecipeEnhancer.UI.Model.Storage
 
         internal static IFilterStorage Create(Settings settings)
         {
-            return Create(settings.LootFilterLocation);
+            return Create(settings.LootFilterFileLocation);
         }
     }
 }

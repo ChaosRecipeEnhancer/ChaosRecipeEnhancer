@@ -20,7 +20,6 @@ namespace ChaosRecipeEnhancer.UI.Model
                 var split = indices.Split(sep, StringSplitOptions.None);
 
                 foreach (var s in split)
-                {
                     if (int.TryParse(s.Trim(), out var parsedIndex))
                     {
                         if (!ret.Contains(parsedIndex)) ret.Add(parsedIndex);
@@ -30,7 +29,6 @@ namespace ChaosRecipeEnhancer.UI.Model
                         MessageBox.Show("Stashtab Index has to be a number!", "Stashtab Error", MessageBoxButton.OK,
                             MessageBoxImage.Error);
                     }
-                }
 
                 if (ret.Count == 0)
                     MessageBox.Show("Stashtab Indices empty!", "Stashtab Error", MessageBoxButton.OK,
