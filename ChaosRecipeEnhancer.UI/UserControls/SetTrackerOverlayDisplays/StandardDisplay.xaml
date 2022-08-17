@@ -402,7 +402,7 @@
             Width="50"
             Grid.Column="12"
             Grid.Row="1"
-            Margin="5,0">
+            Margin="5 10 5 0">
 
             <!-- Conditional rendering for 'Reload Filter' button -->
             <Button.Style>

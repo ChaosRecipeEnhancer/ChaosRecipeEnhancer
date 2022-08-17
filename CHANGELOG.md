@@ -14,6 +14,7 @@ Bug Fixes:
 - [fixed issue where inaccurate values displayed on set tracker when loot filter manipulation is disabled](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues/409)
 - fixed some small display issues with the 'Only Buttons' set tracker overlay display mode
 - fixed some small display issues with the 'Standard' set tracker overlay display mode
+- added missing dependencies in newest version of installer (Thanks to grinder on Discord for reporting this bug!)
 
 Changes Under The Hood:
 - lots of changes to the settings under the hood; you will most likely have to redo your settings (sorry)
