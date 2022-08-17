@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
+        xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
         mc:Ignorable="d"
         Title="CRE Set Tracker Overlay"
         SizeToContent="WidthAndHeight"
@@ -13,9 +15,9 @@
         MouseDown="Window_MouseDown"
         Background="Transparent"
         ResizeMode="NoResize"
-        xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayTopPosition, Mode=TwoWay}"
-        Left="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayLeftPosition, Mode=TwoWay}">
+        Left="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayLeftPosition, Mode=TwoWay}"
+        d:DataContext="{d:DesignInstance Type=view:SetTrackerOverlayView}">
 
     <Border BorderThickness="1"
             CornerRadius="5"

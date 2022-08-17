@@ -6,7 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     mc:Ignorable="d"
     FontSize="14"
-    xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties">
+    xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
+    xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
+    d:DataContext="{d:DesignInstance Type=view:SetTrackerOverlayView }">
 
     <Grid>
 

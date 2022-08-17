@@ -5,7 +5,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
-    mc:Ignorable="d">
+    xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=generalForms:PathOfExileForm}">
 
     <Grid ShowGridLines="False">
 

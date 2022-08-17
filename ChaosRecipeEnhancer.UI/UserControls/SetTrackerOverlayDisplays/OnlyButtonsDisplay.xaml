@@ -5,8 +5,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
+    xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
     mc:Ignorable="d"
-    FontSize="16">
+    FontSize="16"
+    d:DataContext="{d:DesignInstance Type=view:SetTrackerOverlayView }">
 
     <Grid>
 

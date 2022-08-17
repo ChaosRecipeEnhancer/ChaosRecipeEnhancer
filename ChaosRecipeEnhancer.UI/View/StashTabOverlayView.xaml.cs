@@ -81,7 +81,7 @@ namespace ChaosRecipeEnhancer.UI.View
             }
         }
 
-        private Visibility StashBorderVisibility
+        public Visibility StashBorderVisibility
         {
             get => _stashBorderVisibility;
             set

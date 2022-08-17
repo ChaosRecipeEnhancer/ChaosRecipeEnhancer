@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
+        xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -16,7 +17,8 @@
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayTopPosition, Mode=TwoWay}"
         Left="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayLeftPosition, Mode=TwoWay}"
         Height="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayHeight, Mode=TwoWay}"
-        Width="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayWidth, Mode=TwoWay}">
+        Width="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayWidth, Mode=TwoWay}"
+        d:DataContext="{d:DesignInstance Type=view:StashTabOverlayView}">
 
     <Window.Background>
 

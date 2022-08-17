@@ -7,6 +7,7 @@
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
     xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
+    xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
     mc:Ignorable="d"
     FontSize="14"
     Title="Chaos Recipe Enhancer Settings"
@@ -16,7 +17,8 @@
     MouseDown="Window_MouseDown"
     ResizeMode="CanMinimize"
     Top="{Binding Source={x:Static properties:Settings.Default}, Path=SettingsWindowTopPosition, Mode=TwoWay}"
-    Left="{Binding Source={x:Static properties:Settings.Default}, Path=SettingsWindowLeftPosition, Mode=TwoWay}">
+    Left="{Binding Source={x:Static properties:Settings.Default}, Path=SettingsWindowLeftPosition, Mode=TwoWay}"
+    d:DataContext="{d:DesignInstance Type=view:SettingsView}">
 
     <Border
         BorderBrush="DarkGray"
@@ -731,8 +733,7 @@
                                 VerticalAlignment="Center"
                                 Text="Loot Filter Location:"
                                 ToolTipService.InitialShowDelay="50"
-                                ToolTip="The path to your loot filter. Standard path is: 'Username/Documents/My Games/Path of Exile'."
-                                Visibility="{Binding LootFilterFileDialogVisible}" />
+                                ToolTip="The path to your loot filter. Standard path is: 'Username/Documents/My Games/Path of Exile'." />
 
                             <Button
                                 Grid.Column="3"
@@ -743,8 +744,7 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterFileLocation, Mode=TwoWay}"
                                 Content="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterFileLocation, Mode=TwoWay}"
-                                HorizontalContentAlignment="Left"
-                                Visibility="{Binding LootFilterFileDialogVisible}">
+                                HorizontalContentAlignment="Left" >
 
                                 <Button.Style>
 

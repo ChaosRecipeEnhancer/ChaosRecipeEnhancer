@@ -8,7 +8,9 @@
         FontSize="18"
         Topmost="True"
         WindowStartupLocation="CenterScreen"
-        Title="CRE Hotkey Window" Height="200" Width="300">
+        Title="CRE Hotkey Window"
+        Height="200"
+        Width="300">
 
     <Grid>
 
