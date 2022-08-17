@@ -44,4 +44,4 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 [issues-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues
 [support-badge]: https://img.shields.io/badge/Paypal-Support-<COLOR>?style=for-the-badge&logo=paypal&color=ffae29
 [support-link]: https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS
-[dotnet-framework-link]: https://dotnet.microsoft.com/en-us/download/dotnet-framework
+[dotnet-framework-link]: https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48
