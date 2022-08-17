@@ -44,7 +44,7 @@
             Grid.Column="3"
             Grid.Row="1"
             Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterGlovesColor}"
-            Margin="5,0"
+            Margin="5 10 5 0"
             CornerRadius="6"
             Opacity="{Binding GlovesOpacity}"
             x:Name="Gloves">
@@ -88,7 +88,7 @@
             Height="50"
             Width="50"
             CornerRadius="6"
-            Margin="5,0"
+            Margin="5 10 5 0"
             Opacity="{Binding BootsOpacity}"
             x:Name="Boots"
             Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBootsColor}">
@@ -132,7 +132,7 @@
             Height="50"
             CornerRadius="6"
             Width="50"
-            Margin="5,0"
+            Margin="5 10 5 0"
             x:Name="Chest"
             Opacity="{Binding ChestsOpacity}"
             Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBodyArmourColor}">
@@ -176,7 +176,7 @@
             Height="50"
             CornerRadius="6"
             Width="50"
-            Margin="5,0"
+            Margin="5 10 5 0"
             x:Name="Weapon"
             Opacity="{Binding WeaponsOpacity}"
             Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterWeaponColor}">
@@ -220,7 +220,7 @@
             Height="50"
             CornerRadius="6"
             Width="50"
-            Margin="5,0"
+            Margin="5 10 5 0"
             Opacity="{Binding HelmetOpacity}"
             Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterHelmetColor}"
             x:Name="Helmet">
@@ -264,7 +264,7 @@
             Height="50"
             CornerRadius="6"
             Width="50"
-            Margin="5,0"
+            Margin="5 10 5 0"
             Opacity="{Binding RingsOpacity}"
             Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterRingColor}"
             x:Name="Rings">
@@ -308,7 +308,7 @@
             Height="50"
             CornerRadius="6"
             Width="50"
-            Margin="5,0"
+            Margin="5 10 5 0"
             Opacity="{Binding AmuletsOpacity}"
             Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterAmuletColor}"
             x:Name="Amulet">
@@ -352,7 +352,7 @@
             Height="50"
             CornerRadius="6"
             Width="50"
-            Margin="5,0"
+            Margin="5 10 5 0"
             Opacity="{Binding BeltsOpacity}"
             Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBeltColor}"
             x:Name="Belt">
@@ -394,7 +394,7 @@
             Grid.Column="11"
             Grid.Row="1"
             Content="Fetch"
-            Margin="5,0" />
+            Margin="5 10 5 0" />
 
         <Button
             x:Name="ReloadFilterButton"
@@ -438,7 +438,7 @@
             Grid.Column="1"
             Grid.Row="1"
             Content="{Binding OpenStashOverlayButtonContent}"
-            Margin="5,0" />
+            Margin="5 10 5 0" />
 
         <UniformGrid
             Grid.Row="1"
