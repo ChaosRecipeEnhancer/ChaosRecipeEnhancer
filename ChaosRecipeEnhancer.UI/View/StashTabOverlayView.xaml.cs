@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using ChaosRecipeEnhancer.App;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
@@ -139,6 +140,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
                     tbk.SetBinding(TextBlock.BackgroundProperty, new Binding("TabHeaderColor"));
                     tbk.SetBinding(TextBlock.PaddingProperty, new Binding("TabHeaderWidth"));
+
                     tbk.FontSize = 16;
                     i.TabHeader = tbk;
 
@@ -167,7 +169,7 @@ namespace ChaosRecipeEnhancer.UI.View
                 StashTabOverlayTabControl.SelectedIndex = 0;
 
                 Data.PrepareSelling();
-                Data.ActivateNextCell(true, null);
+                Data.ActivateNextCell(true, null, StashTabOverlayTabControl);
                 if (Settings.Default.StashTabOverlayHighlightMode == 2)
                     foreach (var set in Data.ItemSetListHighlight)
                     foreach (var i in set.ItemList)

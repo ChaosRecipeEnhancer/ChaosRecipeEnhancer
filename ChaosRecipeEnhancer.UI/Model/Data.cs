@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using ChaosRecipeEnhancer.UI.Filter;
 using ChaosRecipeEnhancer.UI.Properties;
@@ -61,7 +62,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             for (var i = 0; i < SetTargetAmount; i++) ret.Add(new ItemSet());
 
             ItemSetList = ret;
-            Trace.WriteLine(ItemSetList.Count, "item set list count");
+            Trace.WriteLine(ItemSetList.Count, "[Data:GenerateItemSetList()]: item set list count");
             if (Settings.Default.ExaltedShardRecipeTrackingEnabled) GenerateInfluencedItemSets();
         }
 
@@ -303,10 +304,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                         missingGearPieceForChaosRecipe);
 
                 //Trace.WriteLine(fullSets, "full sets");
-                setTrackerOverlay.Dispatcher.Invoke(() =>
-                {
-                    setTrackerOverlay.FullSetsText = fullSets.ToString();
-                });
+                setTrackerOverlay.Dispatcher.Invoke(() => { setTrackerOverlay.FullSetsText = fullSets.ToString(); });
 
                 // invoke chaos missing
                 if (missingGearPieceForChaosRecipe && !Settings.Default.RegalRecipeTrackingEnabled)
@@ -490,13 +488,15 @@ namespace ChaosRecipeEnhancer.UI.Model
             return null;
         }
 
-        public static void ActivateNextCell(bool active, Cell cell)
+        public static void ActivateNextCell(bool active, Cell cell, TabControl tabControl)
         {
             if (active)
             {
+                var currentlySelectedStashOverlayTabName = ((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text;
+                
+                //activate cell by cell / item by item
                 if (Settings.Default.StashTabOverlayHighlightMode == 0)
                 {
-                    //activate cell by cell
                     foreach (var s in StashTabList.StashTabs)
                     {
                         s.DeactivateItemCells();
@@ -520,82 +520,84 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                     // next item if itemlist not empty
                     if (ItemSetListHighlight.Count > 0)
+                    {
                         if (ItemSetListHighlight[0].ItemList.Count > 0 &&
                             ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
                         {
                             var highlightItem = ItemSetListHighlight[0].ItemList[0];
                             var currentTab = GetStashTabFromItem(highlightItem);
+
                             if (currentTab != null)
                             {
                                 currentTab.ActivateItemCells(highlightItem);
-                                if (Settings.Default.StashTabOverlayHighlightColor != "")
-                                    currentTab.TabHeaderColor = new SolidColorBrush(
-                                        (Color)ColorConverter.ConvertFromString(Settings.Default
-                                            .StashTabOverlayHighlightColor));
+                                
+                                Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
+                                Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
+                                
+                                if (currentTab.TabName != currentlySelectedStashOverlayTabName && Settings.Default.StashTabOverlayHighlightColor != "")
+                                    currentTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
                                 else
-                                    currentTab.TabHeaderColor = Brushes.Red;
+                                    currentTab.TabHeaderColor = Brushes.Transparent;
 
                                 ItemSetListHighlight[0].ItemList.RemoveAt(0);
                             }
-                            //check for full sets
-                            //if (ItemSetListHighlight[0].ItemList.Count <= 0)
-                            //{
-                            //}
                         }
+                    }
                 }
+                // activate whole set
                 else if (Settings.Default.StashTabOverlayHighlightMode == 1)
                 {
-                    // activate whole set
                     if (ItemSetListHighlight.Count > 0)
                     {
-                        Trace.WriteLine(ItemSetListHighlight[0].ItemList.Count, "item list count");
-                        Trace.WriteLine(ItemSetListHighlight.Count, "itemset list ocunt");
-                        // check for full sets
+                        Trace.WriteLine(ItemSetListHighlight[0].ItemList.Count, "[Data: ActivateNextCell()]: item list count");
+                        Trace.WriteLine(ItemSetListHighlight.Count, "[Data: ActivateNextCell()]: item set list count");
 
+                        // check for full sets
                         if (ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
                         {
                             if (cell != null)
                             {
                                 var highlightItem = cell.CellItem;
                                 var currentTab = GetStashTabFromItem(highlightItem);
+
                                 if (currentTab != null)
                                 {
                                     currentTab.DeactivateSingleItemCells(cell.CellItem);
-                                    currentTab.TabHeaderColor = Brushes.Transparent;
                                     ItemSetListHighlight[0].ItemList.Remove(highlightItem);
                                 }
                             }
-                            //Trace.WriteLine("IS HERE IS HERE IS HERE");
 
                             foreach (var i in ItemSetListHighlight[0].ItemList)
                             {
-                                //currentTab.ActivateItemCells(i);
                                 var currTab = GetStashTabFromItem(i);
                                 currTab.ActivateItemCells(i);
-                                //currTab.ShowNumbersOnActiveCells();
-                                if (Settings.Default.StashTabOverlayHighlightColor != "")
-                                    currTab.TabHeaderColor =
-                                        new SolidColorBrush(
-                                            (Color)ColorConverter.ConvertFromString(Settings.Default
-                                                .StashTabOverlayHighlightColor));
-                                else
-                                    currTab.TabHeaderColor = Brushes.Red;
                             }
 
                             // mark item order
                             if (ItemSetListHighlight[0] != null)
+                            {
                                 if (ItemSetListHighlight[0].ItemList.Count > 0)
                                 {
                                     var cTab = GetStashTabFromItem(ItemSetListHighlight[0].ItemList[0]);
                                     cTab.MarkNextItem(ItemSetListHighlight[0].ItemList[0]);
-                                }
 
+                                    Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
+                                    Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
+
+                                    if (cTab.TabName != currentlySelectedStashOverlayTabName && Settings.Default.StashTabOverlayHighlightColor != "")
+                                        cTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                                    else
+                                        cTab.TabHeaderColor = Brushes.Transparent;
+                                }
+                            }
+
+                            // Set has been completed
                             if (ItemSetListHighlight[0].ItemList.Count == 0)
                             {
-                                //Trace.WriteLine("itemsetlist gets removes0");
                                 ItemSetListHighlight.RemoveAt(0);
+
                                 // activate next set
-                                ActivateNextCell(true, null);
+                                ActivateNextCell(true, null, null);
                                 PlayerSet.Dispatcher.Invoke(() => { PlayNotificationSoundSetPicked(); });
                             }
                         }
@@ -605,12 +607,16 @@ namespace ChaosRecipeEnhancer.UI.Model
                 {
                     //activate all cells at once
                     if (ItemSetListHighlight.Count > 0)
+                    {
                         foreach (var set in ItemSetListHighlight)
+                        {
                             if (set.EmptyItemSlots.Count == 0)
+                            {
                                 if (cell != null)
                                 {
                                     var highlightItem = cell.CellItem;
                                     var currentTab = GetStashTabFromItem(highlightItem);
+
                                     if (currentTab != null)
                                     {
                                         currentTab.DeactivateSingleItemCells(cell.CellItem);
@@ -618,6 +624,9 @@ namespace ChaosRecipeEnhancer.UI.Model
                                         ItemSetListHighlight[0].ItemList.Remove(highlightItem);
                                     }
                                 }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -697,17 +706,5 @@ namespace ChaosRecipeEnhancer.UI.Model
                         EmptyItemSlots = new List<string>(set.EmptyItemSlots)
                     });
         }
-    }
-
-    public class ItemTypeAmounts
-    {
-        public int Gloves { get; set; } = 0;
-        public int Helmets { get; set; } = 0;
-        public int Boots { get; set; } = 0;
-        public int Chests { get; set; } = 0;
-        public int Weapons { get; set; } = 0;
-        public int Amulets { get; set; } = 0;
-        public int Rings { get; set; } = 0;
-        public int Belts { get; set; } = 0;
     }
 }

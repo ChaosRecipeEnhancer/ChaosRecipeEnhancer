@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using ChaosRecipeEnhancer.UI.UserControls.StashTabOverlayDisplays;
@@ -159,7 +160,9 @@ namespace ChaosRecipeEnhancer.UI.Model
                             hitIndex = b;
                         }
 
-                    if (isHit) Data.ActivateNextCell(true, buttonList[hitIndex].Cell);
+                    Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Quad Tab Current Tab Index: {stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex}");
+                    
+                    if (isHit) Data.ActivateNextCell(true, buttonList[hitIndex].Cell, stashTabOverlayView.StashTabOverlayTabControl);
 
                     for (var stash = 0; stash < StashTabList.StashTabs.Count; stash++)
                         if (CheckForHeaderHit(StashTabList.StashTabs[stash]))
@@ -182,7 +185,9 @@ namespace ChaosRecipeEnhancer.UI.Model
                             hitIndex = b;
                         }
 
-                    if (isHit) Data.ActivateNextCell(true, buttonList[hitIndex].Cell);
+                    Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Normal Tab Current Tab Index: {stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex}");
+
+                    if (isHit) Data.ActivateNextCell(true, buttonList[hitIndex].Cell, stashTabOverlayView.StashTabOverlayTabControl);
 
                     for (var stash = 0; stash < StashTabList.StashTabs.Count; stash++)
                         if (CheckForHeaderHit(StashTabList.StashTabs[stash]))

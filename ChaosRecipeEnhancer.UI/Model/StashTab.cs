@@ -49,7 +49,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             set
             {
                 _tabHeaderColor = value;
-                OnPropertyChanged(nameof(TabHeaderColor));
+                OnPropertyChanged("TabHeaderColor");
             }
         }
 
