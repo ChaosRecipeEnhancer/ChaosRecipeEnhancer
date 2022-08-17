@@ -1,15 +1,17 @@
-﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays.StandardDisplay"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d"
-             FontSize="14"
-             xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties">
+﻿<UserControl
+    x:Class="ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays.StandardDisplay"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    mc:Ignorable="d"
+    FontSize="14"
+    xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties">
 
     <Grid>
 
         <Grid.ColumnDefinitions>
+
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
@@ -24,47 +26,55 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="5" />
+
         </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
+
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="5" />
+
         </Grid.RowDefinitions>
 
-        <Border Height="50"
-                Width="50"
-                Grid.Column="3"
-                Grid.Row="1"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterGlovesColor}"
-                Margin="5,0"
-                CornerRadius="6"
-                Opacity="{Binding GlovesOpacity}"
-                x:Name="Gloves">
+        <Border
+            Height="50"
+            Width="50"
+            Grid.Column="3"
+            Grid.Row="1"
+            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterGlovesColor}"
+            Margin="5,0"
+            CornerRadius="6"
+            Opacity="{Binding GlovesOpacity}"
+            x:Name="Gloves">
 
             <Grid>
 
-                <Image Source="../../Assets/Images/gloves.png"
-                       MaxWidth="50"
-                       MaxHeight="50" />
+                <Image
+                    Source="../../Assets/Images/gloves.png"
+                    MaxWidth="50"
+                    MaxHeight="50" />
 
-                <Border Width="20"
-                        Height="20"
-                        Visibility="{Binding AmountsVisibility}"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Right"
-                        CornerRadius="50"
-                        Background="White">
+                <Border
+                    Width="20"
+                    Height="20"
+                    Visibility="{Binding AmountsVisibility}"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    CornerRadius="50"
+                    Background="White">
 
-                    <TextBlock FontSize="18"
-                               FontFamily="Segoe UI"
-                               FontWeight="DemiBold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               TextAlignment="Center"
-                               Background="Transparent"
-                               Foreground="Black"
-                               Text="{Binding GlovesAmount}" />
+                    <TextBlock
+                        FontSize="18"
+                        FontFamily="Segoe UI"
+                        FontWeight="DemiBold"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center"
+                        Background="Transparent"
+                        Foreground="Black"
+                        Text="{Binding GlovesAmount}" />
 
                 </Border>
 
@@ -72,39 +82,43 @@
 
         </Border>
 
-        <Border Grid.Column="4"
-                Grid.Row="1"
-                Height="50"
-                Width="50"
-                CornerRadius="6"
-                Margin="5,0"
-                Opacity="{Binding BootsOpacity}"
-                x:Name="Boots"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBootsColor}">
+        <Border
+            Grid.Column="4"
+            Grid.Row="1"
+            Height="50"
+            Width="50"
+            CornerRadius="6"
+            Margin="5,0"
+            Opacity="{Binding BootsOpacity}"
+            x:Name="Boots"
+            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBootsColor}">
 
             <Grid>
 
-                <Image MaxHeight="50"
-                       MaxWidth="50"
-                       Source="../../Assets/Images/boots.png" />
+                <Image
+                    MaxHeight="50"
+                    MaxWidth="50"
+                    Source="../../Assets/Images/boots.png" />
 
-                <Border Width="20"
-                        Height="20"
-                        Visibility="{Binding AmountsVisibility}"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Right"
-                        CornerRadius="50"
-                        Background="White">
+                <Border
+                    Width="20"
+                    Height="20"
+                    Visibility="{Binding AmountsVisibility}"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    CornerRadius="50"
+                    Background="White">
 
-                    <TextBlock FontSize="18"
-                               FontFamily="Segoe UI"
-                               FontWeight="DemiBold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               TextAlignment="Center"
-                               Background="Transparent"
-                               Foreground="Black"
-                               Text="{Binding BootsAmount}" />
+                    <TextBlock
+                        FontSize="18"
+                        FontFamily="Segoe UI"
+                        FontWeight="DemiBold"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center"
+                        Background="Transparent"
+                        Foreground="Black"
+                        Text="{Binding BootsAmount}" />
 
                 </Border>
 
@@ -112,39 +126,43 @@
 
         </Border>
 
-        <Border Grid.Column="6"
-                Grid.Row="1"
-                Height="50"
-                CornerRadius="6"
-                Width="50"
-                Margin="5,0"
-                x:Name="Chest"
-                Opacity="{Binding ChestsOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBodyArmourColor}">
+        <Border
+            Grid.Column="6"
+            Grid.Row="1"
+            Height="50"
+            CornerRadius="6"
+            Width="50"
+            Margin="5,0"
+            x:Name="Chest"
+            Opacity="{Binding ChestsOpacity}"
+            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBodyArmourColor}">
 
             <Grid>
 
-                <Image MaxHeight="50"
-                       MaxWidth="50"
-                       Source="../../Assets/Images/chest.png" />
+                <Image
+                    MaxHeight="50"
+                    MaxWidth="50"
+                    Source="../../Assets/Images/chest.png" />
 
-                <Border Width="20"
-                        Height="20"
-                        Visibility="{Binding AmountsVisibility}"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Right"
-                        CornerRadius="50"
-                        Background="White">
+                <Border
+                    Width="20"
+                    Height="20"
+                    Visibility="{Binding AmountsVisibility}"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    CornerRadius="50"
+                    Background="White">
 
-                    <TextBlock FontSize="18"
-                               FontFamily="Segoe UI"
-                               FontWeight="DemiBold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               TextAlignment="Center"
-                               Background="Transparent"
-                               Foreground="Black"
-                               Text="{Binding ChestsAmount}" />
+                    <TextBlock
+                        FontSize="18"
+                        FontFamily="Segoe UI"
+                        FontWeight="DemiBold"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center"
+                        Background="Transparent"
+                        Foreground="Black"
+                        Text="{Binding ChestsAmount}" />
 
                 </Border>
 
@@ -152,39 +170,43 @@
 
         </Border>
 
-        <Border Grid.Column="7"
-                Grid.Row="1"
-                Height="50"
-                CornerRadius="6"
-                Width="50"
-                Margin="5,0"
-                x:Name="Weapon"
-                Opacity="{Binding WeaponsOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterWeaponColor}">
+        <Border
+            Grid.Column="7"
+            Grid.Row="1"
+            Height="50"
+            CornerRadius="6"
+            Width="50"
+            Margin="5,0"
+            x:Name="Weapon"
+            Opacity="{Binding WeaponsOpacity}"
+            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterWeaponColor}">
 
             <Grid>
 
-                <Image MaxHeight="50"
-                       MaxWidth="50"
-                       Source="../../Assets/Images/weapon.png" />
+                <Image
+                    MaxHeight="50"
+                    MaxWidth="50"
+                    Source="../../Assets/Images/weapon.png" />
 
-                <Border Width="20"
-                        Height="20"
-                        Visibility="{Binding AmountsVisibility}"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Right"
-                        CornerRadius="50"
-                        Background="White">
+                <Border
+                    Width="20"
+                    Height="20"
+                    Visibility="{Binding AmountsVisibility}"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    CornerRadius="50"
+                    Background="White">
 
-                    <TextBlock FontSize="18"
-                               FontFamily="Segoe UI"
-                               FontWeight="DemiBold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               TextAlignment="Center"
-                               Background="Transparent"
-                               Foreground="Black"
-                               Text="{Binding WeaponsAmount}" />
+                    <TextBlock
+                        FontSize="18"
+                        FontFamily="Segoe UI"
+                        FontWeight="DemiBold"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center"
+                        Background="Transparent"
+                        Foreground="Black"
+                        Text="{Binding WeaponsAmount}" />
 
                 </Border>
 
@@ -192,39 +214,43 @@
 
         </Border>
 
-        <Border Grid.Column="5"
-                Grid.Row="1"
-                Height="50"
-                CornerRadius="6"
-                Width="50"
-                Margin="5,0"
-                Opacity="{Binding HelmetOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterHelmetColor}"
-                x:Name="Helmet">
+        <Border
+            Grid.Column="5"
+            Grid.Row="1"
+            Height="50"
+            CornerRadius="6"
+            Width="50"
+            Margin="5,0"
+            Opacity="{Binding HelmetOpacity}"
+            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterHelmetColor}"
+            x:Name="Helmet">
 
             <Grid>
 
-                <Image MaxHeight="50"
-                       MaxWidth="50"
-                       Source="../../Assets/Images/helmet.png" />
+                <Image
+                    MaxHeight="50"
+                    MaxWidth="50"
+                    Source="../../Assets/Images/helmet.png" />
 
-                <Border Width="20"
-                        Height="20"
-                        Visibility="{Binding AmountsVisibility}"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Right"
-                        CornerRadius="50"
-                        Background="White">
+                <Border
+                    Width="20"
+                    Height="20"
+                    Visibility="{Binding AmountsVisibility}"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    CornerRadius="50"
+                    Background="White">
 
-                    <TextBlock FontSize="18"
-                               FontFamily="Segoe UI"
-                               FontWeight="DemiBold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               TextAlignment="Center"
-                               Background="Transparent"
-                               Foreground="Black"
-                               Text="{Binding HelmetsAmount}" />
+                    <TextBlock
+                        FontSize="18"
+                        FontFamily="Segoe UI"
+                        FontWeight="DemiBold"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center"
+                        Background="Transparent"
+                        Foreground="Black"
+                        Text="{Binding HelmetsAmount}" />
 
                 </Border>
 
@@ -232,39 +258,43 @@
 
         </Border>
 
-        <Border Grid.Column="8"
-                Grid.Row="1"
-                Height="50"
-                CornerRadius="6"
-                Width="50"
-                Margin="5,0"
-                Opacity="{Binding RingsOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterRingColor}"
-                x:Name="Rings">
+        <Border
+            Grid.Column="8"
+            Grid.Row="1"
+            Height="50"
+            CornerRadius="6"
+            Width="50"
+            Margin="5,0"
+            Opacity="{Binding RingsOpacity}"
+            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterRingColor}"
+            x:Name="Rings">
 
             <Grid>
 
-                <Image MaxHeight="50"
-                       MaxWidth="50"
-                       Source="../../Assets/Images/ring.png" />
+                <Image
+                    MaxHeight="50"
+                    MaxWidth="50"
+                    Source="../../Assets/Images/ring.png" />
 
-                <Border Width="20"
-                        Height="20"
-                        Visibility="{Binding AmountsVisibility}"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Right"
-                        CornerRadius="50"
-                        Background="White">
+                <Border
+                    Width="20"
+                    Height="20"
+                    Visibility="{Binding AmountsVisibility}"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    CornerRadius="50"
+                    Background="White">
 
-                    <TextBlock FontSize="18"
-                               FontFamily="Segoe UI"
-                               FontWeight="DemiBold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               TextAlignment="Center"
-                               Background="Transparent"
-                               Foreground="Black"
-                               Text="{Binding RingsAmount}" />
+                    <TextBlock
+                        FontSize="18"
+                        FontFamily="Segoe UI"
+                        FontWeight="DemiBold"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center"
+                        Background="Transparent"
+                        Foreground="Black"
+                        Text="{Binding RingsAmount}" />
 
                 </Border>
 
@@ -272,39 +302,43 @@
 
         </Border>
 
-        <Border Grid.Column="9"
-                Grid.Row="1"
-                Height="50"
-                CornerRadius="6"
-                Width="50"
-                Margin="5,0"
-                Opacity="{Binding AmuletsOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterAmuletColor}"
-                x:Name="Amulet">
+        <Border
+            Grid.Column="9"
+            Grid.Row="1"
+            Height="50"
+            CornerRadius="6"
+            Width="50"
+            Margin="5,0"
+            Opacity="{Binding AmuletsOpacity}"
+            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterAmuletColor}"
+            x:Name="Amulet">
 
             <Grid>
 
-                <Image MaxHeight="50"
-                       MaxWidth="50"
-                       Source="../../Assets/Images/amulet.png" />
+                <Image
+                    MaxHeight="50"
+                    MaxWidth="50"
+                    Source="../../Assets/Images/amulet.png" />
 
-                <Border Width="20"
-                        Height="20"
-                        Visibility="{Binding AmountsVisibility}"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Right"
-                        CornerRadius="50"
-                        Background="White">
+                <Border
+                    Width="20"
+                    Height="20"
+                    Visibility="{Binding AmountsVisibility}"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    CornerRadius="50"
+                    Background="White">
 
-                    <TextBlock FontSize="18"
-                               FontFamily="Segoe UI"
-                               FontWeight="DemiBold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               TextAlignment="Center"
-                               Background="Transparent"
-                               Foreground="Black"
-                               Text="{Binding AmuletsAmount}" />
+                    <TextBlock
+                        FontSize="18"
+                        FontFamily="Segoe UI"
+                        FontWeight="DemiBold"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center"
+                        Background="Transparent"
+                        Foreground="Black"
+                        Text="{Binding AmuletsAmount}" />
 
                 </Border>
 
@@ -312,35 +346,39 @@
 
         </Border>
 
-        <Border Grid.Column="10"
-                Grid.Row="1"
-                Height="50"
-                CornerRadius="6"
-                Width="50"
-                Margin="5,0"
-                Opacity="{Binding BeltsOpacity}"
-                Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBeltColor}"
-                x:Name="Belt">
+        <Border
+            Grid.Column="10"
+            Grid.Row="1"
+            Height="50"
+            CornerRadius="6"
+            Width="50"
+            Margin="5,0"
+            Opacity="{Binding BeltsOpacity}"
+            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBeltColor}"
+            x:Name="Belt">
 
             <Grid>
 
-                <Image MaxHeight="50"
-                       MaxWidth="50"
-                       Source="../../Assets/Images/belt.png" />
+                <Image
+                    MaxHeight="50"
+                    MaxWidth="50"
+                    Source="../../Assets/Images/belt.png" />
 
-                <Border Width="20" Height="20"
-                        Visibility="{Binding AmountsVisibility}"
-                        VerticalAlignment="Top" HorizontalAlignment="Right" CornerRadius="50" Background="White">
+                <Border
+                    Width="20" Height="20"
+                    Visibility="{Binding AmountsVisibility}"
+                    VerticalAlignment="Top" HorizontalAlignment="Right" CornerRadius="50" Background="White">
 
-                    <TextBlock FontSize="18"
-                               FontFamily="Segoe UI"
-                               FontWeight="DemiBold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               TextAlignment="Center"
-                               Background="Transparent"
-                               Foreground="Black"
-                               Text="{Binding BeltsAmount}" />
+                    <TextBlock
+                        FontSize="18"
+                        FontFamily="Segoe UI"
+                        FontWeight="DemiBold"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center"
+                        Background="Transparent"
+                        Foreground="Black"
+                        Text="{Binding BeltsAmount}" />
 
                 </Border>
 
@@ -348,93 +386,111 @@
 
         </Border>
 
-        <Button x:Name="RefreshButton"
-                Click="FetchButton_Click"
-                Width="50"
-                IsEnabled="{Binding FetchButtonEnabled}"
-                Grid.Column="11"
-                Grid.Row="1"
-                Content="Fetch"
-                Margin="5,0" />
+        <Button
+            x:Name="RefreshButton"
+            Click="FetchButton_Click"
+            Width="50"
+            IsEnabled="{Binding FetchButtonEnabled}"
+            Grid.Column="11"
+            Grid.Row="1"
+            Content="Fetch"
+            Margin="5,0" />
 
-        <Button x:Name="ReloadFilterButton"
-                Click="ReloadFilterButton_Click"
-                Width="50"
-                Grid.Column="12"
-                Grid.Row="1"
-                Margin="5,0">
+        <Button
+            x:Name="ReloadFilterButton"
+            Click="ReloadFilterButton_Click"
+            Width="50"
+            Grid.Column="12"
+            Grid.Row="1"
+            Margin="5,0">
 
             <!-- Conditional rendering for 'Reload Filter' button -->
             <Button.Style>
+
                 <Style TargetType="{x:Type Button}">
+
                     <Setter Property="Visibility" Value="Visible" />
+
                     <Style.Triggers>
+
                         <DataTrigger
                             Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}"
                             Value="False">
+
                             <Setter Property="Visibility" Value="Collapsed" />
+
                         </DataTrigger>
+
                     </Style.Triggers>
+
                 </Style>
+
             </Button.Style>
 
             <TextBlock TextAlignment="Center">Reload<LineBreak />Filter</TextBlock>
 
         </Button>
 
-        <Button x:Name="OpenStashTabOverlay"
-                Click="OpenStashTabOverlay_Click"
-                Width="50"
-                Grid.Column="1"
-                Grid.Row="1"
-                Content="{Binding OpenStashOverlayButtonContent}"
-                Margin="5,0" />
+        <Button
+            x:Name="OpenStashTabOverlay"
+            Click="OpenStashTabOverlay_Click"
+            Width="50"
+            Grid.Column="1"
+            Grid.Row="1"
+            Content="{Binding OpenStashOverlayButtonContent}"
+            Margin="5,0" />
 
-        <UniformGrid Grid.Row="1"
-                     Grid.Column="2"
-                     Height="50"
-                     Width="50"
-                     Columns="1"
-                     Rows="2"
-                     Margin="5,0"
-                     Background="White">
+        <UniformGrid
+            Grid.Row="1"
+            Grid.Column="2"
+            Height="50"
+            Width="50"
+            Columns="1"
+            Rows="2"
+            Margin="5,0"
+            Background="White">
 
-            <TextBlock TextAlignment="Center"
-                       VerticalAlignment="Center"
-                       Text="Sets" />
+            <TextBlock
+                TextAlignment="Center"
+                VerticalAlignment="Center"
+                Text="Sets" />
 
-            <TextBlock x:Name="FullSetsTextBlock"
-                       Text="{Binding FullSetsText}"
-                       VerticalAlignment="Center"
-                       TextAlignment="Center" />
+            <TextBlock
+                x:Name="FullSetsTextBlock"
+                Text="{Binding FullSetsText}"
+                VerticalAlignment="Center"
+                TextAlignment="Center" />
 
         </UniformGrid>
 
-        <ProgressBar Grid.Column="1"
-                     Grid.ColumnSpan="12"
-                     Grid.Row="2"
-                     Height="5"
-                     Minimum="0"
-                     Maximum="10"
-                     IsIndeterminate="{Binding IsIndeterminate}"
-                     Margin="10,10,10,0"
-                     Foreground="Aqua"
-                     Background="AntiqueWhite"
-                     BorderThickness="0,0,0,0"
-                     x:Name="OverlayProgressBar" />
+        <ProgressBar
+            Grid.Column="1"
+            Grid.ColumnSpan="12"
+            Grid.Row="2"
+            Height="5"
+            Minimum="0"
+            Maximum="10"
+            IsIndeterminate="{Binding IsIndeterminate}"
+            Margin="10,10,10,0"
+            Foreground="Aqua"
+            Background="AntiqueWhite"
+            BorderThickness="0,0,0,0"
+            x:Name="OverlayProgressBar" />
 
-        <Border Grid.Column="4"
-                Grid.ColumnSpan="6"
-                Grid.Row="0"
-                CornerRadius="5"
-                Background="White"
-                Margin="0,0,0,4"
-                Visibility="{Binding WarningMessageVisibility}">
+        <Border
+            Grid.Column="4"
+            Grid.ColumnSpan="6"
+            Grid.Row="0"
+            CornerRadius="5"
+            Background="White"
+            Margin="0,0,0,4"
+            Visibility="{Binding WarningMessageVisibility}">
 
-            <TextBlock VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       Text="{Binding WarningMessage}"
-                       FontSize="16" />
+            <TextBlock
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Text="{Binding WarningMessage}"
+                FontSize="16" />
 
         </Border>
 
