@@ -12,10 +12,13 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
 
         public PathOfExileForm()
         {
+            DataContext = this;
             InitializeComponent();
-            
+
             // Populate the league dropdown
             if (!Settings.Default.CustomLeagueEnabled) MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
+
+            LoadCustomLeagueInputVisibility();
         }
 
         public Visibility MainLeagueVisible
@@ -53,7 +56,6 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
         private void CustomLeagueCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             Settings.Default.CustomLeagueEnabled = false;
-            MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
             LoadCustomLeagueInputVisibility();
         }
 
