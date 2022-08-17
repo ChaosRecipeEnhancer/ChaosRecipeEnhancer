@@ -59,7 +59,9 @@ namespace ChaosRecipeEnhancer.UI.View
         private readonly SetTrackerOverlayView _setTrackerOverlayView;
         private readonly StashTabOverlayView _stashTabOverlayView;
 
-        private const string AppVersion = "1.6.0";
+        // This version # should match up with the format for Assembly version # (3 dots, 4 digits), or else you'll get spammed for AutoUpdates
+        private const string AppVersion = "1.6.0.0";
+        
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
         // ReSharper disable once UnusedMember.Local
