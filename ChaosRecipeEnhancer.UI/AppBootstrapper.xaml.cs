@@ -33,8 +33,9 @@ namespace ChaosRecipeEnhancer.UI
             {
                 Settings.Default.Upgrade();
                 Settings.Default.UpgradeSettingsAfterUpdate = false;
+                Settings.Default.Save();
             }
-            
+
             const string outputTemplate =
                 "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} | Level:{Level} | ThreadId:{ThreadId} | ContextValue:{ContextValue} | SourceContext:{SourceContext}] {Message}{NewLine}{Exception}";
             const string debugOutputTemplate =

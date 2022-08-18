@@ -60,7 +60,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private readonly StashTabOverlayView _stashTabOverlayView;
 
         // This version # should match up with the format for Assembly version # (3 dots, 4 digits), or else you'll get spammed for AutoUpdates
-        private const string AppVersion = "1.6.0.0";
+        private const string AppVersion = "1.6.0.1";
         
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
