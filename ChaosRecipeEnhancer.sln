@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution 
 		.gitignore = .gitignore
 		CHANGELOG.md = CHANGELOG.md
 		README.md = README.md
+		LICENSE.md = LICENSE.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChaosRecipeEnhancer.DataModels", "ChaosRecipeEnhancer.DataModels\ChaosRecipeEnhancer.DataModels.csproj", "{4FE898A7-2AF2-4169-AA88-68591CE59B82}"
