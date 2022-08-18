@@ -37,9 +37,9 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/Stash-Tab-Overlay.gif" width="500" alt="Stash Tab Overlay">
 
-#### Main Overlay & Loot Filter Manipulation
+#### Set Tracker Overlay & Loot Filter Manipulation
 
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/Main-Overlay.png" width="500" alt="Main Overlay">
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
 
 ## Copyright
 
