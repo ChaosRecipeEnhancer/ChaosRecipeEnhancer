@@ -490,78 +490,138 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static void ActivateNextCell(bool active, Cell cell, TabControl tabControl)
         {
-            if (active)
+            if (!active || tabControl == null) return;
+            
+            var currentlySelectedStashOverlayTabName = ((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text;
+
+            //activate cell by cell / item by item
+            if (Settings.Default.StashTabOverlayHighlightMode == 0)
             {
-                var currentlySelectedStashOverlayTabName = tabControl != null
-                    ? ((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text
-                    : "";
-
-                //activate cell by cell / item by item
-                if (Settings.Default.StashTabOverlayHighlightMode == 0)
+                foreach (var s in StashTabList.StashTabs)
                 {
-                    foreach (var s in StashTabList.StashTabs)
-                    {
-                        s.DeactivateItemCells();
-                        s.TabHeaderColor = Brushes.Transparent;
-                    }
+                    s.DeactivateItemCells();
+                    s.TabHeaderColor = Brushes.Transparent;
+                }
 
-                    // remove and sound if itemlist empty
-                    if (ItemSetListHighlight.Count > 0)
+                // remove and sound if itemlist empty
+                if (ItemSetListHighlight.Count > 0)
+                {
+                    if (ItemSetListHighlight[0].ItemList.Count == 0)
                     {
-                        if (ItemSetListHighlight[0].ItemList.Count == 0)
+                        ItemSetListHighlight.RemoveAt(0);
+                        PlayerSet.Dispatcher.Invoke(() => { PlayNotificationSoundSetPicked(); });
+                    }
+                }
+                else
+                {
+                    if (ItemSetListHighlight.Count > 0)
+                        PlayerSet.Dispatcher.Invoke(() => { PlayNotificationSoundSetPicked(); });
+                }
+
+                // next item if itemlist not empty
+                if (ItemSetListHighlight.Count > 0)
+                {
+                    if (ItemSetListHighlight[0].ItemList.Count > 0 &&
+                        ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
+                    {
+                        var highlightItem = ItemSetListHighlight[0].ItemList[0];
+                        var currentTab = GetStashTabFromItem(highlightItem);
+
+                        if (currentTab != null)
                         {
-                            ItemSetListHighlight.RemoveAt(0);
-                            PlayerSet.Dispatcher.Invoke(() => { PlayNotificationSoundSetPicked(); });
+                            currentTab.ActivateItemCells(highlightItem);
+
+                            Trace.WriteLine(
+                                $"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
+                            Trace.WriteLine(
+                                $"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
+
+                            if (currentTab.TabName != currentlySelectedStashOverlayTabName &&
+                                Settings.Default.StashTabOverlayHighlightColor != "")
+                                currentTab.TabHeaderColor = new SolidColorBrush(
+                                    (Color)ColorConverter.ConvertFromString(Settings.Default
+                                        .StashTabOverlayHighlightColor));
+                            else
+                                currentTab.TabHeaderColor = Brushes.Transparent;
+
+                            ItemSetListHighlight[0].ItemList.RemoveAt(0);
                         }
                     }
-                    else
-                    {
-                        if (ItemSetListHighlight.Count > 0)
-                            PlayerSet.Dispatcher.Invoke(() => { PlayNotificationSoundSetPicked(); });
-                    }
+                }
+            }
+            // activate whole set
+            else if (Settings.Default.StashTabOverlayHighlightMode == 1)
+            {
+                if (ItemSetListHighlight.Count > 0)
+                {
+                    Trace.WriteLine(ItemSetListHighlight[0].ItemList.Count,
+                        "[Data: ActivateNextCell()]: item list count");
+                    Trace.WriteLine(ItemSetListHighlight.Count, "[Data: ActivateNextCell()]: item set list count");
 
-                    // next item if itemlist not empty
-                    if (ItemSetListHighlight.Count > 0)
+                    // check for full sets
+                    if (ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
                     {
-                        if (ItemSetListHighlight[0].ItemList.Count > 0 &&
-                            ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
+                        if (cell != null)
                         {
-                            var highlightItem = ItemSetListHighlight[0].ItemList[0];
+                            var highlightItem = cell.CellItem;
                             var currentTab = GetStashTabFromItem(highlightItem);
 
                             if (currentTab != null)
                             {
-                                currentTab.ActivateItemCells(highlightItem);
+                                currentTab.DeactivateSingleItemCells(cell.CellItem);
+                                ItemSetListHighlight[0].ItemList.Remove(highlightItem);
+                            }
+                        }
+
+                        foreach (var i in ItemSetListHighlight[0].ItemList)
+                        {
+                            var currTab = GetStashTabFromItem(i);
+                            currTab.ActivateItemCells(i);
+                        }
+
+                        // mark item order
+                        if (ItemSetListHighlight[0] != null)
+                        {
+                            if (ItemSetListHighlight[0].ItemList.Count > 0)
+                            {
+                                var cTab = GetStashTabFromItem(ItemSetListHighlight[0].ItemList[0]);
+                                cTab.MarkNextItem(ItemSetListHighlight[0].ItemList[0]);
 
                                 Trace.WriteLine(
                                     $"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
                                 Trace.WriteLine(
                                     $"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
 
-                                if (currentTab.TabName != currentlySelectedStashOverlayTabName &&
+                                if (cTab.TabName != currentlySelectedStashOverlayTabName &&
                                     Settings.Default.StashTabOverlayHighlightColor != "")
-                                    currentTab.TabHeaderColor = new SolidColorBrush(
+                                    cTab.TabHeaderColor = new SolidColorBrush(
                                         (Color)ColorConverter.ConvertFromString(Settings.Default
                                             .StashTabOverlayHighlightColor));
                                 else
-                                    currentTab.TabHeaderColor = Brushes.Transparent;
-
-                                ItemSetListHighlight[0].ItemList.RemoveAt(0);
+                                    cTab.TabHeaderColor = Brushes.Transparent;
                             }
+                        }
+
+                        // Set has been completed
+                        if (ItemSetListHighlight[0].ItemList.Count == 0)
+                        {
+                            ItemSetListHighlight.RemoveAt(0);
+
+                            // activate next set
+                            ActivateNextCell(true, null, null);
+                            PlayerSet.Dispatcher.Invoke(() => { PlayNotificationSoundSetPicked(); });
                         }
                     }
                 }
-                // activate whole set
-                else if (Settings.Default.StashTabOverlayHighlightMode == 1)
+            }
+            else if (Settings.Default.StashTabOverlayHighlightMode == 2)
+            {
+                //activate all cells at once
+                if (ItemSetListHighlight.Count > 0)
                 {
-                    if (ItemSetListHighlight.Count > 0)
+                    foreach (var set in ItemSetListHighlight)
                     {
-                        Trace.WriteLine(ItemSetListHighlight[0].ItemList.Count,
-                            "[Data: ActivateNextCell()]: item list count");
-                        Trace.WriteLine(ItemSetListHighlight.Count, "[Data: ActivateNextCell()]: item set list count");
-
-                        // check for full sets
-                        if (ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
+                        if (set.EmptyItemSlots.Count == 0)
                         {
                             if (cell != null)
                             {
@@ -571,71 +631,8 @@ namespace ChaosRecipeEnhancer.UI.Model
                                 if (currentTab != null)
                                 {
                                     currentTab.DeactivateSingleItemCells(cell.CellItem);
+                                    currentTab.TabHeaderColor = Brushes.Transparent;
                                     ItemSetListHighlight[0].ItemList.Remove(highlightItem);
-                                }
-                            }
-
-                            foreach (var i in ItemSetListHighlight[0].ItemList)
-                            {
-                                var currTab = GetStashTabFromItem(i);
-                                currTab.ActivateItemCells(i);
-                            }
-
-                            // mark item order
-                            if (ItemSetListHighlight[0] != null)
-                            {
-                                if (ItemSetListHighlight[0].ItemList.Count > 0)
-                                {
-                                    var cTab = GetStashTabFromItem(ItemSetListHighlight[0].ItemList[0]);
-                                    cTab.MarkNextItem(ItemSetListHighlight[0].ItemList[0]);
-
-                                    Trace.WriteLine(
-                                        $"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
-                                    Trace.WriteLine(
-                                        $"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
-
-                                    if (cTab.TabName != currentlySelectedStashOverlayTabName &&
-                                        Settings.Default.StashTabOverlayHighlightColor != "")
-                                        cTab.TabHeaderColor = new SolidColorBrush(
-                                            (Color)ColorConverter.ConvertFromString(Settings.Default
-                                                .StashTabOverlayHighlightColor));
-                                    else
-                                        cTab.TabHeaderColor = Brushes.Transparent;
-                                }
-                            }
-
-                            // Set has been completed
-                            if (ItemSetListHighlight[0].ItemList.Count == 0)
-                            {
-                                ItemSetListHighlight.RemoveAt(0);
-
-                                // activate next set
-                                ActivateNextCell(true, null, null);
-                                PlayerSet.Dispatcher.Invoke(() => { PlayNotificationSoundSetPicked(); });
-                            }
-                        }
-                    }
-                }
-                else if (Settings.Default.StashTabOverlayHighlightMode == 2)
-                {
-                    //activate all cells at once
-                    if (ItemSetListHighlight.Count > 0)
-                    {
-                        foreach (var set in ItemSetListHighlight)
-                        {
-                            if (set.EmptyItemSlots.Count == 0)
-                            {
-                                if (cell != null)
-                                {
-                                    var highlightItem = cell.CellItem;
-                                    var currentTab = GetStashTabFromItem(highlightItem);
-
-                                    if (currentTab != null)
-                                    {
-                                        currentTab.DeactivateSingleItemCells(cell.CellItem);
-                                        currentTab.TabHeaderColor = Brushes.Transparent;
-                                        ItemSetListHighlight[0].ItemList.Remove(highlightItem);
-                                    }
                                 }
                             }
                         }
