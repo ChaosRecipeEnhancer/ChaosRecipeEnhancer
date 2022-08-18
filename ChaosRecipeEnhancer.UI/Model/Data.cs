@@ -492,8 +492,10 @@ namespace ChaosRecipeEnhancer.UI.Model
         {
             if (active)
             {
-                var currentlySelectedStashOverlayTabName = ((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text;
-                
+                var currentlySelectedStashOverlayTabName = tabControl != null
+                    ? ((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text
+                    : "";
+
                 //activate cell by cell / item by item
                 if (Settings.Default.StashTabOverlayHighlightMode == 0)
                 {
@@ -530,12 +532,17 @@ namespace ChaosRecipeEnhancer.UI.Model
                             if (currentTab != null)
                             {
                                 currentTab.ActivateItemCells(highlightItem);
-                                
-                                Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
-                                Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
-                                
-                                if (currentTab.TabName != currentlySelectedStashOverlayTabName && Settings.Default.StashTabOverlayHighlightColor != "")
-                                    currentTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+
+                                Trace.WriteLine(
+                                    $"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
+                                Trace.WriteLine(
+                                    $"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
+
+                                if (currentTab.TabName != currentlySelectedStashOverlayTabName &&
+                                    Settings.Default.StashTabOverlayHighlightColor != "")
+                                    currentTab.TabHeaderColor = new SolidColorBrush(
+                                        (Color)ColorConverter.ConvertFromString(Settings.Default
+                                            .StashTabOverlayHighlightColor));
                                 else
                                     currentTab.TabHeaderColor = Brushes.Transparent;
 
@@ -549,7 +556,8 @@ namespace ChaosRecipeEnhancer.UI.Model
                 {
                     if (ItemSetListHighlight.Count > 0)
                     {
-                        Trace.WriteLine(ItemSetListHighlight[0].ItemList.Count, "[Data: ActivateNextCell()]: item list count");
+                        Trace.WriteLine(ItemSetListHighlight[0].ItemList.Count,
+                            "[Data: ActivateNextCell()]: item list count");
                         Trace.WriteLine(ItemSetListHighlight.Count, "[Data: ActivateNextCell()]: item set list count");
 
                         // check for full sets
@@ -581,11 +589,16 @@ namespace ChaosRecipeEnhancer.UI.Model
                                     var cTab = GetStashTabFromItem(ItemSetListHighlight[0].ItemList[0]);
                                     cTab.MarkNextItem(ItemSetListHighlight[0].ItemList[0]);
 
-                                    Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
-                                    Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
+                                    Trace.WriteLine(
+                                        $"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
+                                    Trace.WriteLine(
+                                        $"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
 
-                                    if (cTab.TabName != currentlySelectedStashOverlayTabName && Settings.Default.StashTabOverlayHighlightColor != "")
-                                        cTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                                    if (cTab.TabName != currentlySelectedStashOverlayTabName &&
+                                        Settings.Default.StashTabOverlayHighlightColor != "")
+                                        cTab.TabHeaderColor = new SolidColorBrush(
+                                            (Color)ColorConverter.ConvertFromString(Settings.Default
+                                                .StashTabOverlayHighlightColor));
                                     else
                                         cTab.TabHeaderColor = Brushes.Transparent;
                                 }
