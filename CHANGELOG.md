@@ -1,6 +1,6 @@
 ## Change Log
 
-#### 1.6.0.1 (Hotfix)
+#### 1.6.0.2 (Hotfix)
 
 - fixed null pointer exception thrown when completing set collection in the stash tab overlay (specifically when using the 'Set by Set' or 'All Items' highlighting modes) (Thanks to hakaisu on Discord for reporting this bug!)
 
