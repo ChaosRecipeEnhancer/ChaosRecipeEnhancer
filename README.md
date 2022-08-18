@@ -12,7 +12,7 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 [![Discord][discord-badge]][discord-link]
 [![Support][support-badge]][support-link]
 
-## User Guide
+## User Guide (Video)
 
 <a href="https://www.youtube.com/watch?v=7umgTuN8bMU">
     <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
