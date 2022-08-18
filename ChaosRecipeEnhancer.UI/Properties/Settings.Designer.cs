@@ -813,5 +813,17 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["DebugMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UpgradeSettingsAfterUpdate {
+            get {
+                return ((bool)(this["UpgradeSettingsAfterUpdate"]));
+            }
+            set {
+                this["UpgradeSettingsAfterUpdate"] = value;
+            }
+        }
     }
 }

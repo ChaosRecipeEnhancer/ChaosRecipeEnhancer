@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?define ProductVersion = "1.6.0.0"?>
+<?define ProductVersion = "1.6.0.1"?>
 <?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
@@ -11,8 +11,12 @@
 	<Product Id="*" Name="ChaosRecipeEnhancer" Language="1033" Version="$(var.ProductVersion)" Manufacturer="CRETeam"
              UpgradeCode="$(var.UpgradeCode)">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
-		<MajorUpgrade AllowSameVersionUpgrades="no" Schedule="afterInstallInitialize"
-                      DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
+		
+		<MajorUpgrade
+				AllowSameVersionUpgrades="yes"
+				Schedule="afterInstallInitialize"
+				DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
+		
 		<MediaTemplate EmbedCab="yes"/>
 		<!-- We can't do 4.8 check because Wix is garbage -->
 		<PropertyRef Id="WIX_IS_NETFRAMEWORK_462_OR_LATER_INSTALLED"/>

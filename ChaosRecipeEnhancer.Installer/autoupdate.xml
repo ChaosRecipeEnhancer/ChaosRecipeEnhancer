@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
-    <version>1.6.0.0</version>
+    <version>1.6.0.1</version>
     <url>
+        <!-- Production Config -->
         https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/ChaosRecipeEnhancer.Installer/ChaosRecipeEnhancerSetup.msi?raw=true
+
+        <!-- Testing Config (Point to your testing branch) -->
+        <!-- https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/{YOUR BRANCH HERE}/ChaosRecipeEnhancer.Installer/ChaosRecipeEnhancerSetup.msi?raw=true -->
     </url>
     <mandatory>false</mandatory>
 </item>

@@ -29,6 +29,13 @@ namespace ChaosRecipeEnhancer.UI
 
         protected void OnApplicationStartup(object sender, StartupEventArgs e)
         {
+            if (Settings.Default.UpgradeSettingsAfterUpdate)
+            {
+                Settings.Default.Upgrade();
+                Settings.Default.UpgradeSettingsAfterUpdate = false;
+                Settings.Default.Save();
+            }
+
             const string outputTemplate =
                 "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} | Level:{Level} | ThreadId:{ThreadId} | ContextValue:{ContextValue} | SourceContext:{SourceContext}] {Message}{NewLine}{Exception}";
             const string debugOutputTemplate =
