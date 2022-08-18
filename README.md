@@ -12,6 +12,12 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 [![Discord][discord-badge]][discord-link]
 [![Support][support-badge]][support-link]
 
+## User Guide
+
+<a href="https://www.youtube.com/watch?v=7umgTuN8bMU">
+    <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
+</a>
+
 ## Installation
 
 1. Make sure you've installed the latest [.NET Framework Runtime][dotnet-framework-link]
