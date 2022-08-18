@@ -77,14 +77,14 @@ namespace ChaosRecipeEnhancer.UI.Model
 
             // TODO: crashes here after some time
             foreach (var s in StashTabList.StashTabs)
-            foreach (var i in (List<Item>)Utility.GetPropertyValue(s, listName))
-                if (set.GetNextItemClass() == i.ItemType || (!honorOrder && set.IsValidItem(i)))
-                    if (set.GetItemDistance(i) < minDistance)
-                    {
-                        //Trace.WriteLine(minDistance, "minDistance");
-                        minDistance = set.GetItemDistance(i);
-                        minItem = i;
-                    }
+                foreach (var i in (List<Item>)Utility.GetPropertyValue(s, listName))
+                    if (set.GetNextItemClass() == i.ItemType || (!honorOrder && set.IsValidItem(i)))
+                        if (set.GetItemDistance(i) < minDistance)
+                        {
+                            //Trace.WriteLine(minDistance, "minDistance");
+                            minDistance = set.GetItemDistance(i);
+                            minItem = i;
+                        }
 
             if (minItem != null)
             {
@@ -103,14 +103,14 @@ namespace ChaosRecipeEnhancer.UI.Model
                 {
                     nextItemType = "OneHandWeapons";
                     foreach (var s in StashTabList.StashTabs)
-                    foreach (var i in (List<Item>)Utility.GetPropertyValue(s, listName))
-                        if (nextItemType == i.ItemType)
-                            if (set.GetItemDistance(i) < minDistance)
-                            {
-                                //Trace.WriteLine(minDistance, "minDistance");
-                                minDistance = set.GetItemDistance(i);
-                                minItem = i;
-                            }
+                        foreach (var i in (List<Item>)Utility.GetPropertyValue(s, listName))
+                            if (nextItemType == i.ItemType)
+                                if (set.GetItemDistance(i) < minDistance)
+                                {
+                                    //Trace.WriteLine(minDistance, "minDistance");
+                                    minDistance = set.GetItemDistance(i);
+                                    minItem = i;
+                                }
 
                     if (minItem != null)
                     {
@@ -490,9 +490,10 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static void ActivateNextCell(bool active, Cell cell, TabControl tabControl)
         {
-            if (!active || tabControl == null) return;
-            
-            var currentlySelectedStashOverlayTabName = ((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text;
+            if (!active) return;
+            var currentlySelectedStashOverlayTabName = tabControl != null
+                ? ((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text
+                : "";
 
             //activate cell by cell / item by item
             if (Settings.Default.StashTabOverlayHighlightMode == 0)
@@ -531,10 +532,11 @@ namespace ChaosRecipeEnhancer.UI.Model
                         {
                             currentTab.ActivateItemCells(highlightItem);
 
-                            Trace.WriteLine(
-                                $"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
-                            Trace.WriteLine(
-                                $"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
+                            // if (tabControl != null)
+                            // {
+                            //     Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
+                            //     Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
+                            // }
 
                             if (currentTab.TabName != currentlySelectedStashOverlayTabName &&
                                 Settings.Default.StashTabOverlayHighlightColor != "")
@@ -587,16 +589,16 @@ namespace ChaosRecipeEnhancer.UI.Model
                                 var cTab = GetStashTabFromItem(ItemSetListHighlight[0].ItemList[0]);
                                 cTab.MarkNextItem(ItemSetListHighlight[0].ItemList[0]);
 
-                                Trace.WriteLine(
-                                    $"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
-                                Trace.WriteLine(
-                                    $"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
+                                // if (tabControl != null)
+                                // {
+                                //     Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
+                                //     Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
+                                // }
 
                                 if (cTab.TabName != currentlySelectedStashOverlayTabName &&
                                     Settings.Default.StashTabOverlayHighlightColor != "")
                                     cTab.TabHeaderColor = new SolidColorBrush(
-                                        (Color)ColorConverter.ConvertFromString(Settings.Default
-                                            .StashTabOverlayHighlightColor));
+                                        (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
                                 else
                                     cTab.TabHeaderColor = Brushes.Transparent;
                             }
