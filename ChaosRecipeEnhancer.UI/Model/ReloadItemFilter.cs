@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using ChaosRecipeEnhancer.App.Native;
 using ChaosRecipeEnhancer.UI.Model.Utils;
 using ChaosRecipeEnhancer.UI.Properties;
-using Clipboard = System.Windows.Clipboard;
 // REF: https://stackoverflow.com/a/1635680
 using HWND = System.IntPtr;
 
@@ -62,14 +61,8 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static void ReloadFilter()
         {
-            // Saving state of current clipboard
-            // TODO How does this work if you have non-text on your clipboard?
-            var oldClipboard = Clipboard.GetText();
-
             var chatCommand = BuildFilterReloadCommand();
             if (chatCommand is null) return;
-
-            ClipboardNative.CopyTextToClipboard(chatCommand);
 
             // Map all current window names to their associated "handle to a window" pointers (HWND)
             var openWindows = GetOpenWindows();
@@ -95,11 +88,8 @@ namespace ChaosRecipeEnhancer.UI.Model
 
             // Compose a series of commands we send to the game window (the in-game chat box, specifically)
             SendKeys.SendWait("{ENTER}");
-            SendKeys.SendWait("^(v)");
+            SendKeys.SendWait(chatCommand);
             SendKeys.SendWait("{ENTER}");
-
-            // restore clipboard
-            Clipboard.SetDataObject(oldClipboard);
         }
 
         private static string BuildFilterReloadCommand()
