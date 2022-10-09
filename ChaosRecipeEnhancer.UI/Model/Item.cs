@@ -46,6 +46,8 @@ namespace ChaosRecipeEnhancer.UI.Model
                 case "Weapons":
                 case "Armours":
                     itemClass = iconParts[2];
+                    if(itemClass == "Shields")
+                        itemClass = "OneHandWeapons";
                     break;
                 case "Rings":
                 case "Amulets":
