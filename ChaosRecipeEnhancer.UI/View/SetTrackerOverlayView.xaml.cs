@@ -17,23 +17,6 @@ namespace ChaosRecipeEnhancer.UI.View
     /// </summary>
     public partial class SetTrackerOverlayView : INotifyPropertyChanged
     {
-        #region Constructors
-
-        public SetTrackerOverlayView()
-        {
-            _logger = Log.ForContext<SetTrackerOverlayView>();
-            _logger.Debug("Constructing ChaosRecipeEnhancer");
-
-            InitializeComponent();
-
-            DataContext = this;
-            FullSetsText = "0";
-
-            _logger.Debug("ChaosRecipeEnhancer constructed successfully");
-        }
-
-        #endregion
-
         #region Fields
 
         private readonly ILogger _logger;
@@ -83,6 +66,21 @@ namespace ChaosRecipeEnhancer.UI.View
         private static bool CalculationActive { get; set; }
 
         private static LogWatcher Watcher { get; set; }
+
+        #endregion
+        
+        #region Constructors
+
+        public SetTrackerOverlayView()
+        {
+            _logger = Log.ForContext<SetTrackerOverlayView>();
+            _logger.Debug("Constructing ChaosRecipeEnhancer");
+
+            DataContext = this;
+            InitializeComponent();
+            
+            _logger.Debug("ChaosRecipeEnhancer constructed successfully");
+        }
 
         #endregion
 
@@ -390,18 +388,18 @@ namespace ChaosRecipeEnhancer.UI.View
         {
             setTrackerOverlayView.WarningMessage = "";
             setTrackerOverlayView.ShadowOpacity = 0;
-            setTrackerOverlayView.WarningMessageVisibility = Visibility.Hidden;
+            setTrackerOverlayView.WarningMessageVisibility = Visibility.Collapsed;
         }
 
         private async void FetchData()
         {
             if (FetchingActive) return;
 
-            if (!Settings.Default.ChaosRecipeTrackingEnabled && !Settings.Default.RegalRecipeTrackingEnabled &&
+            if (!Settings.Default.ChaosRecipeTrackingEnabled &&
+                !Settings.Default.RegalRecipeTrackingEnabled &&
                 !Settings.Default.ExaltedShardRecipeTrackingEnabled)
             {
-                MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -504,11 +502,6 @@ namespace ChaosRecipeEnhancer.UI.View
                     MessageBox.Show("Missing Stash Query Settings!" + Environment.NewLine +
                                     "Please set stash tab suffix.");
                     return;
-
-                // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-                // case 3 when Settings.Default.StashFolderName == "":
-                //     MessageBox.Show("Missing Stash Query Settings!" + Environment.NewLine + "Please set stash tab folder name.");
-                //     return;
             }
 
             if (CalculationActive)
@@ -542,45 +535,37 @@ namespace ChaosRecipeEnhancer.UI.View
 
             Dispatcher.Invoke(() =>
             {
-                if (!Data.ActiveItems.HelmetActive)
-                    HelmetOpacity = DeactivatedOpacity;
-                else
-                    HelmetOpacity = ActivatedOpacity;
+                HelmetOpacity = !Data.ActiveItems.HelmetActive 
+                    ? DeactivatedOpacity 
+                    : ActivatedOpacity;
 
-                if (!Data.ActiveItems.GlovesActive)
-                    GlovesOpacity = DeactivatedOpacity;
-                else
-                    GlovesOpacity = ActivatedOpacity;
+                GlovesOpacity = !Data.ActiveItems.GlovesActive 
+                    ? DeactivatedOpacity 
+                    : ActivatedOpacity;
 
-                if (!Data.ActiveItems.BootsActive)
-                    BootsOpacity = DeactivatedOpacity;
-                else
-                    BootsOpacity = ActivatedOpacity;
+                BootsOpacity = !Data.ActiveItems.BootsActive 
+                    ? DeactivatedOpacity 
+                    : ActivatedOpacity;
 
-                if (!Data.ActiveItems.WeaponActive)
-                    WeaponsOpacity = DeactivatedOpacity;
-                else
-                    WeaponsOpacity = ActivatedOpacity;
+                WeaponsOpacity = !Data.ActiveItems.WeaponActive 
+                    ? DeactivatedOpacity 
+                    : ActivatedOpacity;
 
-                if (!Data.ActiveItems.ChestActive)
-                    ChestsOpacity = DeactivatedOpacity;
-                else
-                    ChestsOpacity = ActivatedOpacity;
+                ChestsOpacity = !Data.ActiveItems.ChestActive 
+                    ? DeactivatedOpacity 
+                    : ActivatedOpacity;
 
-                if (!Data.ActiveItems.RingActive)
-                    RingsOpacity = DeactivatedOpacity;
-                else
-                    RingsOpacity = ActivatedOpacity;
+                RingsOpacity = !Data.ActiveItems.RingActive 
+                    ? DeactivatedOpacity 
+                    : ActivatedOpacity;
 
-                if (!Data.ActiveItems.AmuletActive)
-                    AmuletsOpacity = DeactivatedOpacity;
-                else
-                    AmuletsOpacity = ActivatedOpacity;
+                AmuletsOpacity = !Data.ActiveItems.AmuletActive 
+                    ? DeactivatedOpacity 
+                    : ActivatedOpacity;
 
-                if (!Data.ActiveItems.BeltActive)
-                    BeltsOpacity = DeactivatedOpacity;
-                else
-                    BeltsOpacity = ActivatedOpacity;
+                BeltsOpacity = !Data.ActiveItems.BeltActive 
+                    ? DeactivatedOpacity 
+                    : ActivatedOpacity;
             });
         }
 

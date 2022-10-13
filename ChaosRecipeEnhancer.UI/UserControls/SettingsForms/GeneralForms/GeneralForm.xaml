@@ -23,25 +23,25 @@
 
         <Grid.RowDefinitions>
 
-            <RowDefinition Height="10" />   <!-- Row 1 -->
-            <RowDefinition Height="30" />   <!-- Row 2 -->
-            <RowDefinition Height="5" />    <!-- Row 3 -->
-            <RowDefinition Height="25" />   <!-- Row 4 -->
-            <RowDefinition Height="5" />    <!-- Row 5 -->
-            <RowDefinition Height="25" />   <!-- Row 6 -->
-            <RowDefinition Height="5" />    <!-- Row 7 -->
-            <RowDefinition Height="25" />   <!-- Row 8 -->
-            <RowDefinition Height="5" />    <!-- Row 9 -->
-            <RowDefinition Height="25" />   <!-- Row 10 -->
-            <RowDefinition Height="5" />    <!-- Row 11 -->
-            <RowDefinition Height="25" />   <!-- Row 12 -->
-            <RowDefinition Height="5" />    <!-- Row 13 -->
-            <RowDefinition Height="25" />   <!-- Row 14 -->
-            <RowDefinition Height="5" />    <!-- Row 15 -->
-            <RowDefinition Height="25" />   <!-- Row 16 -->
-            <RowDefinition Height="5" />    <!-- Row 17 -->
-            <RowDefinition Height="25" />   <!-- Row 18 -->
-            <RowDefinition Height="5" />    <!-- Row 19 -->
+            <RowDefinition Height="10" />   <!-- Row 0 -->
+            <RowDefinition Height="30" />   <!-- Row 1 -->
+            <RowDefinition Height="5" />    <!-- Row 2 -->
+            <RowDefinition Height="25" />   <!-- Row 3 -->
+            <RowDefinition Height="5" />    <!-- Row 4 -->
+            <RowDefinition Height="25" />   <!-- Row 5 -->
+            <RowDefinition Height="5" />    <!-- Row 6 -->
+            <RowDefinition Height="25" />   <!-- Row 7 -->
+            <RowDefinition Height="5" />    <!-- Row 8 -->
+            <RowDefinition Height="25" />   <!-- Row 9 -->
+            <RowDefinition Height="5" />    <!-- Row 10 -->
+            <RowDefinition Height="25" />   <!-- Row 11 -->
+            <RowDefinition Height="5" />    <!-- Row 12 -->
+            <RowDefinition Height="Auto" />   <!-- Row 13 -->
+            <RowDefinition Height="5" />    <!-- Row 14 -->
+            <RowDefinition Height="25" />   <!-- Row 15 -->
+            <RowDefinition Height="5" />    <!-- Row 16 -->
+            <RowDefinition Height="25" />   <!-- Row 17 -->
+            <RowDefinition Height="5" />    <!-- Row 18 -->
 
         </Grid.RowDefinitions>
 
@@ -187,7 +187,7 @@
             Grid.Row="13"
             VerticalAlignment="Center"
             Text="PoE Client.txt File Location:"
-            ToolTipService.InitialShowDelay="50"
+            Visibility="{Binding FetchOnNewMapEnabled}"
             ToolTip="The standard path is: `C:/Programs/Grinding Gear Games/Path of Exile/logs/Client.txt`; it will be different for steam users." />
 
         <Button
@@ -196,7 +196,7 @@
             Grid.Row="13"
             Width="200"
             Click="LogLocationDialog_Click"
-            ToolTipService.InitialShowDelay="50"
+            Visibility="{Binding FetchOnNewMapEnabled}"
             ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=PathOfExileClientLogLocation, Mode=TwoWay}"
             Content="{Binding Source={x:Static properties:Settings.Default}, Path=PathOfExileClientLogLocation, Mode=TwoWay}"
             HorizontalContentAlignment="Left">
@@ -236,7 +236,6 @@
             Grid.Row="15"
             VerticalAlignment="Center"
             Text="Language:"
-            ToolTipService.InitialShowDelay="50"
             ToolTip="Fetch on new Map only works in the correct language. Set it to the same as your PoE client." />
 
         <ComboBox
@@ -263,7 +262,6 @@
             Grid.Row="17"
             VerticalAlignment="Center"
             Text="Close to Tray:"
-            ToolTipService.InitialShowDelay="50"
             ToolTip="Minimizes to Tray when closing the application." />
 
         <CheckBox
@@ -279,7 +277,6 @@
         <!--            Grid.Row="17" -->
         <!--            VerticalAlignment="Center" -->
         <!--            Text="Debug Mode:" -->
-        <!--            ToolTipService.InitialShowDelay="50" -->
         <!--            ToolTip="Enables logging to a file that you can give to the developers so they can better resolve your issue." /> -->
 
         <!-- <CheckBox x:Name="DebugMode" -->
