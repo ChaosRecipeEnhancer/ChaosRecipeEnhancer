@@ -2,7 +2,8 @@
 
 #### 1.6.1
 
-- removed clipboard integration when sending chat commands as it was causing users to paste clipboard into chat (thanks to [drifio](https://github.com/drifio))
+- removed clipboard integration when sending chat commands as it was causing users to paste clipboard into chat (thanks to [drifio](https://github.com/drifio) for your code contribution!)
+- fixing regal recipe lower item level threshold (thanks to [BananaFlambe](https://github.com/BananaFlambe) for your bug report)
 - fixing misalignment of sets text in the set tracker overlay
 - fixing empty padding that would stay after filling sets (or triggering any other message) when using the horizontal versions of the set tracker overlay, it now collapses after the message clears
 
