@@ -1,376 +1,387 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-    <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}</ProjectGuid>
-        <OutputType>WinExe</OutputType>
-        <RootNamespace>ChaosRecipeEnhancer.UI</RootNamespace>
-        <AssemblyName>ChaosRecipeEnhancer</AssemblyName>
-        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-        <FileAlignment>512</FileAlignment>
-        <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-        <WarningLevel>4</WarningLevel>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <Deterministic>true</Deterministic>
-        <IsWebBootstrapper>false</IsWebBootstrapper>
-        <NuGetPackageImportStamp>
-        </NuGetPackageImportStamp>
-        <TargetFrameworkProfile />
-        <Install>true</Install>
-        <InstallFrom>Disk</InstallFrom>
-        <UpdateEnabled>false</UpdateEnabled>
-        <UpdateMode>Foreground</UpdateMode>
-        <UpdateInterval>7</UpdateInterval>
-        <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-        <UpdatePeriodically>false</UpdatePeriodically>
-        <UpdateRequired>false</UpdateRequired>
-        <MapFileExtensions>true</MapFileExtensions>
-        <ApplicationRevision>0</ApplicationRevision>
-        <ApplicationVersion>1.0.7.%2a</ApplicationVersion>
-        <UseApplicationTrust>false</UseApplicationTrust>
-        <PublishWizardCompleted>true</PublishWizardCompleted>
-        <BootstrapperEnabled>true</BootstrapperEnabled>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ManifestCertificateThumbprint>948E8F2C0AF957B3C25EDF6B26B0A6FC77CD3014</ManifestCertificateThumbprint>
-    </PropertyGroup>
-    <PropertyGroup>
-        <GenerateManifests>true</GenerateManifests>
-    </PropertyGroup>
-    <PropertyGroup>
-        <SignManifests>false</SignManifests>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ApplicationIcon>Assets\Icons\coin.ico</ApplicationIcon>
-    </PropertyGroup>
-    <PropertyGroup>
-        <StartupObject>
-        </StartupObject>
-    </PropertyGroup>
-    <PropertyGroup>
-        <SignAssembly>false</SignAssembly>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    </PropertyGroup>
-    <PropertyGroup>
-        <TargetZone>LocalIntranet</TargetZone>
-    </PropertyGroup>
-    <ItemGroup>
-        <Reference Include="mscorlib" />
-        <Reference Include="System" />
-        <Reference Include="System.ComponentModel.Composition" />
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Data">
-            <Private>True</Private>
-        </Reference>
-        <Reference Include="System.Net" />
-        <Reference Include="System.Runtime.Serialization" />
-        <Reference Include="System.Web.Extensions">
-            <Private>true</Private>
-        </Reference>
-        <Reference Include="Microsoft.CSharp">
-            <Private>true</Private>
-        </Reference>
-        <Reference Include="System.Core">
-            <Private>true</Private>
-        </Reference>
-        <Reference Include="System.Xml.Linq">
-            <Private>true</Private>
-        </Reference>
-        <Reference Include="System.Data.DataSetExtensions">
-            <Private>true</Private>
-        </Reference>
-        <Reference Include="PresentationCore">
-            <Private>true</Private>
-        </Reference>
-    </ItemGroup>
-    <ItemGroup>
-        <ApplicationDefinition Include="AppBootstrapper.xaml">
-            <Generator>MSBuild:Compile</Generator>
-            <SubType>Designer</SubType>
-        </ApplicationDefinition>
-        <Compile Include="Const\CConst.cs" />
-        <Compile Include="Enums\EnumItemClass.cs" />
-        <Compile Include="Filter\CFilterGenerationManager.cs" />
-        <Compile Include="Model\ActiveItemTypes.cs" />
-        <Compile Include="Model\AutoFetch.cs" />
-        <Compile Include="Model\Cell.cs" />
-        <Compile Include="Model\Coordinates.cs" />
-        <Compile Include="Model\ReloadItemFilter.cs" />
-        <Compile Include="Model\Storage\FileFilterStorage.cs" />
-        <Compile Include="Model\Storage\FilterStorageFactory.cs" />
-        <Compile Include="Model\ItemSet.cs" />
-        <Compile Include="Model\MouseHook.cs" />
-        <Compile Include="Model\RateLimit.cs" />
-        <Compile Include="Model\StashTabList.cs" />
-        <Compile Include="Model\Storage\IFilterStorage.cs" />
-        <Compile Include="Model\Utility.cs" />
-        <Compile Include="Model\Utils\UserWarning.cs" />
-        <Compile Include="Properties\Resources.Designer.cs">
-            <AutoGen>True</AutoGen>
-            <DesignTime>True</DesignTime>
-            <DependentUpon>Resources.resx</DependentUpon>
-        </Compile>
-        <Compile Include="UserControls\SettingsForms\GeneralForms\GeneralForm.xaml.cs">
-          <DependentUpon>GeneralForm.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="UserControls\SettingsForms\GeneralForms\PathOfExileForm.xaml.cs">
-          <DependentUpon>PathOfExileForm.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="UserControls\SettingsForms\GeneralForms\RecipesForm.xaml.cs">
-          <DependentUpon>RecipesForm.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="UserControls\SettingsForms\GeneralForms\SoundForm.xaml.cs">
-          <DependentUpon>SoundForm.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="UserControls\SetTrackerOverlayDisplays\StandardDisplay.xaml.cs">
-          <DependentUpon>StandardDisplay.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs">
-          <DependentUpon>MinifiedDisplay.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs">
-          <DependentUpon>OnlyButtonsDisplay.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs">
-          <DependentUpon>VerticalStandardDisplay.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs">
-          <DependentUpon>VerticalMinifiedDisplay.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="UserControls\StashTabOverlayDisplays\NormalStashGrid.xaml.cs">
-          <DependentUpon>NormalStashGrid.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="UserControls\StashTabOverlayDisplays\QuadStashGrid.xaml.cs">
-          <DependentUpon>QuadStashGrid.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="View\StashTabOverlayView.xaml.cs">
-            <DependentUpon>StashTabOverlayView.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Factory\Managers\ABaseItemClassManager.cs" />
-        <Compile Include="Factory\Managers\Implementation\CAmuletsManager.cs" />
-        <Compile Include="Factory\Managers\Implementation\CBeltsManager.cs" />
-        <Compile Include="Factory\Managers\Implementation\CBodyArmoursManager.cs" />
-        <Compile Include="Factory\Managers\Implementation\CBootsManager.cs" />
-        <Compile Include="Factory\Managers\Implementation\CGlovesManager.cs" />
-        <Compile Include="Factory\Managers\Implementation\CHelmetManager.cs" />
-        <Compile Include="Factory\Managers\Implementation\COneHandWeaponsManager.cs" />
-        <Compile Include="Factory\Managers\Implementation\CRingsManager.cs" />
-        <Compile Include="Factory\Managers\Implementation\CTwoHandWeaponsManager.cs" />
-        <Compile Include="Factory\CItemClassManagerFactory.cs" />
-        <Page Include="UserControls\SettingsForms\GeneralForms\GeneralForm.xaml" />
-        <Page Include="UserControls\SettingsForms\GeneralForms\PathOfExileForm.xaml" />
-        <Page Include="UserControls\SettingsForms\GeneralForms\RecipesForm.xaml" />
-        <Page Include="UserControls\SettingsForms\GeneralForms\SoundForm.xaml" />
-        <Page Include="UserControls\SetTrackerOverlayDisplays\StandardDisplay.xaml">
-          <SubType>Designer</SubType>
-          <Generator>MSBuild:Compile</Generator>
-        </Page>
-        <Page Include="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml">
-          <SubType>Designer</SubType>
-          <Generator>MSBuild:Compile</Generator>
-        </Page>
-        <Page Include="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml">
-          <SubType>Designer</SubType>
-          <Generator>MSBuild:Compile</Generator>
-        </Page>
-        <Page Include="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml" />
-        <Page Include="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml" />
-        <Page Include="UserControls\StashTabOverlayDisplays\NormalStashGrid.xaml">
-          <SubType>Designer</SubType>
-          <Generator>MSBuild:Compile</Generator>
-        </Page>
-        <Page Include="UserControls\StashTabOverlayDisplays\QuadStashGrid.xaml">
-          <SubType>Designer</SubType>
-          <Generator>MSBuild:Compile</Generator>
-        </Page>
-        <Page Include="View\SetTrackerOverlayView.xaml">
-            <SubType>Designer</SubType>
-            <Generator>MSBuild:Compile</Generator>
-        </Page>
-        <Page Include="UserControls\HotkeyEditorControl.xaml">
-            <SubType>Designer</SubType>
-            <Generator>MSBuild:Compile</Generator>
-        </Page>
-        <Page Include="View\HotkeyView.xaml">
-            <SubType>Designer</SubType>
-            <Generator>MSBuild:Compile</Generator>
-        </Page>
-        <Page Include="View\SettingsView.xaml">
-            <Generator>MSBuild:Compile</Generator>
-            <SubType>Designer</SubType>
-        </Page>
-        <Compile Include="Model\ApiAdapter.cs" />
-        <Compile Include="AppBootstrapper.xaml.cs">
-            <DependentUpon>AppBootstrapper.xaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
-        <Compile Include="Model\EventArgs.cs" />
-        <Compile Include="Model\EventRaiser.cs" />
-        <Compile Include="Model\RelayCommand.cs" />
-        <Compile Include="Model\StashTab.cs" />
-        <Compile Include="View\SetTrackerOverlayView.xaml.cs">
-            <DependentUpon>SetTrackerOverlayView.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Model\Data.cs" />
-        <Compile Include="Model\GlobalHotkey.cs" />
-        <Compile Include="Model\Hotkey.cs" />
-        <Compile Include="UserControls\HotkeyEditorControl.xaml.cs">
-            <DependentUpon>HotkeyEditorControl.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Model\HotkeysManager.cs" />
-        <Compile Include="View\HotkeyView.xaml.cs">
-            <DependentUpon>HotkeyView.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Model\Item.cs" />
-        <Compile Include="View\SettingsView.xaml.cs">
-            <DependentUpon>SettingsView.xaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
-        <Page Include="View\StashTabOverlayView.xaml">
-            <SubType>Designer</SubType>
-            <Generator>MSBuild:Compile</Generator>
-        </Page>
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Include="Properties\AssemblyInfo.cs">
-            <SubType>Code</SubType>
-        </Compile>
-        <Compile Include="Properties\Settings.Designer.cs">
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Settings.settings</DependentUpon>
-            <DesignTimeSharedInput>True</DesignTimeSharedInput>
-        </Compile>
-        <EmbeddedResource Include="Properties\Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <SubType>Designer</SubType>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-        <Resource Include="Assets\Fonts\password.ttf" />
-        <Resource Include="Assets\Images\amulet.png" />
-        <Resource Include="Assets\Images\belt.png" />
-        <Resource Include="Assets\Images\boots.png" />
-        <Resource Include="Assets\Images\chest.png" />
-        <Resource Include="Assets\Images\gloves.png" />
-        <Resource Include="Assets\Images\helmet.png" />
-        <Resource Include="Assets\Images\ring.png" />
-        <Resource Include="Assets\Images\weapon.png" />
-        <None Include="Assets\Icons\coin.ico" />
-        <None Include="Assets\Sounds\filterchanged.mp3">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Include="Assets\FilterStyles\InfluencedItemsStyle.txt">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Include="Assets\FilterStyles\NormalItemsStyle.txt">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Include="Properties\app.manifest" />
-        <None Include="Properties\Settings.settings">
-            <Generator>SettingsSingleFileGenerator</Generator>
-            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-        </None>
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="App.config" />
-    </ItemGroup>
-    <ItemGroup>
-        <BootstrapperPackage Include=".NETFramework,Version=v4.8">
-            <Visible>False</Visible>
-            <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
-            <Install>true</Install>
-        </BootstrapperPackage>
-    </ItemGroup>
-    <ItemGroup>
-        <WCFMetadata Include="Connected Services\" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\ChaosRecipeEnhancer.App\ChaosRecipeEnhancer.App.csproj">
-            <Project>{4395b43e-64ec-45ea-8637-929769567799}</Project>
-            <Name>ChaosRecipeEnhancer.App</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\ChaosRecipeEnhancer.DataModels\ChaosRecipeEnhancer.DataModels.csproj">
-            <Project>{4fe898a7-2af2-4169-aa88-68591ce59b82}</Project>
-            <Name>ChaosRecipeEnhancer.DataModels</Name>
-        </ProjectReference>
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Autofac" Version="6.4.0" />
-        <PackageReference Include="AutofacSerilogIntegration" Version="5.0.0" />
-        <PackageReference Include="Autoupdater.NET.Official" Version="1.7.4" />
-        <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
-        <PackageReference Include="Microsoft.Extensions.Logging">
-            <Version>6.0.0</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Logging.Console">
-            <Version>6.0.0</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug">
-            <Version>6.0.0</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1293.44" />
-        <PackageReference Include="Serilog">
-            <Version>2.11.0</Version>
-        </PackageReference>
-        <PackageReference Include="Serilog.Enrichers.Context" Version="4.6.0" />
-        <PackageReference Include="Serilog.Enrichers.Environment">
-            <Version>2.2.0</Version>
-        </PackageReference>
-        <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
-        <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
-        <PackageReference Include="Serilog.Sinks.Console">
-            <Version>4.0.1</Version>
-        </PackageReference>
-        <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
-        <PackageReference Include="Serilog.Sinks.File">
-            <Version>5.0.0</Version>
-        </PackageReference>
-        <PackageReference Include="Serilog.Sinks.Trace" Version="3.0.0" />
-        <PackageReference Include="System.Buffers" Version="4.5.1" />
-        <PackageReference Include="System.IO" Version="4.3.0" />
-        <PackageReference Include="System.Memory" Version="4.5.5" />
-        <PackageReference Include="System.Net.Http" Version="4.3.4" />
-        <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
-        <PackageReference Include="System.Runtime" Version="4.3.1" />
-        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-        <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
-        <PackageReference Include="System.Security.Cryptography.Encoding" Version="4.3.0" />
-        <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
-        <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
-        <PackageReference Include="System.Text.Encodings.Web" Version="6.0.0" />
-        <PackageReference Include="System.Text.Json" Version="6.0.5" />
-        <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-        <PackageReference Include="WiX" Version="3.11.2" />
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="Assets\Sounds\itemsPickedUp.mp3">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ChaosRecipeEnhancer.UI</RootNamespace>
+    <AssemblyName>ChaosRecipeEnhancer</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.7.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>948E8F2C0AF957B3C25EDF6B26B0A6FC77CD3014</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Assets\Icons\coin.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="AppBootstrapper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Const\CConst.cs" />
+    <Compile Include="Enums\EnumItemClass.cs" />
+    <Compile Include="Filter\CFilterGenerationManager.cs" />
+    <Compile Include="Model\ActiveItemTypes.cs" />
+    <Compile Include="Model\AutoFetch.cs" />
+    <Compile Include="Model\Cell.cs" />
+    <Compile Include="Model\Coordinates.cs" />
+    <Compile Include="Model\ReloadItemFilter.cs" />
+    <Compile Include="Model\Storage\FileFilterStorage.cs" />
+    <Compile Include="Model\Storage\FilterStorageFactory.cs" />
+    <Compile Include="Model\ItemSet.cs" />
+    <Compile Include="Model\MouseHook.cs" />
+    <Compile Include="Model\RateLimit.cs" />
+    <Compile Include="Model\StashTabList.cs" />
+    <Compile Include="Model\Storage\IFilterStorage.cs" />
+    <Compile Include="Model\Utility.cs" />
+    <Compile Include="Model\Utils\UserWarning.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SettingsForms\GeneralForms\GeneralForm.xaml.cs">
+      <DependentUpon>GeneralForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SettingsForms\GeneralForms\PathOfExileForm.xaml.cs">
+      <DependentUpon>PathOfExileForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SettingsForms\GeneralForms\RecipesForm.xaml.cs">
+      <DependentUpon>RecipesForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SettingsForms\GeneralForms\SoundForm.xaml.cs">
+      <DependentUpon>SoundForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SetTrackerOverlayDisplays\StandardDisplay.xaml.cs">
+      <DependentUpon>StandardDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs">
+      <DependentUpon>MinifiedDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs">
+      <DependentUpon>OnlyButtonsDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs">
+      <DependentUpon>VerticalStandardDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs">
+      <DependentUpon>VerticalMinifiedDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\StashTabOverlayDisplays\NormalStashGrid.xaml.cs">
+      <DependentUpon>NormalStashGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\StashTabOverlayDisplays\QuadStashGrid.xaml.cs">
+      <DependentUpon>QuadStashGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StashTabOverlayView.xaml.cs">
+      <DependentUpon>StashTabOverlayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Factory\Managers\ABaseItemClassManager.cs" />
+    <Compile Include="Factory\Managers\Implementation\CAmuletsManager.cs" />
+    <Compile Include="Factory\Managers\Implementation\CBeltsManager.cs" />
+    <Compile Include="Factory\Managers\Implementation\CBodyArmoursManager.cs" />
+    <Compile Include="Factory\Managers\Implementation\CBootsManager.cs" />
+    <Compile Include="Factory\Managers\Implementation\CGlovesManager.cs" />
+    <Compile Include="Factory\Managers\Implementation\CHelmetManager.cs" />
+    <Compile Include="Factory\Managers\Implementation\COneHandWeaponsManager.cs" />
+    <Compile Include="Factory\Managers\Implementation\CRingsManager.cs" />
+    <Compile Include="Factory\Managers\Implementation\CTwoHandWeaponsManager.cs" />
+    <Compile Include="Factory\CItemClassManagerFactory.cs" />
+    <Page Include="UserControls\SettingsForms\GeneralForms\GeneralForm.xaml" />
+    <Page Include="UserControls\SettingsForms\GeneralForms\PathOfExileForm.xaml" />
+    <Page Include="UserControls\SettingsForms\GeneralForms\RecipesForm.xaml" />
+    <Page Include="UserControls\SettingsForms\GeneralForms\SoundForm.xaml" />
+    <Page Include="UserControls\SetTrackerOverlayDisplays\StandardDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml" />
+    <Page Include="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml" />
+    <Page Include="UserControls\StashTabOverlayDisplays\NormalStashGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\StashTabOverlayDisplays\QuadStashGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SetTrackerOverlayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\HotkeyEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\HotkeyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Model\ApiAdapter.cs" />
+    <Compile Include="AppBootstrapper.xaml.cs">
+      <DependentUpon>AppBootstrapper.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\EventArgs.cs" />
+    <Compile Include="Model\EventRaiser.cs" />
+    <Compile Include="Model\RelayCommand.cs" />
+    <Compile Include="Model\StashTab.cs" />
+    <Compile Include="View\SetTrackerOverlayView.xaml.cs">
+      <DependentUpon>SetTrackerOverlayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Data.cs" />
+    <Compile Include="Model\GlobalHotkey.cs" />
+    <Compile Include="Model\Hotkey.cs" />
+    <Compile Include="UserControls\HotkeyEditorControl.xaml.cs">
+      <DependentUpon>HotkeyEditorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\HotkeysManager.cs" />
+    <Compile Include="View\HotkeyView.xaml.cs">
+      <DependentUpon>HotkeyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Item.cs" />
+    <Compile Include="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="View\StashTabOverlayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Resource Include="Assets\Fonts\password.ttf" />
+    <Resource Include="Assets\Images\amulet.png" />
+    <Resource Include="Assets\Images\belt.png" />
+    <Resource Include="Assets\Images\boots.png" />
+    <Resource Include="Assets\Images\chest.png" />
+    <Resource Include="Assets\Images\gloves.png" />
+    <Resource Include="Assets\Images\helmet.png" />
+    <Resource Include="Assets\Images\ring.png" />
+    <Resource Include="Assets\Images\weapon.png" />
+    <None Include="Assets\Icons\coin.ico" />
+    <None Include="Assets\Sounds\filterchanged.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\FilterStyles\InfluencedItemsStyle.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\FilterStyles\NormalItemsStyle.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChaosRecipeEnhancer.App\ChaosRecipeEnhancer.App.csproj">
+      <Project>{4395b43e-64ec-45ea-8637-929769567799}</Project>
+      <Name>ChaosRecipeEnhancer.App</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChaosRecipeEnhancer.DataModels\ChaosRecipeEnhancer.DataModels.csproj">
+      <Project>{4fe898a7-2af2-4169-aa88-68591ce59b82}</Project>
+      <Name>ChaosRecipeEnhancer.DataModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.4.0" />
+    <PackageReference Include="AutofacSerilogIntegration" Version="5.0.0" />
+    <PackageReference Include="Autoupdater.NET.Official" Version="1.7.5" />
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+    <PackageReference Include="Microsoft.Extensions.Logging">
+      <Version>6.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Console">
+      <Version>6.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug">
+      <Version>6.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1370.28" />
+    <PackageReference Include="Serilog">
+      <Version>2.12.0</Version>
+    </PackageReference>
+    <PackageReference Include="Serilog.Enrichers.Context" Version="4.6.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
+    <PackageReference Include="Serilog.Sinks.Console">
+      <Version>4.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.File">
+      <Version>5.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Serilog.Sinks.Trace" Version="3.0.0" />
+    <PackageReference Include="System.Buffers" Version="4.5.1" />
+    <PackageReference Include="System.IO" Version="4.3.0" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
+    <PackageReference Include="System.Security.Cryptography.Encoding" Version="4.3.0" />
+    <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="6.0.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.6" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="WiX" Version="3.11.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Sounds\itemsPickedUp.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

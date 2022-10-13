@@ -100,7 +100,7 @@ namespace ChaosRecipeEnhancer.UI.Filter
                               CConst.tab;
                     break;
                 case false when Settings.Default.RegalRecipeTrackingEnabled:
-                    result += "ItemLevel > 75" + CConst.newLine + CConst.tab;
+                    result += "ItemLevel >= 75" + CConst.newLine + CConst.tab;
                     break;
                 default:
                     result += "ItemLevel >= 60" + CConst.newLine + CConst.tab;

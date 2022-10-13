@@ -9,6 +9,14 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays
     /// </summary>
     public partial class MinifiedDisplay
     {
+        #region Fields
+
+        private readonly ILogger _logger;
+        private readonly SetTrackerOverlayView _setTrackerOverlay;
+        private readonly SettingsView _settingsView;
+
+        #endregion
+
         #region Constructors
 
         public MinifiedDisplay(SettingsView settingsView, SetTrackerOverlayView setTrackerOverlay)
@@ -22,14 +30,6 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays
 
             _logger.Debug("MinifiedDisplay  constructed successfully");
         }
-
-        #endregion
-
-        #region Fields
-
-        private readonly ILogger _logger;
-        private readonly SetTrackerOverlayView _setTrackerOverlay;
-        private readonly SettingsView _settingsView;
 
         #endregion
 

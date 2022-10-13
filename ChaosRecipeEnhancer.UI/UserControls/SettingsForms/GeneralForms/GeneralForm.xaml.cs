@@ -13,12 +13,14 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
         private Visibility _tabIndicesVisible = Visibility.Visible;
         private Visibility _tabNamePrefixVisible = Visibility.Hidden;
         private Visibility _tabNameSuffixVisible = Visibility.Hidden;
-
+        private Visibility _fetchOnNewMapEnabled = Visibility.Collapsed;
+        
         public GeneralForm()
         {
             DataContext = this;
             InitializeComponent();
             LoadStashQueryModeVisibility();
+            LoadFetchOnNewMapEnabled();
         }
 
         public Visibility TabIndicesVisible
@@ -59,6 +61,19 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
                 }
             }
         }
+        
+        public Visibility FetchOnNewMapEnabled
+        {
+            get => _fetchOnNewMapEnabled;
+            set
+            {
+                if (_fetchOnNewMapEnabled != value)
+                {
+                    _fetchOnNewMapEnabled = value;
+                    OnPropertyChanged("FetchOnNewMapEnabled");
+                }
+            }
+        }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -71,10 +86,13 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
 
         private void AutoFetchCheckBox_Checked(object sender, RoutedEventArgs e)
         {
+            LoadFetchOnNewMapEnabled();
         }
 
         private void AutoFetchCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
+            LoadFetchOnNewMapEnabled();
+
             if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive) LogWatcher.WorkerThread.Abort();
         }
 
@@ -121,6 +139,13 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
                     TabNameSuffixVisible = Visibility.Visible;
                     break;
             }
+        }
+
+        private void LoadFetchOnNewMapEnabled()
+        {
+            FetchOnNewMapEnabled = Settings.Default.AutoFetchOnRezoneEnabled 
+                ? Visibility.Visible 
+                : Visibility.Collapsed;
         }
 
         #region INotifyPropertyChanged implementation
