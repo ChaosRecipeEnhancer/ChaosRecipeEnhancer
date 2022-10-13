@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows.Forms;
-using ChaosRecipeEnhancer.App.Native;
 using ChaosRecipeEnhancer.UI.Model.Utils;
 using ChaosRecipeEnhancer.UI.Properties;
+using IWshRuntimeLibrary;
+
 // REF: https://stackoverflow.com/a/1635680
 using HWND = System.IntPtr;
 
@@ -86,18 +86,23 @@ namespace ChaosRecipeEnhancer.UI.Model
             // Get 'Path of Exile' window in the foreground to actually send input to said window
             SetForegroundWindow(poeWindow);
 
-            // Compose a series of commands we send to the game window (the in-game chat box, specifically)
-            SendKeys.SendWait("{ENTER}");
-            SendKeys.SendWait(chatCommand);
-            SendKeys.SendWait("{ENTER}");
+            // Workaround to speed up key input since SendKeys.SendWait() was taking around 5+ seconds (especially with longer filter names)
+            // REF: https://social.msdn.microsoft.com/Forums/en-US/3caa1210-e6fd-4f4e-a11c-c8c06e802a6f/sendkeys-too-slow-c-winform?forum=csharpgeneral
+            var scriptHost = new WshShell();
+
+            scriptHost.SendKeys("{ENTER}");
+            scriptHost.SendKeys(chatCommand);
+            scriptHost.SendKeys("{ENTER}");
         }
 
         private static string BuildFilterReloadCommand()
         {
             var filterName = GetFilterName();
+            
             if (!string.IsNullOrEmpty(filterName)) return "/itemfilter " + filterName;
 
             UserWarning.WarnUser("No filter found. Please set your filter in settings", "No filter found");
+            
             return null;
         }
 
