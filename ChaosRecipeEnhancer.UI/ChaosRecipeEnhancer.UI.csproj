@@ -145,6 +145,9 @@
     <Compile Include="UserControls\SettingsForms\GeneralForms\SoundForm.xaml.cs">
       <DependentUpon>SoundForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs">
+      <DependentUpon>OnlyMinifiedButtonsDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\SetTrackerOverlayDisplays\StandardDisplay.xaml.cs">
       <DependentUpon>StandardDisplay.xaml</DependentUpon>
     </Compile>
@@ -184,6 +187,7 @@
     <Page Include="UserControls\SettingsForms\GeneralForms\PathOfExileForm.xaml" />
     <Page Include="UserControls\SettingsForms\GeneralForms\RecipesForm.xaml" />
     <Page Include="UserControls\SettingsForms\GeneralForms\SoundForm.xaml" />
+    <Page Include="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
     <Page Include="UserControls\SetTrackerOverlayDisplays\StandardDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
