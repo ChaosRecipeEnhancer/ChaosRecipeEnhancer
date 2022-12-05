@@ -5,6 +5,9 @@ using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.Model
 {
+    /// <summary>
+    ///     UI representation for a collection of stash tabs within our app (NOT the GGG StashTab object model).
+    /// </summary>
     internal static class StashTabList
     {
         public static List<StashTab> StashTabs { get; set; } = new List<StashTab>();
@@ -26,19 +29,19 @@ namespace ChaosRecipeEnhancer.UI.Model
                     }
                     else
                     {
-                        MessageBox.Show("Stashtab Index has to be a number!", "Stashtab Error", MessageBoxButton.OK,
+                        MessageBox.Show("Stashtab Index has to be a number!", "Error: Stash Tab Overlay", MessageBoxButton.OK,
                             MessageBoxImage.Error);
                     }
 
                 if (ret.Count == 0)
-                    MessageBox.Show("Stashtab Indices empty!", "Stashtab Error", MessageBoxButton.OK,
+                    MessageBox.Show("Stashtab Indices empty!", "Error: Stash Tab Overlay", MessageBoxButton.OK,
                         MessageBoxImage.Error);
 
                 StashTabIndices = ret;
             }
             else
             {
-                MessageBox.Show("Stashtab Indices empty!", "Stashtab Error", MessageBoxButton.OK,
+                MessageBox.Show("No valid Stash Tab indices could be found in the user settings.", "Error: Stash Tab Overlay", MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }
