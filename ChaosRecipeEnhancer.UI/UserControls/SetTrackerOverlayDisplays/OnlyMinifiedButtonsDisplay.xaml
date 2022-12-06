@@ -1,0 +1,152 @@
+﻿<UserControl
+    x:Class="ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays.OnlyMinifiedButtonsDisplay"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
+    xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
+    mc:Ignorable="d"
+    FontSize="16"
+    d:DataContext="{d:DesignInstance Type=view:SetTrackerOverlayView }">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="3" />      <!-- Column 0 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 1 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 2 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 3 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 4 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 5 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 6 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 7 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 8 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 9 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 10 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 11 -->
+            <ColumnDefinition Width="auto" />   <!-- Column 12 -->
+            <ColumnDefinition Width="3" />      <!-- Column 13 -->
+
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="3" />
+
+        </Grid.RowDefinitions>
+
+        <Border
+            Grid.Row="1"
+            Grid.Column="2"
+            Height="30"
+            Width="30"
+            CornerRadius="50"
+            Margin="3,6, 3, 0"
+            PreviewMouseDown="OpenStashTabOverlay_Click"
+            Background="White"
+            BorderThickness="3"
+            BorderBrush="DarkSlateGray"
+            ToolTip="Completed Item Sets">
+
+            <TextBlock
+                x:Name="FullSetsTextBlock"
+                Text="{Binding FullSetsText}"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                TextAlignment="Center" />
+
+        </Border>
+
+        <Border
+            Grid.Row="1"
+            Name="RefreshButton"
+            IsEnabled="{Binding FetchButtonEnabled}"
+            Grid.Column="11"
+            Height="30"
+            Width="30"
+            CornerRadius="50"
+            Margin="3,6, 3, 0"
+            PreviewMouseDown="RefreshButton_Click"
+            Background="White"
+            BorderThickness="3"
+            ToolTip="Fetch Stash">
+
+            <TextBlock
+                Text="F"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                TextAlignment="Center" />
+
+        </Border>
+
+        <Border
+            Grid.Row="1"
+            Name="ReloadItemFilterButton"
+            Grid.Column="12"
+            Height="30"
+            Width="30"
+            CornerRadius="50"
+            Margin="3,6, 3, 0"
+            PreviewMouseDown="ReloadItemFilterButton_Click"
+            Background="White"
+            BorderThickness="3"
+            BorderBrush="DarkSlateGray"
+            ToolTip="Reload Loot Filter">
+
+            <!-- Conditional rendering for 'Reload Filter' 'button' -->
+            <Border.Style>
+
+                <Style TargetType="{x:Type Border}">
+
+                    <Setter Property="Visibility" Value="Visible" />
+
+                    <Style.Triggers>
+
+                        <DataTrigger
+                            Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}"
+                            Value="False">
+
+                            <Setter Property="Visibility" Value="Collapsed" />
+
+                        </DataTrigger>
+
+                    </Style.Triggers>
+
+                </Style>
+
+            </Border.Style>
+
+            <TextBlock
+                Text="R"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                TextAlignment="Center"
+                Foreground="Black" />
+
+        </Border>
+        
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="14"
+            CornerRadius="5"
+            Background="White"
+            Margin="8,8,8,3"
+            Visibility="{Binding WarningMessageVisibility}">
+
+            <TextBlock
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Text="{Binding WarningMessage}" />
+
+        </Border>
+
+    </Grid>
+
+    
+</UserControl>

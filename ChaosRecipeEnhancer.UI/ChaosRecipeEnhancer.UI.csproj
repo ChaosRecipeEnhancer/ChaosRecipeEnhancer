@@ -145,6 +145,9 @@
     <Compile Include="UserControls\SettingsForms\GeneralForms\SoundForm.xaml.cs">
       <DependentUpon>SoundForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs">
+      <DependentUpon>OnlyMinifiedButtonsDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\SetTrackerOverlayDisplays\StandardDisplay.xaml.cs">
       <DependentUpon>StandardDisplay.xaml</DependentUpon>
     </Compile>
@@ -184,6 +187,7 @@
     <Page Include="UserControls\SettingsForms\GeneralForms\PathOfExileForm.xaml" />
     <Page Include="UserControls\SettingsForms\GeneralForms\RecipesForm.xaml" />
     <Page Include="UserControls\SettingsForms\GeneralForms\SoundForm.xaml" />
+    <Page Include="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
     <Page Include="UserControls\SetTrackerOverlayDisplays\StandardDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -317,22 +321,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.4.0" />
+    <PackageReference Include="Autofac" Version="6.5.0" />
     <PackageReference Include="AutofacSerilogIntegration" Version="5.0.0" />
-    <PackageReference Include="Autoupdater.NET.Official" Version="1.7.5" />
+    <PackageReference Include="Autoupdater.NET.Official" Version="1.7.6" />
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
     <PackageReference Include="Microsoft.Extensions.Logging">
-      <Version>6.0.0</Version>
+      <Version>7.0.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Console">
-      <Version>6.0.0</Version>
+      <Version>7.0.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug">
-      <Version>6.0.0</Version>
+      <Version>7.0.0</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1370.28" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1418.22" />
     <PackageReference Include="Serilog">
       <Version>2.12.0</Version>
     </PackageReference>
@@ -361,8 +365,8 @@
     <PackageReference Include="System.Security.Cryptography.Encoding" Version="4.3.0" />
     <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
     <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
-    <PackageReference Include="System.Text.Encodings.Web" Version="6.0.0" />
-    <PackageReference Include="System.Text.Json" Version="6.0.6" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="7.0.0" />
+    <PackageReference Include="System.Text.Json" Version="7.0.0" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="WiX" Version="3.11.2" />

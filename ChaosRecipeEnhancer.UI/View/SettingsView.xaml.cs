@@ -322,6 +322,12 @@ namespace ChaosRecipeEnhancer.UI.View
                     _setTrackerOverlayView.MainOverlayContentControl.Content =
                         new VerticalMinifiedDisplay(this, _setTrackerOverlayView);
                     break;
+                case 5:
+                    Trace.WriteLine(
+                        $"OverlayModeComboBox_SelectionChanged: Case 5 {Settings.Default.SetTrackerOverlayDisplayMode}");
+                    _setTrackerOverlayView.MainOverlayContentControl.Content =
+                        new OnlyMinifiedButtonsDisplay(this, _setTrackerOverlayView);
+                    break;
             }
         }
 
