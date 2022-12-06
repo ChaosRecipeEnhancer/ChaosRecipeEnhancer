@@ -10,21 +10,21 @@ namespace ChaosRecipeEnhancer.UI.Model
 {
     public static class Coordinates
     {
-        private static bool CheckForHit(Point pt, Button btn)
+        private static bool CheckIfClicked(Point point, Button button)
         {
             var clickX = MouseHook.ClickLocationX;
             var clickY = MouseHook.ClickLocationY;
 
             // adjust btn x,y position a bit
-            pt.X -= 1;
-            pt.Y -= 1;
+            point.X -= 1;
+            point.Y -= 1;
 
             // +1 border thickness
-            var btnX = Convert.ToInt32(Math.Ceiling(pt.X + btn.ActualWidth + 1));
-            var btnY = Convert.ToInt32(Math.Ceiling(pt.Y + btn.ActualHeight + 1));
+            var btnX = Convert.ToInt32(Math.Ceiling(point.X + button.ActualWidth + 1));
+            var btnY = Convert.ToInt32(Math.Ceiling(point.Y + button.ActualHeight + 1));
 
-            if (clickX > pt.X
-                && clickY > pt.Y
+            if (clickX > point.X
+                && clickY > point.Y
                 && clickX < btnX
                 && clickY < btnY)
                 return true;
@@ -43,23 +43,22 @@ namespace ChaosRecipeEnhancer.UI.Model
             return new Point(0, 0);
         }
 
-        private static bool CheckForHeaderHit(StashTab s)
+        private static bool CheckIfTabNameContainerClicked(StashTab stashTab)
         {
             var clickX = MouseHook.ClickLocationX;
             var clickY = MouseHook.ClickLocationY;
 
-            var pt = GetTabHeaderCoordinates(s.TabHeader);
+            var pt = GetTabNameContainerCoordinates(stashTab.TabNameContainer);
 
             // adjust btn x,y position a bit
             pt.X -= 1;
             pt.Y -= 1;
 
             // can be null if user closes overlay while fetching with stash tab overlay open
-            if (s.TabHeader != null)
+            if (stashTab.TabNameContainer != null)
             {
-                var tabX = Convert.ToInt32(Math.Floor(pt.X + s.TabHeader.ActualWidth + 1));
-                var tabY = Convert.ToInt32(Math.Floor(pt.Y + s.TabHeader.ActualHeight + 1));
-
+                var tabX = Convert.ToInt32(Math.Floor(pt.X + stashTab.TabNameContainer.ActualWidth + 1));
+                var tabY = Convert.ToInt32(Math.Floor(pt.Y + stashTab.TabNameContainer.ActualHeight + 1));
 
                 if (clickX > pt.X
                     && clickY > pt.Y
@@ -71,19 +70,19 @@ namespace ChaosRecipeEnhancer.UI.Model
             return false;
         }
 
-        private static bool CheckForEditButtonHit(Button btn)
+        private static bool CheckIfEditButtonClicked(Button editButton)
         {
             var clickX = MouseHook.ClickLocationX;
             var clickY = MouseHook.ClickLocationY;
 
-            var pt = GetEditButtonCoordinates(btn);
+            var pt = GetEditButtonCoordinates(editButton);
 
             // adjust btn x,y position a bit
             pt.X -= 1;
             pt.Y -= 1;
 
-            var btnX = Convert.ToInt32(Math.Floor(pt.X + btn.ActualWidth + 1));
-            var btnY = Convert.ToInt32(Math.Floor(pt.Y + btn.ActualHeight + 1));
+            var btnX = Convert.ToInt32(Math.Floor(pt.X + editButton.ActualWidth + 1));
+            var btnY = Convert.ToInt32(Math.Floor(pt.Y + editButton.ActualHeight + 1));
 
             if (clickX > pt.X
                 && clickY > pt.Y
@@ -94,11 +93,11 @@ namespace ChaosRecipeEnhancer.UI.Model
             return false;
         }
 
-        private static Point GetTabHeaderCoordinates(TextBlock item)
+        private static Point GetTabNameContainerCoordinates(TextBlock tabNameContainer)
         {
-            if (item != null)
+            if (tabNameContainer != null)
             {
-                var locationFromScreen = item.PointToScreen(new Point(0, 0));
+                var locationFromScreen = tabNameContainer.PointToScreen(new Point(0, 0));
                 return locationFromScreen;
             }
 
@@ -116,9 +115,9 @@ namespace ChaosRecipeEnhancer.UI.Model
             return new Point(0, 0);
         }
 
-        private static List<Cell> GetAllActiveCells(int index)
+        private static List<InteractiveCell> GetAllActiveCells(int index)
         {
-            var activeCells = new List<Cell>();
+            var activeCells = new List<InteractiveCell>();
 
             foreach (var cell in StashTabList.StashTabs[index].OverlayCellsList)
                 if (cell.Active)
@@ -139,47 +138,55 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                 var buttonList = new List<ButtonAndCell>();
 
-                if (CheckForEditButtonHit(stashTabOverlayView.EditModeButton))
+                if (CheckIfEditButtonClicked(stashTabOverlayView.EditModeButton))
                     stashTabOverlayView.HandleEditButton(stashTabOverlayView);
 
                 if (StashTabList.StashTabs[selectedIndex].Quad)
                 {
-                    var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as QuadStashGrid;
+                    var control = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as QuadStashGrid;
 
-                    foreach (var cell in activeCells)
-                        buttonList.Add(new ButtonAndCell
-                        {
-                            Button = ctrl.GetButtonFromCell(cell),
-                            Cell = cell
-                        });
+                    if (control != null)
+                    {
+                        foreach (var cell in activeCells)
+                            buttonList.Add(new ButtonAndCell
+                            {
+                                Button = control.GetButtonFromCell(cell),
+                                InteractiveCell = cell
+                            });
+                    }
 
                     for (var b = 0; b < buttonList.Count; b++)
-                        if (CheckForHit(GetCoordinates(buttonList[b].Button), buttonList[b].Button))
+                        if (CheckIfClicked(GetCoordinates(buttonList[b].Button), buttonList[b].Button))
                         {
                             isHit = true;
                             hitIndex = b;
                         }
 
                     Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Quad Tab Current Tab Index: {stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex}");
-                    
-                    if (isHit) Data.ActivateNextCell(true, buttonList[hitIndex].Cell, stashTabOverlayView.StashTabOverlayTabControl);
+
+                    if (isHit)
+                        Data.ActivateNextCell(true, buttonList[hitIndex].InteractiveCell, stashTabOverlayView.StashTabOverlayTabControl);
 
                     for (var stash = 0; stash < StashTabList.StashTabs.Count; stash++)
-                        if (CheckForHeaderHit(StashTabList.StashTabs[stash]))
+                        if (CheckIfTabNameContainerClicked(StashTabList.StashTabs[stash]))
                             stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex = stash;
                 }
                 else
                 {
-                    var ctrl = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as NormalStashGrid;
-                    foreach (var cell in activeCells)
-                        buttonList.Add(new ButtonAndCell
-                        {
-                            Button = ctrl.GetButtonFromCell(cell),
-                            Cell = cell
-                        });
+                    var control = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as NormalStashGrid;
+
+                    if (control != null)
+                    {
+                        foreach (var cell in activeCells)
+                            buttonList.Add(new ButtonAndCell
+                            {
+                                Button = control.GetButtonFromCell(cell),
+                                InteractiveCell = cell
+                            });
+                    }
 
                     for (var b = 0; b < buttonList.Count; b++)
-                        if (CheckForHit(GetCoordinates(buttonList[b].Button), buttonList[b].Button))
+                        if (CheckIfClicked(GetCoordinates(buttonList[b].Button), buttonList[b].Button))
                         {
                             isHit = true;
                             hitIndex = b;
@@ -187,10 +194,11 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                     Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Normal Tab Current Tab Index: {stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex}");
 
-                    if (isHit) Data.ActivateNextCell(true, buttonList[hitIndex].Cell, stashTabOverlayView.StashTabOverlayTabControl);
+                    if (isHit)
+                        Data.ActivateNextCell(true, buttonList[hitIndex].InteractiveCell, stashTabOverlayView.StashTabOverlayTabControl);
 
                     for (var stash = 0; stash < StashTabList.StashTabs.Count; stash++)
-                        if (CheckForHeaderHit(StashTabList.StashTabs[stash]))
+                        if (CheckIfTabNameContainerClicked(StashTabList.StashTabs[stash]))
                             stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex = stash;
                 }
             }
@@ -200,6 +208,6 @@ namespace ChaosRecipeEnhancer.UI.Model
     internal class ButtonAndCell
     {
         public Button Button { get; set; }
-        public Cell Cell { get; set; }
+        public InteractiveCell InteractiveCell { get; set; }
     }
 }
