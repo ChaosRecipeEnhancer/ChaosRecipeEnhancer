@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?define ProductVersion = "1.6.1.0"?>
+<?define ProductVersion = "1.7.0.0"?>
 <?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
@@ -32,8 +32,8 @@
 		</Condition>
 
 		<!-- Add Installer Icon -->
-		<Icon Id="coin.ico" SourceFile="$(var.ChaosRecipeEnhancer_ProjectDir)Assets\Icons\coin.ico"/>
-		<Property Id="ARPPRODUCTICON" Value="coin.ico"/>
+		<Icon Id="CREIcon.ico" SourceFile="$(var.ChaosRecipeEnhancer_ProjectDir)Assets\Icons\CREIcon.ico"/>
+		<Property Id="ARPPRODUCTICON" Value="CREIcon.ico"/>
 
 		<!-- Step 3: Direct WiX on Which Components to Install -->
 		<Feature Id="ProductFeature" Title="ChaosRecipeEnhancer" Level="1">
@@ -120,7 +120,7 @@
 			<Component Id="ApplicationShortcut" Guid="1e4fafd1-872a-42b9-a479-8b46e988ae09">
 				<Shortcut Id="ApplicationStartMenuShortcut" Name="ChaosRecipeEnhancer" Description="ChaosRecipeEnhancer"
                           Target="[INSTALLFOLDER]ChaosRecipeEnhancer.exe" WorkingDirectory="INSTALLFOLDER"
-                          Icon="coin.ico"/>
+                          Icon="CREIcon.ico"/>
 				<RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder"
                               On="uninstall"/>
 				<RegistryValue Root="HKCU" Key="Software\ChaosRecipeEnhancer" Name="installed" Type="integer" Value="1"
@@ -133,7 +133,7 @@
 			<Component Id="ApplicationShortcutDesktop" Guid="5686ed96-73f7-4aad-8742-a40f2e247bf6">
 				<Shortcut Id="ApplicationDesktopShortcut" Name="ChaosRecipeEnhancer" Description="ChaosRecipeEnhancer"
                           Target="[INSTALLFOLDER]ChaosRecipeEnhancer.exe" WorkingDirectory="INSTALLFOLDER"
-                          Icon="coin.ico"/>
+                          Icon="CREIcon.ico"/>
 				<RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall"/>
 				<RegistryValue Root="HKCU" Key="Software\ChaosRecipeEnhancer" Name="installed" Type="integer" Value="1"
                                KeyPath="yes"/>

@@ -62,7 +62,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Assets\Icons\coin.ico</ApplicationIcon>
+    <ApplicationIcon>CREIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -85,6 +85,7 @@
     <Reference Include="System.Data">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Extensions">
@@ -281,7 +282,7 @@
     <Resource Include="Assets\Images\helmet.png" />
     <Resource Include="Assets\Images\ring.png" />
     <Resource Include="Assets\Images\weapon.png" />
-    <None Include="Assets\Icons\coin.ico" />
+    <None Include="Assets\Icons\CREIcon.ico" />
     <None Include="Assets\Sounds\filterchanged.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -372,6 +373,8 @@
     <PackageReference Include="WiX" Version="3.11.2" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="CREIcon.ico" />
+    <Resource Include="Assets\Icons\CREIcon.ico" />
     <Content Include="Assets\Sounds\itemsPickedUp.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

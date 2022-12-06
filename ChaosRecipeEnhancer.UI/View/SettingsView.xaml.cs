@@ -60,7 +60,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private readonly StashTabOverlayView _stashTabOverlayView;
 
         // This version # should match up with the format for Assembly version # (3 dots, 4 digits), or else you'll get spammed for AutoUpdates
-        private const string AppVersion = "1.6.1.0";
+        private const string AppVersion = "1.7.0.0";
         
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
@@ -410,7 +410,7 @@ namespace ChaosRecipeEnhancer.UI.View
         // creates tray icon with menu
         private void InitializeTray()
         {
-            _notifyIcon.Icon = Properties.Resources.coin;
+            _notifyIcon.Icon = Properties.Resources.CREIcon;
             _notifyIcon.Visible = true;
             _notifyIcon.DoubleClick +=
                 delegate
