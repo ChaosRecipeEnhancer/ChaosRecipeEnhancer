@@ -106,7 +106,7 @@ namespace ChaosRecipeEnhancer.UI.View
             foreach (var i in StashTabList.StashTabs)
             {
                 i.OverlayCellsList.Clear();
-                i.TabHeader = null;
+                i.TabNameContainer = null;
             }
 
             IsOpen = false;
@@ -120,63 +120,83 @@ namespace ChaosRecipeEnhancer.UI.View
         // TODO: rework tab items and tab headers
         public new virtual void Show()
         {
+            // Ensure the user has fetched stash data before populating our Stash Tab Overlay
             if (StashTabList.StashTabs.Count != 0)
             {
                 IsOpen = true;
+
                 OverlayStashTabList.Clear();
+
+                // Read user settings that affect how some of the UI components are rendered
                 _stashTabOverlayIndividualTabHeaderGap.Right = Settings.Default.StashTabOverlayIndividualTabHeaderGap;
                 _stashTabOverlayIndividualTabHeaderGap.Left = Settings.Default.StashTabOverlayIndividualTabHeaderGap;
-                StashTabOverlayIndividualTabMargin =
-                    new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
+                StashTabOverlayIndividualTabMargin = new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
 
-                foreach (var i in StashTabList.StashTabs)
+                // For each individual stash tab in our query results
+                foreach (var stashTabData in StashTabList.StashTabs)
                 {
-                    TabItem newStashTabItem;
-                    var tbk = new TextBlock
+                    // Creating an object that represents a Stash Tab (the physical tab that you interact with)
+                    TabItem newStashTab;
+                    
+                    // Creating a text block that will contain the name of said Stash Tab
+                    var textBlock = new TextBlock
                     {
-                        Text = i.TabName,
-                        DataContext = i
+                        Text = stashTabData.TabName,
+                        DataContext = stashTabData
                     };
 
-                    tbk.SetBinding(TextBlock.BackgroundProperty, new Binding("TabHeaderColor"));
-                    tbk.SetBinding(TextBlock.PaddingProperty, new Binding("TabHeaderWidth"));
+                    textBlock.SetBinding(TextBlock.BackgroundProperty, new Binding("TabHeaderColor"));
+                    textBlock.SetBinding(TextBlock.PaddingProperty, new Binding("TabHeaderWidth"));
+                    textBlock.FontSize = 16;
+                    
+                    stashTabData.TabNameContainer = textBlock;
 
-                    tbk.FontSize = 16;
-                    i.TabHeader = tbk;
-
-                    if (i.Quad)
-                        newStashTabItem = new TabItem
+                    if (stashTabData.Quad)
+                    {
+                        newStashTab = new TabItem
                         {
-                            Header = tbk,
+                            Header = textBlock,
                             Content = new QuadStashGrid
                             {
-                                ItemsSource = i.OverlayCellsList
+                                ItemsSource = stashTabData.OverlayCellsList
                             }
                         };
+                    }
                     else
-                        newStashTabItem = new TabItem
+                    {
+                        newStashTab = new TabItem
                         {
-                            Header = tbk,
+                            Header = textBlock,
                             Content = new NormalStashGrid
                             {
-                                ItemsSource = i.OverlayCellsList
+                                ItemsSource = stashTabData.OverlayCellsList
                             }
                         };
+                    }
 
-                    OverlayStashTabList.Add(newStashTabItem);
+                    OverlayStashTabList.Add(newStashTab);
                 }
 
                 StashTabOverlayTabControl.SelectedIndex = 0;
 
                 Data.PrepareSelling();
+                
                 Data.ActivateNextCell(true, null, StashTabOverlayTabControl);
+                
+                // If "All Items" highlight mode enabled, paint all Stash Tab Headers to their respective colors
                 if (Settings.Default.StashTabOverlayHighlightMode == 2)
+                {
                     foreach (var set in Data.ItemSetListHighlight)
-                    foreach (var i in set.ItemList)
                     {
-                        var currTab = Data.GetStashTabFromItem(i);
-                        currTab.ActivateItemCells(i);
+                        foreach (var i in set.ItemList)
+                        {
+                            var currTab = Data.GetStashTabFromItem(i);
+                            currTab.ActivateItemCells(i);
+                            
+                            currTab.TabHeaderColor =  new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                        }
                     }
+                }
 
                 _setTrackerOverlayView.OpenStashOverlayButtonContent = "Hide";
 
@@ -185,7 +205,7 @@ namespace ChaosRecipeEnhancer.UI.View
             }
             else
             {
-                MessageBox.Show("No StashTabs Available! Fetch before opening Overlay.", "Stashtab Error",
+                MessageBox.Show("No StashTabs Available! Fetch before opening overlay.", "Error: Stash Tab Overlay",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

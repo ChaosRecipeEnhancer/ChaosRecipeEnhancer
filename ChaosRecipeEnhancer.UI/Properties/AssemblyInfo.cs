@@ -54,5 +54,5 @@ using System.Windows;
 // and user will have to input that information again. Be mindful of that when creating new releases. Try to limit how
 // many times your doing that.
 
-[assembly: AssemblyVersion("1.6.1.0")]
-[assembly: AssemblyFileVersion("1.6.1.0")]
+[assembly: AssemblyVersion("1.7.0.0")]
+[assembly: AssemblyFileVersion("1.7.0.0")]

@@ -1,3 +1,5 @@
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/CRELogo.png" width="250" alt="Chaos Recipe Enhancer Logo">
+
 # Chaos Recipe Enhancer
 
 ``` This app isn't affiliated with or officially endorsed by Grinding Gear Games. ```

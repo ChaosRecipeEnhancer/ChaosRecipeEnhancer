@@ -9,12 +9,13 @@ using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.Model
 {
+    /// <summary>
+    ///     UI representation for a stash tab within our app (NOT the GGG StashTab object model).
+    /// </summary>
     public class StashTab : INotifyPropertyChanged
     {
         private SolidColorBrush _tabHeaderColor;
-
         private Thickness _tabHeaderWidth;
-
 
         public StashTab(string name, int index)
         {
@@ -35,10 +36,11 @@ namespace ChaosRecipeEnhancer.UI.Model
         public List<Item> ItemListHunter { get; set; } = new List<Item>();
         public List<Item> ItemListRedeemer { get; set; } = new List<Item>();
 
-        public ObservableCollection<Cell> OverlayCellsList { get; set; } = new ObservableCollection<Cell>();
+        public ObservableCollection<InteractiveCell> OverlayCellsList { get; set; } =
+            new ObservableCollection<InteractiveCell>();
 
         // used for registering clicks on tab headers
-        public TextBlock TabHeader { get; set; }
+        public TextBlock TabNameContainer { get; set; }
         public string TabName { get; set; }
         public bool Quad { get; set; }
         public int TabIndex { get; set; }
@@ -66,34 +68,30 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // Create the OnPropertyChanged method to raise the event
-        // The calling member's name will be used as the parameter.
-        protected void OnPropertyChanged(string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
+        /// <summary>
+        /// Creates an N x N grid of interactable <see cref="InteractiveCell"/> objects. All objects are initialized to inactive.
+        /// </summary>
+        /// <param name="size">Represent the dimensions of our Cell object grid (Size = N)</param>
         private void Generate2dArr(int size)
         {
             for (var i = 0; i < size; i++)
-            for (var j = 0; j < size; j++)
-                OverlayCellsList.Add(new Cell
+            {
+                for (var j = 0; j < size; j++)
                 {
-                    Active = false,
-                    XIndex = j,
-                    YIndex = i
-                });
+                    OverlayCellsList.Add(new InteractiveCell
+                    {
+                        Active = false,
+                        XIndex = j,
+                        YIndex = i
+                    });
+                }
+            }
         }
 
         public void PrepareOverlayList()
         {
-            int size;
-            if (Quad)
-                size = 24;
-            else
-                size = 12;
+            // If quad tab, set grid to 24 x 24, else set to 12 x 12 grid
+            var size = Quad ? 24 : 12;
             Generate2dArr(size);
         }
 
@@ -185,48 +183,78 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public void DeactivateSingleItemCells(Item item)
         {
-            var AllCoordinates = new List<List<int>>();
+            // Initializing a list of tuples that represent our X,Y coordinates
+            var allCoordinates = new List<(int X, int Y)>();
 
+            // For a given in-game Item, populate a list of tuples that represent
+            // their X,Y coordinates on our stash grid
             for (var i = 0; i < item.w; i++)
-            for (var j = 0; j < item.h; j++)
-                AllCoordinates.Add(new List<int> { item.x + i, item.y + j });
+            {
+                for (var j = 0; j < item.h; j++)
+                {
+                    allCoordinates.Add((item.x + i, item.y + j));
+                }
+            }
 
             foreach (var cell in OverlayCellsList)
-            foreach (var coordinate in AllCoordinates)
-                if (coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
-                    cell.Active = false;
+            {
+                foreach (var coordinate in allCoordinates)
+                {
+                    if (coordinate.X == cell.XIndex && coordinate.Y == cell.YIndex)
+                        cell.Active = false;
+                }
+            }
         }
 
         public void ActivateItemCells(Item item)
         {
-            var AllCoordinates = new List<List<int>>();
+            // Initializing a list of tuples that represent our X,Y coordinates
+            var allCoordinates = new List<(int X, int Y)>();
 
+            // For a given in-game Item, populate a list of tuples that represent
+            // their X,Y coordinates on our stash grid
             for (var i = 0; i < item.w; i++)
-            for (var j = 0; j < item.h; j++)
-                AllCoordinates.Add(new List<int> { item.x + i, item.y + j });
-            foreach (var cell in OverlayCellsList)
-            foreach (var coordinate in AllCoordinates)
-                if (coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
+            {
+                for (var j = 0; j < item.h; j++)
                 {
-                    cell.Active = true;
-                    cell.CellItem = item;
-                    cell.TabIndex = TabIndex;
+                    allCoordinates.Add((item.x + i, item.y + j));
                 }
+            }
+
+            foreach (var cell in OverlayCellsList)
+            {
+                foreach (var coordinate in allCoordinates)
+                {
+                    if (coordinate.X == cell.XIndex && coordinate.Y == cell.YIndex)
+                    {
+                        cell.Active = true;
+                        cell.PathOfExileItemData = item;
+                        cell.StashTabIndex = TabIndex;
+                    }
+                }
+            }
         }
 
         public void MarkNextItem(Item item)
         {
             foreach (var cell in OverlayCellsList)
-                if (cell.CellItem == item)
-                    cell.ButtonName = "X";
+            {
+                if (cell.PathOfExileItemData == item)
+                    cell.ButtonText = "X";
+            }
         }
 
-        public void ShowNumbersOnActiveCells(int index)
+        #region INotifyPropertyChanged implementation
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Create the OnPropertyChanged method to raise the event
+        // The calling member's name will be used as the parameter.
+        protected void OnPropertyChanged(string name = null)
         {
-            index++;
-            foreach (var cell in OverlayCellsList)
-                if (cell.Active)
-                    cell.ButtonName = index.ToString();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        #endregion
     }
 }

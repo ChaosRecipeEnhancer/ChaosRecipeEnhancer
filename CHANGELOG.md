@@ -1,5 +1,12 @@
 ## Change Log
 
+#### 1.7.0
+
+- updating app icon (thanks to BrandonTheBoot on Discord for the new assets)
+- patching a few bugs for tab highlighting when `All Sets` and `Set by Set` highlight modes are enabled for the stash tab overlay _(Note: Tab highlighting is still a tad buggy. I'm working on stabilizing this behavior in future patches - `Item By Item` highlight mode seems to the most stable)_
+- adding a new only minimized buttons set tracker overlay mode (thanks to [rhoffsch42](https://github.com/rhoffsch42) for your feature request)
+- updating and consolidating various project dependencies under the hood
+
 #### 1.6.1
 
 - removed clipboard integration when sending chat commands as it was causing users to paste clipboard into chat (thanks to [drifio](https://github.com/drifio) for your code contribution!)

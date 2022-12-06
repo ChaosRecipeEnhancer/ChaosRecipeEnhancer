@@ -4,14 +4,17 @@
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
+              xmlns:model="clr-namespace:ChaosRecipeEnhancer.UI.Model"
               mc:Ignorable="d"
               d:DesignHeight="450"
-              d:DesignWidth="800">
+              d:DesignWidth="800"
+              d:DataContext="{d:DesignInstance Type=model:InteractiveCell}">
 
     <ItemsControl.Background>
 
-        <SolidColorBrush Opacity="0"
-                         Color="Transparent" />
+        <SolidColorBrush
+            Opacity="0"
+            Color="Transparent" />
 
     </ItemsControl.Background>
 
@@ -20,8 +23,9 @@
 
         <ItemsPanelTemplate>
 
-            <UniformGrid Columns="12"
-                         Rows="12" />
+            <UniformGrid
+                Columns="12"
+                Rows="12" />
 
         </ItemsPanelTemplate>
 
@@ -85,7 +89,7 @@
                                         Value="1" />
 
                                 <Setter Property="Content"
-                                        Value="{Binding ButtonName}" />
+                                        Value="{Binding ButtonText}" />
 
                                 <Setter Property="Foreground"
                                         Value="White" />
