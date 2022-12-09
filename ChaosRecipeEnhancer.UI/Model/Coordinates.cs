@@ -128,6 +128,11 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static void OverlayClickEvent(StashTabOverlayView stashTabOverlayView)
         {
+            if (StashTabList.StashTabs.Count == 0)
+            {
+                stashTabOverlayView.Hide();
+            }
+            
             if (stashTabOverlayView.IsOpen)
             {
                 var selectedIndex = stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex;
