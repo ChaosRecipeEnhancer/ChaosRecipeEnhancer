@@ -38,6 +38,6 @@ Although there are 2 points which could be problematic:
 
 ### Have another question that's not on this list?
 
-Find us on Discord and we're more than happy to answer any questions you may have. Chances are, someone else has already encountered your issue and found a way to resolve it. Here's the link to our server: https://discord.gg/TcVCJD8w
+Find us on Discord and we're more than happy to answer any questions you may have. Chances are, someone else has already encountered your issue and found a way to resolve it. Here's the link to our server: https://discord.gg/ryss9jnRkZ
 
 Message me directly if the invite link expires: Meatbox#1607
