@@ -6,7 +6,7 @@ I echo what GGG has claimed, and have always told folks to keep your session IDs
 
 **Chaos Recipe Enhancer does not, has not, and will _never_ harvest your session ID or send it to anywhere.**
 
-- Mario
+Mario
 
 ---
 
