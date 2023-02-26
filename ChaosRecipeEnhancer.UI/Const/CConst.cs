@@ -1,9 +1,11 @@
-﻿namespace ChaosRecipeEnhancer.UI.Const
+﻿using System;
+
+namespace ChaosRecipeEnhancer.UI.Const
 {
     //move all settings here possibly
-    public class CConst
+    public static class CConst
     {
-        public const string newLine = "\n";
+        public static string newLine => Environment.NewLine;
         public const string tab = "\t";
     }
 }
