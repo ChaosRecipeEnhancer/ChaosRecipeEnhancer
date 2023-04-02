@@ -65,7 +65,10 @@ namespace ChaosRecipeEnhancer.UI.Model
                 }
                 catch (WebException e)
                 {
-                    MessageBox.Show("Error: " + e.Message);
+                    MessageBox.Show(
+                        e.Message +
+                        "\n\nThe Path of Exile servers seem to be down for patching. Once they're back up, our app will work as usual. The app is NOT broken! ",
+                        "Warning: Path of Exile API Request | ApiAdapter.GetAllLeagueNames()");
                 }
             }
 
@@ -228,7 +231,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             // -1 for 1 request + 3 times if rate limit high exceeded
             if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - 4)
             {
-                RateLimit.RateLimitExceeded = true;
+                RateLimit.rateLimitExceeded = true;
                 return false;
             }
 
@@ -334,7 +337,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             // check rate limit
             if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - StashTabList.StashTabs.Count - 4)
             {
-                RateLimit.RateLimitExceeded = true;
+                RateLimit.rateLimitExceeded = true;
                 return false;
             }
 

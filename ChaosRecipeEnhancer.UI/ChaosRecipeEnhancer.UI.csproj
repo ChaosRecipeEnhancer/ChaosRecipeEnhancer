@@ -232,9 +232,6 @@
       <DependentUpon>AppBootstrapper.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\EventArgs.cs" />
-    <Compile Include="Model\EventRaiser.cs" />
-    <Compile Include="Model\RelayCommand.cs" />
     <Compile Include="Model\StashTab.cs" />
     <Compile Include="View\SetTrackerOverlayView.xaml.cs">
       <DependentUpon>SetTrackerOverlayView.xaml</DependentUpon>
@@ -273,7 +270,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Assets\Fonts\password.ttf" />
+    <Resource Include="Assets\Fonts\Password.ttf" />
     <Resource Include="Assets\Images\amulet.png" />
     <Resource Include="Assets\Images\belt.png" />
     <Resource Include="Assets\Images\boots.png" />
@@ -283,7 +280,7 @@
     <Resource Include="Assets\Images\ring.png" />
     <Resource Include="Assets\Images\weapon.png" />
     <None Include="Assets\Icons\CREIcon.ico" />
-    <None Include="Assets\Sounds\filterchanged.mp3">
+    <None Include="Assets\Sounds\FilterChanged.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Assets\FilterStyles\InfluencedItemsStyle.txt">
@@ -375,7 +372,7 @@
   <ItemGroup>
     <Resource Include="CREIcon.ico" />
     <Resource Include="Assets\Icons\CREIcon.ico" />
-    <Content Include="Assets\Sounds\itemsPickedUp.mp3">
+    <Content Include="Assets\Sounds\ItemPickedUp.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

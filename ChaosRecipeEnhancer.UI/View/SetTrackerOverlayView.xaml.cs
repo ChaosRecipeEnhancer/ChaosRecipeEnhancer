@@ -428,7 +428,7 @@ namespace ChaosRecipeEnhancer.UI.View
                                 SetOpacity();
                                 CalculationActive = false;
                                 Dispatcher.Invoke(() => { IsIndeterminate = false; });
-                            }, Data.CancelationToken);
+                            }, Data.CancellationToken);
 
                             await Task.Delay(FetchCooldown * 1000).ContinueWith(_ =>
                             {
@@ -438,12 +438,12 @@ namespace ChaosRecipeEnhancer.UI.View
                                 //FetchingActive = false;
                             });
                         }
-                        catch (OperationCanceledException ex) when (ex.CancellationToken == Data.CancelationToken)
+                        catch (OperationCanceledException ex) when (ex.CancellationToken == Data.CancellationToken)
                         {
                             Trace.WriteLine("abort");
                         }
 
-                if (RateLimit.RateLimitExceeded)
+                if (RateLimit.rateLimitExceeded)
                 {
                     var secondsToWait = RateLimit.GetSecondsToWait();
 
@@ -506,15 +506,15 @@ namespace ChaosRecipeEnhancer.UI.View
 
             if (CalculationActive)
             {
-                Data.cs.Cancel();
+                Data.CancellationTokenSource.Cancel();
                 FetchingActive = false;
             }
             else
             {
                 if (ApiAdapter.IsFetching) return;
 
-                Data.cs = new CancellationTokenSource();
-                Data.CancelationToken = Data.cs.Token;
+                Data.CancellationTokenSource = new CancellationTokenSource();
+                Data.CancellationToken = Data.CancellationTokenSource.Token;
 
                 // TODO: [Refactor] Remove dependency on stashTabOverlayView and make sure we hide BEFORE or AFTER calling this (?)
                 // if (_stashTabOverlayView.IsOpen) _stashTabOverlayView.Hide();

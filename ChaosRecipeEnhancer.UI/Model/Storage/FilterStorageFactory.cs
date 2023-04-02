@@ -4,8 +4,7 @@ namespace ChaosRecipeEnhancer.UI.Model.Storage
 {
     public static class FilterStorageFactory
     {
-        public static IFilterStorage Create(
-            string lootFilterFilePath)
+        private static IFilterStorage Create(string lootFilterFilePath)
         {
             return new FileFilterStorage(lootFilterFilePath);
         }

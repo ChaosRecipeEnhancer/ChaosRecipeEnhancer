@@ -14,7 +14,6 @@ namespace ChaosRecipeEnhancer.UI.Model
     public static class HotkeysManager
     {
         // Events
-
         public delegate void HotkeyEvent(GlobalHotkey hotkey);
 
         // The build in proc ID for telling windows to hook onto the
@@ -33,9 +32,6 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static ModifierKeys stashTabModifier;
         public static Key stashTabKey;
-
-        //public static ModifierKeys reloadFilterModifier;
-        //public static Key reloadFilterKey;
 
         static HotkeysManager()
         {
@@ -140,7 +136,6 @@ namespace ChaosRecipeEnhancer.UI.Model
         /// </summary>
         /// <param name="modifier"></param>
         /// <param name="key"></param>
-        /// <param name="callbackMethod">If this is not null, the callback method will be checked</param>
         /// <returns></returns>
         public static List<GlobalHotkey> FindHotkeys(ModifierKeys modifier, Key key)
         {
@@ -173,7 +168,7 @@ namespace ChaosRecipeEnhancer.UI.Model
         /// <param name="key"></param>
         /// <param name="removeAllOccourances">
         ///     If this is false, the first found hotkey will be removed.
-        ///     else, every occourance will be removed.
+        ///     else, every occurrence will be removed.
         /// </param>
         public static void RemoveHotkey(ModifierKeys modifier, Key key, bool removeAllOccourances = false)
         {
@@ -198,7 +193,7 @@ namespace ChaosRecipeEnhancer.UI.Model
         /// <summary>
         ///     Sets up the Key Up/Down event hooks.
         /// </summary>
-        /// <param name="proc">The callback method to be called when a key up/down occours</param>
+        /// <param name="proc">The callback method to be called when a key up/down occurs</param>
         /// <returns></returns>
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
@@ -212,9 +207,10 @@ namespace ChaosRecipeEnhancer.UI.Model
         }
 
         /// <summary>
-        ///     The method called when a key up/down occours across the system.
+        ///     The method called when a key up/down occurs across the system.
         /// </summary>
         /// <param name="nCode">idk tbh</param>
+        /// <param name="wParam"></param>
         /// <param name="lParam">LPARAM, contains the key that was pressed. not used atm</param>
         /// <returns>LRESULT</returns>
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
@@ -262,7 +258,6 @@ namespace ChaosRecipeEnhancer.UI.Model
                 }
             }
         }
-
 
         public static void GetToggleHotkey()
         {
@@ -322,45 +317,6 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
         }
 
-        //public static void GetReloadFilterHotkey()
-        //{
-        //    if (Properties.Settings.Default.HotkeyReloadFilter != "< not set >")
-        //    {
-        //        string[] reloadFilterString = Properties.Settings.Default.HotkeyReloadFilter.Split('+');
-
-        //        if (reloadFilterString.Length > 1)
-        //        {
-        //            if (reloadFilterString[0].Trim() == "Ctrl")
-        //            {
-        //                reloadFilterModifier = ModifierKeys.Control;
-        //            }
-        //            else if (reloadFilterString[0].Trim() == "Alt")
-        //            {
-        //                reloadFilterModifier = ModifierKeys.Alt;
-        //            }
-        //            else if (reloadFilterString[0].Trim() == "Win")
-        //            {
-        //                reloadFilterModifier = ModifierKeys.Windows;
-        //            }
-        //            else if (reloadFilterString[0].Trim() == "Shift")
-        //            {
-        //                reloadFilterModifier = ModifierKeys.Shift;
-        //            }
-        //            else
-        //            {
-        //                reloadFilterModifier = ModifierKeys.None;
-        //            }
-
-        //            Enum.TryParse(reloadFilterString[1].Trim(), out reloadFilterKey);
-        //        }
-        //        else
-        //        {
-        //            Enum.TryParse(reloadFilterString[0].Trim(), out reloadFilterKey);
-        //            reloadFilterModifier = ModifierKeys.None;
-        //        }
-        //    }
-        //}
-
         public static void RemoveToggleHotkey()
         {
             RemoveHotkey(toggleModifier, toggleKey);
@@ -377,14 +333,8 @@ namespace ChaosRecipeEnhancer.UI.Model
         }
 
         // Callbacks
-
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
-
-        //public static void RemoveReloadFilterHotkey()
-        //{
-        //    HotkeysManager.RemoveHotkey(reloadFilterModifier, reloadFilterKey);
-        //}
-
+        
         #region Native Methods
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]

@@ -5,14 +5,14 @@ namespace ChaosRecipeEnhancer.UI.Model
 {
     public class Hotkey
     {
+        private Key Key { get; }
+        private ModifierKeys Modifiers { get; }
+        
         public Hotkey(Key key, ModifierKeys modifiers)
         {
             Key = key;
             Modifiers = modifiers;
         }
-
-        public Key Key { get; }
-        public ModifierKeys Modifiers { get; }
 
         public override string ToString()
         {

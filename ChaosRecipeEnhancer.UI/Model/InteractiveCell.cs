@@ -20,7 +20,6 @@ namespace ChaosRecipeEnhancer.UI.Model
         public int YIndex { get; set; }
         public Button CellButton { get; set; }
 
-        
         public bool Active
         {
             get => _active;

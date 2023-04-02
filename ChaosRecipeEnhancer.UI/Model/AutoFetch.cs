@@ -9,12 +9,16 @@ namespace ChaosRecipeEnhancer.UI.Model
 {
     public class LogWatcher
     {
-        private static readonly int cooldown = 120;
-        private FileSystemWatcher watcher = new FileSystemWatcher();
+        private const int Cooldown = 120;
+        private static string LastZone { get; set; } = "";
+        private static string NewZone { get; set; } = "";
+        private static bool FetchAllowed { get; set; } = true;
+        
+        public static Thread WorkerThread { get; set; }
 
         public LogWatcher(SetTrackerOverlayView setTrackerOverlay)
         {
-            Trace.WriteLine("logwatcher created");
+            Trace.WriteLine("LogWatcher created");
 
             var wh = new AutoResetEvent(false);
             var fsw = new FileSystemWatcher(Path.GetDirectoryName(@"" + Settings.Default.PathOfExileClientLogLocation));
@@ -59,21 +63,11 @@ namespace ChaosRecipeEnhancer.UI.Model
                     }
                 }
             });
-            //WorkerThread.Start();
-            StartWatchingLogFile();
 
-            //wh.Close();
+            StartWatchingLogFile();
         }
 
-        public static Thread WorkerThread { get; set; }
-        public static string LastZone { get; set; } = "";
-        public static string NewZone { get; set; } = "";
-
-        private static bool FetchAllowed { get; set; } = true;
-
-        //Ihr habt 'Sonnenspitze-Versteck' betreten.
-
-        public static string[] GetPhraseTranslation()
+        private static string[] GetPhraseTranslation()
         {
             var ret = new string[2];
             ret[1] = "";
@@ -113,7 +107,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             return ret;
         }
 
-        public static string GetHideoutTranslation()
+        private static string GetHideoutTranslation()
         {
             switch (Settings.Default.Language)
             {
@@ -136,7 +130,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
         }
 
-        public static string GetHarbourTranslation()
+        private static string GetHarbourTranslation()
         {
             switch (Settings.Default.Language)
             {
@@ -159,7 +153,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
         }
 
-        public static void StartWatchingLogFile()
+        private static void StartWatchingLogFile()
         {
             WorkerThread.Start();
             Trace.WriteLine("starting watching");
@@ -171,7 +165,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             Trace.WriteLine("stop watch");
         }
 
-        public async void FetchIfPossible(SetTrackerOverlayView setTrackerOverlay)
+        private async void FetchIfPossible(SetTrackerOverlayView setTrackerOverlay)
         {
             if (FetchAllowed)
             {
@@ -179,7 +173,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                 try
                 {
                     setTrackerOverlay.RunFetching();
-                    await Task.Delay(cooldown * 1000).ContinueWith(_ =>
+                    await Task.Delay(Cooldown * 1000).ContinueWith(_ =>
                     {
                         FetchAllowed = true;
                         Trace.WriteLine("allow fetch");

@@ -78,8 +78,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             var poeWindow = openWindows.FirstOrDefault(x => x.Value == "Path of Exile").Key;
             if (poeWindow == HWND.Zero)
             {
-                UserWarning.WarnUser("Could not find Window! Please make sure Path of Exile is running.",
-                    "Window not found");
+                UserWarning.WarnUser("Could not find Window! Please make sure Path of Exile is running.", "Window not found");
                 return;
             }
 

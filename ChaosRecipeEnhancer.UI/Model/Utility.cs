@@ -1,41 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace ChaosRecipeEnhancer.UI.Model
 {
     internal class Utility
     {
-        public static T FindVisualChild<T>(DependencyObject depObj) where T : DependencyObject
-        {
-            if (depObj != null)
-                for (var i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-                {
-                    var child = VisualTreeHelper.GetChild(depObj, i);
-                    if (child != null && child is T) return (T)child;
-
-                    var childItem = FindVisualChild<T>(child);
-                    if (childItem != null) return childItem;
-                }
-
-            return null;
-        }
-
-        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject rootObject) where T : DependencyObject
-        {
-            if (rootObject != null)
-                for (var i = 0; i < VisualTreeHelper.GetChildrenCount(rootObject); i++)
-                {
-                    var child = VisualTreeHelper.GetChild(rootObject, i);
-
-                    if (child != null && child is T)
-                        yield return (T)child;
-
-                    foreach (var childOfChild in FindVisualChildren<T>(child))
-                        yield return childOfChild;
-                }
-        }
-
         public static T GetChild<T>(DependencyObject obj) where T : DependencyObject
         {
             if (obj != null)

@@ -14,22 +14,23 @@ namespace ChaosRecipeEnhancer.UI.Model.Storage
 
         public async Task<string> ReadLootFilterAsync()
         {
-            if (_fileLocation != "")
-                using (var reader = new StreamReader(_fileLocation))
-                {
-                    return await reader.ReadToEndAsync();
-                }
+            if (_fileLocation == "") return null;
 
-            return null;
+            using (var reader = new StreamReader(_fileLocation))
+            {
+                return await reader.ReadToEndAsync();
+            }
         }
 
         public async Task WriteLootFilterAsync(string filter)
         {
             if (_fileLocation != "" && filter != "")
+            {
                 using (var writer = new StreamWriter(_fileLocation))
                 {
                     await writer.WriteAsync(filter);
                 }
+            }
         }
     }
 }

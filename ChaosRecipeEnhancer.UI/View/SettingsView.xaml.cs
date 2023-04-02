@@ -60,7 +60,9 @@ namespace ChaosRecipeEnhancer.UI.View
         private readonly StashTabOverlayView _stashTabOverlayView;
 
         // This version # should match up with the format for Assembly version # (3 dots, 4 digits), or else you'll get spammed for AutoUpdates
-        private const string AppVersion = "1.7.0.0";
+        private const bool IsPreviewVersion = true;
+        private const int PreviewPatchNumber = 1;
+        private const string AppVersion = "1.7.1.0";
         
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
@@ -78,9 +80,8 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public static bool SettingsComplete { get; set; }
 
-        // ReSharper disable once UnusedMember.Global
-        public static string AppVersionText { get; set; } = "v." + AppVersion;
-
+        public static string AppVersionText { get; set; } = "v." + AppVersion + (IsPreviewVersion ? $" (Preview {PreviewPatchNumber})" : String.Empty);
+        
         // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
         // public Visibility FolderNameVisible
         // {

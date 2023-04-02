@@ -4,21 +4,15 @@
     {
         private static RuleDefinition _currentRateLimit;
 
-        private static RuleDefinition
-            _maxRateLimit =
-                new RuleDefinition(int.MaxValue, 0, 0); // initialize to max, this will be updated on our first fetch
-
-        public static bool RateLimitExceeded;
-
-        public static bool HeaderParsingError { get; set; }
-
+        // initialize to max, this will be updated on our first fetch
+        private static RuleDefinition _maxRateLimit = new RuleDefinition(int.MaxValue, 0, 0);
+        private static bool HeaderParsingError { get; set; }
+        private static int ResponseSeconds { get; set; }
+        
+        public static bool rateLimitExceeded;
         public static int CurrentRequests => _currentRateLimit.HitCount;
-
         public static int MaximumRequests => _maxRateLimit.HitCount;
-
         public static int BanTime { get; set; }
-
-        public static int ResponseSeconds { get; set; }
 
         public static void DeserializeResponseSeconds(string responseTime)
         {
@@ -33,7 +27,8 @@
 
         public static void DeserializeRateLimits(string rateLimitMaxString, string rateLimitStateString)
         {
-            const int ExpectedRuleCount = 3; // defined by the PoE API
+            // defined by the PoE API
+            const int expectedRuleCount = 3; 
 
             HeaderParsingError = false;
 
@@ -48,7 +43,7 @@
             // Store the current limit rules
             var maxSplitsState = rateLimitStateString.Split(',');
             var maxSplitsLowState = maxSplitsState[0].Split(':');
-            if (maxSplitsLowState.Length >= ExpectedRuleCount)
+            if (maxSplitsLowState.Length >= expectedRuleCount)
                 _currentRateLimit = new RuleDefinition(
                     int.Parse(maxSplitsLowState[0]),
                     int.Parse(maxSplitsLowState[1]),
@@ -69,15 +64,10 @@
             return false;
         }
 
-        public static void IncreaseRequestCounter()
-        {
-            _currentRateLimit.IncrementHitCounter();
-        }
-
         public static void Reset()
         {
             _currentRateLimit.ClearHitCount();
-            RateLimitExceeded = false;
+            rateLimitExceeded = false;
         }
 
         public static int GetSecondsToWait()

@@ -27,13 +27,6 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         private static IntPtr SetHook(LowLevelMouseProc proc)
         {
-            //using (Process curProcess = Process.GetCurrentProcess())
-            //using (ProcessModule curModule = curProcess.MainModule)
-            //{
-            //    return SetWindowsHookEx(WH_MOUSE_LL, proc,
-            //      GetModuleHandle(curModule.ModuleName), 0);
-            //}
-
             var hook = SetWindowsHookEx(WH_MOUSE_LL, proc, GetModuleHandle("user32"), 0);
             if (hook == IntPtr.Zero) throw new Win32Exception();
             return hook;
@@ -55,16 +48,14 @@ namespace ChaosRecipeEnhancer.UI.Model
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr SetWindowsHookEx(int idHook,
-            LowLevelMouseProc lpfn, IntPtr hMod, uint dwThreadId);
+        private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelMouseProc lpfn, IntPtr hMod, uint dwThreadId);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
-            IntPtr wParam, IntPtr lParam);
+        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?define ProductVersion = "1.7.0.0"?>
+<?define ProductVersion = "1.7.1.0"?>
 <?define UpgradeCode = "7524ed46-e953-4ee0-a9cb-399a81b1f3ce"?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
@@ -453,13 +453,13 @@
 
 		<!-- Sound Assets Get Added to Main Installation Folder -->
 		<ComponentGroup Id="SoundsFolder_files" Directory="SoundsFolder">
-			<Component Id="Sounds_itemsPickedUp.mp3" Guid="c2762fc6-e9fd-4928-a1fa-4b0aaaf17905">
-				<File Id="Sounds_itemsPickedUp.mp3" Name="itemsPickedUp.mp3"
-                      Source="$(var.ChaosRecipeEnhancer_ProjectDir)Assets\Sounds\itemsPickedUp.mp3"/>
+			<Component Id="Sounds_ItemsPickedUp.mp3" Guid="c2762fc6-e9fd-4928-a1fa-4b0aaaf17905">
+				<File Id="Sounds_ItemPickedUp.mp3" Name="ItemPickedUp.mp3"
+                      Source="$(var.ChaosRecipeEnhancer_ProjectDir)Assets\Sounds\ItemPickedUp.mp3"/>
 			</Component>
-			<Component Id="Sounds_filterchanged.mp3" Guid="a0ba0fba-5d38-4595-b44c-7beb03d1bbc8">
-				<File Id="Sounds_filterchanged.mp3" Name="filterchanged.mp3"
-                      Source="$(var.ChaosRecipeEnhancer_ProjectDir)Assets\Sounds\filterchanged.mp3"/>
+			<Component Id="Sounds_FilterChanged.mp3" Guid="a0ba0fba-5d38-4595-b44c-7beb03d1bbc8">
+				<File Id="Sounds_FilterChanged.mp3" Name="FilterChanged.mp3"
+                      Source="$(var.ChaosRecipeEnhancer_ProjectDir)Assets\Sounds\FilterChanged.mp3"/>
 			</Component>
 		</ComponentGroup>
 
