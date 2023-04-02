@@ -9,7 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using ChaosRecipeEnhancer.App.Helpers;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
@@ -38,7 +37,6 @@ namespace ChaosRecipeEnhancer.UI.View
 
             InitializeComponent();
             DataContext = this;
-            AutoUpdateHelper.InitializeAutoUpdater(AppVersion);
             
             InitializeColors();
             InitializeHotkeys();
@@ -134,7 +132,8 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void CheckForUpdates_Click(object Sender, EventArgs e)
         {
-            AutoUpdateHelper.CheckForUpdates();
+            // TODO: Hyperlink to CRE release pages
+            Console.Write("TODO Link to releases");
         }
 
         // Close the form, which closes the application.

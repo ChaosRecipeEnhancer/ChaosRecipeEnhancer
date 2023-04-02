@@ -44,7 +44,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\AutoUpdateHelper.cs" />
     <Compile Include="Models\CREItemSet.cs" />
     <Compile Include="Models\CREItemWrapper.cs" />
     <Compile Include="Native\ClipboardNative.cs" />
@@ -58,7 +57,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autoupdater.NET.Official" Version="1.7.6" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1418.22" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

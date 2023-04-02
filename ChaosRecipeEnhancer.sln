@@ -12,8 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution 
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		CHANGELOG.md = CHANGELOG.md
-		README.md = README.md
 		LICENSE.md = LICENSE.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChaosRecipeEnhancer.DataModels", "ChaosRecipeEnhancer.DataModels\ChaosRecipeEnhancer.DataModels.csproj", "{4FE898A7-2AF2-4169-AA88-68591CE59B82}"
@@ -55,6 +55,7 @@ Global
 		{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}.Release|x86.ActiveCfg = Release|Any CPU
 		{31C6C5C3-CCF5-44C7-A566-2AF9DE4EE388}.Release|x86.Build.0 = Release|Any CPU
 		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Debug|Any CPU.Build.0 = Debug|x86
 		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Debug|ARM.ActiveCfg = Debug|x86
 		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Debug|ARM64.ActiveCfg = Debug|x86
 		{1E01E3D3-9A5B-4869-9762-2AC5C8122C25}.Debug|x64.ActiveCfg = Debug|x86

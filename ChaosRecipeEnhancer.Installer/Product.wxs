@@ -192,11 +192,6 @@
                       Source="$(var.ChaosRecipeEnhancer_TargetDir)AutofacSerilogIntegration.dll"/>
 			</Component>
 
-			<Component Id="AutoUpdater.NET.dll" Guid="{C1CBDC38-D505-43E7-893E-C9523937F275}">
-				<File Id="AutoUpdater.NET.dll" KeyPath="yes"
-                      Source="$(var.ChaosRecipeEnhancer_TargetDir)AutoUpdater.NET.dll"/>
-			</Component>
-
 			<Component Id="Ben.Demystifier.dll" Guid="{363FBC7F-6F4E-417E-B617-A0108AC3C2D2}">
 				<File Id="Ben.Demystifier.dll" KeyPath="yes"
                       Source="$(var.ChaosRecipeEnhancer_TargetDir)Ben.Demystifier.dll"/>
