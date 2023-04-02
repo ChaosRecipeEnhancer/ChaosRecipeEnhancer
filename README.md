@@ -1,12 +1,10 @@
-Update Regarding GGG's [`Do not share POESESSID values with other people`](https://www.pathofexile.com/forum/view-thread/3328601) forum post:
+__Update April, 2023 (Pre 3.21 Launch):__
 
-We have used the session ID as a form of making authenticated requests against some of the GGG's in-game data through the use of their APIs. **I will be working to move away from this model and moving to another form of authentication found on other PoE tool apps so that you do not have to input your PoE Session ID.** I'm hoping this can be done by 3.21, if not sooner.
+Development help would be much appreciated! I (lead developer) have gotten a new job since taking over the project and have not had much time to keep new adding new feature updates and application optimizations to the tool.
 
-I echo what GGG has claimed, and have always told folks to keep your session IDs secure, not share them with anyone. Treat them as you would your password. This is why we deliberately hide the value in our settings.
+Important additions, like linking our app to GGG's OAuth API for token-based authentication are the primary focus for new feature additions, if anyone would like to help implenting that solution.
 
-**Chaos Recipe Enhancer does not, has not, and will _never_ harvest your session ID or send it to anywhere.**
-
-Mario
+If you're interested in helping out, please reach out on our [community discord][discord-link]!
 
 ---
 
@@ -54,6 +52,18 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 #### Set Tracker Overlay & Loot Filter Manipulation
 
 <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
+
+## Statement On Our Use Of `POESESSID`
+
+Update Regarding GGG's [`Do not share POESESSID values with other people`](https://www.pathofexile.com/forum/view-thread/3328601) forum post:
+
+We have used the session ID as a form of making authenticated requests against some of the GGG's in-game data through the use of their APIs. I will be working to move away from this model and moving to another form of authentication found on other PoE tool apps so that you do not have to input your PoE Session ID. I'm hoping this can be done in the future, but I won't lie, this addition will take a ton of development effort.
+
+I echo what GGG has claimed, and have always told folks to keep your session IDs secure, not share them with anyone. Treat them as you would your password. This is why we deliberately hide the value in our settings.
+
+**Chaos Recipe Enhancer does not, has not, and will _never_ harvest your session ID or send it to anywhere.**
+
+---
 
 ## Copyright
 
