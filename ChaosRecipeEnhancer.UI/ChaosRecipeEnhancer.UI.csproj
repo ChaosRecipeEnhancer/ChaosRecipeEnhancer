@@ -146,11 +146,11 @@
     <Compile Include="BusinessLogic\Items\ItemPropertyModel.cs" />
     <Compile Include="BusinessLogic\Items\ItemSet.cs" />
     <Compile Include="DynamicControls\Coordinates.cs" />
-    <Compile Include="DynamicControls\InteractiveCell.cs" />
-    <Compile Include="DynamicControls\StashTabs\StashTab.cs" />
-    <Compile Include="DynamicControls\StashTabs\StashTabList.cs" />
-    <Compile Include="DynamicControls\StashTabs\StashTabPropsList.cs" />
-    <Compile Include="DynamicControls\UserWarning.cs" />
+    <Compile Include="DynamicControls\StashTabs\InteractiveStashCell.cs" />
+    <Compile Include="DynamicControls\StashTabs\StashTabControl.cs" />
+    <Compile Include="DynamicControls\StashTabs\ReconstructedStashTabs.cs" />
+    <Compile Include="DynamicControls\StashTabs\StashTabResponseObject.cs" />
+    <Compile Include="DynamicControls\ErrorWindow.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\Native\NativeMouseExtensions.cs" />
     <Compile Include="Extensions\Native\NativeWindowExtensions.cs" />
@@ -300,7 +300,7 @@
     </None>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>

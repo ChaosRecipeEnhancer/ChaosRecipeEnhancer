@@ -17,7 +17,7 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
             InitializeComponent();
 
             // Populate the league dropdown
-            if (!Settings.Default.CustomLeagueEnabled) MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
+            if (!Settings.Default.CustomLeagueEnabled) MainLeagueComboBox.ItemsSource = ApiAdapter.FetchLeagueNames();
 
             LoadCustomLeagueInputVisibility();
         }

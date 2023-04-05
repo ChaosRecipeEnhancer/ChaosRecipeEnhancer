@@ -11,40 +11,38 @@ using ChaosRecipeEnhancer.UI.Properties;
 namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
 {
     /// <summary>
-    ///     UI representation for a stash tab within our app (NOT the GGG StashTab object model).
+    ///     CRE-specific model of a stash tab within our app (NOT the GGG StashTab object model).
     /// </summary>
-    public class StashTab : INotifyPropertyChanged
+    public class StashTabControl : INotifyPropertyChanged
     {
         private SolidColorBrush _tabHeaderColor;
         private Thickness _tabHeaderWidth;
 
-        public StashTab(string name, int index)
+        public StashTabControl(string name, int index)
         {
             TabName = name;
             TabIndex = index;
             TabHeaderColor = Brushes.Transparent;
-            TabHeaderWidth = new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2,
-                Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2);
+            TabHeaderWidth = new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2, Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2);
         }
 
-        public Uri StashTabUri { get; set; }
+        public int TabIndex { get; }
+        public Uri StashTabApiRequestUrl { get; set; }
         public List<Item> ItemList { get; set; }
-        public List<Item> ItemListChaos { get; set; } = new List<Item>();
-        public List<Item> ItemListShaper { get; set; } = new List<Item>();
-        public List<Item> ItemListElder { get; set; } = new List<Item>();
-        public List<Item> ItemListWarlord { get; set; } = new List<Item>();
-        public List<Item> ItemListCrusader { get; set; } = new List<Item>();
-        public List<Item> ItemListHunter { get; set; } = new List<Item>();
-        public List<Item> ItemListRedeemer { get; set; } = new List<Item>();
+        public List<Item> ItemListChaos { get; } = new List<Item>();
+        public List<Item> ItemListShaper { get; } = new List<Item>();
+        public List<Item> ItemListElder { get; } = new List<Item>();
+        public List<Item> ItemListWarlord { get; } = new List<Item>();
+        public List<Item> ItemListCrusader { get; } = new List<Item>();
+        public List<Item> ItemListHunter { get; } = new List<Item>();
+        public List<Item> ItemListRedeemer { get; } = new List<Item>();
 
-        public ObservableCollection<InteractiveCell> OverlayCellsList { get; set; } =
-            new ObservableCollection<InteractiveCell>();
+        public ObservableCollection<InteractiveStashCell> OverlayCellsList { get; } = new ObservableCollection<InteractiveStashCell>();
 
         // used for registering clicks on tab headers
         public TextBlock TabNameContainer { get; set; }
         public string TabName { get; set; }
         public bool Quad { get; set; }
-        public int TabIndex { get; set; }
 
         public SolidColorBrush TabHeaderColor
         {
@@ -70,16 +68,16 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
         }
 
         /// <summary>
-        /// Creates an N x N grid of interactable <see cref="InteractiveCell"/> objects. All objects are initialized to inactive.
+        /// Creates an N x N grid of interactable <see cref="InteractiveStashCell"/> objects. All objects are initialized to inactive.
         /// </summary>
         /// <param name="size">Represent the dimensions of our Cell object grid (Size = N)</param>
-        private void Generate2dArr(int size)
+        private void GenerateInteractiveStashCellGrid(int size)
         {
             for (var i = 0; i < size; i++)
             {
                 for (var j = 0; j < size; j++)
                 {
-                    OverlayCellsList.Add(new InteractiveCell
+                    OverlayCellsList.Add(new InteractiveStashCell
                     {
                         Active = false,
                         XIndex = j,
@@ -93,7 +91,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
         {
             // If quad tab, set grid to 24 x 24, else set to 12 x 12 grid
             var size = Quad ? 24 : 12;
-            Generate2dArr(size);
+            GenerateInteractiveStashCellGrid(size);
         }
 
         public void CleanItemList()
@@ -131,8 +129,10 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
                 }
 
                 ItemList[i].StashTabIndex = TabIndex;
-                //exalted recipe every ilvl allowed, same bases, sort in itemlists
+                
+                // Exalted recipe every ilvl allowed, same bases, sort in itemlists
                 if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
+                {
                     if (ItemList[i].influences != null)
                     {
                         if (ItemList[i].influences.shaper)
@@ -145,11 +145,14 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
                             ItemListCrusader.Add(ItemList[i]);
                         else if (ItemList[i].influences.hunter)
                             ItemListHunter.Add(ItemList[i]);
-                        else if (ItemList[i].influences.redeemer) ItemListRedeemer.Add(ItemList[i]);
+                        else if (ItemList[i].influences.redeemer)
+                            ItemListRedeemer.Add(ItemList[i]);
 
                         ItemList.RemoveAt(i);
                         continue;
                     }
+                }
+                    
 
                 if (!Settings.Default.ChaosRecipeTrackingEnabled && !Settings.Default.RegalRecipeTrackingEnabled)
                 {
@@ -230,7 +233,6 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
                     {
                         cell.Active = true;
                         cell.PathOfExileItemData = item;
-                        cell.StashTabIndex = TabIndex;
                     }
                 }
             }
@@ -241,7 +243,9 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
             foreach (var cell in OverlayCellsList)
             {
                 if (cell.PathOfExileItemData == item)
+                {
                     cell.ButtonText = "X";
+                }
             }
         }
 

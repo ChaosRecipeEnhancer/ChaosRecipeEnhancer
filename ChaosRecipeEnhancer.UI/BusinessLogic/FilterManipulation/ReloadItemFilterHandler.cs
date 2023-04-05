@@ -32,7 +32,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation
             
             if (NativeWindowExtensions.CheckIfWindowExists(poeWindow))
             {
-                UserWarning.WarnUser("Could not find PoE window! Please make sure PoE is running." + StringConstruction.DoubleNewLineCharacter +
+                ErrorWindow.Spawn("Could not find PoE window! Please make sure PoE is running." + StringConstruction.DoubleNewLineCharacter +
                                      " If PoE is running in admin mode, try running our app in admin mode, as well.", "Error: PoE Window Not Found");
                 return;
             }
@@ -55,7 +55,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation
             
             if (!string.IsNullOrEmpty(filterName)) return "/itemfilter " + filterName;
 
-            UserWarning.WarnUser("Please configure your filter file location in the settings.", "Error: No Filter File Location Set");
+            ErrorWindow.Spawn("Please configure your filter file location in the settings.", "Error: No Filter File Location Set");
             
             return null;
         }
