@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using ChaosRecipeEnhancer.App.Native;
 using ChaosRecipeEnhancer.UI.UserControls.StashTabOverlayDisplays;
 using ChaosRecipeEnhancer.UI.View;
 
@@ -12,8 +13,8 @@ namespace ChaosRecipeEnhancer.UI.Model
     {
         private static bool CheckIfClicked(Point point, Button button)
         {
-            var clickX = MouseHook.ClickLocationX;
-            var clickY = MouseHook.ClickLocationY;
+            var clickX = NativeMouseHandler.ClickLocationX;
+            var clickY = NativeMouseHandler.ClickLocationY;
 
             // adjust btn x,y position a bit
             point.X -= 1;
@@ -45,8 +46,8 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         private static bool CheckIfTabNameContainerClicked(StashTab stashTab)
         {
-            var clickX = MouseHook.ClickLocationX;
-            var clickY = MouseHook.ClickLocationY;
+            var clickX = NativeMouseHandler.ClickLocationX;
+            var clickY = NativeMouseHandler.ClickLocationY;
 
             var pt = GetTabNameContainerCoordinates(stashTab.TabNameContainer);
 
@@ -72,8 +73,8 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         private static bool CheckIfEditButtonClicked(Button editButton)
         {
-            var clickX = MouseHook.ClickLocationX;
-            var clickY = MouseHook.ClickLocationY;
+            var clickX = NativeMouseHandler.ClickLocationX;
+            var clickY = NativeMouseHandler.ClickLocationY;
 
             var pt = GetEditButtonCoordinates(editButton);
 

@@ -8,7 +8,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using ChaosRecipeEnhancer.App;
+using ChaosRecipeEnhancer.App.Native;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.UserControls.StashTabOverlayDisplays;
@@ -101,7 +101,7 @@ namespace ChaosRecipeEnhancer.UI.View
             Transparentize();
             EditModeButton.Content = "Edit";
             IsEditing = false;
-            MouseHook.Stop();
+            NativeMouseHandler.Stop();
 
             foreach (var i in StashTabList.StashTabs)
             {
@@ -200,7 +200,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
                 _setTrackerOverlayView.OpenStashOverlayButtonContent = "Hide";
 
-                MouseHook.Start();
+                NativeMouseHandler.Start();
                 base.Show();
             }
             else
@@ -215,9 +215,9 @@ namespace ChaosRecipeEnhancer.UI.View
             base.OnSourceInitialized(e);
 
             // Get this window's handle
-            var hwnd = new WindowInteropHelper(this).Handle;
+            var hWnd = new WindowInteropHelper(this).Handle;
 
-            Win32.makeTransparent(hwnd);
+            NativeWindowHandler.MakeTransparent(hWnd);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -241,7 +241,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public void StartEditMode()
         {
-            MouseHook.Stop();
+            NativeMouseHandler.Stop();
             EditModeButton.Content = "Save";
             StashBorderVisibility = Visibility.Visible;
             Normalize();
@@ -253,7 +253,7 @@ namespace ChaosRecipeEnhancer.UI.View
             Transparentize();
             EditModeButton.Content = "Edit";
             StashBorderVisibility = Visibility.Hidden;
-            MouseHook.Start();
+            NativeMouseHandler.Start();
             IsEditing = false;
         }
 
@@ -262,7 +262,7 @@ namespace ChaosRecipeEnhancer.UI.View
             Trace.WriteLine("make transparent");
             var hwnd = new WindowInteropHelper(this).Handle;
 
-            Win32.makeTransparent(hwnd);
+            NativeWindowHandler.MakeTransparent(hwnd);
         }
 
         public void Normalize()
@@ -270,7 +270,7 @@ namespace ChaosRecipeEnhancer.UI.View
             Trace.WriteLine("make normal");
             var hwnd = new WindowInteropHelper(this).Handle;
 
-            Win32.makeNormal(hwnd);
+            NativeWindowHandler.MakeNormal(hwnd);
         }
 
         public void HandleEditButton(StashTabOverlayView stashTabOverlayView)

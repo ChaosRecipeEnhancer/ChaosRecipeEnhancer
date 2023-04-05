@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using ChaosRecipeEnhancer.App.Native;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
@@ -42,7 +43,7 @@ namespace ChaosRecipeEnhancer.UI.View
             InitializeTray();
 
             // add Action to MouseHook
-            MouseHook.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayView);
+            NativeMouseHandler.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayView);
 
             _logger.Debug("SettingsView constructed successfully");
         }
@@ -105,7 +106,7 @@ namespace ChaosRecipeEnhancer.UI.View
             
             _notifyIcon.Visible = false;
 
-            MouseHook.Stop();
+            NativeMouseHandler.Stop();
             HotkeysManager.ShutdownSystemHook();
             Settings.Default.Save();
 
