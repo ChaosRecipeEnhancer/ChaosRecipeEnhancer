@@ -248,9 +248,24 @@ namespace ChaosRecipeEnhancer.UI.Model
                     }
                     else
                     {
-                        MessageBox.Show(res.StatusCode == HttpStatusCode.Forbidden
-                            ? "Connection forbidden. Please check your account name and POE Session ID. You may have to refresh your POE Session ID sometimes."
-                            : res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
+                        string statusMessage;
+
+                        if (res.StatusCode == HttpStatusCode.Forbidden)
+                        {
+                            statusMessage = "Error: " + res.StatusCode + StringConstruction.DoubleNewLineCharacter +
+                                            "Connection forbidden. Please check your Account Name and Session ID. You may have to log back into the site and get a new Session ID.";
+                        }
+                        else if (res.StatusCode == HttpStatusCode.ServiceUnavailable)
+                        {
+                            statusMessage = "Error: " + res.StatusCode + StringConstruction.DoubleNewLineCharacter +
+                                            "The PoE site servers seem to be down. This may be due to patching or issues on GGG's end. The app is working as expected.";
+                        }
+                        else
+                        {
+                            statusMessage = res.ReasonPhrase;
+                        }
+                        
+                        MessageBox.Show(statusMessage, "Error: Cannot Fetch Stash Data", MessageBoxButton.OK, MessageBoxImage.Error);
 
                         Trace.WriteLine($"[ApiAdapter:GetProps] Response Headers ${res.Headers}");
                         Trace.WriteLine($"[ApiAdapter:GetProps] Response Content ${res.Content}");
