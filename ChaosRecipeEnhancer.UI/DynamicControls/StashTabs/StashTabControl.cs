@@ -130,7 +130,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
 
                 ItemList[i].StashTabIndex = TabIndex;
                 
-                // Exalted recipe every ilvl allowed, same bases, sort in itemlists
+                // Exalted recipe every item level allowed, same bases, sort in item lists
                 if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
                 {
                     if (ItemList[i].influences != null)
@@ -255,7 +255,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
 
         // Create the OnPropertyChanged method to raise the event
         // The calling member's name will be used as the parameter.
-        protected void OnPropertyChanged(string name = null)
+        private void OnPropertyChanged(string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
