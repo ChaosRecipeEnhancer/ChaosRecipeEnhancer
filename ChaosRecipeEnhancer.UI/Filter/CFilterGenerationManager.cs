@@ -120,6 +120,7 @@ namespace ChaosRecipeEnhancer.UI.Filter
 
             // Map Icon setting enabled
             if (Settings.Default.LootFilterIconsEnabled)
+                // TODO: [Enhancement] Add ability to modify map icon for items added to loot filter
                 result = result + "MinimapIcon 2 White Star" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
             return result;
