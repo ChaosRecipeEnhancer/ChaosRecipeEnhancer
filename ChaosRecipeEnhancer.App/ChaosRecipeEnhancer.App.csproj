@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,18 +47,18 @@
   <ItemGroup>
     <Compile Include="Models\CREItemSet.cs" />
     <Compile Include="Models\CREItemWrapper.cs" />
-    <Compile Include="Native\ClipboardNative.cs" />
+    <Compile Include="Native\NativeMouseHandler.cs" />
+    <Compile Include="Native\NativeWindowHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Win32.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1418.22" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChaosRecipeEnhancer.DataModels\ChaosRecipeEnhancer.DataModels.csproj">
       <Project>{4fe898a7-2af2-4169-aa88-68591ce59b82}</Project>
       <Name>ChaosRecipeEnhancer.DataModels</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1418.22" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
