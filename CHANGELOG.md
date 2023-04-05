@@ -1,5 +1,12 @@
 ## Change Log
 
+#### 1.7.1 (WIP)
+
+- removing (broken) auto-update feature from project
+- various code improvements under the hood
+- adding Environment based NewLine (thanks to [yenbounger](https://github.com/yenbounger) for your PR)
+- updating README
+
 #### 1.7.0
 
 - updating app icon (thanks to BrandonTheBoot on Discord for the new assets)

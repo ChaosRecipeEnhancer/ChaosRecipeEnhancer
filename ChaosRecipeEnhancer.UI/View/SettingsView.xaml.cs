@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -37,7 +36,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
             InitializeComponent();
             DataContext = this;
-            
+
             InitializeColors();
             InitializeHotkeys();
             InitializeTray();
@@ -61,7 +60,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private const bool IsPreviewVersion = true;
         private const int PreviewPatchNumber = 1;
         private const string AppVersion = "1.7.1.0";
-        
+
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
         // ReSharper disable once UnusedMember.Local
@@ -78,22 +77,11 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public static bool SettingsComplete { get; set; }
 
-        public static string AppVersionText { get; set; } = "v." + AppVersion + (IsPreviewVersion ? $" (Preview {PreviewPatchNumber})" : String.Empty);
+        public static string AppVersionText { get; set; } = "v." + AppVersion +
+                                                            (IsPreviewVersion
+                                                                ? $" (Preview {PreviewPatchNumber})"
+                                                                : String.Empty);
         
-        // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-        // public Visibility FolderNameVisible
-        // {
-        //     get => _folderNameVisible;
-        //     set
-        //     {
-        //         if (_folderNameVisible != value)
-        //         {
-        //             _folderNameVisible = value;
-        //             OnPropertyChanged("FolderNameVisible");
-        //         }
-        //     }
-        // }
-
         #endregion
 
         #region Event Handlers
@@ -197,11 +185,7 @@ namespace ChaosRecipeEnhancer.UI.View
         {
             MainGrid.Focus();
         }
-
-        private void VolumeSlider_PreviewMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            Data.PlayNotificationSound();
-        }
+        
 
         private void ColorStashBackgroundPicker_SelectedColorChanged(object sender,
             RoutedPropertyChangedEventArgs<Color?> e)
@@ -359,7 +343,7 @@ namespace ChaosRecipeEnhancer.UI.View
                 ? Visibility.Visible
                 : Visibility.Hidden;
         }
-        
+
         #endregion
 
         #region Methods
@@ -540,12 +524,6 @@ namespace ChaosRecipeEnhancer.UI.View
                     if (Settings.Default.StashTabSuffix == "") missingSettings.Add("- StashTab Suffix");
                     break;
                 }
-                // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-                // case 3:
-                //     {
-                //         if (Settings.Default.StashFolderName == "") missingSettings.Add("- StashFolder Name");
-                //         break;
-                //     }
             }
 
             if (missingSettings.Count > 0)

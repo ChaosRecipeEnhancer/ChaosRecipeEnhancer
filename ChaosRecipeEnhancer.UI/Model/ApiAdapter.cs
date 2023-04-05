@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using ChaosRecipeEnhancer.DataModels.GGGModels;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.Model
@@ -136,58 +137,6 @@ namespace ChaosRecipeEnhancer.UI.Model
                 }
             }
 
-            /**
-             * TODO: [Refactor] Repurpose the code below for searching by stash tab folder name
-             *
-             * So, the API we're using for querying items doesn't support the 'Parent' field for stash tabs.
-             *
-             * The sample response we get back is as follows:
-             * 
-             *      {
-             *         "numTabs": 58,
-             *         "tabs": [
-             *           {
-             *             "n": "Test 1 High iLvl",
-             *             "i": 0,
-             *             "id": "6a2da4a0dc12c816974f129864667fee59f652fcdc5980bfb62b1736a6e92917",
-             *             "type": "PremiumStash",
-             *             "selected": true,
-             *             "colour": { "r": 221, "g": 221, "b": 221 },
-             *             "srcL": "https://web.poecdn.com/gen/image/WzIzLDEseyJ0IjoibCIsImMiOi0yMjM2OTYzfV0/839620a564/Stash_TabL.png",
-             *             "srcC": "https://web.poecdn.com/gen/image/WzIzLDEseyJ0IjoibSIsImMiOi0yMjM2OTYzfV0/e6a1df0898/Stash_TabL.png",
-             *             "srcR": "https://web.poecdn.com/gen/image/WzIzLDEseyJ0IjoiciIsImMiOi0yMjM2OTYzfV0/1cc0d93243/Stash_TabL.png"
-             *           },
-             *          {...}
-             *      }
-             *
-             * As you can see, no sort of 'Parent' field exists, so we aren't able to do select by folder quite yet...
-             *
-             * Below is the code I had written for search by parent mode. We may reuse it at some point later. But it
-             * currently won't work.
-             */
-
-            // mode = Folder Name
-            // if (Settings.Default.StashTabQueryMode == 3)
-            // {
-            //     if (PropsList != null)
-            //     {
-            //         var stashTabFolderName = Settings.Default.StashFolderName;
-            //
-            //         GetAllTabNames();
-            //
-            //         foreach (var tab in PropsList.tabs)
-            //         {
-            //             if (tab.Parent == stashTabFolderName)
-            //             {
-            //                 if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
-            //                     ret.Add(new StashTab(tab.Name, tab.Index));
-            //             }
-            //         }
-            //
-            //         StashTabList.StashTabs = ret;
-            //     }
-            // }
-
             Trace.WriteLine(StashTabList.StashTabs.Count, "stash tab count");
         }
 
@@ -237,7 +186,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
             IsFetching = true;
 
-            Uri propsUri = null;
+            Uri propsUri;
 
             // If accessing personal stash
             if (Settings.Default.TargetStash == 0)
@@ -276,6 +225,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                 // add user agent
                 client.DefaultRequestHeaders.Add("User-Agent",
                     $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}");
+                
                 using (var res = await client.GetAsync(propsUri))
                 {
                     if (res.IsSuccessStatusCode)
@@ -291,6 +241,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                             var rateLimit = res.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
                             var rateLimitState = res.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
                             var responseTime = res.Headers.GetValues("Date").FirstOrDefault();
+                            
                             RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
                             RateLimit.DeserializeResponseSeconds(responseTime);
                         }
@@ -342,17 +293,18 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
 
             IsFetching = true;
+            
             var usedUris = new List<Uri>();
-
             var sessionId = Settings.Default.PathOfExileWebsiteSessionId;
-
             var cookieContainer = new CookieContainer();
+            
             using (var handler = new HttpClientHandler { CookieContainer = cookieContainer })
             using (var client = new HttpClient(handler))
             {
                 // add user agent
                 client.DefaultRequestHeaders.Add("User-Agent",
                     $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}");
+                
                 foreach (var i in StashTabList.StashTabs)
                 {
                     // check rate limit ban
@@ -360,9 +312,11 @@ namespace ChaosRecipeEnhancer.UI.Model
                     if (usedUris.Contains(i.StashTabUri)) continue;
 
                     cookieContainer.Add(i.StashTabUri, new Cookie("POESESSID", sessionId));
+                    
                     using (var res = await client.GetAsync(i.StashTabUri))
                     {
                         usedUris.Add(i.StashTabUri);
+                        
                         if (res.IsSuccessStatusCode)
                         {
                             using (var content = res.Content)
@@ -372,6 +326,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                                 var rateLimitState = res.Headers.GetValues("X-Rate-Limit-Account-State")
                                     .FirstOrDefault();
                                 var responseTime = res.Headers.GetValues("Date").FirstOrDefault();
+                                
                                 RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
                                 RateLimit.DeserializeResponseSeconds(responseTime);
 
@@ -391,8 +346,15 @@ namespace ChaosRecipeEnhancer.UI.Model
                         else
                         {
                             FetchError = true;
-                            MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK,
+                            
+                            MessageBox.Show(
+                                res.StatusCode + ": " + res.ReasonPhrase +
+                                StringConstruction.NewLineCharacter + StringConstruction.NewLineCharacter +
+                                res.Content,
+                                "ApiAdapter: Error Fetching Stash Data",
+                                MessageBoxButton.OK,
                                 MessageBoxImage.Error);
+                            
                             return false;
                         }
                     }

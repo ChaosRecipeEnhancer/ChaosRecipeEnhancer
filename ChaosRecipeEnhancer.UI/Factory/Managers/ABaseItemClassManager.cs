@@ -22,12 +22,6 @@ namespace ChaosRecipeEnhancer.UI.Factory.Managers
             return baseType;
         }
 
-        // TODO: [Remove] I don't think we need this
-        public string SetSocketRules(string result)
-        {
-            return result;
-        }
-
         public virtual bool CheckIfMissing(HashSet<string> missingItemClasses)
         {
             return missingItemClasses.Contains(ClassName);
