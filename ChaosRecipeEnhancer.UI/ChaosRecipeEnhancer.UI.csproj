@@ -121,13 +121,15 @@
     <Compile Include="Filter\CFilterGenerationManager.cs" />
     <Compile Include="Model\ActiveItemTypes.cs" />
     <Compile Include="Model\AutoFetch.cs" />
+    <Compile Include="Model\GlobalHotkey.cs" />
+    <Compile Include="Model\Hotkey.cs" />
+    <Compile Include="Model\HotkeysManager.cs" />
     <Compile Include="Model\InteractiveCell.cs" />
     <Compile Include="Model\Coordinates.cs" />
     <Compile Include="Model\ReloadItemFilter.cs" />
     <Compile Include="Model\Storage\FileFilterStorage.cs" />
     <Compile Include="Model\Storage\FilterStorageFactory.cs" />
     <Compile Include="Model\ItemSet.cs" />
-    <Compile Include="Model\MouseHook.cs" />
     <Compile Include="Model\RateLimit.cs" />
     <Compile Include="Model\StashTabList.cs" />
     <Compile Include="Model\Storage\IFilterStorage.cs" />
@@ -241,12 +243,9 @@
       <DependentUpon>SetTrackerOverlayView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Data.cs" />
-    <Compile Include="Model\GlobalHotkey.cs" />
-    <Compile Include="Model\Hotkey.cs" />
     <Compile Include="UserControls\HotkeyEditorControl.xaml.cs">
       <DependentUpon>HotkeyEditorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\HotkeysManager.cs" />
     <Compile Include="View\HotkeyView.xaml.cs">
       <DependentUpon>HotkeyView.xaml</DependentUpon>
     </Compile>
@@ -295,7 +294,7 @@
     </None>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
