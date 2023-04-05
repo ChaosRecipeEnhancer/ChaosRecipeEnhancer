@@ -148,19 +148,9 @@
 		<!--1st Party Dependencies (DLLs and related files) -->
 		<ComponentGroup Id="FirstPartyProductComponents" Directory="INSTALLFOLDER">
 
-			<Component Id="ChaosRecipeEnhancer.App.dll" Guid="{F9A931A5-E538-4E5B-BB2F-9EE4A8B076F5}">
-				<File Id="ChaosRecipeEnhancer.App.dll" KeyPath="yes"
-                      Source="$(var.ChaosRecipeEnhancer_TargetDir)ChaosRecipeEnhancer.App.dll"/>
-			</Component>
-
 			<Component Id="ChaosRecipeEnhancer.application" Guid="{3AA4DC58-B9FA-43D1-B4FC-8F8C0BD771C8}">
 				<File Id="ChaosRecipeEnhancer.application" KeyPath="yes"
                       Source="$(var.ChaosRecipeEnhancer_TargetDir)ChaosRecipeEnhancer.application"/>
-			</Component>
-
-			<Component Id="ChaosRecipeEnhancer.DataModels.dll" Guid="{0193B726-74F2-4913-9813-8542DDE2F38C}">
-				<File Id="ChaosRecipeEnhancer.DataModels.dll" KeyPath="yes"
-                      Source="$(var.ChaosRecipeEnhancer_TargetDir)ChaosRecipeEnhancer.DataModels.dll"/>
 			</Component>
 
 			<Component Id="ChaosRecipeEnhancer.exe" Guid="{556320E0-FC9A-4E38-88AC-150BA97EFC21}">

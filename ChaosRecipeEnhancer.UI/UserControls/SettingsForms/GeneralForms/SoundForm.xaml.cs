@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using ChaosRecipeEnhancer.UI.Constants;
+using ChaosRecipeEnhancer.UI.BusinessLogic.Constants;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 

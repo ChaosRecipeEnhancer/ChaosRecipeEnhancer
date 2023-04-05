@@ -8,7 +8,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using ChaosRecipeEnhancer.App.Native;
+using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
+using ChaosRecipeEnhancer.UI.Extensions.Native;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.UserControls.StashTabOverlayDisplays;
@@ -101,7 +102,7 @@ namespace ChaosRecipeEnhancer.UI.View
             Transparentize();
             EditModeButton.Content = "Edit";
             IsEditing = false;
-            NativeMouseHandler.Stop();
+            NativeMouseExtensions.Stop();
 
             foreach (var i in StashTabList.StashTabs)
             {
@@ -200,7 +201,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
                 _setTrackerOverlayView.OpenStashOverlayButtonContent = "Hide";
 
-                NativeMouseHandler.Start();
+                NativeMouseExtensions.Start();
                 base.Show();
             }
             else
@@ -217,7 +218,7 @@ namespace ChaosRecipeEnhancer.UI.View
             // Get this window's handle
             var hWnd = new WindowInteropHelper(this).Handle;
 
-            NativeWindowHandler.MakeTransparent(hWnd);
+            NativeWindowExtensions.MakeTransparent(hWnd);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -241,7 +242,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public void StartEditMode()
         {
-            NativeMouseHandler.Stop();
+            NativeMouseExtensions.Stop();
             EditModeButton.Content = "Save";
             StashBorderVisibility = Visibility.Visible;
             Normalize();
@@ -253,7 +254,7 @@ namespace ChaosRecipeEnhancer.UI.View
             Transparentize();
             EditModeButton.Content = "Edit";
             StashBorderVisibility = Visibility.Hidden;
-            NativeMouseHandler.Start();
+            NativeMouseExtensions.Start();
             IsEditing = false;
         }
 
@@ -262,7 +263,7 @@ namespace ChaosRecipeEnhancer.UI.View
             Trace.WriteLine("make transparent");
             var hwnd = new WindowInteropHelper(this).Handle;
 
-            NativeWindowHandler.MakeTransparent(hwnd);
+            NativeWindowExtensions.MakeTransparent(hwnd);
         }
 
         public void Normalize()
@@ -270,7 +271,7 @@ namespace ChaosRecipeEnhancer.UI.View
             Trace.WriteLine("make normal");
             var hwnd = new WindowInteropHelper(this).Handle;
 
-            NativeWindowHandler.MakeNormal(hwnd);
+            NativeWindowExtensions.MakeNormal(hwnd);
         }
 
         public void HandleEditButton(StashTabOverlayView stashTabOverlayView)
