@@ -82,7 +82,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
         {
             var reconstructedStashTabs = new List<StashTabControl>();
 
-            if (Settings.Default.StashTabIndices != null) ReconstructedStashTabs.GetStashTabIndices();
+            if (Settings.Default.StashTabIndices != null) EnhancedStashTabs.GetStashTabIndices();
 
             // mode = Individual Stash Tab Indices
             if (Settings.Default.StashTabQueryMode == 0)
@@ -91,18 +91,18 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                 {
                     foreach (var tab in ResponseObject.StashTabs)
                     {
-                        for (var index = ReconstructedStashTabs.StashTabIndices.Count - 1; index > -1; index--)
+                        for (var index = EnhancedStashTabs.StashTabIndices.Count - 1; index > -1; index--)
                         {
-                            if (ReconstructedStashTabs.StashTabIndices[index] != tab.Index) continue;
+                            if (EnhancedStashTabs.StashTabIndices[index] != tab.Index) continue;
 
-                            ReconstructedStashTabs.StashTabIndices.RemoveAt(index);
+                            EnhancedStashTabs.StashTabIndices.RemoveAt(index);
 
                             if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
                                 reconstructedStashTabs.Add(new StashTabControl(tab.Name, tab.Index));
                         }
                     }
 
-                    ReconstructedStashTabs.StashTabControls = reconstructedStashTabs;
+                    EnhancedStashTabs.StashTabControls = reconstructedStashTabs;
                     ParseAllStashTabNamesFromApiResponse();
                 }
             }
@@ -124,7 +124,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                         }
                     }
 
-                    ReconstructedStashTabs.StashTabControls = reconstructedStashTabs;
+                    EnhancedStashTabs.StashTabControls = reconstructedStashTabs;
                 }
             }
             // mode = Individual Stash Tab Suffix
@@ -147,14 +147,14 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                         }
                     }
 
-                    ReconstructedStashTabs.StashTabControls = reconstructedStashTabs;
+                    EnhancedStashTabs.StashTabControls = reconstructedStashTabs;
                 }
             }
         }
 
         private static void GenerateStashTabApiRequestUrls(string accName, string league)
         {
-            foreach (var i in ReconstructedStashTabs.StashTabControls)
+            foreach (var i in EnhancedStashTabs.StashTabControls)
             {
                 // ternary operation based on which stash we're targeting for queries (they use separate endpoints)
                 i.StashTabApiRequestUrl = Settings.Default.TargetStash == 0
@@ -169,7 +169,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
 
         private static void ParseAllStashTabNamesFromApiResponse()
         {
-            foreach (var s in ReconstructedStashTabs.StashTabControls)
+            foreach (var s in EnhancedStashTabs.StashTabControls)
             {
                 foreach (var props in ResponseObject.StashTabs)
                 {
@@ -293,7 +293,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
             if (FetchError) return false;
 
             // check rate limit
-            if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - ReconstructedStashTabs.StashTabControls.Count - 4)
+            if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - EnhancedStashTabs.StashTabControls.Count - 4)
             {
                 RateLimit.rateLimitExceeded = true;
                 return false;
@@ -311,7 +311,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                 // add user agent
                 client.DefaultRequestHeaders.Add("User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}");
 
-                foreach (var i in ReconstructedStashTabs.StashTabControls)
+                foreach (var i in EnhancedStashTabs.StashTabControls)
                 {
                     // check rate limit ban
                     if (RateLimit.CheckForBan()) return false;
@@ -342,8 +342,8 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
 
                                 if (deserializedContent != null)
                                 {
-                                    i.ItemList = deserializedContent.items;
-                                    i.Quad = deserializedContent.quadLayout;
+                                    i.ItemList = deserializedContent.Items;
+                                    i.Quad = deserializedContent.IsQuadLayout;
                                 }
 
                                 i.CleanItemList();

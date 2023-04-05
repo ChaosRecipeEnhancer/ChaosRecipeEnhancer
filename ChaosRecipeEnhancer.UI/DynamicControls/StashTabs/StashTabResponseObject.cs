@@ -18,7 +18,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
     /// </summary>
     public class StashTabResponseObject
     {
-        [JsonPropertyName("tabs")] public List<StashTabProperties> StashTabs { get; set; }
+        [JsonPropertyName("tabs")] public List<StashTabModel> StashTabs { get; set; }
     }
 
     /// <summary>
@@ -41,12 +41,20 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
     ///
     /// Notice how there are more fields in the example than in our defined object.
     /// </summary>
-    public class StashTabProperties
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class StashTabModel
     {
-        [JsonPropertyName("n")] public string Name { get; set; }
+        public StashTabModel(string name, int index, string type)
+        {
+            Name = name;
+            Index = index;
+            Type = type;
+        }
+        
+        [JsonPropertyName("n")] public string Name { get; }
 
-        [JsonPropertyName("i")] public int Index { get; set; }
+        [JsonPropertyName("i")] public int Index { get; }
 
-        [JsonPropertyName("type")] public string Type { get; set; }
+        [JsonPropertyName("type")] public string Type { get; }
     }
 }

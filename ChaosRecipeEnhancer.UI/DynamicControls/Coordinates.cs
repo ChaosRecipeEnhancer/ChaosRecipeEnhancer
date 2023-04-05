@@ -105,7 +105,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls
         {
             var activeCells = new List<InteractiveStashCell>();
 
-            foreach (var cell in ReconstructedStashTabs.StashTabControls[index].OverlayCellsList)
+            foreach (var cell in EnhancedStashTabs.StashTabControls[index].OverlayCellsList)
             {
                 if (cell.Active)
                 {
@@ -118,7 +118,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls
 
         public static void OverlayClickEvent(StashTabOverlayView stashTabOverlayView)
         {
-            if (ReconstructedStashTabs.StashTabControls.Count == 0)
+            if (EnhancedStashTabs.StashTabControls.Count == 0)
             {
                 stashTabOverlayView.Hide();
             }
@@ -136,7 +136,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls
                     stashTabOverlayView.HandleEditButton(stashTabOverlayView);
                 }
 
-                if (ReconstructedStashTabs.StashTabControls[selectedIndex].Quad)
+                if (EnhancedStashTabs.StashTabControls[selectedIndex].Quad)
                 {
                     var control = stashTabOverlayView.StashTabOverlayTabControl.SelectedContent as QuadStashGrid;
 
@@ -166,9 +166,9 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls
                     if (isHit)
                         Data.ActivateNextCell(true, buttonList[hitIndex].InteractiveStashCell, stashTabOverlayView.StashTabOverlayTabControl);
 
-                    for (var stash = 0; stash < ReconstructedStashTabs.StashTabControls.Count; stash++)
+                    for (var stash = 0; stash < EnhancedStashTabs.StashTabControls.Count; stash++)
                     {
-                        if (CheckIfTabNameContainerClicked(ReconstructedStashTabs.StashTabControls[stash]))
+                        if (CheckIfTabNameContainerClicked(EnhancedStashTabs.StashTabControls[stash]))
                         {
                             stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex = stash;
                         }
@@ -204,9 +204,9 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls
                     if (isHit)
                         Data.ActivateNextCell(true, buttonList[hitIndex].InteractiveStashCell, stashTabOverlayView.StashTabOverlayTabControl);
 
-                    for (var stash = 0; stash < ReconstructedStashTabs.StashTabControls.Count; stash++)
+                    for (var stash = 0; stash < EnhancedStashTabs.StashTabControls.Count; stash++)
                     {
-                        if (CheckIfTabNameContainerClicked(ReconstructedStashTabs.StashTabControls[stash]))
+                        if (CheckIfTabNameContainerClicked(EnhancedStashTabs.StashTabControls[stash]))
                         {
                             stashTabOverlayView.StashTabOverlayTabControl.SelectedIndex = stash;
                         }

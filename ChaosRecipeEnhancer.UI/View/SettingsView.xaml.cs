@@ -265,9 +265,9 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (ReconstructedStashTabs.StashTabControls.Count <= 0) return;
+            if (EnhancedStashTabs.StashTabControls.Count <= 0) return;
 
-            foreach (var s in ReconstructedStashTabs.StashTabControls)
+            foreach (var s in EnhancedStashTabs.StashTabControls)
                 s.TabHeaderWidth =
                     new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2,
                         Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2);

@@ -144,14 +144,15 @@
     <Compile Include="BusinessLogic\Hotkeys\Hotkey.cs" />
     <Compile Include="BusinessLogic\Hotkeys\HotkeysManager.cs" />
     <Compile Include="BusinessLogic\Items\ActiveItemTypes.cs" />
-    <Compile Include="BusinessLogic\Items\Item.cs" />
+    <Compile Include="BusinessLogic\Items\EnhancedItemModel.cs" />
+    <Compile Include="BusinessLogic\Items\ItemModel.cs" />
     <Compile Include="BusinessLogic\Items\ItemInfluenceModel.cs" />
     <Compile Include="BusinessLogic\Items\ItemPropertyModel.cs" />
     <Compile Include="BusinessLogic\Items\ItemSet.cs" />
     <Compile Include="DynamicControls\Coordinates.cs" />
     <Compile Include="DynamicControls\StashTabs\InteractiveStashCell.cs" />
     <Compile Include="DynamicControls\StashTabs\StashTabControl.cs" />
-    <Compile Include="DynamicControls\StashTabs\ReconstructedStashTabs.cs" />
+    <Compile Include="DynamicControls\StashTabs\EnhancedStashTabs.cs" />
     <Compile Include="DynamicControls\StashTabs\StashTabResponseObject.cs" />
     <Compile Include="DynamicControls\ErrorWindow.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />

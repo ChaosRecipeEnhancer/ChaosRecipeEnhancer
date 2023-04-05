@@ -104,7 +104,7 @@ namespace ChaosRecipeEnhancer.UI.View
             IsEditing = false;
             NativeMouseExtensions.Stop();
 
-            foreach (var i in ReconstructedStashTabs.StashTabControls)
+            foreach (var i in EnhancedStashTabs.StashTabControls)
             {
                 i.OverlayCellsList.Clear();
                 i.TabNameContainer = null;
@@ -122,7 +122,7 @@ namespace ChaosRecipeEnhancer.UI.View
         public new virtual void Show()
         {
             // Ensure the user has fetched stash data before populating our Stash Tab Overlay
-            if (ReconstructedStashTabs.StashTabControls.Count != 0)
+            if (EnhancedStashTabs.StashTabControls.Count != 0)
             {
                 IsOpen = true;
 
@@ -134,7 +134,7 @@ namespace ChaosRecipeEnhancer.UI.View
                 StashTabOverlayIndividualTabMargin = new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
 
                 // For each individual stash tab in our query results
-                foreach (var stashTabData in ReconstructedStashTabs.StashTabControls)
+                foreach (var stashTabData in EnhancedStashTabs.StashTabControls)
                 {
                     // Creating an object that represents a Stash Tab (the physical tab that you interact with)
                     TabItem newStashTab;

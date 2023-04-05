@@ -10,7 +10,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
     ///     stash tab JSON object requested from GGG's API.
     /// </summary>
     // TODO: [Refactor] Could this be reclassified as an Extension class?
-    internal static class ReconstructedStashTabs
+    internal static class EnhancedStashTabs
     {
         public static List<StashTabControl> StashTabControls { get; set; } = new List<StashTabControl>();
         public static List<int> StashTabIndices { get; private set; }

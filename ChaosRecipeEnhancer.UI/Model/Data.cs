@@ -86,25 +86,25 @@ namespace ChaosRecipeEnhancer.UI.Model
         {
             var listName = chaosItems ? "ItemListChaos" : "ItemList";
 
-            Item minItem = null;
+            ItemModel minItemModel = null;
             var minDistance = double.PositiveInfinity;
 
             // TODO: crashes here after some time
-            foreach (var s in ReconstructedStashTabs.StashTabControls)
-            foreach (var i in (List<Item>)ObjectExtensions.GetPropertyValue(s, listName))
-                if (set.GetNextItemClass() == i.ItemType || (!honorOrder && set.IsValidItem(i)))
+            foreach (var s in EnhancedStashTabs.StashTabControls)
+            foreach (var i in (List<ItemModel>)ObjectExtensions.GetPropertyValue(s, listName))
+                if (set.GetNextItemClass() == i.DerivedItemClass || (!honorOrder && set.IsValidItem(i)))
                     if (set.GetItemDistance(i) < minDistance)
                     {
                         //Trace.WriteLine(minDistance, "minDistance");
                         minDistance = set.GetItemDistance(i);
-                        minItem = i;
+                        minItemModel = i;
                     }
 
-            if (minItem != null)
+            if (minItemModel != null)
             {
-                set.AddItem(minItem);
-                var tab = GetStashTabFromItem(minItem);
-                ((List<Item>)ObjectExtensions.GetPropertyValue(tab, listName)).Remove(minItem);
+                set.AddItem(minItemModel);
+                var tab = GetStashTabFromItem(minItemModel);
+                ((List<ItemModel>)ObjectExtensions.GetPropertyValue(tab, listName)).Remove(minItemModel);
                 //tab.ItemListChaos.Remove(minItem);
                 return true;
             }
@@ -116,21 +116,21 @@ namespace ChaosRecipeEnhancer.UI.Model
                 if (nextItemType == "TwoHandWeapons")
                 {
                     nextItemType = "OneHandWeapons";
-                    foreach (var s in ReconstructedStashTabs.StashTabControls)
-                    foreach (var i in (List<Item>)ObjectExtensions.GetPropertyValue(s, listName))
-                        if (nextItemType == i.ItemType)
+                    foreach (var s in EnhancedStashTabs.StashTabControls)
+                    foreach (var i in (List<ItemModel>)ObjectExtensions.GetPropertyValue(s, listName))
+                        if (nextItemType == i.DerivedItemClass)
                             if (set.GetItemDistance(i) < minDistance)
                             {
                                 //Trace.WriteLine(minDistance, "minDistance");
                                 minDistance = set.GetItemDistance(i);
-                                minItem = i;
+                                minItemModel = i;
                             }
 
-                    if (minItem != null)
+                    if (minItemModel != null)
                     {
-                        set.AddItem(minItem);
-                        var tab = GetStashTabFromItem(minItem);
-                        ((List<Item>)ObjectExtensions.GetPropertyValue(tab, listName)).Remove(minItem);
+                        set.AddItem(minItemModel);
+                        var tab = GetStashTabFromItem(minItemModel);
+                        ((List<ItemModel>)ObjectExtensions.GetPropertyValue(tab, listName)).Remove(minItemModel);
                         //tab.ItemListChaos.Remove(minItem);
                         return true;
                     }
@@ -198,7 +198,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         private static void FillItemSetsInfluenced()
         {
-            foreach (var tab in ReconstructedStashTabs.StashTabControls)
+            foreach (var tab in EnhancedStashTabs.StashTabControls)
             {
                 foreach (var i in tab.ItemListShaper)
                 {
@@ -260,7 +260,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                     return;
                 }
 
-                if (ReconstructedStashTabs.StashTabControls.Count == 0)
+                if (EnhancedStashTabs.StashTabControls.Count == 0)
                 {
                     setTrackerOverlay.WarningMessage = "No Stashtabs found...";
                     setTrackerOverlay.ShadowOpacity = 1;
@@ -274,8 +274,8 @@ namespace ChaosRecipeEnhancer.UI.Model
                 // (e.g. 2 quad tabs queried w 0 set threshold = 24 set threshold)
                 // else just stick to the default amount (their defined in settings)
                 SetTargetAmount = 0;
-                if (ReconstructedStashTabs.StashTabControls.Count > 0)
-                    foreach (var s in ReconstructedStashTabs.StashTabControls)
+                if (EnhancedStashTabs.StashTabControls.Count > 0)
+                    foreach (var s in EnhancedStashTabs.StashTabControls)
                         GetSetTargetAmount(s);
 
                 if (Settings.Default.SetTrackerOverlayItemCounterDisplayMode != 0)
@@ -380,7 +380,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static void CalculateItemAmounts(SetTrackerOverlayView setTrackerOverlay)
         {
-            if (ReconstructedStashTabs.StashTabControls != null)
+            if (EnhancedStashTabs.StashTabControls != null)
             {
                 Trace.WriteLine("calculating items amount");
 
@@ -396,7 +396,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                 var amounts = new int[8];
                 var weaponsSmall = 0;
                 var weaponBig = 0;
-                foreach (var tab in ReconstructedStashTabs.StashTabControls)
+                foreach (var tab in EnhancedStashTabs.StashTabControls)
                 {
                     Trace.WriteLine("tab amount " + tab.ItemList.Count);
                     Trace.WriteLine("tab amount " + tab.ItemListChaos.Count);
@@ -404,47 +404,47 @@ namespace ChaosRecipeEnhancer.UI.Model
                     if (tab.ItemList.Count > 0)
                         foreach (var i in tab.ItemList)
                         {
-                            Trace.WriteLine(i.ItemType);
-                            if (i.ItemType == "Rings")
+                            Trace.WriteLine(i.DerivedItemClass);
+                            if (i.DerivedItemClass == "Rings")
                                 amounts[0]++;
-                            else if (i.ItemType == "Amulets")
+                            else if (i.DerivedItemClass == "Amulets")
                                 amounts[1]++;
-                            else if (i.ItemType == "Belts")
+                            else if (i.DerivedItemClass == "Belts")
                                 amounts[2]++;
-                            else if (i.ItemType == "BodyArmours")
+                            else if (i.DerivedItemClass == "BodyArmours")
                                 amounts[3]++;
-                            else if (i.ItemType == "TwoHandWeapons")
+                            else if (i.DerivedItemClass == "TwoHandWeapons")
                                 weaponBig++;
-                            else if (i.ItemType == "OneHandWeapons")
+                            else if (i.DerivedItemClass == "OneHandWeapons")
                                 weaponsSmall++;
-                            else if (i.ItemType == "Gloves")
+                            else if (i.DerivedItemClass == "Gloves")
                                 amounts[5]++;
-                            else if (i.ItemType == "Helmets")
+                            else if (i.DerivedItemClass == "Helmets")
                                 amounts[6]++;
-                            else if (i.ItemType == "Boots") amounts[7]++;
+                            else if (i.DerivedItemClass == "Boots") amounts[7]++;
                         }
 
                     if (tab.ItemListChaos.Count > 0)
                         foreach (var i in tab.ItemListChaos)
                         {
-                            Trace.WriteLine(i.ItemType);
-                            if (i.ItemType == "Rings")
+                            Trace.WriteLine(i.DerivedItemClass);
+                            if (i.DerivedItemClass == "Rings")
                                 amounts[0]++;
-                            else if (i.ItemType == "Amulets")
+                            else if (i.DerivedItemClass == "Amulets")
                                 amounts[1]++;
-                            else if (i.ItemType == "Belts")
+                            else if (i.DerivedItemClass == "Belts")
                                 amounts[2]++;
-                            else if (i.ItemType == "BodyArmours")
+                            else if (i.DerivedItemClass == "BodyArmours")
                                 amounts[3]++;
-                            else if (i.ItemType == "TwoHandWeapons")
+                            else if (i.DerivedItemClass == "TwoHandWeapons")
                                 weaponBig++;
-                            else if (i.ItemType == "OneHandWeapons")
+                            else if (i.DerivedItemClass == "OneHandWeapons")
                                 weaponsSmall++;
-                            else if (i.ItemType == "Gloves")
+                            else if (i.DerivedItemClass == "Gloves")
                                 amounts[5]++;
-                            else if (i.ItemType == "Helmets")
+                            else if (i.DerivedItemClass == "Helmets")
                                 amounts[6]++;
-                            else if (i.ItemType == "Boots") amounts[7]++;
+                            else if (i.DerivedItemClass == "Boots") amounts[7]++;
                         }
                 }
 
@@ -485,10 +485,10 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         #region Stash Tab Overlay Logic
 
-        public static StashTabControl GetStashTabFromItem(Item item)
+        public static StashTabControl GetStashTabFromItem(ItemModel itemModel)
         {
-            foreach (var s in ReconstructedStashTabs.StashTabControls)
-                if (item.StashTabIndex == s.TabIndex)
+            foreach (var s in EnhancedStashTabs.StashTabControls)
+                if (itemModel.StashTabIndex == s.TabIndex)
                     return s;
 
             return null;
@@ -505,7 +505,7 @@ namespace ChaosRecipeEnhancer.UI.Model
             // activate cell by cell / item by item
             if (Settings.Default.StashTabOverlayHighlightMode == 0)
             {
-                foreach (var s in ReconstructedStashTabs.StashTabControls.ToList())
+                foreach (var s in EnhancedStashTabs.StashTabControls.ToList())
                 {
                     s.DeactivateItemCells();
                     s.TabHeaderColor = Brushes.Transparent;
@@ -565,13 +565,13 @@ namespace ChaosRecipeEnhancer.UI.Model
                     {
                         if (stashCell != null)
                         {
-                            var highlightItem = stashCell.PathOfExileItemData;
+                            var highlightItem = stashCell.PathOfExileItemModelData;
                             var currentTab = GetStashTabFromItem(highlightItem);
 
                             if (currentTab != null)
                             {
                                 currentTab.TabHeaderColor = Brushes.Transparent;
-                                currentTab.DeactivateSingleItemCells(stashCell.PathOfExileItemData);
+                                currentTab.DeactivateSingleItemCells(stashCell.PathOfExileItemModelData);
                                 ItemSetListHighlight[0].ItemList.Remove(highlightItem);
                             }
                         }
@@ -627,12 +627,12 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                     if (stashCell == null) continue;
 
-                    var highlightItem = stashCell.PathOfExileItemData;
+                    var highlightItem = stashCell.PathOfExileItemModelData;
                     var currentTab = GetStashTabFromItem(highlightItem);
 
                     if (currentTab == null) continue;
 
-                    currentTab.DeactivateSingleItemCells(stashCell.PathOfExileItemData);
+                    currentTab.DeactivateSingleItemCells(stashCell.PathOfExileItemModelData);
                     ItemSetListHighlight[0].ItemList.Remove(highlightItem);
 
                     var itemsRemainingInStashTab = false;
@@ -664,7 +664,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
             if (ItemSetList == null) return;
 
-            foreach (var s in ReconstructedStashTabs.StashTabControls)
+            foreach (var s in EnhancedStashTabs.StashTabControls)
                 s.PrepareOverlayList();
 
             foreach (var itemSet in ItemSetList)
@@ -682,42 +682,42 @@ namespace ChaosRecipeEnhancer.UI.Model
                 if (ItemSetShaper.EmptyItemSlots.Count == 0)
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<Item>(ItemSetShaper.ItemList),
+                        ItemList = new List<ItemModel>(ItemSetShaper.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetShaper.EmptyItemSlots)
                     });
 
                 if (ItemSetElder.EmptyItemSlots.Count == 0)
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<Item>(ItemSetElder.ItemList),
+                        ItemList = new List<ItemModel>(ItemSetElder.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetElder.EmptyItemSlots)
                     });
 
                 if (ItemSetCrusader.EmptyItemSlots.Count == 0)
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<Item>(ItemSetCrusader.ItemList),
+                        ItemList = new List<ItemModel>(ItemSetCrusader.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetCrusader.EmptyItemSlots)
                     });
 
                 if (ItemSetHunter.EmptyItemSlots.Count == 0)
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<Item>(ItemSetHunter.ItemList),
+                        ItemList = new List<ItemModel>(ItemSetHunter.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetHunter.EmptyItemSlots)
                     });
 
                 if (ItemSetWarlord.EmptyItemSlots.Count == 0)
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<Item>(ItemSetWarlord.ItemList),
+                        ItemList = new List<ItemModel>(ItemSetWarlord.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetWarlord.EmptyItemSlots)
                     });
 
                 if (ItemSetRedeemer.EmptyItemSlots.Count == 0)
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<Item>(ItemSetRedeemer.ItemList),
+                        ItemList = new List<ItemModel>(ItemSetRedeemer.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetRedeemer.EmptyItemSlots)
                     });
             }
@@ -727,7 +727,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                 if (set.SetCanProduceChaos || Settings.Default.RegalRecipeTrackingEnabled)
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<Item>(set.ItemList),
+                        ItemList = new List<ItemModel>(set.ItemList),
                         EmptyItemSlots = new List<string>(set.EmptyItemSlots)
                     });
             }

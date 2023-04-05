@@ -28,14 +28,14 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
 
         public int TabIndex { get; }
         public Uri StashTabApiRequestUrl { get; set; }
-        public List<Item> ItemList { get; set; }
-        public List<Item> ItemListChaos { get; } = new List<Item>();
-        public List<Item> ItemListShaper { get; } = new List<Item>();
-        public List<Item> ItemListElder { get; } = new List<Item>();
-        public List<Item> ItemListWarlord { get; } = new List<Item>();
-        public List<Item> ItemListCrusader { get; } = new List<Item>();
-        public List<Item> ItemListHunter { get; } = new List<Item>();
-        public List<Item> ItemListRedeemer { get; } = new List<Item>();
+        public List<ItemModel> ItemList { get; set; }
+        public List<ItemModel> ItemListChaos { get; } = new List<ItemModel>();
+        public List<ItemModel> ItemListShaper { get; } = new List<ItemModel>();
+        public List<ItemModel> ItemListElder { get; } = new List<ItemModel>();
+        public List<ItemModel> ItemListWarlord { get; } = new List<ItemModel>();
+        public List<ItemModel> ItemListCrusader { get; } = new List<ItemModel>();
+        public List<ItemModel> ItemListHunter { get; } = new List<ItemModel>();
+        public List<ItemModel> ItemListRedeemer { get; } = new List<ItemModel>();
 
         public ObservableCollection<InteractiveStashCell> OverlayCellsList { get; } = new ObservableCollection<InteractiveStashCell>();
 
@@ -109,20 +109,20 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
             // for loop backwards for deleting from list 
             for (var i = ItemList.Count - 1; i > -1; i--)
             {
-                if (ItemList[i].identified && !Settings.Default.IncludeIdentifiedItemsEnabled)
+                if (ItemList[i].Identified && !Settings.Default.IncludeIdentifiedItemsEnabled)
                 {
                     ItemList.RemoveAt(i);
                     continue;
                 }
 
-                if (ItemList[i].frameType != 2)
+                if (ItemList[i].FrameType != 2)
                 {
                     ItemList.RemoveAt(i);
                     continue;
                 }
 
                 ItemList[i].GetItemClass();
-                if (ItemList[i].ItemType == null)
+                if (ItemList[i].DerivedItemClass == null)
                 {
                     ItemList.RemoveAt(i);
                     continue;
@@ -133,19 +133,19 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
                 // Exalted recipe every item level allowed, same bases, sort in item lists
                 if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
                 {
-                    if (ItemList[i].influences != null)
+                    if (ItemList[i].ItemInfluences != null)
                     {
-                        if (ItemList[i].influences.shaper)
+                        if (ItemList[i].ItemInfluences.Shaper)
                             ItemListShaper.Add(ItemList[i]);
-                        else if (ItemList[i].influences.elder)
+                        else if (ItemList[i].ItemInfluences.Elder)
                             ItemListElder.Add(ItemList[i]);
-                        else if (ItemList[i].influences.warlord)
+                        else if (ItemList[i].ItemInfluences.Warlord)
                             ItemListWarlord.Add(ItemList[i]);
-                        else if (ItemList[i].influences.crusader)
+                        else if (ItemList[i].ItemInfluences.Crusader)
                             ItemListCrusader.Add(ItemList[i]);
-                        else if (ItemList[i].influences.hunter)
+                        else if (ItemList[i].ItemInfluences.Hunter)
                             ItemListHunter.Add(ItemList[i]);
-                        else if (ItemList[i].influences.redeemer)
+                        else if (ItemList[i].ItemInfluences.Redeemer)
                             ItemListRedeemer.Add(ItemList[i]);
 
                         ItemList.RemoveAt(i);
@@ -160,19 +160,19 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
                     continue;
                 }
 
-                if (ItemList[i].ilvl < 60)
+                if (ItemList[i].ItemLevel < 60)
                 {
                     ItemList.RemoveAt(i);
                     continue;
                 }
 
-                if (Settings.Default.RegalRecipeTrackingEnabled && ItemList[i].ilvl < 75)
+                if (Settings.Default.RegalRecipeTrackingEnabled && ItemList[i].ItemLevel < 75)
                 {
                     ItemList.RemoveAt(i);
                     continue;
                 }
 
-                if (ItemList[i].ilvl <= 74)
+                if (ItemList[i].ItemLevel <= 74)
                 {
                     ItemListChaos.Add(ItemList[i]);
                     ItemList.RemoveAt(i);
@@ -185,18 +185,18 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
             foreach (var cell in OverlayCellsList) cell.Active = false;
         }
 
-        public void DeactivateSingleItemCells(Item item)
+        public void DeactivateSingleItemCells(ItemModel itemModel)
         {
             // Initializing a list of tuples that represent our X,Y coordinates
             var allCoordinates = new List<(int X, int Y)>();
 
             // For a given in-game Item, populate a list of tuples that represent
             // their X,Y coordinates on our stash grid
-            for (var i = 0; i < item.w; i++)
+            for (var i = 0; i < itemModel.Width; i++)
             {
-                for (var j = 0; j < item.h; j++)
+                for (var j = 0; j < itemModel.Height; j++)
                 {
-                    allCoordinates.Add((item.x + i, item.y + j));
+                    allCoordinates.Add((itemModel.X + i, itemModel.Y + j));
                 }
             }
 
@@ -210,18 +210,18 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
             }
         }
 
-        public void ActivateItemCells(Item item)
+        public void ActivateItemCells(ItemModel itemModel)
         {
             // Initializing a list of tuples that represent our X,Y coordinates
             var allCoordinates = new List<(int X, int Y)>();
 
             // For a given in-game Item, populate a list of tuples that represent
             // their X,Y coordinates on our stash grid
-            for (var i = 0; i < item.w; i++)
+            for (var i = 0; i < itemModel.Width; i++)
             {
-                for (var j = 0; j < item.h; j++)
+                for (var j = 0; j < itemModel.Height; j++)
                 {
-                    allCoordinates.Add((item.x + i, item.y + j));
+                    allCoordinates.Add((itemModel.X + i, itemModel.Y + j));
                 }
             }
 
@@ -232,17 +232,17 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
                     if (coordinate.X == cell.XIndex && coordinate.Y == cell.YIndex)
                     {
                         cell.Active = true;
-                        cell.PathOfExileItemData = item;
+                        cell.PathOfExileItemModelData = itemModel;
                     }
                 }
             }
         }
 
-        public void MarkNextItem(Item item)
+        public void MarkNextItem(ItemModel itemModel)
         {
             foreach (var cell in OverlayCellsList)
             {
-                if (cell.PathOfExileItemData == item)
+                if (cell.PathOfExileItemModelData == itemModel)
                 {
                     cell.ButtonText = "X";
                 }
