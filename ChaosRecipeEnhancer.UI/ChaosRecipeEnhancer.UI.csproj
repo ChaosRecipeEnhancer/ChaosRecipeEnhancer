@@ -116,7 +116,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Const\CConst.cs" />
+    <Compile Include="Constants\Constants.cs" />
     <Compile Include="Enums\EnumItemClass.cs" />
     <Compile Include="Filter\CFilterGenerationManager.cs" />
     <Compile Include="Model\ActiveItemTypes.cs" />

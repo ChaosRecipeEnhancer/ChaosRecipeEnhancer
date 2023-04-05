@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 
@@ -15,21 +16,25 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
         {
             InitializeComponent();
 
+            // If the user has changed the sound file location for the filter modification sound, open that file
             if (!string.IsNullOrEmpty(Settings.Default.FilterModificationPendingSoundFileLocation) &&
                 !FilterSoundLocationDialog.Content.Equals("Default Sound"))
                 Data.Player.Open(new Uri(Settings.Default.FilterModificationPendingSoundFileLocation));
+            // Else, open our default sound file location for the included `FilterChanged.mp3` file
             else
                 Data.Player.Open(new Uri(Path.Combine(
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
-                    @"Assets\Sounds\filterchanged.mp3")));
+                    SoundAssets.DefaultFilterChangedSoundFilePath)));
 
+            // If the user has changed the sound file location for the item set completed sound, open that file
             if (!string.IsNullOrEmpty(Settings.Default.ItemSetCompletedSoundFileLocation) &&
                 !ItemPickupLocationDialog.Content.Equals("Default Sound"))
                 Data.PlayerSet.Open(new Uri(Settings.Default.ItemSetCompletedSoundFileLocation));
+            // Else, open our default sound file location for the included `ItemPickedUp.mp3` file
             else
                 Data.PlayerSet.Open(new Uri(Path.Combine(
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
-                    @"Assets\Sounds\itemsPickedUp.mp3")));
+                    SoundAssets.DefaultItemPickedUpSoundFilePath)));
         }
 
         private void VolumeSlider_PreviewMouseUp(object sender, MouseButtonEventArgs e)
@@ -57,21 +62,22 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
             if (soundFilePath == null) return;
 
             Settings.Default.FilterModificationPendingSoundFileLocation = soundFilePath;
+            
             ItemPickupLocationDialog.Content = soundFilePath;
+            
             Data.PlayerSet.Open(new Uri(soundFilePath));
-
             Data.PlayNotificationSoundSetPicked();
         }
 
-        private string GetSoundFilePath()
+        private static string GetSoundFilePath()
         {
             var open = new OpenFileDialog();
-            open.Filter = "MP3|*.mp3";
+            
+            open.Filter = SoundAssets.SoundFileExtensionFilter;
+            
             var res = open.ShowDialog();
 
-            if (res == DialogResult.OK) return open.FileName;
-
-            return null;
+            return res == DialogResult.OK ? open.FileName : null;
         }
     }
 }

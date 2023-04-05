@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using ChaosRecipeEnhancer.UI.Const;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Enums;
 using ChaosRecipeEnhancer.UI.Factory;
 using ChaosRecipeEnhancer.UI.Factory.Managers;
@@ -14,7 +14,6 @@ using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.Filter
 {
-    //add interfaces
     public class CFilterGenerationManager
     {
         #region Constructors
@@ -56,11 +55,10 @@ namespace ChaosRecipeEnhancer.UI.Filter
                     && (_itemClassManager.AlwaysActive || stillMissing))
                 {
                     // if we need chaos only gear to complete a set (60-74), add that to our filter section
-                    if (missingChaosItem)
-                        sectionList.Add(GenerateSection(false, true));
-                    // else add any gear piece 60+ to our section for that item class
-                    else
-                        sectionList.Add(GenerateSection(false));
+                    sectionList.Add(missingChaosItem ?
+                        GenerateSection(false, true) :
+                        // else add any gear piece 60+ to our section for that item class
+                        GenerateSection(false));
 
                     // find better way to handle active items and sound notification on changes
                     activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
@@ -79,57 +77,55 @@ namespace ChaosRecipeEnhancer.UI.Filter
             return activeItemTypes;
         }
 
-        public string GenerateSection(bool isInfluenced, bool onlyChaos = false)
+        private string GenerateSection(bool isInfluenced, bool onlyChaos = false)
         {
             var result = "Show";
 
             if (isInfluenced)
-                result += CConst.newLine + CConst.tab + "HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord";
+                result += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord";
             else
-                result += CConst.newLine + CConst.tab + "HasInfluence None";
+                result += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "HasInfluence None";
 
-            result = result + CConst.newLine + CConst.tab + "Rarity Rare" + CConst.newLine + CConst.tab;
+            result = result + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Rarity Rare" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+            
             if (!Settings.Default.IncludeIdentifiedItemsEnabled)
-                result += "Identified False" + CConst.newLine + CConst.tab;
+                result += "Identified False" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
             switch (isInfluenced)
             {
                 case false when !_itemClassManager.AlwaysActive && onlyChaos &&
                                 !Settings.Default.RegalRecipeTrackingEnabled:
-                    result += "ItemLevel >= 60" + CConst.newLine + CConst.tab + "ItemLevel <= 74" + CConst.newLine +
-                              CConst.tab;
+                    result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "ItemLevel <= 74" + StringConstruction.NewLineCharacter +
+                              StringConstruction.TabCharacter;
                     break;
                 case false when Settings.Default.RegalRecipeTrackingEnabled:
-                    result += "ItemLevel >= 75" + CConst.newLine + CConst.tab;
+                    result += "ItemLevel >= 75" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
                     break;
                 default:
-                    result += "ItemLevel >= 60" + CConst.newLine + CConst.tab;
+                    result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
                     break;
             }
 
-            // TODO: [Remove] I don't think we need this
-            // result = _itemClassManager.SetSocketRules(result);
-
             var baseType = _itemClassManager.SetBaseType();
 
-            result = result + baseType + CConst.newLine + CConst.tab;
+            result = result + baseType + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
             var colors = GetRGB();
             var bgColor = colors.Aggregate("SetBackgroundColor", (current, t) => current + " " + t);
 
-            result = result + bgColor + CConst.newLine + CConst.tab;
+            result = result + bgColor + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
             result = isInfluenced
-                ? _customStyleInfluenced.Aggregate(result, (current, cs) => current + cs + CConst.newLine + CConst.tab)
-                : _customStyle.Aggregate(result, (current, cs) => current + cs + CConst.newLine + CConst.tab);
+                ? _customStyleInfluenced.Aggregate(result, (current, cs) => current + cs + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter)
+                : _customStyle.Aggregate(result, (current, cs) => current + cs + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter);
 
             // Map Icon setting enabled
             if (Settings.Default.LootFilterIconsEnabled)
-                result = result + "MinimapIcon 2 White Star" + CConst.newLine + CConst.tab;
+                result = result + "MinimapIcon 2 White Star" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
             return result;
         }
 
-        public string GenerateLootFilter(string oldFilter, IEnumerable<string> sections, bool isChaos = true)
+        private static string GenerateLootFilter(string oldFilter, IEnumerable<string> sections, bool isChaos = true)
         {
             // order has to be:
             // 1. exa start
@@ -172,7 +168,7 @@ namespace ChaosRecipeEnhancer.UI.Filter
             return beforeSection + sectionBody + afterSection;
         }
 
-        private async Task UpdateFilterAsync(IEnumerable<string> sectionList, IEnumerable<string> sectionListExalted)
+        private static async Task UpdateFilterAsync(IEnumerable<string> sectionList, IEnumerable<string> sectionListExalted)
         {
             var filterStorage = FilterStorageFactory.Create(Settings.Default);
 
@@ -221,10 +217,13 @@ namespace ChaosRecipeEnhancer.UI.Filter
         private void LoadCustomStyle()
         {
             _customStyle.Clear();
+            
             var pathNormalItemsStyle =
                 Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
-                    @"Assets\FilterStyles\NormalItemsStyle.txt");
+                    FilterAssets.DefaultNormalItemFilterStyleFilePath);
+            
             var style = File.ReadAllLines(pathNormalItemsStyle);
+            
             foreach (var line in style)
             {
                 if (line == "") continue;
@@ -236,10 +235,13 @@ namespace ChaosRecipeEnhancer.UI.Filter
         private void LoadCustomStyleInfluenced()
         {
             _customStyleInfluenced.Clear();
+            
             var pathInfluencedItemsStyle =
                 Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
-                    @"Assets\FilterStyles\InfluencedItemsStyle.txt");
+                    FilterAssets.DefaultInfluencedItemFilterStyleFilePath);
+            
             var style = File.ReadAllLines(pathInfluencedItemsStyle);
+            
             foreach (var line in style)
             {
                 if (line == "") continue;

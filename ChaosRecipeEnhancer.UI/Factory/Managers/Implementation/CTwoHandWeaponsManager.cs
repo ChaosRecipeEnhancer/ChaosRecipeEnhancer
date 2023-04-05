@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ChaosRecipeEnhancer.UI.Const;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 
@@ -25,7 +25,9 @@ namespace ChaosRecipeEnhancer.UI.Factory.Managers.Implementation
         {
             var baseType = "Class ";
             baseType += "\"Two Hand Swords\" \"Two Hand Axes\" \"Two Hand Maces\" \"Staves\" \"Warstaves\" \"Bows\"";
-            baseType += CConst.newLine + CConst.tab + "Width <= 2" + CConst.newLine + CConst.tab + "Height <= 3";
+            baseType += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Width <= 2" +
+                        StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Height <= 3";
+            
             return baseType;
         }
 
