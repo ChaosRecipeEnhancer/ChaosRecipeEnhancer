@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
+using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation;
+using ChaosRecipeEnhancer.UI.Extensions;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using Serilog;
@@ -68,7 +71,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private static LogWatcher Watcher { get; set; }
 
         #endregion
-        
+
         #region Constructors
 
         public SetTrackerOverlayView()
@@ -78,7 +81,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
             DataContext = this;
             InitializeComponent();
-            
+
             _logger.Debug("ChaosRecipeEnhancer constructed successfully");
         }
 
@@ -399,7 +402,8 @@ namespace ChaosRecipeEnhancer.UI.View
                 !Settings.Default.RegalRecipeTrackingEnabled &&
                 !Settings.Default.ExaltedShardRecipeTrackingEnabled)
             {
-                MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
                 return;
             }
 
@@ -428,7 +432,7 @@ namespace ChaosRecipeEnhancer.UI.View
                                 SetOpacity();
                                 CalculationActive = false;
                                 Dispatcher.Invoke(() => { IsIndeterminate = false; });
-                            }, Data.CancelationToken);
+                            }, Data.CancellationToken);
 
                             await Task.Delay(FetchCooldown * 1000).ContinueWith(_ =>
                             {
@@ -438,12 +442,12 @@ namespace ChaosRecipeEnhancer.UI.View
                                 //FetchingActive = false;
                             });
                         }
-                        catch (OperationCanceledException ex) when (ex.CancellationToken == Data.CancelationToken)
+                        catch (OperationCanceledException ex) when (ex.CancellationToken == Data.CancellationToken)
                         {
                             Trace.WriteLine("abort");
                         }
 
-                if (RateLimit.RateLimitExceeded)
+                if (RateLimit.rateLimitExceeded)
                 {
                     var secondsToWait = RateLimit.GetSecondsToWait();
 
@@ -506,15 +510,15 @@ namespace ChaosRecipeEnhancer.UI.View
 
             if (CalculationActive)
             {
-                Data.cs.Cancel();
+                Data.CancellationTokenSource.Cancel();
                 FetchingActive = false;
             }
             else
             {
                 if (ApiAdapter.IsFetching) return;
 
-                Data.cs = new CancellationTokenSource();
-                Data.CancelationToken = Data.cs.Token;
+                Data.CancellationTokenSource = new CancellationTokenSource();
+                Data.CancellationToken = Data.CancellationTokenSource.Token;
 
                 // TODO: [Refactor] Remove dependency on stashTabOverlayView and make sure we hide BEFORE or AFTER calling this (?)
                 // if (_stashTabOverlayView.IsOpen) _stashTabOverlayView.Hide();
@@ -526,7 +530,7 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public void ReloadItemFilter()
         {
-            Model.ReloadItemFilter.ReloadFilter();
+            ReloadItemFilterHandler.ReloadFilter();
         }
 
         private void SetOpacity()
@@ -535,36 +539,36 @@ namespace ChaosRecipeEnhancer.UI.View
 
             Dispatcher.Invoke(() =>
             {
-                HelmetOpacity = !Data.ActiveItems.HelmetActive 
-                    ? DeactivatedOpacity 
+                HelmetOpacity = !Data.ActiveItems.HelmetActive
+                    ? DeactivatedOpacity
                     : ActivatedOpacity;
 
-                GlovesOpacity = !Data.ActiveItems.GlovesActive 
-                    ? DeactivatedOpacity 
+                GlovesOpacity = !Data.ActiveItems.GlovesActive
+                    ? DeactivatedOpacity
                     : ActivatedOpacity;
 
-                BootsOpacity = !Data.ActiveItems.BootsActive 
-                    ? DeactivatedOpacity 
+                BootsOpacity = !Data.ActiveItems.BootsActive
+                    ? DeactivatedOpacity
                     : ActivatedOpacity;
 
-                WeaponsOpacity = !Data.ActiveItems.WeaponActive 
-                    ? DeactivatedOpacity 
+                WeaponsOpacity = !Data.ActiveItems.WeaponActive
+                    ? DeactivatedOpacity
                     : ActivatedOpacity;
 
-                ChestsOpacity = !Data.ActiveItems.ChestActive 
-                    ? DeactivatedOpacity 
+                ChestsOpacity = !Data.ActiveItems.ChestActive
+                    ? DeactivatedOpacity
                     : ActivatedOpacity;
 
-                RingsOpacity = !Data.ActiveItems.RingActive 
-                    ? DeactivatedOpacity 
+                RingsOpacity = !Data.ActiveItems.RingActive
+                    ? DeactivatedOpacity
                     : ActivatedOpacity;
 
-                AmuletsOpacity = !Data.ActiveItems.AmuletActive 
-                    ? DeactivatedOpacity 
+                AmuletsOpacity = !Data.ActiveItems.AmuletActive
+                    ? DeactivatedOpacity
                     : ActivatedOpacity;
 
-                BeltsOpacity = !Data.ActiveItems.BeltActive 
-                    ? DeactivatedOpacity 
+                BeltsOpacity = !Data.ActiveItems.BeltActive
+                    ? DeactivatedOpacity
                     : ActivatedOpacity;
             });
         }

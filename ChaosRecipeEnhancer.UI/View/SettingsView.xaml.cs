@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using ChaosRecipeEnhancer.App.Helpers;
+using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
+using ChaosRecipeEnhancer.UI.BusinessLogic.Hotkeys;
+using ChaosRecipeEnhancer.UI.DynamicControls;
+using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
+using ChaosRecipeEnhancer.UI.Extensions.Native;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
@@ -38,14 +41,13 @@ namespace ChaosRecipeEnhancer.UI.View
 
             InitializeComponent();
             DataContext = this;
-            AutoUpdateHelper.InitializeAutoUpdater(AppVersion);
-            
+
             InitializeColors();
             InitializeHotkeys();
             InitializeTray();
 
             // add Action to MouseHook
-            MouseHook.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayView);
+            NativeMouseExtensions.MouseAction += (s, e) => Coordinates.OverlayClickEvent(_stashTabOverlayView);
 
             _logger.Debug("SettingsView constructed successfully");
         }
@@ -60,16 +62,18 @@ namespace ChaosRecipeEnhancer.UI.View
         private readonly StashTabOverlayView _stashTabOverlayView;
 
         // This version # should match up with the format for Assembly version # (3 dots, 4 digits), or else you'll get spammed for AutoUpdates
-        private const string AppVersion = "1.7.0.0";
-        
+        private const bool IsPreviewVersion = true;
+        private const int PreviewPatchNumber = 1;
+        private const string AppVersion = "1.7.1.0";
+
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
         // ReSharper disable once UnusedMember.Local
         private static string RunButtonContent { get; set; } = "Run Overlay";
 
         private ContextMenu _contextMenu;
-        private MenuItem _menuItem;
-        private MenuItem _menuItemUpdate;
+        private MenuItem _exitMenuItem;
+        private MenuItem _checkForUpdatesMenuItem;
         private bool _trayClose;
 
         #endregion
@@ -78,23 +82,11 @@ namespace ChaosRecipeEnhancer.UI.View
 
         public static bool SettingsComplete { get; set; }
 
-        // ReSharper disable once UnusedMember.Global
-        public static string AppVersionText { get; set; } = "v." + AppVersion;
-
-        // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-        // public Visibility FolderNameVisible
-        // {
-        //     get => _folderNameVisible;
-        //     set
-        //     {
-        //         if (_folderNameVisible != value)
-        //         {
-        //             _folderNameVisible = value;
-        //             OnPropertyChanged("FolderNameVisible");
-        //         }
-        //     }
-        // }
-
+        public static string AppVersionText { get; set; } = "v." + AppVersion +
+                                                            (IsPreviewVersion
+                                                                ? $" (Preview {PreviewPatchNumber})"
+                                                                : String.Empty);
+        
         #endregion
 
         #region Event Handlers
@@ -114,30 +106,38 @@ namespace ChaosRecipeEnhancer.UI.View
                 base.OnClosing(e);
             }
 
-            if (!Settings.Default.CloseToTrayEnabled || _trayClose)
+            if (Settings.Default.CloseToTrayEnabled && !_trayClose) return;
+            
+            _notifyIcon.Visible = false;
+
+            NativeMouseExtensions.Stop();
+            HotkeysManager.ShutdownSystemHook();
+            Settings.Default.Save();
+
+            if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
+                LogWatcher.StopWatchingLogFile();
+
+            Application.Current.Shutdown();
+        }
+
+        private static void CheckForClick(object sender, EventArgs e)
+        {
+            var releasesUrl = "https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases";
+            
+            try
             {
-                _notifyIcon.Visible = false;
-
-                MouseHook.Stop();
-
-                HotkeysManager.ShutdownSystemHook();
-
-                Settings.Default.Save();
-
-                if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
-                    LogWatcher.StopWatchingLogFile();
-
-                Application.Current.Shutdown();
+                Process.Start(releasesUrl);
+            }
+            catch
+            {
+                // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                releasesUrl = releasesUrl.Replace("&", "^&");
+                Process.Start(new ProcessStartInfo(releasesUrl) { UseShellExecute = true });
             }
         }
 
-        private void CheckForUpdates_Click(object Sender, EventArgs e)
-        {
-            AutoUpdateHelper.CheckForUpdates();
-        }
-
         // Close the form, which closes the application.
-        private void MenuItem_Click(object Sender, EventArgs e)
+        private void ExitMenuItemClick(object sender, EventArgs e)
         {
             _trayClose = true;
             Close();
@@ -197,11 +197,7 @@ namespace ChaosRecipeEnhancer.UI.View
         {
             MainGrid.Focus();
         }
-
-        private void VolumeSlider_PreviewMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            Data.PlayNotificationSound();
-        }
+        
 
         private void ColorStashBackgroundPicker_SelectedColorChanged(object sender,
             RoutedPropertyChangedEventArgs<Color?> e)
@@ -359,7 +355,7 @@ namespace ChaosRecipeEnhancer.UI.View
                 ? Visibility.Visible
                 : Visibility.Hidden;
         }
-        
+
         #endregion
 
         #region Methods
@@ -421,21 +417,21 @@ namespace ChaosRecipeEnhancer.UI.View
 
             new Container();
             _contextMenu = new ContextMenu();
-            _menuItem = new MenuItem();
-            _menuItemUpdate = new MenuItem();
+            _exitMenuItem = new MenuItem();
+            _checkForUpdatesMenuItem = new MenuItem();
 
             // Initialize contextMenu1
-            _contextMenu.MenuItems.AddRange(new[] { _menuItem, _menuItemUpdate });
+            _contextMenu.MenuItems.AddRange(new[] { _exitMenuItem, _checkForUpdatesMenuItem });
 
             // Initialize menuItem1
-            _menuItem.Index = 1;
-            _menuItem.Text = "E&xit";
-            _menuItem.Click += MenuItem_Click;
+            _exitMenuItem.Index = 1;
+            _exitMenuItem.Text = "E&xit";
+            _exitMenuItem.Click += ExitMenuItemClick;
 
             // Initialize menuItemUpdate
-            _menuItemUpdate.Index = 0;
-            _menuItemUpdate.Text = "C&heck for Updates";
-            _menuItemUpdate.Click += CheckForUpdates_Click;
+            _checkForUpdatesMenuItem.Index = 0;
+            _checkForUpdatesMenuItem.Text = "C&heck for Updates";
+            _checkForUpdatesMenuItem.Click += CheckForClick;
 
             _notifyIcon.ContextMenu = _contextMenu;
         }
@@ -540,12 +536,6 @@ namespace ChaosRecipeEnhancer.UI.View
                     if (Settings.Default.StashTabSuffix == "") missingSettings.Add("- StashTab Suffix");
                     break;
                 }
-                // TODO: [Refactor] Query by folder name stuff (doesn't work; not supported by API)
-                // case 3:
-                //     {
-                //         if (Settings.Default.StashFolderName == "") missingSettings.Add("- StashFolder Name");
-                //         break;
-                //     }
             }
 
             if (missingSettings.Count > 0)

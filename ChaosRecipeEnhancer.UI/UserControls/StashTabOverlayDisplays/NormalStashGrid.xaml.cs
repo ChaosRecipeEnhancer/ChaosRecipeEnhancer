@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using ChaosRecipeEnhancer.UI.Extensions;
 using ChaosRecipeEnhancer.UI.Model;
 using Serilog;
 
@@ -37,7 +38,7 @@ namespace ChaosRecipeEnhancer.UI.UserControls.StashTabOverlayDisplays
                 if (Items[i] == cell)
                 {
                     var container = ItemContainerGenerator.ContainerFromIndex(i);
-                    var t = Utility.GetChild<Button>(container);
+                    var t = ControlExtensions.GetChild<Button>(container);
                     return t;
                 }
 

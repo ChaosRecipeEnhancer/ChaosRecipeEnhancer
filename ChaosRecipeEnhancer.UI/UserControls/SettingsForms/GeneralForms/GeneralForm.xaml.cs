@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using MessageBox = System.Windows.MessageBox;

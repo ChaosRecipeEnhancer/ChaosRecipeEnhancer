@@ -1,6 +1,6 @@
 ﻿# DO NOT REMOVE INITIAL COMMENTS
 
-# You can add any itemstyle you want except for the initial commented stuff.
+# You can add any item style you want except for the initial commented stuff.
 # The commented stuff will be automatically set by the application.
 
 # To comment you have to make sure the '#' sign is at the beginning of the line, no in-line comments allowed
