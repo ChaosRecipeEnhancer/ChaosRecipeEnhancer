@@ -116,7 +116,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BusinessLogic\Constants\Constants.cs" />
+    <Compile Include="BusinessLogic\Constants\SiteEndpoints.cs" />
+    <Compile Include="BusinessLogic\Constants\FilterAssets.cs" />
+    <Compile Include="BusinessLogic\Constants\SoundAssets.cs" />
+    <Compile Include="BusinessLogic\Constants\StringConstruction.cs" />
     <Compile Include="BusinessLogic\DataFetching\ApiAdapter.cs" />
     <Compile Include="BusinessLogic\DataFetching\AutoFetch.cs" />
     <Compile Include="BusinessLogic\DataFetching\RateLimit.cs" />
