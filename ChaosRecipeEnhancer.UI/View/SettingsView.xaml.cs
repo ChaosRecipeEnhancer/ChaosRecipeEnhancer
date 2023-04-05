@@ -67,8 +67,8 @@ namespace ChaosRecipeEnhancer.UI.View
         private static string RunButtonContent { get; set; } = "Run Overlay";
 
         private ContextMenu _contextMenu;
-        private MenuItem _menuItem;
-        private MenuItem _menuItemUpdate;
+        private MenuItem _exitMenuItem;
+        private MenuItem _checkForUpdatesMenuItem;
         private bool _trayClose;
 
         #endregion
@@ -101,31 +101,38 @@ namespace ChaosRecipeEnhancer.UI.View
                 base.OnClosing(e);
             }
 
-            if (!Settings.Default.CloseToTrayEnabled || _trayClose)
+            if (Settings.Default.CloseToTrayEnabled && !_trayClose) return;
+            
+            _notifyIcon.Visible = false;
+
+            MouseHook.Stop();
+            HotkeysManager.ShutdownSystemHook();
+            Settings.Default.Save();
+
+            if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
+                LogWatcher.StopWatchingLogFile();
+
+            Application.Current.Shutdown();
+        }
+
+        private static void CheckForClick(object sender, EventArgs e)
+        {
+            var releasesUrl = "https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases";
+            
+            try
             {
-                _notifyIcon.Visible = false;
-
-                MouseHook.Stop();
-
-                HotkeysManager.ShutdownSystemHook();
-
-                Settings.Default.Save();
-
-                if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive)
-                    LogWatcher.StopWatchingLogFile();
-
-                Application.Current.Shutdown();
+                Process.Start(releasesUrl);
+            }
+            catch
+            {
+                // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                releasesUrl = releasesUrl.Replace("&", "^&");
+                Process.Start(new ProcessStartInfo(releasesUrl) { UseShellExecute = true });
             }
         }
 
-        private void CheckForUpdates_Click(object Sender, EventArgs e)
-        {
-            // TODO: Hyperlink to CRE release pages
-            Console.Write("TODO Link to releases");
-        }
-
         // Close the form, which closes the application.
-        private void MenuItem_Click(object Sender, EventArgs e)
+        private void ExitMenuItemClick(object sender, EventArgs e)
         {
             _trayClose = true;
             Close();
@@ -405,21 +412,21 @@ namespace ChaosRecipeEnhancer.UI.View
 
             new Container();
             _contextMenu = new ContextMenu();
-            _menuItem = new MenuItem();
-            _menuItemUpdate = new MenuItem();
+            _exitMenuItem = new MenuItem();
+            _checkForUpdatesMenuItem = new MenuItem();
 
             // Initialize contextMenu1
-            _contextMenu.MenuItems.AddRange(new[] { _menuItem, _menuItemUpdate });
+            _contextMenu.MenuItems.AddRange(new[] { _exitMenuItem, _checkForUpdatesMenuItem });
 
             // Initialize menuItem1
-            _menuItem.Index = 1;
-            _menuItem.Text = "E&xit";
-            _menuItem.Click += MenuItem_Click;
+            _exitMenuItem.Index = 1;
+            _exitMenuItem.Text = "E&xit";
+            _exitMenuItem.Click += ExitMenuItemClick;
 
             // Initialize menuItemUpdate
-            _menuItemUpdate.Index = 0;
-            _menuItemUpdate.Text = "C&heck for Updates";
-            _menuItemUpdate.Click += CheckForUpdates_Click;
+            _checkForUpdatesMenuItem.Index = 0;
+            _checkForUpdatesMenuItem.Text = "C&heck for Updates";
+            _checkForUpdatesMenuItem.Click += CheckForClick;
 
             _notifyIcon.ContextMenu = _contextMenu;
         }
