@@ -4,7 +4,7 @@
 
 - removing broken auto-update feature from project (the button in the navigation menu now links to our [latest release page on Github](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases))
 - adding Environment based NewLine (thanks to [yenbounger](https://github.com/yenbounger) for your PR) that resolves issue when modifying filters after applying our filter automated filter modification
-- continued code improvements under the hood 
+- massive refactors under the hood (simplifying project structure and removing tons of redundant code; should make it easier for new contributors to understand what classes/methods do what)
 
 #### 1.7.0
 

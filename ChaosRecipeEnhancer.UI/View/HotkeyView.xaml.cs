@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using ChaosRecipeEnhancer.UI.BusinessLogic.Hotkeys;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using Serilog;

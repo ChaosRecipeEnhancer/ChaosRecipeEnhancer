@@ -116,23 +116,45 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Constants\Constants.cs" />
-    <Compile Include="Enums\EnumItemClass.cs" />
-    <Compile Include="Filter\CFilterGenerationManager.cs" />
-    <Compile Include="Model\ActiveItemTypes.cs" />
-    <Compile Include="Model\AutoFetch.cs" />
-    <Compile Include="Model\InteractiveCell.cs" />
-    <Compile Include="Model\Coordinates.cs" />
-    <Compile Include="Model\ReloadItemFilter.cs" />
-    <Compile Include="Model\Storage\FileFilterStorage.cs" />
-    <Compile Include="Model\Storage\FilterStorageFactory.cs" />
-    <Compile Include="Model\ItemSet.cs" />
-    <Compile Include="Model\MouseHook.cs" />
-    <Compile Include="Model\RateLimit.cs" />
-    <Compile Include="Model\StashTabList.cs" />
-    <Compile Include="Model\Storage\IFilterStorage.cs" />
-    <Compile Include="Model\Utility.cs" />
-    <Compile Include="Model\Utils\UserWarning.cs" />
+    <Compile Include="BusinessLogic\Constants\Constants.cs" />
+    <Compile Include="BusinessLogic\DataFetching\ApiAdapter.cs" />
+    <Compile Include="BusinessLogic\DataFetching\AutoFetch.cs" />
+    <Compile Include="BusinessLogic\DataFetching\RateLimit.cs" />
+    <Compile Include="BusinessLogic\Enums\EnumItemClass.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\CFilterGenerationManager.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\Factory\CItemClassManagerFactory.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\Factory\Managers\ABaseItemClassManager.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\Factory\Managers\Implementation\CAmuletsManager.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\Factory\Managers\Implementation\CBeltsManager.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\Factory\Managers\Implementation\CBodyArmoursManager.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\Factory\Managers\Implementation\CBootsManager.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\Factory\Managers\Implementation\CGlovesManager.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\Factory\Managers\Implementation\CHelmetManager.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\Factory\Managers\Implementation\COneHandWeaponsManager.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\Factory\Managers\Implementation\CRingsManager.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterGeneration\Factory\Managers\Implementation\CTwoHandWeaponsManager.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterStorage\FileFilterStorage.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterStorage\FilterStorageFactory.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\FilterStorage\IFilterStorage.cs" />
+    <Compile Include="BusinessLogic\FilterManipulation\ReloadItemFilterHandler.cs" />
+    <Compile Include="BusinessLogic\Hotkeys\GlobalHotkey.cs" />
+    <Compile Include="BusinessLogic\Hotkeys\Hotkey.cs" />
+    <Compile Include="BusinessLogic\Hotkeys\HotkeysManager.cs" />
+    <Compile Include="BusinessLogic\Items\ActiveItemTypes.cs" />
+    <Compile Include="BusinessLogic\Items\Item.cs" />
+    <Compile Include="BusinessLogic\Items\ItemInfluenceModel.cs" />
+    <Compile Include="BusinessLogic\Items\ItemPropertyModel.cs" />
+    <Compile Include="BusinessLogic\Items\ItemSet.cs" />
+    <Compile Include="DynamicControls\Coordinates.cs" />
+    <Compile Include="DynamicControls\InteractiveCell.cs" />
+    <Compile Include="DynamicControls\StashTabs\StashTab.cs" />
+    <Compile Include="DynamicControls\StashTabs\StashTabList.cs" />
+    <Compile Include="DynamicControls\StashTabs\StashTabPropsList.cs" />
+    <Compile Include="DynamicControls\UserWarning.cs" />
+    <Compile Include="Extensions\ControlExtensions.cs" />
+    <Compile Include="Extensions\Native\NativeMouseExtensions.cs" />
+    <Compile Include="Extensions\Native\NativeWindowExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -177,17 +199,6 @@
     <Compile Include="View\StashTabOverlayView.xaml.cs">
       <DependentUpon>StashTabOverlayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Factory\Managers\ABaseItemClassManager.cs" />
-    <Compile Include="Factory\Managers\Implementation\CAmuletsManager.cs" />
-    <Compile Include="Factory\Managers\Implementation\CBeltsManager.cs" />
-    <Compile Include="Factory\Managers\Implementation\CBodyArmoursManager.cs" />
-    <Compile Include="Factory\Managers\Implementation\CBootsManager.cs" />
-    <Compile Include="Factory\Managers\Implementation\CGlovesManager.cs" />
-    <Compile Include="Factory\Managers\Implementation\CHelmetManager.cs" />
-    <Compile Include="Factory\Managers\Implementation\COneHandWeaponsManager.cs" />
-    <Compile Include="Factory\Managers\Implementation\CRingsManager.cs" />
-    <Compile Include="Factory\Managers\Implementation\CTwoHandWeaponsManager.cs" />
-    <Compile Include="Factory\CItemClassManagerFactory.cs" />
     <Page Include="UserControls\SettingsForms\GeneralForms\GeneralForm.xaml" />
     <Page Include="UserControls\SettingsForms\GeneralForms\PathOfExileForm.xaml" />
     <Page Include="UserControls\SettingsForms\GeneralForms\RecipesForm.xaml" />
@@ -231,26 +242,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Model\ApiAdapter.cs" />
     <Compile Include="AppBootstrapper.xaml.cs">
       <DependentUpon>AppBootstrapper.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\StashTab.cs" />
     <Compile Include="View\SetTrackerOverlayView.xaml.cs">
       <DependentUpon>SetTrackerOverlayView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Data.cs" />
-    <Compile Include="Model\GlobalHotkey.cs" />
-    <Compile Include="Model\Hotkey.cs" />
     <Compile Include="UserControls\HotkeyEditorControl.xaml.cs">
       <DependentUpon>HotkeyEditorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\HotkeysManager.cs" />
     <Compile Include="View\HotkeyView.xaml.cs">
       <DependentUpon>HotkeyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Item.cs" />
     <Compile Include="View\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -295,7 +300,7 @@
     </None>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
@@ -311,16 +316,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ChaosRecipeEnhancer.App\ChaosRecipeEnhancer.App.csproj">
-      <Project>{4395b43e-64ec-45ea-8637-929769567799}</Project>
-      <Name>ChaosRecipeEnhancer.App</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ChaosRecipeEnhancer.DataModels\ChaosRecipeEnhancer.DataModels.csproj">
-      <Project>{4fe898a7-2af2-4169-aa88-68591ce59b82}</Project>
-      <Name>ChaosRecipeEnhancer.DataModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.5.0" />
@@ -373,6 +368,10 @@
     <PackageReference Include="WiX" Version="3.11.2" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BusinessLogic\README.md" />
+    <Content Include="DynamicControls\README.md" />
+    <Content Include="Extensions\README.md" />
+    <Content Include="Model\README.md" />
     <Resource Include="CREIcon.ico" />
     <Resource Include="Assets\Icons\CREIcon.ico" />
     <Content Include="Assets\Sounds\ItemPickedUp.mp3">
