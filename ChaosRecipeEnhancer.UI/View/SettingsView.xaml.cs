@@ -13,7 +13,6 @@ using ChaosRecipeEnhancer.UI.BusinessLogic.Hotkeys;
 using ChaosRecipeEnhancer.UI.DynamicControls;
 using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Extensions.Native;
-using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using Serilog;
@@ -62,9 +61,9 @@ namespace ChaosRecipeEnhancer.UI.View
         private readonly StashTabOverlayView _stashTabOverlayView;
 
         // This version # should match up with the format for Assembly version # (3 dots, 4 digits), or else you'll get spammed for AutoUpdates
-        private const bool IsPreviewVersion = true;
-        private const int PreviewPatchNumber = 1;
-        private const string AppVersion = "1.7.1.0";
+        private const bool IsPreviewVersion = false;
+        private const int PreviewPatchNumber = 0;
+        private const string AppVersion = "1.7.2.0";
 
         private readonly NotifyIcon _notifyIcon = new NotifyIcon();
 
@@ -86,7 +85,7 @@ namespace ChaosRecipeEnhancer.UI.View
                                                             (IsPreviewVersion
                                                                 ? $" (Preview {PreviewPatchNumber})"
                                                                 : String.Empty);
-        
+
         #endregion
 
         #region Event Handlers
@@ -107,7 +106,7 @@ namespace ChaosRecipeEnhancer.UI.View
             }
 
             if (Settings.Default.CloseToTrayEnabled && !_trayClose) return;
-            
+
             _notifyIcon.Visible = false;
 
             NativeMouseExtensions.Stop();
@@ -123,7 +122,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private static void CheckForClick(object sender, EventArgs e)
         {
             var releasesUrl = "https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases";
-            
+
             try
             {
                 Process.Start(releasesUrl);
@@ -197,7 +196,7 @@ namespace ChaosRecipeEnhancer.UI.View
         {
             MainGrid.Focus();
         }
-        
+
 
         private void ColorStashBackgroundPicker_SelectedColorChanged(object sender,
             RoutedPropertyChangedEventArgs<Color?> e)
@@ -265,9 +264,9 @@ namespace ChaosRecipeEnhancer.UI.View
 
         private void TabHeaderWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (StashTabList.StashTabs.Count <= 0) return;
+            if (StashTabControlManager.StashTabControls.Count <= 0) return;
 
-            foreach (var s in StashTabList.StashTabs)
+            foreach (var s in StashTabControlManager.StashTabControls)
                 s.TabHeaderWidth =
                     new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2,
                         Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2);

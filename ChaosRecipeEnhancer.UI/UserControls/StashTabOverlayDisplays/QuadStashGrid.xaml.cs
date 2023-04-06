@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
 using ChaosRecipeEnhancer.UI.Extensions;
-using ChaosRecipeEnhancer.UI.Model;
 using Serilog;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTabOverlayDisplays

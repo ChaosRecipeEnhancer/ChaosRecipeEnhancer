@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
-using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using MessageBox = System.Windows.MessageBox;
 
@@ -15,7 +14,7 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
         private Visibility _tabNamePrefixVisible = Visibility.Hidden;
         private Visibility _tabNameSuffixVisible = Visibility.Hidden;
         private Visibility _fetchOnNewMapEnabled = Visibility.Collapsed;
-        
+
         public GeneralForm()
         {
             DataContext = this;
@@ -62,7 +61,7 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
                 }
             }
         }
-        
+
         public Visibility FetchOnNewMapEnabled
         {
             get => _fetchOnNewMapEnabled;
@@ -144,8 +143,8 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
 
         private void LoadFetchOnNewMapEnabled()
         {
-            FetchOnNewMapEnabled = Settings.Default.AutoFetchOnRezoneEnabled 
-                ? Visibility.Visible 
+            FetchOnNewMapEnabled = Settings.Default.AutoFetchOnRezoneEnabled
+                ? Visibility.Visible
                 : Visibility.Collapsed;
         }
 

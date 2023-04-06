@@ -104,7 +104,7 @@ namespace ChaosRecipeEnhancer.UI.View
             IsEditing = false;
             NativeMouseExtensions.Stop();
 
-            foreach (var i in StashTabList.StashTabs)
+            foreach (var i in StashTabControlManager.StashTabControls)
             {
                 i.OverlayCellsList.Clear();
                 i.TabNameContainer = null;
@@ -122,7 +122,7 @@ namespace ChaosRecipeEnhancer.UI.View
         public new virtual void Show()
         {
             // Ensure the user has fetched stash data before populating our Stash Tab Overlay
-            if (StashTabList.StashTabs.Count != 0)
+            if (StashTabControlManager.StashTabControls.Count != 0)
             {
                 IsOpen = true;
 
@@ -134,11 +134,11 @@ namespace ChaosRecipeEnhancer.UI.View
                 StashTabOverlayIndividualTabMargin = new Thickness(Settings.Default.StashTabOverlayIndividualTabMargin, 0, 0, 0);
 
                 // For each individual stash tab in our query results
-                foreach (var stashTabData in StashTabList.StashTabs)
+                foreach (var stashTabData in StashTabControlManager.StashTabControls)
                 {
                     // Creating an object that represents a Stash Tab (the physical tab that you interact with)
                     TabItem newStashTab;
-                    
+
                     // Creating a text block that will contain the name of said Stash Tab
                     var textBlock = new TextBlock
                     {
@@ -149,7 +149,7 @@ namespace ChaosRecipeEnhancer.UI.View
                     textBlock.SetBinding(TextBlock.BackgroundProperty, new Binding("TabHeaderColor"));
                     textBlock.SetBinding(TextBlock.PaddingProperty, new Binding("TabHeaderWidth"));
                     textBlock.FontSize = 16;
-                    
+
                     stashTabData.TabNameContainer = textBlock;
 
                     if (stashTabData.Quad)
@@ -181,9 +181,9 @@ namespace ChaosRecipeEnhancer.UI.View
                 StashTabOverlayTabControl.SelectedIndex = 0;
 
                 Data.PrepareSelling();
-                
+
                 Data.ActivateNextCell(true, null, StashTabOverlayTabControl);
-                
+
                 // If "All Items" highlight mode enabled, paint all Stash Tab Headers to their respective colors
                 if (Settings.Default.StashTabOverlayHighlightMode == 2)
                 {
@@ -193,8 +193,8 @@ namespace ChaosRecipeEnhancer.UI.View
                         {
                             var currTab = Data.GetStashTabFromItem(i);
                             currTab.ActivateItemCells(i);
-                            
-                            currTab.TabHeaderColor =  new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+
+                            currTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
                         }
                     }
                 }

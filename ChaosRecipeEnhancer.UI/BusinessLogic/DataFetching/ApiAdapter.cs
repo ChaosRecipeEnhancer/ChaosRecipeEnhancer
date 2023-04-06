@@ -1,178 +1,194 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows;
 using ChaosRecipeEnhancer.UI.BusinessLogic.Constants;
 using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
+using ChaosRecipeEnhancer.UI.BusinessLogic.StashTabs;
+using ChaosRecipeEnhancer.UI.DynamicControls;
 using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
-using ChaosRecipeEnhancer.UI.Extensions;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
 {
-    public class ApiAdapter
+    public abstract class ApiAdapter
     {
         public static bool IsFetching { get; set; }
-        private static StashTabPropsList PropsList { get; set; }
         public static bool FetchError { get; set; }
-        public static bool FetchingDone { get; set; }
+        private static bool FetchingDone { get; set; }
+        private static StashTabListModel ListModel { get; set; }
 
-        public static async Task<bool> GenerateUri()
+        // TODO: [Refactor] Take a good look at this method - it's a bit redundant in nature. Lots of repeated API calls.
+        public static async Task<bool> FetchItemData()
         {
             FetchError = false;
             FetchingDone = false;
-            Trace.WriteLine("generating uris!!");
 
             if (Settings.Default.PathOfExileAccountName != "" && Settings.Default.LeagueName != "")
             {
                 var accName = Settings.Default.PathOfExileAccountName.Trim();
                 var league = Settings.Default.LeagueName.Trim();
 
-                if (await GetProps(accName, league))
+                // 
+                if (await FetchEntireStashTabList(accName, league))
+                {
                     if (!FetchError)
                     {
-                        GenerateStashTabs();
-                        GenerateStashTabUris(accName, league);
+                        GenerateReconstructedStashTabsFromApiResponse();
+                        GenerateStashTabApiRequestUrls(accName, league);
                         return true;
                     }
+                }
             }
             else
             {
-                MessageBox.Show("Missing Settings!" + Environment.NewLine +
-                                "Please set account name, stash tab name/index and league.");
+                ErrorWindow.Spawn("You are missing one of the following settings: PoE Account Name, League, and Stash Tab Name(s) or Indices.", "Error: Stash Data Fetch Failed");
             }
 
             IsFetching = false;
             return false;
         }
 
-        public static IEnumerable<string> GetAllLeagueNames()
+        public static IEnumerable<string> FetchLeagueNames()
         {
-            var leagueIds = new List<string>();
+            var leagueNames = new List<string>();
 
-            using (var wc = new WebClient())
+            using (var webClient = new WebClient())
             {
                 try
                 {
-                    var json = wc.DownloadString("https://api.pathofexile.com/leagues?type=main");
+                    var json = webClient.DownloadString("https://api.pathofexile.com/leagues?type=main");
                     var document = JsonDocument.Parse(json);
                     var allLeagueData = document.RootElement.EnumerateArray();
 
-                    leagueIds.AddRange(allLeagueData.Select(league => league.GetProperty("id").GetString()));
+                    leagueNames.AddRange(allLeagueData.Select(league => league.GetProperty("id").GetString()));
                 }
                 catch (WebException e)
                 {
-                    MessageBox.Show(
-                        e.Message +
-                        "\n\nThe Path of Exile servers seem to be down for patching. Once they're back up, our app will work as usual. The app is NOT broken! ",
-                        "Warning: Path of Exile API Request | ApiAdapter.GetAllLeagueNames()");
+                    ErrorWindow.Spawn(e.Message + StringConstruction.DoubleNewLineCharacter +
+                                      "The PoE servers are down (perhaps due to patching, maintenance, or server instability). " +
+                                      "While the app is down, you will not be able to fetch. The app is NOT broken! Once the servers are back up, our app will work as usual. ",
+                        "Warning: Path of Exile API Request");
                 }
             }
 
-            return leagueIds;
+            return leagueNames;
         }
 
-        private static void GenerateStashTabs()
+        private static void GenerateReconstructedStashTabsFromApiResponse()
         {
-            var ret = new List<StashTab>();
+            var reconstructedStashTabs = new List<StashTabControl>();
 
-            if (Settings.Default.StashTabIndices != null) StashTabList.GetStashTabIndices();
+            if (Settings.Default.StashTabIndices != null) StashTabControlManager.GetStashTabIndices();
 
             // mode = Individual Stash Tab Indices
             if (Settings.Default.StashTabQueryMode == 0)
             {
-                if (PropsList != null)
+                if (ListModel != null)
                 {
-                    foreach (var tab in PropsList.tabs)
-                        for (var index = StashTabList.StashTabIndices.Count - 1; index > -1; index--)
+                    foreach (var tab in ListModel.StashTabs)
+                    {
+                        for (var index = StashTabControlManager.StashTabIndices.Count - 1; index > -1; index--)
                         {
-                            if (StashTabList.StashTabIndices[index] != tab.Index) continue;
+                            if (StashTabControlManager.StashTabIndices[index] != tab.Index) continue;
 
-                            StashTabList.StashTabIndices.RemoveAt(index);
+                            StashTabControlManager.StashTabIndices.RemoveAt(index);
 
                             if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
-                                ret.Add(new StashTab(tab.Name, tab.Index));
+                                reconstructedStashTabs.Add(new StashTabControl(tab.Name, tab.Index));
                         }
+                    }
 
-                    StashTabList.StashTabs = ret;
-                    GetAllTabNames();
+                    StashTabControlManager.StashTabControls = reconstructedStashTabs;
+                    ParseAllStashTabNamesFromApiResponse();
                 }
             }
             // mode = Individual Stash Tab Prefix
             else if (Settings.Default.StashTabQueryMode == 1)
             {
-                if (PropsList != null)
+                if (ListModel != null)
                 {
                     var individualStashTabPrefix = Settings.Default.StashTabPrefix;
 
-                    GetAllTabNames();
+                    ParseAllStashTabNamesFromApiResponse();
 
-                    foreach (var tab in PropsList.tabs)
+                    foreach (var tab in ListModel.StashTabs)
+                    {
                         if (tab.Name.StartsWith(individualStashTabPrefix))
+                        {
                             if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
-                                ret.Add(new StashTab(tab.Name, tab.Index));
+                                reconstructedStashTabs.Add(new StashTabControl(tab.Name, tab.Index));
+                        }
+                    }
 
-                    StashTabList.StashTabs = ret;
+                    StashTabControlManager.StashTabControls = reconstructedStashTabs;
                 }
             }
             // mode = Individual Stash Tab Suffix
             else if (Settings.Default.StashTabQueryMode == 2)
             {
-                if (PropsList != null)
+                if (ListModel != null)
                 {
                     var individualStashTabSuffix = Settings.Default.StashTabSuffix;
 
-                    GetAllTabNames();
+                    ParseAllStashTabNamesFromApiResponse();
 
-                    foreach (var tab in PropsList.tabs)
+                    foreach (var tab in ListModel.StashTabs)
+                    {
                         if (tab.Name.EndsWith(individualStashTabSuffix))
+                        {
                             if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
-                                ret.Add(new StashTab(tab.Name, tab.Index));
+                            {
+                                reconstructedStashTabs.Add(new StashTabControl(tab.Name, tab.Index));
+                            }
+                        }
+                    }
 
-                    StashTabList.StashTabs = ret;
+                    StashTabControlManager.StashTabControls = reconstructedStashTabs;
                 }
             }
-
-            Trace.WriteLine(StashTabList.StashTabs.Count, "stash tab count");
         }
 
-        private static void GenerateStashTabUris(string accName, string league)
+        private static void GenerateStashTabApiRequestUrls(string accName, string league)
         {
-            foreach (var i in StashTabList.StashTabs)
+            foreach (var i in StashTabControlManager.StashTabControls)
             {
-                var stashTab = i.TabIndex.ToString();
-
-                i.StashTabUri = Settings.Default.TargetStash == 0
+                // ternary operation based on which stash we're targeting for queries (they use separate endpoints)
+                i.StashTabApiRequestUrl = Settings.Default.TargetStash == 0
                     // URL for accessing personal stash
                     ? new Uri(
-                        $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}")
+                        $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={i.TabIndex.ToString()}")
                     // URL for accessing guild stash
                     : new Uri(
-                        $"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={stashTab}");
+                        $"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabIndex={i.TabIndex.ToString()}");
             }
         }
 
-        private static void GetAllTabNames()
+        private static void ParseAllStashTabNamesFromApiResponse()
         {
-            foreach (var s in StashTabList.StashTabs)
-            foreach (var props in PropsList.tabs)
-                if (s.TabIndex == props.Index)
-                    s.TabName = props.Name;
+            foreach (var s in StashTabControlManager.StashTabControls)
+            {
+                foreach (var props in ListModel.StashTabs)
+                {
+                    if (s.TabIndex == props.Index)
+                    {
+                        s.TabName = props.Name;
+                    }
+                }
+            }
         }
 
-        private static async Task<bool> GetProps(string accName, string league)
+        private static async Task<bool> FetchEntireStashTabList(string accName, string league)
         {
             if (IsFetching) return false;
 
-            if (Settings.Default.PathOfExileWebsiteSessionId == "")
+            if (string.IsNullOrWhiteSpace(Settings.Default.PathOfExileWebsiteSessionId))
             {
-                MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set PoE Session Id.");
+                ErrorWindow.Spawn("You must set your PoE Session ID in the user settings to fetch data.","Error: Stash Data Fetch Failed");
                 return false;
             }
 
@@ -193,22 +209,12 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
             // If accessing personal stash
             if (Settings.Default.TargetStash == 0)
             {
-                Trace.WriteLine("[ApiAdapter:GetProps()] Generating propsUri for My Stash");
-
-                propsUri = new Uri(
-                    $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
-
-                Trace.WriteLine($"[ApiAdapter:GetProps()] ${propsUri}");
+                propsUri = new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
             }
             // Else if accessing guild stash
             else if (Settings.Default.TargetStash == 1)
             {
-                Trace.WriteLine("[ApiAdapter:GetProps()] Generating propsUri for Guild Stash");
-
-                propsUri = new Uri(
-                    $"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
-
-                Trace.WriteLine($"[ApiAdapter:GetProps()] ${propsUri}");
+                propsUri = new Uri($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&realm=pc&league={league}&tabs=1&tabIndex=0");
             }
             // Else error out
             else
@@ -217,32 +223,29 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
             }
 
             var sessionId = Settings.Default.PathOfExileWebsiteSessionId;
+            var cookieContainer = new CookieContainer();
+            cookieContainer.Add(propsUri, new Cookie("POESESSID", sessionId));
 
-            var cC = new CookieContainer();
-            cC.Add(propsUri, new Cookie("POESESSID", sessionId));
-
-            using (var handler = new HttpClientHandler { CookieContainer = cC })
+            using (var handler = new HttpClientHandler { CookieContainer = cookieContainer })
             using (var client = new HttpClient(handler))
             {
                 // add user agent
-                client.DefaultRequestHeaders.Add("User-Agent",
-                    $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}");
+                client.DefaultRequestHeaders.Add("User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}");
 
-                using (var res = await client.GetAsync(propsUri))
+                using (var response = await client.GetAsync(propsUri))
                 {
-                    if (res.IsSuccessStatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
-                        using (var content = res.Content)
+                        using (var content = response.Content)
                         {
                             var resContent = await content.ReadAsStringAsync();
-                            PropsList = JsonSerializer.Deserialize<StashTabPropsList>(resContent);
 
-                            Trace.WriteLine(res.Headers, "res headers");
+                            ListModel = JsonSerializer.Deserialize<StashTabListModel>(resContent);
 
                             // get new rate limit values
-                            var rateLimit = res.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
-                            var rateLimitState = res.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
-                            var responseTime = res.Headers.GetValues("Date").FirstOrDefault();
+                            var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
+                            var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
+                            var responseTime = response.Headers.GetValues("Date").FirstOrDefault();
 
                             RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
                             RateLimit.DeserializeResponseSeconds(responseTime);
@@ -252,30 +255,22 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                     {
                         string statusMessage;
 
-                        if (res.StatusCode == HttpStatusCode.Forbidden)
+                        if (response.StatusCode == HttpStatusCode.Forbidden)
                         {
-                            statusMessage = "Error: " + res.StatusCode + StringConstruction.DoubleNewLineCharacter +
+                            statusMessage = response.StatusCode + ": " + response.ReasonPhrase + StringConstruction.DoubleNewLineCharacter +
                                             "Connection forbidden. Please check your Account Name and Session ID. You may have to log back into the site and get a new Session ID.";
                         }
-                        else if (res.StatusCode == HttpStatusCode.ServiceUnavailable)
+                        else if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
                         {
-                            statusMessage = "Error: " + res.StatusCode + StringConstruction.DoubleNewLineCharacter +
+                            statusMessage = response.StatusCode + ": " + response.ReasonPhrase + StringConstruction.DoubleNewLineCharacter +
                                             "The PoE site servers seem to be down. This may be due to patching or issues on GGG's end. The app is working as expected.";
                         }
                         else
                         {
-                            statusMessage = res.ReasonPhrase;
+                            statusMessage = response.StatusCode + ": " + response.ReasonPhrase;
                         }
 
-                        MessageBox.Show(statusMessage, "Error: Cannot Fetch Stash Data", MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-
-                        Trace.WriteLine($"[ApiAdapter:GetProps] Response Headers ${res.Headers}");
-                        Trace.WriteLine($"[ApiAdapter:GetProps] Response Content ${res.Content}");
-                        Trace.WriteLine($"[ApiAdapter:GetProps] Response Status Code ${res.StatusCode}");
-                        Trace.WriteLine($"[ApiAdapter:GetProps] Response Reason Phrase ${res.ReasonPhrase}");
-                        Trace.WriteLine($"[ApiAdapter:GetProps] Response Request Message ${res.RequestMessage}");
-
+                        ErrorWindow.Spawn(statusMessage, "Error: Stash Data Fetch Failed");
                         FetchError = true;
                         return false;
                     }
@@ -286,25 +281,20 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
             return true;
         }
 
-        public static async Task<bool> GetItems()
+        public static async Task<bool> FetchItemsForAllStashTabs()
         {
-            if (IsFetching)
-            {
-                Trace.WriteLine("already fetching");
-                return false;
-            }
+            if (IsFetching) return false;
 
             if (Settings.Default.PathOfExileWebsiteSessionId == "")
             {
-                MessageBox.Show("Missing Settings!" + Environment.NewLine + "Please set PoE Session Id.");
+                ErrorWindow.Spawn("You must set your PoE Session ID in the user settings to fetch data.", "Error: Stash Data Fetch Failed");
                 return false;
             }
 
             if (FetchError) return false;
 
-            // TODO: can someone explain the -4 here? --cat
             // check rate limit
-            if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - StashTabList.StashTabs.Count - 4)
+            if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - StashTabControlManager.StashTabControls.Count - 4)
             {
                 RateLimit.rateLimitExceeded = true;
                 return false;
@@ -320,42 +310,40 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
             using (var client = new HttpClient(handler))
             {
                 // add user agent
-                client.DefaultRequestHeaders.Add("User-Agent",
-                    $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}");
+                client.DefaultRequestHeaders.Add("User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}");
 
-                foreach (var i in StashTabList.StashTabs)
+                foreach (var i in StashTabControlManager.StashTabControls)
                 {
                     // check rate limit ban
                     if (RateLimit.CheckForBan()) return false;
-                    if (usedUris.Contains(i.StashTabUri)) continue;
+                    if (usedUris.Contains(i.StashTabApiRequestUrl)) continue;
 
-                    cookieContainer.Add(i.StashTabUri, new Cookie("POESESSID", sessionId));
+                    cookieContainer.Add(i.StashTabApiRequestUrl, new Cookie("POESESSID", sessionId));
 
-                    using (var res = await client.GetAsync(i.StashTabUri))
+                    using (var response = await client.GetAsync(i.StashTabApiRequestUrl))
                     {
-                        usedUris.Add(i.StashTabUri);
+                        usedUris.Add(i.StashTabApiRequestUrl);
 
-                        if (res.IsSuccessStatusCode)
+                        if (response.IsSuccessStatusCode)
                         {
-                            using (var content = res.Content)
+                            using (var content = response.Content)
                             {
                                 // get new rate limit values
-                                var rateLimit = res.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
-                                var rateLimitState = res.Headers.GetValues("X-Rate-Limit-Account-State")
-                                    .FirstOrDefault();
-                                var responseTime = res.Headers.GetValues("Date").FirstOrDefault();
+                                var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
+                                var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
+                                var responseTime = response.Headers.GetValues("Date").FirstOrDefault();
 
                                 RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
                                 RateLimit.DeserializeResponseSeconds(responseTime);
 
                                 // deserialize response
                                 var resContent = await content.ReadAsStringAsync();
-                                var deserializedContent = JsonSerializer.Deserialize<ItemList>(resContent);
+                                var deserializedContent = JsonSerializer.Deserialize<EnhancedItemListModel>(resContent);
 
                                 if (deserializedContent != null)
                                 {
-                                    i.ItemList = deserializedContent.items;
-                                    i.Quad = deserializedContent.quadLayout;
+                                    i.ItemList = deserializedContent.Items;
+                                    i.Quad = deserializedContent.IsQuadLayout;
                                 }
 
                                 i.CleanItemList();
@@ -364,15 +352,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                         else
                         {
                             FetchError = true;
-
-                            MessageBox.Show(
-                                res.StatusCode + ": " + res.ReasonPhrase +
-                                StringConstruction.NewLineCharacter + StringConstruction.NewLineCharacter +
-                                res.Content,
-                                "ApiAdapter: Error Fetching Stash Data",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-
+                            ErrorWindow.Spawn(response.StatusCode + ": " + response.ReasonPhrase, "Error: Stash Data Fetch Failed");
                             return false;
                         }
                     }

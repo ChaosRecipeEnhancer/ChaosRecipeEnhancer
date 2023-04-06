@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
 using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation;
-using ChaosRecipeEnhancer.UI.Extensions;
+using ChaosRecipeEnhancer.UI.DynamicControls;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using Serilog;
@@ -402,12 +402,10 @@ namespace ChaosRecipeEnhancer.UI.View
                 !Settings.Default.RegalRecipeTrackingEnabled &&
                 !Settings.Default.ExaltedShardRecipeTrackingEnabled)
             {
-                MessageBox.Show("No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                ErrorWindow.Spawn("No vendor recipes are enabled. Please pick a recipe (Chaos, Regal, Exalted, etc.).", "Error: Set Tracking");
                 return;
             }
 
-            // TODO: [Validate] Find some other way to ensure warnings are disabled on the ChaosRecipeEnhancerOverlay
             DisableWarnings(this);
 
             FetchingActive = true;
@@ -421,8 +419,10 @@ namespace ChaosRecipeEnhancer.UI.View
             });
             await Dispatcher.Invoke(async () =>
             {
-                if (await ApiAdapter.GenerateUri())
-                    if (await ApiAdapter.GetItems())
+                if (await ApiAdapter.FetchItemData())
+                {
+                    if (await ApiAdapter.FetchItemsForAllStashTabs())
+                    {
                         try
                         {
                             await Task.Run(async () =>
@@ -434,42 +434,25 @@ namespace ChaosRecipeEnhancer.UI.View
                                 Dispatcher.Invoke(() => { IsIndeterminate = false; });
                             }, Data.CancellationToken);
 
-                            await Task.Delay(FetchCooldown * 1000).ContinueWith(_ =>
-                            {
-                                Trace.WriteLine("waited fetchcooldown");
-                                //FetchButtonEnabled = true;
-                                //FetchButtonColor = Brushes.Green;
-                                //FetchingActive = false;
-                            });
+                            await Task.Delay(FetchCooldown * 1000).ContinueWith(_ => { Trace.WriteLine("Waited for fetch cooldown."); });
                         }
                         catch (OperationCanceledException ex) when (ex.CancellationToken == Data.CancellationToken)
                         {
-                            Trace.WriteLine("abort");
+                            Trace.WriteLine("Aborting fetch operation.");
                         }
+                    }
+                }
 
                 if (RateLimit.rateLimitExceeded)
                 {
                     var secondsToWait = RateLimit.GetSecondsToWait();
-
-                    // TODO: [Refactor] Remove dependency on MainWindow for displaying these warning messages
-                    // MainWindow.Overlay.WarningMessage = $"Rate Limit Exceeded! Waiting {secondsToWait} seconds...";
-                    // MainWindow.Overlay.ShadowOpacity = 1;
-                    // MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
-
                     await Task.Delay(secondsToWait * 1000);
-
                     RateLimit.Reset();
                 }
 
                 if (RateLimit.BanTime > 0)
                 {
-                    // TODO: [Refactor] Remove dependency on MainWindow for displaying these warning messages
-                    // MainWindow.Overlay.WarningMessage = "Temporary Ban! Waiting...";
-                    // MainWindow.Overlay.ShadowOpacity = 1;
-                    // MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
-
                     await Task.Delay(RateLimit.BanTime * 1000);
-
                     RateLimit.BanTime = 0;
                 }
             });
@@ -483,7 +466,6 @@ namespace ChaosRecipeEnhancer.UI.View
                 FetchButtonColor = Brushes.Green;
                 FetchingActive = false;
             });
-            Trace.WriteLine("end of fetch function reached");
         }
 
         public void RunFetching()
