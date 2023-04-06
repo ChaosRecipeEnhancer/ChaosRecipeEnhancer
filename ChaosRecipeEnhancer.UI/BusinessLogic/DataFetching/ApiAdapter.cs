@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.BusinessLogic.Constants;
 using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
+using ChaosRecipeEnhancer.UI.BusinessLogic.StashTabs;
 using ChaosRecipeEnhancer.UI.DynamicControls;
 using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Properties;
@@ -19,7 +20,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
         public static bool IsFetching { get; set; }
         public static bool FetchError { get; set; }
         private static bool FetchingDone { get; set; }
-        private static StashTabResponseObject ResponseObject { get; set; }
+        private static StashTabListModel ListModel { get; set; }
 
         // TODO: [Refactor] Take a good look at this method - it's a bit redundant in nature. Lots of repeated API calls.
         public static async Task<bool> FetchItemData()
@@ -82,40 +83,40 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
         {
             var reconstructedStashTabs = new List<StashTabControl>();
 
-            if (Settings.Default.StashTabIndices != null) EnhancedStashTabs.GetStashTabIndices();
+            if (Settings.Default.StashTabIndices != null) StashTabControlManager.GetStashTabIndices();
 
             // mode = Individual Stash Tab Indices
             if (Settings.Default.StashTabQueryMode == 0)
             {
-                if (ResponseObject != null)
+                if (ListModel != null)
                 {
-                    foreach (var tab in ResponseObject.StashTabs)
+                    foreach (var tab in ListModel.StashTabs)
                     {
-                        for (var index = EnhancedStashTabs.StashTabIndices.Count - 1; index > -1; index--)
+                        for (var index = StashTabControlManager.StashTabIndices.Count - 1; index > -1; index--)
                         {
-                            if (EnhancedStashTabs.StashTabIndices[index] != tab.Index) continue;
+                            if (StashTabControlManager.StashTabIndices[index] != tab.Index) continue;
 
-                            EnhancedStashTabs.StashTabIndices.RemoveAt(index);
+                            StashTabControlManager.StashTabIndices.RemoveAt(index);
 
                             if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
                                 reconstructedStashTabs.Add(new StashTabControl(tab.Name, tab.Index));
                         }
                     }
 
-                    EnhancedStashTabs.StashTabControls = reconstructedStashTabs;
+                    StashTabControlManager.StashTabControls = reconstructedStashTabs;
                     ParseAllStashTabNamesFromApiResponse();
                 }
             }
             // mode = Individual Stash Tab Prefix
             else if (Settings.Default.StashTabQueryMode == 1)
             {
-                if (ResponseObject != null)
+                if (ListModel != null)
                 {
                     var individualStashTabPrefix = Settings.Default.StashTabPrefix;
 
                     ParseAllStashTabNamesFromApiResponse();
 
-                    foreach (var tab in ResponseObject.StashTabs)
+                    foreach (var tab in ListModel.StashTabs)
                     {
                         if (tab.Name.StartsWith(individualStashTabPrefix))
                         {
@@ -124,19 +125,19 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                         }
                     }
 
-                    EnhancedStashTabs.StashTabControls = reconstructedStashTabs;
+                    StashTabControlManager.StashTabControls = reconstructedStashTabs;
                 }
             }
             // mode = Individual Stash Tab Suffix
             else if (Settings.Default.StashTabQueryMode == 2)
             {
-                if (ResponseObject != null)
+                if (ListModel != null)
                 {
                     var individualStashTabSuffix = Settings.Default.StashTabSuffix;
 
                     ParseAllStashTabNamesFromApiResponse();
 
-                    foreach (var tab in ResponseObject.StashTabs)
+                    foreach (var tab in ListModel.StashTabs)
                     {
                         if (tab.Name.EndsWith(individualStashTabSuffix))
                         {
@@ -147,14 +148,14 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                         }
                     }
 
-                    EnhancedStashTabs.StashTabControls = reconstructedStashTabs;
+                    StashTabControlManager.StashTabControls = reconstructedStashTabs;
                 }
             }
         }
 
         private static void GenerateStashTabApiRequestUrls(string accName, string league)
         {
-            foreach (var i in EnhancedStashTabs.StashTabControls)
+            foreach (var i in StashTabControlManager.StashTabControls)
             {
                 // ternary operation based on which stash we're targeting for queries (they use separate endpoints)
                 i.StashTabApiRequestUrl = Settings.Default.TargetStash == 0
@@ -169,9 +170,9 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
 
         private static void ParseAllStashTabNamesFromApiResponse()
         {
-            foreach (var s in EnhancedStashTabs.StashTabControls)
+            foreach (var s in StashTabControlManager.StashTabControls)
             {
-                foreach (var props in ResponseObject.StashTabs)
+                foreach (var props in ListModel.StashTabs)
                 {
                     if (s.TabIndex == props.Index)
                     {
@@ -239,7 +240,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                         {
                             var resContent = await content.ReadAsStringAsync();
 
-                            ResponseObject = JsonSerializer.Deserialize<StashTabResponseObject>(resContent);
+                            ListModel = JsonSerializer.Deserialize<StashTabListModel>(resContent);
 
                             // get new rate limit values
                             var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
@@ -293,7 +294,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
             if (FetchError) return false;
 
             // check rate limit
-            if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - EnhancedStashTabs.StashTabControls.Count - 4)
+            if (RateLimit.CurrentRequests >= RateLimit.MaximumRequests - StashTabControlManager.StashTabControls.Count - 4)
             {
                 RateLimit.rateLimitExceeded = true;
                 return false;
@@ -311,7 +312,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                 // add user agent
                 client.DefaultRequestHeaders.Add("User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}");
 
-                foreach (var i in EnhancedStashTabs.StashTabControls)
+                foreach (var i in StashTabControlManager.StashTabControls)
                 {
                     // check rate limit ban
                     if (RateLimit.CheckForBan()) return false;
@@ -329,8 +330,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                             {
                                 // get new rate limit values
                                 var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
-                                var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State")
-                                    .FirstOrDefault();
+                                var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
                                 var responseTime = response.Headers.GetValues("Date").FirstOrDefault();
 
                                 RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
@@ -338,7 +338,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
 
                                 // deserialize response
                                 var resContent = await content.ReadAsStringAsync();
-                                var deserializedContent = JsonSerializer.Deserialize<ItemList>(resContent);
+                                var deserializedContent = JsonSerializer.Deserialize<EnhancedItemListModel>(resContent);
 
                                 if (deserializedContent != null)
                                 {

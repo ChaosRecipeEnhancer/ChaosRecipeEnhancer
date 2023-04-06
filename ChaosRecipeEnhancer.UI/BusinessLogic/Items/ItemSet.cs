@@ -6,22 +6,30 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.Items
 {
     public class ItemSet
     {
-        public List<ItemModel> ItemList { get; set; } = new List<ItemModel>();
+        public List<EnhancedItemModel> ItemList { get; set; } = new List<EnhancedItemModel>();
 
         // We'll use the list to check which types we still needs to add to the set.
         // We'll need some logic to extract that from the item icon path but that should be possible
-        // TODO These should probably be enums.
         public List<string> EmptyItemSlots { get; set; } = new List<string>
         {
-            "BodyArmours", "TwoHandWeapons", "OneHandWeapons", "OneHandWeapons", "Helmets", "Gloves", "Boots", "Belts",
-            "Rings", "Rings", "Amulets"
+            "BodyArmours",
+            "TwoHandWeapons",
+            "OneHandWeapons",
+            "OneHandWeapons",
+            "Helmets",
+            "Gloves",
+            "Boots",
+            "Belts",
+            "Rings",
+            "Rings",
+            "Amulets"
         };
 
-        public bool SetCanProduceChaos { get; set; }
-        public List<int> CurrentPosition { get; set; } = new List<int> { 0, 0, 0 };
         public string InfluenceType { get; set; }
+        public bool SetCanProduceChaos { get; set; }
+        private List<int> CurrentPosition { get; } = new List<int> { 0, 0, 0 };
 
-        public bool AddItem(ItemModel itemModel)
+        public void AddItem(EnhancedItemModel itemModel)
         {
             if (EmptyItemSlots.Contains(itemModel.DerivedItemClass))
             {
@@ -42,33 +50,39 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.Items
                 CurrentPosition[0] = itemModel.X;
                 CurrentPosition[1] = itemModel.Y;
                 CurrentPosition[2] = itemModel.StashTabIndex;
-                return true;
             }
-
-            return false;
         }
 
         public void OrderItems()
         {
             var orderedClasses = new List<string>
             {
-                "BodyArmours", "TwoHandWeapons", "OneHandWeapons", "OneHandWeapons", "Helmets", "Gloves", "Boots",
-                "Belts", "Rings", "Rings", "Amulets"
+                "BodyArmours",
+                "TwoHandWeapons",
+                "OneHandWeapons",
+                "OneHandWeapons",
+                "Helmets",
+                "Gloves",
+                "Boots",
+                "Belts",
+                "Rings",
+                "Rings",
+                "Amulets"
             };
+
             ItemList = ItemList.OrderBy(d => orderedClasses.IndexOf(d.DerivedItemClass)).ToList();
         }
 
-        public double GetItemDistance(ItemModel itemModel)
+        public double GetItemDistance(EnhancedItemModel itemModel)
         {
             if (itemModel.StashTabIndex != CurrentPosition[2]) return 40;
 
             return Math.Sqrt(Math.Pow(itemModel.X - CurrentPosition[0], 2) + Math.Pow(itemModel.Y - CurrentPosition[1], 2));
         }
 
-        public bool IsValidItem(ItemModel itemModel)
+        public bool IsValidItem(EnhancedItemModel itemModel)
         {
-            if (EmptyItemSlots.Contains(itemModel.DerivedItemClass)) return true;
-            return false;
+            return EmptyItemSlots.Contains(itemModel.DerivedItemClass);
         }
 
         public string GetNextItemClass()

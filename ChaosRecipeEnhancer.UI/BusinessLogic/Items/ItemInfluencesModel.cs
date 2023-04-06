@@ -2,22 +2,15 @@
 
 namespace ChaosRecipeEnhancer.UI.BusinessLogic.Items
 {
-    /// <summary>
-    ///     TODO
-    /// </summary>
-    /// <seealso cref="https://www.pathofexile.com/developer/docs/reference#type-Item" />
-    public class ItemInfluenceModel
+    // This class is instantiated when serialized from JSON API response.
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class ItemInfluencesModel
     {
         [JsonPropertyName("shaper")] public bool Shaper { get; set; } = false;
-
         [JsonPropertyName("elder")] public bool Elder { get; set; } = false;
-
         [JsonPropertyName("crusader")] public bool Crusader { get; set; } = false;
-
         [JsonPropertyName("redeemer")] public bool Redeemer { get; set; } = false;
-
         [JsonPropertyName("hunter")] public bool Hunter { get; set; } = false;
-
         [JsonPropertyName("warlord")] public bool Warlord { get; set; } = false;
     }
 }

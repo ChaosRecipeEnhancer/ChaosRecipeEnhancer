@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +9,6 @@ using System.Windows.Media;
 using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
 using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration;
 using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
-using ChaosRecipeEnhancer.UI.DynamicControls;
 using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Extensions;
 using ChaosRecipeEnhancer.UI.Properties;
@@ -47,10 +45,8 @@ namespace ChaosRecipeEnhancer.UI.Model
             }
             else
             {
-                if (stash.Quad)
-                    SetTargetAmount += 16;
-                else
-                    SetTargetAmount += 4;
+                if (stash.Quad) SetTargetAmount += 16;
+                else SetTargetAmount += 4;
             }
         }
 
@@ -76,8 +72,6 @@ namespace ChaosRecipeEnhancer.UI.Model
 
             ItemSetList = ret;
 
-            Trace.WriteLine(ItemSetList.Count, "[Data:GenerateItemSetList()]: item set list count");
-
             if (Settings.Default.ExaltedShardRecipeTrackingEnabled) GenerateInfluencedItemSets();
         }
 
@@ -86,26 +80,30 @@ namespace ChaosRecipeEnhancer.UI.Model
         {
             var listName = chaosItems ? "ItemListChaos" : "ItemList";
 
-            ItemModel minItemModel = null;
+            EnhancedItemModel minItemModel = null;
             var minDistance = double.PositiveInfinity;
 
             // TODO: crashes here after some time
-            foreach (var s in EnhancedStashTabs.StashTabControls)
-            foreach (var i in (List<ItemModel>)ObjectExtensions.GetPropertyValue(s, listName))
-                if (set.GetNextItemClass() == i.DerivedItemClass || (!honorOrder && set.IsValidItem(i)))
-                    if (set.GetItemDistance(i) < minDistance)
+            foreach (var s in StashTabControlManager.StashTabControls)
+            {
+                foreach (var i in (List<EnhancedItemModel>)ObjectExtensions.GetPropertyValue(s, listName))
+                {
+                    if (set.GetNextItemClass() == i.DerivedItemClass || (!honorOrder && set.IsValidItem(i)))
                     {
-                        //Trace.WriteLine(minDistance, "minDistance");
-                        minDistance = set.GetItemDistance(i);
-                        minItemModel = i;
+                        if (set.GetItemDistance(i) < minDistance)
+                        {
+                            minDistance = set.GetItemDistance(i);
+                            minItemModel = i;
+                        }
                     }
+                }
+            }
 
             if (minItemModel != null)
             {
                 set.AddItem(minItemModel);
                 var tab = GetStashTabFromItem(minItemModel);
-                ((List<ItemModel>)ObjectExtensions.GetPropertyValue(tab, listName)).Remove(minItemModel);
-                //tab.ItemListChaos.Remove(minItem);
+                ((List<EnhancedItemModel>)ObjectExtensions.GetPropertyValue(tab, listName)).Remove(minItemModel);
                 return true;
             }
 
@@ -116,22 +114,27 @@ namespace ChaosRecipeEnhancer.UI.Model
                 if (nextItemType == "TwoHandWeapons")
                 {
                     nextItemType = "OneHandWeapons";
-                    foreach (var s in EnhancedStashTabs.StashTabControls)
-                    foreach (var i in (List<ItemModel>)ObjectExtensions.GetPropertyValue(s, listName))
-                        if (nextItemType == i.DerivedItemClass)
-                            if (set.GetItemDistance(i) < minDistance)
+
+                    foreach (var s in StashTabControlManager.StashTabControls)
+                    {
+                        foreach (var i in (List<EnhancedItemModel>)ObjectExtensions.GetPropertyValue(s, listName))
+                        {
+                            if (nextItemType == i.DerivedItemClass)
                             {
-                                //Trace.WriteLine(minDistance, "minDistance");
-                                minDistance = set.GetItemDistance(i);
-                                minItemModel = i;
+                                if (set.GetItemDistance(i) < minDistance)
+                                {
+                                    minDistance = set.GetItemDistance(i);
+                                    minItemModel = i;
+                                }
                             }
+                        }
+                    }
 
                     if (minItemModel != null)
                     {
                         set.AddItem(minItemModel);
                         var tab = GetStashTabFromItem(minItemModel);
-                        ((List<ItemModel>)ObjectExtensions.GetPropertyValue(tab, listName)).Remove(minItemModel);
-                        //tab.ItemListChaos.Remove(minItem);
+                        ((List<EnhancedItemModel>)ObjectExtensions.GetPropertyValue(tab, listName)).Remove(minItemModel);
                         return true;
                     }
                 }
@@ -150,13 +153,17 @@ namespace ChaosRecipeEnhancer.UI.Model
                 {
                     lastEmptySlots = i.EmptyItemSlots.Count;
                     if (i.SetCanProduceChaos == false && !Settings.Default.RegalRecipeTrackingEnabled)
-                        if (AddItemToItemSet(i, true))
-                            continue;
+                    {
+                        if (AddItemToItemSet(i, true)) continue;
+                    }
 
                     if (!AddItemToItemSet(i))
-                        if (Settings.Default.DoNotPreserveLowItemLevelGear &&
-                            !Settings.Default.RegalRecipeTrackingEnabled)
+                    {
+                        if (Settings.Default.DoNotPreserveLowItemLevelGear && !Settings.Default.RegalRecipeTrackingEnabled)
+                        {
                             AddItemToItemSet(i, true);
+                        }
+                    }
                 }
 
                 /* At this point in time the following conditions may be met, exclusively
@@ -165,26 +172,32 @@ namespace ChaosRecipeEnhancer.UI.Model
                  * 2.) We obtained a full set without a chaos item -> We aren't lacking a regal item in this set but we don't have enough chaos items.
                  * 3.) We couldn't obtain a full set. That means that at least one item slot is missing. We need to check which of the remaining slots we can still fill. We could still be missing a chaos item.
                  */
-                if (i.EmptyItemSlots.Count == 0 &&
-                    (i.SetCanProduceChaos || Settings.Default.RegalRecipeTrackingEnabled))
+                if (i.EmptyItemSlots.Count == 0 && (i.SetCanProduceChaos || Settings.Default.RegalRecipeTrackingEnabled))
+                {
                     // Set full, continue
                     continue;
+                }
 
                 if (i.EmptyItemSlots.Count > 0)
                 {
                     lastEmptySlots = 0;
+
                     while (i.EmptyItemSlots.Count > 0 && i.EmptyItemSlots.Count != lastEmptySlots)
                     {
                         lastEmptySlots = i.EmptyItemSlots.Count;
                         if (!i.SetCanProduceChaos && !Settings.Default.RegalRecipeTrackingEnabled)
-                            if (AddItemToItemSet(i, true, false))
-                                continue;
+                        {
+                            if (AddItemToItemSet(i, true, false)) continue;
+                        }
 
                         if (!AddItemToItemSet(i, false, false))
+                        {
                             // couldn't add a regal item. Try chaos item if filling with chaos is allowed
-                            if (Settings.Default.DoNotPreserveLowItemLevelGear &&
-                                !Settings.Default.RegalRecipeTrackingEnabled)
+                            if (Settings.Default.DoNotPreserveLowItemLevelGear && !Settings.Default.RegalRecipeTrackingEnabled)
+                            {
                                 AddItemToItemSet(i, true, false);
+                            }
+                        }
                     }
                     // At this point the set will contain a chaos item as long as we had at least one left. If not we didn't have any chaos items left.
                     // If the set is not full at this time we're missing at least one regal item. If it has not chaos item we're also missing chaos items.
@@ -198,7 +211,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         private static void FillItemSetsInfluenced()
         {
-            foreach (var tab in EnhancedStashTabs.StashTabControls)
+            foreach (var tab in StashTabControlManager.StashTabControls)
             {
                 foreach (var i in tab.ItemListShaper)
                 {
@@ -260,9 +273,9 @@ namespace ChaosRecipeEnhancer.UI.Model
                     return;
                 }
 
-                if (EnhancedStashTabs.StashTabControls.Count == 0)
+                if (StashTabControlManager.StashTabControls.Count == 0)
                 {
-                    setTrackerOverlay.WarningMessage = "No Stashtabs found...";
+                    setTrackerOverlay.WarningMessage = "No Stash Tabs found...";
                     setTrackerOverlay.ShadowOpacity = 1;
                     setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                     return;
@@ -274,13 +287,16 @@ namespace ChaosRecipeEnhancer.UI.Model
                 // (e.g. 2 quad tabs queried w 0 set threshold = 24 set threshold)
                 // else just stick to the default amount (their defined in settings)
                 SetTargetAmount = 0;
-                if (EnhancedStashTabs.StashTabControls.Count > 0)
-                    foreach (var s in EnhancedStashTabs.StashTabControls)
+                if (StashTabControlManager.StashTabControls.Count > 0)
+                {
+                    foreach (var s in StashTabControlManager.StashTabControls)
+                    {
                         GetSetTargetAmount(s);
+                    }
+                }
 
                 if (Settings.Default.SetTrackerOverlayItemCounterDisplayMode != 0)
                 {
-                    Trace.WriteLine("Calculating Items");
                     CalculateItemAmounts(setTrackerOverlay);
                 }
 
@@ -297,12 +313,13 @@ namespace ChaosRecipeEnhancer.UI.Model
                 // unique missing item classes
                 var missingItemClasses = new HashSet<string>();
 
-                // for every set in our itemsetlist check if their EmptyItemSlots is 0 if not add to our full set count
+                // for every set in our ItemSetList check if their EmptyItemSlots is 0 if not add to our full set count
                 foreach (var set in ItemSetList)
+                {
                     if (set.EmptyItemSlots.Count == 0)
                     {
                         // fix for: condition (fullSets == SetTargetAmount && missingChaos)
-                        // never true cause fullsets < settargetamount when missingChaos @ikogan
+                        // never true cause fullSets < setTargetAmount when missingChaos @ikogan
                         fullSets++;
 
                         if (!set.SetCanProduceChaos && !Settings.Default.RegalRecipeTrackingEnabled)
@@ -310,18 +327,16 @@ namespace ChaosRecipeEnhancer.UI.Model
                     }
                     else
                     {
-                        // all classes which are active over all ilvls
+                        // all classes which are active over all item levels
                         foreach (var itemClass in set.EmptyItemSlots) missingItemClasses.Add(itemClass);
                     }
+                }
 
                 var filterManager = new CFilterGenerationManager();
 
                 // i need to pass in the missingGearPieceForChaosRecipe
-                ActiveItems =
-                    await filterManager.GenerateSectionsAndUpdateFilterAsync(missingItemClasses,
-                        missingGearPieceForChaosRecipe);
+                ActiveItems = await filterManager.GenerateSectionsAndUpdateFilterAsync(missingItemClasses, missingGearPieceForChaosRecipe);
 
-                //Trace.WriteLine(fullSets, "full sets");
                 setTrackerOverlay.Dispatcher.Invoke(() => { setTrackerOverlay.FullSetsText = fullSets.ToString(); });
 
                 // invoke chaos missing
@@ -334,6 +349,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                 // invoke exalted recipe ready
                 if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
+                {
                     if (ItemSetShaper.EmptyItemSlots.Count == 0
                         || ItemSetElder.EmptyItemSlots.Count == 0
                         || ItemSetCrusader.EmptyItemSlots.Count == 0
@@ -345,6 +361,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                         setTrackerOverlay.ShadowOpacity = 1;
                         setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                     }
+                }
 
                 // invoke set full
                 if (fullSets == SetTargetAmount && !missingGearPieceForChaosRecipe)
@@ -354,10 +371,9 @@ namespace ChaosRecipeEnhancer.UI.Model
                     setTrackerOverlay.WarningMessageVisibility = Visibility.Visible;
                 }
 
-                Trace.WriteLine(fullSets, "full sets");
-
                 // If the state of any gear slot changed, we play a sound
                 if (Settings.Default.SoundEnabled)
+                {
                     if (!(PreviousActiveItems.GlovesActive == ActiveItems.GlovesActive
                           && PreviousActiveItems.BootsActive == ActiveItems.BootsActive
                           && PreviousActiveItems.HelmetActive == ActiveItems.HelmetActive
@@ -366,24 +382,20 @@ namespace ChaosRecipeEnhancer.UI.Model
                           && PreviousActiveItems.RingActive == ActiveItems.RingActive
                           && PreviousActiveItems.AmuletActive == ActiveItems.AmuletActive
                           && PreviousActiveItems.BeltActive == ActiveItems.BeltActive))
-                        Player.Dispatcher.Invoke(() =>
-                        {
-                            Trace.WriteLine("Gear Slot State Changed; Playing sound!");
-                            PlayNotificationSound();
-                        });
+                    {
+                        Player.Dispatcher.Invoke(() => { PlayNotificationSound(); });
+                    }
+                }
             }
             catch (OperationCanceledException ex) when (ex.CancellationToken == CancellationToken)
             {
-                Trace.WriteLine("abort");
             }
         }
 
         public static void CalculateItemAmounts(SetTrackerOverlayView setTrackerOverlay)
         {
-            if (EnhancedStashTabs.StashTabControls != null)
+            if (StashTabControlManager.StashTabControls != null)
             {
-                Trace.WriteLine("calculating items amount");
-
                 // 0: rings
                 // 1: amulets
                 // 2: belts
@@ -396,15 +408,11 @@ namespace ChaosRecipeEnhancer.UI.Model
                 var amounts = new int[8];
                 var weaponsSmall = 0;
                 var weaponBig = 0;
-                foreach (var tab in EnhancedStashTabs.StashTabControls)
+                foreach (var tab in StashTabControlManager.StashTabControls)
                 {
-                    Trace.WriteLine("tab amount " + tab.ItemList.Count);
-                    Trace.WriteLine("tab amount " + tab.ItemListChaos.Count);
-
                     if (tab.ItemList.Count > 0)
                         foreach (var i in tab.ItemList)
                         {
-                            Trace.WriteLine(i.DerivedItemClass);
                             if (i.DerivedItemClass == "Rings")
                                 amounts[0]++;
                             else if (i.DerivedItemClass == "Amulets")
@@ -427,7 +435,6 @@ namespace ChaosRecipeEnhancer.UI.Model
                     if (tab.ItemListChaos.Count > 0)
                         foreach (var i in tab.ItemListChaos)
                         {
-                            Trace.WriteLine(i.DerivedItemClass);
                             if (i.DerivedItemClass == "Rings")
                                 amounts[0]++;
                             else if (i.DerivedItemClass == "Amulets")
@@ -450,12 +457,7 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                 if (Settings.Default.SetTrackerOverlayItemCounterDisplayMode == 1)
                 {
-                    Trace.WriteLine("we are here");
-
                     // calculate amounts needed for full sets
-                    //amounts[0] = amounts[0] / 2;
-                    foreach (var a in amounts) Trace.WriteLine(a);
-
                     amounts[4] = weaponsSmall + weaponBig;
                     setTrackerOverlay.RingsAmount = amounts[0];
                     setTrackerOverlay.AmuletsAmount = amounts[1];
@@ -485,16 +487,17 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         #region Stash Tab Overlay Logic
 
-        public static StashTabControl GetStashTabFromItem(ItemModel itemModel)
+        public static StashTabControl GetStashTabFromItem(EnhancedItemModel itemModel)
         {
-            foreach (var s in EnhancedStashTabs.StashTabControls)
-                if (itemModel.StashTabIndex == s.TabIndex)
-                    return s;
+            foreach (var s in StashTabControlManager.StashTabControls)
+            {
+                if (itemModel.StashTabIndex == s.TabIndex) return s;
+            }
 
             return null;
         }
 
-        public static void ActivateNextCell(bool active, InteractiveStashCell stashCell, TabControl tabControl)
+        public static void ActivateNextCell(bool active, InteractiveStashTabCell stashTabCell, TabControl tabControl)
         {
             if (!active) return;
 
@@ -505,13 +508,13 @@ namespace ChaosRecipeEnhancer.UI.Model
             // activate cell by cell / item by item
             if (Settings.Default.StashTabOverlayHighlightMode == 0)
             {
-                foreach (var s in EnhancedStashTabs.StashTabControls.ToList())
+                foreach (var s in StashTabControlManager.StashTabControls.ToList())
                 {
                     s.DeactivateItemCells();
                     s.TabHeaderColor = Brushes.Transparent;
                 }
 
-                // remove and sound if itemlist empty
+                // remove and sound if itemList empty
                 if (ItemSetListHighlight.Count > 0)
                 {
                     if (ItemSetListHighlight[0].ItemList.Count == 0)
@@ -526,11 +529,10 @@ namespace ChaosRecipeEnhancer.UI.Model
                         PlayerSet.Dispatcher.Invoke(() => { PlayNotificationSoundSetPicked(); });
                 }
 
-                // next item if itemlist not empty
+                // next item if itemList not empty
                 if (ItemSetListHighlight.Count > 0)
                 {
-                    if (ItemSetListHighlight[0].ItemList.Count > 0 &&
-                        ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
+                    if (ItemSetListHighlight[0].ItemList.Count > 0 && ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
                     {
                         var highlightItem = ItemSetListHighlight[0].ItemList[0];
                         var currentTab = GetStashTabFromItem(highlightItem);
@@ -539,13 +541,14 @@ namespace ChaosRecipeEnhancer.UI.Model
 
                         currentTab.ActivateItemCells(highlightItem);
 
-                        if (currentTab.TabName != currentlySelectedStashOverlayTabName &&
-                            !string.IsNullOrEmpty(Settings.Default.StashTabOverlayHighlightColor))
-                            currentTab.TabHeaderColor = new SolidColorBrush(
-                                (Color)ColorConverter.ConvertFromString(Settings.Default
-                                    .StashTabOverlayHighlightColor));
+                        if (currentTab.TabName != currentlySelectedStashOverlayTabName && !string.IsNullOrEmpty(Settings.Default.StashTabOverlayHighlightColor))
+                        {
+                            currentTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                        }
                         else
+                        {
                             currentTab.TabHeaderColor = Brushes.Transparent;
+                        }
 
                         ItemSetListHighlight[0].ItemList.RemoveAt(0);
                     }
@@ -556,22 +559,18 @@ namespace ChaosRecipeEnhancer.UI.Model
             {
                 if (ItemSetListHighlight.Count > 0)
                 {
-                    Trace.WriteLine(ItemSetListHighlight[0].ItemList.Count,
-                        "[Data: ActivateNextCell()]: item list count");
-                    Trace.WriteLine(ItemSetListHighlight.Count, "[Data: ActivateNextCell()]: item set list count");
-
                     // check for full sets
                     if (ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
                     {
-                        if (stashCell != null)
+                        if (stashTabCell != null)
                         {
-                            var highlightItem = stashCell.PathOfExileItemModelData;
+                            var highlightItem = stashTabCell.ItemModel;
                             var currentTab = GetStashTabFromItem(highlightItem);
 
                             if (currentTab != null)
                             {
                                 currentTab.TabHeaderColor = Brushes.Transparent;
-                                currentTab.DeactivateSingleItemCells(stashCell.PathOfExileItemModelData);
+                                currentTab.DeactivateSingleItemCells(stashTabCell.ItemModel);
                                 ItemSetListHighlight[0].ItemList.Remove(highlightItem);
                             }
                         }
@@ -589,15 +588,7 @@ namespace ChaosRecipeEnhancer.UI.Model
                             {
                                 var currentStashTab = GetStashTabFromItem(ItemSetListHighlight[0].ItemList[0]);
                                 currentStashTab.MarkNextItem(ItemSetListHighlight[0].ItemList[0]);
-                                currentStashTab.TabHeaderColor = new SolidColorBrush(
-                                    (Color)ColorConverter.ConvertFromString(Settings.Default
-                                        .StashTabOverlayHighlightColor));
-
-                                // if (tabControl != null)
-                                // {
-                                //     Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item {tabControl.SelectedItem}");
-                                //     Trace.WriteLine($"[Data: ActivateNextCell()]: TabControl Current Tab Item Header Text {((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text}");
-                                // }
+                                currentStashTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
                             }
                         }
 
@@ -625,14 +616,14 @@ namespace ChaosRecipeEnhancer.UI.Model
                 {
                     if (set.EmptyItemSlots.Count != 0) continue;
 
-                    if (stashCell == null) continue;
+                    if (stashTabCell == null) continue;
 
-                    var highlightItem = stashCell.PathOfExileItemModelData;
+                    var highlightItem = stashTabCell.ItemModel;
                     var currentTab = GetStashTabFromItem(highlightItem);
 
                     if (currentTab == null) continue;
 
-                    currentTab.DeactivateSingleItemCells(stashCell.PathOfExileItemModelData);
+                    currentTab.DeactivateSingleItemCells(stashTabCell.ItemModel);
                     ItemSetListHighlight[0].ItemList.Remove(highlightItem);
 
                     var itemsRemainingInStashTab = false;
@@ -658,17 +649,13 @@ namespace ChaosRecipeEnhancer.UI.Model
 
         public static void PrepareSelling()
         {
-            //ClearAllItemOrderLists();
             ItemSetListHighlight.Clear();
-            if (ApiAdapter.IsFetching) return;
 
+            if (ApiAdapter.IsFetching) return;
             if (ItemSetList == null) return;
 
-            foreach (var s in EnhancedStashTabs.StashTabControls)
-                s.PrepareOverlayList();
-
-            foreach (var itemSet in ItemSetList)
-                itemSet.OrderItems();
+            foreach (var s in StashTabControlManager.StashTabControls) s.PrepareOverlayList();
+            foreach (var itemSet in ItemSetList) itemSet.OrderItems();
 
             if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
             {
@@ -680,56 +667,70 @@ namespace ChaosRecipeEnhancer.UI.Model
                 ItemSetRedeemer.OrderItems();
 
                 if (ItemSetShaper.EmptyItemSlots.Count == 0)
+                {
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<ItemModel>(ItemSetShaper.ItemList),
+                        ItemList = new List<EnhancedItemModel>(ItemSetShaper.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetShaper.EmptyItemSlots)
                     });
+                }
 
                 if (ItemSetElder.EmptyItemSlots.Count == 0)
+                {
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<ItemModel>(ItemSetElder.ItemList),
+                        ItemList = new List<EnhancedItemModel>(ItemSetElder.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetElder.EmptyItemSlots)
                     });
+                }
 
                 if (ItemSetCrusader.EmptyItemSlots.Count == 0)
+                {
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<ItemModel>(ItemSetCrusader.ItemList),
+                        ItemList = new List<EnhancedItemModel>(ItemSetCrusader.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetCrusader.EmptyItemSlots)
                     });
+                }
 
                 if (ItemSetHunter.EmptyItemSlots.Count == 0)
+                {
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<ItemModel>(ItemSetHunter.ItemList),
+                        ItemList = new List<EnhancedItemModel>(ItemSetHunter.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetHunter.EmptyItemSlots)
                     });
+                }
 
                 if (ItemSetWarlord.EmptyItemSlots.Count == 0)
+                {
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<ItemModel>(ItemSetWarlord.ItemList),
+                        ItemList = new List<EnhancedItemModel>(ItemSetWarlord.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetWarlord.EmptyItemSlots)
                     });
+                }
 
                 if (ItemSetRedeemer.EmptyItemSlots.Count == 0)
+                {
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<ItemModel>(ItemSetRedeemer.ItemList),
+                        ItemList = new List<EnhancedItemModel>(ItemSetRedeemer.ItemList),
                         EmptyItemSlots = new List<string>(ItemSetRedeemer.EmptyItemSlots)
                     });
+                }
             }
 
             foreach (var set in ItemSetList)
             {
                 if (set.SetCanProduceChaos || Settings.Default.RegalRecipeTrackingEnabled)
+                {
                     ItemSetListHighlight.Add(new ItemSet
                     {
-                        ItemList = new List<ItemModel>(set.ItemList),
+                        ItemList = new List<EnhancedItemModel>(set.ItemList),
                         EmptyItemSlots = new List<string>(set.EmptyItemSlots)
                     });
+                }
             }
         }
 

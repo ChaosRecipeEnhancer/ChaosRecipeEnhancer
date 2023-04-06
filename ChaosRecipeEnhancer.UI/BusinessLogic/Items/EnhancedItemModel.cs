@@ -3,6 +3,8 @@ using System.Text;
 
 namespace ChaosRecipeEnhancer.UI.BusinessLogic.Items
 {
+    // This class is instantiated when serialized from JSON API response.
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class EnhancedItemModel : ItemModel
     {
         public EnhancedItemModel(
@@ -13,11 +15,12 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.Items
             int frameType,
             int x,
             int y,
-            ItemInfluences itemInfluences,
+            ItemInfluencesModel itemInfluencesModel,
             string icon
-            ) : base(width, height, identified, itemLevel, frameType, x, y, itemInfluences, icon)
-        { }
-        
+        ) : base(width, height, identified, itemLevel, frameType, x, y, itemInfluencesModel, icon)
+        {
+        }
+
         public string DerivedItemClass { get; set; }
         public int StashTabIndex { get; set; }
 
@@ -26,7 +29,6 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.Items
         /// (i.e. Helmet, Gloves, Body Armour, Ring, etc.)
         /// Because of this, we have a clever workaround to derive a item class using the included IconUrl.
         /// </summary>
-        // TODO: [Refactor] Move this method into DTO utility object (?) extension object maybe
         public void GetItemClass()
         {
             // Example IconUrl: https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldFN0ckRleDciLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/0884b27765/HelmetStrDex7.png

@@ -1,26 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
+namespace ChaosRecipeEnhancer.UI.BusinessLogic.StashTabs
 {
-    /// <summary>
-    /// Represents JSON response objects from `get-stash-items` and `get-guild-stash-items` endpoints.
-    ///
-    /// The full response object is structured as follows:
-    ///
-    ///     {
-    ///         "numTabs" : number,
-    ///         "tabs": [ ... ],
-    ///         "items": [ ... ]
-    ///     }
-    ///
-    /// The only thing we're interested in is the `tabs` array.
-    /// </summary>
-    public class StashTabResponseObject
-    {
-        [JsonPropertyName("tabs")] public List<StashTabModel> StashTabs { get; set; }
-    }
-
     /// <summary>
     /// Represents a JSON response object nested within the previously mentioned response object for `get-stash-items`
     /// and `get-guild-stash-items` endpoints.
@@ -50,7 +31,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
             Index = index;
             Type = type;
         }
-        
+
         [JsonPropertyName("n")] public string Name { get; }
 
         [JsonPropertyName("i")] public int Index { get; }

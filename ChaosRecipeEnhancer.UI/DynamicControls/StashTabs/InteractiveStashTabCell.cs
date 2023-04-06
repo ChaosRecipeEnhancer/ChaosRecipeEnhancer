@@ -3,7 +3,7 @@ using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
 
 namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
 {
-    public sealed class InteractiveStashCell : INotifyPropertyChanged
+    public sealed class InteractiveStashTabCell : INotifyPropertyChanged
     {
         private bool _active;
         private string _buttonText;
@@ -12,7 +12,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
         /// Representation of PoE item class (translated directly from PoE API request). This is the in-game item the
         /// current cell (visual object/button) is tied to.
         /// </summary>
-        public ItemModel PathOfExileItemModelData { get; set; }
+        public EnhancedItemModel ItemModel { get; set; }
         
         public int XIndex { get; set; }
         public int YIndex { get; set; }

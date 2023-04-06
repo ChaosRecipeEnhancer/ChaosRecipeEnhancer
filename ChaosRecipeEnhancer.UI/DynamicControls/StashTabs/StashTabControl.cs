@@ -28,16 +28,16 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
 
         public int TabIndex { get; }
         public Uri StashTabApiRequestUrl { get; set; }
-        public List<ItemModel> ItemList { get; set; }
-        public List<ItemModel> ItemListChaos { get; } = new List<ItemModel>();
-        public List<ItemModel> ItemListShaper { get; } = new List<ItemModel>();
-        public List<ItemModel> ItemListElder { get; } = new List<ItemModel>();
-        public List<ItemModel> ItemListWarlord { get; } = new List<ItemModel>();
-        public List<ItemModel> ItemListCrusader { get; } = new List<ItemModel>();
-        public List<ItemModel> ItemListHunter { get; } = new List<ItemModel>();
-        public List<ItemModel> ItemListRedeemer { get; } = new List<ItemModel>();
+        public List<EnhancedItemModel> ItemList { get; set; }
+        public List<EnhancedItemModel> ItemListChaos { get; } = new List<EnhancedItemModel>();
+        public List<EnhancedItemModel> ItemListShaper { get; } = new List<EnhancedItemModel>();
+        public List<EnhancedItemModel> ItemListElder { get; } = new List<EnhancedItemModel>();
+        public List<EnhancedItemModel> ItemListWarlord { get; } = new List<EnhancedItemModel>();
+        public List<EnhancedItemModel> ItemListCrusader { get; } = new List<EnhancedItemModel>();
+        public List<EnhancedItemModel> ItemListHunter { get; } = new List<EnhancedItemModel>();
+        public List<EnhancedItemModel> ItemListRedeemer { get; } = new List<EnhancedItemModel>();
 
-        public ObservableCollection<InteractiveStashCell> OverlayCellsList { get; } = new ObservableCollection<InteractiveStashCell>();
+        public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = new ObservableCollection<InteractiveStashTabCell>();
 
         // used for registering clicks on tab headers
         public TextBlock TabNameContainer { get; set; }
@@ -68,7 +68,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
         }
 
         /// <summary>
-        /// Creates an N x N grid of interactable <see cref="InteractiveStashCell"/> objects. All objects are initialized to inactive.
+        /// Creates an N x N grid of interactable <see cref="InteractiveStashTabCell"/> objects. All objects are initialized to inactive.
         /// </summary>
         /// <param name="size">Represent the dimensions of our Cell object grid (Size = N)</param>
         private void GenerateInteractiveStashCellGrid(int size)
@@ -77,7 +77,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
             {
                 for (var j = 0; j < size; j++)
                 {
-                    OverlayCellsList.Add(new InteractiveStashCell
+                    OverlayCellsList.Add(new InteractiveStashTabCell
                     {
                         Active = false,
                         XIndex = j,
@@ -133,19 +133,19 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
                 // Exalted recipe every item level allowed, same bases, sort in item lists
                 if (Settings.Default.ExaltedShardRecipeTrackingEnabled)
                 {
-                    if (ItemList[i].ItemInfluences != null)
+                    if (ItemList[i].ItemInfluencesModel != null)
                     {
-                        if (ItemList[i].ItemInfluences.Shaper)
+                        if (ItemList[i].ItemInfluencesModel.Shaper)
                             ItemListShaper.Add(ItemList[i]);
-                        else if (ItemList[i].ItemInfluences.Elder)
+                        else if (ItemList[i].ItemInfluencesModel.Elder)
                             ItemListElder.Add(ItemList[i]);
-                        else if (ItemList[i].ItemInfluences.Warlord)
+                        else if (ItemList[i].ItemInfluencesModel.Warlord)
                             ItemListWarlord.Add(ItemList[i]);
-                        else if (ItemList[i].ItemInfluences.Crusader)
+                        else if (ItemList[i].ItemInfluencesModel.Crusader)
                             ItemListCrusader.Add(ItemList[i]);
-                        else if (ItemList[i].ItemInfluences.Hunter)
+                        else if (ItemList[i].ItemInfluencesModel.Hunter)
                             ItemListHunter.Add(ItemList[i]);
-                        else if (ItemList[i].ItemInfluences.Redeemer)
+                        else if (ItemList[i].ItemInfluencesModel.Redeemer)
                             ItemListRedeemer.Add(ItemList[i]);
 
                         ItemList.RemoveAt(i);
@@ -210,7 +210,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
             }
         }
 
-        public void ActivateItemCells(ItemModel itemModel)
+        public void ActivateItemCells(EnhancedItemModel itemModel)
         {
             // Initializing a list of tuples that represent our X,Y coordinates
             var allCoordinates = new List<(int X, int Y)>();
@@ -232,7 +232,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
                     if (coordinate.X == cell.XIndex && coordinate.Y == cell.YIndex)
                     {
                         cell.Active = true;
-                        cell.PathOfExileItemModelData = itemModel;
+                        cell.ItemModel = itemModel;
                     }
                 }
             }
@@ -242,7 +242,7 @@ namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs
         {
             foreach (var cell in OverlayCellsList)
             {
-                if (cell.PathOfExileItemModelData == itemModel)
+                if (cell.ItemModel == itemModel)
                 {
                     cell.ButtonText = "X";
                 }
