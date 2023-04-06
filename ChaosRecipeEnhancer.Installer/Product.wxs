@@ -187,11 +187,6 @@
                       Source="$(var.ChaosRecipeEnhancer_TargetDir)Ben.Demystifier.dll"/>
 			</Component>
 
-			<Component Id="HtmlAgilityPack.dll" Guid="{339A7F27-05A2-4EB7-83CD-A289007655CD}">
-				<File Id="HtmlAgilityPack.dll" KeyPath="yes"
-                      Source="$(var.ChaosRecipeEnhancer_TargetDir)HtmlAgilityPack.dll"/>
-			</Component>
-
 			<Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="{8A8094DF-FC5C-4167-BF2E-E04919594566}">
 				<File Id="Microsoft.Bcl.AsyncInterfaces.dll" KeyPath="yes"
                       Source="$(var.ChaosRecipeEnhancer_TargetDir)Microsoft.Bcl.AsyncInterfaces.dll"/>
@@ -265,22 +260,7 @@
 				<File Id="Microsoft.Extensions.Primitives.dll" KeyPath="yes"
                       Source="$(var.ChaosRecipeEnhancer_TargetDir)Microsoft.Extensions.Primitives.dll"/>
 			</Component>
-
-			<Component Id="Microsoft.Web.WebView2.Core.dll" Guid="{3c0e3c90-e726-4859-9796-53f0c1717e91}">
-				<File Id="Microsoft.Web.WebView2.Core.dll" KeyPath="yes"
-		              Source="$(var.ChaosRecipeEnhancer_TargetDir)Microsoft.Web.WebView2.Core.dll"/>
-			</Component>
-
-			<Component Id="Microsoft.Web.WebView2.WinForms.dll" Guid="{6ddff8e4-ea60-4e4f-a445-257866cc7fb1}">
-				<File Id="Microsoft.Web.WebView2.WinForms.dll" KeyPath="yes"
-		              Source="$(var.ChaosRecipeEnhancer_TargetDir)Microsoft.Web.WebView2.WinForms.dll"/>
-			</Component>
-
-			<Component Id="Microsoft.Web.WebView2.Wpf.dll" Guid="{61c4e458-b81b-4fd1-b431-f0754c15f444}">
-				<File Id="Microsoft.Web.WebView2.Wpf.dll" KeyPath="yes"
-		              Source="$(var.ChaosRecipeEnhancer_TargetDir)Microsoft.Web.WebView2.Wpf.dll"/>
-			</Component>
-
+			
 			<Component Id="Newtonsoft.Json.dll" Guid="{64DBDD41-0BE4-4FD2-AF11-B8CF15F0C8DB}">
 				<File Id="Newtonsoft.Json.dll" KeyPath="yes"
                       Source="$(var.ChaosRecipeEnhancer_TargetDir)Newtonsoft.Json.dll"/>
