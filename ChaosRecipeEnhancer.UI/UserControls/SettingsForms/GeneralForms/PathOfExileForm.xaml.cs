@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
-using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
@@ -17,7 +16,7 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
             InitializeComponent();
 
             // Populate the league dropdown
-            if (!Settings.Default.CustomLeagueEnabled) MainLeagueComboBox.ItemsSource = ApiAdapter.GetAllLeagueNames();
+            if (!Settings.Default.CustomLeagueEnabled) MainLeagueComboBox.ItemsSource = ApiAdapter.FetchLeagueNames();
 
             LoadCustomLeagueInputVisibility();
         }

@@ -6,10 +6,11 @@
               xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
               xmlns:model="clr-namespace:ChaosRecipeEnhancer.UI.Model"
               xmlns:dynamicControls="clr-namespace:ChaosRecipeEnhancer.UI.DynamicControls"
+              xmlns:stashTabs="clr-namespace:ChaosRecipeEnhancer.UI.DynamicControls.StashTabs"
               mc:Ignorable="d"
               d:DesignHeight="450"
               d:DesignWidth="800"
-              d:DataContext="{d:DesignInstance Type=dynamicControls:InteractiveCell}">
+              d:DataContext="{d:DesignInstance Type=stashTabs:InteractiveStashTabCell}">
 
 
     <ItemsControl.Background>

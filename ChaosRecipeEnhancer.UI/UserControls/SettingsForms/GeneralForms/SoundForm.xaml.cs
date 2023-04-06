@@ -62,9 +62,9 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
             if (soundFilePath == null) return;
 
             Settings.Default.FilterModificationPendingSoundFileLocation = soundFilePath;
-            
+
             ItemPickupLocationDialog.Content = soundFilePath;
-            
+
             Data.PlayerSet.Open(new Uri(soundFilePath));
             Data.PlayNotificationSoundSetPicked();
         }
@@ -72,9 +72,9 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
         private static string GetSoundFilePath()
         {
             var open = new OpenFileDialog();
-            
+
             open.Filter = SoundAssets.SoundFileExtensionFilter;
-            
+
             var res = open.ShowDialog();
 
             return res == DialogResult.OK ? open.FileName : null;

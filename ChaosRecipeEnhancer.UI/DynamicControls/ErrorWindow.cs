@@ -2,9 +2,9 @@
 
 namespace ChaosRecipeEnhancer.UI.DynamicControls
 {
-    public static class UserWarning
+    public static class ErrorWindow
     {
-        public static void WarnUser(string content, string title)
+        public static void Spawn(string content, string title)
         {
             MessageBox.Show(content, title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
