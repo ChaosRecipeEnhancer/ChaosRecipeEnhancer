@@ -13,7 +13,6 @@ using ChaosRecipeEnhancer.UI.BusinessLogic.Hotkeys;
 using ChaosRecipeEnhancer.UI.DynamicControls;
 using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Extensions.Native;
-using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using Serilog;
@@ -86,7 +85,7 @@ namespace ChaosRecipeEnhancer.UI.View
                                                             (IsPreviewVersion
                                                                 ? $" (Preview {PreviewPatchNumber})"
                                                                 : String.Empty);
-        
+
         #endregion
 
         #region Event Handlers
@@ -107,7 +106,7 @@ namespace ChaosRecipeEnhancer.UI.View
             }
 
             if (Settings.Default.CloseToTrayEnabled && !_trayClose) return;
-            
+
             _notifyIcon.Visible = false;
 
             NativeMouseExtensions.Stop();
@@ -123,7 +122,7 @@ namespace ChaosRecipeEnhancer.UI.View
         private static void CheckForClick(object sender, EventArgs e)
         {
             var releasesUrl = "https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases";
-            
+
             try
             {
                 Process.Start(releasesUrl);
@@ -197,7 +196,7 @@ namespace ChaosRecipeEnhancer.UI.View
         {
             MainGrid.Focus();
         }
-        
+
 
         private void ColorStashBackgroundPicker_SelectedColorChanged(object sender,
             RoutedPropertyChangedEventArgs<Color?> e)

@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
-using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms

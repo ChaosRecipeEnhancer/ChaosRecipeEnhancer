@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using ChaosRecipeEnhancer.UI.BusinessLogic.Hotkeys;
-using ChaosRecipeEnhancer.UI.Model;
 using Serilog;
 
 namespace ChaosRecipeEnhancer.UI.UserControls

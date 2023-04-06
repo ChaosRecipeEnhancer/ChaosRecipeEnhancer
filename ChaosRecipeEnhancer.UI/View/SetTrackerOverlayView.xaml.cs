@@ -9,7 +9,6 @@ using System.Windows.Media;
 using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
 using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation;
 using ChaosRecipeEnhancer.UI.DynamicControls;
-using ChaosRecipeEnhancer.UI.Extensions;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using Serilog;
@@ -435,10 +434,7 @@ namespace ChaosRecipeEnhancer.UI.View
                                 Dispatcher.Invoke(() => { IsIndeterminate = false; });
                             }, Data.CancellationToken);
 
-                            await Task.Delay(FetchCooldown * 1000).ContinueWith(_ =>
-                            {
-                                Trace.WriteLine("Waited for fetch cooldown.");
-                            });
+                            await Task.Delay(FetchCooldown * 1000).ContinueWith(_ => { Trace.WriteLine("Waited for fetch cooldown."); });
                         }
                         catch (OperationCanceledException ex) when (ex.CancellationToken == Data.CancellationToken)
                         {
