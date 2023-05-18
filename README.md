@@ -8,7 +8,7 @@ If you're interested in helping out, please reach out on our [community discord]
 
 ---
 
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/CRELogo.png" width="250" alt="Chaos Recipe Enhancer Logo">
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/CRELogo.png" width="250" alt="Chaos Recipe Enhancer Logo">
 
 # Chaos Recipe Enhancer
 
@@ -27,7 +27,7 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 ## User Guide (Video)
 
 <a href="https://www.youtube.com/watch?v=7umgTuN8bMU">
-    <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
+    <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
 </a>
 
 ## Installation
@@ -47,11 +47,11 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 #### Stash Tab Overlay
 
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/Stash-Tab-Overlay.gif" width="500" alt="Stash Tab Overlay">
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/Stash-Tab-Overlay.gif" width="500" alt="Stash Tab Overlay">
 
 #### Set Tracker Overlay & Loot Filter Manipulation
 
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
 
 ## Statement On Our Use Of `POESESSID`
 
