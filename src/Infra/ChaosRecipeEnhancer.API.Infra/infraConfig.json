@@ -1,0 +1,12 @@
+{
+    "ApiVersion": "v1",
+    "Environments": [
+        {
+            "Name": "sandbox",
+            "DisplayName": "Sandbox",
+            "AccountId": "381462643367",
+            "ApiGatewayUrl": "sandbox.chaos-recipe.com",
+            "CertificateArn": "arn:aws:acm:us-east-1:381462643367:certificate/c2b8a2b3-9319-4748-884b-fcb4f9cf5b8c"
+        }
+    ]
+}
