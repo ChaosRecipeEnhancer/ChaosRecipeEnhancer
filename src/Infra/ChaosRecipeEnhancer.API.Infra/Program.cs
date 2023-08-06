@@ -1,24 +1,24 @@
 ﻿using Amazon.CDK;
 using Cdklabs.CdkNag;
-using ChaosRecipeEnhancer.API.Infra;
+using ChaosRecipeEnhancer.API.Infra.Helpers;
+using ChaosRecipeEnhancer.API.Infra.Stacks;
 
-namespace ChaosRecipeEnhancer.Infra;
+namespace ChaosRecipeEnhancer.API.Infra;
 
 sealed class Program
 {
-    private static readonly string API_VERSION = InfraConfigHelper.GetApiVersion();
-
-    public static void Main(string[] args)
+    public static void Main()
     {
         var app = new App();
-        Aspects.Of(app).Add(new AwsSolutionsChecks());
 
-        _ = InfraConfigHelper.GetCurrentEnvironmentById(System.Environment.GetEnvironmentVariable("CDK_DEFAULT_ACCOUNT"));
-        _ = new InfraStack(app, $"CRE-InfraStack", new InfraStackProps()
-        {
-            ApiVersion = API_VERSION,
-            Env = EnvironmentHelper.MakeEnvironment()
-        });
+        // Enable CdkNag checks
+        // Aspects.Of(app).Add(new AwsSolutionsChecks());
+
+        _ = new InfraStack(
+            app,
+            "CRE-InfraStack",
+            new StackProps { Env = EnvironmentHelper.MakeEnvironment() }
+        );
 
         app.Synth();
     }

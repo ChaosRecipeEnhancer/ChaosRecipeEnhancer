@@ -10,11 +10,11 @@
 
 	<ItemGroup>
 		<!-- CDK Construct Library dependencies -->
-		<PackageReference Include="Amazon.CDK.Lib" Version="2.89.0" />
+		<PackageReference Include="Amazon.CDK.Lib" Version="2.90.0" />
 		<PackageReference Include="AWS.Lambda.Powertools.Tracing" Version="1.1.1" />
 		<PackageReference Include="AWS.Lambda.Powertools.Logging" Version="1.1.1" />
 		<PackageReference Include="AWS.Lambda.Powertools.Metrics" Version="1.3.2" />
-		<PackageReference Include="Cdklabs.CdkNag" Version="2.27.90" />
+		<PackageReference Include="Cdklabs.CdkNag" Version="2.27.92" />
 		<PackageReference Include="Constructs" Version="10.2.69" />
 
 		<!-- jsii Roslyn analyzers (un-comment to obtain compile-time checks for missing required props

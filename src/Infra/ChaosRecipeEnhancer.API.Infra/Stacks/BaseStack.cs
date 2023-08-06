@@ -1,18 +1,17 @@
 ﻿using Amazon.CDK;
+using ChaosRecipeEnhancer.API.Infra.Helpers;
 using Constructs;
+using Environment = ChaosRecipeEnhancer.API.Infra.Config.Environment;
 
-namespace ChaosRecipeEnhancer.API.Infra;
+namespace ChaosRecipeEnhancer.API.Infra.Stacks;
 
-public class BaseStack : Stack
+public abstract class BaseStack : Stack
 {
-    protected Environment CurrentEnvironment
-    {
-        get;
-    }
+    protected Environment CurrentEnvironment { get; }
 
-    public BaseStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
+    protected BaseStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
     {
         var accountId = Of(this).Account;
-        CurrentEnvironment = InfraConfigHelper.GetCurrentEnvironmentById(accountId);
+        CurrentEnvironment = InfraConfigHelper.GetCurrentInfraEnvironmentById(accountId);
     }
 }
