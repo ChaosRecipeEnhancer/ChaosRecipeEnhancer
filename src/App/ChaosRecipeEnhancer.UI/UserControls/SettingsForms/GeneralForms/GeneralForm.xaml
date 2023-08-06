@@ -1,0 +1,310 @@
+﻿<UserControl
+    x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms.GeneralForm"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
+    xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=generalForms:GeneralForm}">
+
+    <Grid ShowGridLines="False">
+
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
+
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="10" />
+            <!-- Row 0 -->
+            <RowDefinition Height="30" />
+            <!-- Row 1 -->
+            <RowDefinition Height="5" />
+            <!-- Row 2 -->
+            <RowDefinition Height="25" />
+            <!-- Row 3 -->
+            <RowDefinition Height="5" />
+            <!-- Row 4 -->
+            <RowDefinition Height="25" />
+            <!-- Row 5 -->
+            <RowDefinition Height="5" />
+            <!-- Row 6 -->
+            <RowDefinition Height="25" />
+            <!-- Row 7 -->
+            <RowDefinition Height="5" />
+            <!-- Row 8 -->
+            <RowDefinition Height="25" />
+            <!-- Row 9 -->
+            <RowDefinition Height="5" />
+            <!-- Row 10 -->
+            <RowDefinition Height="25" />
+            <!-- Row 11 -->
+            <RowDefinition Height="5" />
+            <!-- Row 12 -->
+            <RowDefinition Height="Auto" />
+            <!-- Row 13 -->
+            <RowDefinition Height="5" />
+            <!-- Row 14 -->
+            <RowDefinition Height="25" />
+            <!-- Row 15 -->
+            <RowDefinition Height="5" />
+            <!-- Row 16 -->
+            <RowDefinition Height="25" />
+            <!-- Row 17 -->
+            <RowDefinition Height="5" />
+            <!-- Row 18 -->
+
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="1"
+            VerticalAlignment="Center"
+            Grid.ColumnSpan="2"
+            Text="General"
+            FontSize="24"
+            FontWeight="Bold" />
+
+        <!-- Full Set Threshold Setting (Row 3) Start -->
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="3"
+            VerticalAlignment="Center"
+            Text="Full Set Threshold:"
+            ToolTip="Number of full sets you want. If you have collected this amount of items of an item type, item type will get deactivated. Leave at 0 for auto calculation, that means 4 sets for each normal tab and 16 sets for each quad tab.  " />
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="3"
+            Width="200"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=FullSetThreshold, Mode=TwoWay}" />
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="5"
+            VerticalAlignment="Center"
+            Text="Target Stash:"
+            ToolTip="The stash tab you want to use, your individual stash tab or your guild stash." />
+
+        <ComboBox
+            Grid.Column="3"
+            Grid.Row="5"
+            Width="200"
+            VerticalContentAlignment="Center"
+            SelectionChanged="StashTargetComboBox_SelectionChanged"
+            SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=TargetStash, Mode=TwoWay}">
+
+            <ComboBoxItem Content="My Stash" />
+            <ComboBoxItem Content="Guild Stash" />
+
+        </ComboBox>
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="7"
+            VerticalAlignment="Center"
+            Text="Stash Tab Query Mode:"
+            ToolTip="The stash tab fetching mode. Stash tabs will automatically be added." />
+
+        <ComboBox
+            Grid.Column="3"
+            Grid.Row="7"
+            Width="200"
+            VerticalContentAlignment="Center"
+            SelectionChanged="ComboBox_SelectionChanged"
+            SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabQueryMode, Mode=TwoWay}">
+
+            <ComboBoxItem Content="ID" />
+            <ComboBoxItem Content="Prefix" />
+            <ComboBoxItem Content="Suffix" />
+
+        </ComboBox>
+
+        <!-- Individual Stash Tab Indices Start -->
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="9"
+            VerticalAlignment="Center"
+            Text="Stash Tab Indices:"
+            ToolTip="Every stash tab with this indices will be added. Separate them by ',' e.g. '0,1,2,3,4,5' will fetch first 6 stash tabs."
+            Visibility="{Binding TabIndicesVisible}" />
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="9"
+            Width="200"
+            Visibility="{Binding TabIndicesVisible}"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabIndices, Mode=TwoWay}" />
+        <!-- Individual Stash Tab Indices End -->
+
+        <!-- Individual Stash Tab Name Prefix Start -->
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="9"
+            VerticalAlignment="Center"
+            Text="Stash Tab Prefix:"
+            ToolTip="Every stash tab which name starts with this prefix will be added."
+            Visibility="{Binding TabNamePrefixVisible}" />
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="9"
+            Width="200"
+            Visibility="{Binding TabNamePrefixVisible}"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabPrefix, Mode=TwoWay}" />
+        <!-- Individual Stash Tab Name Prefix End -->
+
+        <!-- Individual Stash Tab Name Suffix Start -->
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="9"
+            VerticalAlignment="Center"
+            Text="Stash Tab Suffix:"
+            ToolTip="Every stash tab which name ends with this suffix will be added."
+            Visibility="{Binding TabNameSuffixVisible}" />
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="9"
+            Width="200"
+            Visibility="{Binding TabNameSuffixVisible}"
+            Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabSuffix, Mode=TwoWay}" />
+        <!-- Individual Stash Tab Name Suffix End -->
+
+        <!-- StashTab Query [Index / String] Setting (Row 9) End -->
+
+        <!-- Fetch on New Map Setting (Row 11) Start -->
+        <!-- TODO: [Refactor] Enforce reload when this setting is changed (or at the very least, notify users it's required) -->
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="11"
+            VerticalAlignment="Center"
+            Text="Fetch on New Map:"
+            ToolTip="Automatically fetches when you join a new Zone (Hideout excluded). REOPEN the overlay to take effect." />
+
+        <CheckBox
+            Grid.Column="3"
+            Grid.Row="11"
+            VerticalAlignment="Center"
+            Checked="AutoFetchCheckBox_Checked"
+            Unchecked="AutoFetchCheckBox_Unchecked"
+            IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=AutoFetchOnRezoneEnabled, Mode=TwoWay}" />
+        <!-- Fetch on New Map Setting (Row 11) End -->
+
+        <!-- Client Log File Location Setting (Row 13) Start -->
+        <!-- TODO: [Refactor] Hide this setting if 'Fetch on New Map' setting isn't enabled -->
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="13"
+            VerticalAlignment="Center"
+            Text="PoE Client.txt File Location:"
+            Visibility="{Binding FetchOnNewMapEnabled}"
+            ToolTip="The standard path is: `C:/Programs/Grinding Gear Games/Path of Exile/logs/Client.txt`; it will be different for steam users." />
+
+        <Button
+            x:Name="LogLocationDialog"
+            Grid.Column="3"
+            Grid.Row="13"
+            Width="200"
+            Click="LogLocationDialog_Click"
+            Visibility="{Binding FetchOnNewMapEnabled}"
+            ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=PathOfExileClientLogLocation, Mode=TwoWay}"
+            Content="{Binding Source={x:Static properties:Settings.Default}, Path=PathOfExileClientLogLocation, Mode=TwoWay}"
+            HorizontalContentAlignment="Left">
+
+            <Button.Style>
+
+                <Style TargetType="Button">
+
+                    <Setter
+                        Property="Background"
+                        Value="Transparent" />
+
+                    <Style.Triggers>
+
+                        <Trigger
+                            Property="IsMouseOver"
+                            Value="True">
+
+                            <Setter
+                                Property="Background"
+                                Value="Transparent" />
+
+                        </Trigger>
+
+                    </Style.Triggers>
+
+                </Style>
+
+            </Button.Style>
+
+        </Button>
+        <!-- Client Log File Location Setting (Row 13) End -->
+
+        <!-- Language Setting (Row 15) Start -->
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="15"
+            VerticalAlignment="Center"
+            Text="Language:"
+            ToolTip="Fetch on new Map only works in the correct language. Set it to the same as your PoE client." />
+
+        <ComboBox
+            Grid.Column="3"
+            Grid.Row="15"
+            Width="200"
+            VerticalContentAlignment="Center"
+            SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=Language, Mode=TwoWay}">
+
+            <ComboBoxItem Content="English" />
+            <ComboBoxItem Content="French" />
+            <ComboBoxItem Content="German" />
+            <ComboBoxItem Content="Portuguese" />
+            <ComboBoxItem Content="Russian" />
+            <ComboBoxItem Content="Spanish" />
+            <ComboBoxItem Content="Chinese" />
+
+        </ComboBox>
+        <!-- Language Setting (Row 15) End -->
+
+        <!-- Close to Tray Setting (Row 17) Start -->
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="17"
+            VerticalAlignment="Center"
+            Text="Close to Tray:"
+            ToolTip="Minimizes to Tray when closing the application." />
+
+        <CheckBox
+            Grid.Column="3"
+            Grid.Row="17"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=CloseToTrayEnabled, Mode=TwoWay}" />
+        <!-- Close to Tray Setting (Row 17) End -->
+
+        <!-- TODO DebugMode setting to toggle logging for file (for now, it's always enabled) -->
+        <!-- Debug Mode Setting (Row 19) Start -->
+        <!-- <TextBlock Grid.Column="1" -->
+        <!--            Grid.Row="17" -->
+        <!--            VerticalAlignment="Center" -->
+        <!--            Text="Debug Mode:" -->
+        <!--            ToolTip="Enables logging to a file that you can give to the developers so they can better resolve your issue." /> -->
+
+        <!-- <CheckBox x:Name="DebugMode" -->
+        <!--           Grid.Column="3" -->
+        <!--           Grid.Row="19" -->
+        <!--           VerticalAlignment="Center" -->
+        <!--           IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=DebugMode, Mode=TwoWay}" /> -->
+        <!-- Debug Mode Setting (Row 19) End -->
+
+    </Grid>
+
+</UserControl>

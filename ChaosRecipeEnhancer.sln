@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{04178D70
 		scripts\infra\synth.ps1 = scripts\infra\synth.ps1
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaosRecipeEnhancer.UI.WPF", "src\App\ChaosRecipeEnhancer.UI.WPF\ChaosRecipeEnhancer.UI.WPF.csproj", "{8ED4F3DC-4C9C-4274-B28F-64F1A5932BBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaosRecipeEnhancer.UI", "src\App\ChaosRecipeEnhancer.UI\ChaosRecipeEnhancer.UI.csproj", "{8ED4F3DC-4C9C-4274-B28F-64F1A5932BBD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaosRecipeEnhancer.Common", "src\App\ChaosRecipeEnhancer.Common\ChaosRecipeEnhancer.Common.csproj", "{7DEAC08A-D8E4-457D-8A62-5F0743D7EEFA}"
 EndProject
