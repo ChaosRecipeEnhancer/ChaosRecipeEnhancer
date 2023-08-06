@@ -1,0 +1,10 @@
+@startuml CRE Auth Sequence Diagram
+CRE_DesktopClient -> GGG_Site : Promps user to log in
+GGG_Site -> CRE_API: User authorizes CRE to access their PoE account information
+CRE_API -> CRE_DesktopClient: Returns an auth code that can be used to request a token
+CRE_DesktopClient -> CRE_API: Requests a token using the auth code
+CRE_API -> GGG_Site: Requests a token using the credentials (auth code, client id, and client secret)
+GGG_Site -> CRE_API: Returns a token
+CRE_API -> CRE_DesktopClient: Returns the token
+CRE_DesktopClient -> CRE_API: Can request PoE data (e.g. items in stash tab) using the token
+@enduml
