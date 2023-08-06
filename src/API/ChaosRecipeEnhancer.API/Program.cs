@@ -4,8 +4,7 @@ using ChaosRecipeEnhancer.API;
 using ChaosRecipeEnhancer.API.Extensions;
 using Microsoft.OpenApi.Models;
 
-// TODO: This should be set (by... something).
-var apiVersion = Environment.GetEnvironmentVariable("API_VERSION") ?? "latest";
+var apiVersion = Environment.GetEnvironmentVariable("API_VERSION") ?? "v1";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
