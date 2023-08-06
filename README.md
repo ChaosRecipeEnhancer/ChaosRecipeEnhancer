@@ -1,20 +1,20 @@
-__Update April, 2023 (Pre 3.21 Launch):__
+__Update August 6th, 2023 (Pre 3.22 Launch):__
 
-Development help would be much appreciated! I (lead developer) have gotten a new job since taking over the project and have not had much time to keep new adding new feature updates and application optimizations to the tool.
+Still on the lookout for some help with this project. I've fallen behind on enhancements and bug fixes.
 
-Important additions, like linking our app to GGG's OAuth API for token-based authentication are the primary focus for new feature additions, if anyone would like to help implenting that solution.
+Important additions, like linking our app to GGG's OAuth API for token-based authentication to the Path of Exile API are the primary focus for new feature additions, if anyone would like to help implenting that solution.
 
 If you're interested in helping out, please reach out on our [community discord][discord-link]!
 
 ---
 
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/CRELogo.png" width="250" alt="Chaos Recipe Enhancer Logo">
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/CRELogo.png" width="250" alt="Chaos Recipe Enhancer Logo">
 
 # Chaos Recipe Enhancer
 
 ``` This app isn't affiliated with or officially endorsed by Grinding Gear Games. ```
 
-This app fetches your stash data from the PoE servers and shows which items you need to pick up to complete the chaos, regal, or exalted shard recipe. When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs. 
+This app fetches your stash data from the PoE servers and shows which items you need to pick up to complete the chaos, regal, or exalted shard recipe. When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs.
 
 Optionally, it can also manipulate your offline loot filter, so you can fully streamline your farm.
 
@@ -27,7 +27,7 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 ## User Guide (Video)
 
 <a href="https://www.youtube.com/watch?v=7umgTuN8bMU">
-    <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
+    <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
 </a>
 
 ## Installation
@@ -37,21 +37,21 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 ## Additional Features
 
- - Query from your personal stash or from your guild stash
- - Query multiple stash tabs by ID, prefix, and suffix
- - Customizable hotkeys
- - Customizable overlay position & sizes for different screen resolutions
- - Support for chaos, regal & exalted shard recipes
- - *Offline* loot filter manipulation (online filter syncing not supported)
- - Automatically fetch remaining items when you join a new instance
+- Query from your personal stash or from your guild stash
+- Query multiple stash tabs by ID, prefix, and suffix
+- Customizable hotkeys
+- Customizable overlay position & sizes for different screen resolutions
+- Support for chaos, regal & exalted shard recipes
+- *Offline* loot filter manipulation (online filter syncing not supported)
+- Automatically fetch remaining items when you join a new instance
 
 #### Stash Tab Overlay
 
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/Stash-Tab-Overlay.gif" width="500" alt="Stash Tab Overlay">
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/Stash-Tab-Overlay.gif" width="500" alt="Stash Tab Overlay">
 
 #### Set Tracker Overlay & Loot Filter Manipulation
 
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/master/DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
 
 ## Statement On Our Use Of `POESESSID`
 
@@ -61,14 +61,14 @@ We have used the session ID as a form of making authenticated requests against s
 
 I echo what GGG has claimed, and have always told folks to keep your session IDs secure, not share them with anyone. Treat them as you would your password. This is why we deliberately hide the value in our settings.
 
-**Chaos Recipe Enhancer does not, has not, and will _never_ harvest your session ID or send it to anywhere.**
+**Chaos Recipe Enhancer does not, has not, and will *never* harvest your session ID or send it to anywhere.**
 
 ---
 
 ## Copyright
 
 ```
-Copyright (C) 2022 Chaos Recipe Enhancer Team
+Copyright (C) 2023 Chaos Recipe Enhancer Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -83,7 +83,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ```
-
 
 [downloads-badge]: https://img.shields.io/github/downloads/ChaosRecipeEnhancer/EnhancePoEApp/total?style=for-the-badge&logo=github
 [discord-badge]: https://img.shields.io/discord/786617230879883307?color=5865f2&label=Discord&style=for-the-badge&logo=discord&link
