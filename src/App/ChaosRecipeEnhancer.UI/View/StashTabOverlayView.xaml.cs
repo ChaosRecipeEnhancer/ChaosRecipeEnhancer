@@ -1,130 +1,109 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Linq;
-using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Utilities;
-using ChaosRecipeEnhancer.UI.ViewModel;
 
 namespace ChaosRecipeEnhancer.UI.View;
 
-/// <summary>
-///     Interaction logic for StashTabOverlayView.xaml
-/// </summary>
-internal partial class StashTabOverlayView : Window
+internal partial class StashTabOverlayView
 {
-	#region Fields
+    private readonly ItemSetManager _itemSetManager;
+    private readonly StashTabOverlayViewModel _model;
 
-	public bool IsOpen
-	{
-		get; set;
-	}
+    public StashTabOverlayView(ItemSetManager itemSetManager)
+    {
+        _itemSetManager = itemSetManager;
+        DataContext = _model = new StashTabOverlayViewModel(_itemSetManager);
 
-	private readonly ItemSetManager _itemSetManager;
-	private readonly StashTabOverlayViewModel _model;
+        InitializeComponent();
 
-	#endregion
+        MouseHook.MouseAction += OnMouseHookClick;
+    }
 
-	#region Constructors
+    public bool IsOpen { get; set; }
 
-	public StashTabOverlayView(ItemSetManager itemSetManager)
-	{
-		_itemSetManager = itemSetManager;
-		DataContext = _model = new StashTabOverlayViewModel(_itemSetManager);
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        Win32.MakeToolWindow(this);
+    }
 
-		InitializeComponent();
+    public new virtual void Hide()
+    {
+        if (!IsOpen) return;
 
-		MouseHook.MouseAction += OnMouseHookClick;
-	}
+        MakeWindowClickThrough(true);
+        _model.IsEditing = false;
+        MouseHook.Stop();
 
-	#endregion
+        IsOpen = false;
+        base.Hide();
+    }
 
-	private void OnLoaded(object sender, RoutedEventArgs e) => Win32.MakeToolWindow(this);
+    public new virtual void Show()
+    {
+        IsOpen = true;
 
-	public new virtual void Hide()
-	{
-		if (!IsOpen)
-		{
-			return;
-		}
+        MouseHook.Start();
+        base.Show();
+    }
 
-		MakeWindowClickThrough(true);
-		_model.IsEditing = false;
-		MouseHook.Stop();
+    private void OnMouseHookClick(object sender, MouseHookEventArgs e)
+    {
+        if (!IsOpen || _model.SelectedStashTabHandler.SelectedStashTab is null) return;
 
-		IsOpen = false;
-		base.Hide();
-	}
+        if (UtilityMethods.HitTest(EditModeButton, e.ClickLocation))
+            HandleEditButton();
+        else
+            foreach (var cell in _model.SelectedStashTabHandler.SelectedStashTab.OverlayCellsList.Where(cell =>
+                         cell.Active))
+                if (UtilityMethods.HitTest(UtilityMethods.GetContainerForDataObject<Button>(StashTabControl, cell),
+                        e.ClickLocation))
+                {
+                    _itemSetManager.OnItemCellClicked(cell);
+                    return;
+                }
+    }
 
-	public new virtual void Show()
-	{
-		IsOpen = true;
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        base.OnSourceInitialized(e);
+        MakeWindowClickThrough(true);
+    }
 
-		MouseHook.Start();
-		base.Show();
-	}
+    private void MakeWindowClickThrough(bool clickThrough)
+    {
+        if (clickThrough)
+            Win32.MakeTransparent(this);
+        else
+            Win32.MakeNormal(this);
+    }
 
-	private void OnMouseHookClick(object sender, MouseHookEventArgs e)
-	{
-		if (!IsOpen || _model.SelectedStashTabHandler.SelectedStashTab is null)
-		{
-			return;
-		}
+    private void HandleEditButton()
+    {
+        if (_model.IsEditing)
+        {
+            MakeWindowClickThrough(true);
+            MouseHook.Start();
+            _model.IsEditing = false;
+        }
+        else
+        {
+            MouseHook.Stop();
+            MakeWindowClickThrough(false);
+            _model.IsEditing = true;
+        }
+    }
 
-		if (UtilityMethods.HitTest(EditModeButton, e.ClickLocation))
-		{
-			HandleEditButton();
-		}
-		else
-		{
-			foreach (var cell in _model.SelectedStashTabHandler.SelectedStashTab.OverlayCellsList.Where(cell => cell.Active))
-			{
-				if (UtilityMethods.HitTest(UtilityMethods.GetContainerForDataObject<Button>(StashTabControl, cell), e.ClickLocation))
-				{
-					_itemSetManager.OnItemCellClicked(cell);
-					return;
-				}
-			}
-		}
-	}
+    private void OnEditModeButtonClick(object sender, RoutedEventArgs e)
+    {
+        HandleEditButton();
+    }
 
-	protected override void OnSourceInitialized(EventArgs e)
-	{
-		base.OnSourceInitialized(e);
-		MakeWindowClickThrough(true);
-	}
-
-	private void MakeWindowClickThrough(bool clickThrough)
-	{
-		if (clickThrough)
-		{
-			Win32.MakeTransparent(this);
-		}
-		else
-		{
-			Win32.MakeNormal(this);
-		}
-	}
-
-	private void HandleEditButton()
-	{
-		if (_model.IsEditing)
-		{
-			MakeWindowClickThrough(true);
-			MouseHook.Start();
-			_model.IsEditing = false;
-		}
-		else
-		{
-			MouseHook.Stop();
-			MakeWindowClickThrough(false);
-			_model.IsEditing = true;
-		}
-	}
-
-	private void OnEditModeButtonClick(object sender, RoutedEventArgs e) => HandleEditButton();
-
-	private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
+    private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        DragMove();
+    }
 }

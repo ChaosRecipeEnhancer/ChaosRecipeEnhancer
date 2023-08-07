@@ -1,16 +1,21 @@
-﻿<UserControl
-    x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms.PathOfExileForm"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
-    xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
-    mc:Ignorable="d"
-    d:DataContext="{d:DesignInstance Type=generalForms:PathOfExileForm}">
+﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms.PathOfExileForm"
+             x:ClassModifier="internal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
+             xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=generalForms:PathOfExileFormViewModel}">
 
     <UserControl.Resources>
         <FontFamily x:Key="PasswordFont">../../../Assets/Fonts/#Password</FontFamily>
+        <utilities:BoolVisibilityConverter x:Key="CustomLeagueVisibilityBoolConverter"
+                                           CollapseWhenNotVisible="True"/>
+        <utilities:BoolVisibilityConverter x:Key="MainLeagueVisibilityInvertedBoolConverter"
+                                           CollapseWhenNotVisible="True"
+                                           Invert="True"/>
     </UserControl.Resources>
 
     <Grid ShowGridLines="False">
@@ -60,7 +65,7 @@
             Grid.Column="3"
             Grid.Row="3"
             Width="200"
-            Text="{Binding Source={x:Static properties:Settings.Default}, Path=PathOfExileAccountName, Mode=TwoWay}" />
+            Text="{Binding Settings.PathOfExileAccountName, Mode=TwoWay}" />
 
         <TextBlock
             Grid.Column="1"
@@ -75,7 +80,7 @@
             Grid.Row="5"
             Width="200"
             FontFamily="{StaticResource PasswordFont}"
-            Text="{Binding Source={x:Static properties:Settings.Default}, Path=PathOfExileWebsiteSessionId, Mode=TwoWay}" />
+            Text="{Binding Settings.PathOfExileWebsiteSessionId, Mode=TwoWay}" />
 
         <TextBlock
             Grid.Column="1"
@@ -89,17 +94,18 @@
             Grid.Column="3"
             Grid.Row="7"
             Width="200"
-            Text="{Binding Source={x:Static properties:Settings.Default}, Path=LeagueName, Mode=TwoWay}"
-            Visibility="{Binding CustomLeagueVisible}" />
+            Text="{Binding Settings.LeagueName, Mode=TwoWay}"
+            Visibility="{Binding Settings.CustomLeagueEnabled, Converter={StaticResource CustomLeagueVisibilityBoolConverter}}" />
 
         <ComboBox
-            x:Name="MainLeagueComboBox"
             Grid.Column="3"
             Grid.Row="7"
             Width="200"
             VerticalContentAlignment="Center"
-            SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=LeagueName, Mode=TwoWay}"
-            Visibility="{Binding MainLeagueVisible}" />
+            IsSynchronizedWithCurrentItem="True"
+            ItemsSource="{Binding LeagueList, Mode=OneWay}"
+            SelectedItem="{Binding Settings.LeagueName, Mode=TwoWay}"
+            Visibility="{Binding Settings.CustomLeagueEnabled, Converter={StaticResource MainLeagueVisibilityInvertedBoolConverter}}" />
 
         <TextBlock
             Grid.Column="1"
@@ -113,9 +119,7 @@
             Grid.Column="3"
             Grid.Row="8"
             VerticalAlignment="Center"
-            Checked="CustomLeagueCheckBox_Checked"
-            Unchecked="CustomLeagueCheckBox_Unchecked"
-            IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=CustomLeagueEnabled, Mode=TwoWay}" />
+            IsChecked="{Binding Settings.CustomLeagueEnabled, Mode=TwoWay}" />
 
     </Grid>
 

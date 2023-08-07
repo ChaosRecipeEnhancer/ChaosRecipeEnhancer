@@ -1,45 +1,39 @@
-﻿using ChaosRecipeEnhancer.Common.UI;
-using ChaosRecipeEnhancer.UI.Api.Data;
+﻿using ChaosRecipeEnhancer.UI.Api.Data;
+using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.Model;
 
-internal sealed class Cell : ViewModelBase
+public sealed class Cell : ViewModelBase
 {
-	public int XIndex
-	{
-		get;
-	}
-	public int YIndex
-	{
-		get;
-	}
-	public Item Item
-	{
-		get; private set;
-	}
+    private bool _active;
 
-	private bool _active;
-	public bool Active
-	{
-		get => _active;
-		private set => SetProperty(ref _active, value);
-	}
+    public Cell(int x, int y)
+    {
+        XIndex = x;
+        YIndex = y;
+    }
 
-	public Cell(int x, int y)
-	{
-		XIndex = x;
-		YIndex = y;
-	}
+    public int XIndex { get; }
 
-	public void Activate(ref Item item)
-	{
-		Active = true;
-		Item = item;
-	}
+    public int YIndex { get; }
 
-	public void Deactivate()
-	{
-		Active = false;
-		Item = null;
-	}
+    public Item Item { get; private set; }
+
+    public bool Active
+    {
+        get => _active;
+        private set => SetProperty(ref _active, value);
+    }
+
+    public void Activate(ref Item item)
+    {
+        Active = true;
+        Item = item;
+    }
+
+    public void Deactivate()
+    {
+        Active = false;
+        Item = null;
+    }
 }

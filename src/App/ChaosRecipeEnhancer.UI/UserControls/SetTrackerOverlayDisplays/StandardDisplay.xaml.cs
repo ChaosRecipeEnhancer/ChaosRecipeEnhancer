@@ -1,34 +1,33 @@
 ﻿using System.Windows;
 using ChaosRecipeEnhancer.UI.View;
-using Serilog;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 
 /// <summary>
 ///     Interaction logic for SetTrackerOverlayStandardDisplay.xaml
 /// </summary>
-public partial class StandardDisplay
+internal partial class StandardDisplay
 {
-	private readonly SetTrackerOverlayView _setTrackerOverlay;
+    private readonly SetTrackerOverlayView _parent;
 
-	public StandardDisplay(SetTrackerOverlayView setTrackerOverlay)
-	{
-		_setTrackerOverlay = setTrackerOverlay;
-		InitializeComponent();
-	}
+    public StandardDisplay(SetTrackerOverlayView parent)
+    {
+        _parent = parent;
+        InitializeComponent();
+    }
 
-	private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
-	{
-		_settingsView.RunStashTabOverlay();
-	}
+    private void OnStashTabOverlayButtonClicked(object sender, RoutedEventArgs e)
+    {
+        _parent.RunStashTabOverlay();
+    }
 
-	private void FetchButton_Click(object sender, RoutedEventArgs e)
-	{
-		_setTrackerOverlay.RunFetching();
-	}
+    private void OnFetchButtonClicked(object sender, RoutedEventArgs e)
+    {
+        _parent.RunFetching();
+    }
 
-	private void ReloadFilterButton_Click(object sender, RoutedEventArgs e)
-	{
-		_setTrackerOverlay.ReloadItemFilter();
-	}
+    private void OnReloadFilterButtonClicked(object sender, RoutedEventArgs e)
+    {
+        _parent.RunReloadFilter();
+    }
 }

@@ -1,51 +1,38 @@
 ﻿using System.Windows.Controls;
 using ChaosRecipeEnhancer.UI.Extensions;
-using Serilog;
-using ChaosRecipeEnhancer.UI.UserControls;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTabOverlayDisplays;
 
 /// <summary>
 ///     Interaction logic for QuadStashGrid.xaml
 /// </summary>
-public partial class QuadStashGrid
+internal partial class QuadStashGrid
 {
-	#region Fields
+    #region Constructors
 
-	private readonly ILogger _logger;
+    public QuadStashGrid()
+    {
+        InitializeComponent();
+    }
 
-	#endregion
+    #endregion
 
-	#region Constructors
+    #region Methods
 
-	public QuadStashGrid()
-	{
-		_logger = Log.ForContext<HotkeyEditorControl>();
-		_logger.Debug("Constructing QuadStashGrid");
+    public Button GetButtonFromCell(object cell)
+    {
+        for (var i = 0; i < Items.Count; i++)
+            if (Items[i] == cell)
+            {
+                //Trace.WriteLine(cell.XIndex + " x " + cell.YIndex + " y");
 
-		InitializeComponent();
+                var container = ItemContainerGenerator.ContainerFromIndex(i);
+                var t = ControlExtensions.GetChild<Button>(container);
+                return t;
+            }
 
-		_logger.Debug("QuadStashGrid constructed successfully");
-	}
+        return null;
+    }
 
-	#endregion
-
-	#region Methods
-
-	public Button GetButtonFromCell(object cell)
-	{
-		for (var i = 0; i < Items.Count; i++)
-			if (Items[i] == cell)
-			{
-				//Trace.WriteLine(cell.XIndex + " x " + cell.YIndex + " y");
-
-				var container = ItemContainerGenerator.ContainerFromIndex(i);
-				var t = ControlExtensions.GetChild<Button>(container);
-				return t;
-			}
-
-		return null;
-	}
-
-	#endregion
+    #endregion
 }

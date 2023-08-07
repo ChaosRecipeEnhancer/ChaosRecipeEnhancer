@@ -1,89 +1,24 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
-using ChaosRecipeEnhancer.UI.Properties;
+﻿using ChaosRecipeEnhancer.UI.Api;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
-public partial class PathOfExileForm : INotifyPropertyChanged
+internal partial class PathOfExileForm
 {
-	private Visibility _mainLeagueVisible = Visibility.Visible;
-	private Visibility _customLeagueVisible = Visibility.Hidden;
+    private readonly LeagueGetter _leagueGetter = new();
+    private readonly PathOfExileFormViewModel _model;
 
-	public PathOfExileForm()
-	{
-		DataContext = this;
-		InitializeComponent();
+    public PathOfExileForm()
+    {
+        DataContext = _model = new PathOfExileFormViewModel();
+        InitializeComponent();
 
-		// Populate the league dropdown
-		if (!Settings.Default.CustomLeagueEnabled) MainLeagueComboBox.ItemsSource = ApiAdapter.FetchLeagueNamesAsync();
+        // Populate the league dropdown
+        LoadLeagueList();
+    }
 
-		LoadCustomLeagueInputVisibility();
-	}
-
-	public Visibility MainLeagueVisible
-	{
-		get => _mainLeagueVisible;
-		set
-		{
-			if (_mainLeagueVisible != value)
-			{
-				_mainLeagueVisible = value;
-				OnPropertyChanged("MainLeagueVisible");
-			}
-		}
-	}
-
-	public Visibility CustomLeagueVisible
-	{
-		get => _customLeagueVisible;
-		set
-		{
-			if (_customLeagueVisible != value)
-			{
-				_customLeagueVisible = value;
-				OnPropertyChanged("CustomLeagueVisible");
-			}
-		}
-	}
-
-	private void CustomLeagueCheckBox_Checked(object sender, RoutedEventArgs e)
-	{
-		Settings.Default.CustomLeagueEnabled = true;
-		LoadCustomLeagueInputVisibility();
-	}
-
-	private void CustomLeagueCheckBox_Unchecked(object sender, RoutedEventArgs e)
-	{
-		Settings.Default.CustomLeagueEnabled = false;
-		LoadCustomLeagueInputVisibility();
-	}
-
-	private void LoadCustomLeagueInputVisibility()
-	{
-		if (!Settings.Default.CustomLeagueEnabled)
-		{
-			CustomLeagueVisible = Visibility.Hidden;
-			MainLeagueVisible = Visibility.Visible;
-		}
-		else
-		{
-			CustomLeagueVisible = Visibility.Visible;
-			MainLeagueVisible = Visibility.Hidden;
-		}
-	}
-
-	#region INotifyPropertyChanged implementation
-
-	// Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
-	public event PropertyChangedEventHandler PropertyChanged;
-
-	protected virtual void OnPropertyChanged(string propertyName)
-	{
-		var handler = PropertyChanged;
-		if (handler != null)
-			handler(this, new PropertyChangedEventArgs(propertyName));
-	}
-
-	#endregion
+    private async void LoadLeagueList()
+    {
+        var leagues = await _leagueGetter.GetLeaguesAsync();
+        _model.UpdateLeagueList(leagues);
+    }
 }

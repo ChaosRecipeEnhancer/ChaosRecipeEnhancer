@@ -4,24 +4,25 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-              xmlns:properties="clr-namespace:EnhancePoE.Properties"
-              xmlns:ui="clr-namespace:ChaosRecipeEnhancer.Common.UI"
+              xmlns:properties1="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
+              xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
               mc:Ignorable="d"
               x:Name="Root">
     <ItemsControl.Resources>
-        <ui:BoolToObjectConverter x:Key="IsQuadToSizeConverter"
-                                TrueValue="24"
-                                FalseValue="12" />
+        <utilities:BoolToObjectConverter x:Key="IsQuadToSizeConverter"
+                                         TrueValue="24"
+                                         FalseValue="12" />
     </ItemsControl.Resources>
 
     <ItemsControl.Background>
         <SolidColorBrush Opacity="0"
-                       Color="Transparent" />
+                         Color="Transparent" />
     </ItemsControl.Background>
     <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-            <UniformGrid Columns="{Binding ElementName=Root, Path=IsQuad, Converter={StaticResource IsQuadToSizeConverter}}"
-                      Rows="{Binding ElementName=Root, Path=IsQuad, Converter={StaticResource IsQuadToSizeConverter}}" />
+            <UniformGrid
+                Columns="{Binding ElementName=Root, Path=IsQuad, Converter={StaticResource IsQuadToSizeConverter}}"
+                Rows="{Binding ElementName=Root, Path=IsQuad, Converter={StaticResource IsQuadToSizeConverter}}" />
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.ItemTemplate>
@@ -33,27 +34,27 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
                                     <Border Background="{TemplateBinding Background}"
-                                   BorderBrush="White"
-                                   BorderThickness="0.5" />
+                                            BorderBrush="White"
+                                            BorderThickness="0.5" />
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
                         <Setter Property="Background"
-                          Value="Transparent" />
+                                Value="Transparent" />
                         <Setter Property="Opacity"
-                          Value="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab}" />
+                                Value="{Binding Source={x:Static properties1:Settings.Default}, Path=OpacityStashTab}" />
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver"
-                              Value="True">
+                                     Value="True">
                                 <Setter Property="Background"
-                                Value="Transparent" />
+                                        Value="Transparent" />
                             </Trigger>
                             <DataTrigger Binding="{Binding Active}"
-                                  Value="True">
+                                         Value="True">
                                 <Setter Property="Background"
-                                Value="{Binding Source={x:Static properties:Settings.Default}, Path=ColorStash}" />
+                                        Value="{Binding Source={x:Static properties1:Settings.Default}, Path=ColorStash}" />
                                 <Setter Property="Opacity"
-                                Value="1" />
+                                        Value="1" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ChaosRecipeEnhancer.UI.Api.Data;
+using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities;
 
-namespace ChaosRecipeEnhancer.UI.Model;
+namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 
-public sealed class StashTab : ViewModelBase
+public class InteractiveStashTab : ViewModelBase
 {
     private int _amuletsAmount;
 
@@ -32,7 +33,7 @@ public sealed class StashTab : ViewModelBase
 
     private int _weaponsSmallAmount;
 
-    public StashTab(string name, int index, Uri tabUri)
+    public InteractiveStashTab(string name, int index, Uri tabUri)
     {
         TabName = name;
         TabIndex = index;
@@ -40,9 +41,7 @@ public sealed class StashTab : ViewModelBase
     }
 
     public string TabName { get; }
-
     public int TabIndex { get; }
-
     public Uri StashTabUri { get; }
 
     public List<Item> ItemsForChaosRecipe { get; } = new();
@@ -68,48 +67,21 @@ public sealed class StashTab : ViewModelBase
     }
 
     private bool ShowAmountNeeded => Settings.Default.SetTrackerOverlayItemCounterDisplayMode == 2;
-
-    public int RingAmount =>
-        ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold * 2 - _ringsAmount, 0) : _ringsAmount;
-
-    public bool RingActive => NeedsItemFetch || Settings.Default.FullSetThreshold * 2 - _ringsAmount > 0;
-
-    public int AmuletsAmount =>
-        ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _amuletsAmount, 0) : _amuletsAmount;
-
+    public int RingsAmount => ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold * 2 - _ringsAmount, 0) : _ringsAmount;
+    public bool RingsActive => NeedsItemFetch || Settings.Default.FullSetThreshold * 2 - _ringsAmount > 0;
+    public int AmuletsAmount => ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _amuletsAmount, 0) : _amuletsAmount;
     public bool AmuletsActive => NeedsItemFetch || Settings.Default.FullSetThreshold - _amuletsAmount > 0;
-
-    public int BeltsAmount =>
-        ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _beltsAmount, 0) : _beltsAmount;
-
-    public bool BeltActive => NeedsItemFetch || Settings.Default.FullSetThreshold - _beltsAmount > 0;
-
-    public int BodyArmorAmount =>
-        ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _chestsAmount, 0) : _chestsAmount;
-
-    public bool BodyArmorActive => NeedsItemFetch || Settings.Default.FullSetThreshold - _chestsAmount > 0;
-
-    public int WeaponAmount => ShowAmountNeeded
-        ? Math.Max(Settings.Default.FullSetThreshold * 2 - (_weaponsSmallAmount + _weaponsBigAmount * 2), 0)
-        : _weaponsSmallAmount + _weaponsBigAmount * 2;
-
-    public bool WeaponActive => NeedsItemFetch ||
-                                Settings.Default.FullSetThreshold * 2 - (_weaponsSmallAmount + _weaponsBigAmount * 2) >
-                                0;
-
-    public int GlovesAmount =>
-        ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _glovesAmount, 0) : _glovesAmount;
-
+    public int BeltsAmount => ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _beltsAmount, 0) : _beltsAmount;
+    public bool BeltsActive => NeedsItemFetch || Settings.Default.FullSetThreshold - _beltsAmount > 0;
+    public int ChestsAmount => ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _chestsAmount, 0) : _chestsAmount;
+    public bool ChestsActive => NeedsItemFetch || Settings.Default.FullSetThreshold - _chestsAmount > 0;
+    public int WeaponsAmount => ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold * 2 - (_weaponsSmallAmount + _weaponsBigAmount * 2), 0) : _weaponsSmallAmount + _weaponsBigAmount * 2;
+    public bool WeaponsActive => NeedsItemFetch || Settings.Default.FullSetThreshold * 2 - (_weaponsSmallAmount + _weaponsBigAmount * 2) > 0;
+    public int GlovesAmount => ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _glovesAmount, 0) : _glovesAmount;
     public bool GlovesActive => NeedsItemFetch || Settings.Default.FullSetThreshold - _glovesAmount > 0;
-
-    public int HelmetsAmount =>
-        ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _helmetsAmount, 0) : _helmetsAmount;
-
+    public int HelmetsAmount => ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _helmetsAmount, 0) : _helmetsAmount;
     public bool HelmetsActive => NeedsItemFetch || Settings.Default.FullSetThreshold - _helmetsAmount > 0;
-
-    public int BootsAmount =>
-        ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _bootsAmount, 0) : _bootsAmount;
-
+    public int BootsAmount => ShowAmountNeeded ? Math.Max(Settings.Default.FullSetThreshold - _bootsAmount, 0) : _bootsAmount;
     public bool BootsActive => NeedsItemFetch || Settings.Default.FullSetThreshold - _bootsAmount > 0;
 
     public void FilterItemsForChaosRecipe(List<Item> itemList)
@@ -196,20 +168,20 @@ public sealed class StashTab : ViewModelBase
 
     public void UpdateDisplay()
     {
-        OnPropertyChanged(nameof(RingAmount));
-        OnPropertyChanged(nameof(RingActive));
+        OnPropertyChanged(nameof(RingsAmount));
+        OnPropertyChanged(nameof(RingsActive));
 
         OnPropertyChanged(nameof(AmuletsAmount));
         OnPropertyChanged(nameof(AmuletsActive));
 
         OnPropertyChanged(nameof(BeltsAmount));
-        OnPropertyChanged(nameof(BeltActive));
+        OnPropertyChanged(nameof(BeltsActive));
 
-        OnPropertyChanged(nameof(BodyArmorAmount));
-        OnPropertyChanged(nameof(BodyArmorActive));
+        OnPropertyChanged(nameof(ChestsAmount));
+        OnPropertyChanged(nameof(ChestsActive));
 
-        OnPropertyChanged(nameof(WeaponAmount));
-        OnPropertyChanged(nameof(WeaponActive));
+        OnPropertyChanged(nameof(WeaponsAmount));
+        OnPropertyChanged(nameof(WeaponsActive));
 
         OnPropertyChanged(nameof(GlovesAmount));
         OnPropertyChanged(nameof(GlovesActive));

@@ -11,7 +11,7 @@
 		<AssemblyName>ChaosRecipeEnhancer</AssemblyName>
 		<MapFileExtensions>true</MapFileExtensions>
 		<ApplicationRevision>0</ApplicationRevision>
-		<ApplicationVersion>1.8</ApplicationVersion>
+		<ApplicationVersion>2.0</ApplicationVersion>
 		<UseApplicationTrust>false</UseApplicationTrust>
 		<PublishWizardCompleted>true</PublishWizardCompleted>
 		<BootstrapperEnabled>true</BootstrapperEnabled>
@@ -28,27 +28,6 @@
 		<UpdatePeriodically>true</UpdatePeriodically>
 		<UpdateRequired>false</UpdateRequired>
 		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<ManifestCertificateThumbprint>948E8F2C0AF957B3C25EDF6B26B0A6FC77CD3014</ManifestCertificateThumbprint>
-	</PropertyGroup>
-	<PropertyGroup>
-		<GenerateManifests>true</GenerateManifests>
-	</PropertyGroup>
-	<PropertyGroup>
-		<SignManifests>false</SignManifests>
-	</PropertyGroup>
-	<PropertyGroup>
-		<ApplicationIcon>CREIcon.ico</ApplicationIcon>
-	</PropertyGroup>
-	<PropertyGroup>
-		<StartupObject>
-		</StartupObject>
-	</PropertyGroup>
-	<PropertyGroup>
-		<ApplicationManifest>Properties\app.manifest</ApplicationManifest>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -56,16 +35,20 @@
 		<PlatformTarget>AnyCPU</PlatformTarget>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<ApplicationIcon>CREIcon.ico</ApplicationIcon>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<Resource Include="Assets\Fonts\Password.ttf" />
-		<Resource Include="Assets\Images\amulet.png" />
-		<Resource Include="Assets\Images\belt.png" />
-		<Resource Include="Assets\Images\boots.png" />
-		<Resource Include="Assets\Images\chest.png" />
-		<Resource Include="Assets\Images\gloves.png" />
-		<Resource Include="Assets\Images\helmet.png" />
-		<Resource Include="Assets\Images\ring.png" />
-		<Resource Include="Assets\Images\weapon.png" />
+		<Resource Include="Assets\Images\Amulet.png" />
+		<Resource Include="Assets\Images\Belt.png" />
+		<Resource Include="Assets\Images\Boots.png" />
+		<Resource Include="Assets\Images\BodyArmor.png" />
+		<Resource Include="Assets\Images\Gloves.png" />
+		<Resource Include="Assets\Images\Helmet.png" />
+		<Resource Include="Assets\Images\Ring.png" />
+		<Resource Include="Assets\Images\Weapon.png" />
 		<None Update="Assets\Sounds\FilterChanged.mp3">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -82,31 +65,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="7.0.1" />
-		<PackageReference Include="AutofacSerilogIntegration" Version="5.0.0" />
-		<PackageReference Include="Ben.Demystifier" Version="0.4.1" />
 		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
-		<PackageReference Include="Serilog">
-			<Version>2.12.0</Version>
-		</PackageReference>
-		<PackageReference Include="Serilog.Enrichers.Context" Version="4.6.0" />
-		<PackageReference Include="Serilog.Enrichers.Environment">
-			<Version>2.2.0</Version>
-		</PackageReference>
-		<PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
-		<PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
-		<PackageReference Include="Serilog.Sinks.Console">
-			<Version>4.1.0</Version>
-		</PackageReference>
-		<PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
-		<PackageReference Include="Serilog.Sinks.File">
-			<Version>5.0.0</Version>
-		</PackageReference>
-		<PackageReference Include="Serilog.Sinks.Trace" Version="3.0.0" />
-		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="System.ComponentModel.Composition" Version="7.0.0" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
-		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -132,6 +91,15 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Settings.settings</DependentUpon>
 		</Compile>
+		<Compile Remove="UserControls\SettingsForms\GeneralForms\SoundForm.xaml.cs" />
+		<Compile Remove="UserControls\SettingsForms\GeneralForms\SoundFormViewModel.cs" />
+		<Compile Remove="View\HotkeyView.xaml.cs" />
+		<Compile Remove="View\HotkeyViewModel.cs" />
+		<Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs" />
+		<Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs" />
+		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs" />
+		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs" />
+		<Compile Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -141,8 +109,15 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
+
 	<ItemGroup>
-		<ProjectReference Include="..\ChaosRecipeEnhancer.Common\ChaosRecipeEnhancer.Common.csproj" />
+		<Page Remove="UserControls\SettingsForms\GeneralForms\SoundForm.xaml" />
+		<Page Remove="View\HotkeyView.xaml" />
+		<Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml" />
+		<Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml" />
+		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
+		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml" />
+		<Page Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml" />
 	</ItemGroup>
 
 </Project>

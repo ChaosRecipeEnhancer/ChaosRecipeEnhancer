@@ -2,17 +2,18 @@
 using System.ComponentModel;
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Api.Data;
+using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities;
 
-namespace ChaosRecipeEnhancer.UI.Model;
+namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 
-public interface ISelectedStashTabHandler
+internal interface ISelectedStashTabHandler
 {
     public StashTab SelectedStashTab { get; set; }
 }
 
-public sealed class ItemSetManager : ViewModelBase, ISelectedStashTabHandler
+public class ItemSetManager : ViewModelBase, ISelectedStashTabHandler
 {
     private readonly List<ItemSet> _itemSetList = new();
 
@@ -28,16 +29,13 @@ public sealed class ItemSetManager : ViewModelBase, ISelectedStashTabHandler
         get => _selectedStashTab;
         set
         {
-            if (SetProperty(ref _selectedStashTab, value) && _selectedStashTab is not null)
-                Settings.Default.SelectedStashTabName = _selectedStashTab.TabName;
+            if (SetProperty(ref _selectedStashTab, value) && _selectedStashTab is not null) Settings.Default.SelectedStashTabName = _selectedStashTab.TabName;
         }
     }
 
     private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(Settings.FullSetThreshold) ||
-            e.PropertyName == nameof(Settings.SetTrackerOverlayItemCounterDisplayMode))
-            _selectedStashTab.UpdateDisplay();
+        if (e.PropertyName == nameof(Settings.FullSetThreshold) || e.PropertyName == nameof(Settings.SetTrackerOverlayItemCounterDisplayMode)) _selectedStashTab.UpdateDisplay();
     }
 
     public void UpdateData()
@@ -119,8 +117,7 @@ public sealed class ItemSetManager : ViewModelBase, ISelectedStashTabHandler
                 Item closestMissingItem = null;
                 var minDistance = double.PositiveInfinity;
 
-                foreach (var item in _selectedStashTab.ItemsForChaosRecipe.Where(item =>
-                             itemSet.NeedsItem(item) && itemSet.GetItemDistance(item) < minDistance))
+                foreach (var item in _selectedStashTab.ItemsForChaosRecipe.Where(item => itemSet.NeedsItem(item) && itemSet.GetItemDistance(item) < minDistance))
                 {
                     minDistance = itemSet.GetItemDistance(item);
                     closestMissingItem = item;

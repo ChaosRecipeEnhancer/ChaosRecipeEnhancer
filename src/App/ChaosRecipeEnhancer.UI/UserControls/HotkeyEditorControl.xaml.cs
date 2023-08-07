@@ -3,97 +3,85 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using ChaosRecipeEnhancer.UI.BusinessLogic.Hotkeys;
-using Serilog;
 
 namespace ChaosRecipeEnhancer.UI.UserControls;
 
 /// <summary>
 ///     Interaction logic for HotkeyEditorControl.xaml
 /// </summary>
-public partial class HotkeyEditorControl
+internal partial class HotkeyEditorControl
 {
-	#region Fields
+    #region Constructors
 
-	private readonly ILogger _logger;
+    public HotkeyEditorControl()
+    {
+        InitializeComponent();
+    }
 
-	#endregion
+    #endregion
 
-	#region Constructors
+    #region Properties
 
-	public HotkeyEditorControl()
-	{
-		_logger = Log.ForContext<HotkeyEditorControl>();
-		_logger.Debug("Constructing HotkeyEditorControl");
+    public static readonly DependencyProperty HotkeyProperty =
+        DependencyProperty.Register(nameof(Hotkey), typeof(Hotkey),
+            typeof(HotkeyEditorControl),
+            new FrameworkPropertyMetadata(default(Hotkey),
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-		InitializeComponent();
+    public Hotkey Hotkey
+    {
+        get => (Hotkey)GetValue(HotkeyProperty);
+        set => SetValue(HotkeyProperty, value);
+    }
 
-		_logger.Debug("HotkeyEditorControl constructed successfully");
-	}
+    #endregion
 
-	#endregion
+    #region Event Handlers
 
-	#region Properties
+    private void HotkeyTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        // Don't let the event pass further
+        // because we don't want standard textbox shortcuts working
+        e.Handled = true;
 
-	public static readonly DependencyProperty HotkeyProperty =
-		DependencyProperty.Register(nameof(Hotkey), typeof(Hotkey),
-			typeof(HotkeyEditorControl),
-			new FrameworkPropertyMetadata(default(Hotkey),
-				FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+        // Get modifiers and key data
+        var modifiers = Keyboard.Modifiers;
+        var key = e.Key;
 
-	public Hotkey Hotkey
-	{
-		get => (Hotkey)GetValue(HotkeyProperty);
-		set => SetValue(HotkeyProperty, value);
-	}
+        // When Alt is pressed, SystemKey is used instead
+        if (key == Key.System) key = e.SystemKey;
 
-	#endregion
+        // Pressing delete, backspace or escape without modifiers clears the current value
+        if (modifiers == ModifierKeys.None &&
+            (key == Key.Delete || key == Key.Back || key == Key.Escape))
+        {
+            Hotkey = null;
+            return;
+        }
 
-	#region Event Handlers
+        // If no actual key was pressed - return
+        if (key == Key.LeftCtrl ||
+            key == Key.RightCtrl ||
+            key == Key.LeftAlt ||
+            key == Key.RightAlt ||
+            key == Key.LeftShift ||
+            key == Key.RightShift ||
+            key == Key.LWin ||
+            key == Key.RWin ||
+            key == Key.Clear ||
+            key == Key.OemClear ||
+            key == Key.Apps)
+            return;
 
-	private void HotkeyTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
-	{
-		// Don't let the event pass further
-		// because we don't want standard textbox shortcuts working
-		e.Handled = true;
+        // Update the value
+        Hotkey = new Hotkey(key, modifiers);
+    }
 
-		// Get modifiers and key data
-		var modifiers = Keyboard.Modifiers;
-		var key = e.Key;
+    private void TextBox_Loaded(object sender, RoutedEventArgs e)
+    {
+        Dispatcher.BeginInvoke(DispatcherPriority.Input,
+            new Action(delegate { Keyboard.Focus((IInputElement)sender); }));
+    }
 
-		// When Alt is pressed, SystemKey is used instead
-		if (key == Key.System) key = e.SystemKey;
-
-		// Pressing delete, backspace or escape without modifiers clears the current value
-		if (modifiers == ModifierKeys.None &&
-			(key == Key.Delete || key == Key.Back || key == Key.Escape))
-		{
-			Hotkey = null;
-			return;
-		}
-
-		// If no actual key was pressed - return
-		if (key == Key.LeftCtrl ||
-			key == Key.RightCtrl ||
-			key == Key.LeftAlt ||
-			key == Key.RightAlt ||
-			key == Key.LeftShift ||
-			key == Key.RightShift ||
-			key == Key.LWin ||
-			key == Key.RWin ||
-			key == Key.Clear ||
-			key == Key.OemClear ||
-			key == Key.Apps)
-			return;
-
-		// Update the value
-		Hotkey = new Hotkey(key, modifiers);
-	}
-
-	private void TextBox_Loaded(object sender, RoutedEventArgs e)
-	{
-		Dispatcher.BeginInvoke(DispatcherPriority.Input,
-			new Action(delegate { Keyboard.Focus((IInputElement)sender); }));
-	}
-
-	#endregion
+    #endregion
 }

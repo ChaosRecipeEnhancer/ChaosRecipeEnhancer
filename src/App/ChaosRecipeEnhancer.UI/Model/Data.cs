@@ -57,8 +57,6 @@
 //	}
 
 //	public static ActiveItemTypes ActiveItems { get; private set; } = new ActiveItemTypes();
-//	public static MediaPlayer Player { get; } = new MediaPlayer();
-//	public static MediaPlayer PlayerSet { get; } = new MediaPlayer();
 //	//public static List<ItemSet> ItemSetListHighlight { get; } = new List<ItemSet>();
 //	public static CancellationTokenSource CancellationTokenSource { get; set; } = new CancellationTokenSource();
 //	public static CancellationToken CancellationToken { get; set; } = CancellationTokenSource.Token;
@@ -784,3 +782,4 @@
 
 //	#endregion
 //}
+

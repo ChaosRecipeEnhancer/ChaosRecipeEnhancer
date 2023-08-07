@@ -1,58 +1,37 @@
-﻿using System.ComponentModel;
-using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
+﻿using ChaosRecipeEnhancer.UI.Api.Data;
+using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 
-public sealed class InteractiveStashTabCell : INotifyPropertyChanged
+public sealed class InteractiveStashTabCell : ViewModelBase
 {
-	private bool _active;
-	private string _buttonText;
+    private bool _active;
 
-	/// <summary>
-	/// Representation of PoE item class (translated directly from PoE API request). This is the in-game item the
-	/// current cell (visual object/button) is tied to.
-	/// </summary>
-	public EnhancedItemModel ItemModel
-	{
-		get; set;
-	}
-	public int XIndex
-	{
-		get; set;
-	}
-	public int YIndex
-	{
-		get; set;
-	}
+    public InteractiveStashTabCell(int x, int y)
+    {
+        XIndex = x;
+        YIndex = y;
+    }
 
-	public bool Active
-	{
-		get => _active;
-		set
-		{
-			_active = value;
-			OnPropertyChanged("Active");
-		}
-	}
+    public int XIndex { get; }
+    public int YIndex { get; }
+    public Item Item { get; private set; }
 
-	public string ButtonText
-	{
-		get => _buttonText;
-		set
-		{
-			_buttonText = value;
-			OnPropertyChanged("ButtonText");
-		}
-	}
+    public bool Active
+    {
+        get => _active;
+        private set => SetProperty(ref _active, value);
+    }
 
-	#region INotifyPropertyChanged implementation
+    public void Activate(ref Item item)
+    {
+        Active = true;
+        Item = item;
+    }
 
-	public event PropertyChangedEventHandler PropertyChanged;
-
-	private void OnPropertyChanged(string propertyName)
-	{
-		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-	}
-
-	#endregion
+    public void Deactivate()
+    {
+        Active = false;
+        Item = null;
+    }
 }

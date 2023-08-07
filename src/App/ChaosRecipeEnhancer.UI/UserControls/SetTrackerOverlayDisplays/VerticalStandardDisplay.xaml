@@ -145,7 +145,7 @@
                 <Image
                     MaxHeight="50"
                     MaxWidth="50"
-                    Source="../../Assets/Images/chest.png" />
+                    Source="../../Assets/Images/BodyArmor.png" />
 
                 <Border
                     Width="20"

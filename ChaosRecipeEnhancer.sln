@@ -34,8 +34,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{04178D70
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaosRecipeEnhancer.UI", "src\App\ChaosRecipeEnhancer.UI\ChaosRecipeEnhancer.UI.csproj", "{8ED4F3DC-4C9C-4274-B28F-64F1A5932BBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaosRecipeEnhancer.Common", "src\App\ChaosRecipeEnhancer.Common\ChaosRecipeEnhancer.Common.csproj", "{7DEAC08A-D8E4-457D-8A62-5F0743D7EEFA}"
-EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ChaosRecipeEnhancer.Setup", "src\App\ChaosRecipeEnhancer.Setup\ChaosRecipeEnhancer.Setup.vdproj", "{390AD3D8-8FA0-447F-9799-DC3C670198FB}"
 EndProject
 Global
@@ -70,14 +68,6 @@ Global
 		{8ED4F3DC-4C9C-4274-B28F-64F1A5932BBD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8ED4F3DC-4C9C-4274-B28F-64F1A5932BBD}.Release|x86.ActiveCfg = Release|Any CPU
 		{8ED4F3DC-4C9C-4274-B28F-64F1A5932BBD}.Release|x86.Build.0 = Release|Any CPU
-		{7DEAC08A-D8E4-457D-8A62-5F0743D7EEFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DEAC08A-D8E4-457D-8A62-5F0743D7EEFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DEAC08A-D8E4-457D-8A62-5F0743D7EEFA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7DEAC08A-D8E4-457D-8A62-5F0743D7EEFA}.Debug|x86.Build.0 = Debug|Any CPU
-		{7DEAC08A-D8E4-457D-8A62-5F0743D7EEFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DEAC08A-D8E4-457D-8A62-5F0743D7EEFA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DEAC08A-D8E4-457D-8A62-5F0743D7EEFA}.Release|x86.ActiveCfg = Release|Any CPU
-		{7DEAC08A-D8E4-457D-8A62-5F0743D7EEFA}.Release|x86.Build.0 = Release|Any CPU
 		{390AD3D8-8FA0-447F-9799-DC3C670198FB}.Debug|Any CPU.ActiveCfg = Debug
 		{390AD3D8-8FA0-447F-9799-DC3C670198FB}.Debug|Any CPU.Build.0 = Debug
 		{390AD3D8-8FA0-447F-9799-DC3C670198FB}.Debug|x86.ActiveCfg = Debug

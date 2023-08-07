@@ -1,24 +1,31 @@
-﻿<Window
-    x:Class="ChaosRecipeEnhancer.UI.View.SettingsView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-    xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
-    xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
-    xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
-    mc:Ignorable="d"
-    FontSize="14"
-    Title="Chaos Recipe Enhancer Settings"
-    FontFamily="Segoe UI Light"
-    SizeToContent="WidthAndHeight"
-    WindowStyle="SingleBorderWindow"
-    MouseDown="Window_MouseDown"
-    ResizeMode="CanMinimize"
-    Top="{Binding Source={x:Static properties:Settings.Default}, Path=SettingsWindowTopPosition, Mode=TwoWay}"
-    Left="{Binding Source={x:Static properties:Settings.Default}, Path=SettingsWindowLeftPosition, Mode=TwoWay}"
-    d:DataContext="{d:DesignInstance Type=view:SettingsView}">
+﻿<Window x:Class="ChaosRecipeEnhancer.UI.View.SettingsView"
+        x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
+        xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
+        xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
+        xmlns:base="clr-namespace:ChaosRecipeEnhancer.UI"
+        xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
+        mc:Ignorable="d"
+        FontSize="14"
+        Title="Chaos Recipe Enhancer Settings"
+        FontFamily="Segoe UI Light"
+        SizeToContent="WidthAndHeight"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanMinimize"
+        ShowActivated="True"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="700"
+        Loaded="OnWindowLoaded"
+        d:DataContext="{d:DesignInstance Type=view:SettingsViewModel}">
+
+    <Window.Resources>
+        <utilities:StringColorConverter x:Key="StringColorConverter" />
+    </Window.Resources>
 
     <Border
         BorderBrush="DarkGray"
@@ -96,188 +103,190 @@
                             Grid.Row="1"
                             Grid.RowSpan="3" />
 
+                        <!-- TODO: Fix Hotkey stuff (Files are simply excluded for now) -->
                         <!-- Hotkeys Section Start -->
-                        <Grid
-                            Grid.Column="3"
-                            Grid.Row="1">
-
-                            <Grid.ColumnDefinitions>
-
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-
-                            </Grid.ColumnDefinitions>
-
-                            <Grid.RowDefinitions>
-
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="10" />
-
-                            </Grid.RowDefinitions>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                VerticalAlignment="Center"
-                                Grid.ColumnSpan="2"
-                                Text="Hotkeys"
-                                FontSize="24"
-                                FontWeight="Bold" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="3"
-                                VerticalAlignment="Center"
-                                Text="Fetch Stash Contents:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Hotkey for fetching the most up-to-date stash contents. Remember that you must re-zone to force your stash contents to update on GGG's servers." />
-
-                            <Button
-                                x:Name="RefreshHotkey"
-                                Width="200"
-                                Grid.Column="3"
-                                Grid.Row="3"
-                                IsManipulationEnabled="False"
-                                Focusable="False"
-                                Content="{Binding Source={x:Static properties:Settings.Default}, Path=FetchStashHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                                Click="RefreshHotkey_Click">
-
-                                <Button.Style>
-
-                                    <Style TargetType="Button">
-
-                                        <Setter Property="Background"
-                                                Value="Transparent" />
-
-                                        <Style.Triggers>
-
-                                            <Trigger Property="IsMouseOver"
-                                                     Value="True">
-
-                                                <Setter Property="Background"
-                                                        Value="Transparent" />
-
-                                            </Trigger>
-
-                                        </Style.Triggers>
-
-                                    </Style>
-
-                                </Button.Style>
-
-                            </Button>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Toggle Set Tracker Overlay:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Hotkey for showing/hiding the Set Tracker Overlay. While hidden, there will be no requests to the server." />
-
-                            <!-- TODO: [Refactor] Rename the event methods to better represent what they do (i.e. CustomHotkeyToggle -> ToggleSetTracker something something)-->
-                            <Button
-                                x:Name="CustomHotkeyToggle"
-                                Width="200"
-                                Grid.Column="3"
-                                Grid.Row="5"
-                                IsManipulationEnabled="False"
-                                Focusable="False"
-                                Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleSetTrackerOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                                Click="CustomHotkeyToggle_Click">
-
-                                <Button.Style>
-
-                                    <Style TargetType="Button">
-
-                                        <Setter
-                                            Property="Background"
-                                            Value="Transparent" />
-
-                                        <Style.Triggers>
-
-                                            <Trigger
-                                                Property="IsMouseOver"
-                                                Value="True">
-
-                                                <Setter
-                                                    Property="Background"
-                                                    Value="Transparent" />
-
-                                            </Trigger>
-
-                                        </Style.Triggers>
-
-                                    </Style>
-
-                                </Button.Style>
-
-                            </Button>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Toggle Stash Tab Overlay:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Hotkey for showing/hiding the Stash Tab Overlay." />
-
-                            <Button
-                                x:Name="StashTabHotkey"
-                                Width="200"
-                                Grid.Row="7"
-                                Grid.Column="3"
-                                IsManipulationEnabled="False"
-                                Focusable="False"
-                                Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleStashTabOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                                Click="StashTabHotkey_Click">
-
-                                <Button.Style>
-
-                                    <Style TargetType="Button">
-
-                                        <Setter
-                                            Property="Background"
-                                            Value="Transparent" />
-
-                                        <Style.Triggers>
-
-                                            <Trigger
-                                                Property="IsMouseOver"
-                                                Value="True">
-
-                                                <Setter
-                                                    Property="Background"
-                                                    Value="Transparent" />
-
-                                            </Trigger>
-
-                                        </Style.Triggers>
-
-                                    </Style>
-
-                                </Button.Style>
-
-                            </Button>
-
-                        </Grid>
+                        <!-- <Grid -->
+                        <!--     Grid.Column="3" -->
+                        <!--     Grid.Row="1"> -->
+                        <!-- -->
+                        <!--     <Grid.ColumnDefinitions> -->
+                        <!-- -->
+                        <!--         <ColumnDefinition Width="10" /> -->
+                        <!--         <ColumnDefinition Width="*" /> -->
+                        <!--         <ColumnDefinition Width="10" /> -->
+                        <!--         <ColumnDefinition Width="*" /> -->
+                        <!--         <ColumnDefinition Width="10" /> -->
+                        <!-- -->
+                        <!--     </Grid.ColumnDefinitions> -->
+                        <!-- -->
+                        <!--     <Grid.RowDefinitions> -->
+                        <!-- -->
+                        <!--         <RowDefinition Height="10" /> -->
+                        <!--         <RowDefinition Height="30" /> -->
+                        <!--         <RowDefinition Height="5" /> -->
+                        <!--         <RowDefinition Height="25" /> -->
+                        <!--         <RowDefinition Height="5" /> -->
+                        <!--         <RowDefinition Height="25" /> -->
+                        <!--         <RowDefinition Height="5" /> -->
+                        <!--         <RowDefinition Height="25" /> -->
+                        <!--         <RowDefinition Height="5" /> -->
+                        <!--         <RowDefinition Height="25" /> -->
+                        <!--         <RowDefinition Height="10" /> -->
+                        <!-- -->
+                        <!--     </Grid.RowDefinitions> -->
+                        <!-- -->
+                        <!--     <TextBlock -->
+                        <!--         Grid.Column="1" -->
+                        <!--         Grid.Row="1" -->
+                        <!--         VerticalAlignment="Center" -->
+                        <!--         Grid.ColumnSpan="2" -->
+                        <!--         Text="Hotkeys" -->
+                        <!--         FontSize="24" -->
+                        <!--         FontWeight="Bold" /> -->
+                        <!-- -->
+                        <!--     <TextBlock -->
+                        <!--         Grid.Column="1" -->
+                        <!--         Grid.Row="3" -->
+                        <!--         VerticalAlignment="Center" -->
+                        <!--         Text="Fetch Stash Contents:" -->
+                        <!--         ToolTipService.InitialShowDelay="50" -->
+                        <!--         ToolTip="Hotkey for fetching the most up-to-date stash contents. Remember that you must re-zone to force your stash contents to update on GGG's servers." /> -->
+                        <!-- -->
+                        <!--     <Button -->
+                        <!--         x:Name="RefreshHotkey" -->
+                        <!--         Width="200" -->
+                        <!--         Grid.Column="3" -->
+                        <!--         Grid.Row="3" -->
+                        <!--         IsManipulationEnabled="False" -->
+                        <!--         Focusable="False" -->
+                        <!--         Content="{Binding Source={x:Static properties:Settings.Default}, Path=FetchStashHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}" -->
+                        <!--         Click="RefreshHotkey_Click"> -->
+                        <!-- -->
+                        <!--         <Button.Style> -->
+                        <!-- -->
+                        <!--             <Style TargetType="Button"> -->
+                        <!-- -->
+                        <!--                 <Setter Property="Background" -->
+                        <!--                         Value="Transparent" /> -->
+                        <!-- -->
+                        <!--                 <Style.Triggers> -->
+                        <!-- -->
+                        <!--                     <Trigger Property="IsMouseOver" -->
+                        <!--                              Value="True"> -->
+                        <!-- -->
+                        <!--                         <Setter Property="Background" -->
+                        <!--                                 Value="Transparent" /> -->
+                        <!-- -->
+                        <!--                     </Trigger> -->
+                        <!-- -->
+                        <!--                 </Style.Triggers> -->
+                        <!-- -->
+                        <!--             </Style> -->
+                        <!-- -->
+                        <!--         </Button.Style> -->
+                        <!-- -->
+                        <!--     </Button> -->
+                        <!-- -->
+                        <!--     <TextBlock -->
+                        <!--         Grid.Column="1" -->
+                        <!--         Grid.Row="5" -->
+                        <!--         VerticalAlignment="Center" -->
+                        <!--         Text="Toggle Set Tracker Overlay:" -->
+                        <!--         ToolTipService.InitialShowDelay="50" -->
+                        <!--         ToolTip="Hotkey for showing/hiding the Set Tracker Overlay. While hidden, there will be no requests to the server." /> -->
+                        <!-- -->
+                        <!--     ~1~ TODO: [Refactor] Rename the event methods to better represent what they do (i.e. CustomHotkeyToggle -> ToggleSetTracker something something)@1@ -->
+                        <!--     <Button -->
+                        <!--         x:Name="CustomHotkeyToggle" -->
+                        <!--         Width="200" -->
+                        <!--         Grid.Column="3" -->
+                        <!--         Grid.Row="5" -->
+                        <!--         IsManipulationEnabled="False" -->
+                        <!--         Focusable="False" -->
+                        <!--         Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleSetTrackerOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}" -->
+                        <!--         Click="CustomHotkeyToggle_Click"> -->
+                        <!-- -->
+                        <!--         <Button.Style> -->
+                        <!-- -->
+                        <!--             <Style TargetType="Button"> -->
+                        <!-- -->
+                        <!--                 <Setter -->
+                        <!--                     Property="Background" -->
+                        <!--                     Value="Transparent" /> -->
+                        <!-- -->
+                        <!--                 <Style.Triggers> -->
+                        <!-- -->
+                        <!--                     <Trigger -->
+                        <!--                         Property="IsMouseOver" -->
+                        <!--                         Value="True"> -->
+                        <!-- -->
+                        <!--                         <Setter -->
+                        <!--                             Property="Background" -->
+                        <!--                             Value="Transparent" /> -->
+                        <!-- -->
+                        <!--                     </Trigger> -->
+                        <!-- -->
+                        <!--                 </Style.Triggers> -->
+                        <!-- -->
+                        <!--             </Style> -->
+                        <!-- -->
+                        <!--         </Button.Style> -->
+                        <!-- -->
+                        <!--     </Button> -->
+                        <!-- -->
+                        <!--     <TextBlock -->
+                        <!--         Grid.Column="1" -->
+                        <!--         Grid.Row="7" -->
+                        <!--         VerticalAlignment="Center" -->
+                        <!--         Text="Toggle Stash Tab Overlay:" -->
+                        <!--         ToolTipService.InitialShowDelay="50" -->
+                        <!--         ToolTip="Hotkey for showing/hiding the Stash Tab Overlay." /> -->
+                        <!-- -->
+                        <!--     <Button -->
+                        <!--         x:Name="StashTabHotkey" -->
+                        <!--         Width="200" -->
+                        <!--         Grid.Row="7" -->
+                        <!--         Grid.Column="3" -->
+                        <!--         IsManipulationEnabled="False" -->
+                        <!--         Focusable="False" -->
+                        <!--         Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleStashTabOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}" -->
+                        <!--         Click="StashTabHotkey_Click"> -->
+                        <!-- -->
+                        <!--         <Button.Style> -->
+                        <!-- -->
+                        <!--             <Style TargetType="Button"> -->
+                        <!-- -->
+                        <!--                 <Setter -->
+                        <!--                     Property="Background" -->
+                        <!--                     Value="Transparent" /> -->
+                        <!-- -->
+                        <!--                 <Style.Triggers> -->
+                        <!-- -->
+                        <!--                     <Trigger -->
+                        <!--                         Property="IsMouseOver" -->
+                        <!--                         Value="True"> -->
+                        <!-- -->
+                        <!--                         <Setter -->
+                        <!--                             Property="Background" -->
+                        <!--                             Value="Transparent" /> -->
+                        <!-- -->
+                        <!--                     </Trigger> -->
+                        <!-- -->
+                        <!--                 </Style.Triggers> -->
+                        <!-- -->
+                        <!--             </Style> -->
+                        <!-- -->
+                        <!--         </Button.Style> -->
+                        <!-- -->
+                        <!--     </Button> -->
+                        <!-- -->
+                        <!-- </Grid> -->
                         <!-- Hotkeys Section End -->
 
-                        <generalForms:SoundForm
-                            Grid.Column="3"
-                            Grid.Row="2" />
+                        <!-- TODO: Fix Sound stuff (Files are simply excluded for now) -->
+                        <!-- <generalForms:SoundForm -->
+                        <!--     Grid.Column="3" -->
+                        <!--     Grid.Row="2" /> -->
 
                     </Grid>
                     <!-- General Settings Tab Contents End -->
@@ -396,9 +405,7 @@
                                 Grid.Row="7"
                                 Width="200"
                                 VerticalContentAlignment="Center"
-                                Name="ShowNumbersComboBox"
-                                SelectionChanged="ShowNumbersComboBox_SelectionChanged"
-                                SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayItemCounterDisplayMode, Mode=TwoWay}">
+                                SelectedIndex="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Mode=TwoWay}">
 
                                 <ComboBoxItem Content="None" />
                                 <ComboBoxItem Content="Total Items" />
@@ -419,9 +426,7 @@
                                 Grid.Row="3"
                                 Width="200"
                                 VerticalContentAlignment="Center"
-                                Name="SetTrackerOverlayDisplayModeComboBox"
-                                SelectionChanged="SetTrackerOverlayDisplayModeComboBox_SelectionChanged"
-                                SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayDisplayMode, Mode=TwoWay}">
+                                SelectedIndex="{Binding Settings.SetTrackerOverlayDisplayMode, Mode=TwoWay}">
 
                                 <ComboBoxItem Content="Standard" />
                                 <ComboBoxItem Content="Minified" />
@@ -456,17 +461,13 @@
                             Grid.Row="1">
 
                             <Grid.ColumnDefinitions>
-
                                 <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="10" />
-
                             </Grid.ColumnDefinitions>
-
                             <Grid.RowDefinitions>
-
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="5" />
@@ -484,7 +485,6 @@
                                 <RowDefinition Height="5" />
                                 <RowDefinition Height="25" />
                                 <RowDefinition Height="10" />
-
                             </Grid.RowDefinitions>
 
                             <TextBlock
@@ -504,8 +504,8 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The background opacity of the stash Tabs overlay from 0 (0%) to 1 (100%)." />
 
+                            <!-- Stash Tab Overlay Opacity Slider -->
                             <Slider
-                                x:Name="OpacityStashTab"
                                 Grid.Column="3"
                                 Grid.Row="3"
                                 Width="200"
@@ -515,7 +515,7 @@
                                 AutoToolTipPlacement="TopLeft"
                                 IsMoveToPointEnabled="True"
                                 AutoToolTipPrecision="2"
-                                Value="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayOpacity, Mode=TwoWay}" />
+                                Value="{Binding Settings.StashTabOverlayOpacity, Mode=TwoWay}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -525,13 +525,13 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The color of the background of the Stash Tab Overlay. Make this opaque if you want." />
 
+                            <!-- Stash Tab Overlay Color Picker -->
                             <xctk:ColorPicker
                                 Grid.Column="3"
                                 Grid.Row="5"
                                 Width="200"
-                                Name="ColorStashBackgroundPicker"
                                 ColorMode="ColorCanvas"
-                                SelectedColorChanged="ColorStashBackgroundPicker_SelectedColorChanged" />
+                                SelectedColor="{Binding Settings.StashTabOverlayBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -541,13 +541,13 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The color that highlights the items in your Stash Tab Overlay." />
 
+                            <!-- Stash Tab Overlay Highlighted Items Color Picker -->
                             <xctk:ColorPicker
                                 Grid.Column="3"
                                 Grid.Row="7"
                                 Width="200"
-                                Name="ColorStashPicker"
                                 ColorMode="ColorCanvas"
-                                SelectedColorChanged="ColorStashPicker_SelectedColorChanged" />
+                                SelectedColor="{Binding Settings.StashTabOverlayHighlightColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -557,16 +557,16 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="Item by Item: highlights each item after another. &#x0a;Set by Set: highlights a full set at once, each after another. &#x0a;All Items: highlights all items at once." />
 
+                            <!-- Stash Tab Overlay Highlighted Item Picker Mode -->
                             <ComboBox
                                 Grid.Column="3"
                                 Grid.Row="9"
-                                Name="HighlightModeComboBox"
                                 Width="200"
                                 VerticalContentAlignment="Center"
-                                SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayHighlightMode, Mode=TwoWay}">
+                                SelectedIndex="{Binding Settings.StashTabOverlayHighlightMode, Mode=TwoWay}">
 
-                                <ComboBoxItem Content="Item by Item" />
                                 <ComboBoxItem Content="Set by Set" />
+                                <ComboBoxItem Content="Item by Item" />
                                 <ComboBoxItem Content="All Items" />
 
                             </ComboBox>
@@ -582,7 +582,6 @@
                             <Slider
                                 Grid.Column="3"
                                 Grid.Row="11"
-                                Name="TabHeaderMarginSlider"
                                 Width="200"
                                 VerticalAlignment="Center"
                                 Minimum="0"
@@ -590,8 +589,7 @@
                                 AutoToolTipPlacement="TopLeft"
                                 IsMoveToPointEnabled="True"
                                 AutoToolTipPrecision="1"
-                                ValueChanged="TabHeaderMarginSlider_ValueChanged"
-                                Value="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayIndividualTabMargin, Mode=TwoWay}" />
+                                Value="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -612,8 +610,7 @@
                                 AutoToolTipPlacement="TopLeft"
                                 IsMoveToPointEnabled="True"
                                 AutoToolTipPrecision="1"
-                                ValueChanged="TabHeaderWidthSlider_ValueChanged"
-                                Value="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayIndividualTabHeaderWidth, Mode=TwoWay}" />
+                                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderWidth, Mode=TwoWay}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -634,8 +631,7 @@
                                 AutoToolTipPlacement="TopLeft"
                                 IsMoveToPointEnabled="True"
                                 AutoToolTipPrecision="1"
-                                ValueChanged="TabHeaderGapSlider_ValueChanged"
-                                Value="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" />
+                                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" />
 
                         </Grid>
                         <!-- Stash Tab Overlay Section End -->
@@ -651,18 +647,14 @@
                     <Grid>
 
                         <Grid.ColumnDefinitions>
-
                             <ColumnDefinition Width="10" />
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="10" />
-
                         </Grid.ColumnDefinitions>
-
                         <Grid.RowDefinitions>
-
                             <RowDefinition Height="1" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
@@ -672,27 +664,21 @@
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
-
                         </Grid.RowDefinitions>
 
                         <!-- GENERAL -->
-
                         <Grid
                             Grid.Column="1"
                             Grid.Row="1">
 
                             <Grid.ColumnDefinitions>
-
                                 <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="10" />
-
                             </Grid.ColumnDefinitions>
-
                             <Grid.RowDefinitions>
-
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="5" />
@@ -701,7 +687,6 @@
                                 <RowDefinition Height="25" />
                                 <RowDefinition Height="5" />
                                 <RowDefinition Height="25" />
-
                             </Grid.RowDefinitions>
 
                             <TextBlock
@@ -726,7 +711,7 @@
                                 Grid.Row="3"
                                 x:Name="LootFilterActiveCheckbox"
                                 VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled, Mode=TwoWay}" />
+                                IsChecked="{Binding Settings.LootFilterManipulationEnabled, Mode=TwoWay}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -737,15 +722,15 @@
                                 ToolTip="The path to your loot filter. Standard path is: 'Username/Documents/My Games/Path of Exile'." />
 
                             <Button
+                                x:Name="LootFilterFileDialog"
                                 Grid.Column="3"
                                 Grid.Row="5"
-                                x:Name="LootFilterFileDialog"
                                 Width="200"
                                 Click="LootFilterFileDialog_Click"
                                 ToolTipService.InitialShowDelay="50"
-                                ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterFileLocation, Mode=TwoWay}"
-                                Content="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterFileLocation, Mode=TwoWay}"
-                                HorizontalContentAlignment="Left" >
+                                ToolTip="{Binding Settings.LootFilterFileLocation, Mode=OneWay}"
+                                Content="{Binding Settings.LootFilterFileLocation, Mode=OneWay}"
+                                HorizontalContentAlignment="Left">
 
                                 <Button.Style>
 
@@ -786,9 +771,8 @@
                             <CheckBox
                                 Grid.Column="3"
                                 Grid.Row="7"
-                                x:Name="LootFilterIconsCheckBox"
                                 VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterIconsEnabled, Mode=TwoWay}" />
+                                IsChecked="{Binding Settings.LootFilterIconsEnabled, Mode=TwoWay}" />
 
                         </Grid>
 
@@ -849,13 +833,13 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The color of rings. This color will also be written into your loot filter if you activated Loot Filter Manipulation.." />
 
+                            <!-- Ring Color Picker -->
                             <xctk:ColorPicker
                                 Grid.Column="3"
                                 Grid.Row="3"
                                 Width="200"
-                                Name="ColorRingPicker"
                                 ColorMode="ColorCanvas"
-                                SelectedColorChanged="ColorRingPicker_SelectedColorChanged" />
+                                SelectedColor="{Binding Settings.LootFilterRingColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -865,13 +849,13 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The color of amulets. This color will also be written into your loot filter if you activated Loot Filter Manipulation.." />
 
+                            <!-- Amulet Color -->
                             <xctk:ColorPicker
                                 Grid.Column="3"
                                 Grid.Row="5"
                                 Width="200"
-                                Name="ColorAmuletPicker"
                                 ColorMode="ColorCanvas"
-                                SelectedColorChanged="ColorAmuletPicker_SelectedColorChanged" />
+                                SelectedColor="{Binding Settings.LootFilterAmuletColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -881,13 +865,13 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The color of belts. This color will also be written into your loot filter if you activated Loot Filter Manipulation.." />
 
+                            <!-- Belt Color Picker -->
                             <xctk:ColorPicker
                                 Grid.Column="3"
                                 Grid.Row="7"
                                 Width="200"
-                                Name="ColorBeltPicker"
                                 ColorMode="ColorCanvas"
-                                SelectedColorChanged="ColorBeltPicker_SelectedColorChanged" />
+                                SelectedColor="{Binding Settings.LootFilterBeltColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -897,13 +881,13 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The color of boots. This color will also be written into your loot filter if you activated Loot Filter Manipulation." />
 
+                            <!-- Boots Color Picker -->
                             <xctk:ColorPicker
                                 Grid.Column="3"
                                 Grid.Row="9"
                                 Width="200"
-                                Name="ColorBootsPicker"
                                 ColorMode="ColorCanvas"
-                                SelectedColorChanged="ColorBootsPicker_SelectedColorChanged" />
+                                SelectedColor="{Binding Settings.LootFilterBootsColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -913,13 +897,13 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The color of gloves. This color will also be written into your loot filter if you activated Loot Filter Manipulation." />
 
+                            <!-- Gloves Color Picker -->
                             <xctk:ColorPicker
                                 Grid.Column="3"
                                 Grid.Row="11"
                                 Width="200"
-                                Name="ColorGlovesPicker"
                                 ColorMode="ColorCanvas"
-                                SelectedColorChanged="ColorGlovesPicker_SelectedColorChanged" />
+                                SelectedColor="{Binding Settings.LootFilterGlovesColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -929,13 +913,13 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The color of helmets. This color will also be written into your loot filter if you activated Loot Filter Manipulation." />
 
+                            <!-- Helmet Color Picker -->
                             <xctk:ColorPicker
                                 Grid.Column="3"
                                 Grid.Row="13"
                                 Width="200"
-                                Name="ColorHelmetPicker"
                                 ColorMode="ColorCanvas"
-                                SelectedColorChanged="ColorHelmetPicker_SelectedColorChanged" />
+                                SelectedColor="{Binding Settings.LootFilterHelmetColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -945,13 +929,13 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The color of body armours. This color will also be written into your loot filter if you activated Loot Filter Manipulation.." />
 
+                            <!-- Body Armor Color -->
                             <xctk:ColorPicker
                                 Grid.Column="3"
                                 Grid.Row="15"
                                 Width="200"
-                                Name="ColorChestPicker"
                                 ColorMode="ColorCanvas"
-                                SelectedColorChanged="ColorChestPicker_SelectedColorChanged" />
+                                SelectedColor="{Binding Settings.LootFilterBodyArmourColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -961,13 +945,13 @@
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The color of weapons. This color will also be written into your loot filter if you activated Loot Filter Manipulation." />
 
+                            <!-- Weapon Color Picker -->
                             <xctk:ColorPicker
                                 Grid.Column="3"
                                 Grid.Row="17"
                                 Width="200"
-                                Name="ColorWeaponsPicker"
                                 ColorMode="ColorCanvas"
-                                SelectedColorChanged="ColorWeaponsPicker_SelectedColorChanged" />
+                                SelectedColor="{Binding Settings.LootFilterWeaponColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
                         </Grid>
 
@@ -1026,13 +1010,13 @@
                                 VerticalAlignment="Center"
                                 Text="Rings:" />
 
+                            <!-- Rings Always Active -->
                             <CheckBox
                                 Grid.Column="3"
                                 Grid.Row="3"
                                 Width="200"
-                                x:Name="RingsAlwaysActiveCheckBox"
                                 VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterRingsAlwaysActive, Mode=TwoWay}" />
+                                IsChecked="{Binding Settings.LootFilterRingsAlwaysActive, Mode=TwoWay}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -1040,13 +1024,13 @@
                                 VerticalAlignment="Center"
                                 Text="Amulets:" />
 
+                            <!-- Amulets Always Active -->
                             <CheckBox
                                 Grid.Column="3"
                                 Grid.Row="5"
                                 Width="200"
-                                x:Name="AmuletsAlwaysActiveCheckBox"
                                 VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterAmuletsAlwaysActive, Mode=TwoWay}" />
+                                IsChecked="{Binding Settings.LootFilterAmuletsAlwaysActive, Mode=TwoWay}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -1054,13 +1038,13 @@
                                 VerticalAlignment="Center"
                                 Text="Belts:" />
 
+                            <!-- Belts Always Active -->
                             <CheckBox
                                 Grid.Column="3"
                                 Grid.Row="7"
                                 Width="200"
-                                x:Name="BeltsAlwaysActiveCheckBox"
                                 VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBeltsAlwaysActive, Mode=TwoWay}" />
+                                IsChecked="{Binding Settings.LootFilterBeltsAlwaysActive, Mode=TwoWay}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -1068,26 +1052,26 @@
                                 VerticalAlignment="Center"
                                 Text="Boots:" />
 
+                            <!-- Boots Always Active -->
                             <CheckBox
                                 Grid.Column="3"
                                 Grid.Row="9"
                                 Width="200"
-                                x:Name="BootsAlwaysActiveCheckBox"
                                 VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBootsAlwaysActive, Mode=TwoWay}" />
+                                IsChecked="{Binding Settings.LootFilterBootsAlwaysActive, Mode=TwoWay}" />
 
                             <TextBlock Grid.Column="1"
                                        Grid.Row="11"
                                        VerticalAlignment="Center"
                                        Text="Gloves:" />
 
+                            <!-- Gloves Always Active -->
                             <CheckBox
                                 Grid.Column="3"
                                 Grid.Row="11"
                                 Width="200"
-                                x:Name="GlovesAlwaysActiveCheckBox"
                                 VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterGlovesAlwaysActive, Mode=TwoWay}" />
+                                IsChecked="{Binding Settings.LootFilterGlovesAlwaysActive, Mode=TwoWay}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -1095,13 +1079,13 @@
                                 VerticalAlignment="Center"
                                 Text="Helmets:" />
 
+                            <!-- Helmet Always Active -->
                             <CheckBox
                                 Grid.Column="3"
                                 Grid.Row="13"
                                 Width="200"
-                                x:Name="HelmetsAlwaysActiveCheckBox"
                                 VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterHelmetsAlwaysActive, Mode=TwoWay}" />
+                                IsChecked="{Binding Settings.LootFilterHelmetsAlwaysActive, Mode=TwoWay}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -1109,13 +1093,13 @@
                                 VerticalAlignment="Center"
                                 Text="Body Armours:" />
 
+                            <!-- Body Armor Always Active -->
                             <CheckBox
                                 Grid.Column="3"
                                 Grid.Row="15"
                                 Width="200"
-                                x:Name="ChestsAlwaysActiveCheckBox"
                                 VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBodyArmourAlwaysActive, Mode=TwoWay}" />
+                                IsChecked="{Binding Settings.LootFilterBodyArmourAlwaysActive, Mode=TwoWay}" />
 
                             <TextBlock
                                 Grid.Column="1"
@@ -1123,13 +1107,13 @@
                                 VerticalAlignment="Center"
                                 Text="Weapons:" />
 
+                            <!-- Weapons Always Active -->
                             <CheckBox
                                 Grid.Column="3"
                                 Grid.Row="17"
                                 Width="200"
-                                x:Name="WeaponsAlwaysActiveCheckBox"
                                 VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterWeaponsAlwaysActive, Mode=TwoWay}" />
+                                IsChecked="{Binding Settings.LootFilterWeaponsAlwaysActive, Mode=TwoWay}" />
 
                         </Grid>
 
@@ -1228,29 +1212,55 @@
             <!-- Tab Container End -->
 
             <!-- App Footer Start -->
-            <Grid
-                Grid.Column="1"
-                Grid.Row="2">
+            <Grid>
 
                 <Grid.ColumnDefinitions>
-
                     <ColumnDefinition Width="20" />
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="20" />
-
                 </Grid.ColumnDefinitions>
-
                 <Grid.RowDefinitions>
-
                     <RowDefinition Height="20" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
-
                 </Grid.RowDefinitions>
 
+                <!-- Save Settings Button -->
+                <Button
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Content="Save Settings"
+                    Click="OnSaveButtonClicked" />
+
+                <!-- Reset Settings Button -->
+                <Button
+                    Grid.Column="2"
+                    Grid.Row="2"
+                    Width="100"
+                    Content="Reset Settings"
+                    Click="OnResetButtonClicked" />
+
+                <!-- Run Overlay Button -->
+                <Button
+                    x:Name="RunOverlayButton"
+                    Grid.Column="3"
+                    Grid.Row="2"
+                    Content="Run Overlay"
+                    Click="OnRunOverlayButtonClicked" />
+
+                <!-- Disclaimer Text -->
+                <TextBlock
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    FontSize="10"
+                    VerticalAlignment="Center"
+                    TextAlignment="Center"
+                    Text="This product isn't affiliated with or endorsed by Grinding Gear Games in any way." />
+
+                <!-- Credits Text -->
                 <TextBlock
                     Grid.Column="2"
                     Grid.Row="3"
@@ -1265,55 +1275,24 @@
                         <Run
                             FontFamily="Segoe UI"
                             FontSize="12"
-                            Text="by kosace &amp; friends" />
+                            Text="&#32;by Mario, Zemoto, kosace, &amp; friends" />
 
                     </TextBlock.Inlines>
 
                 </TextBlock>
 
-                <TextBlock
-                    Grid.Column="1"
-                    Grid.Row="3"
-                    FontSize="10"
-                    VerticalAlignment="Center"
-                    TextAlignment="Center"
-                    Text="This product isn't affiliated with or endorsed by Grinding Gear Games in any way." />
-
-                <Button
-                    x:Name="RunButton"
-                    Click="RunButton_Click"
-                    Content="Run Overlay"
-                    Grid.Column="3"
-                    Grid.Row="2" />
-
-                <Button
-                    x:Name="SaveButton"
-                    Click="SaveButton_Click_1"
-                    Content="Save Settings"
-                    Grid.Column="1"
-                    Grid.Row="2" />
-
-                <Button
-                    x:Name="ResetButton"
-                    Click="ResetButton_Click"
-                    Width="100"
-                    Content="Reset Settings"
-                    Grid.Column="2"
-                    Grid.Row="2" />
-
+                <!-- App Version Text -->
                 <TextBlock
                     Grid.Column="3"
                     Grid.Row="3"
-                    Text="{Binding AppVersionText}"
                     FontSize="12"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center"
+                    Text="{x:Static base:Constants.AppVersionText}" />
 
             </Grid>
-            <!-- App Footer Start -->
+            <!-- App Footer End -->
 
         </Grid>
-
     </Border>
-
 </Window>

@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using ChaosRecipeEnhancer.UI.View;
-using Serilog;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 
@@ -9,46 +8,40 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 /// </summary>
 public partial class VerticalStandardDisplay
 {
-	#region Constructors
+    #region Constructors
 
-	public VerticalStandardDisplay(SettingsView settingsView, SetTrackerOverlayView setTrackerOverlay)
-	{
-		_logger = Log.ForContext<VerticalStandardDisplay>();
-		_logger.Debug("Constructing VerticalStandardDisplay");
+    public VerticalStandardDisplay(SettingsView settingsView, SetTrackerOverlayView setTrackerOverlay)
+    {
+        _settingsView = settingsView;
+        _setTrackerOverlay = setTrackerOverlay;
+        InitializeComponent();
+    }
 
-		_settingsView = settingsView;
-		_setTrackerOverlay = setTrackerOverlay;
-		InitializeComponent();
+    #endregion
 
-		_logger.Debug("VerticalStandardDisplay constructed successfully");
-	}
+    #region Fields
 
-	#endregion
+    private readonly SetTrackerOverlayView _setTrackerOverlay;
+    private readonly SettingsView _settingsView;
 
-	#region Fields
+    #endregion
 
-	private readonly ILogger _logger;
-	private readonly SetTrackerOverlayView _setTrackerOverlay;
-	private readonly SettingsView _settingsView;
+    #region Event Handlers
 
-	#endregion
+    private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsView.RunStashTabOverlay();
+    }
 
-	#region Event Handlers
+    private void FetchButton_Click(object sender, RoutedEventArgs e)
+    {
+        _setTrackerOverlay.RunFetching();
+    }
 
-	private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
-	{
-		_settingsView.RunStashTabOverlay();
-	}
+    private void ReloadFilterButton_Click(object sender, RoutedEventArgs e)
+    {
+        _setTrackerOverlay.ReloadItemFilter();
+    }
 
-	private void FetchButton_Click(object sender, RoutedEventArgs e)
-	{
-		_setTrackerOverlay.RunFetching();
-	}
-
-	private void ReloadFilterButton_Click(object sender, RoutedEventArgs e)
-	{
-		_setTrackerOverlay.ReloadItemFilter();
-	}
-
-	#endregion
+    #endregion
 }
