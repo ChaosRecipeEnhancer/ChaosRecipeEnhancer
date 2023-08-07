@@ -31,8 +31,6 @@
             <RowDefinition Height="5" />
             <RowDefinition Height="25" />
             <RowDefinition Height="5" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="5" />
 
         </Grid.RowDefinitions>
 
@@ -79,27 +77,13 @@
             Grid.Column="1"
             Grid.Row="7"
             VerticalAlignment="Center"
-            Text="Exalted Shard Recipe:"
-            ToolTipService.InitialShowDelay="50"
-            ToolTip="Activates Exalted Shard Recipe. Not fully functional at the moment. Visit github for more information." />
-
-        <CheckBox
-            Grid.Column="3"
-            Grid.Row="7"
-            VerticalAlignment="Center"
-            IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedShardRecipeTrackingEnabled, Mode=TwoWay}" />
-
-        <TextBlock
-            Grid.Column="1"
-            Grid.Row="9"
-            VerticalAlignment="Center"
             Text="Include Identified Items:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="Also counts identified Items for 1 chaos per set." />
 
         <CheckBox
             Grid.Column="3"
-            Grid.Row="9"
+            Grid.Row="7"
             VerticalAlignment="Center"
             IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IncludeIdentifiedItemsEnabled, Mode=TwoWay}" />
 

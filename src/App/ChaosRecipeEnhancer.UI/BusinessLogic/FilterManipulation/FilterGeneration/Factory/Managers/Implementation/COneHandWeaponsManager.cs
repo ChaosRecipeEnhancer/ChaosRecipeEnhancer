@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using ChaosRecipeEnhancer.UI.BusinessLogic.Constants;
 using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory.Managers.Implementation;

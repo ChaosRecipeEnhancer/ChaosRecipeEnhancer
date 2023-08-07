@@ -50,7 +50,6 @@
 
         <!-- Stash Button Overlay Button Display -->
         <Button
-            x:Name="StashTabOverlayButton"
             Click="OnStashTabOverlayButtonClicked"
             Width="50"
             Grid.Column="1"

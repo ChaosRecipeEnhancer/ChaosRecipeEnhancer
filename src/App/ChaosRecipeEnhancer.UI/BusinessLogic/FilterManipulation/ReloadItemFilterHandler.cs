@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using ChaosRecipeEnhancer.UI.BusinessLogic.Constants;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.DynamicControls;
 using ChaosRecipeEnhancer.UI.Extensions.Native;
 using ChaosRecipeEnhancer.UI.Properties;
@@ -11,60 +11,64 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation;
 
 public static class ReloadItemFilterHandler
 {
-	public static void ReloadFilter()
-	{
-		var chatCommand = BuildFilterReloadCommand();
-		if (chatCommand is null) return;
+    public static void ReloadFilter()
+    {
+        var chatCommand = BuildFilterReloadCommand();
+        if (chatCommand is null) return;
 
-		// Map all current window names to their associated "handle to a window" pointers (HWND)
-		var openWindows = NativeWindowExtensions.GetOpenWindows();
+        // Map all current window names to their associated "handle to a window" pointers (HWND)
+        var openWindows = NativeWindowExtensions.GetOpenWindows();
 
-		foreach (var window in openWindows)
-		{
-			var handle = window.Key;
-			var title = window.Value;
+        foreach (var window in openWindows)
+        {
+            var handle = window.Key;
+            var title = window.Value;
 
-			Console.WriteLine("{0}: {1}", handle, title);
-		}
+            Console.WriteLine("{0}: {1}", handle, title);
+        }
 
-		// Find the Process ID associated with the 'Path of Exile' game window
-		var poeWindow = openWindows.FirstOrDefault(x => x.Value == "Path of Exile").Key;
+        // Find the Process ID associated with the 'Path of Exile' game window
+        var poeWindow = openWindows.FirstOrDefault(x => x.Value == "Path of Exile").Key;
 
-		if (NativeWindowExtensions.CheckIfWindowExists(poeWindow))
-		{
-			ErrorWindow.Spawn("Could not find PoE window! Please make sure PoE is running." + StringConstruction.DoubleNewLineCharacter +
-								 " If PoE is running in admin mode, try running our app in admin mode, as well.", "Error: PoE Window Not Found");
-			return;
-		}
+        if (NativeWindowExtensions.CheckIfWindowExists(poeWindow))
+        {
+            ErrorWindow.Spawn(
+                "Could not find PoE window! Please make sure PoE is running." +
+                StringConstruction.DoubleNewLineCharacter +
+                " If PoE is running in admin mode, try running our app in admin mode, as well.", "Error: PoE Window Not Found"
+            );
 
-		// Get 'Path of Exile' window in the foreground to actually send input to said window
-		NativeWindowExtensions.SetForegroundWindow(poeWindow);
+            return;
+        }
 
-		//SendKeys.SendWait("{ENTER}");
-		//SendKeys.SendWait(chatCommand);
-		//SendKeys.SendWait("{ENTER}");
+        // Get 'Path of Exile' window in the foreground to actually send input to said window
+        NativeWindowExtensions.SetForegroundWindow(poeWindow);
 
-		Clipboard.Clear();  // Always clear the clipboard first
-		Clipboard.SetText(chatCommand);
+        //SendKeys.SendWait("{ENTER}");
+        //SendKeys.SendWait(chatCommand);
+        //SendKeys.SendWait("{ENTER}");
 
-		SendKeys.SendWait("{ENTER}");
-		SendKeys.SendWait("^(v)");
-		SendKeys.SendWait("{ENTER}");
-	}
+        Clipboard.Clear(); // Always clear the clipboard first
+        Clipboard.SetText(chatCommand);
 
-	private static string BuildFilterReloadCommand()
-	{
-		var filterName = GetFilterName();
+        SendKeys.SendWait("{ENTER}");
+        SendKeys.SendWait("^(v)");
+        SendKeys.SendWait("{ENTER}");
+    }
 
-		if (!string.IsNullOrEmpty(filterName)) return "/itemfilter " + filterName;
+    private static string BuildFilterReloadCommand()
+    {
+        var filterName = GetFilterName();
 
-		ErrorWindow.Spawn("Please configure your filter file location in the settings.", "Error: No Filter File Location Set");
+        if (!string.IsNullOrEmpty(filterName)) return "/itemfilter " + filterName;
 
-		return null;
-	}
+        ErrorWindow.Spawn("Please configure your filter file location in the settings.", "Error: No Filter File Location Set");
 
-	private static string GetFilterName()
-	{
-		return Path.GetFileName(Settings.Default.LootFilterFileLocation).Replace(".filter", "");
-	}
+        return null;
+    }
+
+    private static string GetFilterName()
+    {
+        return Path.GetFileName(Settings.Default.LootFilterFileLocation).Replace(".filter", "");
+    }
 }

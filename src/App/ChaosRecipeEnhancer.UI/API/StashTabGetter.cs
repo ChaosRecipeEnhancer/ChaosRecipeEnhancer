@@ -108,7 +108,7 @@ public sealed class StashTabGetter
         using var client = new HttpClient(handler);
 
         // add user agent
-        client.DefaultRequestHeaders.Add("User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}");
+        client.DefaultRequestHeaders.Add("User-Agent", $"CRE/v{Assembly.GetExecutingAssembly().GetName().Version}");
 
         var res = await client.GetAsync(uri);
 

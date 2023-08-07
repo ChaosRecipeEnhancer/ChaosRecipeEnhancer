@@ -121,18 +121,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ExaltedShardRecipeTrackingEnabled {
-            get {
-                return ((bool)(this["ExaltedShardRecipeTrackingEnabled"]));
-            }
-            set {
-                this["ExaltedShardRecipeTrackingEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int FullSetThreshold {
             get {
@@ -260,42 +248,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["CloseToTrayEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
-        public string FetchStashHotkey {
-            get {
-                return ((string)(this["FetchStashHotkey"]));
-            }
-            set {
-                this["FetchStashHotkey"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
-        public string ToggleSetTrackerOverlayHotkey {
-            get {
-                return ((string)(this["ToggleSetTrackerOverlayHotkey"]));
-            }
-            set {
-                this["ToggleSetTrackerOverlayHotkey"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
-        public string ToggleStashTabOverlayHotkey {
-            get {
-                return ((string)(this["ToggleStashTabOverlayHotkey"]));
-            }
-            set {
-                this["ToggleStashTabOverlayHotkey"] = value;
             }
         }
         

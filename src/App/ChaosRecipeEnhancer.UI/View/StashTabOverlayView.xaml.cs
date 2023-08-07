@@ -54,12 +54,12 @@ internal partial class StashTabOverlayView
     {
         if (!IsOpen || _model.SelectedStashTabHandler.SelectedStashTab is null) return;
 
-        if (UtilityMethods.HitTest(EditModeButton, e.ClickLocation))
+        if (ControlHelpers.HitTest(EditModeButton, e.ClickLocation))
             HandleEditButton();
         else
             foreach (var cell in _model.SelectedStashTabHandler.SelectedStashTab.OverlayCellsList.Where(cell =>
                          cell.Active))
-                if (UtilityMethods.HitTest(UtilityMethods.GetContainerForDataObject<Button>(StashTabControl, cell),
+                if (ControlHelpers.HitTest(ControlHelpers.GetContainerForDataObject<Button>(StashTabControl, cell),
                         e.ClickLocation))
                 {
                     _itemSetManager.OnItemCellClicked(cell);

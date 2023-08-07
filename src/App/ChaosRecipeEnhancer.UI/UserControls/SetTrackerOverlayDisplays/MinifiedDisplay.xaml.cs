@@ -6,42 +6,28 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 /// <summary>
 ///     Interaction logic for MinifiedDisplay.xaml
 /// </summary>
-public partial class MinifiedDisplay
+internal partial class MinifiedDisplay
 {
-    #region Fields
+    private readonly SetTrackerOverlayView _parent;
 
-    private readonly SetTrackerOverlayView _setTrackerOverlay;
-    private readonly SettingsView _settingsView;
-
-    #endregion
-
-    #region Constructors
-
-    public MinifiedDisplay(SettingsView settingsView, SetTrackerOverlayView setTrackerOverlay)
+    public MinifiedDisplay(SetTrackerOverlayView parent)
     {
-        _settingsView = settingsView;
-        _setTrackerOverlay = setTrackerOverlay;
+        _parent = parent;
         InitializeComponent();
     }
 
-    #endregion
-
-    #region Event Handlers
-
-    private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
+    private void OnStashTabOverlayButtonClicked(object sender, RoutedEventArgs e)
     {
-        _settingsView.RunStashTabOverlay();
+        _parent.RunStashTabOverlay();
     }
 
-    private void RefreshButton_Click(object sender, RoutedEventArgs e)
+    private void OnFetchButtonClicked(object sender, RoutedEventArgs e)
     {
-        _setTrackerOverlay.RunFetching();
+        _parent.RunFetching();
     }
 
-    private void ReloadItemFilterButton_Click(object sender, RoutedEventArgs e)
+    private void OnReloadFilterButtonClicked(object sender, RoutedEventArgs e)
     {
-        _setTrackerOverlay.ReloadItemFilter();
+        _parent.RunReloadFilter();
     }
-
-    #endregion
 }

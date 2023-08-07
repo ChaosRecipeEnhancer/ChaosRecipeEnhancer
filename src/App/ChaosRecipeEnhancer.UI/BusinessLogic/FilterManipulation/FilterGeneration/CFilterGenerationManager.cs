@@ -4,263 +4,216 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using ChaosRecipeEnhancer.UI.BusinessLogic.Constants;
 using ChaosRecipeEnhancer.UI.BusinessLogic.Enums;
 using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory;
 using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory.Managers;
 using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterStorage;
 using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration;
 
 public class CFilterGenerationManager
 {
-	#region Constructors
+    private readonly List<string> _customStyle = new();
 
-	public CFilterGenerationManager()
-	{
-		LoadCustomStyle();
-		if (Settings.Default.ExaltedShardRecipeTrackingEnabled) LoadCustomStyleInfluenced();
-	}
+    private ABaseItemClassManager _itemClassManager;
 
-	#endregion
+    public CFilterGenerationManager()
+    {
+        LoadCustomStyle();
+    }
 
-	#region Fields
+    public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem)
+    {
+        var activeItemTypes = new ActiveItemTypes();
+        var visitor = new CItemClassManagerFactory();
+        var sectionList = new HashSet<string>();
 
-	private ABaseItemClassManager _itemClassManager;
-	private readonly List<string> _customStyle = new List<string>();
-	private readonly List<string> _customStyleInfluenced = new List<string>();
+        foreach (EnumItemClass item in Enum.GetValues(typeof(EnumItemClass)))
+        {
+            _itemClassManager = visitor.GetItemClassManager(item);
 
-	#endregion
+            var stillMissing = _itemClassManager.CheckIfMissing(missingItemClasses);
 
-	#region Methods
+            // weapons might be buggy, will try to do some tests
+            if ((Settings.Default.ChaosRecipeTrackingEnabled || Settings.Default.RegalRecipeTrackingEnabled)
+                && (_itemClassManager.AlwaysActive || stillMissing))
+            {
+                // if we need chaos only gear to complete a set (60-74), add that to our filter section
+                sectionList.Add(missingChaosItem
+                    ? GenerateSection(false, true)
+                    :
+                    // else add any gear piece 60+ to our section for that item class
+                    GenerateSection(false));
 
-	public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses,
-		bool missingChaosItem)
-	{
-		var activeItemTypes = new ActiveItemTypes();
-		var visitor = new CItemClassManagerFactory();
-		var sectionList = new HashSet<string>();
-		var sectionListExalted = new HashSet<string>();
+                // find better way to handle active items and sound notification on changes
+                activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
+            }
+            else
+            {
+                activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, false);
+            }
+        }
 
-		foreach (EnumItemClass item in Enum.GetValues(typeof(EnumItemClass)))
-		{
-			_itemClassManager = visitor.GetItemClassManager(item);
+        if (Settings.Default.LootFilterManipulationEnabled)
+            await UpdateFilterAsync(sectionList);
 
-			var stillMissing = _itemClassManager.CheckIfMissing(missingItemClasses);
+        return activeItemTypes;
+    }
 
-			// weapons might be buggy, will try to do some tests
-			if ((Settings.Default.ChaosRecipeTrackingEnabled || Settings.Default.RegalRecipeTrackingEnabled)
-				&& (_itemClassManager.AlwaysActive || stillMissing))
-			{
-				// if we need chaos only gear to complete a set (60-74), add that to our filter section
-				sectionList.Add(missingChaosItem
-					? GenerateSection(false, true)
-					:
-					// else add any gear piece 60+ to our section for that item class
-					GenerateSection(false));
+    private string GenerateSection(bool isInfluenced, bool onlyChaos = false)
+    {
+        var result = "Show";
 
-				// find better way to handle active items and sound notification on changes
-				activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
-			}
-			else
-			{
-				activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, false);
-			}
+        if (isInfluenced)
+            result += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter +
+                      "HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord";
+        else
+            result += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "HasInfluence None";
 
-			if (Settings.Default.ExaltedShardRecipeTrackingEnabled) sectionListExalted.Add(GenerateSection(true));
-		}
+        result = result + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Rarity Rare" +
+                 StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
-		if (Settings.Default.LootFilterManipulationEnabled)
-			await UpdateFilterAsync(sectionList, sectionListExalted);
+        if (!Settings.Default.IncludeIdentifiedItemsEnabled)
+            result += "Identified False" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
-		return activeItemTypes;
-	}
+        switch (isInfluenced)
+        {
+            case false when !_itemClassManager.AlwaysActive && onlyChaos &&
+                            !Settings.Default.RegalRecipeTrackingEnabled:
+                result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter +
+                          StringConstruction.TabCharacter + "ItemLevel <= 74" +
+                          StringConstruction.NewLineCharacter +
+                          StringConstruction.TabCharacter;
+                break;
+            case false when Settings.Default.RegalRecipeTrackingEnabled:
+                result += "ItemLevel >= 75" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                break;
+            default:
+                result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                break;
+        }
 
-	private string GenerateSection(bool isInfluenced, bool onlyChaos = false)
-	{
-		var result = "Show";
+        var baseType = _itemClassManager.SetBaseType();
 
-		if (isInfluenced)
-			result += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter +
-					  "HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord";
-		else
-			result += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "HasInfluence None";
+        result = result + baseType + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
-		result = result + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Rarity Rare" +
-				 StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+        var colors = GetRGB();
+        var bgColor = colors.Aggregate("SetBackgroundColor", (current, t) => current + " " + t);
 
-		if (!Settings.Default.IncludeIdentifiedItemsEnabled)
-			result += "Identified False" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+        result = result + bgColor + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
-		switch (isInfluenced)
-		{
-			case false when !_itemClassManager.AlwaysActive && onlyChaos &&
-							!Settings.Default.RegalRecipeTrackingEnabled:
-				result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter +
-						  StringConstruction.TabCharacter + "ItemLevel <= 74" +
-						  StringConstruction.NewLineCharacter +
-						  StringConstruction.TabCharacter;
-				break;
-			case false when Settings.Default.RegalRecipeTrackingEnabled:
-				result += "ItemLevel >= 75" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
-				break;
-			default:
-				result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
-				break;
-		}
+        result = _customStyle.Aggregate(result,
+            (current, cs) =>
+                current + cs + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter);
 
-		var baseType = _itemClassManager.SetBaseType();
+        // Map Icon setting enabled
+        if (Settings.Default.LootFilterIconsEnabled)
+            // TODO: [Filter Manipulation] [Enhancement] Add ability to modify map icon for items added to loot filter
+            result = result + "MinimapIcon 2 White Star" + StringConstruction.NewLineCharacter +
+                     StringConstruction.TabCharacter;
 
-		result = result + baseType + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+        return result;
+    }
 
-		var colors = GetRGB();
-		var bgColor = colors.Aggregate("SetBackgroundColor", (current, t) => current + " " + t);
+    private static string GenerateLootFilter(string oldFilter, IEnumerable<string> sections)
+    {
+        const string newLine = "\n";
+        var sectionStart = "# Chaos Recipe START - Filter Manipulation by Chaos Recipe Enhancer";
+        var sectionEnd = "# Chaos Recipe END - Filter Manipulation by Chaos Recipe Enhancer";
+        var sectionBody = "";
+        var beforeSection = "";
+        string afterSection;
 
-		result = result + bgColor + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
-		result = isInfluenced
-			? _customStyleInfluenced.Aggregate(result,
-				(current, cs) =>
-					current + cs + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter)
-			: _customStyle.Aggregate(result,
-				(current, cs) =>
-					current + cs + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter);
+        // generate chaos recipe section
+        sectionBody += sectionStart + newLine + newLine;
+        sectionBody = sections.Aggregate(sectionBody, (current, s) => current + s + newLine);
+        sectionBody += sectionEnd + newLine;
 
-		// Map Icon setting enabled
-		if (Settings.Default.LootFilterIconsEnabled)
-			// legacytodo: [Enhancement] Add ability to modify map icon for items added to loot filter
-			result = result + "MinimapIcon 2 White Star" + StringConstruction.NewLineCharacter +
-					 StringConstruction.TabCharacter;
+        string[] sep = { sectionEnd + newLine };
+        var split = oldFilter.Split(sep, StringSplitOptions.None);
 
-		return result;
-	}
+        if (split.Length > 1)
+        {
+            afterSection = split[1];
 
-	private static string GenerateLootFilter(string oldFilter, IEnumerable<string> sections, bool isChaos = true)
-	{
-		// order has to be:
-		// 1. exa start
-		// 2. exa end
-		// 3. chaos start
-		// 4. chaos end
-		var sectionName = isChaos ? "Chaos" : "Exalted";
-		const string newLine = "\n";
-		var sectionStart = "#Chaos Recipe Enhancer by kosace " + sectionName + " Recipe Start";
-		var sectionEnd = "#Chaos Recipe Enhancer by kosace " + sectionName + " Recipe End";
-		var sectionBody = "";
-		var beforeSection = "";
-		string afterSection;
+            string[] sep2 = { sectionStart };
+            var split2 = split[0].Split(sep2, StringSplitOptions.None);
 
-		// generate chaos recipe section
-		sectionBody += sectionStart + newLine + newLine;
-		sectionBody = sections.Aggregate(sectionBody, (current, s) => current + s + newLine);
-		sectionBody += sectionEnd + newLine;
+            if (split2.Length > 1)
+                beforeSection = split2[0];
+            else
+                afterSection = oldFilter;
+        }
+        else
+        {
+            afterSection = oldFilter;
+        }
 
-		string[] sep = { sectionEnd + newLine };
-		var split = oldFilter.Split(sep, StringSplitOptions.None);
+        return beforeSection + sectionBody + afterSection;
+    }
 
-		if (split.Length > 1)
-		{
-			afterSection = split[1];
+    private static async Task UpdateFilterAsync(IEnumerable<string> sectionList)
+    {
+        var filterStorage = FilterStorageFactory.Create(Settings.Default);
 
-			string[] sep2 = { sectionStart };
-			var split2 = split[0].Split(sep2, StringSplitOptions.None);
+        var oldFilter = await filterStorage.ReadLootFilterAsync();
+        if (oldFilter == null) return;
 
-			if (split2.Length > 1)
-				beforeSection = split2[0];
-			else
-				afterSection = oldFilter;
-		}
-		else
-		{
-			afterSection = oldFilter;
-		}
+        var newFilter = GenerateLootFilter(oldFilter, sectionList);
 
-		return beforeSection + sectionBody + afterSection;
-	}
+        await filterStorage.WriteLootFilterAsync(newFilter);
+    }
 
-	private static async Task UpdateFilterAsync(IEnumerable<string> sectionList,
-		IEnumerable<string> sectionListExalted)
-	{
-		var filterStorage = FilterStorageFactory.Create(Settings.Default);
+    private IEnumerable<int> GetRGB()
+    {
+        int r;
+        int g;
+        int b;
+        int a;
+        var color = _itemClassManager.ClassColor;
+        var colorList = new List<int>();
 
-		var oldFilter = await filterStorage.ReadLootFilterAsync();
-		if (oldFilter == null) return;
+        if (color != "")
+        {
+            a = Convert.ToByte(color.Substring(1, 2), 16);
+            r = Convert.ToByte(color.Substring(3, 2), 16);
+            g = Convert.ToByte(color.Substring(5, 2), 16);
+            b = Convert.ToByte(color.Substring(7, 2), 16);
+        }
+        else
+        {
+            a = 255;
+            r = 255;
+            g = 0;
+            b = 0;
+        }
 
-		var newFilter = GenerateLootFilter(oldFilter, sectionList);
-		oldFilter = newFilter;
-		newFilter = GenerateLootFilter(oldFilter, sectionListExalted, false);
+        colorList.Add(r);
+        colorList.Add(g);
+        colorList.Add(b);
+        colorList.Add(a);
 
-		await filterStorage.WriteLootFilterAsync(newFilter);
-	}
+        return colorList;
+    }
 
-	private IEnumerable<int> GetRGB()
-	{
-		int r;
-		int g;
-		int b;
-		int a;
-		var color = _itemClassManager.ClassColor;
-		var colorList = new List<int>();
+    private void LoadCustomStyle()
+    {
+        _customStyle.Clear();
 
-		if (color != "")
-		{
-			a = Convert.ToByte(color.Substring(1, 2), 16);
-			r = Convert.ToByte(color.Substring(3, 2), 16);
-			g = Convert.ToByte(color.Substring(5, 2), 16);
-			b = Convert.ToByte(color.Substring(7, 2), 16);
-		}
-		else
-		{
-			a = 255;
-			r = 255;
-			g = 0;
-			b = 0;
-		}
+        var pathNormalItemsStyle =
+            Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
+                FilterAssets.DefaultNormalItemFilterStyleFilePath);
 
-		colorList.Add(r);
-		colorList.Add(g);
-		colorList.Add(b);
-		colorList.Add(a);
+        var style = File.ReadAllLines(pathNormalItemsStyle);
 
-		return colorList;
-	}
-
-	private void LoadCustomStyle()
-	{
-		_customStyle.Clear();
-
-		var pathNormalItemsStyle =
-			Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
-				FilterAssets.DefaultNormalItemFilterStyleFilePath);
-
-		var style = File.ReadAllLines(pathNormalItemsStyle);
-
-		foreach (var line in style)
-		{
-			if (line == "") continue;
-			if (line.Contains("#")) continue;
-			_customStyle.Add(line.Trim());
-		}
-	}
-
-	private void LoadCustomStyleInfluenced()
-	{
-		_customStyleInfluenced.Clear();
-
-		var pathInfluencedItemsStyle =
-			Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
-				FilterAssets.DefaultInfluencedItemFilterStyleFilePath);
-
-		var style = File.ReadAllLines(pathInfluencedItemsStyle);
-
-		foreach (var line in style)
-		{
-			if (line == "") continue;
-			if (line.Contains("#")) continue;
-			_customStyleInfluenced.Add(line.Trim());
-		}
-	}
-
-	#endregion
+        foreach (var line in style)
+        {
+            if (line == "") continue;
+            if (line.Contains("#")) continue;
+            _customStyle.Add(line.Trim());
+        }
+    }
 }

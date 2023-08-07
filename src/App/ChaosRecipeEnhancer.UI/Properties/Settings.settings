@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ChaosRecipeEnhancer.UI.WPF.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ChaosRecipeEnhancer.UI.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="PathOfExileAccountName" Type="System.String" Scope="User">
@@ -24,9 +24,6 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="RegalRecipeTrackingEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="ExaltedShardRecipeTrackingEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="FullSetThreshold" Type="System.Int32" Scope="User">
@@ -61,15 +58,6 @@
     </Setting>
     <Setting Name="CloseToTrayEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="FetchStashHotkey" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
-    </Setting>
-    <Setting Name="ToggleSetTrackerOverlayHotkey" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
-    </Setting>
-    <Setting Name="ToggleStashTabOverlayHotkey" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
     </Setting>
     <Setting Name="SoundEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

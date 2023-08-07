@@ -54,8 +54,16 @@ public sealed class SingleInstance : IDisposable
 
     private void ListenForOtherProcesses()
     {
-        _server = new NamedPipeServerStream(_instanceName, PipeDirection.In, 1, PipeTransmissionMode.Message,
-            PipeOptions.Asynchronous);
+        _server = new NamedPipeServerStream(
+            _instanceName,
+            PipeDirection.In,
+            1,
+#pragma warning disable CA1416
+            PipeTransmissionMode.Message,
+#pragma warning restore CA1416
+            PipeOptions.Asynchronous
+        );
+
         _ = _server.BeginWaitForConnection(OnPipeConnection, _server);
     }
 
