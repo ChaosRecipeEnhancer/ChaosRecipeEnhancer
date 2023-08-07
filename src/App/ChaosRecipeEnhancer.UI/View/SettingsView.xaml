@@ -32,7 +32,6 @@
         BorderThickness="1">
 
         <Grid
-            Name="MainGrid"
             MinHeight="500"
             MinWidth="1143"
             Focusable="True">
@@ -103,231 +102,12 @@
                             Grid.Row="1"
                             Grid.RowSpan="3" />
 
-                        <!-- TODO: Fix Hotkey stuff (Files are simply excluded for now) -->
                         <!-- Hotkeys Section Start -->
-                        <!-- <Grid -->
-                        <!--     Grid.Column="3" -->
-                        <!--     Grid.Row="1"> -->
-                        <!-- -->
-                        <!--     <Grid.ColumnDefinitions> -->
-                        <!-- -->
-                        <!--         <ColumnDefinition Width="10" /> -->
-                        <!--         <ColumnDefinition Width="*" /> -->
-                        <!--         <ColumnDefinition Width="10" /> -->
-                        <!--         <ColumnDefinition Width="*" /> -->
-                        <!--         <ColumnDefinition Width="10" /> -->
-                        <!-- -->
-                        <!--     </Grid.ColumnDefinitions> -->
-                        <!-- -->
-                        <!--     <Grid.RowDefinitions> -->
-                        <!-- -->
-                        <!--         <RowDefinition Height="10" /> -->
-                        <!--         <RowDefinition Height="30" /> -->
-                        <!--         <RowDefinition Height="5" /> -->
-                        <!--         <RowDefinition Height="25" /> -->
-                        <!--         <RowDefinition Height="5" /> -->
-                        <!--         <RowDefinition Height="25" /> -->
-                        <!--         <RowDefinition Height="5" /> -->
-                        <!--         <RowDefinition Height="25" /> -->
-                        <!--         <RowDefinition Height="5" /> -->
-                        <!--         <RowDefinition Height="25" /> -->
-                        <!--         <RowDefinition Height="10" /> -->
-                        <!-- -->
-                        <!--     </Grid.RowDefinitions> -->
-                        <!-- -->
-                        <!--     <TextBlock -->
-                        <!--         Grid.Column="1" -->
-                        <!--         Grid.Row="1" -->
-                        <!--         VerticalAlignment="Center" -->
-                        <!--         Grid.ColumnSpan="2" -->
-                        <!--         Text="Hotkeys" -->
-                        <!--         FontSize="24" -->
-                        <!--         FontWeight="Bold" /> -->
-                        <!-- -->
-                        <!--     <TextBlock -->
-                        <!--         Grid.Column="1" -->
-                        <!--         Grid.Row="3" -->
-                        <!--         VerticalAlignment="Center" -->
-                        <!--         Text="Fetch Stash Contents:" -->
-                        <!--         ToolTipService.InitialShowDelay="50" -->
-                        <!--         ToolTip="Hotkey for fetching the most up-to-date stash contents. Remember that you must re-zone to force your stash contents to update on GGG's servers." /> -->
-                        <!-- -->
-                        <!--     <Button -->
-                        <!--         x:Name="RefreshHotkey" -->
-                        <!--         Width="200" -->
-                        <!--         Grid.Column="3" -->
-                        <!--         Grid.Row="3" -->
-                        <!--         IsManipulationEnabled="False" -->
-                        <!--         Focusable="False" -->
-                        <!--         Content="{Binding Source={x:Static properties:Settings.Default}, Path=FetchStashHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}" -->
-                        <!--         Click="RefreshHotkey_Click"> -->
-                        <!-- -->
-                        <!--         <Button.Style> -->
-                        <!-- -->
-                        <!--             <Style TargetType="Button"> -->
-                        <!-- -->
-                        <!--                 <Setter Property="Background" -->
-                        <!--                         Value="Transparent" /> -->
-                        <!-- -->
-                        <!--                 <Style.Triggers> -->
-                        <!-- -->
-                        <!--                     <Trigger Property="IsMouseOver" -->
-                        <!--                              Value="True"> -->
-                        <!-- -->
-                        <!--                         <Setter Property="Background" -->
-                        <!--                                 Value="Transparent" /> -->
-                        <!-- -->
-                        <!--                     </Trigger> -->
-                        <!-- -->
-                        <!--                 </Style.Triggers> -->
-                        <!-- -->
-                        <!--             </Style> -->
-                        <!-- -->
-                        <!--         </Button.Style> -->
-                        <!-- -->
-                        <!--     </Button> -->
-                        <!-- -->
-                        <!--     <TextBlock -->
-                        <!--         Grid.Column="1" -->
-                        <!--         Grid.Row="5" -->
-                        <!--         VerticalAlignment="Center" -->
-                        <!--         Text="Toggle Set Tracker Overlay:" -->
-                        <!--         ToolTipService.InitialShowDelay="50" -->
-                        <!--         ToolTip="Hotkey for showing/hiding the Set Tracker Overlay. While hidden, there will be no requests to the server." /> -->
-                        <!-- -->
-                        <!--     ~1~ TODO: [Refactor] Rename the event methods to better represent what they do (i.e. CustomHotkeyToggle -> ToggleSetTracker something something)@1@ -->
-                        <!--     <Button -->
-                        <!--         x:Name="CustomHotkeyToggle" -->
-                        <!--         Width="200" -->
-                        <!--         Grid.Column="3" -->
-                        <!--         Grid.Row="5" -->
-                        <!--         IsManipulationEnabled="False" -->
-                        <!--         Focusable="False" -->
-                        <!--         Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleSetTrackerOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}" -->
-                        <!--         Click="CustomHotkeyToggle_Click"> -->
-                        <!-- -->
-                        <!--         <Button.Style> -->
-                        <!-- -->
-                        <!--             <Style TargetType="Button"> -->
-                        <!-- -->
-                        <!--                 <Setter -->
-                        <!--                     Property="Background" -->
-                        <!--                     Value="Transparent" /> -->
-                        <!-- -->
-                        <!--                 <Style.Triggers> -->
-                        <!-- -->
-                        <!--                     <Trigger -->
-                        <!--                         Property="IsMouseOver" -->
-                        <!--                         Value="True"> -->
-                        <!-- -->
-                        <!--                         <Setter -->
-                        <!--                             Property="Background" -->
-                        <!--                             Value="Transparent" /> -->
-                        <!-- -->
-                        <!--                     </Trigger> -->
-                        <!-- -->
-                        <!--                 </Style.Triggers> -->
-                        <!-- -->
-                        <!--             </Style> -->
-                        <!-- -->
-                        <!--         </Button.Style> -->
-                        <!-- -->
-                        <!--     </Button> -->
-                        <!-- -->
-                        <!--     <TextBlock -->
-                        <!--         Grid.Column="1" -->
-                        <!--         Grid.Row="7" -->
-                        <!--         VerticalAlignment="Center" -->
-                        <!--         Text="Toggle Stash Tab Overlay:" -->
-                        <!--         ToolTipService.InitialShowDelay="50" -->
-                        <!--         ToolTip="Hotkey for showing/hiding the Stash Tab Overlay." /> -->
-                        <!-- -->
-                        <!--     <Button -->
-                        <!--         x:Name="StashTabHotkey" -->
-                        <!--         Width="200" -->
-                        <!--         Grid.Row="7" -->
-                        <!--         Grid.Column="3" -->
-                        <!--         IsManipulationEnabled="False" -->
-                        <!--         Focusable="False" -->
-                        <!--         Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleStashTabOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}" -->
-                        <!--         Click="StashTabHotkey_Click"> -->
-                        <!-- -->
-                        <!--         <Button.Style> -->
-                        <!-- -->
-                        <!--             <Style TargetType="Button"> -->
-                        <!-- -->
-                        <!--                 <Setter -->
-                        <!--                     Property="Background" -->
-                        <!--                     Value="Transparent" /> -->
-                        <!-- -->
-                        <!--                 <Style.Triggers> -->
-                        <!-- -->
-                        <!--                     <Trigger -->
-                        <!--                         Property="IsMouseOver" -->
-                        <!--                         Value="True"> -->
-                        <!-- -->
-                        <!--                         <Setter -->
-                        <!--                             Property="Background" -->
-                        <!--                             Value="Transparent" /> -->
-                        <!-- -->
-                        <!--                     </Trigger> -->
-                        <!-- -->
-                        <!--                 </Style.Triggers> -->
-                        <!-- -->
-                        <!--             </Style> -->
-                        <!-- -->
-                        <!--         </Button.Style> -->
-                        <!-- -->
-                        <!--     </Button> -->
-                        <!-- -->
-                        <!-- </Grid> -->
-                        <!-- Hotkeys Section End -->
-
-                        <!-- TODO: Fix Sound stuff (Files are simply excluded for now) -->
-                        <!-- <generalForms:SoundForm -->
-                        <!--     Grid.Column="3" -->
-                        <!--     Grid.Row="2" /> -->
-
-                    </Grid>
-                    <!-- General Settings Tab Contents End -->
-
-                </TabItem>
-                <!-- General Settings Tab End -->
-
-                <!-- Overlay Settings Tab Start -->
-                <TabItem Header="Overlays">
-
-                    <Grid>
-
-                        <Grid.ColumnDefinitions>
-
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="10" />
-
-                        </Grid.ColumnDefinitions>
-
-                        <Grid.RowDefinitions>
-
-                            <RowDefinition Height="1" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
-                        <!-- Set Tracker Overlay Section Start -->
                         <Grid
-                            Grid.Column="1"
+                            Grid.Column="3"
                             Grid.Row="1">
 
+                            <!-- TODO: Fix Hotkey stuff (Files are simply excluded for now) -->
                             <Grid.ColumnDefinitions>
 
                                 <ColumnDefinition Width="10" />
@@ -350,6 +130,217 @@
                                 <RowDefinition Height="25" />
                                 <RowDefinition Height="5" />
                                 <RowDefinition Height="25" />
+                                <RowDefinition Height="10" />
+
+                            </Grid.RowDefinitions>
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                VerticalAlignment="Center"
+                                Grid.ColumnSpan="2"
+                                Text="Hotkeys"
+                                FontSize="24"
+                                FontWeight="Bold" />
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Grid.Row="3"
+                                VerticalAlignment="Center"
+                                Text="Fetch Stash Contents:"
+                                ToolTipService.InitialShowDelay="50"
+                                ToolTip="Hotkey for fetching the most up-to-date stash contents. Remember that you must re-zone to force your stash contents to update on GGG's servers." />
+
+                            <Button
+                                x:Name="RefreshHotkey"
+                                Width="200"
+                                Grid.Column="3"
+                                Grid.Row="3"
+                                IsManipulationEnabled="False"
+                                Focusable="False"
+                                Content="{Binding Source={x:Static properties:Settings.Default}, Path=FetchStashHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}">
+                                <!-- Click="RefreshHotkey_Click" -->
+
+                                <Button.Style>
+
+                                    <Style TargetType="Button">
+
+                                        <Setter Property="Background"
+                                                Value="Transparent" />
+
+                                        <Style.Triggers>
+
+                                            <Trigger Property="IsMouseOver"
+                                                     Value="True">
+
+                                                <Setter Property="Background"
+                                                        Value="Transparent" />
+
+                                            </Trigger>
+
+                                        </Style.Triggers>
+
+                                    </Style>
+
+                                </Button.Style>
+
+                            </Button>
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Grid.Row="5"
+                                VerticalAlignment="Center"
+                                Text="Toggle Set Tracker Overlay:"
+                                ToolTipService.InitialShowDelay="50"
+                                ToolTip="Hotkey for showing/hiding the Set Tracker Overlay. While hidden, there will be no requests to the server." />
+
+                            <!-- TODO: [Refactor] Rename the event methods to better represent what they do (i.e. CustomHotkeyToggle -> ToggleSetTracker something something)-->
+                            <Button
+                                x:Name="CustomHotkeyToggle"
+                                Width="200"
+                                Grid.Column="3"
+                                Grid.Row="5"
+                                IsManipulationEnabled="False"
+                                Focusable="False"
+                                Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleSetTrackerOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}">
+                                <!-- Click="CustomHotkeyToggle_Click" -->
+
+                                <Button.Style>
+
+                                    <Style TargetType="Button">
+
+                                        <Setter
+                                            Property="Background"
+                                            Value="Transparent" />
+
+                                        <Style.Triggers>
+
+                                            <Trigger
+                                                Property="IsMouseOver"
+                                                Value="True">
+
+                                                <Setter
+                                                    Property="Background"
+                                                    Value="Transparent" />
+
+                                            </Trigger>
+
+                                        </Style.Triggers>
+
+                                    </Style>
+
+                                </Button.Style>
+
+                            </Button>
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Grid.Row="7"
+                                VerticalAlignment="Center"
+                                Text="Toggle Stash Tab Overlay:"
+                                ToolTipService.InitialShowDelay="50"
+                                ToolTip="Hotkey for showing/hiding the Stash Tab Overlay." />
+
+                            <Button
+                                x:Name="StashTabHotkey"
+                                Width="200"
+                                Grid.Row="7"
+                                Grid.Column="3"
+                                IsManipulationEnabled="False"
+                                Focusable="False"
+                                Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleStashTabOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}">
+                                <!-- Click="StashTabHotkey_Click" -->
+
+                                <Button.Style>
+
+                                    <Style TargetType="Button">
+
+                                        <Setter
+                                            Property="Background"
+                                            Value="Transparent" />
+
+                                        <Style.Triggers>
+
+                                            <Trigger
+                                                Property="IsMouseOver"
+                                                Value="True">
+
+                                                <Setter
+                                                    Property="Background"
+                                                    Value="Transparent" />
+
+                                            </Trigger>
+
+                                        </Style.Triggers>
+
+                                    </Style>
+
+                                </Button.Style>
+
+                            </Button>
+
+                        </Grid>
+                        <!-- Hotkeys Section End -->
+
+                        <!-- TODO: Fix Sound stuff (Files are simply excluded for now) -->
+                        <!-- <generalForms:SoundForm -->
+                        <!--     Grid.Column="3" -->
+                        <!--     Grid.Row="2" /> -->
+
+                    </Grid>
+                    <!-- General Settings Tab Contents End -->
+
+                </TabItem>
+                <!-- General Settings Tab End -->
+
+                <!-- Overlay Settings Tab Start -->
+                <TabItem Header="Overlays">
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Set Tracker Overlay Section Start -->
+                        <Grid
+                            Grid.Column="1"
+                            Grid.Row="1">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="10" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="5" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="5" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="5" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="5" />
+                                <RowDefinition Height="25" />
                                 <RowDefinition Height="5" />
                                 <RowDefinition Height="25" />
                                 <RowDefinition Height="5" />
@@ -359,7 +350,6 @@
                                 <RowDefinition Height="5" />
                                 <RowDefinition Height="25" />
                                 <RowDefinition Height="10" />
-
                             </Grid.RowDefinitions>
 
                             <TextBlock
@@ -1212,7 +1202,9 @@
             <!-- Tab Container End -->
 
             <!-- App Footer Start -->
-            <Grid>
+            <Grid
+                Grid.Column="1"
+                Grid.Row="3">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20" />
