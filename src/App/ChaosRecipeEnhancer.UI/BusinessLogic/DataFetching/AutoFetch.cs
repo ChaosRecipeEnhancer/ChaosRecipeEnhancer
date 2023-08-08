@@ -98,9 +98,14 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                 case 5:
                     ret[0] = "Has entrado a";
                     break;
-                //chinese
+                //korean
                 case 6:
                     ret[0] = "진입했습니다";
+                    break;
+                //japanese
+                case 7:
+                    ret[0] = "あなたは";
+                    ret[1] = "入場しました。";
                     break;
             }
 
@@ -125,6 +130,8 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                     return "Guarida";
                 case 6:
                     return "은신처";
+                case 7:
+                    return "隠れ家";
                 default:
                     return "";
             }
@@ -148,6 +155,8 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching
                     return "El Puerto de los renegados";
                 case 6:
                     return "도둑 항구에";
+                case 7:
+                    return "ローグハーバー";
                 default:
                     return "";
             }

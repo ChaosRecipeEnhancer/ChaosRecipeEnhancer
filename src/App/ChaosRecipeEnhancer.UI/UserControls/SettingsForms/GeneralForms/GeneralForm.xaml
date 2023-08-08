@@ -251,7 +251,8 @@
             <ComboBoxItem Content="Portuguese" />
             <ComboBoxItem Content="Russian" />
             <ComboBoxItem Content="Spanish" />
-            <ComboBoxItem Content="Chinese" />
+            <ComboBoxItem Content="Korean" />
+            <ComboBoxItem Content="Japanese"/>
 
         </ComboBox>
         <!-- Language Setting (Row 15) End -->
