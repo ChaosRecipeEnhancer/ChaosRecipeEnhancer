@@ -1,4 +1,4 @@
-﻿using ChaosRecipeEnhancer.UI.Model;
+﻿using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities;
 

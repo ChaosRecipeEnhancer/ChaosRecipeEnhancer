@@ -2,5 +2,5 @@
 
 public static class AppConstants
 {
-    public const string AppVersionText = "v2.0.0";
+    public const string AppVersionText = "v2.0.0-alpha";
 }

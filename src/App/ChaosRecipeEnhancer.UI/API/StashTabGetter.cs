@@ -71,8 +71,10 @@ public sealed class StashTabGetter
 
     public async Task<bool> GetItemsAsync(StashTab stashTab)
     {
+        // If already fetching or are currently banned from querying API
         if (_isFetching || RateLimit.CheckForBan()) return false;
 
+        // If rate limit exceeded for the request
         if (RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - 4)
         {
             RateLimit.RateLimitExceeded = true;
@@ -83,6 +85,7 @@ public sealed class StashTabGetter
         using var __ = new ScopeGuard(() => _isFetching = false);
 
         using var res = await DoAuthenticatedGetRequestAsync(stashTab.StashTabUri);
+
         if (!res.IsSuccessStatusCode)
         {
             _ = MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -104,7 +107,9 @@ public sealed class StashTabGetter
         var cookieContainer = new CookieContainer();
         cookieContainer.Add(uri, new Cookie("POESESSID", Settings.Default.PathOfExileWebsiteSessionId));
 
-        using var handler = new HttpClientHandler { CookieContainer = cookieContainer };
+        using var handler = new HttpClientHandler();
+        handler.CookieContainer = cookieContainer;
+
         using var client = new HttpClient(handler);
 
         // add user agent

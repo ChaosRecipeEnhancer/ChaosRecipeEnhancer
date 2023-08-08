@@ -9,7 +9,7 @@ using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation;
 
-public static class ReloadItemFilterHandler
+public class ReloadItemFilterHandler
 {
     public static void ReloadFilter()
     {
@@ -44,11 +44,8 @@ public static class ReloadItemFilterHandler
         // Get 'Path of Exile' window in the foreground to actually send input to said window
         NativeWindowExtensions.SetForegroundWindow(poeWindow);
 
-        //SendKeys.SendWait("{ENTER}");
-        //SendKeys.SendWait(chatCommand);
-        //SendKeys.SendWait("{ENTER}");
-
-        Clipboard.Clear(); // Always clear the clipboard first
+        // Always clear the clipboard first
+        Clipboard.Clear();
         Clipboard.SetText(chatCommand);
 
         SendKeys.SendWait("{ENTER}");
@@ -69,6 +66,6 @@ public static class ReloadItemFilterHandler
 
     private static string GetFilterName()
     {
-        return Path.GetFileName(Settings.Default.LootFilterFileLocation).Replace(".filter", "");
+        return Path.GetFileName(Settings.Default.LootFilterFileLocation)!.Replace(".filter", "");
     }
 }

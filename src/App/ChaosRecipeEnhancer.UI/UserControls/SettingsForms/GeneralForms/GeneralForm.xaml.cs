@@ -1,100 +1,94 @@
-﻿using System.ComponentModel;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using ChaosRecipeEnhancer.UI.Api;
+using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.Utilities;
 using MessageBox = System.Windows.MessageBox;
-
-// using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
-internal partial class GeneralForm : INotifyPropertyChanged
+internal partial class GeneralForm
 {
-    private Visibility _fetchOnNewMapEnabled = Visibility.Collapsed;
-    private Visibility _tabIndicesVisible = Visibility.Visible;
-    private Visibility _tabNamePrefixVisible = Visibility.Hidden;
-    private Visibility _tabNameSuffixVisible = Visibility.Hidden;
+    private readonly LeagueGetter _leagueGetter = new();
+    private readonly GeneralFormViewModel _model;
+    private readonly StashTabGetter _stashTabGetter = new();
 
     public GeneralForm()
     {
-        DataContext = this;
+        var itemSetManager = new ItemSetManager();
+        DataContext = _model = new GeneralFormViewModel(itemSetManager);
         InitializeComponent();
-        LoadStashQueryModeVisibility();
-        LoadFetchOnNewMapEnabled();
+        LoadLeagueList();
     }
 
-    public Visibility TabIndicesVisible
+    private async void OnFormLoaded(object sender, RoutedEventArgs e)
     {
-        get => _tabIndicesVisible;
-        set
-        {
-            if (_tabIndicesVisible != value)
-            {
-                _tabIndicesVisible = value;
-                OnPropertyChanged("TabIndicesVisible");
-            }
-        }
+        // TODO: Check settings for real before fetching tabs
+        // if (CheckAllSettings(showError: false)) 
+        await LoadStashTabsAsync();
     }
 
-    public Visibility TabNamePrefixVisible
+    private async Task LoadStashTabsAsync()
     {
-        get => _tabNamePrefixVisible;
-        set
+        _model.FetchingStashTabs = true;
+        using var __ = new ScopeGuard(() => _model.FetchingStashTabs = false);
+
+        _model.SelectedStashTabHandler.SelectedStashTab = null;
+        var stashTabs = await _stashTabGetter.FetchStashTabsAsync();
+        if (stashTabs is null)
         {
-            if (_tabNamePrefixVisible != value)
-            {
-                _tabNamePrefixVisible = value;
-                OnPropertyChanged("TabNamePrefixVisible");
-            }
+            _ = MessageBox.Show("Failed to fetch stash tabs", "Request Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
         }
+
+        if (stashTabs.Count == 0) return;
+
+        _model.StashTabList.Clear();
+        foreach (var tab in stashTabs) _model.StashTabList.Add(tab);
+
+        var selectedStashTabName = Settings.Default.SelectedStashTabName;
+        if (!string.IsNullOrEmpty(selectedStashTabName))
+        {
+            var previouslySelectedStashTab = _model.StashTabList.FirstOrDefault(x => x.TabName == selectedStashTabName);
+            if (previouslySelectedStashTab is not null) _model.SelectedStashTabHandler.SelectedStashTab = previouslySelectedStashTab;
+        }
+
+        _model.SelectedStashTabHandler.SelectedStashTab ??= _model.StashTabList[0];
     }
 
-    public Visibility TabNameSuffixVisible
+    private async void OnFetchStashTabsButtonClicked(object sender, RoutedEventArgs e)
     {
-        get => _tabNameSuffixVisible;
-        set
-        {
-            if (_tabNameSuffixVisible != value)
-            {
-                _tabNameSuffixVisible = value;
-                OnPropertyChanged("TabNameSuffixVisible");
-            }
-        }
+        await LoadStashTabsAsync();
     }
 
-    public Visibility FetchOnNewMapEnabled
+    private void OnRefreshLeaguesButtonClicked(object sender, RoutedEventArgs e)
     {
-        get => _fetchOnNewMapEnabled;
-        set
-        {
-            if (_fetchOnNewMapEnabled != value)
-            {
-                _fetchOnNewMapEnabled = value;
-                OnPropertyChanged("FetchOnNewMapEnabled");
-            }
-        }
+        LoadLeagueList();
+    }
+
+    private async void LoadLeagueList()
+    {
+        var leagues = await _leagueGetter.GetLeaguesAsync();
+        _model.UpdateLeagueList(leagues);
     }
 
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        LoadStashQueryModeVisibility();
-    }
-
-    private void StashTargetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
+        _model.LoadStashQueryModeVisibility();
     }
 
     private void AutoFetchCheckBox_Checked(object sender, RoutedEventArgs e)
     {
-        LoadFetchOnNewMapEnabled();
+        _model.LoadFetchOnNewMapEnabled();
     }
 
     private void AutoFetchCheckBox_Unchecked(object sender, RoutedEventArgs e)
     {
-        LoadFetchOnNewMapEnabled();
-
-        // if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive) LogWatcher.WorkerThread.Interrupt();
+        _model.LoadFetchOnNewMapEnabled();
     }
 
     private void LogLocationDialog_Click(object sender, RoutedEventArgs e)
@@ -119,47 +113,4 @@ internal partial class GeneralForm : INotifyPropertyChanged
                 "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
-
-    private void LoadStashQueryModeVisibility()
-    {
-        switch (Settings.Default.StashTabQueryMode)
-        {
-            case 0:
-                TabIndicesVisible = Visibility.Visible;
-                TabNamePrefixVisible = Visibility.Hidden;
-                TabNameSuffixVisible = Visibility.Hidden;
-                break;
-            case 1:
-                TabIndicesVisible = Visibility.Hidden;
-                TabNamePrefixVisible = Visibility.Visible;
-                TabNameSuffixVisible = Visibility.Hidden;
-                break;
-            case 2:
-                TabIndicesVisible = Visibility.Hidden;
-                TabNamePrefixVisible = Visibility.Hidden;
-                TabNameSuffixVisible = Visibility.Visible;
-                break;
-        }
-    }
-
-    private void LoadFetchOnNewMapEnabled()
-    {
-        FetchOnNewMapEnabled = Settings.Default.AutoFetchOnRezoneEnabled
-            ? Visibility.Visible
-            : Visibility.Collapsed;
-    }
-
-    #region INotifyPropertyChanged implementation
-
-    // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged(string propertyName)
-    {
-        var handler = PropertyChanged;
-        if (handler != null)
-            handler(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    #endregion
 }

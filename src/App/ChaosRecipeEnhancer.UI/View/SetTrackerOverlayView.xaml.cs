@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ChaosRecipeEnhancer.UI.Api;
-using ChaosRecipeEnhancer.UI.Model;
+using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation;
+using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using ChaosRecipeEnhancer.UI.Utilities;
@@ -20,18 +21,19 @@ internal partial class SetTrackerOverlayView
     private const int FetchCooldown = 30;
 
     private readonly ItemSetManager _itemSetManager;
-
     private readonly SetTrackerOverlayViewModel _model;
+    private readonly ReloadItemFilterHandler _reloadItemFilterHandler;
     private readonly StashTabGetter _stashTabGetter;
-
     private readonly StashTabOverlayView _stashTabOverlay;
 
     public SetTrackerOverlayView(ItemSetManager itemSetManager, StashTabGetter stashTabGetter)
     {
         _itemSetManager = itemSetManager;
         _stashTabGetter = stashTabGetter;
+
         DataContext = _model = new SetTrackerOverlayViewModel(_itemSetManager);
         _stashTabOverlay = new StashTabOverlayView(_itemSetManager);
+        _reloadItemFilterHandler = new ReloadItemFilterHandler();
 
         InitializeComponent();
 
@@ -50,8 +52,7 @@ internal partial class SetTrackerOverlayView
     {
         if (e.PropertyName == nameof(Settings.SetTrackerOverlayDisplayMode))
             UpdateOverlayType();
-        else if (e.PropertyName == nameof(Settings.FullSetThreshold) ||
-                 e.PropertyName == nameof(Settings.SelectedStashTabName))
+        else if (e.PropertyName == nameof(Settings.FullSetThreshold) || e.PropertyName == nameof(Settings.SelectedStashTabName))
             CheckForFullSets();
     }
 
@@ -67,7 +68,6 @@ internal partial class SetTrackerOverlayView
     private async void FetchDataAsync()
     {
         _model.WarningMessage = string.Empty;
-
         _model.ShowProgress = true;
         _model.FetchButtonEnabled = false;
 
@@ -86,7 +86,7 @@ internal partial class SetTrackerOverlayView
         }
         else if (RateLimit.BanTime > 0)
         {
-            _model.WarningMessage = "Temporary Ban! Waiting...";
+            _model.WarningMessage = "Temporary Ban from API Requests! Waiting...";
             await Task.Delay(RateLimit.BanTime * 1000);
             RateLimit.BanTime = 0;
         }
@@ -101,16 +101,16 @@ internal partial class SetTrackerOverlayView
     {
         if (_itemSetManager.SelectedStashTab?.NeedsItemFetch != false)
             _model.WarningMessage = string.Empty;
-        else if (!_itemSetManager.SelectedStashTab.NeedsItemFetch &&
-                 _itemSetManager.SelectedStashTab.FullSets >= Settings.Default.FullSetThreshold)
+        else if (!_itemSetManager.SelectedStashTab.NeedsItemFetch && _itemSetManager.SelectedStashTab.FullSets >= Settings.Default.FullSetThreshold)
             _model.WarningMessage = SetsFullText;
-        else if (_model.WarningMessage == SetsFullText) _model.WarningMessage = string.Empty;
+        else if (_model.WarningMessage == SetsFullText)
+            _model.WarningMessage = string.Empty;
     }
 
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.ChangedButton == MouseButton.Left && !Settings.Default.SetTrackerOverlayOverlayLockPositionEnabled &&
-            Mouse.LeftButton == MouseButtonState.Pressed) DragMove();
+        if (e.ChangedButton == MouseButton.Left && !Settings.Default.SetTrackerOverlayOverlayLockPositionEnabled && Mouse.LeftButton == MouseButtonState.Pressed)
+            DragMove();
     }
 
     public new virtual void Hide()
@@ -155,6 +155,6 @@ internal partial class SetTrackerOverlayView
 
     public void RunReloadFilter()
     {
-        throw new NotImplementedException();
+        ReloadItemFilterHandler.ReloadFilter();
     }
 }

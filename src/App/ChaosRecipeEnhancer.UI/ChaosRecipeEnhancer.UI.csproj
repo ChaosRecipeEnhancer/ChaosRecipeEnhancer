@@ -40,15 +40,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Resource Include="Assets\Fonts\Password.ttf" />
-        <Resource Include="Assets\Images\Amulet.png" />
-        <Resource Include="Assets\Images\Belt.png" />
-        <Resource Include="Assets\Images\Boots.png" />
-        <Resource Include="Assets\Images\BodyArmor.png" />
-        <Resource Include="Assets\Images\Gloves.png" />
-        <Resource Include="Assets\Images\Helmet.png" />
-        <Resource Include="Assets\Images\Ring.png" />
-        <Resource Include="Assets\Images\Weapon.png" />
+        <Resource Include="Assets\Fonts\Password.ttf"/>
+        <Resource Include="Assets\Images\Amulet.png"/>
+        <Resource Include="Assets\Images\Belt.png"/>
+        <Resource Include="Assets\Images\Boots.png"/>
+        <Resource Include="Assets\Images\BodyArmor.png"/>
+        <Resource Include="Assets\Images\Gloves.png"/>
+        <Resource Include="Assets\Images\Helmet.png"/>
+        <Resource Include="Assets\Images\Ring.png"/>
+        <Resource Include="Assets\Images\Weapon.png"/>
         <None Update="Assets\Sounds\FilterChanged.mp3">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
@@ -62,16 +62,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="BusinessLogic\README.md" />
-        <Content Include="DynamicControls\README.md" />
-        <Content Include="Extensions\README.md" />
-        <Content Include="Model\README.md" />
-        <Resource Include="CREIcon.ico" />
-        <Resource Include="Assets\Icons\CREIcon.ico" />
+        <Content Include="BusinessLogic\README.md"/>
+        <Content Include="DynamicControls\README.md"/>
+        <Content Include="Extensions\README.md"/>
+        <Content Include="Model\README.md"/>
+        <Resource Include="CREIcon.ico"/>
+        <Resource Include="Assets\Icons\CREIcon.ico"/>
         <Content Include="Assets\Sounds\ItemPickedUp.mp3">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
@@ -88,15 +88,15 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Settings.settings</DependentUpon>
         </Compile>
-        <Compile Remove="UserControls\SettingsForms\GeneralForms\SoundForm.xaml.cs" />
-        <Compile Remove="UserControls\SettingsForms\GeneralForms\SoundFormViewModel.cs" />
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs" />
-        <Compile Remove="View\HotkeyView.xaml.cs" />
-        <Compile Remove="View\HotkeyViewModel.cs" />
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs" />
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs" />
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs" />
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs" />
+        <Compile Remove="UserControls\SettingsForms\GeneralForms\SoundForm.xaml.cs"/>
+        <Compile Remove="UserControls\SettingsForms\GeneralForms\SoundFormViewModel.cs"/>
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs"/>
+        <Compile Remove="View\HotkeyView.xaml.cs"/>
+        <Compile Remove="View\HotkeyViewModel.cs"/>
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs"/>
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs"/>
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs"/>
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -108,13 +108,24 @@
 
 
     <ItemGroup>
-        <Page Remove="UserControls\SettingsForms\GeneralForms\SoundForm.xaml" />
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml" />
-        <Page Remove="View\HotkeyView.xaml" />
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml" />
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml" />
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml" />
+        <Page Remove="UserControls\SettingsForms\GeneralForms\SoundForm.xaml"/>
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml"/>
+        <Page Remove="View\HotkeyView.xaml"/>
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml"/>
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml"/>
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml"/>
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml"/>
+        <Page Update="UserControls\SettingsForms\AccountForms\PathOfExileAccountForm.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
     </ItemGroup>
+
+
+    <ItemGroup>
+        <Folder Include="UserControls\SettingsForms\LootFilterForms\"/>
+    </ItemGroup>
+
 
 </Project>

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Api;
-using ChaosRecipeEnhancer.UI.Model;
+using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities;
 using Application = System.Windows.Application;
@@ -30,16 +28,10 @@ internal partial class SettingsView
     {
         var itemSetManager = new ItemSetManager();
         _recipeOverlay = new SetTrackerOverlayView(itemSetManager, _stashTabGetter);
-        DataContext = _model = new SettingsViewModel(itemSetManager);
+        DataContext = _model = new SettingsViewModel();
 
         InitializeComponent();
-
         InitializeTray();
-    }
-
-    private async void OnWindowLoaded(object sender, RoutedEventArgs e)
-    {
-        if (CheckAllSettings(false)) await LoadStashTabsAsync();
     }
 
     private void InitializeTray()
@@ -47,7 +39,7 @@ internal partial class SettingsView
         _trayIcon.Icon = Properties.Resources.CREIcon;
         _trayIcon.Visible = true;
         _trayIcon.ContextMenuStrip = new ContextMenuStrip();
-        _ = _trayIcon.ContextMenuStrip.Items.Add("Close", null, OnTrayItemMenuClicked);
+        _ = _trayIcon.ContextMenuStrip.Items.Add("Close", null, OnExitTrayItemMenuClicked);
         _trayIcon.DoubleClick += (s, a) =>
         {
             Show();
@@ -59,10 +51,22 @@ internal partial class SettingsView
         };
     }
 
-    private void OnTrayItemMenuClicked(object Sender, EventArgs e)
+    public static bool CheckAllSettings(bool showError)
     {
-        _closingFromTrayIcon = true;
-        Close();
+        var missingSettings = new List<string>();
+        var errorMessage = "Please add: \n";
+
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName)) missingSettings.Add("- Account Name \n");
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileWebsiteSessionId)) missingSettings.Add("- PoE Session ID \n");
+        if (string.IsNullOrEmpty(Settings.Default.LeagueName)) missingSettings.Add("- League \n");
+
+        if (missingSettings.Count == 0) return true;
+
+        foreach (var setting in missingSettings) errorMessage += setting;
+
+        if (showError) _ = MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+
+        return false;
     }
 
     protected override void OnClosing(CancelEventArgs e)
@@ -83,7 +87,13 @@ internal partial class SettingsView
         }
     }
 
-    private void LootFilterFileDialog_Click(object sender, RoutedEventArgs e)
+    private void OnExitTrayItemMenuClicked(object sender, EventArgs e)
+    {
+        _closingFromTrayIcon = true;
+        Close();
+    }
+
+    private void OnLootFilterFileDialogInputClicked(object sender, RoutedEventArgs e)
     {
         var open = new OpenFileDialog();
         open.Filter = "LootFilter|*.filter";
@@ -94,59 +104,6 @@ internal partial class SettingsView
         var filename = open.FileName;
         Settings.Default.LootFilterFileLocation = filename;
         LootFilterFileDialog.Content = filename;
-    }
-
-    public static bool CheckAllSettings(bool showError)
-    {
-        var missingSettings = new List<string>();
-        var errorMessage = "Please add: \n";
-
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName)) missingSettings.Add("- Account Name \n");
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileWebsiteSessionId)) missingSettings.Add("- PoE Session ID \n");
-        if (string.IsNullOrEmpty(Settings.Default.LeagueName)) missingSettings.Add("- League \n");
-
-        if (missingSettings.Count == 0) return true;
-
-        foreach (var setting in missingSettings) errorMessage += setting;
-
-        if (showError)
-            _ = MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
-
-        return false;
-    }
-
-    private async Task LoadStashTabsAsync()
-    {
-        _model.FetchingStashTabs = true;
-        using var __ = new ScopeGuard(() => _model.FetchingStashTabs = false);
-
-        _model.SelectedStashTabHandler.SelectedStashTab = null;
-        var stashTabs = await _stashTabGetter.FetchStashTabsAsync();
-        if (stashTabs is null)
-        {
-            _ = MessageBox.Show("Failed to fetch stash tabs", "Request Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
-        }
-
-        if (stashTabs.Count == 0) return;
-
-        _model.StashTabList.Clear();
-        foreach (var tab in stashTabs) _model.StashTabList.Add(tab);
-
-        var selectedStashTabName = Settings.Default.SelectedStashTabName;
-        if (!string.IsNullOrEmpty(selectedStashTabName))
-        {
-            var previouslySelectedStashTab = _model.StashTabList.FirstOrDefault(x => x.TabName == selectedStashTabName);
-            if (previouslySelectedStashTab is not null)
-                _model.SelectedStashTabHandler.SelectedStashTab = previouslySelectedStashTab;
-        }
-
-        _model.SelectedStashTabHandler.SelectedStashTab ??= _model.StashTabList[0];
-    }
-
-    private async void OnFetchStashTabsButtonClicked(object sender, RoutedEventArgs e)
-    {
-        if (CheckAllSettings(true)) await LoadStashTabsAsync();
     }
 
     private void OnSaveButtonClicked(object sender, RoutedEventArgs e)

@@ -25,6 +25,8 @@ public class CFilterGenerationManager
         LoadCustomStyle();
     }
 
+    public Settings Settings { get; } = Settings.Default;
+
     public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem)
     {
         var activeItemTypes = new ActiveItemTypes();
@@ -38,15 +40,10 @@ public class CFilterGenerationManager
             var stillMissing = _itemClassManager.CheckIfMissing(missingItemClasses);
 
             // weapons might be buggy, will try to do some tests
-            if ((Settings.Default.ChaosRecipeTrackingEnabled || Settings.Default.RegalRecipeTrackingEnabled)
-                && (_itemClassManager.AlwaysActive || stillMissing))
+            if (_itemClassManager.AlwaysActive || stillMissing)
             {
                 // if we need chaos only gear to complete a set (60-74), add that to our filter section
-                sectionList.Add(missingChaosItem
-                    ? GenerateSection(false, true)
-                    :
-                    // else add any gear piece 60+ to our section for that item class
-                    GenerateSection(false));
+                sectionList.Add(GenerateSection());
 
                 // find better way to handle active items and sound notification on changes
                 activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
@@ -57,44 +54,28 @@ public class CFilterGenerationManager
             }
         }
 
-        if (Settings.Default.LootFilterManipulationEnabled)
-            await UpdateFilterAsync(sectionList);
+        if (Settings.Default.LootFilterManipulationEnabled) await UpdateFilterAsync(sectionList);
 
         return activeItemTypes;
     }
 
-    private string GenerateSection(bool isInfluenced, bool onlyChaos = false)
+    private string GenerateSection()
     {
         var result = "Show";
 
-        if (isInfluenced)
-            result += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter +
-                      "HasInfluence Crusader Elder Hunter Redeemer Shaper Warlord";
-        else
-            result += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "HasInfluence None";
+        result += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "HasInfluence None";
 
-        result = result + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Rarity Rare" +
-                 StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+        result = result + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Rarity Rare" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
-        if (!Settings.Default.IncludeIdentifiedItemsEnabled)
-            result += "Identified False" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+        if (!Settings.Default.IncludeIdentifiedItemsEnabled) result += "Identified False" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
-        switch (isInfluenced)
+        result += Settings.ChaosRecipeTrackingEnabled switch
         {
-            case false when !_itemClassManager.AlwaysActive && onlyChaos &&
-                            !Settings.Default.RegalRecipeTrackingEnabled:
-                result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter +
-                          StringConstruction.TabCharacter + "ItemLevel <= 74" +
-                          StringConstruction.NewLineCharacter +
-                          StringConstruction.TabCharacter;
-                break;
-            case false when Settings.Default.RegalRecipeTrackingEnabled:
-                result += "ItemLevel >= 75" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
-                break;
-            default:
-                result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
-                break;
-        }
+            false when !_itemClassManager.AlwaysActive => "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "ItemLevel <= 74" +
+                                                          StringConstruction.NewLineCharacter + StringConstruction.TabCharacter,
+            false => "ItemLevel >= 75" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter,
+            _ => "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter
+        };
 
         var baseType = _itemClassManager.SetBaseType();
 

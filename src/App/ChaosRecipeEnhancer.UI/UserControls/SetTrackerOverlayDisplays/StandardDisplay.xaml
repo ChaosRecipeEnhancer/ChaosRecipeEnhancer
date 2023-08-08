@@ -10,7 +10,7 @@
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d"
              FontSize="14"
-             d:DataContext="{d:DesignInstance Type=view:SetTrackerOverlayViewModel }">
+             d:DataContext="{d:DesignInstance Type=view:SetTrackerOverlayViewModel}">
 
     <UserControl.Resources>
         <utilities:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter"
@@ -81,21 +81,6 @@
                 TextAlignment="Center" />
 
         </UniformGrid>
-
-        <!-- Items Not Fetched Overlay Display -->
-        <Grid Grid.Row="1"
-              Grid.Column="3"
-              Grid.ColumnSpan="8"
-              Visibility="{Binding SelectedStashTabHandler.SelectedStashTab.NeedsItemFetch, Converter={StaticResource VisibleIfTrue}}">
-            <Grid.Background>
-                <SolidColorBrush Color="Gray"
-                                 Opacity="0.9" />
-            </Grid.Background>
-            <TextBlock Text="Items Not Fetched"
-                       Foreground="White"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center" />
-        </Grid>
 
         <!-- Glove Display -->
         <Border
@@ -456,6 +441,21 @@
 
         </Border>
 
+        <!-- Items Not Fetched Overlay Display -->
+        <Grid Grid.Row="1"
+              Grid.Column="3"
+              Grid.ColumnSpan="8"
+              Visibility="{Binding SelectedStashTabHandler.SelectedStashTab.NeedsItemFetch, Converter={StaticResource VisibleIfTrue}}">
+            <Grid.Background>
+                <SolidColorBrush Color="Gray"
+                                 Opacity="0.9" />
+            </Grid.Background>
+            <TextBlock Text="Items Not Fetched"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+        </Grid>
+
         <!-- Fetch Button -->
         <Button
             x:Name="FetchButton"
@@ -485,7 +485,7 @@
                     <Setter Property="Visibility" Value="Visible" />
                     <Style.Triggers>
                         <DataTrigger
-                            Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}"
+                            Binding="{Binding Settings.LootFilterManipulationEnabled}"
                             Value="False">
                             <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>

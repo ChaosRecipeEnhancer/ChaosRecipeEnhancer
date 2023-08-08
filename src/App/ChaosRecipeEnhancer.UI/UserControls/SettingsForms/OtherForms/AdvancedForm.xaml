@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms.AdvancedForm"
+             xmlns:otherForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=otherForms:AdvancedFormViewModel}">
+    <Grid
+        Margin="10 0 10 10"
+        ShowGridLines="False">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="0"
+            Text="Recipes"
+            FontSize="24"
+            VerticalAlignment="Center"
+            FontWeight="Bold" />
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="1"
+            Margin="0 0 0 10"
+            FontSize="14"
+            FontWeight="SemiBold"
+            VerticalAlignment="Center">
+            Make sure you know what you're doing <LineBreak />
+            when modifying these settings.
+        </TextBlock>
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="2"
+            VerticalAlignment="Center"
+            Text=""
+            ToolTipService.InitialShowDelay="50"
+            ToolTipService.ShowDuration="24000"
+            ToolTip="With this checked on, you'll be able to include more than 1 lower item level &#x0a;piece of gear in your Chaos recipes. &#x0a; &#x0a;If you de-select this, the tool will try its best to only include 1 piece of &#x0a;lower item level gear so that it'll last you longer into higher tier maps. &#x0a; &#x0a;The Chaos Orb recipe only requires a single item level 60 - 75 item out of every &#x0a;set you turn in. As you get further into maps and out-level those items (i.e. &#x0a;zone level is higher than 74), you'll start to notice the amount of items you &#x0a;have for the chaos recipe will rapidly diminish. &#x0a; &#x0a;This lets you decide if you want to take a more greedy approach and use up as &#x0a;many items as possible, or potentially save some lower-level items for potentially &#x0a;more chaos in the long run.">
+            Do Not Preserve Low Item Level Gear: <LineBreak />
+            (Fill Greedy Mode)
+        </TextBlock>
+
+        <CheckBox
+            Grid.Column="1"
+            Grid.Row="2"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Settings.DoNotPreserveLowItemLevelGear, Mode=TwoWay}" />
+
+    </Grid>
+</UserControl>

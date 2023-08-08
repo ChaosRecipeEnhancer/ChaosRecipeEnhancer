@@ -1,4 +1,4 @@
-﻿using ChaosRecipeEnhancer.UI.Model;
+﻿using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.View;

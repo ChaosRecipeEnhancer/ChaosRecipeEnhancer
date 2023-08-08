@@ -7,10 +7,11 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
         xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
+        xmlns:accountForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms"
         xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
-        xmlns:base="clr-namespace:ChaosRecipeEnhancer.UI"
         xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
         xmlns:constants="clr-namespace:ChaosRecipeEnhancer.UI.Constants"
+        xmlns:otherForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms"
         mc:Ignorable="d"
         FontSize="14"
         Title="Chaos Recipe Enhancer Settings"
@@ -20,7 +21,6 @@
         ResizeMode="CanMinimize"
         ShowActivated="True"
         WindowStartupLocation="CenterScreen"
-        Loaded="OnWindowLoaded"
         d:DataContext="{d:DesignInstance Type={x:Type view:SettingsViewModel}}">
 
     <Window.Resources>
@@ -31,72 +31,77 @@
         BorderBrush="DarkGray"
         BorderThickness="1">
 
-        <Grid Focusable="True">
+        <Grid
+            Margin="10 10 10 0"
+            Focusable="True">
 
+            <!-- 'Main' App Grid Definitions -->
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="20" />
+                <!-- Left Gap -->
+                <!-- Main Content -->
+                <ColumnDefinition Width="Auto" />
+                <!-- Right Gap -->
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <!-- Main Content -->
+                <RowDefinition Height="Auto" />
+                <!-- Footer -->
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- Tab Container Start -->
             <TabControl
-                Grid.Column="1"
-                Grid.Row="1">
+                Grid.Column="0"
+                Grid.Row="0">
+
+                <!-- Account Settings Tab Start -->
+                <TabItem Header="Account">
+
+                    <!-- Account Settings Tab Contents Start -->
+                    <Grid Margin="5 10 ">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <accountForms:PathOfExileAccountForm
+                            Grid.Column="0"
+                            Grid.Row="0" />
+
+                    </Grid>
+                    <!-- Account Settings Tab Contents End -->
+
+                </TabItem>
+                <!-- Account Settings Tab End -->
 
                 <!-- General Settings Tab Start -->
                 <TabItem Header="General">
 
                     <!-- General Settings Tab Contents Start -->
-                    <Grid>
+                    <Grid Margin="5 10">
 
+                        <!-- General Tab Content Grid Definitions -->
                         <Grid.ColumnDefinitions>
-
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="10" />
-
+                            <!-- Recipes Form -->
+                            <ColumnDefinition Width="Auto" />
+                            <!-- General Form -->
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-
                         <Grid.RowDefinitions>
-
-                            <RowDefinition Height="1" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="*" />
-
+                            <!-- General Tab Content -->
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <generalForms:PathOfExileForm
-                            Grid.Column="1"
-                            Grid.Row="1" />
-
                         <generalForms:RecipesForm
-                            Grid.Column="1"
-                            Grid.Row="2" />
+                            Grid.Column="0"
+                            Grid.Row="0" />
 
                         <generalForms:GeneralForm
-                            Grid.Column="2"
-                            Grid.Row="1"
-                            Grid.RowSpan="3" />
-
-                        <!-- TODO: Fix Sound stuff (Files are simply excluded for now) -->
-                        <!-- <generalForms:SoundForm -->
-                        <!--     Grid.Column="3" -->
-                        <!--     Grid.Row="2" /> -->
+                            Grid.Column="1"
+                            Grid.Row="0" />
 
                     </Grid>
                     <!-- General Settings Tab Contents End -->
@@ -494,7 +499,7 @@
                                 Grid.Column="1"
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
-                                Text="General"
+                                Text="Loot Filter"
                                 FontSize="24"
                                 VerticalAlignment="Center"
                                 FontWeight="Bold" />
@@ -527,7 +532,7 @@
                                 Grid.Column="3"
                                 Grid.Row="5"
                                 Width="200"
-                                Click="LootFilterFileDialog_Click"
+                                Click="OnLootFilterFileDialogInputClicked"
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="{Binding Settings.LootFilterFileLocation, Mode=OneWay}"
                                 Content="{Binding Settings.LootFilterFileLocation, Mode=OneWay}"
@@ -926,83 +931,23 @@
                 <!-- Advanced Settings Tab Start -->
                 <TabItem Header="Advanced">
 
-                    <Grid>
+                    <Grid Margin="5 10 ">
 
                         <Grid.ColumnDefinitions>
-
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="*" />
-
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-
                         <Grid.RowDefinitions>
-
-                            <RowDefinition Height="1" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="*" />
-
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <Grid
+                        <otherForms:AdvancedForm
+                            Grid.Column="0"
+                            Grid.Row="0" />
+
+                        <otherForms:SystemForm
                             Grid.Column="1"
-                            Grid.Row="1">
-
-                            <Grid.ColumnDefinitions>
-
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-
-                            </Grid.ColumnDefinitions>
-
-                            <Grid.RowDefinitions>
-
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="10" />
-
-                            </Grid.RowDefinitions>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                VerticalAlignment="Center"
-                                Text="Make sure you know what you're doing when modifying these settings." />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="3"
-                                Grid.ColumnSpan="2"
-                                Text="Recipes"
-                                FontSize="24"
-                                VerticalAlignment="Center"
-                                FontWeight="Bold" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Do Not Preserve Low Item Level Gear:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTipService.ShowDuration="24000"
-                                ToolTip="With this checked on, you'll be able to include more than 1 lower item level &#x0a;piece of gear in your Chaos recipes. &#x0a; &#x0a;If you de-select this, the tool will try its best to only include 1 piece of &#x0a;lower item level gear so that it'll last you longer into higher tier maps. &#x0a; &#x0a;The Chaos Orb recipe only requires a single item level 60 - 75 item out of every &#x0a;set you turn in. As you get further into maps and out-level those items (i.e. &#x0a;zone level is higher than 74), you'll start to notice the amount of items you &#x0a;have for the chaos recipe will rapidly diminish. &#x0a; &#x0a;This lets you decide if you want to take a more greedy approach and use up as &#x0a;many items as possible, or potentially save some lower-level items for potentially &#x0a;more chaos in the long run." />
-
-                            <CheckBox
-                                x:Name="LimitChaosCheckBox"
-                                Grid.Column="3"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=DoNotPreserveLowItemLevelGear, Mode=TwoWay}" />
-
-                        </Grid>
+                            Grid.Row="0" />
 
                     </Grid>
 
@@ -1014,8 +959,8 @@
 
             <!-- App Footer Start -->
             <UniformGrid
-                Grid.Column="1"
-                Grid.Row="2"
+                Grid.Column="0"
+                Grid.Row="1"
                 Columns="3"
                 Rows="2"
                 Margin="0 10 0 5">

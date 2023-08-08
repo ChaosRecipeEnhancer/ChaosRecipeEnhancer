@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ChaosRecipeEnhancer.UI.Model;
+using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.View;
@@ -57,10 +57,8 @@ internal partial class StashTabOverlayView
         if (ControlHelpers.HitTest(EditModeButton, e.ClickLocation))
             HandleEditButton();
         else
-            foreach (var cell in _model.SelectedStashTabHandler.SelectedStashTab.OverlayCellsList.Where(cell =>
-                         cell.Active))
-                if (ControlHelpers.HitTest(ControlHelpers.GetContainerForDataObject<Button>(StashTabControl, cell),
-                        e.ClickLocation))
+            foreach (var cell in _model.SelectedStashTabHandler.SelectedStashTab.OverlayCellsList.Where(cell => cell.Active))
+                if (ControlHelpers.HitTest(ControlHelpers.GetContainerForDataObject<Button>(StashTabControl, cell), e.ClickLocation))
                 {
                     _itemSetManager.OnItemCellClicked(cell);
                     return;
