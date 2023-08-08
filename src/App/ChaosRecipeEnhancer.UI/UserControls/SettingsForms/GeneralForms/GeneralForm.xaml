@@ -193,13 +193,16 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <ComboBox Grid.Column="0"
-                      Width="140"
-                      IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}"
-                      ItemsSource="{Binding StashTabList}"
-                      SelectedItem="{Binding SelectedStashTabHandler.SelectedStashTab, Mode=TwoWay}"
-                      DisplayMemberPath="TabName"
-                      VerticalContentAlignment="Center" />
+            <xctk:CheckComboBox
+                Grid.Column="0"
+                IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}"
+                ItemsSource="{Binding StashTabList}"
+                SelectedItemsOverride="{Binding SelectedStashTabHandler.SelectedStashTab, Mode=TwoWay}"
+                DisplayMemberPath="TabName"
+                VerticalContentAlignment="Center"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ValueMemberPath="Level" />
 
             <Button Content="Fetch"
                     Grid.Column="2"

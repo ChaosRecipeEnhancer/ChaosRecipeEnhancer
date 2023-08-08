@@ -29,7 +29,9 @@ public class ItemSetManager : ViewModelBase, ISelectedStashTabHandler
         get => _selectedStashTab;
         set
         {
-            if (SetProperty(ref _selectedStashTab, value) && _selectedStashTab is not null) Settings.Default.SelectedStashTabName = _selectedStashTab.TabName;
+            if (SetProperty(ref _selectedStashTab, value) && _selectedStashTab is not null)
+                if (Settings.Default.SelectedStashTabName is not null)
+                    Settings.Default.SelectedStashTabName[0] = _selectedStashTab.TabName;
         }
     }
 
