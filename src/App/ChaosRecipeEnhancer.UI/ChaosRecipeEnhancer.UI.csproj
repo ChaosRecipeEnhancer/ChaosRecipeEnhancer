@@ -14,8 +14,6 @@
         <UseApplicationTrust>false</UseApplicationTrust>
         <PublishWizardCompleted>true</PublishWizardCompleted>
         <BootstrapperEnabled>true</BootstrapperEnabled>
-        <Version>2.0.0</Version>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <ApplicationVersion>2.0</ApplicationVersion>
         <ApplicationRevision>0</ApplicationRevision>
 
