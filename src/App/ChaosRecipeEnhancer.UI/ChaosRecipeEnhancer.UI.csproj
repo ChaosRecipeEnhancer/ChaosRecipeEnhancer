@@ -6,16 +6,18 @@
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <UseWindowsForms>True</UseWindowsForms>
         <UseWPF>true</UseWPF>
+        <IsPackable>false</IsPackable>
 
         <!--Application Name & Version-->
         <AssemblyName>ChaosRecipeEnhancer</AssemblyName>
         <MapFileExtensions>true</MapFileExtensions>
-        <ApplicationRevision>0</ApplicationRevision>
-        <ApplicationVersion>2.0</ApplicationVersion>
         <UseApplicationTrust>false</UseApplicationTrust>
         <PublishWizardCompleted>true</PublishWizardCompleted>
         <BootstrapperEnabled>true</BootstrapperEnabled>
-
+        <Version>2.0.0</Version>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <ApplicationVersion>2.0</ApplicationVersion>
+        <ApplicationRevision>0</ApplicationRevision>
 
         <!--Update Settings-->
         <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -31,16 +33,16 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <TargetZone>LocalIntranet</TargetZone>
-        <PlatformTarget>AnyCPU</PlatformTarget>
+        <ApplicationIcon>Assets\Icons\CREIcon.ico</ApplicationIcon>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <ApplicationIcon>CREIcon.ico</ApplicationIcon>
-    </PropertyGroup>
-
+    <!-- Project Assets -->
     <ItemGroup>
+        <!-- Icons -->
+        <Resource Include="Assets\Icons\CREIcon.ico"/>
         <Resource Include="Assets\Fonts\Password.ttf"/>
+
+        <!-- Images -->
         <Resource Include="Assets\Images\Amulet.png"/>
         <Resource Include="Assets\Images\Belt.png"/>
         <Resource Include="Assets\Images\Boots.png"/>
@@ -49,32 +51,25 @@
         <Resource Include="Assets\Images\Helmet.png"/>
         <Resource Include="Assets\Images\Ring.png"/>
         <Resource Include="Assets\Images\Weapon.png"/>
-        <None Update="Assets\Sounds\FilterChanged.mp3">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Update="Assets\FilterStyles\NormalItemsStyle.txt">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Update="Properties\Settings.settings">
-            <Generator>PublicSettingsSingleFileGenerator</Generator>
-            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-        </None>
-    </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0"/>
-    </ItemGroup>
+        <!-- Sounds -->
+        <Content Update="Assets\Sounds\FilterChanged.mp3">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Assets\Sounds\ItemPickedUp.mp3">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
 
-    <ItemGroup>
+        <!-- Filters -->
+        <Content Update="Assets\FilterStyles\NormalItemsStyle.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+
+        <!-- Documentation -->
         <Content Include="BusinessLogic\README.md"/>
         <Content Include="DynamicControls\README.md"/>
         <Content Include="Extensions\README.md"/>
         <Content Include="Model\README.md"/>
-        <Resource Include="CREIcon.ico"/>
-        <Resource Include="Assets\Icons\CREIcon.ico"/>
-        <Content Include="Assets\Sounds\ItemPickedUp.mp3">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -83,44 +78,38 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
         <Compile Update="Properties\Settings.Designer.cs">
             <DesignTimeSharedInput>True</DesignTimeSharedInput>
             <AutoGen>True</AutoGen>
             <DependentUpon>Settings.settings</DependentUpon>
         </Compile>
-        <Compile Remove="UserControls\SettingsForms\GeneralForms\SoundForm.xaml.cs"/>
-        <Compile Remove="UserControls\SettingsForms\GeneralForms\SoundFormViewModel.cs"/>
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs"/>
-        <Compile Remove="View\HotkeyView.xaml.cs"/>
-        <Compile Remove="View\HotkeyViewModel.cs"/>
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs"/>
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs"/>
+        <None Update="Properties\Settings.settings">
+            <Generator>PublicSettingsSingleFileGenerator</Generator>
+            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+        </None>
+    </ItemGroup>
+
+    <!-- NuGet Packages -->
+    <ItemGroup>
+        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0"/>
+    </ItemGroup>
+
+    <!-- Excluded Files -->
+    <!-- Likely stuff we're looking to (re-)implement in a very near release -->
+    <ItemGroup>
         <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs"/>
         <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Update="Properties\Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-
-
-    <ItemGroup>
-        <Page Remove="UserControls\SettingsForms\GeneralForms\SoundForm.xaml"/>
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml"/>
-        <Page Remove="View\HotkeyView.xaml"/>
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml"/>
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml"/>
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs"/>
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs"/>
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs"/>
         <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml"/>
         <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml"/>
-        <Page Update="UserControls\SettingsForms\AccountForms\PathOfExileAccountForm.xaml">
-            <Generator>MSBuild:Compile</Generator>
-            <XamlRuntime>Wpf</XamlRuntime>
-            <SubType>Designer</SubType>
-        </Page>
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml"/>
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml"/>
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml"/>
     </ItemGroup>
-
-
 </Project>

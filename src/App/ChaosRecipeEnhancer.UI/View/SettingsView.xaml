@@ -21,15 +21,12 @@
         ShowActivated="True"
         WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance Type={x:Type view:SettingsViewModel}}">
-
     <Border
         BorderBrush="DarkGray"
         BorderThickness="1">
-
         <Grid
             Margin="10 10 10 0"
             Focusable="True">
-
             <!-- 'Main' App Grid Definitions -->
             <Grid.ColumnDefinitions>
                 <!-- Left Gap -->
@@ -43,12 +40,10 @@
                 <!-- Footer -->
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-
             <!-- Tab Container Start -->
             <TabControl
                 Grid.Column="0"
                 Grid.Row="0">
-
                 <!-- Account Settings Tab Start -->
                 <TabItem Header="Account">
                     <Grid>
@@ -160,7 +155,6 @@
                 <!-- Advanced Settings Tab End -->
             </TabControl>
             <!-- Tab Container End -->
-
             <!-- App Footer Start -->
             <UniformGrid
                 Grid.Column="0"
@@ -209,7 +203,6 @@
 
             </UniformGrid>
             <!-- App Footer End -->
-
         </Grid>
     </Border>
 </Window>

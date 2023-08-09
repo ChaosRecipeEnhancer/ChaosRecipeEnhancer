@@ -1,5 +1,4 @@
 ﻿using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
-using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.View;
@@ -16,8 +15,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     {
         SelectedStashTabHandler = selectedStashTabHandler;
     }
-
-    public Settings Settings => Settings.Default;
 
     public ISelectedStashTabHandler SelectedStashTabHandler { get; }
 
