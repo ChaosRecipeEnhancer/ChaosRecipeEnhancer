@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,11 +28,46 @@ internal partial class GeneralForm
 
     private async void OnFormLoaded(object sender, RoutedEventArgs e)
     {
-        // TODO: Check settings for real before fetching tabs
-        // if (CheckAllSettings(showError: false)) 
-        await LoadStashTabsAsync();
+        if (CheckAccountSettings(showError: false))
+            await LoadStashTabsAsync();
     }
 
+    private static bool CheckAccountSettings( bool showError )
+    {
+        var missingSettings = new List<string>();
+        string errorMessage = "Please add: \n";
+
+        if ( string.IsNullOrEmpty( Settings.Default.PathOfExileAccountName ) )
+        {
+            missingSettings.Add( "- Account Name \n" );
+        }
+        if ( string.IsNullOrEmpty( Settings.Default.PathOfExileWebsiteSessionId ) )
+        {
+            missingSettings.Add( "- PoE Session ID \n" );
+        }
+        if ( string.IsNullOrEmpty( Settings.Default.LeagueName ) )
+        {
+            missingSettings.Add( "- League \n" );
+        }
+
+        if ( missingSettings.Count == 0 )
+        {
+            return true;
+        }
+
+        foreach ( string setting in missingSettings )
+        {
+            errorMessage += setting;
+        }
+
+        if ( showError )
+        {
+            _ = MessageBox.Show( errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error );
+        }
+
+        return false;
+    }
+    
     private async Task LoadStashTabsAsync()
     {
         _model.FetchingStashTabs = true;
