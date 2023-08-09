@@ -14,21 +14,7 @@
         <utilities:InvertBoolConverter x:Key="InvertedBoolConverter" />
     </UserControl.Resources>
 
-    <Grid
-        Margin="10 0 10 0"
-        ShowGridLines="False">
-
-        <Grid.Resources>
-            <Style TargetType="TextBlock">
-                <Setter Property="Margin" Value="0 10 0 0" />
-            </Style>
-            <Style TargetType="TextBox">
-                <Setter Property="Margin" Value="10 10 0 0" />
-            </Style>
-            <Style TargetType="CheckBox">
-                <Setter Property="Margin" Value="10 10 0 0" />
-            </Style>
-        </Grid.Resources>
+    <Grid ShowGridLines="False">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -46,7 +32,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="0"
-            Margin="0 "
+            Grid.ColumnSpan="2"
             VerticalAlignment="Center"
             Text="Recipes"
             FontSize="24"
@@ -57,6 +43,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
+            MinWidth="150"
             VerticalAlignment="Center"
             Text="Chaos Orb Recipe:"
             ToolTipService.InitialShowDelay="50"
@@ -65,6 +52,7 @@
         <CheckBox
             Grid.Column="1"
             Grid.Row="1"
+            MinWidth="200"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.ChaosRecipeTrackingEnabled, Mode=TwoWay}" />
         <!-- Chaos Recipe Selector End -->
@@ -73,6 +61,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="2"
+            MinWidth="150"
             VerticalAlignment="Center"
             Text="Regal Recipe:"
             ToolTipService.InitialShowDelay="50"
@@ -89,6 +78,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="3"
+            MinWidth="150"
             VerticalAlignment="Center"
             Text="Include Identified Items:"
             ToolTipService.InitialShowDelay="50"
@@ -105,6 +95,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="4"
+            MinWidth="150"
             VerticalAlignment="Center"
             Text="Full Set Threshold:"
             ToolTip="Number of full sets you want. If you have collected this amount of items of an item type, item type will get deactivated. Leave at 0 for auto calculation, that means 4 sets for each normal tab and 16 sets for each quad tab.  " />
@@ -112,6 +103,7 @@
         <TextBox
             Grid.Column="1"
             Grid.Row="4"
+            MinWidth="200"
             Text="{Binding Settings.FullSetThreshold, Mode=TwoWay}" />
         <!-- Full Set Threshold Setting End -->
 

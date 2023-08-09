@@ -123,9 +123,4 @@
     </ItemGroup>
 
 
-    <ItemGroup>
-        <Folder Include="UserControls\SettingsForms\LootFilterForms\"/>
-    </ItemGroup>
-
-
 </Project>

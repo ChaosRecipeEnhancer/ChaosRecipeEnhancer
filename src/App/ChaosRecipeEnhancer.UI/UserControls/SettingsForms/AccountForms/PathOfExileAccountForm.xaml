@@ -13,26 +13,13 @@
     </UserControl.Resources>
 
     <Grid
-        Margin="10 0 10 10"
         ShowGridLines="False">
-
-        <Grid.Resources>
-            <Style TargetType="TextBlock">
-                <Setter Property="Margin" Value="0 10 10 0" />
-            </Style>
-            <Style TargetType="TextBox">
-                <Setter Property="Margin" Value="0 5 0 0" />
-                <Setter Property="Width" Value="200" />
-            </Style>
-        </Grid.Resources>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -50,6 +37,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
+            MinWidth="150"
             VerticalAlignment="Center"
             Text="Account Name:"
             ToolTipService.InitialShowDelay="50"
@@ -58,11 +46,13 @@
         <TextBox
             Grid.Column="1"
             Grid.Row="1"
+            Width="200"
             Text="{Binding Settings.PathOfExileAccountName, Mode=TwoWay}" />
 
         <TextBlock
             Grid.Column="0"
             Grid.Row="2"
+            MinWidth="150"
             VerticalAlignment="Center"
             Text="PoE Session ID:"
             ToolTipService.InitialShowDelay="50"
@@ -71,6 +61,7 @@
         <TextBox
             Grid.Column="1"
             Grid.Row="2"
+            Width="200"
             FontFamily="{StaticResource PasswordFont}"
             Text="{Binding Settings.PathOfExileWebsiteSessionId, Mode=TwoWay}" />
 

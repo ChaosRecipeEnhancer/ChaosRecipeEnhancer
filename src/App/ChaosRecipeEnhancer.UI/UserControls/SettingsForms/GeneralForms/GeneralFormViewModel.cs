@@ -31,7 +31,6 @@ internal class GeneralFormViewModel : ViewModelBase
     public ObservableCollection<StashTab> StashTabList { get; } = new();
     public ObservableCollection<string> LeagueList { get; } = new();
     public ISelectedStashTabHandler SelectedStashTabHandler { get; }
-    public Settings Settings { get; } = Settings.Default;
 
     public bool FetchingStashTabs
     {

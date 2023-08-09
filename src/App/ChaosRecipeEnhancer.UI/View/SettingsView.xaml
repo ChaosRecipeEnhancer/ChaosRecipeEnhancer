@@ -4,12 +4,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
+        xmlns:overlayForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms"
         xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
         xmlns:accountForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms"
+        xmlns:lootFilterForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms"
         xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
-        xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
         xmlns:constants="clr-namespace:ChaosRecipeEnhancer.UI.Constants"
         xmlns:otherForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms"
         mc:Ignorable="d"
@@ -22,10 +21,6 @@
         ShowActivated="True"
         WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance Type={x:Type view:SettingsViewModel}}">
-
-    <Window.Resources>
-        <utilities:StringColorConverter x:Key="StringColorConverter" />
-    </Window.Resources>
 
     <Border
         BorderBrush="DarkGray"
@@ -56,883 +51,46 @@
 
                 <!-- Account Settings Tab Start -->
                 <TabItem Header="Account">
-
-                    <!-- Account Settings Tab Contents Start -->
-                    <Grid Margin="5 10 ">
-
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-
+                        <!-- Path of Exile Account -->
                         <accountForms:PathOfExileAccountForm
                             Grid.Column="0"
                             Grid.Row="0" />
-
                     </Grid>
-                    <!-- Account Settings Tab Contents End -->
-
                 </TabItem>
                 <!-- Account Settings Tab End -->
 
                 <!-- General Settings Tab Start -->
                 <TabItem Header="General">
-
-                    <!-- General Settings Tab Contents Start -->
-                    <Grid Margin="5 10">
-
-                        <!-- General Tab Content Grid Definitions -->
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <!-- Recipes Form -->
                             <ColumnDefinition Width="Auto" />
-                            <!-- General Form -->
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <!-- General Tab Content -->
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-
+                        <!-- Recipes -->
                         <generalForms:RecipesForm
                             Grid.Column="0"
                             Grid.Row="0" />
-
+                        <!-- General -->
                         <generalForms:GeneralForm
                             Grid.Column="1"
                             Grid.Row="0" />
-
                     </Grid>
-                    <!-- General Settings Tab Contents End -->
-
                 </TabItem>
                 <!-- General Settings Tab End -->
 
                 <!-- Overlay Settings Tab Start -->
                 <TabItem Header="Overlays">
-
                     <Grid>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="10" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
-                        <!-- Set Tracker Overlay Section Start -->
-                        <Grid
-                            Grid.Column="1"
-                            Grid.Row="1">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="10" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Text="Set Tracker Overlay"
-                                FontSize="24"
-                                VerticalAlignment="Center"
-                                FontWeight="Bold" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Set Tracker Overlay Opacity:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The background opacity of the Set Tracker Overlay from 0 (0%) to 1 (100%)." />
-
-                            <Slider
-                                x:Name="OpacityOverlay"
-                                Width="200"
-                                Grid.Column="3"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Minimum="0.01"
-                                Maximum="1"
-                                AutoToolTipPlacement="TopLeft"
-                                IsMoveToPointEnabled="True"
-                                AutoToolTipPrecision="2"
-                                Value="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayOpacity, Mode=TwoWay}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Item Counter Display Mode:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Shows little numbers in your item types in the Set Tracker Overlay." />
-
-                            <ComboBox
-                                Grid.Column="3"
-                                Grid.Row="7"
-                                Width="200"
-                                VerticalContentAlignment="Center"
-                                SelectedIndex="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Mode=TwoWay}">
-
-                                <ComboBoxItem Content="None" />
-                                <ComboBoxItem Content="Total Items" />
-                                <ComboBoxItem Content="Items Missing" />
-
-                            </ComboBox>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="3"
-                                VerticalAlignment="Center"
-                                Text="Overlay Display Mode:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The design of the Main Overlay." />
-
-                            <ComboBox
-                                Grid.Column="3"
-                                Grid.Row="3"
-                                Width="200"
-                                VerticalContentAlignment="Center"
-                                SelectedIndex="{Binding Settings.SetTrackerOverlayDisplayMode, Mode=TwoWay}">
-
-                                <ComboBoxItem Content="Standard" />
-                                <ComboBoxItem Content="Minified" />
-                                <ComboBoxItem Content="Only Buttons" />
-                                <ComboBoxItem Content="Standard (Vertical)" />
-                                <ComboBoxItem Content="Minified (Vertical)" />
-                                <ComboBoxItem Content="Only Minified Buttons" />
-
-                            </ComboBox>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="9"
-                                VerticalAlignment="Center"
-                                Text="Lock Position:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Locks the position of the main overlay in one place." />
-
-                            <CheckBox
-                                x:Name="LockOverlayCheckBox"
-                                Grid.Column="3"
-                                Grid.Row="9"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayOverlayLockPositionEnabled, Mode=TwoWay}" />
-
-                        </Grid>
-                        <!-- Set Tracker Overlay Section End -->
-
-                        <!-- Stash Tab Overlay Section Start -->
-                        <Grid
-                            Grid.Column="2"
-                            Grid.Row="1">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="10" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Text="Stash Tab Overlay"
-                                FontSize="24"
-                                VerticalAlignment="Center"
-                                FontWeight="Bold" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="3"
-                                VerticalAlignment="Center"
-                                Text="Stash Tab Overlay Opacity:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The background opacity of the stash Tabs overlay from 0 (0%) to 1 (100%)." />
-
-                            <!-- Stash Tab Overlay Opacity Slider -->
-                            <Slider
-                                Grid.Column="3"
-                                Grid.Row="3"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                Minimum="0.01"
-                                Maximum="1"
-                                AutoToolTipPlacement="TopLeft"
-                                IsMoveToPointEnabled="True"
-                                AutoToolTipPrecision="2"
-                                Value="{Binding Settings.StashTabOverlayOpacity, Mode=TwoWay}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Stash Tab Background Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of the background of the Stash Tab Overlay. Make this opaque if you want." />
-
-                            <!-- Stash Tab Overlay Color Picker -->
-                            <xctk:ColorPicker
-                                Grid.Column="3"
-                                Grid.Row="5"
-                                Width="200"
-                                ColorMode="ColorCanvas"
-                                SelectedColor="{Binding Settings.StashTabOverlayBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Highlight Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color that highlights the items in your Stash Tab Overlay." />
-
-                            <!-- Stash Tab Overlay Highlighted Items Color Picker -->
-                            <xctk:ColorPicker
-                                Grid.Column="3"
-                                Grid.Row="7"
-                                Width="200"
-                                ColorMode="ColorCanvas"
-                                SelectedColor="{Binding Settings.StashTabOverlayHighlightColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="9"
-                                VerticalAlignment="Center"
-                                Text="Highlight Mode:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Item by Item: highlights each item after another. &#x0a;Set by Set: highlights a full set at once, each after another. &#x0a;All Items: highlights all items at once." />
-
-                            <!-- Stash Tab Overlay Highlighted Item Picker Mode -->
-                            <ComboBox
-                                Grid.Column="3"
-                                Grid.Row="9"
-                                Width="200"
-                                VerticalContentAlignment="Center"
-                                SelectedIndex="{Binding Settings.StashTabOverlayHighlightMode, Mode=TwoWay}">
-
-                                <ComboBoxItem Content="Set by Set" />
-                                <ComboBoxItem Content="Item by Item" />
-                                <ComboBoxItem Content="All Items" />
-
-                            </ComboBox>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="11"
-                                VerticalAlignment="Center"
-                                Text="Tab Header Margin:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The starting margin of the tab headers in the Stash Tab Overlay." />
-
-                            <Slider
-                                Grid.Column="3"
-                                Grid.Row="11"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                Minimum="0"
-                                Maximum="500"
-                                AutoToolTipPlacement="TopLeft"
-                                IsMoveToPointEnabled="True"
-                                AutoToolTipPrecision="1"
-                                Value="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="13"
-                                VerticalAlignment="Center"
-                                Text="Tab Header Width:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The width of the tab headers in Stash Tab Overlay." />
-
-                            <Slider
-                                Grid.Column="3"
-                                Grid.Row="13"
-                                Name="TabHeaderWidthSlider"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                Minimum="0"
-                                Maximum="50"
-                                AutoToolTipPlacement="TopLeft"
-                                IsMoveToPointEnabled="True"
-                                AutoToolTipPrecision="1"
-                                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderWidth, Mode=TwoWay}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="15"
-                                VerticalAlignment="Center"
-                                Text="Tab Header Gap:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The gap between tab headers in the Stash Tab Overlay." />
-
-                            <Slider
-                                Grid.Column="3"
-                                Grid.Row="15"
-                                Name="TabHeaderGapSlider"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                Minimum="0"
-                                Maximum="20"
-                                AutoToolTipPlacement="TopLeft"
-                                IsMoveToPointEnabled="True"
-                                AutoToolTipPrecision="1"
-                                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" />
-
-                        </Grid>
-                        <!-- Stash Tab Overlay Section End -->
-
-                    </Grid>
-
-                </TabItem>
-                <!-- Overlay Settings Tab End -->
-
-                <!-- Loot Filter Settings Tab Start -->
-                <TabItem Header="Loot Filter">
-
-                    <Grid>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="10" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
-                        <!-- GENERAL -->
-                        <Grid
-                            Grid.Column="1"
-                            Grid.Row="1">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Text="Loot Filter"
-                                FontSize="24"
-                                VerticalAlignment="Center"
-                                FontWeight="Bold" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="3"
-                                VerticalAlignment="Center"
-                                Text="Loot Filter Manipulation:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Activates manipulation of loot filter. When active your loot filter gets rewritten as soon as an item type changes." />
-
-                            <CheckBox
-                                Grid.Column="3"
-                                Grid.Row="3"
-                                x:Name="LootFilterActiveCheckbox"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.LootFilterManipulationEnabled, Mode=TwoWay}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Loot Filter Location:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The path to your loot filter. Standard path is: 'Username/Documents/My Games/Path of Exile'." />
-
-                            <Button
-                                x:Name="LootFilterFileDialog"
-                                Grid.Column="3"
-                                Grid.Row="5"
-                                Width="200"
-                                Click="OnLootFilterFileDialogInputClicked"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="{Binding Settings.LootFilterFileLocation, Mode=OneWay}"
-                                Content="{Binding Settings.LootFilterFileLocation, Mode=OneWay}"
-                                HorizontalContentAlignment="Left">
-
-                                <Button.Style>
-
-                                    <Style TargetType="Button">
-
-                                        <Setter
-                                            Property="Background"
-                                            Value="Transparent" />
-
-                                        <Style.Triggers>
-
-                                            <Trigger
-                                                Property="IsMouseOver"
-                                                Value="True">
-
-                                                <Setter
-                                                    Property="Background"
-                                                    Value="Transparent" />
-
-                                            </Trigger>
-
-                                        </Style.Triggers>
-
-                                    </Style>
-
-                                </Button.Style>
-
-                            </Button>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Show Icon on Map:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Activates icons on the minimap." />
-
-                            <CheckBox
-                                Grid.Column="3"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.LootFilterIconsEnabled, Mode=TwoWay}" />
-
-                        </Grid>
-
-                        <!-- COLORS -->
-
-                        <Grid
-                            Grid.Column="2"
-                            Grid.Row="1">
-
-                            <Grid.ColumnDefinitions>
-
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-
-                            </Grid.ColumnDefinitions>
-
-                            <Grid.RowDefinitions>
-
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="10" />
-
-                            </Grid.RowDefinitions>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Text="Colors"
-                                FontSize="24"
-                                VerticalAlignment="Center"
-                                FontWeight="Bold" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="3"
-                                Text="Ring Color:"
-                                VerticalAlignment="Center"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of rings. This color will also be written into your loot filter if you activated Loot Filter Manipulation.." />
-
-                            <!-- Ring Color Picker -->
-                            <xctk:ColorPicker
-                                Grid.Column="3"
-                                Grid.Row="3"
-                                Width="200"
-                                ColorMode="ColorCanvas"
-                                SelectedColor="{Binding Settings.LootFilterRingColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Amulet Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of amulets. This color will also be written into your loot filter if you activated Loot Filter Manipulation.." />
-
-                            <!-- Amulet Color -->
-                            <xctk:ColorPicker
-                                Grid.Column="3"
-                                Grid.Row="5"
-                                Width="200"
-                                ColorMode="ColorCanvas"
-                                SelectedColor="{Binding Settings.LootFilterAmuletColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Belt Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of belts. This color will also be written into your loot filter if you activated Loot Filter Manipulation.." />
-
-                            <!-- Belt Color Picker -->
-                            <xctk:ColorPicker
-                                Grid.Column="3"
-                                Grid.Row="7"
-                                Width="200"
-                                ColorMode="ColorCanvas"
-                                SelectedColor="{Binding Settings.LootFilterBeltColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="9"
-                                VerticalAlignment="Center"
-                                Text="Boots Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of boots. This color will also be written into your loot filter if you activated Loot Filter Manipulation." />
-
-                            <!-- Boots Color Picker -->
-                            <xctk:ColorPicker
-                                Grid.Column="3"
-                                Grid.Row="9"
-                                Width="200"
-                                ColorMode="ColorCanvas"
-                                SelectedColor="{Binding Settings.LootFilterBootsColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="11"
-                                VerticalAlignment="Center"
-                                Text="Gloves Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of gloves. This color will also be written into your loot filter if you activated Loot Filter Manipulation." />
-
-                            <!-- Gloves Color Picker -->
-                            <xctk:ColorPicker
-                                Grid.Column="3"
-                                Grid.Row="11"
-                                Width="200"
-                                ColorMode="ColorCanvas"
-                                SelectedColor="{Binding Settings.LootFilterGlovesColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="13"
-                                VerticalAlignment="Center"
-                                Text="Helmet Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of helmets. This color will also be written into your loot filter if you activated Loot Filter Manipulation." />
-
-                            <!-- Helmet Color Picker -->
-                            <xctk:ColorPicker
-                                Grid.Column="3"
-                                Grid.Row="13"
-                                Width="200"
-                                ColorMode="ColorCanvas"
-                                SelectedColor="{Binding Settings.LootFilterHelmetColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="15"
-                                VerticalAlignment="Center"
-                                Text="Body Armour Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of body armours. This color will also be written into your loot filter if you activated Loot Filter Manipulation.." />
-
-                            <!-- Body Armor Color -->
-                            <xctk:ColorPicker
-                                Grid.Column="3"
-                                Grid.Row="15"
-                                Width="200"
-                                ColorMode="ColorCanvas"
-                                SelectedColor="{Binding Settings.LootFilterBodyArmourColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="17"
-                                VerticalAlignment="Center"
-                                Text="Weapons Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of weapons. This color will also be written into your loot filter if you activated Loot Filter Manipulation." />
-
-                            <!-- Weapon Color Picker -->
-                            <xctk:ColorPicker
-                                Grid.Column="3"
-                                Grid.Row="17"
-                                Width="200"
-                                ColorMode="ColorCanvas"
-                                SelectedColor="{Binding Settings.LootFilterWeaponColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
-
-                        </Grid>
-
-                        <!-- ALWAYS ACTIVE -->
-
-                        <Grid
-                            Grid.Column="3"
-                            Grid.Row="1">
-
-                            <Grid.ColumnDefinitions>
-
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-
-                            </Grid.ColumnDefinitions>
-
-                            <Grid.RowDefinitions>
-
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="10" />
-
-                            </Grid.RowDefinitions>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Text="Always Active"
-                                FontSize="24"
-                                VerticalAlignment="Center"
-                                FontWeight="Bold" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="3"
-                                VerticalAlignment="Center"
-                                Text="Rings:" />
-
-                            <!-- Rings Always Active -->
-                            <CheckBox
-                                Grid.Column="3"
-                                Grid.Row="3"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.LootFilterRingsAlwaysActive, Mode=TwoWay}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Amulets:" />
-
-                            <!-- Amulets Always Active -->
-                            <CheckBox
-                                Grid.Column="3"
-                                Grid.Row="5"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.LootFilterAmuletsAlwaysActive, Mode=TwoWay}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Belts:" />
-
-                            <!-- Belts Always Active -->
-                            <CheckBox
-                                Grid.Column="3"
-                                Grid.Row="7"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.LootFilterBeltsAlwaysActive, Mode=TwoWay}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="9"
-                                VerticalAlignment="Center"
-                                Text="Boots:" />
-
-                            <!-- Boots Always Active -->
-                            <CheckBox
-                                Grid.Column="3"
-                                Grid.Row="9"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.LootFilterBootsAlwaysActive, Mode=TwoWay}" />
-
-                            <TextBlock Grid.Column="1"
-                                       Grid.Row="11"
-                                       VerticalAlignment="Center"
-                                       Text="Gloves:" />
-
-                            <!-- Gloves Always Active -->
-                            <CheckBox
-                                Grid.Column="3"
-                                Grid.Row="11"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.LootFilterGlovesAlwaysActive, Mode=TwoWay}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="13"
-                                VerticalAlignment="Center"
-                                Text="Helmets:" />
-
-                            <!-- Helmet Always Active -->
-                            <CheckBox
-                                Grid.Column="3"
-                                Grid.Row="13"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.LootFilterHelmetsAlwaysActive, Mode=TwoWay}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="15"
-                                VerticalAlignment="Center"
-                                Text="Body Armours:" />
-
-                            <!-- Body Armor Always Active -->
-                            <CheckBox
-                                Grid.Column="3"
-                                Grid.Row="15"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.LootFilterBodyArmourAlwaysActive, Mode=TwoWay}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Grid.Row="17"
-                                VerticalAlignment="Center"
-                                Text="Weapons:" />
-
-                            <!-- Weapons Always Active -->
-                            <CheckBox
-                                Grid.Column="3"
-                                Grid.Row="17"
-                                Width="200"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.LootFilterWeaponsAlwaysActive, Mode=TwoWay}" />
-
-                        </Grid>
-
-                    </Grid>
-
-                </TabItem>
-                <!-- Loot Filter Settings Tab End -->
-
-                <!-- Advanced Settings Tab Start -->
-                <TabItem Header="Advanced">
-
-                    <Grid Margin="5 10 ">
-
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
@@ -940,20 +98,66 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
+                        <!-- Set Tracker Overlay -->
+                        <overlayForms:SetTrackerOverlayForm
+                            Grid.Column="0"
+                            Grid.Row="0" />
+                        <!-- Stash Tab Overlay -->
+                        <overlayForms:StashTabOverlayForm
+                            Grid.Column="1"
+                            Grid.Row="0" />
+                    </Grid>
+                </TabItem>
+                <!-- Overlay Settings Tab End -->
 
+                <!-- Loot Filter Settings Tab Start -->
+                <TabItem Header="Loot Filter">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <!-- Filter Manipulation -->
+                        <lootFilterForms:LootFilterManipulationForm
+                            Grid.Column="0"
+                            Grid.Row="0" />
+                        <!-- Colors -->
+                        <lootFilterForms:ColorsForm
+                            Grid.Column="1"
+                            Grid.Row="0" />
+                        <!-- Always Active -->
+                        <lootFilterForms:AlwaysActiveForm
+                            Grid.Column="2"
+                            Grid.Row="0" />
+                    </Grid>
+                </TabItem>
+                <!-- Loot Filter Settings Tab End -->
+
+                <!-- Advanced Settings Tab Start -->
+                <TabItem Header="Advanced">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <!-- Advance Form -->
                         <otherForms:AdvancedForm
                             Grid.Column="0"
                             Grid.Row="0" />
-
+                        <!-- System Form -->
                         <otherForms:SystemForm
                             Grid.Column="1"
                             Grid.Row="0" />
-
                     </Grid>
-
                 </TabItem>
                 <!-- Advanced Settings Tab End -->
-
             </TabControl>
             <!-- Tab Container End -->
 

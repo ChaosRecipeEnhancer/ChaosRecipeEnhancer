@@ -1,11 +1,10 @@
-﻿using System.Windows.Controls;
+﻿namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms;
 
-namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms;
-
-public partial class SetTrackerOverlayForm : UserControl
+public partial class SetTrackerOverlayForm
 {
     public SetTrackerOverlayForm()
     {
+        DataContext = new SetTrackerOverlayFormViewModel();
         InitializeComponent();
     }
 }

@@ -17,7 +17,6 @@ namespace ChaosRecipeEnhancer.UI.View;
 /// </summary>
 internal partial class SettingsView
 {
-    private readonly SettingsViewModel _model;
     private readonly SetTrackerOverlayView _recipeOverlay;
     private readonly StashTabGetter _stashTabGetter = new();
     private readonly NotifyIcon _trayIcon = new();
@@ -26,9 +25,10 @@ internal partial class SettingsView
 
     public SettingsView()
     {
+        DataContext = new SettingsViewModel();
+
         var itemSetManager = new ItemSetManager();
         _recipeOverlay = new SetTrackerOverlayView(itemSetManager, _stashTabGetter);
-        DataContext = _model = new SettingsViewModel();
 
         InitializeComponent();
         InitializeTray();
@@ -91,19 +91,6 @@ internal partial class SettingsView
     {
         _closingFromTrayIcon = true;
         Close();
-    }
-
-    private void OnLootFilterFileDialogInputClicked(object sender, RoutedEventArgs e)
-    {
-        var open = new OpenFileDialog();
-        open.Filter = "LootFilter|*.filter";
-        var res = open.ShowDialog();
-
-        if (res != System.Windows.Forms.DialogResult.OK) return;
-
-        var filename = open.FileName;
-        Settings.Default.LootFilterFileLocation = filename;
-        LootFilterFileDialog.Content = filename;
     }
 
     private void OnSaveButtonClicked(object sender, RoutedEventArgs e)
