@@ -6,7 +6,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=overlayForms:SetTrackerOverlayFormViewModel}">
-    <Grid>
+    <Grid
+        Margin="10"
+        ShowGridLines="False">
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
@@ -22,34 +25,64 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="0"
+            Grid.ColumnSpan="2"
+            Margin="0 0 0 10"
             Text="Set Tracker Overlay"
-            FontSize="24"
-            VerticalAlignment="Center"
-            FontWeight="Bold" />
+            FontSize="24" />
 
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Set Tracker Overlay Opacity:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The background opacity of the Set Tracker Overlay from 0 (0%) to 1 (100%)." />
 
-        <Slider
+        <Grid
             Grid.Column="1"
             Grid.Row="1"
-            Width="200"
-            VerticalAlignment="Center"
-            Minimum="0.01"
-            Maximum="1"
-            AutoToolTipPlacement="TopLeft"
-            IsMoveToPointEnabled="True"
-            AutoToolTipPrecision="2"
-            Value="{Binding Settings.SetTrackerOverlayOpacity, Mode=TwoWay}" />
+            Margin="10 0 0 10">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Slider
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.ColumnSpan="4"
+                Margin="0 0 5 0"
+                Width="150"
+                VerticalAlignment="Center"
+                Minimum="0.01"
+                Maximum="1"
+                AutoToolTipPlacement="TopLeft"
+                IsMoveToPointEnabled="True"
+                AutoToolTipPrecision="2"
+                Value="{Binding Settings.SetTrackerOverlayOpacity, Mode=TwoWay}" />
+
+            <TextBox
+                Grid.Column="4"
+                Grid.Row="0"
+                Width="40"
+                Margin="5 0 0 0"
+                HorizontalContentAlignment="Center"
+                Text="{Binding Settings.SetTrackerOverlayOpacity, Mode=TwoWay}" />
+
+        </Grid>
 
         <TextBlock
             Grid.Column="0"
             Grid.Row="2"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Item Counter Display Mode:"
             ToolTipService.InitialShowDelay="50"
@@ -58,6 +91,7 @@
         <ComboBox
             Grid.Column="1"
             Grid.Row="2"
+            Margin="10 0 0 10"
             Width="200"
             VerticalContentAlignment="Center"
             SelectedIndex="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Mode=TwoWay}">
@@ -71,6 +105,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="3"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Overlay Display Mode:"
             ToolTipService.InitialShowDelay="50"
@@ -79,6 +114,7 @@
         <ComboBox
             Grid.Column="1"
             Grid.Row="3"
+            Margin="10 0 0 10"
             Width="200"
             VerticalContentAlignment="Center"
             SelectedIndex="{Binding Settings.SetTrackerOverlayDisplayMode, Mode=TwoWay}">
@@ -95,6 +131,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="4"
+            Margin="0 0 0 0"
             VerticalAlignment="Center"
             Text="Lock Position:"
             ToolTipService.InitialShowDelay="50"
@@ -103,6 +140,7 @@
         <CheckBox
             Grid.Column="1"
             Grid.Row="4"
+            Margin="10 0 0 0"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.SetTrackerOverlayOverlayLockPositionEnabled, Mode=TwoWay}" />
 

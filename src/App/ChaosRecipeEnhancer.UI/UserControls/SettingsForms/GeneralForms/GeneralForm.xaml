@@ -1,6 +1,5 @@
 ﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms.GeneralForm"
              x:ClassModifier="internal"
-             xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
              xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
              xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -21,7 +20,9 @@
         <xctk:InverseBoolConverter x:Key="InvertBoolConverter" />
     </UserControl.Resources>
 
-    <Grid ShowGridLines="False">
+    <Grid
+        Margin="10"
+        ShowGridLines="False">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -42,16 +43,16 @@
             Grid.Column="0"
             Grid.Row="0"
             Grid.ColumnSpan="2"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="General"
-            FontSize="24"
-            FontWeight="Bold" />
+            FontSize="24" />
 
         <!-- League Selection Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
-            MinWidth="150"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="League:"
             ToolTipService.InitialShowDelay="50"
@@ -60,9 +61,10 @@
         <Grid
             Grid.Column="1"
             Grid.Row="1"
-            MinWidth="200">
+            Margin="10 0 0 10">
 
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -74,29 +76,29 @@
             <TextBox
                 Grid.Column="0"
                 Grid.Row="0"
-                Grid.ColumnSpan="3"
-                MinWidth="200"
+                Grid.ColumnSpan="4"
+                Width="200"
                 Text="{Binding Settings.LeagueName, Mode=TwoWay}"
                 Visibility="{Binding Settings.CustomLeagueEnabled, Converter={StaticResource CustomLeagueVisibilityBoolConverter}}" />
 
             <ComboBox
                 Grid.Column="0"
                 Grid.Row="0"
-                Grid.ColumnSpan="2"
-                MinWidth="140"
+                Grid.ColumnSpan="3"
+                Width="130"
+                Margin="0 0 5 0"
                 VerticalContentAlignment="Center"
-                HorizontalContentAlignment="Stretch"
                 IsSynchronizedWithCurrentItem="True"
                 ItemsSource="{Binding LeagueList, Mode=OneWay}"
                 SelectedItem="{Binding Settings.LeagueName, Mode=TwoWay}"
                 Visibility="{Binding Settings.CustomLeagueEnabled, Converter={StaticResource MainLeagueVisibilityInvertedBoolConverter}}" />
 
             <Button
-                Grid.Column="2"
+                Grid.Column="3"
                 Grid.Row="0"
-                MinWidth="60"
+                Width="60"
+                Margin="5 0 0 0"
                 HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
                 Content="Refresh"
                 Click="OnRefreshLeaguesButtonClicked"
                 Visibility="{Binding Settings.CustomLeagueEnabled, Converter={StaticResource MainLeagueVisibilityInvertedBoolConverter}}" />
@@ -108,7 +110,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="2"
-            MinWidth="150"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Custom League:"
             ToolTipService.InitialShowDelay="50"
@@ -117,6 +119,7 @@
         <CheckBox
             Grid.Column="1"
             Grid.Row="2"
+            Margin="10 0 0 10"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.CustomLeagueEnabled, Mode=TwoWay}" />
         <!-- Custom League Checkbox Start -->
@@ -125,7 +128,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="3"
-            MinWidth="150"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Target Stash:"
             ToolTip="The stash tab you want to use, your individual stash tab or your guild stash." />
@@ -133,6 +136,7 @@
         <ComboBox
             Grid.Column="1"
             Grid.Row="3"
+            Margin="10 0 0 10"
             MinWidth="200"
             VerticalContentAlignment="Center"
             SelectedIndex="{Binding Settings.TargetStash, Mode=TwoWay}">
@@ -147,7 +151,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="4"
-            MinWidth="150"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Stash Tab Query Mode:"
             ToolTip="The stash tab fetching mode. Stash tabs will automatically be added." />
@@ -155,6 +159,7 @@
         <ComboBox
             Grid.Column="1"
             Grid.Row="4"
+            Margin="10 0 0 10"
             MinWidth="200"
             VerticalContentAlignment="Center"
             SelectionChanged="ComboBox_SelectionChanged"
@@ -171,23 +176,33 @@
         <!-- Select Tab From List Start -->
         <TextBlock Grid.Column="0"
                    Grid.Row="5"
-                   MinWidth="150"
+                   Margin="0 0 0 10"
                    VerticalAlignment="Center"
-                   Text="Stash Tabs:" />
+                   Text="Select Stash Tabs:"
+                   Visibility="{Binding TabSelectVisible, Mode=TwoWay}" />
 
-        <Grid Grid.Column="1"
-              Grid.Row="5"
-              MinWidth="200">
+        <Grid
+            Grid.Column="1"
+            Grid.Row="5"
+            Margin="10 0 0 10">
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="4" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
             <xctk:CheckComboBox
                 Grid.Column="0"
-                MinWidth="140"
+                Grid.Row="0"
+                Grid.ColumnSpan="4"
+                Margin="0 0 5 0"
+                Width="150"
                 IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}"
                 ItemsSource="{Binding StashTabList}"
                 SelectedItemsOverride="{Binding SelectedStashTabHandler.SelectedStashTab, Mode=TwoWay}"
@@ -197,11 +212,14 @@
                 VerticalAlignment="Center"
                 ValueMemberPath="Level" />
 
-            <Button Content="Fetch"
-                    Grid.Column="2"
-                    MinWidth="60"
-                    IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}"
-                    Click="OnFetchStashTabsButtonClicked" />
+            <Button
+                Grid.Column="4"
+                Grid.Row="0"
+                Width="40"
+                Margin="5 0 0 0"
+                Content="Fetch"
+                IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}"
+                Click="OnFetchStashTabsButtonClicked" />
         </Grid>
         <!-- Select Tab From List End -->
 
@@ -209,16 +227,16 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="5"
-            MinWidth="150"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Stash Tab Indices:"
             ToolTip="Every stash tab with this indices will be added. Separate them by ',' e.g. '0,1,2,3,4,5' will fetch first 6 stash tabs."
-            Visibility="{Binding TabIndicesVisible}" />
+            Visibility="{Binding TabIndicesVisible, Mode=TwoWay}" />
 
         <TextBox
             Grid.Column="1"
             Grid.Row="5"
-            MinWidth="200"
+            Margin="10 0 0 10"
             Visibility="{Binding TabIndicesVisible}"
             Text="{Binding Settings.StashTabIndices, Mode=TwoWay}" />
         <!-- Individual Stash Tab Indices End -->
@@ -227,16 +245,16 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="5"
-            MinWidth="150"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Stash Tab Prefix:"
             ToolTip="Every stash tab which name starts with this prefix will be added."
-            Visibility="{Binding TabNamePrefixVisible}" />
+            Visibility="{Binding TabNamePrefixVisible, Mode=TwoWay}" />
 
         <TextBox
             Grid.Column="1"
             Grid.Row="5"
-            MinWidth="200"
+            Margin="10 0 0 10"
             Visibility="{Binding TabNamePrefixVisible}"
             Text="{Binding Settings.StashTabPrefix, Mode=TwoWay}" />
         <!-- Individual Stash Tab Name Prefix End -->
@@ -245,16 +263,16 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="5"
-            MinWidth="150"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Stash Tab Suffix:"
             ToolTip="Every stash tab which name ends with this suffix will be added."
-            Visibility="{Binding TabNameSuffixVisible}" />
+            Visibility="{Binding TabNameSuffixVisible, Mode=TwoWay}" />
 
         <TextBox
             Grid.Column="1"
             Grid.Row="5"
-            MaxWidth="200"
+            Margin="10 0 0 10"
             Visibility="{Binding TabNameSuffixVisible}"
             Text="{Binding Settings.StashTabSuffix, Mode=TwoWay}" />
         <!-- Individual Stash Tab Name Suffix End -->
@@ -264,7 +282,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="6"
-            MinWidth="150"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Fetch on New Map:"
             ToolTip="Automatically fetches when you join a new Zone (Hideout excluded). REOPEN the overlay to take effect." />
@@ -272,7 +290,7 @@
         <CheckBox
             Grid.Column="1"
             Grid.Row="6"
-            MinWidth="200"
+            Margin="10 0 0 10"
             VerticalAlignment="Center"
             Checked="AutoFetchCheckBox_Checked"
             Unchecked="AutoFetchCheckBox_Unchecked"
@@ -284,7 +302,6 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="7"
-            MinWidth="150"
             VerticalAlignment="Center"
             Text="PoE Client.txt File Location:"
             Visibility="{Binding FetchOnNewMapEnabled}"
@@ -294,11 +311,11 @@
             x:Name="LogLocationDialog"
             Grid.Column="1"
             Grid.Row="7"
-            MinWidth="200"
+            Margin="10 0 0 0"
             Click="LogLocationDialog_Click"
             Visibility="{Binding FetchOnNewMapEnabled}"
-            ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=PathOfExileClientLogLocation, Mode=TwoWay}"
-            Content="{Binding Source={x:Static properties:Settings.Default}, Path=PathOfExileClientLogLocation, Mode=TwoWay}"
+            ToolTip="{Binding Settings.PathOfExileClientLogLocation, Mode=TwoWay}"
+            Content="{Binding Settings.PathOfExileClientLogLocation, Mode=TwoWay}"
             HorizontalContentAlignment="Left">
 
             <Button.Style>
@@ -321,5 +338,4 @@
         <!-- Client Log File Location Setting End -->
 
     </Grid>
-
 </UserControl>

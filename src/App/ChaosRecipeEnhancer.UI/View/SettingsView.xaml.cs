@@ -98,18 +98,6 @@ internal partial class SettingsView
         Settings.Default.Save();
     }
 
-    private void OnResetButtonClicked(object sender, RoutedEventArgs e)
-    {
-        switch (MessageBox.Show("This will reset all of your settings!", "Reset Settings", MessageBoxButton.YesNo))
-        {
-            case MessageBoxResult.Yes:
-                Settings.Default.Reset();
-                break;
-            case MessageBoxResult.No:
-                break;
-        }
-    }
-
     private void OnRunOverlayButtonClicked(object sender, RoutedEventArgs e)
     {
         if (_recipeOverlay.IsOpen)

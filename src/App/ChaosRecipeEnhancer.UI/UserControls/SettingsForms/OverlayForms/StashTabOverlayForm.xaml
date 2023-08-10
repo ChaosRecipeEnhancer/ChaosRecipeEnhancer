@@ -13,68 +13,88 @@
         <utilities:StringColorConverter x:Key="StringColorConverter" />
     </UserControl.Resources>
 
-    <Grid>
+    <Grid
+        Margin="10"
+        ShowGridLines="False">
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-
         <TextBlock
-            Grid.Column="1"
-            Grid.Row="1"
+            Grid.Column="0"
+            Grid.Row="0"
             Grid.ColumnSpan="2"
+            Margin="0 0 0 10"
             Text="Stash Tab Overlay"
-            FontSize="24"
-            VerticalAlignment="Center"
-            FontWeight="Bold" />
+            FontSize="24" />
 
         <TextBlock
-            Grid.Column="1"
-            Grid.Row="3"
+            Grid.Column="0"
+            Grid.Row="1"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Stash Tab Overlay Opacity:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The background opacity of the stash Tabs overlay from 0 (0%) to 1 (100%)." />
 
         <!-- Stash Tab Overlay Opacity Slider -->
-        <Slider
-            Grid.Column="3"
-            Grid.Row="3"
-            Width="200"
-            VerticalAlignment="Center"
-            Minimum="0.01"
-            Maximum="1"
-            AutoToolTipPlacement="TopLeft"
-            IsMoveToPointEnabled="True"
-            AutoToolTipPrecision="2"
-            Value="{Binding Settings.StashTabOverlayOpacity, Mode=TwoWay}" />
+        <Grid
+            Grid.Column="1"
+            Grid.Row="1"
+            Margin="10 0 0 10">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Slider
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.ColumnSpan="4"
+                Margin="0 0 5 0"
+                Width="150"
+                VerticalAlignment="Center"
+                Minimum="0.01"
+                Maximum="1"
+                AutoToolTipPlacement="TopLeft"
+                IsMoveToPointEnabled="True"
+                AutoToolTipPrecision="2"
+                Value="{Binding Settings.StashTabOverlayOpacity, Mode=TwoWay}" />
+
+            <TextBox
+                Grid.Column="4"
+                Grid.Row="0"
+                Width="40"
+                Margin="5 0 0 0"
+                HorizontalContentAlignment="Center"
+                Text="{Binding Settings.StashTabOverlayOpacity, Mode=TwoWay}" />
+
+        </Grid>
 
         <TextBlock
-            Grid.Column="1"
-            Grid.Row="5"
+            Grid.Column="0"
+            Grid.Row="2"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Stash Tab Background Color:"
             ToolTipService.InitialShowDelay="50"
@@ -82,40 +102,45 @@
 
         <!-- Stash Tab Overlay Color Picker -->
         <xctk:ColorPicker
-            Grid.Column="3"
-            Grid.Row="5"
+            Grid.Column="1"
+            Grid.Row="2"
+            Margin="10 0 0 10"
             Width="200"
             ColorMode="ColorCanvas"
             SelectedColor="{Binding Settings.StashTabOverlayBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <TextBlock
-            Grid.Column="1"
-            Grid.Row="7"
+            Grid.Column="0"
+            Grid.Row="3"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Highlight Color:"
+            Text="Item Highlight Color:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The color that highlights the items in your Stash Tab Overlay." />
 
         <!-- Stash Tab Overlay Highlighted Items Color Picker -->
         <xctk:ColorPicker
-            Grid.Column="3"
-            Grid.Row="7"
+            Grid.Column="1"
+            Grid.Row="3"
+            Margin="10 0 0 10"
             Width="200"
             ColorMode="ColorCanvas"
             SelectedColor="{Binding Settings.StashTabOverlayHighlightColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <TextBlock
-            Grid.Column="1"
-            Grid.Row="9"
+            Grid.Column="0"
+            Grid.Row="4"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Highlight Mode:"
+            Text="Item Highlight Mode:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="Item by Item: highlights each item after another. &#x0a;Set by Set: highlights a full set at once, each after another. &#x0a;All Items: highlights all items at once." />
 
         <!-- Stash Tab Overlay Highlighted Item Picker Mode -->
         <ComboBox
-            Grid.Column="3"
-            Grid.Row="9"
+            Grid.Column="1"
+            Grid.Row="4"
+            Margin="10 0 0 10"
             Width="200"
             VerticalContentAlignment="Center"
             SelectedIndex="{Binding Settings.StashTabOverlayHighlightMode, Mode=TwoWay}">
@@ -127,66 +152,150 @@
         </ComboBox>
 
         <TextBlock
-            Grid.Column="1"
-            Grid.Row="11"
+            Grid.Column="0"
+            Grid.Row="5"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Tab Header Margin:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The starting margin of the tab headers in the Stash Tab Overlay." />
 
-        <Slider
-            Grid.Column="3"
-            Grid.Row="11"
-            Width="200"
-            VerticalAlignment="Center"
-            Minimum="0"
-            Maximum="500"
-            AutoToolTipPlacement="TopLeft"
-            IsMoveToPointEnabled="True"
-            AutoToolTipPrecision="1"
-            Value="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" />
+        <Grid
+            Grid.Column="1"
+            Grid.Row="5"
+            Margin="10 0 0 10">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Slider
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.ColumnSpan="4"
+                Margin="0 0 5 0"
+                Width="150"
+                VerticalAlignment="Center"
+                Minimum="0"
+                Maximum="1000"
+                TickFrequency="10"
+                AutoToolTipPlacement="TopLeft"
+                IsMoveToPointEnabled="True"
+                AutoToolTipPrecision="1"
+                Value="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" />
+
+            <TextBox
+                Grid.Column="4"
+                Grid.Row="0"
+                Width="40"
+                Margin="5 0 0 0"
+                HorizontalContentAlignment="Center"
+                Text="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" />
+
+        </Grid>
 
         <TextBlock
-            Grid.Column="1"
-            Grid.Row="13"
+            Grid.Column="0"
+            Grid.Row="6"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Tab Header Width:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The width of the tab headers in Stash Tab Overlay." />
 
-        <Slider
-            Grid.Column="3"
-            Grid.Row="13"
-            Name="TabHeaderWidthSlider"
-            Width="200"
-            VerticalAlignment="Center"
-            Minimum="0"
-            Maximum="50"
-            AutoToolTipPlacement="TopLeft"
-            IsMoveToPointEnabled="True"
-            AutoToolTipPrecision="1"
-            Value="{Binding Settings.StashTabOverlayIndividualTabHeaderWidth, Mode=TwoWay}" />
+        <Grid
+            Grid.Column="1"
+            Grid.Row="6"
+            Margin="10 0 0 10">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Slider
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.ColumnSpan="4"
+                Margin="0 0 5 0"
+                Width="150"
+                VerticalAlignment="Center"
+                Minimum="0"
+                Maximum="50"
+                AutoToolTipPlacement="TopLeft"
+                IsMoveToPointEnabled="True"
+                AutoToolTipPrecision="1"
+                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderWidth, Mode=TwoWay}" />
+
+            <TextBox
+                Grid.Column="4"
+                Grid.Row="0"
+                Width="40"
+                Margin="5 0 0 0"
+                HorizontalContentAlignment="Center"
+                Text="{Binding Settings.StashTabOverlayIndividualTabHeaderWidth, Mode=TwoWay}" />
+
+        </Grid>
 
         <TextBlock
-            Grid.Column="1"
-            Grid.Row="15"
+            Grid.Column="0"
+            Grid.Row="7"
             VerticalAlignment="Center"
             Text="Tab Header Gap:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The gap between tab headers in the Stash Tab Overlay." />
 
-        <Slider
-            Grid.Column="3"
-            Grid.Row="15"
-            Name="TabHeaderGapSlider"
-            Width="200"
-            VerticalAlignment="Center"
-            Minimum="0"
-            Maximum="20"
-            AutoToolTipPlacement="TopLeft"
-            IsMoveToPointEnabled="True"
-            AutoToolTipPrecision="1"
-            Value="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" />
+        <Grid
+            Grid.Column="1"
+            Grid.Row="7"
+            Margin="10 0 0 0">
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Slider
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.ColumnSpan="4"
+                Margin="0 0 5 0"
+                Width="150"
+                VerticalAlignment="Center"
+                Minimum="0"
+                Maximum="100"
+                AutoToolTipPlacement="TopLeft"
+                IsMoveToPointEnabled="True"
+                AutoToolTipPrecision="1"
+                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" />
+
+            <TextBox
+                Grid.Column="4"
+                Grid.Row="0"
+                Width="40"
+                Margin="5 0 0 0"
+                HorizontalContentAlignment="Center"
+                Text="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" />
+
+        </Grid>
     </Grid>
 </UserControl>

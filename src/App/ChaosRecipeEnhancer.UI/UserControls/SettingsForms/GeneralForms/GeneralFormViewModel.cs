@@ -106,27 +106,27 @@ internal class GeneralFormViewModel : ViewModelBase
         {
             case 0:
                 TabSelectVisible = Visibility.Visible;
-                TabIndicesVisible = Visibility.Hidden;
                 TabNamePrefixVisible = Visibility.Hidden;
                 TabNameSuffixVisible = Visibility.Hidden;
+                TabIndicesVisible = Visibility.Hidden;
                 break;
             case 1:
                 TabSelectVisible = Visibility.Hidden;
-                TabIndicesVisible = Visibility.Visible;
-                TabNamePrefixVisible = Visibility.Hidden;
+                TabNamePrefixVisible = Visibility.Visible;
                 TabNameSuffixVisible = Visibility.Hidden;
+                TabIndicesVisible = Visibility.Hidden;
                 break;
             case 2:
                 TabSelectVisible = Visibility.Hidden;
+                TabNamePrefixVisible = Visibility.Hidden;
+                TabNameSuffixVisible = Visibility.Visible;
                 TabIndicesVisible = Visibility.Hidden;
-                TabNamePrefixVisible = Visibility.Visible;
-                TabNameSuffixVisible = Visibility.Hidden;
                 break;
             case 3:
                 TabSelectVisible = Visibility.Hidden;
-                TabIndicesVisible = Visibility.Hidden;
                 TabNamePrefixVisible = Visibility.Hidden;
-                TabNameSuffixVisible = Visibility.Visible;
+                TabNameSuffixVisible = Visibility.Hidden;
+                TabIndicesVisible = Visibility.Visible;
                 break;
         }
     }

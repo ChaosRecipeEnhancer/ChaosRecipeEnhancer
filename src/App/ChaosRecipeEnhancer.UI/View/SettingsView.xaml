@@ -9,7 +9,6 @@
         xmlns:accountForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms"
         xmlns:lootFilterForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms"
         xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
-        xmlns:constants="clr-namespace:ChaosRecipeEnhancer.UI.Constants"
         xmlns:otherForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms"
         mc:Ignorable="d"
         FontSize="14"
@@ -25,25 +24,46 @@
         BorderBrush="DarkGray"
         BorderThickness="1">
         <Grid
-            Margin="10 10 10 0"
+            Margin="5"
             Focusable="True">
             <!-- 'Main' App Grid Definitions -->
             <Grid.ColumnDefinitions>
-                <!-- Left Gap -->
-                <!-- Main Content -->
                 <ColumnDefinition Width="Auto" />
-                <!-- Right Gap -->
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <!-- Main Content -->
                 <RowDefinition Height="Auto" />
-                <!-- Footer -->
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+
+            <!-- App Header Start -->
+            <UniformGrid
+                Grid.Column="0"
+                Grid.Row="0"
+                Columns="2"
+                Rows="1"
+                Margin="0 0 0 5">
+
+                <!-- Save Settings Button -->
+                <Button
+                    Margin="0 0 5 0"
+                    Content="Save Settings"
+                    Click="OnSaveButtonClicked" />
+
+                <!-- Run Overlay Button -->
+                <Button
+                    x:Name="RunOverlayButton"
+                    Margin="5 0 0 0"
+                    Content="Run Overlay"
+                    Click="OnRunOverlayButtonClicked" />
+
+            </UniformGrid>
+            <!-- App Header End -->
+
             <!-- Tab Container Start -->
             <TabControl
                 Grid.Column="0"
-                Grid.Row="0">
+                Grid.Row="1">
                 <!-- Account Settings Tab Start -->
                 <TabItem Header="Account">
                     <Grid>
@@ -111,7 +131,6 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -123,10 +142,6 @@
                         <!-- Colors -->
                         <lootFilterForms:ColorsForm
                             Grid.Column="1"
-                            Grid.Row="0" />
-                        <!-- Always Active -->
-                        <lootFilterForms:AlwaysActiveForm
-                            Grid.Column="2"
                             Grid.Row="0" />
                     </Grid>
                 </TabItem>
@@ -155,30 +170,14 @@
                 <!-- Advanced Settings Tab End -->
             </TabControl>
             <!-- Tab Container End -->
+
             <!-- App Footer Start -->
             <UniformGrid
                 Grid.Column="0"
-                Grid.Row="1"
-                Columns="3"
-                Rows="2"
-                Margin="0 10 0 5">
-
-                <!-- Save Settings Button -->
-                <Button
-                    Content="Save Settings"
-                    Click="OnSaveButtonClicked" />
-
-                <!-- Reset Settings Button -->
-                <Button
-                    Width="100"
-                    Content="Reset Settings"
-                    Click="OnResetButtonClicked" />
-
-                <!-- Run Overlay Button -->
-                <Button
-                    x:Name="RunOverlayButton"
-                    Content="Run Overlay"
-                    Click="OnRunOverlayButtonClicked" />
+                Grid.Row="2"
+                Columns="2"
+                Rows="1"
+                Margin="0 5 0 0 ">
 
                 <!-- Disclaimer Text -->
                 <TextBlock
@@ -187,19 +186,13 @@
                     TextAlignment="Center"
                     Text="This product isn't affiliated with or endorsed by Grinding Gear Games in any way." />
 
-                <!-- Credits Text -->
-                <TextBlock
-                    FontSize="12"
-                    VerticalAlignment="Center"
-                    TextAlignment="Center"
-                    Text="CRE by Mario, Zemoto, &amp; kosace" />
-
                 <!-- App Version Text -->
                 <TextBlock
                     FontSize="12"
-                    HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    Text="{x:Static constants:AppConstants.AppVersionText}" />
+                    HorizontalAlignment="Right"
+                    TextAlignment="Center"
+                    Text="{Binding AppVersion, StringFormat='CRE {0} by Mario, Zemoto, &amp; kosace'}" />
 
             </UniformGrid>
             <!-- App Footer End -->

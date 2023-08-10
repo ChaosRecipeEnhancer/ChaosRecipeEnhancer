@@ -7,21 +7,8 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:SystemFormViewModel}">
     <Grid
-        Margin="10 0 10 10"
+        Margin="10"
         ShowGridLines="False">
-
-        <Grid.Resources>
-            <Style TargetType="TextBlock">
-                <Setter Property="Margin" Value="0 10 10 0" />
-            </Style>
-            <Style TargetType="CheckBox">
-                <Setter Property="Margin" Value="0 10 0 0" />
-            </Style>
-            <Style TargetType="ComboBox">
-                <Setter Property="Margin" Value="0 10 0 0" />
-                <Setter Property="Width" Value="140" />
-            </Style>
-        </Grid.Resources>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -37,16 +24,16 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="0"
-            VerticalAlignment="Center"
+            Margin="0 0 0 10"
             Grid.ColumnSpan="2"
             Text="System"
-            FontSize="24"
-            FontWeight="Bold" />
+            FontSize="24" />
 
-        <!-- Language Setting (Row 15) Start -->
+        <!-- Language Setting Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Language:"
             ToolTip="Fetch on new Map only works in the correct language. Set it to the same as your PoE client." />
@@ -54,7 +41,9 @@
         <ComboBox
             Grid.Column="1"
             Grid.Row="1"
-            VerticalContentAlignment="Center"
+            Margin="15 0 0 10"
+            Width="150"
+            HorizontalAlignment="Center"
             SelectedIndex="{Binding Settings.Language, Mode=TwoWay}">
 
             <ComboBoxItem Content="English" />
@@ -72,6 +61,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="2"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Close to Tray:"
             ToolTip="Minimizes to Tray when closing the application." />
@@ -79,6 +69,7 @@
         <CheckBox
             Grid.Column="1"
             Grid.Row="2"
+            Margin="15 0 0 10"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.CloseToTrayEnabled, Mode=TwoWay}" />
         <!-- Close to Tray Setting End -->
@@ -93,9 +84,9 @@
         <CheckBox
             Grid.Column="1"
             Grid.Row="3"
+            Margin="15 0 0 0"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.DebugMode, Mode=TwoWay}" />
         <!-- Debug Mode Setting End -->
-
     </Grid>
 </UserControl>

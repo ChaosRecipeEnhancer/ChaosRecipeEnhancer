@@ -14,7 +14,9 @@
         <utilities:InvertBoolConverter x:Key="InvertedBoolConverter" />
     </UserControl.Resources>
 
-    <Grid ShowGridLines="False">
+    <Grid
+        Margin="10"
+        ShowGridLines="False">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -33,17 +35,16 @@
             Grid.Column="0"
             Grid.Row="0"
             Grid.ColumnSpan="2"
-            VerticalAlignment="Center"
+            Margin="0 0 0 10"
             Text="Recipes"
-            FontSize="24"
-            FontWeight="Bold" />
+            FontSize="24" />
         <!-- Form Header End -->
 
         <!-- Chaos Recipe Selector Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
-            MinWidth="150"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Chaos Orb Recipe:"
             ToolTipService.InitialShowDelay="50"
@@ -52,7 +53,7 @@
         <CheckBox
             Grid.Column="1"
             Grid.Row="1"
-            MinWidth="200"
+            Margin="10 0 0 10"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.ChaosRecipeTrackingEnabled, Mode=TwoWay}" />
         <!-- Chaos Recipe Selector End -->
@@ -61,7 +62,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="2"
-            MinWidth="150"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Regal Recipe:"
             ToolTipService.InitialShowDelay="50"
@@ -70,6 +71,7 @@
         <CheckBox
             Grid.Column="1"
             Grid.Row="2"
+            Margin="10 0 0 10"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.ChaosRecipeTrackingEnabled, Mode=TwoWay, Converter={StaticResource InvertedBoolConverter}}" />
         <!-- Regal Recipe Selector End -->
@@ -78,7 +80,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="3"
-            MinWidth="150"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Include Identified Items:"
             ToolTipService.InitialShowDelay="50"
@@ -87,6 +89,7 @@
         <CheckBox
             Grid.Column="1"
             Grid.Row="3"
+            Margin="10 0 0 10"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.IncludeIdentifiedItemsEnabled, Mode=TwoWay}" />
         <!-- Include Identified Selector End -->
@@ -95,7 +98,6 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="4"
-            MinWidth="150"
             VerticalAlignment="Center"
             Text="Full Set Threshold:"
             ToolTip="Number of full sets you want. If you have collected this amount of items of an item type, item type will get deactivated. Leave at 0 for auto calculation, that means 4 sets for each normal tab and 16 sets for each quad tab.  " />
@@ -103,10 +105,11 @@
         <TextBox
             Grid.Column="1"
             Grid.Row="4"
-            MinWidth="200"
+            Margin="10 0 0 0"
+            Width="40"
+            HorizontalContentAlignment="Left"
             Text="{Binding Settings.FullSetThreshold, Mode=TwoWay}" />
         <!-- Full Set Threshold Setting End -->
 
     </Grid>
-
 </UserControl>
