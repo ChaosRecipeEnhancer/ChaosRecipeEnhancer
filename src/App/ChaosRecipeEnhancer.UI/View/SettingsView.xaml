@@ -1,5 +1,6 @@
 ﻿<Window x:Class="ChaosRecipeEnhancer.UI.View.SettingsView"
         x:ClassModifier="internal"
+        Style="{StaticResource CustomWindowStyle}"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,7 +16,6 @@
         Title="Chaos Recipe Enhancer Settings"
         FontFamily="Segoe UI Light"
         SizeToContent="WidthAndHeight"
-        WindowStyle="SingleBorderWindow"
         ResizeMode="CanMinimize"
         ShowActivated="True"
         WindowStartupLocation="CenterScreen"
@@ -46,14 +46,14 @@
 
                 <!-- Save Settings Button -->
                 <Button
-                    Margin="0 0 5 0"
+                    Margin="0 0 2.5 0"
                     Content="Save Settings"
                     Click="OnSaveButtonClicked" />
 
                 <!-- Run Overlay Button -->
                 <Button
                     x:Name="RunOverlayButton"
-                    Margin="5 0 0 0"
+                    Margin="2.5 0 0 0"
                     Content="Run Overlay"
                     Click="OnRunOverlayButtonClicked" />
 
@@ -192,7 +192,7 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
                     TextAlignment="Center"
-                    Text="{Binding AppVersion, StringFormat='CRE {0} by Mario, Zemoto, &amp; kosace'}" />
+                    Text="{Binding Version, StringFormat='CRE {0} by Mario, Zemoto, &amp; kosace'}" />
 
             </UniformGrid>
             <!-- App Footer End -->

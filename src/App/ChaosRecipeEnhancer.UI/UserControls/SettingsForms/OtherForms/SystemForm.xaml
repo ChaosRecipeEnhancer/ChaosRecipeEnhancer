@@ -19,6 +19,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -29,10 +30,37 @@
             Text="System"
             FontSize="24" />
 
-        <!-- Language Setting Start -->
+        <!-- App Theme Setting Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
+            Text="App Theme:" />
+
+        <ComboBox
+            Grid.Column="1"
+            Grid.Row="1"
+            Margin="15 0 0 10"
+            Width="150"
+            HorizontalAlignment="Center"
+            SelectionChanged="ComboBox_ThemeSelectionChanged"
+            SelectedIndex="{Binding Settings.AppTheme, Mode=TwoWay}">
+
+            <ComboBoxItem Content="Deep Dark" />
+            <ComboBoxItem Content="Dark Grey" />
+            <ComboBoxItem Content="Soft Dark" />
+            <ComboBoxItem Content="Grey" />
+            <ComboBoxItem Content="Light" />
+            <ComboBoxItem Content="Red &amp; Black" />
+
+        </ComboBox>
+        <!-- App Theme Setting End -->
+
+        <!-- Language Setting Start -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="2"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Language:"
@@ -40,7 +68,7 @@
 
         <ComboBox
             Grid.Column="1"
-            Grid.Row="1"
+            Grid.Row="2"
             Margin="15 0 0 10"
             Width="150"
             HorizontalAlignment="Center"
@@ -60,7 +88,7 @@
         <!-- Close to Tray Setting Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="2"
+            Grid.Row="3"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Close to Tray:"
@@ -68,7 +96,7 @@
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="2"
+            Grid.Row="3"
             Margin="15 0 0 10"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.CloseToTrayEnabled, Mode=TwoWay}" />
@@ -76,14 +104,14 @@
 
         <!-- Debug Mode Setting  Start -->
         <TextBlock Grid.Column="0"
-                   Grid.Row="3"
+                   Grid.Row="4"
                    VerticalAlignment="Center"
                    Text="Debug Mode:"
                    ToolTip="Enables logging to a file that you can give to the developers so they can better resolve your issue." />
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="3"
+            Grid.Row="4"
             Margin="15 0 0 0"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.DebugMode, Mode=TwoWay}" />

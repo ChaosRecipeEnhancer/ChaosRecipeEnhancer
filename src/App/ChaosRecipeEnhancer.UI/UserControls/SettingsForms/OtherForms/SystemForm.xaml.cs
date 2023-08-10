@@ -1,10 +1,19 @@
-﻿namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms;
+﻿using System.Windows.Controls;
+
+namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms;
 
 public partial class SystemForm
 {
+    private readonly SystemFormViewModel _model;
+
     public SystemForm()
     {
-        DataContext = new SystemFormViewModel();
+        DataContext = _model = new SystemFormViewModel();
         InitializeComponent();
+    }
+
+    private void ComboBox_ThemeSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        _model.OnAppThemeChanged();
     }
 }

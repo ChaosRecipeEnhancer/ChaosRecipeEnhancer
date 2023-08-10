@@ -5,5 +5,5 @@ namespace ChaosRecipeEnhancer.UI.View;
 
 internal class SettingsViewModel : ViewModelBase
 {
-    public string AppVersion => AppConstants.AppVersionText;
+    public string Version => AppConstants.VersionText;
 }
