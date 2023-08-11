@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Api;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities;
@@ -39,7 +41,10 @@ internal partial class SettingsView
         _trayIcon.Icon = Properties.Resources.CREIcon;
         _trayIcon.Visible = true;
         _trayIcon.ContextMenuStrip = new ContextMenuStrip();
+
+        _ = _trayIcon.ContextMenuStrip.Items.Add("Check for Update", null, OnCheckForUpdatesItemMenuClicked);
         _ = _trayIcon.ContextMenuStrip.Items.Add("Close", null, OnExitTrayItemMenuClicked);
+
         _trayIcon.DoubleClick += (s, a) =>
         {
             Show();
@@ -51,7 +56,7 @@ internal partial class SettingsView
         };
     }
 
-    public static bool CheckAllSettings(bool showError)
+    private static bool CheckAllSettings(bool showError)
     {
         var missingSettings = new List<string>();
         var errorMessage = "Please add: \n";
@@ -91,6 +96,11 @@ internal partial class SettingsView
     {
         _closingFromTrayIcon = true;
         Close();
+    }
+
+    private void OnCheckForUpdatesItemMenuClicked(object sender, EventArgs e)
+    {
+        Process.Start(new ProcessStartInfo(AppConstants.GithubReleasesUrl) { UseShellExecute = true });
     }
 
     private void OnSaveButtonClicked(object sender, RoutedEventArgs e)

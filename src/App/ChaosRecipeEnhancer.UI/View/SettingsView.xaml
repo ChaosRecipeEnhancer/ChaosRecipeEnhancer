@@ -14,6 +14,7 @@
         mc:Ignorable="d"
         FontSize="14"
         Title="Chaos Recipe Enhancer Settings"
+        Icon="/Assets/Icons/CREIcon.ico"
         FontFamily="Segoe UI Light"
         SizeToContent="WidthAndHeight"
         ResizeMode="CanMinimize"

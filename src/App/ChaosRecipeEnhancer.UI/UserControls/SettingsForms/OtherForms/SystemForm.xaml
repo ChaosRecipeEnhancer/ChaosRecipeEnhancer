@@ -31,30 +31,32 @@
             FontSize="24" />
 
         <!-- App Theme Setting Start -->
-        <TextBlock
-            Grid.Column="0"
-            Grid.Row="1"
-            Margin="0 0 0 10"
-            VerticalAlignment="Center"
-            Text="App Theme:" />
 
-        <ComboBox
-            Grid.Column="1"
-            Grid.Row="1"
-            Margin="15 0 0 10"
-            Width="150"
-            HorizontalAlignment="Center"
-            SelectionChanged="ComboBox_ThemeSelectionChanged"
-            SelectedIndex="{Binding Settings.AppTheme, Mode=TwoWay}">
+        <!-- <TextBlock -->
+        <!--     Grid.Column="0" -->
+        <!--     Grid.Row="1" -->
+        <!--     Margin="0 0 0 10" -->
+        <!--     VerticalAlignment="Center" -->
+        <!--     Text="App Theme:" /> -->
 
-            <ComboBoxItem Content="Deep Dark" />
-            <ComboBoxItem Content="Dark Grey" />
-            <ComboBoxItem Content="Soft Dark" />
-            <ComboBoxItem Content="Grey" />
-            <ComboBoxItem Content="Light" />
-            <ComboBoxItem Content="Red &amp; Black" />
+        <!-- <ComboBox -->
+        <!--     Grid.Column="1" -->
+        <!--     Grid.Row="1" -->
+        <!--     Margin="15 0 0 10" -->
+        <!--     Width="150" -->
+        <!--     HorizontalAlignment="Center" -->
+        <!--     SelectionChanged="ComboBox_ThemeSelectionChanged" -->
+        <!--     SelectedIndex="{Binding Settings.AppTheme, Mode=TwoWay}"> -->
 
-        </ComboBox>
+        <!--     <ComboBoxItem Content="Deep Dark" /> -->
+        <!--     <ComboBoxItem Content="Dark Grey" /> -->
+        <!--     <ComboBoxItem Content="Soft Dark" /> -->
+        <!--     <ComboBoxItem Content="Grey" /> -->
+        <!--     <ComboBoxItem Content="Light" /> -->
+        <!--     <ComboBoxItem Content="Red &amp; Black" /> -->
+
+        <!-- </ComboBox> -->
+
         <!-- App Theme Setting End -->
 
         <!-- Language Setting Start -->
@@ -114,6 +116,7 @@
             Grid.Row="4"
             Margin="15 0 0 0"
             VerticalAlignment="Center"
+            IsEnabled="False"
             IsChecked="{Binding Settings.DebugMode, Mode=TwoWay}" />
         <!-- Debug Mode Setting End -->
     </Grid>

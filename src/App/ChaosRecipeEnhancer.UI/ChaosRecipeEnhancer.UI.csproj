@@ -32,23 +32,24 @@
 
     <PropertyGroup>
         <ApplicationIcon>Assets\Icons\CREIcon.ico</ApplicationIcon>
+        <PackageIcon>CREIcon.ico</PackageIcon>
     </PropertyGroup>
 
     <!-- Project Assets -->
     <ItemGroup>
         <!-- Icons -->
-        <Resource Include="Assets\Icons\CREIcon.ico"/>
-        <Resource Include="Assets\Fonts\Password.ttf"/>
+        <Resource Include="Assets\Icons\CREIcon.ico" />
+        <Resource Include="Assets\Fonts\Password.ttf" />
 
         <!-- Images -->
-        <Resource Include="Assets\Images\Amulet.png"/>
-        <Resource Include="Assets\Images\Belt.png"/>
-        <Resource Include="Assets\Images\Boots.png"/>
-        <Resource Include="Assets\Images\BodyArmor.png"/>
-        <Resource Include="Assets\Images\Gloves.png"/>
-        <Resource Include="Assets\Images\Helmet.png"/>
-        <Resource Include="Assets\Images\Ring.png"/>
-        <Resource Include="Assets\Images\Weapon.png"/>
+        <Resource Include="Assets\Images\Amulet.png" />
+        <Resource Include="Assets\Images\Belt.png" />
+        <Resource Include="Assets\Images\Boots.png" />
+        <Resource Include="Assets\Images\BodyArmor.png" />
+        <Resource Include="Assets\Images\Gloves.png" />
+        <Resource Include="Assets\Images\Helmet.png" />
+        <Resource Include="Assets\Images\Ring.png" />
+        <Resource Include="Assets\Images\Weapon.png" />
 
         <!-- Sounds -->
         <Content Update="Assets\Sounds\FilterChanged.mp3">
@@ -64,10 +65,10 @@
         </Content>
 
         <!-- Documentation -->
-        <Content Include="BusinessLogic\README.md"/>
-        <Content Include="DynamicControls\README.md"/>
-        <Content Include="Extensions\README.md"/>
-        <Content Include="Model\README.md"/>
+        <Content Include="BusinessLogic\README.md" />
+        <Content Include="DynamicControls\README.md" />
+        <Content Include="Extensions\README.md" />
+        <Content Include="Model\README.md" />
     </ItemGroup>
 
     <ItemGroup>
@@ -85,6 +86,10 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Settings.settings</DependentUpon>
         </Compile>
+        <None Update="Assets\Icons\CREIcon.ico">
+          <Pack>True</Pack>
+          <PackagePath>\</PackagePath>
+        </None>
         <None Update="Properties\Settings.settings">
             <Generator>PublicSettingsSingleFileGenerator</Generator>
             <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -93,21 +98,21 @@
 
     <!-- NuGet Packages -->
     <ItemGroup>
-        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0"/>
+        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
     </ItemGroup>
 
     <!-- Excluded Files -->
     <!-- Likely stuff we're looking to (re-)implement in a very near release -->
     <ItemGroup>
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs"/>
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs"/>
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs"/>
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs"/>
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs"/>
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml"/>
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml"/>
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml"/>
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml"/>
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml"/>
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs" />
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs" />
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs" />
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs" />
+        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs" />
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml" />
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml" />
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml" />
+        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml" />
     </ItemGroup>
 </Project>

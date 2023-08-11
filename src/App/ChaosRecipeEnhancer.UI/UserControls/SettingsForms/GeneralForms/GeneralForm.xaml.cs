@@ -86,7 +86,7 @@ internal partial class GeneralForm
         _model.StashTabList.Clear();
         foreach (var tab in stashTabs) _model.StashTabList.Add(tab);
 
-        var selectedStashTabName = Settings.Default.SelectedStashTabName;
+        var selectedStashTabName = Settings.Default.SelectedStashTabNames;
         if (selectedStashTabName != null)
         {
             var previouslySelectedStashTab = _model.StashTabList.FirstOrDefault(x => x.TabName == selectedStashTabName[0]);

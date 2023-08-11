@@ -74,11 +74,15 @@
                 Margin="0 0 5 0"
                 Width="150"
                 VerticalAlignment="Center"
-                Minimum="0.01"
+                Minimum="0"
                 Maximum="1"
+                SmallChange=".05"
+                LargeChange=".1"
+                TickFrequency="0.01"
                 AutoToolTipPlacement="TopLeft"
                 IsMoveToPointEnabled="True"
                 AutoToolTipPrecision="2"
+                IsSnapToTickEnabled="True"
                 Value="{Binding Settings.StashTabOverlayOpacity, Mode=TwoWay}" />
 
             <TextBox
@@ -187,9 +191,10 @@
                 Maximum="1000"
                 TickFrequency="10"
                 AutoToolTipPlacement="TopLeft"
+                IsSnapToTickEnabled="True"
                 IsMoveToPointEnabled="True"
                 AutoToolTipPrecision="1"
-                Value="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" />
+                Value="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" LargeChange="100" SmallChange="10" />
 
             <TextBox
                 Grid.Column="4"
@@ -237,8 +242,9 @@
                 Maximum="50"
                 AutoToolTipPlacement="TopLeft"
                 IsMoveToPointEnabled="True"
+                IsSnapToTickEnabled="True"
                 AutoToolTipPrecision="1"
-                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderWidth, Mode=TwoWay}" />
+                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderWidth, Mode=TwoWay}" TickFrequency="1" SmallChange="1" LargeChange="10" />
 
             <TextBox
                 Grid.Column="4"
@@ -283,10 +289,12 @@
                 VerticalAlignment="Center"
                 Minimum="0"
                 Maximum="100"
-                AutoToolTipPlacement="TopLeft"
-                IsMoveToPointEnabled="True"
                 AutoToolTipPrecision="1"
-                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" />
+                TickFrequency="1"
+                AutoToolTipPlacement="TopLeft"
+                IsSnapToTickEnabled="True"
+                IsMoveToPointEnabled="True"
+                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" LargeChange="20" SmallChange="1" />
 
             <TextBox
                 Grid.Column="4"

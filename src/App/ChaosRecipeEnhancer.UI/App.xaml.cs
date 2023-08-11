@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows;
-using ChaosRecipeEnhancer.UI.Constants;
-using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.View;
 
 namespace ChaosRecipeEnhancer.UI;
 
-/// <summary>
-///     Interaction logic for App.xaml
-/// </summary>
 internal partial class App
 {
     private readonly SingleInstance _singleInstance = new("EnhancePoE");
@@ -21,8 +14,6 @@ internal partial class App
     public App()
     {
         if (!_singleInstance.Claim()) Shutdown();
-
-        SetApplicationTheme(Settings.Default.AppTheme);
         SetupUnhandledExceptionHandling();
     }
 
@@ -70,33 +61,5 @@ internal partial class App
         var settingsView = new SettingsView();
         settingsView.Show();
         _singleInstance.PingedByOtherProcess += (_, _) => Dispatcher.Invoke(settingsView.Show);
-    }
-
-    public void SetApplicationTheme(int appTheme)
-    {
-        var a = Current as App;
-
-        var themePath = appTheme switch
-        {
-            0 => AppConstants.Themes.DeepDark,
-            1 => AppConstants.Themes.DarkGrey,
-            2 => AppConstants.Themes.SoftDark,
-            3 => AppConstants.Themes.Grey,
-            4 => AppConstants.Themes.Light,
-            5 => AppConstants.Themes.RedBlack,
-            _ => throw new ArgumentOutOfRangeException()
-        };
-
-        var dict = new ResourceDictionary() { Source = new Uri(themePath, UriKind.Relative) };
-
-        foreach (var mergeDict in dict.MergedDictionaries)
-        {
-            a.Resources.MergedDictionaries.Add(mergeDict);
-        }
-
-        foreach (var key in dict.Keys)
-        {
-            a.Resources[key] = dict[key];
-        }
     }
 }
