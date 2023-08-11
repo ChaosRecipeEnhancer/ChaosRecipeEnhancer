@@ -28,46 +28,47 @@ internal partial class GeneralForm
 
     private async void OnFormLoaded(object sender, RoutedEventArgs e)
     {
-        if (CheckAccountSettings(showError: false))
-            await LoadStashTabsAsync();
+        if (CheckAccountSettings(showError: false)) ;
+        // TODO: this shit breaks everything
+        // await LoadStashTabsAsync();
     }
 
-    private static bool CheckAccountSettings( bool showError )
+    private static bool CheckAccountSettings(bool showError)
     {
         var missingSettings = new List<string>();
         string errorMessage = "Please add: \n";
 
-        if ( string.IsNullOrEmpty( Settings.Default.PathOfExileAccountName ) )
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName))
         {
-            missingSettings.Add( "- Account Name \n" );
+            missingSettings.Add("- Account Name \n");
         }
-        if ( string.IsNullOrEmpty( Settings.Default.PathOfExileWebsiteSessionId ) )
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileWebsiteSessionId))
         {
-            missingSettings.Add( "- PoE Session ID \n" );
+            missingSettings.Add("- PoE Session ID \n");
         }
-        if ( string.IsNullOrEmpty( Settings.Default.LeagueName ) )
+        if (string.IsNullOrEmpty(Settings.Default.LeagueName))
         {
-            missingSettings.Add( "- League \n" );
+            missingSettings.Add("- League \n");
         }
 
-        if ( missingSettings.Count == 0 )
+        if (missingSettings.Count == 0)
         {
             return true;
         }
 
-        foreach ( string setting in missingSettings )
+        foreach (string setting in missingSettings)
         {
             errorMessage += setting;
         }
 
-        if ( showError )
+        if (showError)
         {
-            _ = MessageBox.Show( errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error );
+            _ = MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         return false;
     }
-    
+
     private async Task LoadStashTabsAsync()
     {
         _model.FetchingStashTabs = true;

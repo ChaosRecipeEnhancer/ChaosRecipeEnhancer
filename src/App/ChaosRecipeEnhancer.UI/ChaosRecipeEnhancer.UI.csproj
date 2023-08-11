@@ -1,118 +1,122 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <!--Build Settings-->
-        <TargetFramework>net7.0-windows</TargetFramework>
-        <OutputType>WinExe</OutputType>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <UseWindowsForms>True</UseWindowsForms>
-        <UseWPF>true</UseWPF>
-        <IsPackable>false</IsPackable>
+	<PropertyGroup>
+		<!--Build Settings-->
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<OutputType>WinExe</OutputType>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<UseWindowsForms>True</UseWindowsForms>
+		<UseWPF>true</UseWPF>
+		<IsPackable>false</IsPackable>
 
-        <!--Application Name & Version-->
-        <AssemblyName>ChaosRecipeEnhancer</AssemblyName>
-        <MapFileExtensions>true</MapFileExtensions>
-        <UseApplicationTrust>false</UseApplicationTrust>
-        <PublishWizardCompleted>true</PublishWizardCompleted>
-        <BootstrapperEnabled>true</BootstrapperEnabled>
-        <ApplicationVersion>2.0</ApplicationVersion>
-        <ApplicationRevision>0</ApplicationRevision>
+		<!--Application Name & Version-->
+		<AssemblyName>ChaosRecipeEnhancer</AssemblyName>
+		<MapFileExtensions>true</MapFileExtensions>
+		<UseApplicationTrust>false</UseApplicationTrust>
+		<PublishWizardCompleted>true</PublishWizardCompleted>
+		<BootstrapperEnabled>true</BootstrapperEnabled>
+		<ApplicationVersion>2.0</ApplicationVersion>
+		<ApplicationRevision>0</ApplicationRevision>
 
-        <!--Update Settings-->
-        <IsWebBootstrapper>false</IsWebBootstrapper>
-        <Install>true</Install>
-        <InstallFrom>Disk</InstallFrom>
-        <UpdateEnabled>true</UpdateEnabled>
-        <UpdateMode>Foreground</UpdateMode>
-        <UpdateInterval>1</UpdateInterval>
-        <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-        <UpdatePeriodically>true</UpdatePeriodically>
-        <UpdateRequired>false</UpdateRequired>
-        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    </PropertyGroup>
+		<!--Update Settings-->
+		<IsWebBootstrapper>false</IsWebBootstrapper>
+		<Install>true</Install>
+		<InstallFrom>Disk</InstallFrom>
+		<UpdateEnabled>true</UpdateEnabled>
+		<UpdateMode>Foreground</UpdateMode>
+		<UpdateInterval>1</UpdateInterval>
+		<UpdateIntervalUnits>Days</UpdateIntervalUnits>
+		<UpdatePeriodically>true</UpdatePeriodically>
+		<UpdateRequired>false</UpdateRequired>
+		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+	</PropertyGroup>
 
-    <PropertyGroup>
-        <ApplicationIcon>Assets\Icons\CREIcon.ico</ApplicationIcon>
-        <PackageIcon>CREIcon.ico</PackageIcon>
-    </PropertyGroup>
+	<PropertyGroup>
+		<ApplicationIcon>Assets\Icons\CREIcon.ico</ApplicationIcon>
+		<PackageIcon>CREIcon.ico</PackageIcon>
+	</PropertyGroup>
 
-    <!-- Project Assets -->
-    <ItemGroup>
-        <!-- Icons -->
-        <Resource Include="Assets\Icons\CREIcon.ico" />
-        <Resource Include="Assets\Fonts\Password.ttf" />
+	<!-- Project Assets -->
+	<ItemGroup>
+		<!-- Icons -->
+		<Resource Include="Assets\Icons\CREIcon.ico" />
+		<Resource Include="Assets\Fonts\Password.ttf" />
 
-        <!-- Images -->
-        <Resource Include="Assets\Images\Amulet.png" />
-        <Resource Include="Assets\Images\Belt.png" />
-        <Resource Include="Assets\Images\Boots.png" />
-        <Resource Include="Assets\Images\BodyArmor.png" />
-        <Resource Include="Assets\Images\Gloves.png" />
-        <Resource Include="Assets\Images\Helmet.png" />
-        <Resource Include="Assets\Images\Ring.png" />
-        <Resource Include="Assets\Images\Weapon.png" />
+		<!-- Images -->
+		<Resource Include="Assets\Images\Amulet.png" />
+		<Resource Include="Assets\Images\Belt.png" />
+		<Resource Include="Assets\Images\Boots.png" />
+		<Resource Include="Assets\Images\BodyArmor.png" />
+		<Resource Include="Assets\Images\Gloves.png" />
+		<Resource Include="Assets\Images\Helmet.png" />
+		<Resource Include="Assets\Images\Ring.png" />
+		<Resource Include="Assets\Images\Weapon.png" />
 
-        <!-- Sounds -->
-        <Content Update="Assets\Sounds\FilterChanged.mp3">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Assets\Sounds\ItemPickedUp.mp3">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+		<Resource Include="Assets\Images\Validated.png" />
+		<Resource Include="Assets\Images\Warning.png" />
+		<Resource Include="Assets\Images\Error.png" />
 
-        <!-- Filters -->
-        <Content Update="Assets\FilterStyles\NormalItemsStyle.txt">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+		<!-- Sounds -->
+		<Content Update="Assets\Sounds\FilterChanged.mp3">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Sounds\ItemPickedUp.mp3">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 
-        <!-- Documentation -->
-        <Content Include="BusinessLogic\README.md" />
-        <Content Include="DynamicControls\README.md" />
-        <Content Include="Extensions\README.md" />
-        <Content Include="Model\README.md" />
-    </ItemGroup>
+		<!-- Filters -->
+		<Content Update="Assets\FilterStyles\NormalItemsStyle.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 
-    <ItemGroup>
-        <Compile Update="Properties\Resources.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Resources.resx</DependentUpon>
-        </Compile>
-        <EmbeddedResource Update="Properties\Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-        <Compile Update="Properties\Settings.Designer.cs">
-            <DesignTimeSharedInput>True</DesignTimeSharedInput>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Settings.settings</DependentUpon>
-        </Compile>
-        <None Update="Assets\Icons\CREIcon.ico">
-          <Pack>True</Pack>
-          <PackagePath>\</PackagePath>
-        </None>
-        <None Update="Properties\Settings.settings">
-            <Generator>PublicSettingsSingleFileGenerator</Generator>
-            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-        </None>
-    </ItemGroup>
+		<!-- Documentation -->
+		<Content Include="BusinessLogic\README.md" />
+		<Content Include="DynamicControls\README.md" />
+		<Content Include="Extensions\README.md" />
+		<Content Include="Model\README.md" />
+	</ItemGroup>
 
-    <!-- NuGet Packages -->
-    <ItemGroup>
-        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
-    </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+		<None Update="Assets\Icons\CREIcon.ico">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Update="Properties\Settings.settings">
+			<Generator>PublicSettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 
-    <!-- Excluded Files -->
-    <!-- Likely stuff we're looking to (re-)implement in a very near release -->
-    <ItemGroup>
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs" />
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs" />
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs" />
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs" />
-        <Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs" />
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml" />
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml" />
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml" />
-        <Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml" />
-    </ItemGroup>
+	<!-- NuGet Packages -->
+	<ItemGroup>
+		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+	</ItemGroup>
+
+	<!-- Excluded Files -->
+	<!-- Likely stuff we're looking to (re-)implement in a very near release -->
+	<ItemGroup>
+		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs" />
+		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs" />
+		<Compile Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs" />
+		<Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs" />
+		<Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml.cs" />
+		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
+		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml" />
+		<Page Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml" />
+		<Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml" />
+		<Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml" />
+	</ItemGroup>
 </Project>

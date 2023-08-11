@@ -41,7 +41,7 @@ public sealed class StashTabGetter
         return null;
     }
 
-    private async Task<StashTabPropsList> GetStashPropsAsync(string accName, string league)
+    public async Task<StashTabPropsList> GetStashPropsAsync(string accName, string league)
     {
         if (_isFetching || RateLimit.CheckForBan()) return null;
 
