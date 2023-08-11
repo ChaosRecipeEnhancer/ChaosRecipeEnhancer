@@ -203,14 +203,16 @@
                 Grid.ColumnSpan="4"
                 Margin="0 0 5 0"
                 Width="150"
-                IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}"
-                ItemsSource="{Binding StashTabList}"
-                SelectedItemsOverride="{Binding SelectedStashTabHandler.SelectedStashTab, Mode=TwoWay}"
+                ItemsSource="{Binding StashTabNameIndexList}"
                 DisplayMemberPath="TabName"
                 VerticalContentAlignment="Center"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 ValueMemberPath="Level" />
+
+            <!-- IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}" -->
+            <!-- SelectedItemsOverride="{Binding SelectedStashTabHandler.SelectedStashTab, Mode=TwoWay}" -->
+
 
             <Button
                 Grid.Column="4"

@@ -9,27 +9,18 @@ namespace ChaosRecipeEnhancer.UI.Model;
 
 public sealed class StashTab : ViewModelBase
 {
-    private int _amuletsAmount;
-
-    private int _beltsAmount;
-
-    private int _bootsAmount;
-
-    private int _chestsAmount;
-
-    private int _fullSets;
-
-    private int _glovesAmount;
-
-    private int _helmetsAmount;
-
     private bool _needsItemFetch = true;
-
+    private int _fullSets;
     private bool _quad;
 
+    private int _amuletsAmount;
+    private int _beltsAmount;
+    private int _bootsAmount;
+    private int _chestsAmount;
+    private int _glovesAmount;
+    private int _helmetsAmount;
     private int _ringsAmount;
     private int _weaponsBigAmount;
-
     private int _weaponsSmallAmount;
 
     public StashTab(string name, int index, Uri tabUri)
@@ -118,8 +109,8 @@ public sealed class StashTab : ViewModelBase
         OverlayCellsList.Clear();
         var size = Quad ? 24 : 12;
         for (var i = 0; i < size; i++)
-        for (var j = 0; j < size; j++)
-            OverlayCellsList.Add(new Cell(j, i));
+            for (var j = 0; j < size; j++)
+                OverlayCellsList.Add(new Cell(j, i));
 
         ItemsForChaosRecipe.Clear();
         foreach (var item in itemList)
@@ -147,13 +138,13 @@ public sealed class StashTab : ViewModelBase
         var itemCoordinates = new List<List<int>>();
 
         for (var i = 0; i < item.w; i++)
-        for (var j = 0; j < item.h; j++)
-            itemCoordinates.Add(new List<int> { item.x + i, item.y + j });
+            for (var j = 0; j < item.h; j++)
+                itemCoordinates.Add(new List<int> { item.x + i, item.y + j });
 
         foreach (var cell in OverlayCellsList)
-        foreach (var coordinate in itemCoordinates)
-            if (coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
-                cell.Deactivate();
+            foreach (var coordinate in itemCoordinates)
+                if (coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
+                    cell.Deactivate();
     }
 
     public void ActivateItemCells(Item item)
@@ -161,13 +152,13 @@ public sealed class StashTab : ViewModelBase
         var AllCoordinates = new List<List<int>>();
 
         for (var i = 0; i < item.w; i++)
-        for (var j = 0; j < item.h; j++)
-            AllCoordinates.Add(new List<int> { item.x + i, item.y + j });
+            for (var j = 0; j < item.h; j++)
+                AllCoordinates.Add(new List<int> { item.x + i, item.y + j });
 
         foreach (var cell in OverlayCellsList)
-        foreach (var coordinate in AllCoordinates)
-            if (coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
-                cell.Activate(ref item);
+            foreach (var coordinate in AllCoordinates)
+                if (coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex)
+                    cell.Activate(ref item);
     }
 
     // 0: rings

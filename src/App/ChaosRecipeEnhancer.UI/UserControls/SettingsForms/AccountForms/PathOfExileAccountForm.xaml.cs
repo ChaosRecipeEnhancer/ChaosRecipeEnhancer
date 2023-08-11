@@ -27,8 +27,16 @@ internal partial class PathOfExileAccountForm
         try
         {
             // simple 'health check' that will ping for your account's stash metadata in standard league
-            await _stashTabGetter.GetStashPropsAsync(Settings.Default.PathOfExileAccountName.Trim(), "Standard");
-            Settings.Default.PoEAccountConnectionStatus = 1; // 1 = validated connection
+            var tabs = await _stashTabGetter.GetStashPropsAsync(Settings.Default.PathOfExileAccountName.Trim(), "Standard");
+
+            if (tabs is null)
+            {
+                Settings.Default.PoEAccountConnectionStatus = 2;
+            }
+            else
+            {
+                Settings.Default.PoEAccountConnectionStatus = 1; // 1 = validated connection
+            }
         }
         catch (InvalidOperationException)
         {

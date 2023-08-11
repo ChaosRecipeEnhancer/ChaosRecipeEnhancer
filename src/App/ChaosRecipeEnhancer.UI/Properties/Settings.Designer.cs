@@ -769,12 +769,12 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Specialized.StringCollection SelectedStashTabNames {
+        public global::System.Collections.Specialized.StringCollection SelectedStashTabs {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["SelectedStashTabNames"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["SelectedStashTabs"]));
             }
             set {
-                this["SelectedStashTabNames"] = value;
+                this["SelectedStashTabs"] = value;
             }
         }
         

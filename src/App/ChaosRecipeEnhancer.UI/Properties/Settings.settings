@@ -188,7 +188,7 @@
     <Setting Name="UpgradeSettingsAfterUpdate" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="SelectedStashTabNames" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="SelectedStashTabs" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="PoEAccountConnectionStatus" Type="System.Int32" Scope="User">

@@ -28,78 +28,26 @@ internal partial class GeneralForm
 
     private async void OnFormLoaded(object sender, RoutedEventArgs e)
     {
-        if (CheckAccountSettings(showError: false)) ;
-        // TODO: this shit breaks everything
-        // await LoadStashTabsAsync();
-    }
-
-    private static bool CheckAccountSettings(bool showError)
-    {
-        var missingSettings = new List<string>();
-        string errorMessage = "Please add: \n";
-
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName))
-        {
-            missingSettings.Add("- Account Name \n");
-        }
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileWebsiteSessionId))
-        {
-            missingSettings.Add("- PoE Session ID \n");
-        }
-        if (string.IsNullOrEmpty(Settings.Default.LeagueName))
-        {
-            missingSettings.Add("- League \n");
-        }
-
-        if (missingSettings.Count == 0)
-        {
-            return true;
-        }
-
-        foreach (string setting in missingSettings)
-        {
-            errorMessage += setting;
-        }
-
-        if (showError)
-        {
-            _ = MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-
-        return false;
-    }
-
-    private async Task LoadStashTabsAsync()
-    {
-        _model.FetchingStashTabs = true;
-        using var __ = new ScopeGuard(() => _model.FetchingStashTabs = false);
-
-        _model.SelectedStashTabHandler.SelectedStashTab = null;
-        var stashTabs = await _stashTabGetter.FetchStashTabsAsync();
-        if (stashTabs is null)
-        {
-            _ = MessageBox.Show("Failed to fetch stash tabs", "Request Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
-        }
-
-        if (stashTabs.Count == 0) return;
-
-        _model.StashTabList.Clear();
-        foreach (var tab in stashTabs) _model.StashTabList.Add(tab);
-
-        var selectedStashTabName = Settings.Default.SelectedStashTabNames;
-        if (selectedStashTabName != null)
-        {
-            var previouslySelectedStashTab = _model.StashTabList.FirstOrDefault(x => x.TabName == selectedStashTabName[0]);
-            if (previouslySelectedStashTab is not null) _model.SelectedStashTabHandler.SelectedStashTab = previouslySelectedStashTab;
-        }
-
-        _model.SelectedStashTabHandler.SelectedStashTab ??= _model.StashTabList[0];
+        if (CheckAccountSettings(showError: false))
+            await LoadStashTabNamesIndicesAsync();
     }
 
     private async void OnFetchStashTabsButtonClicked(object sender, RoutedEventArgs e)
     {
-        await LoadStashTabsAsync();
+        await LoadStashTabNamesIndicesAsync();
+    }
+
+    private async Task LoadStashTabNamesIndicesAsync()
+    {
+        var accName = Settings.Default.PathOfExileAccountName.Trim();
+        var league = Settings.Default.LeagueName.Trim();
+
+        var stashTabPropsList = await _stashTabGetter.GetStashPropsAsync(accName, league);
+
+        if (stashTabPropsList is not null)
+        {
+            _model.UpdateStashTabNameIndexList(stashTabPropsList.tabs);
+        }
     }
 
     private void OnRefreshLeaguesButtonClicked(object sender, RoutedEventArgs e)
@@ -149,5 +97,41 @@ internal partial class GeneralForm
                 "Invalid file selected. Make sure you're selecting the \"Client.txt\" file located in your main Path of Exile installation folder.",
                 "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+    }
+
+    private static bool CheckAccountSettings(bool showError)
+    {
+        var missingSettings = new List<string>();
+        string errorMessage = "Please add: \n";
+
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName))
+        {
+            missingSettings.Add("- Account Name \n");
+        }
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileWebsiteSessionId))
+        {
+            missingSettings.Add("- PoE Session ID \n");
+        }
+        if (string.IsNullOrEmpty(Settings.Default.LeagueName))
+        {
+            missingSettings.Add("- League \n");
+        }
+
+        if (missingSettings.Count == 0)
+        {
+            return true;
+        }
+
+        foreach (string setting in missingSettings)
+        {
+            errorMessage += setting;
+        }
+
+        if (showError)
+        {
+            _ = MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        return false;
     }
 }

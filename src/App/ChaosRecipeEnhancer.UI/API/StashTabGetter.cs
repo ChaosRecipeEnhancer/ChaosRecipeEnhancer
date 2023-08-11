@@ -57,10 +57,22 @@ public sealed class StashTabGetter
 
         var propsUri = new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabs=1&league={league}&tabIndex=");
         using var res = await DoAuthenticatedGetRequestAsync(propsUri);
-        if (!res.IsSuccessStatusCode)
+
+        if (res.IsSuccessStatusCode)
         {
-            _ = MessageBox.Show(res.StatusCode == HttpStatusCode.Forbidden ? "Connection forbidden. Please check your Account Name and Session ID." : res.ReasonPhrase,
+            Settings.Default.PoEAccountConnectionStatus = 1;
+            Settings.Default.Save();
+        }
+        else if (!res.IsSuccessStatusCode)
+        {
+            Settings.Default.PoEAccountConnectionStatus = 2;
+            Settings.Default.Save();
+
+            _ = MessageBox.Show(res.StatusCode == HttpStatusCode.Forbidden
+                    ? "Connection forbidden. Please check your Account Name and Session ID."
+                    : res.ReasonPhrase,
                 "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
+
             return null;
         }
 
