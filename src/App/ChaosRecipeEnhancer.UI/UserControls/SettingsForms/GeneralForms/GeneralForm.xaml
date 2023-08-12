@@ -205,14 +205,30 @@
                 Grid.ColumnSpan="4"
                 Margin="0 0 5 0"
                 Width="150"
-                MaxDropDownHeight="300"
                 IsSelectAllActive="True"
                 SelectAllContent="Select All / Clear All"
+                MaxDropDownHeight="300"
                 ItemsSource="{Binding StashTabNameIndexList, Mode=OneWay}"
                 VerticalContentAlignment="Center"
                 HorizontalAlignment="Center"
-                IsDropDownOpen="True"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center">
+
+                <xctk:CheckComboBox.Resources>
+                    <Style TargetType="{x:Type CheckBox}">
+                        <Setter Property="Background" Value="White" />
+                    </Style>
+                    <Style TargetType="{x:Type xctk:SelectAllSelectorItem}">
+                        <Setter Property="Background" Value="#202020" />
+                    </Style>
+                </xctk:CheckComboBox.Resources>
+
+                <xctk:CheckComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Foreground="#202020" />
+                    </DataTemplate>
+                </xctk:CheckComboBox.ItemTemplate>
+
+            </xctk:CheckComboBox>
 
             <Button
                 Grid.Column="4"
