@@ -3,6 +3,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
                     xmlns:ap="clr-namespace:FramePFX.Themes.Attached">
+
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -218,6 +219,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
         <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
             <Grid.ColumnDefinitions>
@@ -267,6 +269,7 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
     <Style x:Key="ComboBoxEditableTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="Foreground" Value="{DynamicResource ABrush.Foreground.Static}" />
         <Setter Property="CaretBrush" Value="{DynamicResource ABrush.Glyph.Static}" />
@@ -285,6 +288,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <ControlTemplate x:Key="ComboBoxEditableTemplate" TargetType="{x:Type ComboBox}">
         <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
             <Grid.ColumnDefinitions>
@@ -337,6 +341,7 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
     <Style TargetType="{x:Type ComboBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Padding" Value="4,1" />
@@ -414,6 +419,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="{x:Type ComboBox}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
         <Setter Property="Background" Value="{DynamicResource ComboBox.Static.Background}" />
@@ -854,8 +860,8 @@
 
     <Style TargetType="{x:Type CheckBox}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
-        <Setter Property="Background" Value="{DynamicResource OptionMark.Static.Background}" />
         <Setter Property="BorderBrush" Value="{DynamicResource OptionMark.Static.Border}" />
+        <Setter Property="Background" Value="{DynamicResource OptionMark.Static.Background}" />
         <Setter Property="Foreground" Value="{DynamicResource ABrush.Foreground.Static}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="1" />
@@ -1005,6 +1011,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="ScrollBarThumbHorizontal" TargetType="{x:Type Thumb}">
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="IsTabStop" Value="false" />
@@ -1024,6 +1031,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
@@ -1357,6 +1365,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
     <Style x:Key="CompactBarsScrollViewerStyle" TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Type ScrollViewer}}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
@@ -1778,6 +1787,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="ExpanderUpHeaderStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Template">
             <Setter.Value>
@@ -1829,6 +1839,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="ExpanderLeftHeaderStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Template">
             <Setter.Value>
@@ -1880,6 +1891,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="ExpanderHeaderFocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -1891,6 +1903,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="ExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Template">
             <Setter.Value>
@@ -1988,6 +2001,7 @@
     </Style>
 
     <BorderGapMaskConverter x:Key="BorderGapMaskConverter" />
+
     <Style TargetType="{x:Type GroupBox}">
         <Setter Property="Background" Value="{DynamicResource GroupBox.Header.Static.Background}" />
         <Setter Property="BorderBrush" Value="{DynamicResource GroupBox.Static.Border}" />
@@ -2239,6 +2253,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="{x:Type MenuItem}">
         <Style.Triggers>
             <Trigger Property="IsCheckable" Value="True">
@@ -2859,6 +2874,7 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
     <ControlTemplate x:Key="SliderThumbHorizontalBottom" TargetType="{x:Type Thumb}">
         <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
             <Path x:Name="grip" Data="M 0,12 C0,12 5.5,18 5.5,18 5.5,18 11,12 11,12 11,12 11,0 11,0 11,0 0,0 0,0 0,0 0,12 0,12 z" Fill="{DynamicResource SliderThumb.Static.Background}" Stretch="Fill" SnapsToDevicePixels="True" Stroke="{DynamicResource SliderThumb.Static.Border}" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center" />
@@ -2898,6 +2914,7 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
     <ControlTemplate x:Key="SliderHorizontal" TargetType="{x:Type Slider}">
         <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
             <Grid>
@@ -3016,6 +3033,7 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
     <ControlTemplate x:Key="SliderThumbVerticalRight" TargetType="{x:Type Thumb}">
         <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
             <Path x:Name="grip" Data="M 12,11 C12,11 18,5.5 18,5.5 18,5.5 12,0 12,0 12,0 0,0 0,0 0,0 0,11 0,11 0,11 12,11 12,11 z" Fill="{DynamicResource SliderThumb.Static.Background}" Stretch="Fill" Stroke="{DynamicResource SliderThumb.Static.Border}" />
@@ -3035,6 +3053,7 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
     <ControlTemplate x:Key="SliderThumbVerticalDefault" TargetType="{x:Type Thumb}">
         <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
             <Path x:Name="grip" Data="M0.5,0.5 L18.5,0.5 18.5,11.5 0.5,11.5z" Fill="{DynamicResource SliderThumb.Static.Background}" Stretch="Fill" Stroke="{DynamicResource SliderThumb.Static.Border}" />
@@ -3054,6 +3073,7 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
     <ControlTemplate x:Key="SliderVertical" TargetType="{x:Type Slider}">
         <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
             <Grid>
@@ -3351,6 +3371,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="ToolBarMainPanelBorderStyle" TargetType="{x:Type Border}">
         <Setter Property="Margin" Value="0,0,11,0"/>
         <Setter Property="CornerRadius" Value="3,3,3,3"/>
@@ -3360,6 +3381,7 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+
     <Style x:Key="ToolBarButtonBaseStyle" TargetType="{x:Type ButtonBase}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
         <Setter Property="Background" Value="{DynamicResource Button.Static.Background}" />
@@ -3397,10 +3419,15 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}" />
+
     <Style x:Key="{x:Static ToolBar.ToggleButtonStyleKey}" BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}" />
+
     <Style x:Key="{x:Static ToolBar.CheckBoxStyleKey}" BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}"/>
+
     <Style x:Key="{x:Static ToolBar.RadioButtonStyleKey}" BasedOn="{StaticResource {x:Type RadioButton}}" TargetType="{x:Type RadioButton}" />
+
     <Style TargetType="{x:Type ToolBar}">
         <Setter Property="Background" Value="{DynamicResource ToolBarHorizontalBackground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ToolBarHorizontalBorder}"/>
@@ -3528,6 +3555,7 @@
             </MultiTrigger>
         </Style.Triggers>
     </Style>
+
     <Style x:Key="{x:Type Hyperlink}" TargetType="{x:Type Hyperlink}">
         <Setter Property="Foreground" Value="{DynamicResource ABrush.Foreground.Static}"/>
         <Setter Property="TextDecorations" Value="Underline"/>
@@ -3543,6 +3571,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
     <Style TargetType="{x:Type RichTextBox}">
         <Style.Resources>
             <Style x:Key="{x:Type FlowDocument}" TargetType="{x:Type FlowDocument}">
@@ -3630,6 +3659,7 @@
     </Style>
 
     <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
+
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Width" Value="16"/>
@@ -3689,6 +3719,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="{x:Type TreeViewItem}">
         <Setter Property="Background" Value="{DynamicResource TreeViewItem.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource TreeViewItem.Static.Border}"/>
@@ -3884,6 +3915,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="{x:Type DataGrid}">
         <Setter Property="Background" Value="{DynamicResource DataGrid.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource DataGrid.Static.Border}"/>
@@ -3945,6 +3977,7 @@
             </MultiTrigger>
         </Style.Triggers>
     </Style>
+
     <Style TargetType="{x:Type DataGridColumnHeadersPresenter}">
         <Setter Property="Background" Value="{DynamicResource DataGrid.HeaderItem.Static.Background}"/>
         <Setter Property="Foreground" Value="{DynamicResource ABrush.Foreground.Static}"/>
@@ -3965,6 +3998,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="ColumnHeaderGripperStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Width" Value="8"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -3977,6 +4011,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="Background" Value="{DynamicResource DataGrid.HeaderItem.Static.Background}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
@@ -4021,6 +4056,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="{x:Type DataGridRow}">
         <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"/>
         <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -4061,6 +4097,7 @@
     </Style>
 
     <BooleanToVisibilityConverter x:Key="B2VConverter"/>
+
     <Style x:Key="RowHeaderGripperStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Height" Value="8"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -4073,6 +4110,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="{x:Type DataGridRowHeader}">
         <Setter Property="Background" Value="{DynamicResource DataGrid.RowHeader.Static.Background}"/>
         <Setter Property="Template">
@@ -4128,6 +4166,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="{x:Type CalendarItem}">
         <Setter Property="Template">
             <Setter.Value>
@@ -4358,6 +4397,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="{x:Type DatePicker}">
         <Setter Property="Foreground" Value="{DynamicResource ABrush.Foreground.Static}"/>
         <Setter Property="IsTodayHighlighted" Value="True"/>
