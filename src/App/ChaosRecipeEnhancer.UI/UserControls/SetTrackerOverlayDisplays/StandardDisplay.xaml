@@ -433,39 +433,12 @@
 
         </Border>
 
-        <!-- Items Not Fetched Overlay Display -->
-        <Grid Grid.Row="1"
-              Grid.Column="3"
-              Grid.ColumnSpan="8"
-              Margin="5 0"
-              Visibility="{Binding SelectedStashTabHandler.SelectedStashTab.NeedsItemFetch, Converter={StaticResource VisibleIfTrue}}">
-            <Grid.Background>
-                <SolidColorBrush Color="Gray"
-                                 Opacity="0.95" />
-            </Grid.Background>
-            <TextBlock Text="Items Not Fetched"
-                       Foreground="White"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center" />
-        </Grid>
-
-        <!-- Fetch Button -->
-        <Button
-            x:Name="FetchButton"
-            Click="OnFetchButtonClicked"
-            Width="50"
-            IsEnabled="{Binding FetchButtonEnabled}"
-            Grid.Column="11"
-            Grid.Row="1"
-            Content="Fetch"
-            Margin="5 0" />
-
         <!-- Reload Filter Button -->
         <Button
             x:Name="ReloadFilterButton"
             Click="OnReloadFilterButtonClicked"
             Width="50"
-            Grid.Column="12"
+            Grid.Column="11"
             Grid.Row="1"
             Margin="5 0"
             Visibility="{Binding Settings.LootFilterManipulationEnabled, Converter={StaticResource VisibleIfTrue}}"
@@ -489,6 +462,39 @@
             </Button.Style>
 
         </Button>
+
+        <!-- Items Not Fetched Overlay Display -->
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              Grid.ColumnSpan="11"
+              Margin="5 0"
+              Visibility="{Binding SelectedStashTabHandler.SelectedStashTab.NeedsItemFetch, Converter={StaticResource VisibleIfTrue}}">
+
+            <Grid.Background>
+                <SolidColorBrush Color="Gray"
+                                 Opacity="0.90" />
+            </Grid.Background>
+
+            <TextBlock Text="Items Not Fetched"
+                       Foreground="White"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+
+        </Grid>
+
+        <!-- Fetch Button -->
+        <Button
+            x:Name="FetchButton"
+            Click="OnFetchButtonClicked"
+            Width="50"
+            IsEnabled="{Binding FetchButtonEnabled}"
+            Grid.Column="12"
+            Grid.Row="1"
+            Content="Fetch"
+            BorderBrush="Aquamarine"
+            Margin="5 0" />
 
         <!-- Overlay Progress Bar -->
         <ProgressBar
