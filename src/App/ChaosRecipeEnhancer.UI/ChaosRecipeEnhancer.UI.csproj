@@ -100,9 +100,11 @@
 		</None>
 	</ItemGroup>
 
-	<!-- NuGet Packages -->
+	<!-- Dependencies -->
 	<ItemGroup>
-		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+		<Reference Include="WpfToolkit">
+			<HintPath>WpfToolkit\Xceed.Wpf.Toolkit.NET5.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 	<!-- Excluded Files -->
@@ -118,5 +120,8 @@
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalStandardDisplay.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="WpfToolkit\" />
 	</ItemGroup>
 </Project>

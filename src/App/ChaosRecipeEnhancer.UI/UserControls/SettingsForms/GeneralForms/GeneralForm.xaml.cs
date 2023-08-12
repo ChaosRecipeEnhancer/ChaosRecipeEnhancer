@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Api;
-using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Properties;
+using Xceed.Wpf.Toolkit;
+using Xceed.Wpf.Toolkit.Primitives;
 using MessageBox = System.Windows.MessageBox;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
@@ -40,7 +41,7 @@ internal partial class GeneralForm
 
         var stashTabPropsList = await _stashTabGetter.GetStashPropsAsync(accName, league);
 
-        if (stashTabPropsList is not null) _model.UpdateStashTabNameIndexList(stashTabPropsList.tabs);
+        if (stashTabPropsList is not null) _model.UpdateStashTabNameIndexFullList(stashTabPropsList.tabs);
     }
 
     private void OnRefreshLeaguesButtonClicked(object sender, RoutedEventArgs e)
@@ -52,6 +53,12 @@ internal partial class GeneralForm
     {
         var leagues = await _leagueGetter.GetLeaguesAsync();
         _model.UpdateLeagueList(leagues);
+    }
+
+    private void OnStashTabSelectionChanged(object sender, ItemSelectionChangedEventArgs itemSelectionChangedEventArgs)
+    {
+        var checkComboBox = (CheckComboBox)sender;
+        _model.UpdateSelectedTabList(checkComboBox.SelectedItems);
     }
 
     private void LogLocationDialog_Click(object sender, RoutedEventArgs e)

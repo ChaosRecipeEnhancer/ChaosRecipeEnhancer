@@ -21,7 +21,7 @@
                                            Invert="True" />
         <utilities:EqualityToVisibilityConverter x:Key="VisibleIfEqual"
                                                  ComparisonType="{x:Type system:Int32}" />
-        <xctk:InverseBoolConverter x:Key="InvertBoolConverter" />
+        <utilities:InvertBoolConverter x:Key="InvertBoolConverter" />
     </UserControl.Resources>
 
     <Grid
@@ -208,7 +208,10 @@
                 IsSelectAllActive="True"
                 SelectAllContent="Select All / Clear All"
                 MaxDropDownHeight="300"
-                ItemsSource="{Binding StashTabNameIndexList, Mode=OneWay}"
+                ItemSelectionChanged="OnStashTabSelectionChanged"
+                SelectedItemsOverride="{Binding Path=SelectedStashTabs, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                ItemsSource="{Binding StashTabIndexNameFullList}"
+                ValueMemberPath="i"
                 VerticalContentAlignment="Center"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
