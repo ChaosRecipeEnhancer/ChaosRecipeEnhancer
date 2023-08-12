@@ -12,31 +12,13 @@ internal class GeneralFormViewModel : ViewModelBase
 {
     private bool _fetchingStashTabs;
 
-    public GeneralFormViewModel(ISelectedStashTabHandler selectedStashTabHandler)
-    {
-        Settings.PropertyChanged += OnSettingsChanged;
-        // SelectedStashTabHandler = selectedStashTabHandler;
-    }
-
-    // public ObservableCollection<StashTab> StashTabList { get; } = new();
     public ObservableCollection<string> StashTabNameIndexList { get; } = new();
-
     public ObservableCollection<string> LeagueList { get; } = new();
-    // public ISelectedStashTabHandler SelectedStashTabHandler { get; }
 
     public bool FetchingStashTabs
     {
         get => _fetchingStashTabs;
         set => SetProperty(ref _fetchingStashTabs, value);
-    }
-
-    private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(Settings.LeagueName))
-        {
-            // StashTabList.Clear();
-            // SelectedStashTabHandler.SelectedStashTab = null;
-        }
     }
 
     public void UpdateLeagueList(IEnumerable<string> leagueList)

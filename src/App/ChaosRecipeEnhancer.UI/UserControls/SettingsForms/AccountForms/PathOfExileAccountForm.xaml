@@ -8,6 +8,7 @@
              xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d"
+             Background="#202020"
              d:DataContext="{d:DesignInstance Type=accountForms:PathOfExileAccountFormViewModel}">
 
     <UserControl.Resources>

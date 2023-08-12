@@ -17,8 +17,7 @@ internal partial class GeneralForm
 
     public GeneralForm()
     {
-        var itemSetManager = new ItemSetManager();
-        DataContext = _model = new GeneralFormViewModel(itemSetManager);
+        DataContext = _model = new GeneralFormViewModel();
         InitializeComponent();
         LoadLeagueList();
     }

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms"
              mc:Ignorable="d"
+             Background="#202020"
              d:DataContext="{d:DesignInstance Type=local:LootFilterManipulationFormViewModel}">
     <Grid
         Margin="10"

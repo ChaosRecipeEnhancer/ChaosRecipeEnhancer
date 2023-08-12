@@ -7,6 +7,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
+             Background="#202020"
              d:DataContext="{d:DesignInstance Type=lootFilterForms:ColorsFormViewModel}">
 
     <UserControl.Resources>

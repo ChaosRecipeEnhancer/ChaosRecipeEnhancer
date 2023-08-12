@@ -60,6 +60,7 @@
                         Height="20"
                         Margin="0,0,0,10"
                         Content="{Binding IsEditing, Converter={StaticResource EditButtonTextConverter}}"
+                        Foreground="White"
                         Click="OnEditModeButtonClick" />
             </Grid>
 

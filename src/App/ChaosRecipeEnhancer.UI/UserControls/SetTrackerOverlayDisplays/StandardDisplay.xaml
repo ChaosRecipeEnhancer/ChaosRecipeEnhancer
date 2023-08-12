@@ -10,6 +10,7 @@
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d"
              FontSize="14"
+             Background="#202020"
              d:DataContext="{d:DesignInstance Type=view:SetTrackerOverlayViewModel}">
 
     <UserControl.Resources>
@@ -65,8 +66,7 @@
             Width="50"
             Columns="1"
             Rows="2"
-            Margin="5 0"
-            Background="White">
+            Margin="5 0">
 
             <TextBlock
                 TextAlignment="Center"
@@ -90,7 +90,6 @@
             Height="50"
             Width="50"
             Margin="5 0"
-            CornerRadius="6"
             Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterGlovesColor}"
             Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}">
 
@@ -98,8 +97,8 @@
 
                 <Image
                     Source="../../Assets/Images/Gloves.png"
-                    MaxWidth="50"
-                    MaxHeight="50" />
+                    MaxWidth="40"
+                    MaxHeight="40" />
 
                 <Border
                     Width="20"
@@ -132,9 +131,8 @@
             x:Name="Boots"
             Grid.Column="4"
             Grid.Row="1"
-            Height="50"
-            Width="50"
-            CornerRadius="6"
+            Height="40"
+            Width="40"
             Margin="5 0"
             Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterBootsColor}">
@@ -179,7 +177,6 @@
             Grid.Row="1"
             Height="50"
             Width="50"
-            CornerRadius="6"
             Margin="5 0"
             Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterHelmetColor}">
@@ -187,8 +184,8 @@
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
+                    MaxHeight="40"
+                    MaxWidth="40"
                     Source="../../Assets/Images/Helmet.png" />
 
                 <Border
@@ -224,7 +221,6 @@
             Grid.Row="1"
             Height="50"
             Width="50"
-            CornerRadius="6"
             Margin="5 0"
             Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.BodyArmorActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterBodyArmourColor}">
@@ -232,8 +228,8 @@
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
+                    MaxHeight="40"
+                    MaxWidth="40"
                     Source="../../Assets/Images/BodyArmor.png" />
 
                 <Border
@@ -269,7 +265,6 @@
             Grid.Row="1"
             Height="50"
             Width="50"
-            CornerRadius="6"
             Margin="5 0"
             Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.WeaponActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterWeaponColor}">
@@ -277,8 +272,8 @@
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
+                    MaxHeight="40"
+                    MaxWidth="40"
                     Source="../../Assets/Images/Weapon.png" />
 
                 <Border
@@ -314,7 +309,6 @@
             Grid.Row="1"
             Height="50"
             Width="50"
-            CornerRadius="6"
             Margin="5  0"
             Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.RingActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterRingColor}">
@@ -322,8 +316,8 @@
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
+                    MaxHeight="40"
+                    MaxWidth="40"
                     Source="../../Assets/Images/Ring.png" />
 
                 <Border
@@ -359,7 +353,6 @@
             Grid.Row="1"
             Height="50"
             Width="50"
-            CornerRadius="6"
             Margin="5 0"
             Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterAmuletColor}">
@@ -367,8 +360,8 @@
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
+                    MaxHeight="40"
+                    MaxWidth="40"
                     Source="../../Assets/Images/Amulet.png" />
 
                 <Border
@@ -404,7 +397,6 @@
             Grid.Row="1"
             Height="50"
             Width="50"
-            CornerRadius="6"
             Margin="5 0"
             Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.BeltActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterBeltColor}">
@@ -412,8 +404,8 @@
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
+                    MaxHeight="40"
+                    MaxWidth="40"
                     Source="../../Assets/Images/Belt.png" />
 
                 <Border
@@ -445,10 +437,11 @@
         <Grid Grid.Row="1"
               Grid.Column="3"
               Grid.ColumnSpan="8"
+              Margin="5 0"
               Visibility="{Binding SelectedStashTabHandler.SelectedStashTab.NeedsItemFetch, Converter={StaticResource VisibleIfTrue}}">
             <Grid.Background>
                 <SolidColorBrush Color="Gray"
-                                 Opacity="0.9" />
+                                 Opacity="0.95" />
             </Grid.Background>
             <TextBlock Text="Items Not Fetched"
                        Foreground="White"
@@ -474,7 +467,9 @@
             Width="50"
             Grid.Column="12"
             Grid.Row="1"
-            Margin="5 0">
+            Margin="5 0"
+            Visibility="{Binding Settings.LootFilterManipulationEnabled, Converter={StaticResource VisibleIfTrue}}"
+            Background="#202020">
 
             <!-- Content with Line Break (Not sure if there's an easier way to do this...) -->
             <TextBlock TextAlignment="Center">Reload<LineBreak />Filter</TextBlock>
