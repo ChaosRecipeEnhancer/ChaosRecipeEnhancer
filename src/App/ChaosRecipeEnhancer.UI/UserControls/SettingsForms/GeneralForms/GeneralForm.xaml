@@ -199,35 +199,17 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- <xctk:CheckComboBox -->
-            <!--     Grid.Column="0" -->
-            <!--     Grid.Row="0" -->
-            <!--     Grid.ColumnSpan="4" -->
-            <!--     Margin="0 0 5 0" -->
-            <!--     Width="150" -->
-            <!--     ItemsSource="{Binding StashTabNameIndexList}" -->
-            <!--     DisplayMemberPath="TabName" -->
-            <!--     VerticalContentAlignment="Center" -->
-            <!--     HorizontalAlignment="Center" -->
-            <!--     VerticalAlignment="Center" -->
-            <!--     ValueMemberPath="Level" /> -->
-
-            <!-- IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}" -->
-            <!-- SelectedItemsOverride="{Binding SelectedStashTabHandler.SelectedStashTab, Mode=TwoWay}" -->
-
-
-            <ComboBox
+            <xctk:CheckComboBox
                 Grid.Column="0"
                 Grid.Row="0"
+                Grid.ColumnSpan="4"
+                Margin="0 0 5 0"
                 Width="150"
-                DisplayMemberPath="TabName"
-                VerticalContentAlignment="Center" />
-
-            <!-- ItemsSource="{Binding StashTabNameIndexList}" -->
-
-            <!-- IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}" -->
-            <!-- SelectedItem="{Binding SelectedStashTabHandler.SelectedStashTab, Mode=TwoWay}" -->
-
+                MaxDropDownHeight="300"
+                ItemsSource="{Binding StashTabNameIndexList, Mode=OneWay}"
+                VerticalContentAlignment="Center"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" />
 
             <Button
                 Grid.Column="4"

@@ -6,15 +6,15 @@
     <Application.Resources>
         <ResourceDictionary>
             <FontFamily x:Key="PasswordFont">pack://application:,,,/Assets/#password</FontFamily>
-            <ResourceDictionary.MergedDictionaries>
-                <!-- Contains all of the colors and brushes for a theme -->
-                <ResourceDictionary Source="Themes/ColourDictionaries/DeepDark.xaml" />
-                <!-- Contains most of the control-specific brushes which reference -->
-                <!-- the above theme. I aim for this to contain ALL brushes, not most  -->
-                <ResourceDictionary Source="Themes/ControlColours.xaml" />
-                <!-- Contains all of the control styles (Button, ListBox, etc) -->
-                <ResourceDictionary Source="Themes/Controls.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+            <!-- <ResourceDictionary.MergedDictionaries> -->
+            <!--     ~1~ Contains all of the colors and brushes for a theme @1@ -->
+            <!--     <ResourceDictionary Source="Themes/ColourDictionaries/DeepDark.xaml" /> -->
+            <!--     ~1~ Contains most of the control-specific brushes which reference @1@ -->
+            <!--     ~1~ the above theme. I aim for this to contain ALL brushes, not most  @1@ -->
+            <!--     <ResourceDictionary Source="Themes/ControlColours.xaml" /> -->
+            <!--     ~1~ Contains all of the control styles (Button, ListBox, etc) @1@ -->
+            <!--     <ResourceDictionary Source="Themes/Controls.xaml" /> -->
+            <!-- </ResourceDictionary.MergedDictionaries> -->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

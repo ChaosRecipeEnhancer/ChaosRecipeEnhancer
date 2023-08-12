@@ -131,7 +131,7 @@
             <TextBlock
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Foreground="PaleGreen"
+                Foreground="Green"
                 Text="Validated" />
         </Grid>
 
