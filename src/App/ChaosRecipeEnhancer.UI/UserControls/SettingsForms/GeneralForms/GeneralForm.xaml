@@ -7,16 +7,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d"
              Loaded="OnFormLoaded"
              d:DataContext="{d:DesignInstance Type=generalForms:GeneralFormViewModel}">
 
     <UserControl.Resources>
-        <utilities:BoolVisibilityConverter x:Key="CustomLeagueVisibilityBoolConverter"
+        <utilities:BoolVisibilityConverter x:Key="BoolVisibilityConverter"
                                            CollapseWhenNotVisible="True" />
-        <utilities:BoolVisibilityConverter x:Key="MainLeagueVisibilityInvertedBoolConverter"
+        <utilities:BoolVisibilityConverter x:Key="InvertedBoolVisibilityConverter"
                                            CollapseWhenNotVisible="True"
                                            Invert="True" />
+        <utilities:EqualityToVisibilityConverter x:Key="VisibleIfEqual"
+                                                 ComparisonType="{x:Type system:Int32}" />
         <xctk:InverseBoolConverter x:Key="InvertBoolConverter" />
     </UserControl.Resources>
 
@@ -77,9 +80,9 @@
                 Grid.Column="0"
                 Grid.Row="0"
                 Grid.ColumnSpan="4"
-                Width="200"
+                Width="190"
                 Text="{Binding Settings.LeagueName, Mode=TwoWay}"
-                Visibility="{Binding Settings.CustomLeagueEnabled, Converter={StaticResource CustomLeagueVisibilityBoolConverter}}" />
+                Visibility="{Binding Settings.CustomLeagueEnabled, Converter={StaticResource BoolVisibilityConverter}}" />
 
             <ComboBox
                 Grid.Column="0"
@@ -91,7 +94,7 @@
                 IsSynchronizedWithCurrentItem="True"
                 ItemsSource="{Binding LeagueList, Mode=OneWay}"
                 SelectedItem="{Binding Settings.LeagueName, Mode=TwoWay}"
-                Visibility="{Binding Settings.CustomLeagueEnabled, Converter={StaticResource MainLeagueVisibilityInvertedBoolConverter}}" />
+                Visibility="{Binding Settings.CustomLeagueEnabled, Converter={StaticResource InvertedBoolVisibilityConverter}}" />
 
             <Button
                 Grid.Column="3"
@@ -101,7 +104,7 @@
                 HorizontalContentAlignment="Center"
                 Content="Refresh"
                 Click="OnRefreshLeaguesButtonClicked"
-                Visibility="{Binding Settings.CustomLeagueEnabled, Converter={StaticResource MainLeagueVisibilityInvertedBoolConverter}}" />
+                Visibility="{Binding Settings.CustomLeagueEnabled, Converter={StaticResource InvertedBoolVisibilityConverter}}" />
 
         </Grid>
         <!-- League Selection End -->
@@ -162,7 +165,6 @@
             Margin="10 0 0 10"
             MinWidth="200"
             VerticalContentAlignment="Center"
-            SelectionChanged="ComboBox_SelectionChanged"
             SelectedIndex="{Binding Settings.StashTabQueryMode, Mode=TwoWay}">
 
             <ComboBoxItem Content="Select Tabs From List" />
@@ -179,7 +181,7 @@
                    Margin="0 0 0 10"
                    VerticalAlignment="Center"
                    Text="Select Stash Tabs:"
-                   Visibility="{Binding TabSelectVisible, Mode=TwoWay}" />
+                   Visibility="{Binding Settings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=0}" />
 
         <Grid
             Grid.Column="1"
@@ -197,21 +199,34 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <xctk:CheckComboBox
-                Grid.Column="0"
-                Grid.Row="0"
-                Grid.ColumnSpan="4"
-                Margin="0 0 5 0"
-                Width="150"
-                ItemsSource="{Binding StashTabNameIndexList}"
-                DisplayMemberPath="TabName"
-                VerticalContentAlignment="Center"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                ValueMemberPath="Level" />
+            <!-- <xctk:CheckComboBox -->
+            <!--     Grid.Column="0" -->
+            <!--     Grid.Row="0" -->
+            <!--     Grid.ColumnSpan="4" -->
+            <!--     Margin="0 0 5 0" -->
+            <!--     Width="150" -->
+            <!--     ItemsSource="{Binding StashTabNameIndexList}" -->
+            <!--     DisplayMemberPath="TabName" -->
+            <!--     VerticalContentAlignment="Center" -->
+            <!--     HorizontalAlignment="Center" -->
+            <!--     VerticalAlignment="Center" -->
+            <!--     ValueMemberPath="Level" /> -->
 
             <!-- IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}" -->
             <!-- SelectedItemsOverride="{Binding SelectedStashTabHandler.SelectedStashTab, Mode=TwoWay}" -->
+
+
+            <ComboBox
+                Grid.Column="0"
+                Grid.Row="0"
+                Width="150"
+                DisplayMemberPath="TabName"
+                VerticalContentAlignment="Center" />
+
+            <!-- ItemsSource="{Binding StashTabNameIndexList}" -->
+
+            <!-- IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}" -->
+            <!-- SelectedItem="{Binding SelectedStashTabHandler.SelectedStashTab, Mode=TwoWay}" -->
 
 
             <Button
@@ -225,24 +240,6 @@
         </Grid>
         <!-- Select Tab From List End -->
 
-        <!-- Individual Stash Tab Indices Start -->
-        <TextBlock
-            Grid.Column="0"
-            Grid.Row="5"
-            Margin="0 0 0 10"
-            VerticalAlignment="Center"
-            Text="Stash Tab Indices:"
-            ToolTip="Every stash tab with this indices will be added. Separate them by ',' e.g. '0,1,2,3,4,5' will fetch first 6 stash tabs."
-            Visibility="{Binding TabIndicesVisible, Mode=TwoWay}" />
-
-        <TextBox
-            Grid.Column="1"
-            Grid.Row="5"
-            Margin="10 0 0 10"
-            Visibility="{Binding TabIndicesVisible}"
-            Text="{Binding Settings.StashTabIndices, Mode=TwoWay}" />
-        <!-- Individual Stash Tab Indices End -->
-
         <!-- Individual Stash Tab Name Prefix Start -->
         <TextBlock
             Grid.Column="0"
@@ -251,13 +248,13 @@
             VerticalAlignment="Center"
             Text="Stash Tab Prefix:"
             ToolTip="Every stash tab which name starts with this prefix will be added."
-            Visibility="{Binding TabNamePrefixVisible, Mode=TwoWay}" />
+            Visibility="{Binding Settings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}" />
 
         <TextBox
             Grid.Column="1"
             Grid.Row="5"
             Margin="10 0 0 10"
-            Visibility="{Binding TabNamePrefixVisible}"
+            Visibility="{Binding Settings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
             Text="{Binding Settings.StashTabPrefix, Mode=TwoWay}" />
         <!-- Individual Stash Tab Name Prefix End -->
 
@@ -269,15 +266,33 @@
             VerticalAlignment="Center"
             Text="Stash Tab Suffix:"
             ToolTip="Every stash tab which name ends with this suffix will be added."
-            Visibility="{Binding TabNameSuffixVisible, Mode=TwoWay}" />
+            Visibility="{Binding Settings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=2}" />
 
         <TextBox
             Grid.Column="1"
             Grid.Row="5"
             Margin="10 0 0 10"
-            Visibility="{Binding TabNameSuffixVisible}"
+            Visibility="{Binding Settings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=2}"
             Text="{Binding Settings.StashTabSuffix, Mode=TwoWay}" />
         <!-- Individual Stash Tab Name Suffix End -->
+
+        <!-- Individual Stash Tab Indices Start -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="5"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
+            Text="Stash Tab Indices:"
+            ToolTip="Every stash tab with this indices will be added. Separate them by ',' e.g. '0,1,2,3,4,5' will fetch first 6 stash tabs."
+            Visibility="{Binding Settings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=3}" />
+
+        <TextBox
+            Grid.Column="1"
+            Grid.Row="5"
+            Margin="10 0 0 10"
+            Visibility="{Binding Settings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=3}"
+            Text="{Binding Settings.StashTabIndices, Mode=TwoWay}" />
+        <!-- Individual Stash Tab Indices End -->
 
         <!-- Fetch on New Map Setting Start -->
         <!-- TODO: [Refactor] Enforce reload when this setting is changed (or at the very least, notify users it's required) -->
@@ -294,8 +309,6 @@
             Grid.Row="6"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
-            Checked="AutoFetchCheckBox_Checked"
-            Unchecked="AutoFetchCheckBox_Unchecked"
             IsChecked="{Binding Settings.AutoFetchOnRezoneEnabled, Mode=TwoWay}" />
         <!-- Fetch on New Map Setting End -->
 
@@ -305,8 +318,8 @@
             Grid.Column="0"
             Grid.Row="7"
             VerticalAlignment="Center"
-            Text="PoE Client.txt File Location:"
-            Visibility="{Binding FetchOnNewMapEnabled}"
+            Text="PoE Client.txt Path:"
+            Visibility="{Binding Settings.AutoFetchOnRezoneEnabled, Converter={StaticResource BoolVisibilityConverter}}"
             ToolTip="The standard path is: `C:/Programs/Grinding Gear Games/Path of Exile/logs/Client.txt`; it will be different for steam users." />
 
         <Button
@@ -315,7 +328,7 @@
             Grid.Row="7"
             Margin="10 0 0 0"
             Click="LogLocationDialog_Click"
-            Visibility="{Binding FetchOnNewMapEnabled}"
+            Visibility="{Binding Settings.AutoFetchOnRezoneEnabled, Converter={StaticResource BoolVisibilityConverter}}"
             ToolTip="{Binding Settings.PathOfExileClientLogLocation, Mode=TwoWay}"
             Content="{Binding Settings.PathOfExileClientLogLocation, Mode=TwoWay}"
             HorizontalContentAlignment="Left">

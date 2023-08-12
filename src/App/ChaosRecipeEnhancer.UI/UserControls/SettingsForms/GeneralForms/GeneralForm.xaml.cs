@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Api;
 using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.Utilities;
 using MessageBox = System.Windows.MessageBox;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
@@ -28,7 +25,7 @@ internal partial class GeneralForm
 
     private async void OnFormLoaded(object sender, RoutedEventArgs e)
     {
-        if (CheckAccountSettings(showError: false))
+        if (CheckAccountSettings(false))
             await LoadStashTabNamesIndicesAsync();
     }
 
@@ -44,10 +41,7 @@ internal partial class GeneralForm
 
         var stashTabPropsList = await _stashTabGetter.GetStashPropsAsync(accName, league);
 
-        if (stashTabPropsList is not null)
-        {
-            _model.UpdateStashTabNameIndexList(stashTabPropsList.tabs);
-        }
+        if (stashTabPropsList is not null) _model.UpdateStashTabNameIndexList(stashTabPropsList.tabs);
     }
 
     private void OnRefreshLeaguesButtonClicked(object sender, RoutedEventArgs e)
@@ -59,21 +53,6 @@ internal partial class GeneralForm
     {
         var leagues = await _leagueGetter.GetLeaguesAsync();
         _model.UpdateLeagueList(leagues);
-    }
-
-    private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        _model.LoadStashQueryModeVisibility();
-    }
-
-    private void AutoFetchCheckBox_Checked(object sender, RoutedEventArgs e)
-    {
-        _model.LoadFetchOnNewMapEnabled();
-    }
-
-    private void AutoFetchCheckBox_Unchecked(object sender, RoutedEventArgs e)
-    {
-        _model.LoadFetchOnNewMapEnabled();
     }
 
     private void LogLocationDialog_Click(object sender, RoutedEventArgs e)
@@ -102,35 +81,17 @@ internal partial class GeneralForm
     private static bool CheckAccountSettings(bool showError)
     {
         var missingSettings = new List<string>();
-        string errorMessage = "Please add: \n";
+        var errorMessage = "Please add: \n";
 
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName))
-        {
-            missingSettings.Add("- Account Name \n");
-        }
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileWebsiteSessionId))
-        {
-            missingSettings.Add("- PoE Session ID \n");
-        }
-        if (string.IsNullOrEmpty(Settings.Default.LeagueName))
-        {
-            missingSettings.Add("- League \n");
-        }
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName)) missingSettings.Add("- Account Name \n");
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileWebsiteSessionId)) missingSettings.Add("- PoE Session ID \n");
+        if (string.IsNullOrEmpty(Settings.Default.LeagueName)) missingSettings.Add("- League \n");
 
-        if (missingSettings.Count == 0)
-        {
-            return true;
-        }
+        if (missingSettings.Count == 0) return true;
 
-        foreach (string setting in missingSettings)
-        {
-            errorMessage += setting;
-        }
+        foreach (var setting in missingSettings) errorMessage += setting;
 
-        if (showError)
-        {
-            _ = MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        if (showError) _ = MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
 
         return false;
     }
