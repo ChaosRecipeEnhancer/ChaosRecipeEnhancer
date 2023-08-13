@@ -19,7 +19,7 @@ public sealed class StashTabControl : ViewModelBase
 
         // validate settings, somehow need them set
         // might need to change where we initialize the stash tab control
-        StashTabUri = SiteEndpoints.StashTabUrl(Settings.TargetStash, Settings.PathOfExileAccountName, Settings.LeagueName, index);
+        StashTabUri = ApiEndpoints.IndividualTabContentsEndpoint(Settings.TargetStash, Settings.PathOfExileAccountName, Settings.LeagueName, index);
     }
 
     public string TabName { get; }

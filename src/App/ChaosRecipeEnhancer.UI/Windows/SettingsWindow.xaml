@@ -1,0 +1,203 @@
+<Window x:Class="ChaosRecipeEnhancer.UI.Windows.SettingsWindow"
+        x:ClassModifier="internal"
+        Style="{StaticResource CustomWindowStyle}"
+        xmlns:overlayForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms"
+        xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
+        xmlns:accountForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms"
+        xmlns:lootFilterForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms"
+        xmlns:otherForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
+        FontSize="14"
+        Title="Chaos Recipe Enhancer Settings"
+        Icon="/Assets/Icons/CREIcon.ico"
+        FontFamily="Segoe UI Light"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="CanMinimize"
+        ShowActivated="True"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type={x:Type view:SettingsViewModel}}">
+
+    <Border
+        BorderBrush="DarkGray"
+        BorderThickness="1">
+        <Grid
+            Margin="5"
+            Focusable="True">
+            <!-- 'Main' App Grid Definitions -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- App Header Start -->
+            <UniformGrid
+                Grid.Column="0"
+                Grid.Row="0"
+                Columns="2"
+                Rows="1"
+                Margin="0 0 0 5">
+
+                <!-- Save Settings Button -->
+                <Button
+                    Margin="0 0 2.5 0"
+                    Content="Save Settings"
+                    Click="OnSaveButtonClicked" />
+
+                <!-- Run Overlay Button -->
+                <Button
+                    x:Name="RunOverlayButton"
+                    Margin="2.5 0 0 0"
+                    Content="Run Overlay"
+                    Click="OnRunOverlayButtonClicked" />
+
+            </UniformGrid>
+            <!-- App Header End -->
+
+            <!-- Tab Container Start -->
+            <TabControl
+                Grid.Column="0"
+                Grid.Row="1">
+                <!-- Account Settings Tab Start -->
+                <TabItem Header="Account">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <!-- Path of Exile Account -->
+                        <accountForms:PathOfExileAccountForm
+                            Grid.Column="0"
+                            Grid.Row="0" />
+                    </Grid>
+                </TabItem>
+                <!-- Account Settings Tab End -->
+
+                <!-- General Settings Tab Start -->
+                <TabItem Header="General">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <!-- Recipes -->
+                        <generalForms:RecipesForm
+                            Grid.Column="0"
+                            Grid.Row="0" />
+                        <!-- General -->
+                        <generalForms:GeneralForm
+                            Grid.Column="1"
+                            Grid.Row="0" />
+                    </Grid>
+                </TabItem>
+                <!-- General Settings Tab End -->
+
+                <!-- Overlay Settings Tab Start -->
+                <TabItem Header="Overlays">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <!-- Set Tracker Overlay -->
+                        <overlayForms:SetTrackerOverlayForm
+                            Grid.Column="0"
+                            Grid.Row="0" />
+                        <!-- Stash Tab Overlay -->
+                        <overlayForms:StashTabOverlayForm
+                            Grid.Column="1"
+                            Grid.Row="0" />
+                    </Grid>
+                </TabItem>
+                <!-- Overlay Settings Tab End -->
+
+                <!-- Loot Filter Settings Tab Start -->
+                <TabItem Header="Loot Filter">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <!-- Filter Manipulation -->
+                        <lootFilterForms:LootFilterManipulationForm
+                            Grid.Column="0"
+                            Grid.Row="0" />
+                        <!-- Colors -->
+                        <lootFilterForms:ColorsForm
+                            Grid.Column="1"
+                            Grid.Row="0" />
+                    </Grid>
+                </TabItem>
+                <!-- Loot Filter Settings Tab End -->
+
+                <!-- Advanced Settings Tab Start -->
+                <TabItem Header="Advanced">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <!-- Advance Form -->
+                        <otherForms:AdvancedForm
+                            Grid.Column="0"
+                            Grid.Row="0" />
+                        <!-- System Form -->
+                        <otherForms:SystemForm
+                            Grid.Column="1"
+                            Grid.Row="0" />
+                    </Grid>
+                </TabItem>
+                <!-- Advanced Settings Tab End -->
+            </TabControl>
+            <!-- Tab Container End -->
+
+            <!-- App Footer Start -->
+            <UniformGrid
+                Grid.Column="0"
+                Grid.Row="2"
+                Columns="2"
+                Rows="1"
+                Margin="0 5 0 0 ">
+
+                <!-- Disclaimer Text -->
+                <TextBlock
+                    FontSize="10"
+                    VerticalAlignment="Center"
+                    TextAlignment="Center"
+                    Text="This product isn't affiliated with or endorsed by Grinding Gear Games in any way." />
+
+                <!-- App Version Text -->
+                <TextBlock
+                    FontSize="12"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    TextAlignment="Center"
+                    Text="{Binding Version, StringFormat='CRE {0} by Mario, Zemoto, &amp; kosace'}" />
+
+            </UniformGrid>
+            <!-- App Footer End -->
+        </Grid>
+    </Border>
+</Window>

@@ -20,7 +20,7 @@ internal partial class GeneralForm
 
     public GeneralForm(SettingsWindow parent)
     {
-        DataContext = _model = new GeneralFormViewModel(parent.ItemSetManager);
+        DataContext = _model = new GeneralFormViewModel(parent);
         InitializeComponent();
         LoadLeagueList();
     }
