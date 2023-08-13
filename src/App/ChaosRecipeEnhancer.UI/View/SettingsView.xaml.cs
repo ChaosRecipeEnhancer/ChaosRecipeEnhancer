@@ -14,9 +14,6 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace ChaosRecipeEnhancer.UI.View;
 
-/// <summary>
-///     Interaction logic for SettingsWindow.xaml
-/// </summary>
 internal partial class SettingsView
 {
     private readonly SetTrackerOverlayView _recipeOverlay;

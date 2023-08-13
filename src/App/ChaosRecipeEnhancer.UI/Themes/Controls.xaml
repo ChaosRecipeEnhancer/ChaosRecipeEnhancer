@@ -529,7 +529,6 @@
                             <Setter TargetName="btnMaximize" Property="Visibility" Value="Collapsed"/>
                             <Setter TargetName="btnWtfEvenLolol" Property="Visibility" Value="Visible"/>
                         </Trigger>
-
                         <Trigger Property="ResizeMode" Value="NoResize">
                             <Setter TargetName="ThingButtons" Property="Visibility" Value="Collapsed"/>
                             <Setter TargetName="btnMinimize" Property="Visibility" Value="Visible"/>
