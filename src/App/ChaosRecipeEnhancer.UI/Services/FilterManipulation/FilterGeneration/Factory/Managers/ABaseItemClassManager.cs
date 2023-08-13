@@ -14,11 +14,4 @@ public abstract class ABaseItemClassManager
         var baseType = "Class " + ClassFilterName;
         return baseType;
     }
-
-    public virtual bool CheckIfMissing(HashSet<string> missingItemClasses)
-    {
-        return missingItemClasses.Contains(ClassName);
-    }
-
-    public abstract ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue);
 }

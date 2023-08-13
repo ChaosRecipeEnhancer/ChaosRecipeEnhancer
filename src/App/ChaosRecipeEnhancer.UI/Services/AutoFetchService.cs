@@ -7,6 +7,8 @@ using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
+// TODO: [Refactor] the living shit out of this
+
 public interface IAutoFetchService
 {
 }

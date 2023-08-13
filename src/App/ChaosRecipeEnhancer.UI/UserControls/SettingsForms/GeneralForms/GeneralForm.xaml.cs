@@ -3,7 +3,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Api;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Windows;
 using Xceed.Wpf.Toolkit;
@@ -14,13 +16,14 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
 internal partial class GeneralForm
 {
-    private readonly LeagueGetter _leagueGetter = new();
+    private readonly IApiService ApiService;
     private readonly GeneralFormViewModel _model;
-    private readonly StashTabGetter _stashTabGetter = new();
-
-    public GeneralForm(SettingsWindow parent)
+    
+    public GeneralForm(IApiService apiService)
     {
-        DataContext = _model = new GeneralFormViewModel(parent);
+        ApiService = apiService;
+        
+        DataContext = _model = new GeneralFormViewModel();
         InitializeComponent();
         LoadLeagueList();
     }
@@ -30,7 +33,7 @@ internal partial class GeneralForm
         if (CheckAccountSettings(false))
         {
             if (_model.StashTabIndexNameFullList.Count == 0) await LoadStashTabNamesIndicesAsync();
-            if (_model.SelectedStashTabHandler.StashManagerControl is null) await LoadStashTabsAsync();
+            if (_model.SelectedStashTabHandler.StashManagerControl is null) await LoadStashTabContentAsync();
         }
     }
 
@@ -41,22 +44,39 @@ internal partial class GeneralForm
 
     private async Task LoadStashTabNamesIndicesAsync()
     {
-        var accName = Settings.Default.PathOfExileAccountName.Trim();
-        var league = Settings.Default.LeagueName.Trim();
+        var secret = _model.Settings.PathOfExileWebsiteSessionId;
+        var accountName = _model.Settings.PathOfExileAccountName;
+        var leagueName = _model.Settings.LeagueName;
 
-        var stashTabPropsList = await _stashTabGetter.GetStashPropsAsync(accName, league);
+        var stashTabPropsList = _model.Settings.TargetStash == (int)TargetStash.Personal
+            ? await ApiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, secret)
+            : await ApiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, secret);
 
-        if (stashTabPropsList is not null) _model.UpdateStashTabNameIndexFullList(stashTabPropsList.tabs);
+        if (stashTabPropsList is not null) _model.UpdateStashTabNameIndexFullList(stashTabPropsList.StashTabs);
     }
 
-    private async Task LoadStashTabsAsync()
+    private async Task LoadStashTabContentAsync()
     {
+        // visual (and programmatic) indication that we are currently fetching
+        // i.e. disable future calls until this fetch has concluded
         _model.FetchingStashTabs = true;
         using var __ = new ScopeGuard(() => _model.FetchingStashTabs = false);
 
+        // invalidate stuff for some reason
         _model.SelectedStashTabHandler.StashManagerControl = null;
-        var stashTabs = await _stashTabGetter.FetchStashTabsAsync();
-        if (stashTabs is null)
+        
+        var secret = _model.Settings.PathOfExileWebsiteSessionId;
+        var accountName = _model.Settings.PathOfExileAccountName;
+        var leagueName = _model.Settings.LeagueName;
+        var selectedTabIndices = _model.Settings.StashTabIndices;
+
+        // why am i making a form responsible for fetching stash data
+        // don't like this at all
+        // var stashTabContent = _model.Settings.TargetStash == (int)TargetStash.Personal
+        //     ? await ApiService.GetPersonalStashTabContentsByIndexAsync(accountName, leagueName, )
+        //     : await ApiService.FetchStashTabsAsync();
+        
+        if (stashTabContent is null)
         {
             _ = MessageBox.Show("Failed to fetch stash tabs", "Request Failed", MessageBoxButton.OK, MessageBoxImage.Error);
         }

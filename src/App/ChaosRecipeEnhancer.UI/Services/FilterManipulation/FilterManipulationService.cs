@@ -4,21 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory;
-using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory.Managers;
 using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterStorage;
-using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
 using ChaosRecipeEnhancer.UI.Constants;
-using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers;
 
-namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration;
+namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
 public class FilterManipulationService
 {
     private readonly List<string> _customStyle = new();
-
     private ABaseItemClassManager _itemClassManager;
 
     public FilterManipulationService()
@@ -28,37 +23,38 @@ public class FilterManipulationService
 
     public Settings Settings { get; } = Settings.Default;
 
-    public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem)
-    {
-        var activeItemTypes = new ActiveItemTypes();
-        var visitor = new CItemClassManagerFactory();
-        var sectionList = new HashSet<string>();
-
-        foreach (ItemClass item in Enum.GetValues(typeof(ItemClass)))
-        {
-            _itemClassManager = visitor.GetItemClassManager(item);
-
-            var stillMissing = _itemClassManager.CheckIfMissing(missingItemClasses);
-
-            // weapons might be buggy, will try to do some tests
-            if (_itemClassManager.AlwaysActive || stillMissing)
-            {
-                // if we need chaos only gear to complete a set (60-74), add that to our filter section
-                sectionList.Add(GenerateSection());
-
-                // find better way to handle active items and sound notification on changes
-                activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
-            }
-            else
-            {
-                activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, false);
-            }
-        }
-
-        if (Settings.Default.LootFilterManipulationEnabled) await UpdateFilterAsync(sectionList);
-
-        return activeItemTypes;
-    }
+    // TODO: [Refactor] mechanism for receiving missing items from some other service and populating based on that limited information
+    // public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem)
+    // {
+    //     var activeItemTypes = new ActiveItemTypes();
+    //     var visitor = new CItemClassManagerFactory();
+    //     var sectionList = new HashSet<string>();
+    //
+    //     foreach (ItemClass item in Enum.GetValues(typeof(ItemClass)))
+    //     {
+    //         _itemClassManager = visitor.GetItemClassManager(item);
+    //
+    //         var stillMissing = _itemClassManager.CheckIfMissing(missingItemClasses);
+    //
+    //         // weapons might be buggy, will try to do some tests
+    //         if (_itemClassManager.AlwaysActive || stillMissing)
+    //         {
+    //             // if we need chaos only gear to complete a set (60-74), add that to our filter section
+    //             sectionList.Add(GenerateSection());
+    //
+    //             // find better way to handle active items and sound notification on changes
+    //             activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
+    //         }
+    //         else
+    //         {
+    //             activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, false);
+    //         }
+    //     }
+    //
+    //     if (Settings.Default.LootFilterManipulationEnabled) await UpdateFilterAsync(sectionList);
+    //
+    //     return activeItemTypes;
+    // }
 
     private string GenerateSection()
     {
@@ -82,7 +78,7 @@ public class FilterManipulationService
 
         result = result + baseType + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
-        var colors = GetRGB();
+        var colors = GetColorRGBAValues();
         var bgColor = colors.Aggregate("SetBackgroundColor", (current, t) => current + " " + t);
 
         result = result + bgColor + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
@@ -102,12 +98,14 @@ public class FilterManipulationService
 
     private static string GenerateLootFilter(string oldFilter, IEnumerable<string> sections)
     {
+        // can't use our Env const due to compile time requirement
         const string newLine = "\n";
-        var sectionStart = "# Chaos Recipe START - Filter Manipulation by Chaos Recipe Enhancer";
-        var sectionEnd = "# Chaos Recipe END - Filter Manipulation by Chaos Recipe Enhancer";
-        var sectionBody = "";
+        
         var beforeSection = "";
-        string afterSection;
+        var sectionStart = "# Chaos Recipe START - Filter Manipulation by Chaos Recipe Enhancer";
+        var sectionBody = "";
+        var sectionEnd = "# Chaos Recipe END - Filter Manipulation by Chaos Recipe Enhancer";
+        var afterSection = "";
 
         // generate chaos recipe section
         sectionBody += sectionStart + newLine + newLine;
@@ -140,16 +138,17 @@ public class FilterManipulationService
     private static async Task UpdateFilterAsync(IEnumerable<string> sectionList)
     {
         var filterStorage = FilterStorageFactory.Create(Settings.Default);
-
         var oldFilter = await filterStorage.ReadLootFilterAsync();
+        
+        // return if no old filter detected (usually caused by user error no path selected)
+        // in our case the manager doesn't care about setting error this should likely be an Exception
         if (oldFilter == null) return;
 
         var newFilter = GenerateLootFilter(oldFilter, sectionList);
-
         await filterStorage.WriteLootFilterAsync(newFilter);
     }
 
-    private IEnumerable<int> GetRGB()
+    private IEnumerable<int> GetColorRGBAValues()
     {
         int r;
         int g;

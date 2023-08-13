@@ -1,6 +1,6 @@
 ﻿namespace ChaosRecipeEnhancer.UI.Services;
 
-internal static class RateLimit
+public static class RateLimit
 {
     public static bool RateLimitExceeded;
     public static int RequestCounter { get; set; }

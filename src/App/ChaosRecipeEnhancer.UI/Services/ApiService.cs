@@ -12,10 +12,7 @@ using ChaosRecipeEnhancer.UI.Models.Enums;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
-public interface IApiService
-{
-}
-
+[GenerateAutomaticInterface]
 public class ApiService : IApiService
 {
     private bool _isFetching;

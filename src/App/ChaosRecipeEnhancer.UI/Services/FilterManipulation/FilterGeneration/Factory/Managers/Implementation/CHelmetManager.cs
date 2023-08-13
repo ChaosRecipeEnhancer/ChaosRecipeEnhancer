@@ -1,13 +1,9 @@
-﻿using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
-using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers;
+﻿using ChaosRecipeEnhancer.UI.Properties;
 
-namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory.Managers.Implementation;
+namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers.Implementation;
 
-internal class CHelmetManager : ABaseItemClassManager
+public class CHelmetManager : ABaseItemClassManager
 {
-	#region Constructors
-
 	public CHelmetManager()
 	{
 		ClassName = "Helmets";
@@ -15,16 +11,4 @@ internal class CHelmetManager : ABaseItemClassManager
 		ClassColor = Settings.Default.LootFilterHelmetColor;
 		AlwaysActive = Settings.Default.LootFilterHelmetsAlwaysActive;
 	}
-
-	#endregion
-
-	#region Methods
-
-	public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
-	{
-		activeItems.HelmetActive = newValue;
-		return activeItems;
-	}
-
-	#endregion
 }

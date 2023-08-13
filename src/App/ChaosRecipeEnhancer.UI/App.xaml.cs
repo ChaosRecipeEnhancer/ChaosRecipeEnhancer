@@ -2,8 +2,10 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Windows;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ChaosRecipeEnhancer.UI;
 
@@ -14,9 +16,31 @@ internal partial class App
     public App()
     {
         if (!_singleInstance.Claim()) Shutdown();
+        
+        // set up services (for IoC)
+        Services = ConfigureServices();
+        
         SetupUnhandledExceptionHandling();
     }
+    
+    public IServiceProvider Services { get; }
+    
+    private static IServiceProvider ConfigureServices()
+    {
+        var services = new ServiceCollection();
 
+        services.AddSingleton<IItemSetManagerService, ItemSetManagerService>();
+
+        return services.BuildServiceProvider();
+    }
+    
+    private void OnStartup(object sender, StartupEventArgs e)
+    {
+        var settingsView = new SettingsWindow();
+        settingsView.Show();
+        _singleInstance.PingedByOtherProcess += (_, _) => Dispatcher.Invoke(settingsView.Show);
+    }
+    
     private void SetupUnhandledExceptionHandling()
     {
         // Catch exceptions from all threads in the AppDomain.
@@ -54,12 +78,5 @@ internal partial class App
         // Let the user decide if the app should die or not (if applicable).
         if (MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons) == MessageBoxResult.Yes)
             Current.Shutdown();
-    }
-
-    private void OnStartup(object sender, StartupEventArgs e)
-    {
-        var settingsView = new SettingsWindow();
-        settingsView.Show();
-        _singleInstance.PingedByOtherProcess += (_, _) => Dispatcher.Invoke(settingsView.Show);
     }
 }

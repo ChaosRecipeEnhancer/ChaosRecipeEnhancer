@@ -7,10 +7,7 @@ using ChaosRecipeEnhancer.UI.Models.Enums;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
-public interface IItemSetManagerService
-{
-}
-
+[GenerateAutomaticInterface]
 public class ItemSetManagerService : IItemSetManagerService
 {
     private int _setThreshold;

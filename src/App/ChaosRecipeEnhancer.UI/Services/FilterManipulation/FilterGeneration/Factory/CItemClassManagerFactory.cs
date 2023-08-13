@@ -1,15 +1,12 @@
 ﻿using System;
-using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory.Managers;
-using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory.Managers.Implementation;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers;
+using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers.Implementation;
 
-namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory;
+namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory;
 
 public class CItemClassManagerFactory
 {
-	#region Methods
-
 	public ABaseItemClassManager GetItemClassManager(ItemClass itemClass)
 	{
 		switch (itemClass)
@@ -36,6 +33,4 @@ public class CItemClassManagerFactory
 				throw new Exception("Wrong item class.");
 		}
 	}
-
-	#endregion
 }

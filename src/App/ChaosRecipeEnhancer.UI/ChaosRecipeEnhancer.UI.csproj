@@ -122,4 +122,12 @@
 	<ItemGroup>
 	  <Folder Include="WpfToolkit\" />
 	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="AutomaticInterface" Version="1.6.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+	</ItemGroup>
 </Project>

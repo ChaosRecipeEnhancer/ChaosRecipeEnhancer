@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using ChaosRecipeEnhancer.UI.Api.Data;
 using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
+using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
@@ -13,14 +14,14 @@ internal class GeneralFormViewModel : ViewModelBase
     private bool _fetchingStashTabs;
     private bool _initialized;
 
-    public GeneralFormViewModel(ISelectedStashTabHandler selectedStashTabHandler)
+    public GeneralFormViewModel()
     {
-        SelectedStashTabHandler = selectedStashTabHandler;
+        // SelectedStashTabHandler = selectedStashTabHandler;
         Settings.PropertyChanged += OnSettingsChanged;
     }
 
-    public ObservableCollection<StashTabProps> StashTabIndexNameFullList { get; set; } = new();
-    public ObservableCollection<StashTabProps> SelectedStashTabs { get; set; } = new();
+    public ObservableCollection<BaseStashTabMetadata> StashTabIndexNameFullList { get; set; } = new();
+    public ObservableCollection<BaseStashTabMetadata> SelectedStashTabs { get; set; } = new();
     public ObservableCollection<string> LeagueList { get; } = new();
     public ISelectedStashTabHandler SelectedStashTabHandler { get; }
 
@@ -30,7 +31,7 @@ internal class GeneralFormViewModel : ViewModelBase
         set => SetProperty(ref _fetchingStashTabs, value);
     }
 
-    private void OnSettingsChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Settings.LeagueName) && _initialized)
         {
@@ -46,9 +47,9 @@ internal class GeneralFormViewModel : ViewModelBase
         {
             var selectedItems = new List<string>();
 
-            foreach (var tab in (ObservableCollection<StashTabProps>)selectedStashTabProps)
+            foreach (var tab in (ObservableCollection<BaseStashTabMetadata>)selectedStashTabProps)
             {
-                selectedItems!.Add(tab.i.ToString());
+                selectedItems!.Add(tab.Index.ToString());
             }
 
             Settings.StashTabIndices = string.Join(",", selectedItems!);
@@ -78,7 +79,7 @@ internal class GeneralFormViewModel : ViewModelBase
         _initialized = true;
     }
 
-    public void UpdateStashTabNameIndexFullList(List<StashTabProps> stashTabProps)
+    public void UpdateStashTabNameIndexFullList(List<BaseStashTabMetadata> stashTabProps)
     {
         // clearing observable (ui) collection for stash tabs
         StashTabIndexNameFullList.Clear();
@@ -91,7 +92,7 @@ internal class GeneralFormViewModel : ViewModelBase
             var selectedStashTabs = Settings.StashTabIndices.Split(',').ToList();
 
             foreach (var tab in StashTabIndexNameFullList)
-                if (selectedStashTabs.Contains(tab.i.ToString()))
+                if (selectedStashTabs.Contains(tab.Index.ToString()))
                     SelectedStashTabs.Add(tab);
         }
     }

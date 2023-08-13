@@ -1,30 +1,14 @@
-﻿using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
-using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers;
+﻿using ChaosRecipeEnhancer.UI.Properties;
 
-namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory.Managers.Implementation;
+namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers.Implementation;
 
-internal class CBodyArmoursManager : ABaseItemClassManager
+public class CBodyArmoursManager : ABaseItemClassManager
 {
-	#region Constructors
-
-	public CBodyArmoursManager()
-	{
-		ClassName = "BodyArmours";
-		ClassFilterName = "\"Body Armours\"";
-		ClassColor = Settings.Default.LootFilterBodyArmourColor;
-		AlwaysActive = Settings.Default.LootFilterBodyArmourAlwaysActive;
-	}
-
-	#endregion
-
-	#region Methods
-
-	public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
-	{
-		activeItems.ChestActive = newValue;
-		return activeItems;
-	}
-
-	#endregion
+    public CBodyArmoursManager()
+    {
+        ClassName = "BodyArmours";
+        ClassFilterName = "\"Body Armours\"";
+        ClassColor = Settings.Default.LootFilterBodyArmourColor;
+        AlwaysActive = Settings.Default.LootFilterBodyArmourAlwaysActive;
+    }
 }
