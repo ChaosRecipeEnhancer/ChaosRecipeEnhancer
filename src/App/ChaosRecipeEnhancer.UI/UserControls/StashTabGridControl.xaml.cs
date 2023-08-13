@@ -3,7 +3,8 @@
 namespace ChaosRecipeEnhancer.UI.UserControls;
 
 /// <summary>
-///     Interaction logic for StashTabGridControl.xaml
+/// This Control represents the internal grid that will contain all the clickable cells within the Stash Tab.
+/// There will only ever be one of these per app instance.
 /// </summary>
 internal partial class StashTabGridControl
 {
@@ -11,7 +12,8 @@ internal partial class StashTabGridControl
         nameof(IsQuad),
         typeof(bool),
         typeof(StashTabGridControl),
-        new PropertyMetadata(false));
+        new PropertyMetadata(false)
+    );
 
     public StashTabGridControl()
     {

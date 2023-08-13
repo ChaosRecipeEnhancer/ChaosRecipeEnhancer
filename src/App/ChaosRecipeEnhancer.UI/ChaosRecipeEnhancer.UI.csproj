@@ -72,7 +72,6 @@
 		<Content Include="BusinessLogic\README.md" />
 		<Content Include="DynamicControls\README.md" />
 		<Content Include="Extensions\README.md" />
-		<Content Include="Model\README.md" />
 	</ItemGroup>
 
 	<ItemGroup>

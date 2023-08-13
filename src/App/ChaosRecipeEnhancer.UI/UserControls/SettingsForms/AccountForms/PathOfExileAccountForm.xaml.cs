@@ -27,6 +27,7 @@ internal partial class PathOfExileAccountForm
         try
         {
             // simple 'health check' that will ping for your account's stash metadata in standard league
+            // todo: can we call something lighter for a simple auth request to test connection?
             var tabs = await _stashTabGetter.GetStashPropsAsync(Settings.Default.PathOfExileAccountName.Trim(), "Standard");
 
             if (tabs is null)

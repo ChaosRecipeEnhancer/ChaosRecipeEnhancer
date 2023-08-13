@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Api;
 using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.Utilities;
+using ChaosRecipeEnhancer.UI.Windows;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Primitives;
 using MessageBox = System.Windows.MessageBox;
@@ -16,9 +18,9 @@ internal partial class GeneralForm
     private readonly GeneralFormViewModel _model;
     private readonly StashTabGetter _stashTabGetter = new();
 
-    public GeneralForm()
+    public GeneralForm(SettingsWindow parent)
     {
-        DataContext = _model = new GeneralFormViewModel();
+        DataContext = _model = new GeneralFormViewModel(parent.ItemSetManager);
         InitializeComponent();
         LoadLeagueList();
     }
@@ -26,7 +28,10 @@ internal partial class GeneralForm
     private async void OnFormLoaded(object sender, RoutedEventArgs e)
     {
         if (CheckAccountSettings(false))
-            await LoadStashTabNamesIndicesAsync();
+        {
+            if (_model.StashTabIndexNameFullList.Count == 0) await LoadStashTabNamesIndicesAsync();
+            if (_model.SelectedStashTabHandler.StashManagerControl is null) await LoadStashTabsAsync();
+        }
     }
 
     private async void OnFetchStashTabsButtonClicked(object sender, RoutedEventArgs e)
@@ -42,6 +47,19 @@ internal partial class GeneralForm
         var stashTabPropsList = await _stashTabGetter.GetStashPropsAsync(accName, league);
 
         if (stashTabPropsList is not null) _model.UpdateStashTabNameIndexFullList(stashTabPropsList.tabs);
+    }
+
+    private async Task LoadStashTabsAsync()
+    {
+        _model.FetchingStashTabs = true;
+        using var __ = new ScopeGuard(() => _model.FetchingStashTabs = false);
+
+        _model.SelectedStashTabHandler.StashManagerControl = null;
+        var stashTabs = await _stashTabGetter.FetchStashTabsAsync();
+        if (stashTabs is null)
+        {
+            _ = MessageBox.Show("Failed to fetch stash tabs", "Request Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void OnRefreshLeaguesButtonClicked(object sender, RoutedEventArgs e)

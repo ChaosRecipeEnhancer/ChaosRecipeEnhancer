@@ -1,13 +1,14 @@
 ﻿<ItemsControl x:Class="ChaosRecipeEnhancer.UI.UserControls.StashTabGridControl"
-              x:ClassModifier="internal"
-              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-              xmlns:properties1="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
-              xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
-              mc:Ignorable="d"
-              x:Name="Root">
+                  x:ClassModifier="internal"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:properties1="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
+                  xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
+                  mc:Ignorable="d"
+                  x:Name="Root">
+
     <ItemsControl.Resources>
         <utilities:BoolToObjectConverter x:Key="IsQuadToSizeConverter"
                                          TrueValue="24"
@@ -18,6 +19,7 @@
         <SolidColorBrush Opacity="0"
                          Color="Transparent" />
     </ItemsControl.Background>
+
     <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
             <UniformGrid
@@ -25,6 +27,7 @@
                 Rows="{Binding ElementName=Root, Path=IsQuad, Converter={StaticResource IsQuadToSizeConverter}}" />
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
+
     <ItemsControl.ItemTemplate>
         <DataTemplate>
             <Button>
@@ -39,16 +42,20 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
                         <Setter Property="Background"
                                 Value="Transparent" />
+
                         <Setter Property="Opacity"
                                 Value="{Binding Source={x:Static properties1:Settings.Default}, Path=OpacityStashTab}" />
                         <Style.Triggers>
+
                             <Trigger Property="IsMouseOver"
                                      Value="True">
                                 <Setter Property="Background"
                                         Value="Transparent" />
                             </Trigger>
+
                             <DataTrigger Binding="{Binding Active}"
                                          Value="True">
                                 <Setter Property="Background"
@@ -56,6 +63,7 @@
                                 <Setter Property="Opacity"
                                         Value="1" />
                             </DataTrigger>
+
                         </Style.Triggers>
                     </Style>
                 </Button.Style>

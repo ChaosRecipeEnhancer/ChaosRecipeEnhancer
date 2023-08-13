@@ -19,7 +19,7 @@
 // 		get; set;
 // 	}
 //
-// 	public LogWatcher(SetTrackerOverlayView setTrackerOverlay)
+// 	public LogWatcher(SetTrackerOverlayWindow setTrackerOverlay)
 // 	{
 // 		Trace.WriteLine("LogWatcher created");
 //
@@ -176,7 +176,7 @@
 // 		Trace.WriteLine("Stop watch");
 // 	}
 //
-// 	private async void FetchIfPossible(SetTrackerOverlayView setTrackerOverlay)
+// 	private async void FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
 // 	{
 // 		if (FetchAllowed)
 // 		{

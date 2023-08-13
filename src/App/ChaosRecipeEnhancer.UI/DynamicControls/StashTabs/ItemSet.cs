@@ -10,7 +10,20 @@ public class ItemSet
     public ItemSet()
     {
         ItemList = new List<Item>();
-        EmptyItemSlots = new List<string> { "BodyArmours", "TwoHandWeapons", "OneHandWeapons", "OneHandWeapons", "Helmets", "Gloves", "Boots", "Belts", "Rings", "Rings", "Amulets" };
+        EmptyItemSlots = new List<string>
+        {
+            "BodyArmours",
+            "TwoHandWeapons",
+            "OneHandWeapons",
+            "OneHandWeapons",
+            "Helmets",
+            "Gloves",
+            "Boots",
+            "Belts",
+            "Rings",
+            "Rings",
+            "Amulets"
+        };
     }
 
     public ItemSet(ItemSet other)
@@ -46,7 +59,14 @@ public class ItemSet
     public double GetItemDistance(Item item)
     {
         var lastItemAdded = ItemList.LastOrDefault();
-        return lastItemAdded is null ? 0 : Math.Sqrt(Math.Pow(item.x - lastItemAdded.x, 2) + Math.Pow(item.y - lastItemAdded.y, 2));
+
+        // if there are no items gg ez it's done
+        return lastItemAdded is null ? 0
+            // we will add a significant multiplier for items in different tabs
+            // the magnitude of the multiplier will be amplified by items in tabs further from the other tab
+            : (Math.Sqrt(Math.Pow(item.x - lastItemAdded.x, 2) + Math.Pow(item.y - lastItemAdded.y, 2)))
+              // this was Mario's addition, he's a legend 8^)
+              * Math.Abs(lastItemAdded.StashTabIndex - item.StashTabIndex);
     }
 
     public bool NeedsItem(Item item)

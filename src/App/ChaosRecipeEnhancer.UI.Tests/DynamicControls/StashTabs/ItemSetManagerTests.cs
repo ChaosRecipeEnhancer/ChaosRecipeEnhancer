@@ -2,7 +2,6 @@
 using System.Reflection;
 using ChaosRecipeEnhancer.UI.Api.Data;
 using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
-using ChaosRecipeEnhancer.UI.Model;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Tests.Helpers;
 
@@ -15,14 +14,14 @@ public class ItemSetManagerTests
     {
         // Arrange
         var itemSetManager = new ItemSetManager();
-        var stashTab = new StashTab("Test", 0, new Uri("https://www.test.com"));
+        var stashTab = new StashTabControl("Test", 0, new Uri("https://www.test.com"));
         Settings.Default.SelectedStashTabs = new StringCollection { "ADifferentName" };
 
         // Act
-        itemSetManager.SelectedStashTab = stashTab;
+        itemSetManager.SelectedStashTabs = stashTab;
 
         // Assert
-        itemSetManager.SelectedStashTab.Should().Be(stashTab);
+        itemSetManager.SelectedStashTabs.Should().Be(stashTab);
         Settings.Default.SelectedStashTabs[0].Should().Be(stashTab.TabName);
     }
 
@@ -33,7 +32,7 @@ public class ItemSetManagerTests
         var itemSetManager = new ItemSetManager();
         var stashTab = CreateFullSetStashTab();
 
-        itemSetManager.SelectedStashTab = stashTab;
+        itemSetManager.SelectedStashTabs = stashTab;
         
         // Act
         itemSetManager.UpdateData();
@@ -55,7 +54,7 @@ public class ItemSetManagerTests
         Settings.Default.FullSetThreshold = 1;
         var itemSetManager = new ItemSetManager();
         var stashTab = CreateFullSetStashTab();
-        itemSetManager.SelectedStashTab = stashTab;
+        itemSetManager.SelectedStashTabs = stashTab;
         
         // Act
         itemSetManager.UpdateData();
@@ -75,7 +74,7 @@ public class ItemSetManagerTests
         Settings.Default.FullSetThreshold = 1;
         var itemSetManager = new ItemSetManager();
         var stashTab = CreateFullSetStashTab();
-        itemSetManager.SelectedStashTab = stashTab;
+        itemSetManager.SelectedStashTabs = stashTab;
         var expectedActiveCells = stashTab.ItemsForChaosRecipe.Select(x => x.w * x.h).Sum();
         // Act
         itemSetManager.UpdateData();
@@ -99,7 +98,7 @@ public class ItemSetManagerTests
         Settings.Default.FullSetThreshold = 1;
         var itemSetManager = new ItemSetManager();
         var stashTab = CreateFullSetStashTab();
-        itemSetManager.SelectedStashTab = stashTab;
+        itemSetManager.SelectedStashTabs = stashTab;
         itemSetManager.UpdateData();
         var cell = stashTab.OverlayCellsList.First(x => x.Item.ItemType == "Rings");
         
@@ -120,7 +119,7 @@ public class ItemSetManagerTests
         var itemSetOne = GenerateItemList(0);
         var itemSetTwo = GenerateItemList(5);
         
-        var stashTab = new StashTab("Test", 0, new Uri("https://www.test.com"))
+        var stashTab = new StashTabControl("Test", 0, new Uri("https://www.test.com"))
         {
             Quad = true
         };
@@ -129,7 +128,7 @@ public class ItemSetManagerTests
         
         stashTab.FilterItemsForChaosRecipe(allItems);
         
-        itemSetManager.SelectedStashTab = stashTab;
+        itemSetManager.SelectedStashTabs = stashTab;
         itemSetManager.UpdateData();
         
         var expectedActiveCells = itemSetOne.Select(x => x.w * x.h).Sum();
@@ -147,9 +146,9 @@ public class ItemSetManagerTests
             .Which.Should().HaveCount(1);
     }
 
-    private static StashTab CreateFullSetStashTab(int horizontalShift = 0)
+    private static StashTabControl CreateFullSetStashTab(int horizontalShift = 0)
     {
-        var stashTab = new StashTab("Test", 0, new Uri("https://www.test.com"))
+        var stashTab = new StashTabControl("Test", 0, new Uri("https://www.test.com"))
         {
             Quad = true
         };

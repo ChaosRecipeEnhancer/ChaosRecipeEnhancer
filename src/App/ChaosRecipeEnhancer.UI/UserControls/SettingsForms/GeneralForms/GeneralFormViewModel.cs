@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Api.Data;
+using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
@@ -10,15 +11,32 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 internal class GeneralFormViewModel : ViewModelBase
 {
     private bool _fetchingStashTabs;
+    private bool _initialized;
+
+    public GeneralFormViewModel(ISelectedStashTabHandler selectedStashTabHandler)
+    {
+        SelectedStashTabHandler = selectedStashTabHandler;
+        Settings.PropertyChanged += OnSettingsChanged;
+    }
 
     public ObservableCollection<StashTabProps> StashTabIndexNameFullList { get; set; } = new();
     public ObservableCollection<StashTabProps> SelectedStashTabs { get; set; } = new();
     public ObservableCollection<string> LeagueList { get; } = new();
+    public ISelectedStashTabHandler SelectedStashTabHandler { get; }
 
     public bool FetchingStashTabs
     {
         get => _fetchingStashTabs;
         set => SetProperty(ref _fetchingStashTabs, value);
+    }
+
+    private void OnSettingsChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(Settings.LeagueName) && _initialized)
+        {
+            SelectedStashTabs.Clear();
+            SelectedStashTabHandler.StashManagerControl.StashTabControls = null;
+        }
     }
 
     public void UpdateSelectedTabList(IList selectedStashTabProps)
@@ -56,6 +74,8 @@ internal class GeneralFormViewModel : ViewModelBase
         Settings.LeagueName = string.IsNullOrEmpty(selectedLeague)
             ? LeagueList.FirstOrDefault()
             : selectedLeague;
+
+        _initialized = true;
     }
 
     public void UpdateStashTabNameIndexFullList(List<StashTabProps> stashTabProps)

@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using ChaosRecipeEnhancer.UI.Api.Data;
-using ChaosRecipeEnhancer.UI.Model;
+using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities;
 
@@ -18,7 +18,7 @@ public sealed class StashTabGetter
 {
     private bool _isFetching;
 
-    public async Task<List<StashTab>> FetchStashTabsAsync()
+    public async Task<List<StashTabControl>> FetchStashTabsAsync()
     {
         var accName = Settings.Default.PathOfExileAccountName.Trim();
         var league = Settings.Default.LeagueName.Trim();
@@ -26,12 +26,16 @@ public sealed class StashTabGetter
         var stashTabPropsList = await GetStashPropsAsync(accName, league);
         if (stashTabPropsList is not null)
         {
-            var stashTabs = new List<StashTab>();
+            var stashTabs = new List<StashTabControl>();
             for (var i = 0; i < stashTabPropsList.tabs.Count; i++)
             {
                 var stashTabProps = stashTabPropsList.tabs[i];
+
+                // todo constants
+                // todo our stash tab vs normal
+
                 var uri = new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabIndex={i}&league={league}");
-                stashTabs.Add(new StashTab(stashTabProps.n, stashTabProps.i, uri));
+                stashTabs.Add(new StashTabControl(stashTabProps.n, stashTabProps.i));
             }
 
             return stashTabs;
@@ -55,7 +59,14 @@ public sealed class StashTabGetter
         _isFetching = true;
         using var __ = new ScopeGuard(() => _isFetching = false);
 
-        var propsUri = new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabs=1&league={league}&tabIndex=");
+        // our tab vs guild tab
+        // TODO constants
+        var propsUri = Settings.Default.TargetStash == 0
+            ? new Uri($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&league={league}&tabs=1&tabIndex=")
+            : new Uri($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accName}&league={league}&tabs=1&tabIndex=");
+
+        Console.WriteLine($"Generated StashProps Query URL: {propsUri}");
+
         using var res = await DoAuthenticatedGetRequestAsync(propsUri);
 
         if (res.IsSuccessStatusCode)
@@ -78,10 +89,14 @@ public sealed class StashTabGetter
 
         using var content = res.Content;
         var resContent = await content.ReadAsStringAsync();
+
+        Console.WriteLine("Successfully Retreived StashProps data.");
+        // Console.WriteLine(resContent);
+
         return JsonSerializer.Deserialize<StashTabPropsList>(resContent);
     }
 
-    public async Task<bool> GetItemsAsync(StashTab stashTab)
+    public async Task<bool> GetItemsAsync(StashManagerControl stashManager, int queryMode = 0, List<string> fullStashList = null)
     {
         // If already fetching or are currently banned from querying API
         if (_isFetching || RateLimit.CheckForBan()) return false;
@@ -96,21 +111,42 @@ public sealed class StashTabGetter
         _isFetching = true;
         using var __ = new ScopeGuard(() => _isFetching = false);
 
-        using var res = await DoAuthenticatedGetRequestAsync(stashTab.StashTabUri);
-
-        if (!res.IsSuccessStatusCode)
+        // var queryMode = Settings.Default.StashTabQueryMode;
+        // // if we have to do a '1st time' initialization for this thing
+        // if (stashManager.StashTabControls.Count == 0 &&
+        //     ((Settings.Default.StashTabIndices is not null && queryMode == 0) ||
+        //      (!string.IsNullOrWhiteSpace(Settings.Default.StashTabPrefix) && queryMode == 1) ||
+        //      (!string.IsNullOrWhiteSpace(Settings.Default.StashTabSuffix) && queryMode == 2)))
+        // {
+        //     
+        // }
+        
+        
+        // make request for each stash tab (is this really necessary? can we not batch this?)
+        // i am surprised we don't get rate limited for this for-loop
+        foreach (var stashTabControl in stashManager.StashTabControls)
         {
-            _ = MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
-            return false;
+            Console.WriteLine($"Generated StashTab Query URL: {stashTabControl.StashTabUri}");
+            using var res = await DoAuthenticatedGetRequestAsync(stashTabControl.StashTabUri);
+            if (!res.IsSuccessStatusCode)
+            {
+                _ = MessageBox.Show(res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
+                // hit a snag, return false to indicate failure
+                return false;
+            }
+
+            using var content = res.Content;
+            var resContent = await content.ReadAsStringAsync();
+            var deserializedContent = JsonSerializer.Deserialize<ItemList>(resContent);
+
+            stashTabControl.Quad = deserializedContent.quadLayout;
+            stashTabControl.FilterItemsForChaosRecipe(deserializedContent.items);
+            
+            // yay we made it
+            Console.WriteLine("Successfully Retreived StashTab data.");
+            Console.WriteLine(deserializedContent);
         }
-
-        using var content = res.Content;
-        var resContent = await content.ReadAsStringAsync();
-        var deserializedContent = JsonSerializer.Deserialize<ItemList>(resContent);
-
-        stashTab.Quad = deserializedContent.quadLayout;
-        stashTab.FilterItemsForChaosRecipe(deserializedContent.items);
-
+        
         return true;
     }
 

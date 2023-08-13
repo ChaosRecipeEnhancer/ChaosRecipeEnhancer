@@ -11,7 +11,7 @@ namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation;
 
 public class ReloadItemFilterHandler
 {
-    public static void ReloadFilter()
+    public void ReloadFilter()
     {
         var chatCommand = BuildFilterReloadCommand();
         if (chatCommand is null) return;

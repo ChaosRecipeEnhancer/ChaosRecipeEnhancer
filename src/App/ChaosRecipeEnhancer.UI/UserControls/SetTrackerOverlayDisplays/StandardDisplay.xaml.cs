@@ -1,16 +1,13 @@
 ﻿using System.Windows;
-using ChaosRecipeEnhancer.UI.View;
+using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 
-/// <summary>
-///     Interaction logic for SetTrackerOverlayStandardDisplay.xaml
-/// </summary>
 internal partial class StandardDisplay
 {
-    private readonly SetTrackerOverlayView _parent;
+    private readonly SetTrackerOverlayWindow _parent;
 
-    public StandardDisplay(SetTrackerOverlayView parent)
+    public StandardDisplay(SetTrackerOverlayWindow parent)
     {
         _parent = parent;
         InitializeComponent();

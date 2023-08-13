@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -6,6 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.Api;
@@ -21,13 +23,12 @@ internal sealed class League
 
 internal sealed class LeagueGetter
 {
-    private const string LeaguesListEndpoint = "https://api.pathofexile.com/leagues?type=main&realm=pc";
-
     public async Task<IEnumerable<string>> GetLeaguesAsync()
     {
         using (var client = new HttpClient())
         {
-            var response = await client.GetAsync(LeaguesListEndpoint);
+            Console.WriteLine($"Generated LeagueList Query URL: {SiteEndpoints.LeagueEndpoint}");
+            var response = await client.GetAsync(SiteEndpoints.LeagueEndpoint);
 
             if (response.IsSuccessStatusCode)
             {
@@ -37,9 +38,13 @@ internal sealed class LeagueGetter
                 var leagueJson = await response.Content.ReadAsStringAsync();
                 var leagues = JsonSerializer.Deserialize<League[]>(leagueJson);
 
+                Console.WriteLine("Successfully Retreived LeagueList data.");
+                // Console.WriteLine(leagues);
+                
                 return leagues.Select(x => x.Name);
             }
-            else if (!response.IsSuccessStatusCode)
+
+            if (!response.IsSuccessStatusCode)
             {
                 Settings.Default.PoEAccountConnectionStatus = 2;
                 Settings.Default.Save();
@@ -50,10 +55,9 @@ internal sealed class LeagueGetter
                     "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 return null;
-
             }
         }
-
+        
         return new List<string>();
     }
 }

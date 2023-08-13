@@ -1,12 +1,18 @@
-﻿namespace ChaosRecipeEnhancer.UI.Constants;
+﻿using System;
+
+namespace ChaosRecipeEnhancer.UI.Constants;
 
 public static class SiteEndpoints
 {
-    public const string LeagueEndpoint = "https://api.pathofexile.com/leagues?type=main";
+    public const string LeagueEndpoint = "https://api.pathofexile.com/leagues?type=main&realm=pc";
 
-    public static string PersonalStashIndividualTabUri(string accountName, string league, string stashTab) =>
-        $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accountName}&realm=pc&league={league}&tabIndex={stashTab}";
+    public static Uri StashTabUrl(int targetStash, string accountName, string league, int stashTabIndex) => targetStash == 0
+            ? PersonalStashIndividualTabUri(accountName, league, stashTabIndex)
+            : GuildStashIndividualTabUri(accountName, league, stashTabIndex);
 
-    public static string GuildStashIndividualTabUri(string accountName, string league, string stashTab) =>
-        $"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accountName}&realm=pc&league={league}&tabIndex={stashTab}";
+    private static Uri PersonalStashIndividualTabUri(string accountName, string league, int stashTabIndex) =>
+        new($"https://www.pathofexile.com/character-window/get-stash-items?accountName={accountName}&realm=pc&league={league}&tabIndex={stashTabIndex}");
+
+    private static Uri GuildStashIndividualTabUri(string accountName, string league, int stashTabIndex) =>
+        new($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={accountName}&realm=pc&league={league}&tabIndex={stashTabIndex}");
 }

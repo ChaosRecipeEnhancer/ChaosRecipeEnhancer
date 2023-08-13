@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using ChaosRecipeEnhancer.UI.Utilities;
-using ChaosRecipeEnhancer.UI.View;
+using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI;
 
@@ -58,7 +58,7 @@ internal partial class App
 
     private void OnStartup(object sender, StartupEventArgs e)
     {
-        var settingsView = new SettingsView();
+        var settingsView = new SettingsWindow();
         settingsView.Show();
         _singleInstance.PingedByOtherProcess += (_, _) => Dispatcher.Invoke(settingsView.Show);
     }
