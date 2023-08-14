@@ -29,35 +29,35 @@ public interface IApiService
 public class ApiService : IApiService
 {
     private bool _isFetching;
-    
+
     public async Task<IEnumerable<BaseLeagueMetadata>> GetLeaguesAsync()
     {
         var responseRaw = await GetAsync(ApiEndpoints.LeagueEndpoint);
-        
+
         return responseRaw is null
             ? null
             : JsonSerializer.Deserialize<BaseLeagueMetadata[]>((string)responseRaw);
     }
-    
+
     public async Task<BaseStashTabMetadataList> GetAllPersonalStashTabMetadataAsync(string accountName, string leagueName, string secret)
     {
         var responseRaw = await GetAuthenticatedAsync(
             ApiEndpoints.StashTabPropsEndpoint(TargetStash.Personal, accountName, leagueName),
             secret
         );
-        
+
         return responseRaw is null
             ? null
             : JsonSerializer.Deserialize<BaseStashTabMetadataList>((string)responseRaw);
     }
-    
+
     public async Task<BaseStashTabMetadataList> GetAllGuildStashTabMetadataAsync(string accountName, string leagueName, string secret)
     {
         var responseRaw = await GetAuthenticatedAsync(
             ApiEndpoints.StashTabPropsEndpoint(TargetStash.Guild, accountName, leagueName),
             secret
         );
-        
+
         return responseRaw is null
             ? null
             : JsonSerializer.Deserialize<BaseStashTabMetadataList>((string)responseRaw);
@@ -69,35 +69,35 @@ public class ApiService : IApiService
             ApiEndpoints.IndividualTabContentsEndpoint(TargetStash.Personal, accountName, leagueName, tabIndex),
             secret
         );
-        
+
         return responseRaw is null
             ? null
             : JsonSerializer.Deserialize<BaseStashTabContents>((string)responseRaw);
     }
-    
+
     public async Task<BaseStashTabContents> GetGuildStashTabContentsByIndexAsync(string accountName, string leagueName, int tabIndex, string secret)
     {
         var responseRaw = await GetAuthenticatedAsync(
             ApiEndpoints.IndividualTabContentsEndpoint(TargetStash.Guild, accountName, leagueName, tabIndex),
             secret
         );
-        
+
         return responseRaw is null
             ? null
             : JsonSerializer.Deserialize<BaseStashTabContents>((string)responseRaw);
     }
-    
+
     private async Task<object> GetAuthenticatedAsync(Uri requestUri, string secret)
     {
         if (_isFetching || RateLimitManager.CheckForBan()) return null;
-        
+
         // -1 for 1 request + 3 times if rate limit high exceeded
         if (RateLimitManager.RateLimitState[0] >= RateLimitManager.MaximumRequests - 4)
         {
             RateLimitManager.RateLimitExceeded = true;
             return null;
         }
-        
+
         _isFetching = true;
         var cookieContainer = new CookieContainer();
         cookieContainer.Add(requestUri, new Cookie("POESESSID", secret));
@@ -124,23 +124,23 @@ public class ApiService : IApiService
             _isFetching = false;
             return null;
         }
-        
+
         using var responseHttpContent = response.Content;
         _isFetching = false;
         return await responseHttpContent.ReadAsStringAsync();
     }
-    
+
     private async Task<object> GetAsync(Uri requestUri)
     {
         if (_isFetching || RateLimitManager.CheckForBan()) return null;
-        
+
         // -1 for 1 request + 3 times if ratelimit high exceeded
         if (RateLimitManager.RateLimitState[0] >= RateLimitManager.MaximumRequests - 4)
         {
             RateLimitManager.RateLimitExceeded = true;
             return null;
         }
-        
+
         _isFetching = true;
         using var client = new HttpClient();
         var response = await client.GetAsync(requestUri);
@@ -150,7 +150,7 @@ public class ApiService : IApiService
             _isFetching = false;
             return null;
         }
-        
+
         _isFetching = false;
         return await response.Content.ReadAsStringAsync();
     }

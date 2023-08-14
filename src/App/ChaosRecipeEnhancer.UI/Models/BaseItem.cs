@@ -44,6 +44,7 @@ namespace ChaosRecipeEnhancer.UI.API.Data;
 // This class is instantiated when serialized from JSON API response.
 public class BaseItem
 {
+    [JsonConstructor]
     public BaseItem(
         int width,
         int height,
@@ -64,6 +65,19 @@ public class BaseItem
         Y = y;
         BaseItemInfluences = baseItemInfluences;
         Icon = icon;
+    }
+
+    public BaseItem(BaseItem other)
+    {
+        Width = other.Width;
+        Height = other.Height;
+        Identified = other.Identified;
+        ItemLevel = other.ItemLevel;
+        FrameType = other.FrameType;
+        X = other.X;
+        Y = other.Y;
+        BaseItemInfluences = other.BaseItemInfluences;
+        Icon = other.Icon;
     }
 
     // poe json props

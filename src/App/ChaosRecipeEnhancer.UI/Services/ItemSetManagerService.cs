@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
@@ -16,6 +15,19 @@ public interface IItemSetManagerService
         bool includeIdentified = false,
         bool chaosRecipe = true
     );
+
+    public bool RetrieveNeedsFetching();
+    public int RetrieveCompletedSets();
+
+    public int RetrieveRingsAmount();
+    public int RetrieveAmuletsAmount();
+    public int RetrieveBeltsAmount();
+    public int RetrieveChestsAmount();
+    public int RetrieveWeaponsSmallAmount();
+    public int RetrieveWeaponsBigAmount();
+    public int RetrieveGlovesAmount();
+    public int RetrieveHelmetsAmount();
+    public int RetrieveBootsAmount();
 }
 
 public class ItemSetManagerService : IItemSetManagerService
@@ -24,39 +36,6 @@ public class ItemSetManagerService : IItemSetManagerService
     private List<int> _currentSelectedTabs;
     private List<EnhancedItemSet> _setsInProgress = new();
     private List<EnhancedItem> _currentItemsFilteredForRecipe = new(); // filtered for chaos recipe
-    private List<EnhancedItem> _stashContentsFilteredBySelectedTabs; // items in selected tabs not yet filtered for recipe
-
-    // we will need a setThreshold to initialize,
-    // this value can change at any given point
-    // current selected tabs is also required.
-    // unsure if we want to 'invalidate' this
-    // and recreate it if the currentSelection changes
-    public ItemSetManagerService(
-        int setThreshold,
-        List<int> selectedTabIndices,
-        List<EnhancedItem> stashContentsFilteredBySelectedTabs, // this is pre-filtered by the caller based on their selected indices
-        bool includeIdentified = false,
-        bool chaosRecipe = true
-    )
-    {
-        _setThreshold = setThreshold;
-        _currentSelectedTabs = selectedTabIndices;
-        _stashContentsFilteredBySelectedTabs = stashContentsFilteredBySelectedTabs;
-
-        // i don't usually like using exceptions as a logic check
-        // but in this case the object simply cannot be constructed (and updated)
-        // without the required properties
-        // so if we fail our simple check it's a skill issue kekw (probably by dev)
-        var result = UpdateData(
-            setThreshold,
-            selectedTabIndices,
-            stashContentsFilteredBySelectedTabs,
-            includeIdentified,
-            chaosRecipe
-        );
-
-        if (!result) throw new ArgumentException();
-    }
 
     // item amounts by kind that will be exposed
     // while ItemSetManagerService doesn't know,
@@ -73,6 +52,13 @@ public class ItemSetManagerService : IItemSetManagerService
 
     // full set amounts will also need to be rendered
     public int CompletedSets { get; set; }
+
+    public bool NeedsFetching { get; set; }
+
+    public ItemSetManagerService()
+    {
+        NeedsFetching = true;
+    }
 
     // this is the primary method being called by external entities
     // return true if successful update, false if some error (likely caller error missing important data)
@@ -101,17 +87,14 @@ public class ItemSetManagerService : IItemSetManagerService
         // deriving completed sets by iteratively checking every one of our sets in progress for any missing slots
         // if a set has no missing slots, it is complete
         CompletedSets = _setsInProgress.Count(x => x.EmptyItemSlots.Count == 0);
+
+        NeedsFetching = false;
         return true;
     }
 
     // this should probably be called right after we update our CurrentStashContents
     private void FilterItemsForRecipe(List<EnhancedItem> filteredStashContents, bool includeIdentified = false, bool chaosRecipe = true)
     {
-        // not sure if i like the pattern of blowing this
-        // up and re-creating it ever single time...
-        // how can i optimize here? 
-        _stashContentsFilteredBySelectedTabs.Clear();
-
         // iterate through each item in the provided list
         foreach (var item in filteredStashContents)
         {
@@ -135,7 +118,7 @@ public class ItemSetManagerService : IItemSetManagerService
             // chaos recipe ilvl 60 through 74
             // regal recipe ilvl 75+
             if (item.ItemLevel >= 60 && // lower bound for all recipes
-                // either enforce chaos recipe upper bound or 'ignore' upper bound
+                                        // either enforce chaos recipe upper bound or 'ignore' upper bound
                 (item.ItemLevel <= 74 || !chaosRecipe))
             {
                 // simple check if item is in our tabs
@@ -192,7 +175,7 @@ public class ItemSetManagerService : IItemSetManagerService
         {
             // create new 'empty' enhanced item set
             var enhancedItemSet = new EnhancedItemSet();
-            
+
             // iterate until the end of time (jk)
             while (true)
             {
@@ -230,4 +213,19 @@ public class ItemSetManagerService : IItemSetManagerService
             _setsInProgress.Add(enhancedItemSet);
         }
     }
+
+    // workaround to expose properties as functions on our interface
+    public bool RetrieveNeedsFetching() => NeedsFetching;
+    public int RetrieveCompletedSets() => CompletedSets;
+
+    public int RetrieveRingsAmount() => RingsAmount;
+    public int RetrieveAmuletsAmount() => AmuletsAmount;
+    public int RetrieveBeltsAmount() => BeltsAmount;
+    public int RetrieveChestsAmount() => ChestsAmount;
+    public int RetrieveWeaponsSmallAmount() => WeaponsSmallAmount;
+    public int RetrieveWeaponsBigAmount() => WeaponsBigAmount;
+    public int RetrieveGlovesAmount() => GlovesAmount;
+    public int RetrieveHelmetsAmount() => HelmetsAmount;
+    public int RetrieveBootsAmount() => BootsAmount;
+
 }

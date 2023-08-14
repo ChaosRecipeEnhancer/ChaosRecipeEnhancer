@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using ChaosRecipeEnhancer.UI.Services;
+using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms;
 using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Windows;
@@ -25,6 +26,8 @@ internal partial class App
     {
         // services-as-services registration
         services.AddSingleton<IApiService, ApiService>();
+        services.AddSingleton<IReloadFilterService, ReloadFilterService>();
+        services.AddSingleton<IItemSetManagerService, ItemSetManagerService>();
     }
 
     private void OnStartup(object sender, StartupEventArgs e)

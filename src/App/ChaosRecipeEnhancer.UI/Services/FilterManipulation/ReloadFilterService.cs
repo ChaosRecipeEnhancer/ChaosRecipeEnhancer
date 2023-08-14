@@ -9,7 +9,12 @@ using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
-public class ReloadFilterService
+public interface IReloadFilterService
+{
+    public void ReloadFilter();
+}
+
+public class ReloadFilterService : IReloadFilterService
 {
     public void ReloadFilter()
     {
@@ -53,7 +58,7 @@ public class ReloadFilterService
         SendKeys.SendWait("{ENTER}");
     }
 
-    private static string BuildFilterReloadCommand()
+    private string BuildFilterReloadCommand()
     {
         var filterName = GetFilterName();
 
@@ -64,7 +69,7 @@ public class ReloadFilterService
         return null;
     }
 
-    private static string GetFilterName()
+    private string GetFilterName()
     {
         return Path.GetFileName(Settings.Default.LootFilterFileLocation)!.Replace(".filter", "");
     }

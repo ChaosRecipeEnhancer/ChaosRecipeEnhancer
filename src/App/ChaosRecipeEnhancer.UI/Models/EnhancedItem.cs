@@ -5,6 +5,7 @@ using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 
 namespace ChaosRecipeEnhancer.UI.Models;
+
 // This class is instantiated when serialized from JSON API response.
 public class EnhancedItem : BaseItem
 {
@@ -23,6 +24,11 @@ public class EnhancedItem : BaseItem
         GetItemClass();
     }
 
+    public EnhancedItem(BaseItem other) : base(other)
+    {
+        GetItemClass();
+    }
+
     public string DerivedItemClass { get; set; }
     public int StashTabIndex { get; set; }
 
@@ -31,12 +37,12 @@ public class EnhancedItem : BaseItem
     /// (i.e. Helmet, Gloves, Body Armour, Ring, etc.)
     /// Because of this, we have a clever workaround to derive a item class using the included IconUrl.
     /// </summary>
-    public void GetItemClass()
+    private void GetItemClass()
     {
         // Example IconUrl: https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldFN0ckRleDciLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/0884b27765/HelmetStrDex7.png
         //
         // Distinct URL parts split into array (after removing empty entries):
-        // 
+        //
         //  [
         //      "https:",
         //      "web.poecdn.com",

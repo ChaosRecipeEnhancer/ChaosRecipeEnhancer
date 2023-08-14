@@ -22,6 +22,7 @@ public class BaseStashTabContents
     // Keeping unused field to retain integrity of JSON response object mappings
     // In other words, we want this to remain the source of truth for GGG's item model composition
     // ReSharper disable once UnusedMember.Global
-    [JsonPropertyName("items")] public List<BaseItem> Items { get; set; }
+    [JsonPropertyName("numTabs")] public int NumTabs { get; set; }
     [JsonPropertyName("quadLayout")] public bool IsQuadLayout { get; set; }
+    [JsonPropertyName("items")] public List<BaseItem> Items { get; set; }
 }

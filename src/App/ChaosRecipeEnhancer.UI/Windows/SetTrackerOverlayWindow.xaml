@@ -4,7 +4,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
         xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
         xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
         mc:Ignorable="d"
@@ -17,8 +16,8 @@
         Background="Transparent"
         ShowInTaskbar="False"
         Loaded="OnLoaded"
-        Top="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayTopPosition, Mode=TwoWay}"
-        Left="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayLeftPosition, Mode=TwoWay}"
+        Top="{Binding Settings.SetTrackerOverlayTopPosition, Mode=TwoWay}"
+        Left="{Binding Settings.SetTrackerOverlayLeftPosition, Mode=TwoWay}"
         d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
 
     <Window.Resources>
@@ -30,14 +29,12 @@
             ClipToBounds="True">
 
         <Border.BorderBrush>
-            <SolidColorBrush
-                Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayOpacity}"
-                Color="White" />
+            <SolidColorBrush Color="White" />
         </Border.BorderBrush>
 
         <Border.Background>
             <SolidColorBrush
-                Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=SetTrackerOverlayOpacity}"
+                Opacity="{Binding Settings.SetTrackerOverlayOpacity}"
                 Color="White" />
         </Border.Background>
 

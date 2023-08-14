@@ -76,7 +76,7 @@
             <!-- Set Counter -->
             <TextBlock
                 x:Name="FullSetsTextBlock"
-                Text="{Binding SelectedStashTabHandler.StashManagerControl.FullSets}"
+                Text="{Binding FullSets}"
                 VerticalAlignment="Center"
                 TextAlignment="Center" />
 
@@ -90,8 +90,8 @@
             Height="50"
             Width="50"
             Margin="5 0"
-            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterGlovesColor}"
-            Opacity="{Binding SelectedStashTabHandler.StashManagerControl.GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}">
+            Background="{Binding Settings.LootFilterGlovesColor}"
+            Opacity="{Binding GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}">
 
             <Grid>
 
@@ -118,7 +118,7 @@
                         TextAlignment="Center"
                         Background="Transparent"
                         Foreground="Black"
-                        Text="{Binding SelectedStashTabHandler.StashManagerControl.GlovesAmount}" />
+                        Text="{Binding GlovesAmount}" />
 
                 </Border>
 
@@ -131,10 +131,10 @@
             x:Name="Boots"
             Grid.Column="4"
             Grid.Row="1"
-            Height="40"
-            Width="40"
+            Height="50"
+            Width="50"
             Margin="5 0"
-            Opacity="{Binding SelectedStashTabHandler.StashManagerControl.BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Opacity="{Binding BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterBootsColor}">
 
             <Grid>
@@ -162,7 +162,7 @@
                         TextAlignment="Center"
                         Background="Transparent"
                         Foreground="Black"
-                        Text="{Binding SelectedStashTabHandler.StashManagerControl.BootsAmount}" />
+                        Text="{Binding BootsAmount}" />
 
                 </Border>
 
@@ -178,7 +178,7 @@
             Height="50"
             Width="50"
             Margin="5 0"
-            Opacity="{Binding SelectedStashTabHandler.StashManagerControl.HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Opacity="{Binding HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterHelmetColor}">
 
             <Grid>
@@ -206,7 +206,7 @@
                         TextAlignment="Center"
                         Background="Transparent"
                         Foreground="Black"
-                        Text="{Binding SelectedStashTabHandler.StashManagerControl.HelmetsAmount}" />
+                        Text="{Binding HelmetsAmount}" />
 
                 </Border>
 
@@ -222,7 +222,7 @@
             Height="50"
             Width="50"
             Margin="5 0"
-            Opacity="{Binding SelectedStashTabHandler.StashManagerControl.BodyArmorActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Opacity="{Binding ChestsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterBodyArmourColor}">
 
             <Grid>
@@ -250,7 +250,7 @@
                         TextAlignment="Center"
                         Background="Transparent"
                         Foreground="Black"
-                        Text="{Binding SelectedStashTabHandler.StashManagerControl.BodyArmorAmount}" />
+                        Text="{Binding ChestsAmount}" />
 
                 </Border>
 
@@ -266,7 +266,7 @@
             Height="50"
             Width="50"
             Margin="5 0"
-            Opacity="{Binding SelectedStashTabHandler.StashManagerControl.WeaponActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Opacity="{Binding WeaponsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterWeaponColor}">
 
             <Grid>
@@ -294,7 +294,7 @@
                         TextAlignment="Center"
                         Background="Transparent"
                         Foreground="Black"
-                        Text="{Binding SelectedStashTabHandler.StashManagerControl.WeaponAmount}" />
+                        Text="{Binding WeaponsAmount}" />
 
                 </Border>
 
@@ -310,7 +310,7 @@
             Height="50"
             Width="50"
             Margin="5  0"
-            Opacity="{Binding SelectedStashTabHandler.StashManagerControl.RingActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Opacity="{Binding RingsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterRingColor}">
 
             <Grid>
@@ -338,7 +338,7 @@
                         TextAlignment="Center"
                         Background="Transparent"
                         Foreground="Black"
-                        Text="{Binding SelectedStashTabHandler.StashManagerControl.RingAmount}" />
+                        Text="{Binding RingsAmount}" />
 
                 </Border>
 
@@ -354,7 +354,7 @@
             Height="50"
             Width="50"
             Margin="5 0"
-            Opacity="{Binding SelectedStashTabHandler.StashManagerControl.AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Opacity="{Binding AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterAmuletColor}">
 
             <Grid>
@@ -382,7 +382,7 @@
                         TextAlignment="Center"
                         Background="Transparent"
                         Foreground="Black"
-                        Text="{Binding SelectedStashTabHandler.StashManagerControl.AmuletsAmount}" />
+                        Text="{Binding AmuletsAmount}" />
 
                 </Border>
 
@@ -398,7 +398,7 @@
             Height="50"
             Width="50"
             Margin="5 0"
-            Opacity="{Binding SelectedStashTabHandler.StashManagerControl.BeltActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Opacity="{Binding BeltsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
             Background="{Binding Settings.LootFilterBeltColor}">
 
             <Grid>
@@ -425,7 +425,7 @@
                         TextAlignment="Center"
                         Background="Transparent"
                         Foreground="Black"
-                        Text="{Binding SelectedStashTabHandler.StashManagerControl.BeltsAmount}" />
+                        Text="{Binding BeltsAmount}" />
 
                 </Border>
 
@@ -468,7 +468,7 @@
               Grid.Column="1"
               Grid.ColumnSpan="11"
               Margin="5 0"
-              Visibility="{Binding SelectedStashTabHandler.StashManagerControl.NeedsItemFetch, Converter={StaticResource VisibleIfTrue}}">
+              Visibility="{Binding NeedsFetching, Converter={StaticResource VisibleIfTrue}}">
 
             <Grid.Background>
                 <SolidColorBrush Color="Gray"
