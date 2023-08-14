@@ -3,8 +3,10 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using ChaosRecipeEnhancer.UI.Services;
+using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms;
 using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Windows;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ChaosRecipeEnhancer.UI;
@@ -16,31 +18,33 @@ internal partial class App
     public App()
     {
         if (!_singleInstance.Claim()) Shutdown();
-        
-        // set up services (for IoC)
-        Services = ConfigureServices();
-        
         SetupUnhandledExceptionHandling();
     }
-    
-    public IServiceProvider Services { get; }
-    
-    private static IServiceProvider ConfigureServices()
+
+    private void ConfigureServices(IServiceCollection services)
     {
-        var services = new ServiceCollection();
-
-        services.AddSingleton<IItemSetManagerService, ItemSetManagerService>();
-
-        return services.BuildServiceProvider();
+        // services-as-services registration
+        services.AddSingleton<IApiService, ApiService>();
     }
-    
+
     private void OnStartup(object sender, StartupEventArgs e)
     {
-        var settingsView = new SettingsWindow();
-        settingsView.Show();
-        _singleInstance.PingedByOtherProcess += (_, _) => Dispatcher.Invoke(settingsView.Show);
+        // Create the service collection and configure services
+        var services = new ServiceCollection();
+        ConfigureServices(services);
+
+        // Build the service provider
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+
+        // Configure the MVVM Toolkit to use the DI provider
+        Ioc.Default.ConfigureServices(serviceProvider);
+
+        var settingsWindow = new SettingsWindow();
+        settingsWindow.Show();
+
+        _singleInstance.PingedByOtherProcess += (_, _) => Dispatcher.Invoke(settingsWindow.Show);
     }
-    
+
     private void SetupUnhandledExceptionHandling()
     {
         // Catch exceptions from all threads in the AppDomain.

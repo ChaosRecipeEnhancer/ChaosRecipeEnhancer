@@ -1,22 +1,17 @@
 using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
 internal partial class StashTabOverlayWindow
 {
-    private readonly ItemSetManager _itemSetManager;
     private readonly StashTabOverlayViewModel _model;
 
-    public StashTabOverlayWindow(ItemSetManager itemSetManager)
+    public StashTabOverlayWindow()
     {
-        _itemSetManager = itemSetManager;
-        DataContext = _model = new StashTabOverlayViewModel(_itemSetManager);
-
+        DataContext = _model = new StashTabOverlayViewModel();
         InitializeComponent();
 
         MouseHook.MouseAction += OnMouseHookClick;
@@ -51,17 +46,8 @@ internal partial class StashTabOverlayWindow
 
     private void OnMouseHookClick(object sender, MouseHookEventArgs e)
     {
-        if (!IsOpen || _model.SelectedStashTabHandler.StashManagerControl is null) return;
-
-        if (ControlHelpers.HitTest(EditModeButton, e.ClickLocation))
-            HandleEditButton();
-        else
-            foreach (var cell in _model.SelectedStashTabHandler.StashManagerControl.OverlayCellsList.Where(cell => cell.Active))
-                if (ControlHelpers.HitTest(ControlHelpers.GetContainerForDataObject<Button>(StashTabControl, cell), e.ClickLocation))
-                {
-                    _itemSetManager.OnItemCellClicked(cell);
-                    return;
-                }
+        if (!IsOpen) return;
+        if (ControlHelpers.HitTest(EditModeButton, e.ClickLocation)) HandleEditButton();
     }
 
     protected override void OnSourceInitialized(EventArgs e)

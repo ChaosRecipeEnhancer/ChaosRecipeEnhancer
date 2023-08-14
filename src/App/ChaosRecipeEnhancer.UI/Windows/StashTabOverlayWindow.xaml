@@ -64,10 +64,9 @@
                         Click="OnEditModeButtonClick" />
             </Grid>
 
-            <userControls:StashTabGridControl x:Name="StashTabControl"
-                                              Grid.Row="1"
-                                              IsQuad="{Binding SelectedStashTabHandler.SelectedStashTab.Quad}"
-                                              ItemsSource="{Binding SelectedStashTabHandler.SelectedStashTab.OverlayCellsList}" />
+            <!-- Stash Grid Control -->
+            <userControls:StashTabGridControl
+                Grid.Row="1" />
 
         </Grid>
     </Grid>

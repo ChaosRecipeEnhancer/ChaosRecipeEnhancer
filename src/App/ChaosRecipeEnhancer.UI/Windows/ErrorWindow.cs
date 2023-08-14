@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace ChaosRecipeEnhancer.UI.DynamicControls;
+namespace ChaosRecipeEnhancer.UI.Windows;
 
 public static class ErrorWindow
 {

@@ -8,9 +8,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
-             mc:Ignorable="d"
-             Loaded="OnFormLoaded"
              Background="#202020"
+             Loaded="OnLoaded"
+             mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=generalForms:GeneralFormViewModel}">
 
     <UserControl.Resources>
@@ -211,7 +211,7 @@
                 ItemSelectionChanged="OnStashTabSelectionChanged"
                 SelectedItemsOverride="{Binding Path=SelectedStashTabs, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 ItemsSource="{Binding StashTabIndexNameFullList}"
-                ValueMemberPath="i"
+                ValueMemberPath="Index"
                 VerticalContentAlignment="Center"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">

@@ -6,7 +6,7 @@ namespace ChaosRecipeEnhancer.UI.Constants;
 public static class ApiEndpoints
 {
     public static readonly Uri LeagueEndpoint = new("https://api.pathofexile.com/leagues?type=main&realm=pc");
-
+    
     public static Uri IndividualTabContentsEndpoint(TargetStash targetStash, string accountName, string leagueName, int stashTabIndex) => targetStash == TargetStash.Personal
             ? PersonalStashIndividualTabEndpoint(accountName, leagueName, stashTabIndex)
             : GuildStashIndividualTabEndpoint(accountName, leagueName, stashTabIndex);

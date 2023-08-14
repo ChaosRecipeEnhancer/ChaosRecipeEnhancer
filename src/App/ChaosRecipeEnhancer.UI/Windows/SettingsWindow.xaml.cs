@@ -4,9 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
-using ChaosRecipeEnhancer.UI.Api;
 using ChaosRecipeEnhancer.UI.Constants;
-using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities;
 using Application = System.Windows.Application;
@@ -17,7 +15,6 @@ namespace ChaosRecipeEnhancer.UI.Windows;
 internal partial class SettingsWindow
 {
     private readonly SetTrackerOverlayWindow _recipeOverlay;
-    private readonly StashTabGetter _stashTabGetter = new();
     private readonly NotifyIcon _trayIcon = new();
 
     private bool _closingFromTrayIcon;
@@ -25,10 +22,7 @@ internal partial class SettingsWindow
     public SettingsWindow()
     {
         DataContext = new SettingsViewModel();
-
-        var itemSetManager = new ItemSetManager();
-        _recipeOverlay = new SetTrackerOverlayWindow(itemSetManager, _stashTabGetter);
-
+        _recipeOverlay = new SetTrackerOverlayWindow();
         InitializeComponent();
         InitializeTray();
     }

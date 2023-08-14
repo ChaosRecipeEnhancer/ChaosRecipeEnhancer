@@ -1,13 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
-using ChaosRecipeEnhancer.UI.Api;
-using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.Services;
-using ChaosRecipeEnhancer.UI.Utilities;
-using ChaosRecipeEnhancer.UI.Windows;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Primitives;
 using MessageBox = System.Windows.MessageBox;
@@ -16,81 +11,33 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
 internal partial class GeneralForm
 {
-    private readonly IApiService ApiService;
     private readonly GeneralFormViewModel _model;
-    
-    public GeneralForm(IApiService apiService)
+
+    public GeneralForm()
     {
-        ApiService = apiService;
-        
-        DataContext = _model = new GeneralFormViewModel();
         InitializeComponent();
-        LoadLeagueList();
+        DataContext = _model = new GeneralFormViewModel();
+
+        // right on initialization
+        _model.LoadLeagueList();
     }
 
-    private async void OnFormLoaded(object sender, RoutedEventArgs e)
+    private async void OnLoaded(object sender, RoutedEventArgs e)
     {
         if (CheckAccountSettings(false))
         {
-            if (_model.StashTabIndexNameFullList.Count == 0) await LoadStashTabNamesIndicesAsync();
-            if (_model.SelectedStashTabHandler.StashManagerControl is null) await LoadStashTabContentAsync();
+            if (_model.StashTabIndexNameFullList.Count == 0) await _model.LoadStashTabNamesIndicesAsync();
         }
     }
 
     private async void OnFetchStashTabsButtonClicked(object sender, RoutedEventArgs e)
     {
-        await LoadStashTabNamesIndicesAsync();
-    }
-
-    private async Task LoadStashTabNamesIndicesAsync()
-    {
-        var secret = _model.Settings.PathOfExileWebsiteSessionId;
-        var accountName = _model.Settings.PathOfExileAccountName;
-        var leagueName = _model.Settings.LeagueName;
-
-        var stashTabPropsList = _model.Settings.TargetStash == (int)TargetStash.Personal
-            ? await ApiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, secret)
-            : await ApiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, secret);
-
-        if (stashTabPropsList is not null) _model.UpdateStashTabNameIndexFullList(stashTabPropsList.StashTabs);
-    }
-
-    private async Task LoadStashTabContentAsync()
-    {
-        // visual (and programmatic) indication that we are currently fetching
-        // i.e. disable future calls until this fetch has concluded
-        _model.FetchingStashTabs = true;
-        using var __ = new ScopeGuard(() => _model.FetchingStashTabs = false);
-
-        // invalidate stuff for some reason
-        _model.SelectedStashTabHandler.StashManagerControl = null;
-        
-        var secret = _model.Settings.PathOfExileWebsiteSessionId;
-        var accountName = _model.Settings.PathOfExileAccountName;
-        var leagueName = _model.Settings.LeagueName;
-        var selectedTabIndices = _model.Settings.StashTabIndices;
-
-        // why am i making a form responsible for fetching stash data
-        // don't like this at all
-        // var stashTabContent = _model.Settings.TargetStash == (int)TargetStash.Personal
-        //     ? await ApiService.GetPersonalStashTabContentsByIndexAsync(accountName, leagueName, )
-        //     : await ApiService.FetchStashTabsAsync();
-        
-        if (stashTabContent is null)
-        {
-            _ = MessageBox.Show("Failed to fetch stash tabs", "Request Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        await _model.LoadStashTabNamesIndicesAsync();
     }
 
     private void OnRefreshLeaguesButtonClicked(object sender, RoutedEventArgs e)
     {
-        LoadLeagueList();
-    }
-
-    private async void LoadLeagueList()
-    {
-        var leagues = await _leagueGetter.GetLeaguesAsync();
-        _model.UpdateLeagueList(leagues);
+        _model.LoadLeagueList();
     }
 
     private void OnStashTabSelectionChanged(object sender, ItemSelectionChangedEventArgs itemSelectionChangedEventArgs)

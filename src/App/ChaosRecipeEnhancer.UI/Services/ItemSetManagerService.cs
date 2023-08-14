@@ -7,7 +7,17 @@ using ChaosRecipeEnhancer.UI.Models.Enums;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
-[GenerateAutomaticInterface]
+public interface IItemSetManagerService
+{
+    public bool UpdateData(
+        int setThreshold,
+        List<int> selectedTabIndices,
+        List<EnhancedItem> filteredStashContents,
+        bool includeIdentified = false,
+        bool chaosRecipe = true
+    );
+}
+
 public class ItemSetManagerService : IItemSetManagerService
 {
     private int _setThreshold;

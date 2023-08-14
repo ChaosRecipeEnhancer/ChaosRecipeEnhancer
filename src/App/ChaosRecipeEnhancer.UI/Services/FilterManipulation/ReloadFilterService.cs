@@ -3,11 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Constants;
-using ChaosRecipeEnhancer.UI.DynamicControls;
 using ChaosRecipeEnhancer.UI.Extensions.Native;
 using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.Windows;
 
-namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation;
+namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
 public class ReloadFilterService
 {

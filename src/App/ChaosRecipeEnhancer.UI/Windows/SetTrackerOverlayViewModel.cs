@@ -1,22 +1,12 @@
-using ChaosRecipeEnhancer.UI.DynamicControls.StashTabs;
-using ChaosRecipeEnhancer.UI.Utilities;
+using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
 internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 {
     private bool _fetchButtonEnabled = true;
-
     private bool _showProgress;
-
     private string _warningMessage;
-
-    public SetTrackerOverlayViewModel(ISelectedStashTabHandler selectedStashTabHandler)
-    {
-        SelectedStashTabHandler = selectedStashTabHandler;
-    }
-
-    public ISelectedStashTabHandler SelectedStashTabHandler { get; }
 
     public bool ShowProgress
     {

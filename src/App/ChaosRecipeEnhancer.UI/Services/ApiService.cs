@@ -9,10 +9,23 @@ using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
-[GenerateAutomaticInterface]
+public interface IApiService
+{
+    public Task<IEnumerable<BaseLeagueMetadata>> GetLeaguesAsync();
+
+    public Task<BaseStashTabMetadataList> GetAllPersonalStashTabMetadataAsync(string accountName, string leagueName, string secret);
+
+    public Task<BaseStashTabMetadataList> GetAllGuildStashTabMetadataAsync(string accountName, string leagueName, string secret);
+
+    public Task<BaseStashTabContents> GetPersonalStashTabContentsByIndexAsync(string accountName, string leagueName, int tabIndex, string secret);
+
+    public Task<BaseStashTabContents> GetGuildStashTabContentsByIndexAsync(string accountName, string leagueName, int tabIndex, string secret);
+}
+
 public class ApiService : IApiService
 {
     private bool _isFetching;
@@ -25,7 +38,7 @@ public class ApiService : IApiService
             ? null
             : JsonSerializer.Deserialize<BaseLeagueMetadata[]>((string)responseRaw);
     }
-
+    
     public async Task<BaseStashTabMetadataList> GetAllPersonalStashTabMetadataAsync(string accountName, string leagueName, string secret)
     {
         var responseRaw = await GetAuthenticatedAsync(
@@ -76,12 +89,12 @@ public class ApiService : IApiService
     
     private async Task<object> GetAuthenticatedAsync(Uri requestUri, string secret)
     {
-        if (_isFetching || RateLimit.CheckForBan()) return null;
+        if (_isFetching || RateLimitManager.CheckForBan()) return null;
         
         // -1 for 1 request + 3 times if rate limit high exceeded
-        if (RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - 4)
+        if (RateLimitManager.RateLimitState[0] >= RateLimitManager.MaximumRequests - 4)
         {
-            RateLimit.RateLimitExceeded = true;
+            RateLimitManager.RateLimitExceeded = true;
             return null;
         }
         
@@ -103,8 +116,8 @@ public class ApiService : IApiService
         var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
         var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
         var responseTime = response.Headers.GetValues("Date").FirstOrDefault();
-        RateLimit.DeserializeRateLimits(rateLimit, rateLimitState);
-        RateLimit.DeserializeResponseSeconds(responseTime);
+        RateLimitManager.DeserializeRateLimits(rateLimit, rateLimitState);
+        RateLimitManager.DeserializeResponseSeconds(responseTime);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -119,12 +132,12 @@ public class ApiService : IApiService
     
     private async Task<object> GetAsync(Uri requestUri)
     {
-        if (_isFetching || RateLimit.CheckForBan()) return null;
+        if (_isFetching || RateLimitManager.CheckForBan()) return null;
         
         // -1 for 1 request + 3 times if ratelimit high exceeded
-        if (RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - 4)
+        if (RateLimitManager.RateLimitState[0] >= RateLimitManager.MaximumRequests - 4)
         {
-            RateLimit.RateLimitExceeded = true;
+            RateLimitManager.RateLimitExceeded = true;
             return null;
         }
         

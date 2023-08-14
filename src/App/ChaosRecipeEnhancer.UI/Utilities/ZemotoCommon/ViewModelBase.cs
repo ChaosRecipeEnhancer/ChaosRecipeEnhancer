@@ -1,8 +1,9 @@
-﻿using System.ComponentModel;
+﻿using ChaosRecipeEnhancer.UI.Properties;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using ChaosRecipeEnhancer.UI.Properties;
 
-namespace ChaosRecipeEnhancer.UI.Utilities;
+namespace ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 public abstract class ViewModelBase : INotifyPropertyChanged
 {
