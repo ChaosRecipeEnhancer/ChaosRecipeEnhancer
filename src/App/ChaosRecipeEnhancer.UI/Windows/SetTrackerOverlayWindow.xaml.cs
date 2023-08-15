@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using ChaosRecipeEnhancer.UI.Utilities;
 
@@ -36,15 +35,13 @@ internal partial class SetTrackerOverlayWindow
         if (e.PropertyName == nameof(Settings.SetTrackerOverlayDisplayMode))
             UpdateOverlayType();
         else if (e.PropertyName == nameof(Settings.FullSetThreshold) || e.PropertyName == nameof(Settings.SelectedStashTabs))
-            _model.CheckForFullSets();
+            _model.UpdateNotificationMessage();
     }
 
     private void UpdateOverlayType()
     {
         if (Settings.Default.SetTrackerOverlayDisplayMode == 0)
             MainOverlayContentControl.Content = new StandardDisplay(this);
-        // else if (Settings.Default.SetTrackerOverlayDisplayMode == 1)
-        //      MainOverlayContentControl.Content = new MinifiedDisplay(this);
     }
 
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)

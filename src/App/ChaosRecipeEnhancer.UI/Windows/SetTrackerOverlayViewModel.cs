@@ -76,7 +76,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
 
             // add the enhanced items to the filtered stash contents
-            filteredStashContents.AddRange(enhancedItems);
+            filteredStashContents.AddRange(EnhancedItemHelper.FilterItemsForRecipe(enhancedItems, includeIdentified, chaosRecipe));
 
             _itemSetManagerService.UpdateData(
                 setThreshold,
@@ -88,9 +88,11 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
             // update the UI accordingly
             ShowProgress = false;
-            await Task.Delay(FetchCooldown * 1000);
+            UpdateDisplay();
+            UpdateNotificationMessage();
 
-
+            // wait a bit before fetching the next tab
+            await Task.Delay(FetchCooldown * 1000); // 30 seconds default fetch cooldown
             if (RateLimitManager.RateLimitExceeded)
             {
                 WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
@@ -108,13 +110,12 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
         ShowProgress = false;
         FetchButtonEnabled = true;
-
-        CheckForFullSets();
-        UpdateDisplay();
     }
 
-    public void CheckForFullSets()
+    public void UpdateNotificationMessage()
     {
+        // update the warning message (notifications based on status)
+        // usually "Sets Full!"; sometimes rate limit warnings
         if (NeedsFetching)
             WarningMessage = string.Empty;
         else if (!NeedsFetching && FullSets >= Settings.FullSetThreshold)
@@ -134,7 +135,8 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     public int FullSets => _itemSetManagerService.RetrieveCompletedSets();
 
     public int RingsAmount => ShowAmountNeeded ? Math.Max((Settings.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount(), 0) : _itemSetManagerService.RetrieveRingsAmount();
-    public bool RingsActive => NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount() > 0;
+    public bool RingsActive => NeedsFetching ||
+                               (Properties.Settings.Default.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount() > 0;
 
     public int AmuletsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveAmuletsAmount(), 0) : _itemSetManagerService.RetrieveAmuletsAmount();
     public bool AmuletsActive => NeedsFetching || Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveAmuletsAmount() > 0;
@@ -183,5 +185,14 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
         OnPropertyChanged(nameof(BootsAmount));
         OnPropertyChanged(nameof(BootsActive));
+
+        OnPropertyChanged(nameof(NeedsFetching));
+        OnPropertyChanged(nameof(FullSets));
+        OnPropertyChanged(nameof(WarningMessage));
+        OnPropertyChanged(nameof(ShowProgress));
+        OnPropertyChanged(nameof(FetchButtonEnabled));
+        OnPropertyChanged(nameof(ShowAmountNeeded));
+
+
     }
 }

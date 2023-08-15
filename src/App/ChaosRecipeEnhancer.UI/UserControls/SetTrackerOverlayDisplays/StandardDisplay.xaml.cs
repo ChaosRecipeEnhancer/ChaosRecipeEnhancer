@@ -9,8 +9,8 @@ internal partial class StandardDisplay
 
     public StandardDisplay(SetTrackerOverlayWindow parent)
     {
-        _parent = parent;
         InitializeComponent();
+        _parent = parent;
     }
 
     private void OnStashTabOverlayButtonClicked(object sender, RoutedEventArgs e)

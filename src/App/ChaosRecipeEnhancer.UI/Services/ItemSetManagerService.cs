@@ -76,11 +76,11 @@ public class ItemSetManagerService : IItemSetManagerService
         // setting some new properties
         _setThreshold = setThreshold;
         _currentSelectedTabs = selectedTabIndices;
+        _currentItemsFilteredForRecipe = filteredStashContents;
 
         // will this ever be done independent of one another?
         // not doubting, just want to be 100% sure lol
         // i guess separating out for readability and debugging is fine
-        FilterItemsForRecipe(filteredStashContents, includeIdentified, chaosRecipe);
         CalculateItemAmounts();
         GenerateInProgressItemSets();
 
@@ -92,47 +92,20 @@ public class ItemSetManagerService : IItemSetManagerService
         return true;
     }
 
-    // this should probably be called right after we update our CurrentStashContents
-    private void FilterItemsForRecipe(List<EnhancedItem> filteredStashContents, bool includeIdentified = false, bool chaosRecipe = true)
-    {
-        // iterate through each item in the provided list
-        foreach (var item in filteredStashContents)
-        {
-            // if it's not rare ignore item (could keep identified items if passed as true)
-            // maybe i could optimize here by pre-emptively removing all non-rare items
-            // in the calling request? idk if it would truly 'optimize' or if it would
-            // just offload the work to another service lol
-            if ((item.Identified && !includeIdentified) || item.FrameType != ItemFrameType.Rare)
-            {
-                continue;
-            }
-
-            // if the derived class is not what we're looking for
-            // (think rare maps, rare jewels, etc... NOT 'gear')
-            if (item.DerivedItemClass == null)
-            {
-                continue;
-            }
-
-            // if an item falls within the ilvl bounds for whichever recipe we're calling
-            // chaos recipe ilvl 60 through 74
-            // regal recipe ilvl 75+
-            if (item.ItemLevel >= 60 && // lower bound for all recipes
-                                        // either enforce chaos recipe upper bound or 'ignore' upper bound
-                (item.ItemLevel <= 74 || !chaosRecipe))
-            {
-                // simple check if item is in our tabs
-                // checks like this make me want to filter before we get here, save some cycles
-                if (_currentSelectedTabs.Contains(item.StashTabIndex))
-                {
-                    _currentItemsFilteredForRecipe.Add(item);
-                }
-            }
-        }
-    }
-
     private void CalculateItemAmounts()
     {
+
+        // reset all item amounts
+        RingsAmount = 0;
+        AmuletsAmount = 0;
+        BeltsAmount = 0;
+        ChestsAmount = 0;
+        WeaponsSmallAmount = 0;
+        WeaponsBigAmount = 0;
+        GlovesAmount = 0;
+        HelmetsAmount = 0;
+        BootsAmount = 0;
+
         foreach (var item in _currentItemsFilteredForRecipe)
         {
             switch (item.DerivedItemClass)
@@ -166,11 +139,14 @@ public class ItemSetManagerService : IItemSetManagerService
                     break;
             }
         }
+
+        NeedsFetching = false;
     }
 
     private void GenerateInProgressItemSets()
     {
         _setsInProgress.Clear();
+
         for (var i = 0; i < _setThreshold; i++)
         {
             // create new 'empty' enhanced item set

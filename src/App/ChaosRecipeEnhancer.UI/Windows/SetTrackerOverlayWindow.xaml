@@ -58,8 +58,9 @@
 
                     <TextBlock VerticalAlignment="Center"
                                HorizontalAlignment="Center"
+                               Foreground="Red"
                                Text="{Binding WarningMessage}"
-                               Margin="40,0" />
+                               Margin="40,5" />
 
                 </Border>
 
