@@ -336,7 +336,11 @@ public partial class StashTabOverlayWindow
                         StashTabControlManager.StashTabIndices.RemoveAt(index);
 
                         if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
-                            reconstructedStashTabs.Add(new StashTabControl(tab.Name, tab.Index));
+                        {
+                            var tabToAdd = new StashTabControl(tab.Name, tab.Index);
+                            if (tab.Type == "QuadStash") tabToAdd.Quad = true;
+                            reconstructedStashTabs.Add(tabToAdd);
+                        }
                     }
                 }
 
