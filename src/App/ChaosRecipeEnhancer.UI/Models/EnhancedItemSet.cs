@@ -36,8 +36,8 @@ public class EnhancedItemSet
     }
 
     public bool HasRecipeQualifier { get; set; }
-    public List<EnhancedItem> Items { get; } = new();
-    public List<string> EmptyItemSlots { get; }
+    public List<EnhancedItem> Items { get; set; } = new();
+    public List<string> EmptyItemSlots { get; set; }
 
     /// <summary>
     /// This will attempt to add an item. If it is not needed, it will not be added.
@@ -79,4 +79,24 @@ public class EnhancedItemSet
     }
 
     public bool IsItemClassNeeded(EnhancedItem item) => EmptyItemSlots.Contains(item.DerivedItemClass);
+
+    public void OrderItemsForPicking()
+    {
+        var orderedClasses = new List<string>
+        {
+            GameTerminology.BodyArmor,
+            GameTerminology.TwoHandWeapons,
+            GameTerminology.OneHandWeapons,
+            GameTerminology.OneHandWeapons,
+            GameTerminology.Helmets,
+            GameTerminology.Gloves,
+            GameTerminology.Boots,
+            GameTerminology.Belts,
+            GameTerminology.Rings,
+            GameTerminology.Rings,
+            GameTerminology.Amulets
+        };
+
+        Items = Items.OrderBy(d => orderedClasses.IndexOf(d.DerivedItemClass)).ToList();
+    }
 }

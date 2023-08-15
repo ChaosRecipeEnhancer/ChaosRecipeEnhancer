@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Enums;
@@ -72,6 +73,13 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         _itemSetManagerService.ResetCompletedSets();
         _itemSetManagerService.ResetItemAmounts();
 
+        // update the stash tab metadata based on your target stash
+        var stashTabMetadataList = targetStash == TargetStash.Personal
+            ? await _apiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, secret)
+            : await _apiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, secret);
+
+        _itemSetManagerService.UpdateStashMetadata(stashTabMetadataList);
+
         foreach (var index in selectedTabIndices)
         {
             // first we retrieve the 'raw' results from the API
@@ -142,7 +150,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     private bool ShowAmountNeeded => Settings.SetTrackerOverlayItemCounterDisplayMode == 2;
 
     public bool NeedsFetching => _itemSetManagerService.RetrieveNeedsFetching();
-    public int FullSets => _itemSetManagerService.RetrieveCompletedSets();
+    public int FullSets => _itemSetManagerService.RetrieveCompletedSetCount();
 
     public int RingsAmount => ShowAmountNeeded ? Math.Max((Settings.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount(), 0) : _itemSetManagerService.RetrieveRingsAmount();
     public bool RingsActive => NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount() > 0;
@@ -201,7 +209,5 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         OnPropertyChanged(nameof(ShowProgress));
         OnPropertyChanged(nameof(FetchButtonEnabled));
         OnPropertyChanged(nameof(ShowAmountNeeded));
-
-
     }
 }

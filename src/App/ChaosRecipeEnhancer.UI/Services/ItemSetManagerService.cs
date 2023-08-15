@@ -8,6 +8,8 @@ namespace ChaosRecipeEnhancer.UI.Services;
 
 public interface IItemSetManagerService
 {
+    public void UpdateStashMetadata(BaseStashTabMetadataList metadata);
+
     public bool UpdateData(
         int setThreshold,
         List<int> selectedTabIndices,
@@ -21,8 +23,10 @@ public interface IItemSetManagerService
     public void ResetCompletedSets();
     public void ResetItemAmounts();
 
+    public BaseStashTabMetadataList RetrieveStashTabMetadataList();
     public bool RetrieveNeedsFetching();
-    public int RetrieveCompletedSets();
+    public int RetrieveCompletedSetCount();
+    public List<EnhancedItemSet> RetrieveSetsInProgress();
 
     public int RetrieveRingsAmount();
     public int RetrieveAmuletsAmount();
@@ -40,6 +44,7 @@ public class ItemSetManagerService : IItemSetManagerService
     private int _setThreshold;
     private List<EnhancedItemSet> _setsInProgress = new();
     private List<EnhancedItem> _currentItemsFilteredForRecipe = new(); // filtered for chaos recipe
+    private BaseStashTabMetadataList _stashTabMetadataList;
 
     // item amounts by kind that will be exposed
     // while ItemSetManagerService doesn't know,
@@ -55,9 +60,16 @@ public class ItemSetManagerService : IItemSetManagerService
     public int BootsAmount { get; set; }
 
     // full set amounts will also need to be rendered
-    public int CompletedSets { get; set; }
-
+    public int CompletedSetCount { get; set; }
     public bool NeedsFetching { get; set; } = true;
+
+    // temporary housing for this field that is needed by some components
+    // i'd likely want to move this to its own service tbh
+
+    public void UpdateStashMetadata(BaseStashTabMetadataList metadata)
+    {
+        _stashTabMetadataList = metadata;
+    }
 
     // this is the primary method being called by external entities
     // return true if successful update, false if some error (likely caller error missing important data)
@@ -121,7 +133,7 @@ public class ItemSetManagerService : IItemSetManagerService
 
     public void ResetCompletedSets()
     {
-        CompletedSets = 0;
+        CompletedSetCount = 0;
     }
 
     public void ResetItemAmounts()
@@ -232,7 +244,7 @@ public class ItemSetManagerService : IItemSetManagerService
 
                         if (listOfSets[i].EmptyItemSlots.Count == 0)
                         {
-                            CompletedSets++;
+                            CompletedSetCount++;
                         }
                     }
                 }
@@ -243,9 +255,13 @@ public class ItemSetManagerService : IItemSetManagerService
         }
     }
 
+    #region Properties as Functions
+
     // workaround to expose properties as functions on our interface
+    public BaseStashTabMetadataList RetrieveStashTabMetadataList() => _stashTabMetadataList;
     public bool RetrieveNeedsFetching() => NeedsFetching;
-    public int RetrieveCompletedSets() => CompletedSets;
+    public int RetrieveCompletedSetCount() => CompletedSetCount;
+    public List<EnhancedItemSet> RetrieveSetsInProgress() => _setsInProgress;
 
     // item amount public properties via functions
     public int RetrieveRingsAmount() => RingsAmount;
@@ -258,4 +274,5 @@ public class ItemSetManagerService : IItemSetManagerService
     public int RetrieveHelmetsAmount() => HelmetsAmount;
     public int RetrieveBootsAmount() => BootsAmount;
 
+    #endregion
 }

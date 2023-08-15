@@ -205,7 +205,7 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
                     TextAlignment="Center"
-                    Text="{Binding Version, StringFormat='CRE {0} by Mario, Zemoto, &amp; kosace'}" />
+                    Text="{Binding Version, StringFormat='CRE {0} by Mario, Tropical, Zemoto, &amp; kosace'}" />
 
             </UniformGrid>
             <!-- App Footer End -->
