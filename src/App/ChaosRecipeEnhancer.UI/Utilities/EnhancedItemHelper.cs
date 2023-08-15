@@ -30,11 +30,8 @@ public static class EnhancedItemHelper
             }
 
             // if an item falls within the ilvl bounds for whichever recipe we're calling
-            // chaos recipe ilvl 60 through 74
-            // regal recipe ilvl 75+
-            if (item.ItemLevel >= 60 && // lower bound for all recipes
-                                        // either enforce chaos recipe upper bound or 'ignore' upper bound
-                (item.ItemLevel <= 74 || !chaosRecipe))
+            // chaos recipe ilvl 60+
+            if (item.ItemLevel >= 60)
             {
                 // simple check if item is in our tabs
                 // checks like this make me want to filter before we get here, save some cycles
@@ -44,5 +41,4 @@ public static class EnhancedItemHelper
 
         return filteredItems;
     }
-
 }

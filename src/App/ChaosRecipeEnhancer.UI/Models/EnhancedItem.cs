@@ -29,6 +29,7 @@ public class EnhancedItem : BaseItem
         GetItemClass();
     }
 
+    public bool IsChaosRecipeEligible => ItemLevel is >= 60 and <= 74;
     public string DerivedItemClass { get; set; }
     public int StashTabIndex { get; set; }
 

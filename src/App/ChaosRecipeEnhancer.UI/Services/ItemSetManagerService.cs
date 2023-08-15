@@ -16,6 +16,11 @@ public interface IItemSetManagerService
         bool chaosRecipe = true
     );
 
+    public void GenerateItemSets(bool chaosRecipe);
+    public void CalculateItemAmounts();
+    public void ResetCompletedSets();
+    public void ResetItemAmounts();
+
     public bool RetrieveNeedsFetching();
     public int RetrieveCompletedSets();
 
@@ -33,7 +38,6 @@ public interface IItemSetManagerService
 public class ItemSetManagerService : IItemSetManagerService
 {
     private int _setThreshold;
-    private List<int> _currentSelectedTabs;
     private List<EnhancedItemSet> _setsInProgress = new();
     private List<EnhancedItem> _currentItemsFilteredForRecipe = new(); // filtered for chaos recipe
 
@@ -53,12 +57,7 @@ public class ItemSetManagerService : IItemSetManagerService
     // full set amounts will also need to be rendered
     public int CompletedSets { get; set; }
 
-    public bool NeedsFetching { get; set; }
-
-    public ItemSetManagerService()
-    {
-        NeedsFetching = true;
-    }
+    public bool NeedsFetching { get; set; } = true;
 
     // this is the primary method being called by external entities
     // return true if successful update, false if some error (likely caller error missing important data)
@@ -75,37 +74,14 @@ public class ItemSetManagerService : IItemSetManagerService
 
         // setting some new properties
         _setThreshold = setThreshold;
-        _currentSelectedTabs = selectedTabIndices;
         _currentItemsFilteredForRecipe = filteredStashContents;
-
-        // will this ever be done independent of one another?
-        // not doubting, just want to be 100% sure lol
-        // i guess separating out for readability and debugging is fine
-        CalculateItemAmounts();
-        GenerateInProgressItemSets();
-
-        // deriving completed sets by iteratively checking every one of our sets in progress for any missing slots
-        // if a set has no missing slots, it is complete
-        CompletedSets = _setsInProgress.Count(x => x.EmptyItemSlots.Count == 0);
 
         NeedsFetching = false;
         return true;
     }
 
-    private void CalculateItemAmounts()
+    public void CalculateItemAmounts()
     {
-
-        // reset all item amounts
-        RingsAmount = 0;
-        AmuletsAmount = 0;
-        BeltsAmount = 0;
-        ChestsAmount = 0;
-        WeaponsSmallAmount = 0;
-        WeaponsBigAmount = 0;
-        GlovesAmount = 0;
-        HelmetsAmount = 0;
-        BootsAmount = 0;
-
         foreach (var item in _currentItemsFilteredForRecipe)
         {
             switch (item.DerivedItemClass)
@@ -143,15 +119,76 @@ public class ItemSetManagerService : IItemSetManagerService
         NeedsFetching = false;
     }
 
-    private void GenerateInProgressItemSets()
+    public void ResetCompletedSets()
+    {
+        CompletedSets = 0;
+    }
+
+    public void ResetItemAmounts()
+    {
+        // reset all item amounts
+        RingsAmount = 0;
+        AmuletsAmount = 0;
+        BeltsAmount = 0;
+        ChestsAmount = 0;
+        WeaponsSmallAmount = 0;
+        WeaponsBigAmount = 0;
+        GlovesAmount = 0;
+        HelmetsAmount = 0;
+        BootsAmount = 0;
+    }
+
+    public void GenerateItemSets(bool chaosRecipe)
     {
         _setsInProgress.Clear();
 
+        var listOfSets = new List<EnhancedItemSet>();
+
+        // iterate once to create as many sets as possible that can produce recipe
+        if (chaosRecipe)
+        {
+            var noChaosItemsLeft = false;
+            for (var i = 0; i < _setThreshold; i++)
+            {
+                // create new 'empty' enhanced item set
+                var enhancedItemSet = new EnhancedItemSet();
+
+                if (!noChaosItemsLeft)
+                {
+                    var eligibleChaosItems = _currentItemsFilteredForRecipe.Where(x => x.IsChaosRecipeEligible).ToList();
+
+                    if (eligibleChaosItems.Count != 0)
+                    {
+                        foreach (var attempt in eligibleChaosItems)
+                        {
+                            var addSuccessful = enhancedItemSet.TryAddItem(attempt);
+
+                            if (addSuccessful)
+                            {
+                                _currentItemsFilteredForRecipe.Remove(attempt);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        noChaosItemsLeft = true;
+                    }
+                }
+
+                listOfSets.Add(enhancedItemSet);
+            }
+        }
+        else
+        {
+            for (var i = 0; i < _setThreshold; i++)
+            {
+                listOfSets.Add(new EnhancedItemSet());
+            }
+        }
+
         for (var i = 0; i < _setThreshold; i++)
         {
-            // create new 'empty' enhanced item set
-            var enhancedItemSet = new EnhancedItemSet();
-
             // iterate until the end of time (jk)
             while (true)
             {
@@ -163,17 +200,17 @@ public class ItemSetManagerService : IItemSetManagerService
                 // this is a nested for over each other item in our current item filtered for recipe
                 // probably could be optimized? maybe?
                 foreach (var item in _currentItemsFilteredForRecipe
-                             .Where(item => enhancedItemSet.IsItemClassNeeded(item) && // item is of a class we need
-                                            enhancedItemSet.GetItemDistance(item) < minDistance)) // item is closer than the current closest
+                             .Where(item => listOfSets[i].IsItemClassNeeded(item) && // item is of a class we need
+                                            listOfSets[i].GetItemDistance(item) < minDistance)) // item is closer than the current closest
                 {
-                    minDistance = enhancedItemSet.GetItemDistance(item);
+                    minDistance = listOfSets[i].GetItemDistance(item);
                     closestMissingItem = item;
                 }
 
                 if (closestMissingItem is not null)
                 {
                     // if we found a new closer we're good to add it to our enhanced set
-                    _ = enhancedItemSet.AddItem(closestMissingItem);
+                    _ = listOfSets[i].TryAddItem(closestMissingItem);
                     // promptly remove it from our pool of 'available' items
                     // do i actually want to do this? lol
                     _ = _currentItemsFilteredForRecipe.Remove(closestMissingItem);
@@ -183,10 +220,26 @@ public class ItemSetManagerService : IItemSetManagerService
                 {
                     break;
                 }
+
+                if (chaosRecipe)
+                {
+                    var canProduce = listOfSets[i].Items.FirstOrDefault(x => x.IsChaosRecipeEligible, null);
+
+                    // my reason for separating out this logic is that it's a bit more readable and debuggable
+                    if (canProduce is not null)
+                    {
+                        listOfSets[i].HasRecipeQualifier = true;
+
+                        if (listOfSets[i].EmptyItemSlots.Count == 0)
+                        {
+                            CompletedSets++;
+                        }
+                    }
+                }
             }
 
             // add new enhanced item set to our list of sets in progress
-            _setsInProgress.Add(enhancedItemSet);
+            _setsInProgress = listOfSets;
         }
     }
 
@@ -194,6 +247,7 @@ public class ItemSetManagerService : IItemSetManagerService
     public bool RetrieveNeedsFetching() => NeedsFetching;
     public int RetrieveCompletedSets() => CompletedSets;
 
+    // item amount public properties via functions
     public int RetrieveRingsAmount() => RingsAmount;
     public int RetrieveAmuletsAmount() => AmuletsAmount;
     public int RetrieveBeltsAmount() => BeltsAmount;

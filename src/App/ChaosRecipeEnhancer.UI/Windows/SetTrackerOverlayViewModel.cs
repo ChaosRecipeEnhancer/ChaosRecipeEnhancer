@@ -65,6 +65,13 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
         var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
 
+        // reset item amounts before fetching new data
+        ShowProgress = true;
+
+        // invalidate some outdated state for our item manager
+        _itemSetManagerService.ResetCompletedSets();
+        _itemSetManagerService.ResetItemAmounts();
+
         foreach (var index in selectedTabIndices)
         {
             // first we retrieve the 'raw' results from the API
@@ -86,13 +93,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 chaosRecipe
             );
 
-            // update the UI accordingly
-            ShowProgress = false;
-            UpdateDisplay();
-            UpdateNotificationMessage();
-
-            // wait a bit before fetching the next tab
-            await Task.Delay(FetchCooldown * 1000); // 30 seconds default fetch cooldown
             if (RateLimitManager.RateLimitExceeded)
             {
                 WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
@@ -108,7 +108,17 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             }
         }
 
+        // recalculate item amounts and generate item sets after fetching from api
+        _itemSetManagerService.CalculateItemAmounts();
+        _itemSetManagerService.GenerateItemSets(chaosRecipe);
+
+        // update the UI accordingly
         ShowProgress = false;
+        UpdateDisplay();
+        UpdateNotificationMessage();
+
+        // wait a bit before fetching the next tab
+        await Task.Delay(FetchCooldown * 1000); // 30 seconds default fetch cooldown
         FetchButtonEnabled = true;
     }
 
@@ -135,8 +145,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     public int FullSets => _itemSetManagerService.RetrieveCompletedSets();
 
     public int RingsAmount => ShowAmountNeeded ? Math.Max((Settings.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount(), 0) : _itemSetManagerService.RetrieveRingsAmount();
-    public bool RingsActive => NeedsFetching ||
-                               (Properties.Settings.Default.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount() > 0;
+    public bool RingsActive => NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount() > 0;
 
     public int AmuletsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveAmuletsAmount(), 0) : _itemSetManagerService.RetrieveAmuletsAmount();
     public bool AmuletsActive => NeedsFetching || Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveAmuletsAmount() > 0;

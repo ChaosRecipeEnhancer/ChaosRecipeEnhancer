@@ -109,7 +109,7 @@
                     Background="White">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -153,7 +153,7 @@
                     Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -197,7 +197,7 @@
                     Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -241,7 +241,7 @@
                     Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -285,7 +285,7 @@
                     Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -329,7 +329,7 @@
                     Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -373,7 +373,7 @@
                     Background="White">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -416,7 +416,7 @@
                     Background="White">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"

@@ -35,15 +35,16 @@ public class EnhancedItemSet
         EmptyItemSlots = other.EmptyItemSlots;
     }
 
+    public bool HasRecipeQualifier { get; set; }
     public List<EnhancedItem> Items { get; } = new();
     public List<string> EmptyItemSlots { get; }
-    
+
     /// <summary>
     /// This will attempt to add an item. If it is not needed, it will not be added.
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public bool AddItem(EnhancedItem item)
+    public bool TryAddItem(EnhancedItem item)
     {
         if (!EmptyItemSlots.Contains(item.DerivedItemClass))
         {
