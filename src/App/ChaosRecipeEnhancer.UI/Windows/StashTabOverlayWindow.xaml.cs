@@ -216,7 +216,11 @@ public partial class StashTabOverlayWindow
                             currentTab.DeactivateSingleItemCells(stashTabCell.ItemModel);
                             SetsToHighlight[0].Items.Remove(highlightItem);
 
-                            if (SetsToHighlight[0].Items.Count == 0)
+                            // disable tab header color if no more items in set for the current tab
+                            if (SetsToHighlight[0]
+                                    .Items
+                                    .Where(x => x.StashTabIndex == currentTab.TabIndex)
+                                    .ToList().Count == 0)
                             {
                                 currentTab.TabHeaderColor = Brushes.Transparent;
                             }
