@@ -105,7 +105,7 @@
                             Padding="5 5"
                             Width="300"
                             TextWrapping="Wrap"
-                            Text="Please validate your account credentials with the 'Test Connection' button to ensure they're correct."
+                            Text="Please validate your Path of Exile Account Credentials with the 'Test Connection' button to ensure they are correct."
                             Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibilityConverter}, ConverterParameter=0}"/>
 
                         <!-- Warning Message Display -->
