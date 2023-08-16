@@ -112,18 +112,18 @@ public class ApiService : IApiService
         // send request
         var response = await client.GetAsync(requestUri);
 
+        if (!response.IsSuccessStatusCode)
+        {
+            _isFetching = false;
+            return null;
+        }
+
         // get new rate limit values
         var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
         var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
         var responseTime = response.Headers.GetValues("Date").FirstOrDefault();
         RateLimitManager.DeserializeRateLimits(rateLimit, rateLimitState);
         RateLimitManager.DeserializeResponseSeconds(responseTime);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            _isFetching = false;
-            return null;
-        }
 
         using var responseHttpContent = response.Content;
         _isFetching = false;

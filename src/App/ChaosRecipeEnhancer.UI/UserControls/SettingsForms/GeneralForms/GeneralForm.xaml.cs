@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Primitives;
@@ -24,9 +25,11 @@ internal partial class GeneralForm
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (CheckAccountSettings(false))
+        if (CheckAccountSettings(false)
+            && _model.Settings.PoEAccountConnectionStatus == (int)ConnectionStatusTypes.ValidatedConnection
+            && _model.StashTabIndexNameFullList.Count == 0)
         {
-            if (_model.StashTabIndexNameFullList.Count == 0) await _model.LoadStashTabNamesIndicesAsync();
+            await _model.LoadStashTabNamesIndicesAsync();
         }
     }
 
