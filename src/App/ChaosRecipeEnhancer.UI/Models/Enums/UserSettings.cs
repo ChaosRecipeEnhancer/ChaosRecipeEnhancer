@@ -27,5 +27,6 @@ public enum TargetStash
 
 public enum SetTrackerOverlayMode
 {
-    Standard
+    Standard,
+    VerticalStandard
 }

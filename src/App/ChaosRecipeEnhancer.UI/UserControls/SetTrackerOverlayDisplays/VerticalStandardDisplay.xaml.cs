@@ -1,47 +1,30 @@
 ﻿using System.Windows;
-using ChaosRecipeEnhancer.UI.View;
+using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 
-/// <summary>
-///     Interaction logic for VerticalStandardDisplay.xaml
-/// </summary>
 public partial class VerticalStandardDisplay
 {
-    #region Constructors
+    private readonly SetTrackerOverlayWindow _parent;
 
-    public VerticalStandardDisplay(SettingsView settingsView, SetTrackerOverlayView setTrackerOverlay)
+    public VerticalStandardDisplay(SetTrackerOverlayWindow parent)
     {
-        _settingsView = settingsView;
-        _setTrackerOverlay = setTrackerOverlay;
         InitializeComponent();
+        _parent = parent;
     }
 
-    #endregion
-
-    #region Fields
-
-    private readonly SetTrackerOverlayView _setTrackerOverlay;
-    private readonly SettingsView _settingsView;
-
-    #endregion
-
-    #region Event Handlers
-
-    private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
+    private void OnStashTabOverlayButtonClicked(object sender, RoutedEventArgs e)
     {
-        _settingsView.RunStashTabOverlay();
+        _parent.RunStashTabOverlay();
     }
 
-    private void FetchButton_Click(object sender, RoutedEventArgs e)
+    private void OnFetchButtonClicked(object sender, RoutedEventArgs e)
     {
-        _setTrackerOverlay.RunFetching();
+        _parent.RunFetching();
     }
 
-    private void ReloadFilterButton_Click(object sender, RoutedEventArgs e)
+    private void OnReloadFilterButtonClicked(object sender, RoutedEventArgs e)
     {
-        _setTrackerOverlay.ReloadItemFilter();
+        _parent.RunReloadFilter();
     }
-
-    #endregion
 }

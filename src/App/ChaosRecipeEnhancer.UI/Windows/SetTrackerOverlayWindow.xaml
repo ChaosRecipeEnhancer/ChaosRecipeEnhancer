@@ -3,11 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
         xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
-        xmlns:userControls="clr-namespace:ChaosRecipeEnhancer.UI.UserControls"
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
         FontSize="14"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -19,10 +18,6 @@
         Top="{Binding Settings.SetTrackerOverlayTopPosition, Mode=TwoWay}"
         Left="{Binding Settings.SetTrackerOverlayLeftPosition, Mode=TwoWay}"
         d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
-
-    <Window.Resources>
-        <utilities:NullOrEmptyVisibilityConverter x:Key="NullOrEmptyVisibilityConverter" />
-    </Window.Resources>
 
     <Border BorderThickness="1"
             BorderBrush="Transparent"
@@ -36,33 +31,10 @@
         <Border Background="Transparent"
                 BorderThickness="1"
                 Margin="-2">
-            <Grid>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            <!-- Set Tracker Display -->
+            <ContentControl x:Name="MainOverlayContentControl"/>
 
-                <!-- Warning Message Display -->
-                <userControls:OutlinedTextBlock
-                    Grid.Row="0"
-                    TextAlignment="Center"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    FontSize="24"
-                    Fill="OrangeRed"
-                    Stroke="Black"
-                    StrokeThickness="5"
-                    FontWeight="ExtraBold"
-                    Visibility="{Binding WarningMessage, Converter={StaticResource NullOrEmptyVisibilityConverter}}"
-                    Text="{Binding WarningMessage}" />
-
-                <!-- Set Tracker Display -->
-                <ContentControl
-                    x:Name="MainOverlayContentControl"
-                    Grid.Row="1" />
-
-            </Grid>
         </Border>
     </Border>
 

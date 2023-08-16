@@ -7,6 +7,7 @@
              xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
+             xmlns:userControls="clr-namespace:ChaosRecipeEnhancer.UI.UserControls"
              mc:Ignorable="d"
              FontSize="14"
              Background="#202020"
@@ -22,6 +23,7 @@
         <utilities:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual"
                                                  Invert="True"
                                                  ComparisonType="{x:Type system:Int32}" />
+        <utilities:NullOrEmptyVisibilityConverter x:Key="NullOrEmptyVisibilityConverter" />
     </UserControl.Resources>
 
     <Grid>
@@ -52,6 +54,7 @@
         <Button
             Click="OnStashTabOverlayButtonClicked"
             Width="50"
+            Height="50"
             Grid.Column="1"
             Grid.Row="1"
             Content="Stash"
@@ -366,11 +369,11 @@
                 <Border
                     Width="20"
                     Height="20"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
-                    Background="White">
+                    Background="White"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
                         FontSize="12"
@@ -408,12 +411,13 @@
                     Source="../../Assets/Images/Belt.png" />
 
                 <Border
-                    Width="20" Height="20"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
+                    Width="20"
+                    Height="20"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
-                    Background="White">
+                    Background="White"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
                         FontSize="12"
@@ -437,6 +441,7 @@
             x:Name="ReloadFilterButton"
             Click="OnReloadFilterButtonClicked"
             Width="50"
+            Height="50"
             Grid.Column="11"
             Grid.Row="1"
             Margin="5 0"
@@ -498,8 +503,8 @@
         <!-- Overlay Progress Bar -->
         <ProgressBar
             Grid.Column="1"
-            Grid.ColumnSpan="12"
             Grid.Row="2"
+            Grid.ColumnSpan="12"
             Height="5"
             Minimum="0"
             Maximum="10"
@@ -508,6 +513,21 @@
             Foreground="Aqua"
             Background="AntiqueWhite"
             BorderThickness="0,0,0,0" />
+
+        <!-- Warning Message Display -->
+        <userControls:OutlinedTextBlock
+            Grid.Column="6"
+            Grid.Row="1"
+            TextAlignment="Center"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            FontSize="24"
+            Fill="OrangeRed"
+            Stroke="Black"
+            StrokeThickness="5"
+            FontWeight="ExtraBold"
+            Visibility="{Binding WarningMessage, Converter={StaticResource NullOrEmptyVisibilityConverter}}"
+            Text="{Binding WarningMessage}" />
 
     </Grid>
 
