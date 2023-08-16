@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Input;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using ChaosRecipeEnhancer.UI.Utilities;
 
@@ -62,7 +61,13 @@ public partial class SetTrackerOverlayWindow
     {
         IsOpen = false;
         _stashTabOverlay.Hide();
-        if (_logWatcherManager is not null && _logWatcherManager.WorkerThread != null && _logWatcherManager.WorkerThread.IsAlive) _logWatcherManager.StopWatchingLogFile();
+
+        if (_logWatcherManager is not null)
+        {
+            _logWatcherManager.StopWatchingLogFile();
+            _logWatcherManager.Dispose();
+        }
+
         base.Hide();
     }
 

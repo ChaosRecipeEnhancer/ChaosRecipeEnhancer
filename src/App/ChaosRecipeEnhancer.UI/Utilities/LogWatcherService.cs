@@ -1,92 +1,102 @@
-﻿using ChaosRecipeEnhancer.UI.Properties;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Windows;
 
-namespace ChaosRecipeEnhancer.UI.Services;
+namespace ChaosRecipeEnhancer.UI.Utilities;
 
 public class LogWatcherManager
 {
-    private const int Cooldown = 120;
+    private static bool AutoFetchAllowed { get; set; } = true;
+    private const int AutoFetchCooldown = 60;
     private static string LastZone { get; set; } = "";
     private static string NewZone { get; set; } = "";
-    public static bool FetchAllowed { get; set; } = true;
 
-    public Thread WorkerThread { get; set; }
+    private readonly CancellationTokenSource _cancellationTokenSource;
+    private readonly Task _workerTask;
 
     public LogWatcherManager(SetTrackerOverlayWindow setTrackerOverlay)
     {
         Trace.WriteLine("LogWatcherManager created");
 
-        var wh = new AutoResetEvent(false);
-        var fsw = new FileSystemWatcher(Path.GetDirectoryName(@"" + Settings.Default.PathOfExileClientLogLocation));
-        fsw.Filter = "Client.txt";
-        fsw.EnableRaisingEvents = true;
+        _cancellationTokenSource = new CancellationTokenSource();
+        _workerTask = Task.Run(() => StartWatchingLogFile(setTrackerOverlay));
+    }
+
+    private void StartWatchingLogFile(SetTrackerOverlayWindow setTrackerOverlay)
+    {
+        Trace.WriteLine("starting watching");
+
+        using var wh = new AutoResetEvent(false);
+        using var fsw = new FileSystemWatcher(Path.GetDirectoryName(@"" + Settings.Default.PathOfExileClientLogLocation))
+        {
+            Filter = "Client.txt",
+            EnableRaisingEvents = true
+        };
+
         fsw.Changed += (s, e) => wh.Set();
 
-        var fs = new FileStream(Settings.Default.PathOfExileClientLogLocation, FileMode.Open, FileAccess.Read,
-            FileShare.ReadWrite);
+        using var fs = new FileStream(Settings.Default.PathOfExileClientLogLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         fs.Position = fs.Length;
 
-        WorkerThread = new Thread(() =>
+        using var sr = new StreamReader(fs);
+        while (!_cancellationTokenSource.Token.IsCancellationRequested)
         {
-            using (var sr = new StreamReader(fs))
+            var s = sr.ReadLine();
+            if (s != null)
             {
-                var s = "";
-                while (true)
+                var phrase = GetPhraseTranslation();
+                var hideout = GetHideoutTranslation();
+                var harbour = GetHarbourTranslation();
+
+                if (s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout) && !s.Contains(harbour))
                 {
-                    s = sr.ReadLine();
-                    if (s != null)
-                    {
-                        var phrase = GetPhraseTranslation();
-                        var hideout = GetHideoutTranslation();
-                        var harbour = GetHarbourTranslation();
+                    LastZone = NewZone;
+                    NewZone = s.Substring(s.IndexOf(phrase[0]));
 
-                        if (s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout) &&
-                            !s.Contains(harbour))
-                        {
-                            LastZone = NewZone;
-                            NewZone = s.Substring(s.IndexOf(phrase[0]));
+                    Trace.WriteLine("entered new zone");
+                    Trace.WriteLine(NewZone);
 
-                            Trace.WriteLine("entered new zone");
-
-                            Trace.WriteLine(NewZone);
-                            FetchIfPossible(setTrackerOverlay);
-                        }
-                    }
-                    else
-                    {
-                        wh.WaitOne(1000);
-                    }
+                    FetchIfPossible(setTrackerOverlay);
                 }
             }
-        });
-
-        StartWatchingLogFile();
-    }
-    public async void FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
-    {
-        if (FetchAllowed)
-        {
-            FetchAllowed = false;
-            try
+            else
             {
-                setTrackerOverlay.RunFetching();
-                await Task.Delay(Cooldown * 1000).ContinueWith(_ =>
-                {
-                    FetchAllowed = true;
-                    Trace.WriteLine("allow fetch");
-                });
-            }
-            catch
-            {
-                FetchAllowed = true;
+                wh.WaitOne(1000);
             }
         }
     }
-    public string[] GetPhraseTranslation()
+
+    private async void FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
+    {
+        if (AutoFetchAllowed)
+        {
+            AutoFetchAllowed = false;
+            try
+            {
+                setTrackerOverlay.RunFetching();
+
+                // enforce cooldown on fetch button to reduce chances of rate limiting
+                try
+                {
+                    await Task.Factory.StartNew(() => Thread.Sleep(AutoFetchCooldown * 1000));
+                }
+                finally
+                {
+                    AutoFetchAllowed = true;
+                    Trace.WriteLine("allow fetch");
+                }
+            }
+            catch
+            {
+                AutoFetchAllowed = true;
+            }
+        }
+    }
+
+    private string[] GetPhraseTranslation()
     {
         var ret = new string[2];
         ret[1] = "";
@@ -126,7 +136,7 @@ public class LogWatcherManager
         return ret;
     }
 
-    public string GetHideoutTranslation()
+    private string GetHideoutTranslation()
     {
         switch (Settings.Default.Language)
         {
@@ -149,7 +159,7 @@ public class LogWatcherManager
         }
     }
 
-    public string GetHarbourTranslation()
+    private string GetHarbourTranslation()
     {
         switch (Settings.Default.Language)
         {
@@ -172,16 +182,16 @@ public class LogWatcherManager
         }
     }
 
-    public void StartWatchingLogFile()
-    {
-        WorkerThread.Start();
-        Trace.WriteLine("starting watching");
-    }
 
     public void StopWatchingLogFile()
     {
-        WorkerThread.Abort();
+        _cancellationTokenSource.Cancel();
+        _workerTask.Wait();
         Trace.WriteLine("stop watch");
     }
 
+    public void Dispose()
+    {
+        _cancellationTokenSource?.Dispose();
+    }
 }

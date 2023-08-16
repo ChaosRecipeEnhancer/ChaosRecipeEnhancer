@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
@@ -9,6 +11,7 @@ using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
@@ -26,16 +29,16 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     private bool _showProgress;
     private string _warningMessage;
 
-    public bool ShowProgress
-    {
-        get => _showProgress;
-        set => SetProperty(ref _showProgress, value);
-    }
-
     public bool FetchButtonEnabled
     {
         get => _fetchButtonEnabled;
         set => SetProperty(ref _fetchButtonEnabled, value);
+    }
+
+    public bool ShowProgress
+    {
+        get => _showProgress;
+        set => SetProperty(ref _showProgress, value);
     }
 
     public string WarningMessage
@@ -123,13 +126,19 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         _itemSetManagerService.GenerateItemSets(chaosRecipe);
 
         // update the UI accordingly
-        ShowProgress = false;
+        ShowProgress = false; // <--- this is fucking us all up lmao
         UpdateDisplay();
         UpdateNotificationMessage();
 
-        // wait a bit before fetching the next tab
-        await Task.Delay(FetchCooldown * 1000); // 30 seconds default fetch cooldown
-        FetchButtonEnabled = true;
+        // enforce cooldown on fetch button to reduce chances of rate limiting
+        try
+        {
+            await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+        }
+        finally
+        {
+            FetchButtonEnabled = true;
+        }
     }
 
     public void UpdateNotificationMessage()
