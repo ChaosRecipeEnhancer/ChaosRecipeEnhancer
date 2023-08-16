@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
         xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
+        xmlns:userControls="clr-namespace:ChaosRecipeEnhancer.UI.UserControls"
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
         FontSize="14"
@@ -25,14 +26,12 @@
     </Window.Resources>
 
     <Border BorderThickness="1"
-            CornerRadius="2.5"
-            BorderBrush="White"
+            BorderBrush="Transparent"
             ClipToBounds="True">
 
         <Border.Background>
             <SolidColorBrush
-                Opacity="{Binding Settings.SetTrackerOverlayOpacity}"
-                Color="White" />
+                Opacity="{Binding Settings.SetTrackerOverlayOpacity}"/>
         </Border.Background>
 
         <Border Background="Transparent"
@@ -46,12 +45,17 @@
                 </Grid.RowDefinitions>
 
                 <!-- Warning Message Display -->
-                <TextBlock VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Foreground="White"
-                           Text="{Binding WarningMessage}"
-                           Visibility="{Binding WarningMessage, Converter={StaticResource NullVisibilityConverter}}"
-                           Margin="40,5" />
+                <userControls:OutlinedTextBlock
+                    Grid.Row="0"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    FontSize="24"
+                    Fill="OrangeRed"
+                    Stroke="Black"
+                    StrokeThickness="5"
+                    FontWeight="ExtraBold"
+                    Text="{Binding WarningMessage}"
+                    Visibility="{Binding WarningMessage, Converter={StaticResource NullVisibilityConverter}}"/>
 
                 <!-- Set Tracker Display -->
                 <ContentControl x:Name="MainOverlayContentControl"
