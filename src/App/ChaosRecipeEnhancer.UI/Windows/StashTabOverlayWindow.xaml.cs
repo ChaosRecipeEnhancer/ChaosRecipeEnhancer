@@ -253,8 +253,8 @@ public partial class StashTabOverlayWindow
 
                     foreach (var i in ItemSetListHighlight[0].Items.ToList())
                     {
-                        var currTab = GetStashTabFromItem(i);
-                        currTab.ActivateItemCells(i);
+                        var currentTab = GetStashTabFromItem(i);
+                        currentTab.ActivateItemCells(i);
                     }
 
                     // mark item order
@@ -442,29 +442,6 @@ public partial class StashTabOverlayWindow
                 StashTabControlManager.StashTabControls = reconstructedStashTabs;
             }
         }
-        // mode = Individual Stash Tab Suffix
-        else if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabNameSuffix)
-        {
-            if (stashTabMetadataList != null)
-            {
-                var individualStashTabSuffix = Properties.Settings.Default.StashTabSuffix;
-
-                ParseAllStashTabNamesFromApiResponse();
-
-                foreach (var tab in stashTabMetadataList.StashTabs)
-                {
-                    if (tab.Name.EndsWith(individualStashTabSuffix))
-                    {
-                        if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
-                        {
-                            reconstructedStashTabs.Add(new StashTabControl(tab.Name, tab.Index));
-                        }
-                    }
-                }
-
-                StashTabControlManager.StashTabControls = reconstructedStashTabs;
-            }
-        }
     }
 
     private void ParseAllStashTabNamesFromApiResponse()
@@ -491,5 +468,4 @@ public partial class StashTabOverlayWindow
 
         return null;
     }
-
 }

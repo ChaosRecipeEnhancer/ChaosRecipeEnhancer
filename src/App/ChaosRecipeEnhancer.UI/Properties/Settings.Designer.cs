@@ -169,18 +169,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string StashTabSuffix {
-            get {
-                return ((string)(this["StashTabSuffix"]));
-            }
-            set {
-                this["StashTabSuffix"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool AutoFetchOnRezoneEnabled {
             get {
@@ -301,7 +289,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("23")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public double StashTabOverlayIndividualTabMargin {
             get {
                 return ((double)(this["StashTabOverlayIndividualTabMargin"]));
@@ -313,7 +301,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20.4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public double StashTabOverlayIndividualTabHeaderWidth {
             get {
                 return ((double)(this["StashTabOverlayIndividualTabHeaderWidth"]));
@@ -325,7 +313,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public double StashTabOverlayIndividualTabHeaderGap {
             get {
                 return ((double)(this["StashTabOverlayIndividualTabHeaderGap"]));
@@ -716,66 +704,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["UpgradeSettingsAfterUpdate"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SoundEnabled {
-            get {
-                return ((bool)(this["SoundEnabled"]));
-            }
-            set {
-                this["SoundEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public int Volume {
-            get {
-                return ((int)(this["Volume"]));
-            }
-            set {
-                this["Volume"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
-        public string ItemSetCompletedSoundFileLocation {
-            get {
-                return ((string)(this["ItemSetCompletedSoundFileLocation"]));
-            }
-            set {
-                this["ItemSetCompletedSoundFileLocation"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
-        public string FilterModificationPendingSoundFileLocation {
-            get {
-                return ((string)(this["FilterModificationPendingSoundFileLocation"]));
-            }
-            set {
-                this["FilterModificationPendingSoundFileLocation"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string StashFolderName {
-            get {
-                return ((string)(this["StashFolderName"]));
-            }
-            set {
-                this["StashFolderName"] = value;
             }
         }
     }

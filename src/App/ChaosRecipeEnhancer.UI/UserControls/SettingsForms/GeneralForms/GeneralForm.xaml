@@ -170,7 +170,6 @@
 
             <ComboBoxItem Content="Select Tabs From List" />
             <ComboBoxItem Content="Tab Name Prefix" />
-            <ComboBoxItem Content="Tab Name Suffix" />
 
         </ComboBox>
         <!-- Stash Tab Query Mode Selector Start -->
@@ -262,24 +261,6 @@
             Visibility="{Binding Settings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
             Text="{Binding Settings.StashTabPrefix, Mode=TwoWay}" />
         <!-- Individual Stash Tab Name Prefix End -->
-
-        <!-- Individual Stash Tab Name Suffix Start -->
-        <TextBlock
-            Grid.Column="0"
-            Grid.Row="5"
-            Margin="0 0 0 10"
-            VerticalAlignment="Center"
-            Text="Stash Tab Suffix:"
-            ToolTip="Every stash tab which name ends with this suffix will be added."
-            Visibility="{Binding Settings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=2}" />
-
-        <TextBox
-            Grid.Column="1"
-            Grid.Row="5"
-            Margin="10 0 0 10"
-            Visibility="{Binding Settings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=2}"
-            Text="{Binding Settings.StashTabSuffix, Mode=TwoWay}" />
-        <!-- Individual Stash Tab Name Suffix End -->
 
         <!-- Fetch on New Map Setting Start -->
         <!-- TODO: [Refactor] Enforce reload when this setting is changed (or at the very least, notify users it's required) -->

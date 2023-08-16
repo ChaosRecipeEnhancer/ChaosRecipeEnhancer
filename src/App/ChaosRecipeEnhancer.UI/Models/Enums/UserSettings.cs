@@ -17,8 +17,13 @@ public enum StashTabOverlayHighlightMode
 public enum StashTabQueryMode
 {
     SelectTabsFromList,
-    TabNamePrefix,
-    TabNameSuffix
+    TabNamePrefix
+}
+
+public enum TargetStash
+{
+    Personal,
+    Guild
 }
 
 public enum SetTrackerOverlayMode

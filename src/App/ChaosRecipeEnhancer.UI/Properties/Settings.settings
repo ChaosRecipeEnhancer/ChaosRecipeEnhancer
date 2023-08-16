@@ -38,9 +38,6 @@
     <Setting Name="StashTabPrefix" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="StashTabSuffix" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="AutoFetchOnRezoneEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -72,13 +69,13 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="StashTabOverlayIndividualTabMargin" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">23</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="StashTabOverlayIndividualTabHeaderWidth" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">20.4</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="StashTabOverlayIndividualTabHeaderGap" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">5</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="LootFilterManipulationEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -175,21 +172,6 @@
     </Setting>
     <Setting Name="UpgradeSettingsAfterUpdate" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="SoundEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="Volume" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">50</Value>
-    </Setting>
-    <Setting Name="ItemSetCompletedSoundFileLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Default Sound</Value>
-    </Setting>
-    <Setting Name="FilterModificationPendingSoundFileLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Default Sound</Value>
-    </Setting>
-    <Setting Name="StashFolderName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
