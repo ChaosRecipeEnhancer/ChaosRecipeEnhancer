@@ -15,7 +15,7 @@
 		<PublishWizardCompleted>true</PublishWizardCompleted>
 		<BootstrapperEnabled>true</BootstrapperEnabled>
 		<ApplicationVersion>2.0</ApplicationVersion>
-		<ApplicationRevision>0</ApplicationRevision>
+		<ApplicationRevision>1</ApplicationRevision>
 
 		<!--Update Settings-->
 		<IsWebBootstrapper>false</IsWebBootstrapper>
