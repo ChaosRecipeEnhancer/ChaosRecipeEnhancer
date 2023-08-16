@@ -170,6 +170,7 @@
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Content="Test Connection"
+            IsEnabled="{Binding TestConnectionButtonEnabled}"
             Click="OnTestConnectionClicked" />
 
     </Grid>

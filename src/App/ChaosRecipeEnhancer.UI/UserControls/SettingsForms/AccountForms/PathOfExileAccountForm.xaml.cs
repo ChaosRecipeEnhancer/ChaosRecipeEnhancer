@@ -10,13 +10,11 @@ internal partial class PathOfExileAccountForm
     {
         InitializeComponent();
         DataContext = _model = new PathOfExileAccountFormViewModel();
-
-        // right on initialization
-        _model.TestConnectionToPoEServers();
     }
 
     private void OnTestConnectionClicked(object sender, RoutedEventArgs e)
     {
         _model.TestConnectionToPoEServers();
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
@@ -11,9 +12,19 @@ internal class PathOfExileAccountFormViewModel : ViewModelBase
 {
     // private readonly IApiService _apiService = Ioc.Default.GetService<IApiService>();
     private readonly IApiService _apiService = new ApiService();
+    private bool _testConnectionButtonEnabled = true;
+    private const int TestConnectionCooldown = 15;
+
+    public bool TestConnectionButtonEnabled
+    {
+        get => _testConnectionButtonEnabled;
+        set => SetProperty(ref _testConnectionButtonEnabled, value);
+    }
 
     public async void TestConnectionToPoEServers()
     {
+        TestConnectionButtonEnabled = false;
+
         try
         {
             var accountName = Settings.PathOfExileAccountName;
@@ -55,6 +66,8 @@ internal class PathOfExileAccountFormViewModel : ViewModelBase
         finally
         {
             Settings.Save();
+            await Task.Delay(TestConnectionCooldown * 1000); // 30 seconds default fetch cooldown
+            TestConnectionButtonEnabled = false;
         }
     }
 }
