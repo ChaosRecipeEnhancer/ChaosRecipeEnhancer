@@ -21,10 +21,8 @@ internal static class StashTabControlManager
         {
             var stashTabIndices = new List<int>();
             var indices = Settings.Default.StashTabIndices;
-            string[] characterSeparators = { "," };
-            var split = indices.Split(characterSeparators, StringSplitOptions.None);
 
-            foreach (var s in split)
+            foreach (var s in indices.Split(','))
             {
                 if (int.TryParse(s.Trim(), out var parsedIndex))
                 {

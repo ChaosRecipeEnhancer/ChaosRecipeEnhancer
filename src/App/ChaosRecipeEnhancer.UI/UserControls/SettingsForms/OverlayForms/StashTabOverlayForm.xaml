@@ -152,7 +152,6 @@
 
             <ComboBoxItem Content="Set by Set" />
             <ComboBoxItem Content="Item by Item" />
-            <ComboBoxItem Content="All Items" />
 
         </ComboBox>
 

@@ -88,6 +88,8 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
             // then we convert the raw results into a list of EnhancedItem objects
             var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
+            // manually setting index because we need to know which tab the item came from
+            foreach (var enhancedItem in enhancedItems) enhancedItem.StashTabIndex = index;
 
             // add the enhanced items to the filtered stash contents
             filteredStashContents.AddRange(EnhancedItemHelper.FilterItemsForRecipe(enhancedItems, includeIdentified, chaosRecipe));

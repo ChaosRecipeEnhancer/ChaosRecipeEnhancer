@@ -25,11 +25,7 @@ public class StashTabControl : INotifyPropertyChanged
     }
 
     public int TabIndex { get; }
-    public Uri StashTabApiRequestUrl { get; set; }
-    public List<EnhancedItem> ItemList { get; set; }
-    public List<EnhancedItem> ItemListChaos { get; } = new List<EnhancedItem>();
-
-    public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = new ObservableCollection<InteractiveStashTabCell>();
+    public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = new();
 
     // used for registering clicks on tab headers
     public TextBlock TabNameContainer { get; set; }
@@ -60,7 +56,7 @@ public class StashTabControl : INotifyPropertyChanged
     }
 
     /// <summary>
-    /// Creates an N x N grid of interactable <see cref="InteractiveStashTabCell"/> objects. All objects are initialized to inactive.
+    /// Creates an N x N grid of interactive <see cref="InteractiveStashTabCell"/> objects. All objects are initialized to inactive.
     /// </summary>
     /// <param name="size">Represent the dimensions of our Cell object grid (Size = N)</param>
     private void GenerateInteractiveStashCellGrid(int size)
@@ -84,51 +80,6 @@ public class StashTabControl : INotifyPropertyChanged
         // If quad tab, set grid to 24 x 24, else set to 12 x 12 grid
         var size = Quad ? 24 : 12;
         GenerateInteractiveStashCellGrid(size);
-    }
-
-    public void CleanItemList()
-    {
-        // for loop backwards for deleting from list
-        for (var i = ItemList.Count - 1; i > -1; i--)
-        {
-            if (ItemList[i].Identified && !Settings.Default.IncludeIdentifiedItemsEnabled)
-            {
-                ItemList.RemoveAt(i);
-                continue;
-            }
-
-            if (ItemList[i].FrameType == ItemFrameType.Rare)
-            {
-                ItemList.RemoveAt(i);
-                continue;
-            }
-
-            if (ItemList[i].DerivedItemClass == null)
-            {
-                ItemList.RemoveAt(i);
-                continue;
-            }
-
-            ItemList[i].StashTabIndex = TabIndex;
-
-            if (!Settings.Default.ChaosRecipeTrackingEnabled)
-            {
-                ItemList.RemoveAt(i);
-                continue;
-            }
-
-            if (ItemList[i].ItemLevel < 60)
-            {
-                ItemList.RemoveAt(i);
-                continue;
-            }
-
-            if (ItemList[i].ItemLevel <= 74)
-            {
-                ItemListChaos.Add(ItemList[i]);
-                ItemList.RemoveAt(i);
-            }
-        }
     }
 
     public void DeactivateItemCells()

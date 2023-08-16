@@ -11,6 +11,13 @@ namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
 public static class Coordinates
 {
+    private static Point GetItemCoordinates(Visual item)
+    {
+        return item is null
+            ? new Point(0, 0)
+            : item.PointToScreen(new Point(0, 0));
+    }
+
     private static bool CheckIfItemClicked(Point point, FrameworkElement button)
     {
         var clickX = NativeMouseExtensions.ClickLocationX;
@@ -30,11 +37,11 @@ public static class Coordinates
                && clickY < btnY;
     }
 
-    private static Point GetItemCoordinates(Visual item)
+    private static Point GetTabNameContainerCoordinates(Visual tabNameContainer)
     {
-        return item is null
+        return tabNameContainer is null
             ? new Point(0, 0)
-            : item.PointToScreen(new Point(0, 0));
+            : tabNameContainer.PointToScreen(new Point(0, 0));
     }
 
     private static bool CheckIfTabNameContainerClicked(StashTabControl stashTabControl)
@@ -60,11 +67,30 @@ public static class Coordinates
                && clickY < tabY;
     }
 
-    private static Point GetTabNameContainerCoordinates(Visual tabNameContainer)
+    private static Point GetEditButtonCoordinates(Visual button)
     {
-        return tabNameContainer is null
-            ? new Point(0, 0)
-            : tabNameContainer.PointToScreen(new Point(0, 0));
+        if (button == null) return new Point(0, 0);
+        return button.PointToScreen(new Point(0, 0));
+    }
+
+    private static bool CheckIfEditButtonClicked(FrameworkElement editButton)
+    {
+        var clickX = NativeMouseExtensions.ClickLocationX;
+        var clickY = NativeMouseExtensions.ClickLocationY;
+
+        var pt = GetEditButtonCoordinates(editButton);
+
+        // adjust btn x,y position a bit
+        pt.X -= 1;
+        pt.Y -= 1;
+
+        var btnX = Convert.ToInt32(Math.Floor(pt.X + editButton.ActualWidth + 1));
+        var btnY = Convert.ToInt32(Math.Floor(pt.Y + editButton.ActualHeight + 1));
+
+        return clickX > pt.X
+               && clickY > pt.Y
+               && clickX < btnX
+               && clickY < btnY;
     }
 
     private static List<InteractiveStashTabCell> GetAllActiveCells(int index)
@@ -99,11 +125,14 @@ public static class Coordinates
             var selectedIndex = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex;
             var activeCells = GetAllActiveCells(selectedIndex);
 
+            if (CheckIfEditButtonClicked(stashTabOverlayWindow.EditModeButton))
+            {
+                stashTabOverlayWindow.HandleEditButton();
+            }
+
             // if currently selected tab is a quad tab
             if (StashTabControlManager.StashTabControls[selectedIndex].Quad)
             {
-                Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Quad Tab Selected - Current Tab Index: {stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex}");
-
                 // force us to view grid as normal tab grid
                 var control = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedContent as QuadStashGrid;
 
@@ -125,7 +154,7 @@ public static class Coordinates
                 {
                     if (CheckIfItemClicked(GetItemCoordinates(buttonList[b].Button), buttonList[b].Button))
                     {
-                        Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Successful Hit: {buttonList[hitIndex].InteractiveStashTabCell}");
+                        Trace.WriteLine("[Coordinates:OverlayClickEvent()]: Quad Tab Successful Item Hit");
 
                         isHit = true;
                         hitIndex = b;
@@ -136,7 +165,7 @@ public static class Coordinates
                 if (isHit)
                 {
                     stashTabOverlayWindow.ActivateNextCell(true, buttonList[hitIndex].InteractiveStashTabCell, stashTabOverlayWindow.StashTabOverlayTabControl);
-                    Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Activating next Item: {buttonList[hitIndex].InteractiveStashTabCell}");
+                    Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Quad Tab Activating Next Item: {buttonList[hitIndex].InteractiveStashTabCell}");
 
                 }
 
@@ -151,8 +180,6 @@ public static class Coordinates
             // if currently selected tab is a normal tab
             else
             {
-                Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Quad Tab Selected - Current Tab Index: {stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex}");
-
                 // force us to view grid as normal tab grid
                 var control = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedContent as NormalStashGrid;
 
@@ -173,16 +200,17 @@ public static class Coordinates
                 {
                     if (CheckIfItemClicked(GetItemCoordinates(buttonList[b].Button), buttonList[b].Button))
                     {
+                        Trace.WriteLine("[Coordinates:OverlayClickEvent()]: Normal Tab Successful Item Hit");
+
                         isHit = true;
                         hitIndex = b;
                     }
                 }
 
-                Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Normal Tab Current Tab Index: {stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex}");
-
                 if (isHit)
                 {
                     stashTabOverlayWindow.ActivateNextCell(true, buttonList[hitIndex].InteractiveStashTabCell, stashTabOverlayWindow.StashTabOverlayTabControl);
+                    Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Normal Tab Activating Next Item: {buttonList[hitIndex].InteractiveStashTabCell}");
                 }
 
                 for (var stash = 0; stash < StashTabControlManager.StashTabControls.Count; stash++)

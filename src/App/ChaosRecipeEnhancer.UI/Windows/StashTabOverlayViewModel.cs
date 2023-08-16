@@ -15,6 +15,6 @@ internal sealed class StashTabOverlayViewModel : ViewModelBase
         set => SetProperty(ref _isEditing, value);
     }
 
-    public ObservableCollection<TabItem> OverlayStashTabList = new();
+    public readonly ObservableCollection<TabItem> OverlayStashTabList = new();
 
 }
