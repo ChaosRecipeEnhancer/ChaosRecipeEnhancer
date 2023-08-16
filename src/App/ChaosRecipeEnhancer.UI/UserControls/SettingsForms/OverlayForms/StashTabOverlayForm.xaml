@@ -6,12 +6,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
+             xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
              mc:Ignorable="d"
              Background="#202020"
              d:DataContext="{d:DesignInstance Type=overlayForms:StashTabOverlayFormViewModel}">
 
     <UserControl.Resources>
-        <utilities:StringColorConverter x:Key="StringColorConverter" />
+        <zemotoCommon:StringColorConverter x:Key="StringColorConverter" />
     </UserControl.Resources>
 
     <Grid

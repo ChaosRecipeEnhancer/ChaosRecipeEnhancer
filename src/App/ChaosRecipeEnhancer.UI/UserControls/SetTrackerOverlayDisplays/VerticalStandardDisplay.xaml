@@ -8,22 +8,23 @@
     xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:userControls="clr-namespace:ChaosRecipeEnhancer.UI.UserControls"
+    xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
     FontSize="14"
     Background="#202020"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
 
     <UserControl.Resources>
-        <utilities:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter"
+        <zemotoCommon:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter"
                                          TrueValue="1.0"
                                          FalseValue="0.1" />
 
         <BooleanToVisibilityConverter x:Key="VisibleIfTrue" />
 
-        <utilities:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual"
+        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual"
                                                  Invert="True"
                                                  ComparisonType="{x:Type system:Int32}" />
-        <utilities:NullOrEmptyVisibilityConverter x:Key="NullOrEmptyVisibilityConverter" />
+        <zemotoCommon:NullOrEmptyVisibilityConverter x:Key="NullOrEmptyVisibilityConverter" />
     </UserControl.Resources>
 
     <Grid Margin="5 0">

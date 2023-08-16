@@ -8,20 +8,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
              Background="#202020"
              Loaded="OnLoaded"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=generalForms:GeneralFormViewModel}">
 
     <UserControl.Resources>
-        <utilities:BoolVisibilityConverter x:Key="BoolVisibilityConverter"
+        <zemotoCommon:BoolVisibilityConverter x:Key="BoolVisibilityConverter"
                                            CollapseWhenNotVisible="True" />
-        <utilities:BoolVisibilityConverter x:Key="InvertedBoolVisibilityConverter"
+        <zemotoCommon:BoolVisibilityConverter x:Key="InvertedBoolVisibilityConverter"
                                            CollapseWhenNotVisible="True"
                                            Invert="True" />
-        <utilities:EqualityToVisibilityConverter x:Key="VisibleIfEqual"
+        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfEqual"
                                                  ComparisonType="{x:Type system:Int32}" />
-        <utilities:InvertBoolConverter x:Key="InvertBoolConverter" />
+        <zemotoCommon:InvertBoolConverter x:Key="InvertBoolConverter" />
     </UserControl.Resources>
 
     <Grid
