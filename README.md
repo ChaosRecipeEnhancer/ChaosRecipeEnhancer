@@ -38,10 +38,9 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 ## Additional Features
 
 - Query from your personal stash or from your guild stash
-- Query multiple stash tabs by ID, prefix, and suffix
-- Customizable hotkeys
+- Query multiple stash tabs by ID, named prefix, and named suffix
 - Customizable overlay position & sizes for different screen resolutions
-- Support for chaos, regal & exalted shard recipes
+- Support for chaos & regal
 - *Offline* loot filter manipulation (online filter syncing not supported)
 - Automatically fetch remaining items when you join a new instance
 

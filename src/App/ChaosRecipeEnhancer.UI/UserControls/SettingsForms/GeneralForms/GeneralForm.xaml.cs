@@ -1,165 +1,89 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
-using ChaosRecipeEnhancer.UI.BusinessLogic.DataFetching;
 using ChaosRecipeEnhancer.UI.Properties;
+using Xceed.Wpf.Toolkit;
+using Xceed.Wpf.Toolkit.Primitives;
 using MessageBox = System.Windows.MessageBox;
 
-namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms
+namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
+
+internal partial class GeneralForm
 {
-    public partial class GeneralForm : INotifyPropertyChanged
+    private readonly GeneralFormViewModel _model;
+
+    public GeneralForm()
     {
-        private Visibility _tabIndicesVisible = Visibility.Visible;
-        private Visibility _tabNamePrefixVisible = Visibility.Hidden;
-        private Visibility _tabNameSuffixVisible = Visibility.Hidden;
-        private Visibility _fetchOnNewMapEnabled = Visibility.Collapsed;
+        InitializeComponent();
+        DataContext = _model = new GeneralFormViewModel();
 
-        public GeneralForm()
+        // right on initialization
+        _model.LoadLeagueList();
+    }
+
+    private async void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        if (CheckAccountSettings(false))
         {
-            DataContext = this;
-            InitializeComponent();
-            LoadStashQueryModeVisibility();
-            LoadFetchOnNewMapEnabled();
+            if (_model.StashTabIndexNameFullList.Count == 0) await _model.LoadStashTabNamesIndicesAsync();
         }
+    }
 
-        public Visibility TabIndicesVisible
+    private async void OnFetchStashTabsButtonClicked(object sender, RoutedEventArgs e)
+    {
+        await _model.LoadStashTabNamesIndicesAsync();
+    }
+
+    private void OnRefreshLeaguesButtonClicked(object sender, RoutedEventArgs e)
+    {
+        _model.LoadLeagueList();
+    }
+
+    private void OnStashTabSelectionChanged(object sender, ItemSelectionChangedEventArgs itemSelectionChangedEventArgs)
+    {
+        var checkComboBox = (CheckComboBox)sender;
+        _model.UpdateSelectedTabList(checkComboBox.SelectedItems);
+    }
+
+    private void LogLocationDialog_Click(object sender, RoutedEventArgs e)
+    {
+        var open = new OpenFileDialog();
+        open.Filter = "Text|Client.txt";
+        var res = open.ShowDialog();
+
+        if (res != DialogResult.OK) return;
+
+        var filename = open.FileName;
+
+        if (filename.EndsWith("Client.txt"))
         {
-            get => _tabIndicesVisible;
-            set
-            {
-                if (_tabIndicesVisible != value)
-                {
-                    _tabIndicesVisible = value;
-                    OnPropertyChanged("TabIndicesVisible");
-                }
-            }
+            Settings.Default.PathOfExileClientLogLocation = filename;
+            LogLocationDialog.Content = filename;
         }
-
-        public Visibility TabNamePrefixVisible
+        else
         {
-            get => _tabNamePrefixVisible;
-            set
-            {
-                if (_tabNamePrefixVisible != value)
-                {
-                    _tabNamePrefixVisible = value;
-                    OnPropertyChanged("TabNamePrefixVisible");
-                }
-            }
+            MessageBox.Show(
+                "Invalid file selected. Make sure you're selecting the \"Client.txt\" file located in your main Path of Exile installation folder.",
+                "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+    }
 
-        public Visibility TabNameSuffixVisible
-        {
-            get => _tabNameSuffixVisible;
-            set
-            {
-                if (_tabNameSuffixVisible != value)
-                {
-                    _tabNameSuffixVisible = value;
-                    OnPropertyChanged("TabNameSuffixVisible");
-                }
-            }
-        }
+    private static bool CheckAccountSettings(bool showError)
+    {
+        var missingSettings = new List<string>();
+        var errorMessage = "Please add: \n";
 
-        public Visibility FetchOnNewMapEnabled
-        {
-            get => _fetchOnNewMapEnabled;
-            set
-            {
-                if (_fetchOnNewMapEnabled != value)
-                {
-                    _fetchOnNewMapEnabled = value;
-                    OnPropertyChanged("FetchOnNewMapEnabled");
-                }
-            }
-        }
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName)) missingSettings.Add("- Account Name \n");
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileWebsiteSessionId)) missingSettings.Add("- PoE Session ID \n");
+        if (string.IsNullOrEmpty(Settings.Default.LeagueName)) missingSettings.Add("- League \n");
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            LoadStashQueryModeVisibility();
-        }
+        if (missingSettings.Count == 0) return true;
 
-        private void StashTargetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
+        foreach (var setting in missingSettings) errorMessage += setting;
 
-        private void AutoFetchCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            LoadFetchOnNewMapEnabled();
-        }
+        if (showError) _ = MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
 
-        private void AutoFetchCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            LoadFetchOnNewMapEnabled();
-
-            if (LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive) LogWatcher.WorkerThread.Abort();
-        }
-
-        private void LogLocationDialog_Click(object sender, RoutedEventArgs e)
-        {
-            var open = new OpenFileDialog();
-            open.Filter = "Text|Client.txt";
-            var res = open.ShowDialog();
-
-            if (res != DialogResult.OK) return;
-
-            var filename = open.FileName;
-
-            if (filename.EndsWith("Client.txt"))
-            {
-                Settings.Default.PathOfExileClientLogLocation = filename;
-                LogLocationDialog.Content = filename;
-            }
-            else
-            {
-                MessageBox.Show(
-                    "Invalid file selected. Make sure you're selecting the \"Client.txt\" file located in your main Path of Exile installation folder.",
-                    "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void LoadStashQueryModeVisibility()
-        {
-            switch (Settings.Default.StashTabQueryMode)
-            {
-                case 0:
-                    TabIndicesVisible = Visibility.Visible;
-                    TabNamePrefixVisible = Visibility.Hidden;
-                    TabNameSuffixVisible = Visibility.Hidden;
-                    break;
-                case 1:
-                    TabIndicesVisible = Visibility.Hidden;
-                    TabNamePrefixVisible = Visibility.Visible;
-                    TabNameSuffixVisible = Visibility.Hidden;
-                    break;
-                case 2:
-                    TabIndicesVisible = Visibility.Hidden;
-                    TabNamePrefixVisible = Visibility.Hidden;
-                    TabNameSuffixVisible = Visibility.Visible;
-                    break;
-            }
-        }
-
-        private void LoadFetchOnNewMapEnabled()
-        {
-            FetchOnNewMapEnabled = Settings.Default.AutoFetchOnRezoneEnabled
-                ? Visibility.Visible
-                : Visibility.Collapsed;
-        }
-
-        #region INotifyPropertyChanged implementation
-
-        // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
+        return false;
     }
 }

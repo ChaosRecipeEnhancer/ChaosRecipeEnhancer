@@ -1,55 +1,31 @@
-﻿using System.Windows;
-using ChaosRecipeEnhancer.UI.View;
-using Serilog;
+﻿using System.Configuration;
+using System.Windows;
+using ChaosRecipeEnhancer.UI.Windows;
 
-namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays
+namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
+
+internal partial class StandardDisplay
 {
-    /// <summary>
-    ///     Interaction logic for SetTrackerOverlayStandardDisplay.xaml
-    /// </summary>
-    public partial class StandardDisplay
+    private readonly SetTrackerOverlayWindow _parent;
+
+    public StandardDisplay(SetTrackerOverlayWindow parent)
     {
-        #region Constructors
+        InitializeComponent();
+        _parent = parent;
+    }
 
-        public StandardDisplay(SettingsView settingsView, SetTrackerOverlayView setTrackerOverlay)
-        {
-            _logger = Log.ForContext<StandardDisplay>();
-            _logger.Debug("Constructing StandardDisplay");
+    private void OnStashTabOverlayButtonClicked(object sender, RoutedEventArgs e)
+    {
+        _parent.RunStashTabOverlay();
+    }
 
-            _settingsView = settingsView;
-            _setTrackerOverlay = setTrackerOverlay;
-            InitializeComponent();
+    private void OnFetchButtonClicked(object sender, RoutedEventArgs e)
+    {
+        _parent.RunFetching();
+    }
 
-            _logger.Debug("StandardDisplay constructed successfully");
-        }
-
-        #endregion
-
-        #region Fields
-
-        private readonly ILogger _logger;
-        private readonly SetTrackerOverlayView _setTrackerOverlay;
-        private readonly SettingsView _settingsView;
-
-        #endregion
-
-        #region Event Handlers
-
-        private void OpenStashTabOverlay_Click(object sender, RoutedEventArgs e)
-        {
-            _settingsView.RunStashTabOverlay();
-        }
-
-        private void FetchButton_Click(object sender, RoutedEventArgs e)
-        {
-            _setTrackerOverlay.RunFetching();
-        }
-
-        private void ReloadFilterButton_Click(object sender, RoutedEventArgs e)
-        {
-            _setTrackerOverlay.ReloadItemFilter();
-        }
-
-        #endregion
+    private void OnReloadFilterButtonClicked(object sender, RoutedEventArgs e)
+    {
+        _parent.RunReloadFilter();
     }
 }

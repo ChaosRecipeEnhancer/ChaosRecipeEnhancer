@@ -14,20 +14,34 @@
 
         <Grid.ColumnDefinitions>
 
-            <ColumnDefinition Width="3" />      <!-- Column 0 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 1 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 2 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 3 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 4 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 5 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 6 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 7 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 8 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 9 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 10 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 11 -->
-            <ColumnDefinition Width="auto" />   <!-- Column 12 -->
-            <ColumnDefinition Width="3" />      <!-- Column 13 -->
+            <ColumnDefinition Width="3" />
+            <!-- Column 0 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 1 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 2 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 3 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 4 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 5 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 6 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 7 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 8 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 9 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 10 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 11 -->
+            <ColumnDefinition Width="auto" />
+            <!-- Column 12 -->
+            <ColumnDefinition Width="3" />
+            <!-- Column 13 -->
 
         </Grid.ColumnDefinitions>
 
@@ -129,7 +143,7 @@
                 Foreground="Black" />
 
         </Border>
-        
+
         <Border
             Grid.Row="0"
             Grid.Column="0"
@@ -148,5 +162,5 @@
 
     </Grid>
 
-    
+
 </UserControl>
