@@ -26,7 +26,7 @@
         <utilities:NullOrEmptyVisibilityConverter x:Key="NullOrEmptyVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Margin="0 5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="auto" />
@@ -44,10 +44,10 @@
             <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="6" />
+            <RowDefinition Height="1" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="5" />
+            <RowDefinition Height="1" />
         </Grid.RowDefinitions>
 
         <!-- Stash Button Overlay Button Display -->
@@ -57,8 +57,7 @@
             Height="50"
             Grid.Column="1"
             Grid.Row="1"
-            Content="Stash"
-            Margin="5 0" />
+            Content="Stash" />
 
         <!-- Set Counter Display -->
         <UniformGrid
@@ -471,7 +470,6 @@
         <Grid Grid.Row="1"
               Grid.Column="1"
               Grid.ColumnSpan="11"
-              Margin="5 0"
               Visibility="{Binding NeedsFetching, Converter={StaticResource VisibleIfTrue}}">
 
             <Grid.Background>
@@ -497,19 +495,18 @@
             Grid.Column="12"
             Grid.Row="1"
             Content="Fetch"
-            BorderBrush="Aquamarine"
-            Margin="5 0" />
+            BorderBrush="Aquamarine" />
 
         <!-- Overlay Progress Bar -->
         <ProgressBar
-            Grid.Column="1"
+            Grid.Column="0"
             Grid.Row="2"
-            Grid.ColumnSpan="12"
+            Grid.ColumnSpan="13"
             Height="5"
             Minimum="0"
             Maximum="10"
             IsIndeterminate="{Binding ShowProgress}"
-            Margin="10,10,10,0"
+            Margin="5,5,0,0"
             Foreground="Aqua"
             Background="AntiqueWhite"
             BorderThickness="0,0,0,0" />
