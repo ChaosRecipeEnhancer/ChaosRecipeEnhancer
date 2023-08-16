@@ -1,23 +1,26 @@
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
-internal partial class SetTrackerOverlayWindow
+public partial class SetTrackerOverlayWindow
 {
     private readonly SetTrackerOverlayViewModel _model;
     private readonly StashTabOverlayWindow _stashTabOverlay;
+    private LogWatcherManager _logWatcherManager;
 
     public SetTrackerOverlayWindow()
     {
         DataContext = _model = new SetTrackerOverlayViewModel();
 
-        // initialize stash tab overlay window alongside this window
+        // initialize stash tab overlay window and log watcher alongside this window
         _stashTabOverlay = new StashTabOverlayWindow();
 
         InitializeComponent();
@@ -59,13 +62,30 @@ internal partial class SetTrackerOverlayWindow
     {
         IsOpen = false;
         _stashTabOverlay.Hide();
+        if (_logWatcherManager is not null && _logWatcherManager.WorkerThread != null && _logWatcherManager.WorkerThread.IsAlive) _logWatcherManager.StopWatchingLogFile();
         base.Hide();
     }
 
     public new virtual void Show()
     {
-        IsOpen = true;
-        base.Show();
+        try
+        {
+            IsOpen = true;
+            if (Settings.Default.AutoFetchOnRezoneEnabled) _logWatcherManager = new LogWatcherManager(this);
+            base.Show();
+        }
+        catch (ArgumentNullException)
+        {
+            IsOpen = false;
+            _stashTabOverlay.Hide();
+            base.Hide();
+
+            ErrorWindow.Spawn(
+                "No PoE Client.txt file path set. Please set the file path or disable 'Fetch on New Map' setting.",
+                "Error: Auto-Fetching"
+            );
+        }
+
     }
 
     public void RunFetching()

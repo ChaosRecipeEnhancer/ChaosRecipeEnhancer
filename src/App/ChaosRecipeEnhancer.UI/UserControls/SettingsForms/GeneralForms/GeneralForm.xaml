@@ -294,9 +294,11 @@
             Grid.Column="1"
             Grid.Row="7"
             Margin="10 0 0 0"
+            Width="200"
             Click="LogLocationDialog_Click"
             Visibility="{Binding Settings.AutoFetchOnRezoneEnabled, Converter={StaticResource BoolVisibilityConverter}}"
             ToolTip="{Binding Settings.PathOfExileClientLogLocation, Mode=TwoWay}"
+            ToolTipService.InitialShowDelay="50"
             Content="{Binding Settings.PathOfExileClientLogLocation, Mode=TwoWay}"
             HorizontalContentAlignment="Left">
 

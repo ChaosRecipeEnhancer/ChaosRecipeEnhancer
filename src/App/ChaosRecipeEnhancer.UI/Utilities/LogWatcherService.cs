@@ -1,42 +1,33 @@
-﻿using System.Diagnostics;
+﻿using ChaosRecipeEnhancer.UI.Properties;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
-// TODO: [Refactor] the living shit out of this
-
-public interface IAutoFetchService
-{
-}
-
-public class AutoFetchService : IAutoFetchService
+public class LogWatcherManager
 {
     private const int Cooldown = 120;
-    private static bool FetchAllowed { get; set; } = true;
     private static string LastZone { get; set; } = "";
     private static string NewZone { get; set; } = "";
+    public static bool FetchAllowed { get; set; } = true;
 
-    public static Thread WorkerThread
-    {
-        get; set;
-    }
+    public Thread WorkerThread { get; set; }
 
-    public AutoFetchService()
+    public LogWatcherManager(SetTrackerOverlayWindow setTrackerOverlay)
     {
         Trace.WriteLine("LogWatcherManager created");
 
         var wh = new AutoResetEvent(false);
         var fsw = new FileSystemWatcher(Path.GetDirectoryName(@"" + Settings.Default.PathOfExileClientLogLocation));
-
         fsw.Filter = "Client.txt";
         fsw.EnableRaisingEvents = true;
         fsw.Changed += (s, e) => wh.Set();
 
-        var fs = new FileStream(Settings.Default.PathOfExileClientLogLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        var fs = new FileStream(Settings.Default.PathOfExileClientLogLocation, FileMode.Open, FileAccess.Read,
+            FileShare.ReadWrite);
         fs.Position = fs.Length;
 
         WorkerThread = new Thread(() =>
@@ -44,40 +35,30 @@ public class AutoFetchService : IAutoFetchService
             using (var sr = new StreamReader(fs))
             {
                 var s = "";
-
                 while (true)
                 {
-                    try
+                    s = sr.ReadLine();
+                    if (s != null)
                     {
-                        s = sr.ReadLine();
-                        if (s != null)
+                        var phrase = GetPhraseTranslation();
+                        var hideout = GetHideoutTranslation();
+                        var harbour = GetHarbourTranslation();
+
+                        if (s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout) &&
+                            !s.Contains(harbour))
                         {
-                            var phrase = GetPhraseTranslation();
-                            var hideout = GetHideoutTranslation();
-                            var harbour = GetHarbourTranslation();
+                            LastZone = NewZone;
+                            NewZone = s.Substring(s.IndexOf(phrase[0]));
 
-                            if (s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout) &&
-                                !s.Contains(harbour))
-                            {
-                                LastZone = NewZone;
-                                NewZone = s.Substring(s.IndexOf(phrase[0]));
+                            Trace.WriteLine("entered new zone");
 
-                                Trace.WriteLine("entered new zone");
-
-                                Trace.WriteLine(NewZone);
-
-                                // TODO: Fetch if possible
-                                // FetchIfPossible(setTrackerOverlay);
-                            }
-                        }
-                        else
-                        {
-                            wh.WaitOne(1000);
+                            Trace.WriteLine(NewZone);
+                            FetchIfPossible(setTrackerOverlay);
                         }
                     }
-                    catch (ThreadInterruptedException)
+                    else
                     {
-                        wh.Close();
+                        wh.WaitOne(1000);
                     }
                 }
             }
@@ -85,20 +66,7 @@ public class AutoFetchService : IAutoFetchService
 
         StartWatchingLogFile();
     }
-
-    private static void StartWatchingLogFile()
-    {
-        WorkerThread.Start();
-        Trace.WriteLine("Start watching");
-    }
-
-    public static void StopWatchingLogFile()
-    {
-        WorkerThread.Interrupt();
-        Trace.WriteLine("Stop watch");
-    }
-
-    private async void FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
+    public async void FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
     {
         if (FetchAllowed)
         {
@@ -118,8 +86,7 @@ public class AutoFetchService : IAutoFetchService
             }
         }
     }
-
-    private static string[] GetPhraseTranslation()
+    public string[] GetPhraseTranslation()
     {
         var ret = new string[2];
         ret[1] = "";
@@ -159,7 +126,7 @@ public class AutoFetchService : IAutoFetchService
         return ret;
     }
 
-    private static string GetHideoutTranslation()
+    public string GetHideoutTranslation()
     {
         switch (Settings.Default.Language)
         {
@@ -182,7 +149,7 @@ public class AutoFetchService : IAutoFetchService
         }
     }
 
-    private static string GetHarbourTranslation()
+    public string GetHarbourTranslation()
     {
         switch (Settings.Default.Language)
         {
@@ -204,4 +171,17 @@ public class AutoFetchService : IAutoFetchService
                 return "";
         }
     }
+
+    public void StartWatchingLogFile()
+    {
+        WorkerThread.Start();
+        Trace.WriteLine("starting watching");
+    }
+
+    public void StopWatchingLogFile()
+    {
+        WorkerThread.Abort();
+        Trace.WriteLine("stop watch");
+    }
+
 }
