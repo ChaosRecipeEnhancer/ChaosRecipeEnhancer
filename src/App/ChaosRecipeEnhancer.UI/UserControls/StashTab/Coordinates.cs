@@ -20,6 +20,8 @@ public static class Coordinates
 
     private static bool CheckIfItemClicked(Point point, FrameworkElement button)
     {
+        if (button is null) return false;
+
         var clickX = NativeMouseExtensions.ClickLocationX;
         var clickY = NativeMouseExtensions.ClickLocationY;
 
@@ -28,6 +30,9 @@ public static class Coordinates
         point.Y -= 1;
 
         // +1 border thickness
+        // TODO: lots of null pointer exceptions here let's see if we can fix the root cause
+        // might want to go off of zemoto's code for this
+        // might want to check if the item is null before we do anything but that won't actually fix it
         var btnX = Convert.ToInt32(Math.Ceiling(point.X + button.ActualWidth + 1));
         var btnY = Convert.ToInt32(Math.Ceiling(point.Y + button.ActualHeight + 1));
 

@@ -233,17 +233,6 @@ public partial class StashTabOverlayWindow
                         currentTab.ActivateItemCells(i);
                     }
 
-                    // mark item order
-                    // if (SetsToHighlight[0] != null)
-                    // {
-                    //     if (SetsToHighlight[0].Items.Count > 0)
-                    //     {
-                    //         var currentStashTab = GetStashTabFromItem(SetsToHighlight[0].Items[0]);
-                    //         currentStashTab.MarkNextItem(SetsToHighlight[0].Items[0]);
-                    //         currentStashTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Properties.Settings.Default.StashTabOverlayHighlightColor));
-                    //     }
-                    // }
-
                     // Set has been completed
                     if (SetsToHighlight[0].Items.Count == 0)
                     {
