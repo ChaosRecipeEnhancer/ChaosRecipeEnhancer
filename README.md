@@ -1,13 +1,3 @@
-__Update August 6th, 2023 (Pre 3.22 Launch):__
-
-Still on the lookout for some help with this project. I've fallen behind on enhancements and bug fixes.
-
-Important additions, like linking our app to GGG's OAuth API for token-based authentication to the Path of Exile API are the primary focus for new feature additions, if anyone would like to help implenting that solution.
-
-If you're interested in helping out, please reach out on our [community discord][discord-link]!
-
----
-
 <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/CRELogo.png" width="250" alt="Chaos Recipe Enhancer Logo">
 
 # Chaos Recipe Enhancer
@@ -32,15 +22,14 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 ## Installation
 
-1. Make sure you've installed the [.NET Framework Runtime (Version 4.8)][dotnet-framework-link]
-2. Download and install the [latest the ChaosRecipeEnhancerSetup.msi][releases-link]
+1. Download and install the [latest the ChaosRecipeEnhancerSetup.msi][releases-link]
 
 ## Additional Features
 
 - Query from your personal stash or from your guild stash
-- Query multiple stash tabs by ID, named prefix, and named suffix
+- Query multiple stash tabs
 - Customizable overlay position & sizes for different screen resolutions
-- Support for chaos & regal
+- Support for chaos & regal recipes
 - *Offline* loot filter manipulation (online filter syncing not supported)
 - Automatically fetch remaining items when you join a new instance
 
