@@ -30,7 +30,8 @@ public partial class StashTabOverlayWindow
         DataContext = _model = new StashTabOverlayViewModel();
 
         StashTabOverlayTabControl.ItemsSource = _model.OverlayStashTabList;
-        MouseHook.MouseAction += OnMouseHookClick;
+
+        NativeMouseExtensions.MouseAction += (s, e) => Coordinates.OverlayClickEvent(this);
     }
 
     #region Pre-Fuckup
