@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using ChaosRecipeEnhancer.UI.Utilities;
+using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.Tests.Utilities.Converters;
 
@@ -9,7 +9,7 @@ public class NullVisibilityConverterTests
     public void Convert_GivenNull_ReturnsCollapsed()
     {
         // Arrange
-        var converter = new NullVisibilityConverter();
+        var converter = new NullOrEmptyVisibilityConverter();
 
         // Act
         var result = converter.Convert(null, null, null, null);
@@ -22,7 +22,7 @@ public class NullVisibilityConverterTests
     public void Convert_GivenEmptyString_ReturnsCollapsed()
     {
         // Arrange
-        var converter = new NullVisibilityConverter();
+        var converter = new NullOrEmptyVisibilityConverter();
 
         // Act
         var result = converter.Convert(string.Empty, null, null, null);
@@ -30,12 +30,12 @@ public class NullVisibilityConverterTests
         // Assert
         result.Should().Be(Visibility.Collapsed);
     }
-    
+
     [Fact]
     public void Convert_GivenNotNull_ReturnsVisible()
     {
         // Arrange
-        var converter = new NullVisibilityConverter();
+        var converter = new NullOrEmptyVisibilityConverter();
 
         // Act
         var result = converter.Convert("test", null, null, null);

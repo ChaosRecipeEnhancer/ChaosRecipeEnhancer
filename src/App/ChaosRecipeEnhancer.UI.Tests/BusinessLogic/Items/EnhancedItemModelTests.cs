@@ -1,5 +1,5 @@
 ﻿using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
-using ChaosRecipeEnhancer.UI.Tests.API.Data;
+using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Tests.Helpers;
 
 namespace ChaosRecipeEnhancer.UI.Tests.BusinessLogic.Items;
@@ -11,7 +11,7 @@ public class EnhancedItemModelTests
     public void GetItemClass_GivenURL_AssignsExpectedToItemType(string url, string expected)
     {
         // Arrange
-        var item = new EnhancedItemModel(1, 1, false, null, 0, 0, 0, new ItemInfluencesModel(), url);
+        var item = new EnhancedItem(1, 1, false, null, 0, 0, 0, new BaseItemInfluences(), url);
 
         // Act
         item.GetItemClass();
@@ -25,10 +25,10 @@ public class EnhancedItemModelTests
     {
         // Arrange
         var item = EnhancedItemHelpers.GetShieldItemModel();
-        
+
         // Act
         item.GetItemClass();
-        
+
         // Assert
         item.DerivedItemClass.Should().Be("Shields");
     }

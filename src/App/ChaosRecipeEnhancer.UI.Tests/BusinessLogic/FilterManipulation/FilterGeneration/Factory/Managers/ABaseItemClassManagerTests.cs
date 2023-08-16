@@ -17,7 +17,7 @@ public class ABaseItemClassManagerTests
         // Assert
         result.Should().Be("Class Test");
     }
-    
+
     [Fact]
     public void CheckIfMissing_GivenClassNameAssigned_ReturnsTrue()
     {
@@ -37,7 +37,7 @@ public class ABaseItemClassManagerTests
         // Assert
         result.Should().BeTrue();
     }
-    
+
     [Fact]
     public void CheckIfMissing_GivenClassNameNotAssigned_ReturnsFalse()
     {

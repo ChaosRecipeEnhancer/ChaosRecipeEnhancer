@@ -29,6 +29,8 @@ public class EnhancedItem : BaseItem
         GetItemClass();
     }
 
+    public EnhancedItem() { }
+
     public bool IsChaosRecipeEligible => ItemLevel is >= 60 and <= 74;
     public string DerivedItemClass { get; set; }
     public int StashTabIndex { get; set; }
@@ -38,7 +40,7 @@ public class EnhancedItem : BaseItem
     /// (i.e. Helmet, Gloves, Body Armour, Ring, etc.)
     /// Because of this, we have a clever workaround to derive a item class using the included IconUrl.
     /// </summary>
-    private void GetItemClass()
+    public void GetItemClass()
     {
         // Example IconUrl: https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldFN0ckRleDciLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/0884b27765/HelmetStrDex7.png
         //

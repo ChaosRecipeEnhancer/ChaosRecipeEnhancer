@@ -1,5 +1,5 @@
-﻿using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory.Managers;
-using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
+﻿using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration;
+using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers;
 
 namespace ChaosRecipeEnhancer.UI.Tests.BusinessLogic.FilterManipulation.FilterGeneration.Factory.Managers;
 
