@@ -66,8 +66,17 @@ internal class PathOfExileAccountFormViewModel : ViewModelBase
         finally
         {
             Settings.Save();
-            await Task.Delay(TestConnectionCooldown * 1000); // 30 seconds default fetch cooldown
-            TestConnectionButtonEnabled = false;
+
+            if (Settings.PoEAccountConnectionStatus == (int)ConnectionStatusTypes.ValidatedConnection)
+            {
+                await Task.Delay(TestConnectionCooldown * 1000); // 30 seconds default fetch cooldown
+                TestConnectionButtonEnabled = true;
+            }
+            else
+            {
+                await Task.Delay(2000); // reduced to 2 seconds fetch cooldown if error
+                TestConnectionButtonEnabled = true;
+            }
         }
     }
 }

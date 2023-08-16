@@ -7,24 +7,27 @@
              xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
+             xmlns:userControls="clr-namespace:ChaosRecipeEnhancer.UI.UserControls"
+             xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
              mc:Ignorable="d"
              FontSize="14"
              Background="#202020"
              d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
 
     <UserControl.Resources>
-        <utilities:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter"
+        <zemotoCommon:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter"
                                          TrueValue="1.0"
                                          FalseValue="0.1" />
 
         <BooleanToVisibilityConverter x:Key="VisibleIfTrue" />
 
-        <utilities:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual"
+        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual"
                                                  Invert="True"
                                                  ComparisonType="{x:Type system:Int32}" />
+        <zemotoCommon:NullOrEmptyVisibilityConverter x:Key="NullOrEmptyVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Margin="0 5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="auto" />
@@ -42,20 +45,20 @@
             <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="6" />
+            <RowDefinition Height="1" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="5" />
+            <RowDefinition Height="1" />
         </Grid.RowDefinitions>
 
         <!-- Stash Button Overlay Button Display -->
         <Button
             Click="OnStashTabOverlayButtonClicked"
             Width="50"
+            Height="50"
             Grid.Column="1"
             Grid.Row="1"
-            Content="Stash"
-            Margin="5 0" />
+            Content="Stash" />
 
         <!-- Set Counter Display -->
         <UniformGrid
@@ -366,11 +369,11 @@
                 <Border
                     Width="20"
                     Height="20"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
-                    Background="White">
+                    Background="White"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
                         FontSize="12"
@@ -408,12 +411,13 @@
                     Source="../../Assets/Images/Belt.png" />
 
                 <Border
-                    Width="20" Height="20"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
+                    Width="20"
+                    Height="20"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
-                    Background="White">
+                    Background="White"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
                         FontSize="12"
@@ -437,6 +441,7 @@
             x:Name="ReloadFilterButton"
             Click="OnReloadFilterButtonClicked"
             Width="50"
+            Height="50"
             Grid.Column="11"
             Grid.Row="1"
             Margin="5 0"
@@ -466,7 +471,6 @@
         <Grid Grid.Row="1"
               Grid.Column="1"
               Grid.ColumnSpan="11"
-              Margin="5 0"
               Visibility="{Binding NeedsFetching, Converter={StaticResource VisibleIfTrue}}">
 
             <Grid.Background>
@@ -492,22 +496,36 @@
             Grid.Column="12"
             Grid.Row="1"
             Content="Fetch"
-            BorderBrush="Aquamarine"
-            Margin="5 0" />
+            BorderBrush="Aquamarine" />
 
         <!-- Overlay Progress Bar -->
         <ProgressBar
-            Grid.Column="1"
-            Grid.ColumnSpan="12"
+            Grid.Column="0"
             Grid.Row="2"
+            Grid.ColumnSpan="13"
             Height="5"
             Minimum="0"
             Maximum="10"
             IsIndeterminate="{Binding ShowProgress}"
-            Margin="10,10,10,0"
+            Margin="5,5,0,0"
             Foreground="Aqua"
             Background="AntiqueWhite"
             BorderThickness="0,0,0,0" />
+
+        <!-- Warning Message Display -->
+        <userControls:OutlinedTextBlock
+            Grid.Column="6"
+            Grid.Row="1"
+            TextAlignment="Center"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            FontSize="24"
+            Fill="OrangeRed"
+            Stroke="Black"
+            StrokeThickness="5"
+            FontWeight="ExtraBold"
+            Visibility="{Binding WarningMessage, Converter={StaticResource NullOrEmptyVisibilityConverter}}"
+            Text="{Binding WarningMessage}" />
 
     </Grid>
 

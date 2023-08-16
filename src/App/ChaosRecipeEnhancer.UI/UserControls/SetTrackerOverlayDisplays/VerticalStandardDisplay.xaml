@@ -4,25 +4,37 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    mc:Ignorable="d"
+    xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
+    xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:userControls="clr-namespace:ChaosRecipeEnhancer.UI.UserControls"
+    xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
     FontSize="14"
-    xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
-    xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.View"
-    d:DataContext="{d:DesignInstance Type=view:SetTrackerOverlayView }">
+    Background="#202020"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
 
-    <Grid>
+    <UserControl.Resources>
+        <zemotoCommon:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter"
+                                         TrueValue="1.0"
+                                         FalseValue="0.1" />
 
+        <BooleanToVisibilityConverter x:Key="VisibleIfTrue" />
+
+        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual"
+                                                 Invert="True"
+                                                 ComparisonType="{x:Type system:Int32}" />
+        <zemotoCommon:NullOrEmptyVisibilityConverter x:Key="NullOrEmptyVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="5 0">
         <Grid.ColumnDefinitions>
-
-            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="10" />
-
+            <ColumnDefinition Width="1" />
         </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
-
             <RowDefinition Height="5" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -38,38 +50,70 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="5" />
-
         </Grid.RowDefinitions>
 
-        <Border
+        <!-- Stash Button Overlay Button Display -->
+        <Button
+            x:Name="OpenStashTabOverlay"
+            Click="OnStashTabOverlayButtonClicked"
+            Width="50"
+            Height="50"
+            Grid.Column="1"
+            Grid.Row="1"
+            Content="Stash" />
+
+        <!-- Set Counter Display -->
+        <UniformGrid
+            Grid.Row="2"
+            Grid.Column="1"
             Height="50"
             Width="50"
+            Columns="1"
+            Rows="2"
+            Margin="0,5">
+
+            <TextBlock
+                TextAlignment="Center"
+                VerticalAlignment="Center"
+                Text="Sets" />
+
+            <TextBlock
+                x:Name="FullSetsTextBlock"
+                Text="{Binding FullSets}"
+                VerticalAlignment="Center"
+                TextAlignment="Center" />
+
+        </UniformGrid>
+
+        <!-- Gloves -->
+        <Border
+            x:Name="Gloves"
             Grid.Column="1"
             Grid.Row="3"
-            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterGlovesColor}"
+            Height="50"
+            Width="50"
             Margin="0,5"
-            CornerRadius="6"
-            Opacity="{Binding GlovesOpacity}"
-            x:Name="Gloves">
+            Background="{Binding Settings.LootFilterGlovesColor}"
+            Opacity="{Binding GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}">
 
             <Grid>
 
                 <Image
-                    Source="../../Assets/Images/gloves.png"
-                    MaxWidth="50"
-                    MaxHeight="50" />
+                    Source="../../Assets/Images/Gloves.png"
+                    MaxWidth="40"
+                    MaxHeight="40" />
 
                 <Border
                     Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
                     Background="White">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -85,35 +129,35 @@
 
         </Border>
 
+        <!-- Boots -->
         <Border
+            x:Name="Boots"
             Grid.Column="1"
             Grid.Row="4"
             Height="50"
             Width="50"
-            CornerRadius="6"
             Margin="0,5"
-            Opacity="{Binding BootsOpacity}"
-            x:Name="Boots"
-            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBootsColor}">
+            Opacity="{Binding BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Background="{Binding Settings.LootFilterBootsColor}">
 
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
-                    Source="../../Assets/Images/boots.png" />
+                    MaxHeight="40"
+                    MaxWidth="40"
+                    Source="../../Assets/Images/Boots.png" />
 
                 <Border
                     Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
-                    Background="White">
+                    Background="White"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -129,35 +173,36 @@
 
         </Border>
 
+        <!-- Chests -->
         <Border
+            x:Name="Chest"
             Grid.Column="1"
             Grid.Row="6"
             Height="50"
-            CornerRadius="6"
             Width="50"
             Margin="0,5"
-            x:Name="Chest"
-            Opacity="{Binding ChestsOpacity}"
-            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBodyArmourColor}">
+            Opacity="{Binding ChestsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Background="{Binding Settings.LootFilterBodyArmourColor}">
 
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
+                    MaxHeight="40"
+                    MaxWidth="40"
                     Source="../../Assets/Images/BodyArmor.png" />
 
                 <Border
                     Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
-                    Background="White">
+                    Background="White"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
+
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -173,35 +218,36 @@
 
         </Border>
 
+        <!-- Weapons -->
         <Border
+            x:Name="Weapon"
             Grid.Column="1"
             Grid.Row="7"
             Height="50"
-            CornerRadius="6"
             Width="50"
             Margin="0,5"
-            x:Name="Weapon"
-            Opacity="{Binding WeaponsOpacity}"
-            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterWeaponColor}">
+            Opacity="{Binding WeaponsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Background="{Binding Settings.LootFilterWeaponColor}">
 
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
-                    Source="../../Assets/Images/weapon.png" />
+                    MaxHeight="40"
+                    MaxWidth="40"
+                    Source="../../Assets/Images/Weapon.png" />
 
                 <Border
                     Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
-                    Background="White">
+                    Background="White"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
+
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -217,35 +263,36 @@
 
         </Border>
 
+        <!-- Helmet -->
         <Border
+            x:Name="Helmet"
             Grid.Column="1"
             Grid.Row="5"
             Height="50"
-            CornerRadius="6"
             Width="50"
             Margin="0,5"
-            Opacity="{Binding HelmetOpacity}"
-            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterHelmetColor}"
-            x:Name="Helmet">
+            Opacity="{Binding HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Background="{Binding Settings.LootFilterHelmetColor}">
 
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
-                    Source="../../Assets/Images/helmet.png" />
+                    MaxHeight="40"
+                    MaxWidth="40"
+                    Source="../../Assets/Images/Helmet.png" />
 
                 <Border
                     Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
-                    Background="White">
+                    Background="White"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
+
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -261,35 +308,35 @@
 
         </Border>
 
+        <!-- Rings -->
         <Border
+            x:Name="Rings"
             Grid.Column="1"
             Grid.Row="8"
             Height="50"
-            CornerRadius="6"
             Width="50"
             Margin="0,5"
-            Opacity="{Binding RingsOpacity}"
-            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterRingColor}"
-            x:Name="Rings">
+            Opacity="{Binding RingsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Background="{Binding Settings.LootFilterRingColor}">
 
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
-                    Source="../../Assets/Images/ring.png" />
+                    MaxHeight="40"
+                    MaxWidth="40"
+                    Source="../../Assets/Images/Ring.png" />
 
                 <Border
                     Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
-                    Background="White">
+                    Background="White"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -305,35 +352,35 @@
 
         </Border>
 
+        <!-- Amulets -->
         <Border
+            x:Name="Amulet"
             Grid.Column="1"
             Grid.Row="9"
             Height="50"
-            CornerRadius="6"
             Width="50"
             Margin="0,5"
-            Opacity="{Binding AmuletsOpacity}"
-            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterAmuletColor}"
-            x:Name="Amulet">
+            Opacity="{Binding AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Background="{Binding Settings.LootFilterAmuletColor}">
 
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
-                    Source="../../Assets/Images/amulet.png" />
+                    MaxHeight="40"
+                    MaxWidth="40"
+                    Source="../../Assets/Images/Amulet.png" />
 
                 <Border
                     Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
-                    Background="White">
+                    Background="White"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -349,31 +396,35 @@
 
         </Border>
 
+        <!-- Belts -->
         <Border
+            x:Name="Belt"
             Grid.Column="1"
             Grid.Row="10"
             Height="50"
-            CornerRadius="6"
             Width="50"
             Margin="0,5"
-            Opacity="{Binding BeltsOpacity}"
-            Background="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterBeltColor}"
-            x:Name="Belt">
+            Opacity="{Binding BeltsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+            Background="{Binding Settings.LootFilterBeltColor}">
 
             <Grid>
 
                 <Image
-                    MaxHeight="50"
-                    MaxWidth="50"
-                    Source="../../Assets/Images/belt.png" />
+                    MaxHeight="40"
+                    MaxWidth="40"
+                    Source="../../Assets/Images/Belt.png" />
 
                 <Border
-                    Width="20" Height="20"
-                    Visibility="{Binding AmountsVisibility}"
-                    VerticalAlignment="Top" HorizontalAlignment="Right" CornerRadius="50" Background="White">
+                    Width="20"
+                    Height="20"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    CornerRadius="50"
+                    Background="White"
+                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                     <TextBlock
-                        FontSize="18"
+                        FontSize="12"
                         FontFamily="Segoe UI"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
@@ -389,110 +440,109 @@
 
         </Border>
 
+        <!-- Reload Filter Button -->
+        <Button
+            x:Name="ReloadFilterButton"
+            Grid.Column="1"
+            Grid.Row="11"
+            Click="OnReloadFilterButtonClicked"
+            Width="50"
+            Height="50"
+            Margin="0,5"
+            Visibility="{Binding Settings.LootFilterManipulationEnabled, Converter={StaticResource VisibleIfTrue}}"
+            Background="#202020">
+
+            <!-- Content with Line Break (Not sure if there's an easier way to do this...) -->
+            <TextBlock TextAlignment="Center">Reload<LineBreak />Filter</TextBlock>
+
+            <!-- Conditional rendering for 'Reload Filter' button -->
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger
+                            Binding="{Binding Settings.LootFilterManipulationEnabled}"
+                            Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <!-- Items Not Fetched Overlay Display -->
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              Grid.RowSpan="11"
+              Width="50"
+              Visibility="{Binding NeedsFetching, Converter={StaticResource VisibleIfTrue}}">
+
+            <Grid.Background>
+                <SolidColorBrush Color="Gray"
+                                 Opacity="0.90" />
+            </Grid.Background>
+
+            <TextBlock
+                       Foreground="White"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center">
+                Items
+                <LineBreak />
+                Not
+                <LineBreak />
+                Fetched
+            </TextBlock>
+
+        </Grid>
+
+        <!-- Fetch Button -->
         <Button
             x:Name="RefreshButton"
-            Click="FetchButton_Click"
+            Click="OnFetchButtonClicked"
             Width="50"
             Height="50"
             IsEnabled="{Binding FetchButtonEnabled}"
             Grid.Column="1"
-            Grid.Row="11"
-            Content="Fetch"
-            Margin="0,5" />
-
-        <Button
-            x:Name="ReloadFilterButton"
-            Click="ReloadFilterButton_Click"
-            Width="50"
-            Height="50"
-            Grid.Column="1"
             Grid.Row="12"
-            Margin="0,5">
+            Content="Fetch" />
 
-            <!-- Conditional rendering for 'Reload Filter' button -->
+        <!-- Overlay Progress Bar -->
+        <ProgressBar
+            Grid.Column="2"
+            Grid.Row="0"
+            Grid.RowSpan="13"
+            Width="5"
+            IsIndeterminate="{Binding ShowProgress}"
+            Margin="5 5 0 0"
+            Foreground="Aqua"
+            Background="AntiqueWhite"
+            BorderThickness="0,0,0,0" />
 
-            <Button.Style>
-
-                <Style TargetType="{x:Type Button}">
-
-                    <Setter Property="Visibility" Value="Visible" />
-
-                    <Style.Triggers>
-
-                        <DataTrigger
-                            Binding="{Binding Source={x:Static properties:Settings.Default}, Path=LootFilterManipulationEnabled}"
-                            Value="False">
-
-                            <Setter Property="Visibility" Value="Collapsed" />
-
-                        </DataTrigger>
-
-                    </Style.Triggers>
-
-                </Style>
-
-            </Button.Style>
-
-            <TextBlock TextAlignment="Center">
-
-                Reload
-                <LineBreak />
-                Filter
-
-            </TextBlock>
-
-        </Button>
-
-        <Button
-            x:Name="OpenStashTabOverlay"
-            Click="OpenStashTabOverlay_Click"
-            Width="50"
-            Height="50"
+        <!-- Warning Message Display -->
+        <userControls:OutlinedTextBlock
             Grid.Column="1"
-            Grid.Row="1"
-            Content="{Binding OpenStashOverlayButtonContent}"
-            Margin="0,5" />
+            Grid.Row="3"
+            Grid.ColumnSpan="3"
+            Grid.RowSpan="9"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            TextAlignment="Center"
+            FontSize="24"
+            Fill="OrangeRed"
+            Stroke="Black"
+            StrokeThickness="5"
+            FontWeight="ExtraBold"
+            Visibility="{Binding WarningMessage, Converter={StaticResource NullOrEmptyVisibilityConverter}}"
+            Text="{Binding WarningMessage}">
 
-        <UniformGrid
-            Grid.Row="2"
-            Grid.Column="1"
-            Height="50"
-            Width="50"
-            Columns="1"
-            Rows="2"
-            Margin="0,5"
-            Background="White">
+            <userControls:OutlinedTextBlock.LayoutTransform>
+                <RotateTransform Angle="90" />
+            </userControls:OutlinedTextBlock.LayoutTransform>
 
-            <TextBlock
-                TextAlignment="Center"
-                VerticalAlignment="Center"
-                Text="Sets" />
-
-            <TextBlock
-                x:Name="FullSetsTextBlock"
-                Text="{Binding FullSetsText}"
-                VerticalAlignment="Center"
-                TextAlignment="Center" />
-
-        </UniformGrid>
-
-        <Border
-            Grid.Column="1"
-            Grid.Row="13"
-            Width="50"
-            Height="Auto"
-            Margin="0,5"
-            Visibility="{Binding WarningMessageVisibility}">
-
-            <TextBlock
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                TextWrapping="WrapWithOverflow"
-                Text="{Binding WarningMessage}"
-                FontSize="12"
-                Foreground="White" />
-
-        </Border>
+        </userControls:OutlinedTextBlock>
 
     </Grid>
 

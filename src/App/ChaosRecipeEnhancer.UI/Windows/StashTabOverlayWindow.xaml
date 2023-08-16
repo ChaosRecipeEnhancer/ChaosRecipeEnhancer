@@ -6,6 +6,7 @@
         xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
         xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
         xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
+        xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -26,10 +27,10 @@
     </Window.Background>
 
     <Window.Resources>
-        <utilities:BoolVisibilityConverter x:Key="HiddenIfFalse"
+        <zemotoCommon:BoolVisibilityConverter x:Key="HiddenIfFalse"
                                            CollapseWhenNotVisible="True" />
 
-        <utilities:BoolToObjectConverter x:Key="EditButtonTextConverter"
+        <zemotoCommon:BoolToObjectConverter x:Key="EditButtonTextConverter"
                                          TrueValue="Save"
                                          FalseValue="Edit" />
     </Window.Resources>

@@ -11,6 +11,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:view="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
+        xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
+        xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:userControls="clr-namespace:ChaosRecipeEnhancer.UI.UserControls"
         FontSize="14"
         Title="Chaos Recipe Enhancer Settings"
         Icon="/Assets/Icons/CREIcon.ico"
@@ -21,6 +25,11 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type={x:Type view:SettingsViewModel}}">
+
+    <Window.Resources>
+        <zemotoCommon:EqualityConverter x:Key="ValidateConnectionConverter" ComparisonType="{x:Type system:Int32}" />
+        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibilityConverter" ComparisonType="{x:Type system:Int32}" />
+    </Window.Resources>
 
     <Border
         BorderBrush="DarkGray"
@@ -57,7 +66,8 @@
                     x:Name="RunOverlayButton"
                     Margin="2.5 0 0 0"
                     Content="Run Overlay"
-                    Click="OnRunOverlayButtonClicked" />
+                    Click="OnRunOverlayButtonClicked"
+                    IsEnabled="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}"/>
 
             </UniformGrid>
             <!-- App Header End -->
@@ -71,6 +81,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -81,12 +92,46 @@
                             Grid.Column="0"
                             Grid.Row="0" />
 
+                        <!-- Warning Message Display -->
+                        <TextBlock
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            TextAlignment="Center"
+                            FontSize="16"
+                            Foreground="OrangeRed"
+                            Background="WhiteSmoke"
+                            Padding="5 5"
+                            Width="300"
+                            TextWrapping="Wrap"
+                            Text="Please validate your Path of Exile Account Credentials with the 'Test Connection' button to ensure they are correct."
+                            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibilityConverter}, ConverterParameter=0}"/>
+
+                        <!-- Warning Message Display -->
+                        <TextBlock
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            TextAlignment="Center"
+                            FontSize="16"
+                            Foreground="Red"
+                            Background="WhiteSmoke"
+                            Padding="5 5"
+                            Width="300"
+                            TextWrapping="Wrap"
+                            Text="There was an issue validating your Path of Exile Account credentials. Please check your account name spelling, or your Session ID and try again. The PoE servers could also be down."
+                            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibilityConverter}, ConverterParameter=2}"/>
+
                     </Grid>
                 </TabItem>
                 <!-- Account Settings Tab End -->
 
                 <!-- General Settings Tab Start -->
-                <TabItem Header="General">
+                <TabItem
+                    Header="General"
+                    IsEnabled="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -111,7 +156,9 @@
                 <!-- General Settings Tab End -->
 
                 <!-- Overlay Settings Tab Start -->
-                <TabItem Header="Overlays">
+                <TabItem
+                    Header="Overlays"
+                    IsEnabled="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -136,7 +183,9 @@
                 <!-- Overlay Settings Tab End -->
 
                 <!-- Loot Filter Settings Tab Start -->
-                <TabItem Header="Loot Filter">
+                <TabItem
+                    Header="Loot Filter"
+                    IsEnabled="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />

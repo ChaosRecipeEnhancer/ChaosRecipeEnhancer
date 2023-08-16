@@ -121,11 +121,12 @@
             SelectedIndex="{Binding Settings.SetTrackerOverlayDisplayMode, Mode=TwoWay}">
 
             <ComboBoxItem Content="Standard" />
-            <ComboBoxItem Content="Minified" />
-            <ComboBoxItem Content="Only Buttons" />
             <ComboBoxItem Content="Standard (Vertical)" />
-            <ComboBoxItem Content="Minified (Vertical)" />
-            <ComboBoxItem Content="Only Minified Buttons" />
+
+            <!-- <ComboBoxItem Content="Minified" /> -->
+            <!-- <ComboBoxItem Content="Only Buttons" /> -->
+            <!-- <ComboBoxItem Content="Minified (Vertical)" /> -->
+            <!-- <ComboBoxItem Content="Only Minified Buttons" /> -->
 
         </ComboBox>
 

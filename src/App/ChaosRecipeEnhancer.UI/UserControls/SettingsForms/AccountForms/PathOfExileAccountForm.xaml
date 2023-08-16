@@ -7,13 +7,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
              Background="#202020"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=accountForms:PathOfExileAccountFormViewModel}">
 
     <UserControl.Resources>
         <FontFamily x:Key="PasswordFont">../../../Assets/Fonts/#Password</FontFamily>
-        <utilities:EqualityToVisibilityConverter x:Key="VisibleIfEqual"
+        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfEqual"
                                                  ComparisonType="{x:Type system:Int32}" />
     </UserControl.Resources>
 
@@ -159,7 +160,7 @@
                 Grid.Column="1"
                 VerticalAlignment="Center"
                 Foreground="OrangeRed"
-                Text="PoE Server Issues" />
+                Text="Connection Issues" />
         </Grid>
 
         <!-- Validate Connection Button -->

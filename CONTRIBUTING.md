@@ -46,13 +46,6 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 1. In GitHub, send a pull request to our `develop` branch, or `EnhancePoEApp:develop` if you have forked the repo.
 
-## Required extensions
-
-For contributions to the client, you should have the following extensions installed in Visual Studio 2022:
-
-1. [WiX Toolset Build Tools](https://marketplace.visualstudio.com/items?itemName=WixToolset.WiXToolset) 
-
-
 ## Coding Guidelines
 
 TODO: We will update this as needed.
