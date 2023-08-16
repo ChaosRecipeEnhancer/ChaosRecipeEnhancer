@@ -11,4 +11,10 @@ public class CBeltsManager : ABaseItemClassManager
         ClassColor = Settings.Default.LootFilterBeltColor;
         AlwaysActive = Settings.Default.LootFilterBeltsAlwaysActive;
     }
+
+    public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
+    {
+        activeItems.BeltActive = newValue;
+        return activeItems;
+    }
 }

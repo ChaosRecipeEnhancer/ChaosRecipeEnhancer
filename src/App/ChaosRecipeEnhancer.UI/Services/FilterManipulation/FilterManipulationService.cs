@@ -6,12 +6,20 @@ using System.Reflection;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterStorage;
 using ChaosRecipeEnhancer.UI.Constants;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration;
+using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
-public class FilterManipulationService
+public interface IFilterManipulationService
+{
+    public Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem);
+}
+
+public class FilterManipulationService : IFilterManipulationService
 {
     private ABaseItemClassManager _itemClassManager;
     private readonly List<string> _customStyle = new();
@@ -24,37 +32,37 @@ public class FilterManipulationService
     public Settings Settings { get; } = Settings.Default;
 
     // TODO: [Refactor] mechanism for receiving missing items from some other service and populating based on that limited information
-    // public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem)
-    // {
-    //     var activeItemTypes = new ActiveItemTypes();
-    //     var visitor = new CItemClassManagerFactory();
-    //     var sectionList = new HashSet<string>();
-    //
-    //     foreach (ItemClass item in Enum.GetValues(typeof(ItemClass)))
-    //     {
-    //         _itemClassManager = visitor.GetItemClassManager(item);
-    //
-    //         var stillMissing = _itemClassManager.CheckIfMissing(missingItemClasses);
-    //
-    //         // weapons might be buggy, will try to do some tests
-    //         if (_itemClassManager.AlwaysActive || stillMissing)
-    //         {
-    //             // if we need chaos only gear to complete a set (60-74), add that to our filter section
-    //             sectionList.Add(GenerateSection());
-    //
-    //             // find better way to handle active items and sound notification on changes
-    //             activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
-    //         }
-    //         else
-    //         {
-    //             activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, false);
-    //         }
-    //     }
-    //
-    //     if (Settings.Default.LootFilterManipulationEnabled) await UpdateFilterAsync(sectionList);
-    //
-    //     return activeItemTypes;
-    // }
+    public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem)
+    {
+        var activeItemTypes = new ActiveItemTypes();
+        var visitor = new CItemClassManagerFactory();
+        var sectionList = new HashSet<string>();
+
+        foreach (ItemClass item in Enum.GetValues(typeof(ItemClass)))
+        {
+            _itemClassManager = visitor.GetItemClassManager(item);
+
+            var stillMissing = _itemClassManager.CheckIfMissing(missingItemClasses);
+
+            // weapons might be buggy, will try to do some tests
+            if (_itemClassManager.AlwaysActive || stillMissing)
+            {
+                // if we need chaos only gear to complete a set (60-74), add that to our filter section
+                sectionList.Add(GenerateSection());
+
+                // find better way to handle active items and sound notification on changes
+                activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
+            }
+            else
+            {
+                activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, false);
+            }
+        }
+
+        if (Settings.Default.LootFilterManipulationEnabled) await UpdateFilterAsync(sectionList);
+
+        return activeItemTypes;
+    }
 
     private string GenerateSection()
     {
@@ -184,9 +192,7 @@ public class FilterManipulationService
     {
         _customStyle.Clear();
 
-        var pathNormalItemsStyle =
-            Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
-                FilterAssets.DefaultNormalItemFilterStyleFilePath);
+        var pathNormalItemsStyle = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty, FilterAssets.DefaultNormalItemFilterStyleFilePath);
 
         var style = File.ReadAllLines(pathNormalItemsStyle);
 

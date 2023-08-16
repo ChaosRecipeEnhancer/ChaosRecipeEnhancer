@@ -11,4 +11,10 @@ public class CGlovesManager : ABaseItemClassManager
         ClassColor = Settings.Default.LootFilterGlovesColor;
         AlwaysActive = Settings.Default.LootFilterGlovesAlwaysActive;
     }
+
+    public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
+    {
+        activeItems.GlovesActive = newValue;
+        return activeItems;
+    }
 }

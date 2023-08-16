@@ -11,4 +11,10 @@ public class CBodyArmoursManager : ABaseItemClassManager
         ClassColor = Settings.Default.LootFilterBodyArmourColor;
         AlwaysActive = Settings.Default.LootFilterBodyArmourAlwaysActive;
     }
+
+    public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
+    {
+        activeItems.BootsActive = newValue;
+        return activeItems;
+    }
 }

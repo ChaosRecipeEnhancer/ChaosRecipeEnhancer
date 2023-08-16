@@ -14,6 +14,7 @@ namespace ChaosRecipeEnhancer.UI.Windows;
 
 internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 {
+    private readonly IFilterManipulationService _filterManipulationService = Ioc.Default.GetRequiredService<IFilterManipulationService>();
     private readonly IItemSetManagerService _itemSetManagerService = Ioc.Default.GetRequiredService<IItemSetManagerService>();
     private readonly IReloadFilterService _reloadFilterService = Ioc.Default.GetRequiredService<IReloadFilterService>();
     private readonly IApiService _apiService = Ioc.Default.GetRequiredService<IApiService>();
@@ -145,6 +146,20 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     public void RunReloadFilter()
     {
+        // hash set of missing item classes (e.g. "ring", "amulet", etc.)
+        var sets = _itemSetManagerService.RetrieveSetsInProgress();
+        var needChaosItems = sets.Any(set => !set.HasRecipeQualifier);
+        var missingItemClasses = new HashSet<string>();
+
+        foreach (var set in sets)
+        {
+            foreach (var item in set.EmptyItemSlots)
+            {
+                missingItemClasses.Add(item);
+            }
+        }
+
+        _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses, needChaosItems);
         _reloadFilterService.ReloadFilter();
     }
 

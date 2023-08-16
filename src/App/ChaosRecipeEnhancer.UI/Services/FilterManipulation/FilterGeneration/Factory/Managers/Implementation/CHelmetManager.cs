@@ -4,11 +4,17 @@ namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Fa
 
 public class CHelmetManager : ABaseItemClassManager
 {
-	public CHelmetManager()
-	{
-		ClassName = "Helmets";
-		ClassFilterName = "\"Helmets\"";
-		ClassColor = Settings.Default.LootFilterHelmetColor;
-		AlwaysActive = Settings.Default.LootFilterHelmetsAlwaysActive;
-	}
+    public CHelmetManager()
+    {
+        ClassName = "Helmets";
+        ClassFilterName = "\"Helmets\"";
+        ClassColor = Settings.Default.LootFilterHelmetColor;
+        AlwaysActive = Settings.Default.LootFilterHelmetsAlwaysActive;
+    }
+
+    public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
+    {
+        activeItems.HelmetActive = newValue;
+        return activeItems;
+    }
 }

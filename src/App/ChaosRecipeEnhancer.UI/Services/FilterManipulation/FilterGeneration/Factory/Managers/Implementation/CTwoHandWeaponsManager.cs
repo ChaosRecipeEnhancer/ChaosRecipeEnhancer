@@ -1,4 +1,5 @@
-﻿using ChaosRecipeEnhancer.UI.Constants;
+﻿using System.Collections.Generic;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers.Implementation;
@@ -22,4 +23,17 @@ public class CTwoHandWeaponsManager : ABaseItemClassManager
 
         return baseType;
     }
+
+    public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
+    {
+        activeItems.WeaponActive = newValue;
+        return activeItems;
+    }
+
+    public override bool CheckIfMissing(HashSet<string> missingItemClasses)
+    {
+        // bad, dont like, no good ideas for now tho
+        return missingItemClasses.Contains(ClassName) || missingItemClasses.Contains("OneHandWeapons");
+    }
+
 }

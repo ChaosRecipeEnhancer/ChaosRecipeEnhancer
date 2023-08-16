@@ -64,9 +64,9 @@
 		</Content>
 
 		<!-- Filters -->
-		<Content Update="Assets\FilterStyles\NormalItemsStyle.txt">
+		<None Update="Assets\FilterStyles\NormalItemsStyle.txt">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
+		</None>
 
 		<!-- Documentation -->
 		<Content Include="Extensions\README.md" />

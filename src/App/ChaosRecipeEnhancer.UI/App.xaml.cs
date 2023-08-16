@@ -28,6 +28,7 @@ internal partial class App
         services.AddSingleton<IApiService, ApiService>();
         services.AddSingleton<IReloadFilterService, ReloadFilterService>();
         services.AddSingleton<IItemSetManagerService, ItemSetManagerService>();
+        services.AddSingleton<IFilterManipulationService, FilterManipulationService>();
     }
 
     private void OnStartup(object sender, StartupEventArgs e)

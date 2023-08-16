@@ -11,4 +11,10 @@ public class CBootsManager : ABaseItemClassManager
         ClassColor = Settings.Default.LootFilterBootsColor;
         AlwaysActive = Settings.Default.LootFilterBootsAlwaysActive;
     }
+
+    public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
+    {
+        activeItems.BootsActive = newValue;
+        return activeItems;
+    }
 }

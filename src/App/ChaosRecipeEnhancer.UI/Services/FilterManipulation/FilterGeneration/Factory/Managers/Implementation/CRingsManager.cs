@@ -11,4 +11,10 @@ public class CRingsManager : ABaseItemClassManager
         ClassColor = Settings.Default.LootFilterRingColor;
         AlwaysActive = Settings.Default.LootFilterRingsAlwaysActive;
     }
+
+    public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
+    {
+        activeItems.RingActive = newValue;
+        return activeItems;
+    }
 }

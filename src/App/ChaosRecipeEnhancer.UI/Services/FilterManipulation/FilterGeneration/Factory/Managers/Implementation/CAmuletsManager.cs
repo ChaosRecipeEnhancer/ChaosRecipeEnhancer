@@ -11,4 +11,10 @@ public class CAmuletsManager : ABaseItemClassManager
         ClassColor = Settings.Default.LootFilterAmuletColor;
         AlwaysActive = Settings.Default.LootFilterAmuletsAlwaysActive;
     }
+
+    public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
+    {
+        activeItems.AmuletActive = newValue;
+        return activeItems;
+    }
 }
