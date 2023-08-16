@@ -22,7 +22,7 @@
         d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
 
     <Window.Resources>
-        <utilities:NullVisibilityConverter x:Key="NullVisibilityConverter" />
+        <utilities:NullOrEmptyVisibilityConverter x:Key="NullOrEmptyVisibilityConverter" />
     </Window.Resources>
 
     <Border BorderThickness="1"
@@ -47,6 +47,7 @@
                 <!-- Warning Message Display -->
                 <userControls:OutlinedTextBlock
                     Grid.Row="0"
+                    TextAlignment="Center"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     FontSize="24"
@@ -54,12 +55,13 @@
                     Stroke="Black"
                     StrokeThickness="5"
                     FontWeight="ExtraBold"
-                    Text="{Binding WarningMessage}"
-                    Visibility="{Binding WarningMessage, Converter={StaticResource NullVisibilityConverter}}"/>
+                    Visibility="{Binding WarningMessage, Converter={StaticResource NullOrEmptyVisibilityConverter}}"
+                    Text="{Binding WarningMessage}" />
 
                 <!-- Set Tracker Display -->
-                <ContentControl x:Name="MainOverlayContentControl"
-                                Grid.Row="1" />
+                <ContentControl
+                    x:Name="MainOverlayContentControl"
+                    Grid.Row="1" />
 
             </Grid>
         </Border>

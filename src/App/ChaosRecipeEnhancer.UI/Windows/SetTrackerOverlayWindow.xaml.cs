@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using ChaosRecipeEnhancer.UI.Utilities;
@@ -10,16 +11,18 @@ namespace ChaosRecipeEnhancer.UI.Windows;
 internal partial class SetTrackerOverlayWindow
 {
     private readonly SetTrackerOverlayViewModel _model;
-
     private readonly StashTabOverlayWindow _stashTabOverlay;
 
     public SetTrackerOverlayWindow()
     {
         DataContext = _model = new SetTrackerOverlayViewModel();
+
+        // initialize stash tab overlay window alongside this window
         _stashTabOverlay = new StashTabOverlayWindow();
 
         InitializeComponent();
         UpdateOverlayType();
+
         Settings.Default.PropertyChanged += OnSettingsChanged;
     }
 
@@ -34,13 +37,15 @@ internal partial class SetTrackerOverlayWindow
     {
         if (e.PropertyName == nameof(Settings.SetTrackerOverlayDisplayMode))
             UpdateOverlayType();
-        else if (e.PropertyName == nameof(Settings.FullSetThreshold) || e.PropertyName == nameof(Settings.SelectedStashTabs))
+        else if (e.PropertyName == nameof(Settings.FullSetThreshold)
+                 || e.PropertyName == nameof(Settings.StashTabIndices)
+                 || e.PropertyName == nameof(Settings.StashTabPrefix))
             _model.UpdateNotificationMessage();
     }
 
     private void UpdateOverlayType()
     {
-        if (Settings.Default.SetTrackerOverlayDisplayMode == 0)
+        if (Settings.Default.SetTrackerOverlayDisplayMode == (int)SetTrackerOverlayMode.Standard)
             MainOverlayContentControl.Content = new StandardDisplay(this);
     }
 

@@ -49,6 +49,54 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int PoEAccountConnectionStatus {
+            get {
+                return ((int)(this["PoEAccountConnectionStatus"]));
+            }
+            set {
+                this["PoEAccountConnectionStatus"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ChaosRecipeTrackingEnabled {
+            get {
+                return ((bool)(this["ChaosRecipeTrackingEnabled"]));
+            }
+            set {
+                this["ChaosRecipeTrackingEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IncludeIdentifiedItemsEnabled {
+            get {
+                return ((bool)(this["IncludeIdentifiedItemsEnabled"]));
+            }
+            set {
+                this["IncludeIdentifiedItemsEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int FullSetThreshold {
+            get {
+                return ((int)(this["FullSetThreshold"]));
+            }
+            set {
+                this["FullSetThreshold"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string LeagueName {
             get {
@@ -68,54 +116,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["CustomLeagueEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool DoNotPreserveLowItemLevelGear {
-            get {
-                return ((bool)(this["DoNotPreserveLowItemLevelGear"]));
-            }
-            set {
-                this["DoNotPreserveLowItemLevelGear"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IncludeIdentifiedItemsEnabled {
-            get {
-                return ((bool)(this["IncludeIdentifiedItemsEnabled"]));
-            }
-            set {
-                this["IncludeIdentifiedItemsEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ChaosRecipeTrackingEnabled {
-            get {
-                return ((bool)(this["ChaosRecipeTrackingEnabled"]));
-            }
-            set {
-                this["ChaosRecipeTrackingEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int FullSetThreshold {
-            get {
-                return ((int)(this["FullSetThreshold"]));
-            }
-            set {
-                this["FullSetThreshold"] = value;
             }
         }
         
@@ -152,18 +152,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["StashTabIndices"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string StashFolderName {
-            get {
-                return ((string)(this["StashFolderName"]));
-            }
-            set {
-                this["StashFolderName"] = value;
             }
         }
         
@@ -217,90 +205,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int Language {
-            get {
-                return ((int)(this["Language"]));
-            }
-            set {
-                this["Language"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool CloseToTrayEnabled {
-            get {
-                return ((bool)(this["CloseToTrayEnabled"]));
-            }
-            set {
-                this["CloseToTrayEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SoundEnabled {
-            get {
-                return ((bool)(this["SoundEnabled"]));
-            }
-            set {
-                this["SoundEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public int Volume {
-            get {
-                return ((int)(this["Volume"]));
-            }
-            set {
-                this["Volume"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
-        public string ItemSetCompletedSoundFileLocation {
-            get {
-                return ((string)(this["ItemSetCompletedSoundFileLocation"]));
-            }
-            set {
-                this["ItemSetCompletedSoundFileLocation"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
-        public string FilterModificationPendingSoundFileLocation {
-            get {
-                return ((string)(this["FilterModificationPendingSoundFileLocation"]));
-            }
-            set {
-                this["FilterModificationPendingSoundFileLocation"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int SetTrackerOverlayDisplayMode {
-            get {
-                return ((int)(this["SetTrackerOverlayDisplayMode"]));
-            }
-            set {
-                this["SetTrackerOverlayDisplayMode"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public float SetTrackerOverlayOpacity {
             get {
@@ -320,6 +224,18 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["SetTrackerOverlayItemCounterDisplayMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SetTrackerOverlayDisplayMode {
+            get {
+                return ((int)(this["SetTrackerOverlayDisplayMode"]));
+            }
+            set {
+                this["SetTrackerOverlayDisplayMode"] = value;
             }
         }
         
@@ -361,18 +277,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int StashTabOverlayHighlightMode {
-            get {
-                return ((int)(this["StashTabOverlayHighlightMode"]));
-            }
-            set {
-                this["StashTabOverlayHighlightMode"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#96F90000")]
         public string StashTabOverlayHighlightColor {
             get {
@@ -380,6 +284,18 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["StashTabOverlayHighlightColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int StashTabOverlayHighlightMode {
+            get {
+                return ((int)(this["StashTabOverlayHighlightMode"]));
+            }
+            set {
+                this["StashTabOverlayHighlightMode"] = value;
             }
         }
         
@@ -649,6 +565,42 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DoNotPreserveLowItemLevelGear {
+            get {
+                return ((bool)(this["DoNotPreserveLowItemLevelGear"]));
+            }
+            set {
+                this["DoNotPreserveLowItemLevelGear"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Language {
+            get {
+                return ((int)(this["Language"]));
+            }
+            set {
+                this["Language"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CloseToTrayEnabled {
+            get {
+                return ((bool)(this["CloseToTrayEnabled"]));
+            }
+            set {
+                this["CloseToTrayEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public double SettingsWindowTopPosition {
             get {
@@ -769,24 +721,61 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Specialized.StringCollection SelectedStashTabs {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SoundEnabled {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["SelectedStashTabs"]));
+                return ((bool)(this["SoundEnabled"]));
             }
             set {
-                this["SelectedStashTabs"] = value;
+                this["SoundEnabled"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int PoEAccountConnectionStatus {
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int Volume {
             get {
-                return ((int)(this["PoEAccountConnectionStatus"]));
+                return ((int)(this["Volume"]));
             }
             set {
-                this["PoEAccountConnectionStatus"] = value;
+                this["Volume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
+        public string ItemSetCompletedSoundFileLocation {
+            get {
+                return ((string)(this["ItemSetCompletedSoundFileLocation"]));
+            }
+            set {
+                this["ItemSetCompletedSoundFileLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
+        public string FilterModificationPendingSoundFileLocation {
+            get {
+                return ((string)(this["FilterModificationPendingSoundFileLocation"]));
+            }
+            set {
+                this["FilterModificationPendingSoundFileLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StashFolderName {
+            get {
+                return ((string)(this["StashFolderName"]));
+            }
+            set {
+                this["StashFolderName"] = value;
             }
         }
     }

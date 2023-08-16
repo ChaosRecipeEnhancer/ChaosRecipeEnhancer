@@ -116,7 +116,7 @@ public sealed class InvertBoolConverter : IValueConverter
     }
 }
 
-public sealed class NullVisibilityConverter : IValueConverter
+public sealed class NullOrEmptyVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

@@ -11,6 +11,7 @@ using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.UserControls.StashTab;
 using ChaosRecipeEnhancer.UI.Utilities;
 using System.Linq;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
 using CommunityToolkit.Mvvm.DependencyInjection;
 
@@ -19,7 +20,7 @@ namespace ChaosRecipeEnhancer.UI.Windows;
 public partial class StashTabOverlayWindow
 {
     private readonly IItemSetManagerService _itemSetManagerService = Ioc.Default.GetService<IItemSetManagerService>();
-    private List<EnhancedItemSet> ItemSetListHighlight { get; } = new List<EnhancedItemSet>();
+    private List<EnhancedItemSet> ItemSetListHighlight { get; } = new();
 
     private readonly StashTabOverlayViewModel _model;
 
@@ -29,7 +30,6 @@ public partial class StashTabOverlayWindow
         DataContext = _model = new StashTabOverlayViewModel();
 
         StashTabOverlayTabControl.ItemsSource = _model.OverlayStashTabList;
-
         MouseHook.MouseAction += OnMouseHookClick;
     }
 
@@ -177,7 +177,7 @@ public partial class StashTabOverlayWindow
             ActivateNextCell(true, null, StashTabOverlayTabControl);
 
             // If "All Items" highlight mode enabled, paint all Stash Tab Headers to their respective colors
-            if (Settings.Default.StashTabOverlayHighlightMode == 2)
+            if (Settings.Default.StashTabOverlayHighlightMode == (int)StashTabOverlayHighlightMode.AllItems)
             {
                 foreach (var set in ItemSetListHighlight)
                 {
@@ -221,26 +221,17 @@ public partial class StashTabOverlayWindow
         base.Hide();
     }
 
-    private StashTabControl GetStashTabFromItem(EnhancedItem itemModel)
-    {
-        foreach (var s in StashTabControlManager.StashTabControls)
-        {
-            if (itemModel.StashTabIndex == s.TabIndex) return s;
-        }
-
-        return null;
-    }
-
     public void ActivateNextCell(bool active, InteractiveStashTabCell stashTabCell, TabControl tabControl)
     {
         if (!active) return;
 
+        // this is hilariously bad
         var currentlySelectedStashOverlayTabName = tabControl != null
             ? ((TextBlock)((HeaderedContentControl)tabControl.SelectedItem).Header).Text
             : "";
 
         // activate set by set
-        if (Settings.Default.StashTabOverlayHighlightMode == 1)
+        if (Settings.Default.StashTabOverlayHighlightMode == (int)StashTabOverlayHighlightMode.SetBySet)
         {
             if (ItemSetListHighlight.Count > 0)
             {
@@ -273,7 +264,7 @@ public partial class StashTabOverlayWindow
                         {
                             var currentStashTab = GetStashTabFromItem(ItemSetListHighlight[0].Items[0]);
                             currentStashTab.MarkNextItem(ItemSetListHighlight[0].Items[0]);
-                            currentStashTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                            currentStashTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Properties.Settings.Default.StashTabOverlayHighlightColor));
                         }
                     }
 
@@ -288,9 +279,92 @@ public partial class StashTabOverlayWindow
                 }
             }
         }
+        // activate cell by cell / item by item
+        else if (Settings.Default.StashTabOverlayHighlightMode == (int)StashTabOverlayHighlightMode.ItemByItem)
+        {
+            foreach (var s in StashTabControlManager.StashTabControls.ToList())
+            {
+                s.DeactivateItemCells();
+                s.TabHeaderColor = Brushes.Transparent;
+            }
+
+            // remove and sound if itemList empty
+            if (ItemSetListHighlight.Count > 0)
+            {
+                if (ItemSetListHighlight[0].Items.Count == 0)
+                {
+                    ItemSetListHighlight.RemoveAt(0);
+                }
+            }
+
+            // next item if itemList not empty
+            if (ItemSetListHighlight.Count > 0)
+            {
+                if (ItemSetListHighlight[0].Items.Count > 0 && ItemSetListHighlight[0].EmptyItemSlots.Count == 0)
+                {
+                    var highlightItem = ItemSetListHighlight[0].Items[0];
+                    var currentTab = GetStashTabFromItem(highlightItem);
+
+                    if (currentTab == null) return;
+
+                    currentTab.ActivateItemCells(highlightItem);
+
+                    if (currentTab.TabName != currentlySelectedStashOverlayTabName && !string.IsNullOrEmpty(Settings.Default.StashTabOverlayHighlightColor))
+                    {
+                        currentTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                    }
+                    else
+                    {
+                        currentTab.TabHeaderColor = Brushes.Transparent;
+                    }
+
+                    ItemSetListHighlight[0].Items.RemoveAt(0);
+                }
+            }
+        }
+        // activate whole set
+        else if (Settings.Default.StashTabOverlayHighlightMode == (int)StashTabOverlayHighlightMode.AllItems)
+        {
+            //activate all cells at once
+            if (ItemSetListHighlight.Count <= 0) return;
+
+            // Why do I switch all of the foreach loops to reference {Some List}.ToList()?
+            // REF: https://stackoverflow.com/a/604843
+            foreach (var set in ItemSetListHighlight.ToList())
+            {
+                if (set.EmptyItemSlots.Count != 0) continue;
+
+                if (stashTabCell == null) continue;
+
+                var highlightItem = stashTabCell.ItemModel;
+                var currentTab = GetStashTabFromItem(highlightItem);
+
+                if (currentTab == null) continue;
+
+                currentTab.DeactivateSingleItemCells(stashTabCell.ItemModel);
+                ItemSetListHighlight[0].Items.Remove(highlightItem);
+
+                var itemsRemainingInStashTab = false;
+
+                foreach (var item in ItemSetListHighlight.ToList()[0].Items.ToList())
+                {
+                    if (item.StashTabIndex == currentTab.TabIndex) itemsRemainingInStashTab = true;
+                }
+
+                if (!itemsRemainingInStashTab) currentTab.TabHeaderColor = Brushes.Transparent;
+
+                // Set has been completed
+                if (ItemSetListHighlight[0].Items.Count != 0) continue;
+
+                ItemSetListHighlight.RemoveAt(0);
+
+                // activate next set, if one exists
+                if (ItemSetListHighlight.Count != 0) ActivateNextCell(true, null, null);
+            }
+        }
     }
 
-    public void PrepareSelling()
+    private void PrepareSelling()
     {
         ItemSetListHighlight.Clear();
 
@@ -300,7 +374,6 @@ public partial class StashTabOverlayWindow
 
         foreach (var s in StashTabControlManager.StashTabControls) s.PrepareOverlayList();
         foreach (var itemSet in _itemSetManagerService.RetrieveSetsInProgress()) itemSet.OrderItemsForPicking();
-
         foreach (var set in _itemSetManagerService.RetrieveSetsInProgress())
         {
             if (set.HasRecipeQualifier)
@@ -322,8 +395,8 @@ public partial class StashTabOverlayWindow
 
         var stashTabMetadataList = _itemSetManagerService.RetrieveStashTabMetadataList();
 
-        // mode = Individual Stash Tab Indices
-        if (Settings.Default.StashTabQueryMode == 0)
+        // mode = Select Tab From List (default)
+        if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList)
         {
             if (stashTabMetadataList != null)
             {
@@ -349,11 +422,11 @@ public partial class StashTabOverlayWindow
             }
         }
         // mode = Individual Stash Tab Prefix
-        else if (Settings.Default.StashTabQueryMode == 1)
+        else if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix)
         {
             if (stashTabMetadataList != null)
             {
-                var individualStashTabPrefix = Settings.Default.StashTabPrefix;
+                var individualStashTabPrefix = Properties.Settings.Default.StashTabPrefix;
 
                 ParseAllStashTabNamesFromApiResponse();
 
@@ -370,11 +443,11 @@ public partial class StashTabOverlayWindow
             }
         }
         // mode = Individual Stash Tab Suffix
-        else if (Settings.Default.StashTabQueryMode == 2)
+        else if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabNameSuffix)
         {
             if (stashTabMetadataList != null)
             {
-                var individualStashTabSuffix = Settings.Default.StashTabSuffix;
+                var individualStashTabSuffix = Properties.Settings.Default.StashTabSuffix;
 
                 ParseAllStashTabNamesFromApiResponse();
 
@@ -408,4 +481,15 @@ public partial class StashTabOverlayWindow
             }
         }
     }
+
+    private StashTabControl GetStashTabFromItem(EnhancedItem itemModel)
+    {
+        foreach (var s in StashTabControlManager.StashTabControls)
+        {
+            if (itemModel.StashTabIndex == s.TabIndex) return s;
+        }
+
+        return null;
+    }
+
 }

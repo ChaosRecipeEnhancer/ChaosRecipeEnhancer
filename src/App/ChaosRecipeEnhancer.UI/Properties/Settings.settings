@@ -1,10 +1,7 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings"
-  CurrentProfile="(Default)" GeneratedClassNamespace="ChaosRecipeEnhancer.UI.Properties"
-  GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ChaosRecipeEnhancer.UI.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <!-- Account -->
     <Setting Name="PathOfExileAccountName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -14,8 +11,6 @@
     <Setting Name="PoEAccountConnectionStatus" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-
-    <!-- Recipes -->
     <Setting Name="ChaosRecipeTrackingEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -23,10 +18,8 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="FullSetThreshold" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
-
-    <!-- General -->
     <Setting Name="LeagueName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -54,8 +47,6 @@
     <Setting Name="PathOfExileClientLogLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-
-    <!-- Set Tracker Overlay -->
     <Setting Name="SetTrackerOverlayOpacity" Type="System.Single" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
@@ -68,8 +59,6 @@
     <Setting Name="SetTrackerOverlayOverlayLockPositionEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-
-    <!-- Stash Tab Overlay -->
     <Setting Name="StashTabOverlayOpacity" Type="System.Single" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
@@ -91,8 +80,6 @@
     <Setting Name="StashTabOverlayIndividualTabHeaderGap" Type="System.Double" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
-
-    <!-- Loot Filter Manipulation -->
     <Setting Name="LootFilterManipulationEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -102,8 +89,6 @@
     <Setting Name="LootFilterIconsEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-
-    <!-- Colors -->
     <Setting Name="LootFilterRingColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FFFF0303</Value>
     </Setting>
@@ -152,21 +137,15 @@
     <Setting Name="LootFilterWeaponsAlwaysActive" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-
-    <!-- Advanced -->
     <Setting Name="DoNotPreserveLowItemLevelGear" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-
-    <!-- System -->
     <Setting Name="Language" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="CloseToTrayEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-
-    <!-- Window Positions -->
     <Setting Name="SettingsWindowTopPosition" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
@@ -191,16 +170,12 @@
     <Setting Name="StashTabOverlayWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">641</Value>
     </Setting>
-
-    <!-- Other -->
     <Setting Name="DebugMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="UpgradeSettingsAfterUpdate" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-
-    <!-- Depracated -->
     <Setting Name="SoundEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -212,6 +187,9 @@
     </Setting>
     <Setting Name="FilterModificationPendingSoundFileLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)">Default Sound</Value>
+    </Setting>
+    <Setting Name="StashFolderName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

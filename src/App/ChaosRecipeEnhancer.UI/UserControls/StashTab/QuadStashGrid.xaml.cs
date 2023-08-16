@@ -13,14 +13,13 @@ public partial class QuadStashGrid
     public Button GetButtonFromCell(object cell)
     {
         for (var i = 0; i < Items.Count; i++)
+        {
             if (Items[i] == cell)
             {
-                //Trace.WriteLine(cell.XIndex + " x " + cell.YIndex + " y");
-
                 var container = ItemContainerGenerator.ContainerFromIndex(i);
-                var t = ControlExtensions.GetChild<Button>(container);
-                return t;
+                return ControlExtensions.GetChild<Button>(container);
             }
+        }
 
         return null;
     }

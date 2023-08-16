@@ -13,8 +13,8 @@ namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
 public class FilterManipulationService
 {
-    private readonly List<string> _customStyle = new();
     private ABaseItemClassManager _itemClassManager;
+    private readonly List<string> _customStyle = new();
 
     public FilterManipulationService()
     {
@@ -100,7 +100,7 @@ public class FilterManipulationService
     {
         // can't use our Env const due to compile time requirement
         const string newLine = "\n";
-        
+
         var beforeSection = "";
         var sectionStart = "# Chaos Recipe START - Filter Manipulation by Chaos Recipe Enhancer";
         var sectionBody = "";
@@ -139,7 +139,7 @@ public class FilterManipulationService
     {
         var filterStorage = FilterStorageFactory.Create(Settings.Default);
         var oldFilter = await filterStorage.ReadLootFilterAsync();
-        
+
         // return if no old filter detected (usually caused by user error no path selected)
         // in our case the manager doesn't care about setting error this should likely be an Exception
         if (oldFilter == null) return;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using ChaosRecipeEnhancer.UI.Constants;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
@@ -28,28 +29,28 @@ internal class PathOfExileAccountFormViewModel : ViewModelBase
 
             if (tabs is null)
             {
-                Settings.PoEAccountConnectionStatus = 2;
+                Settings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionError;
             }
             else
             {
-                Settings.PoEAccountConnectionStatus = 1; // 1 = validated connection
+                Settings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ValidatedConnection; // 1 = validated connection
             }
         }
         catch (InvalidOperationException)
         {
             Settings.PoEAccountConnectionStatus =
-                0; // 0 = connection not validated (malformed user credentials - maybe typo in username or session id)
+                (int)ConnectionStatusTypes.ConnectionNotValidated; // 0 = connection not validated (malformed user credentials - maybe typo in username or session id)
         }
         catch (HttpRequestException e)
         {
             Settings.PoEAccountConnectionStatus =
                 e.Message.Contains("400") || e.Message.Contains("401") || e.Message.Contains("403")
-                    ? 0 // 0 = connection not validated (invalid user credentials - maybe expired session id)
-                    : 2; // 2 = connection validation error (poe server issues)
+                    ? (int)ConnectionStatusTypes.ConnectionNotValidated // 0 = connection not validated (invalid user credentials - maybe expired session id)
+                    : (int)ConnectionStatusTypes.ConnectionError; // 2 = connection validation error (poe server issues)
         }
         catch
         {
-            Settings.PoEAccountConnectionStatus = 0; // 0 = connection not validated (some other cre error)
+            Settings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated; // 0 = connection not validated (some other cre error)
         }
         finally
         {
