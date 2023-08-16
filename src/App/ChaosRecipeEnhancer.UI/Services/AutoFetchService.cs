@@ -150,9 +150,14 @@ public class AutoFetchService : IAutoFetchService
             case 5:
                 ret[0] = "Has entrado a";
                 break;
-            //chinese
+            //korean
             case 6:
                 ret[0] = "진입했습니다";
+                break;
+            //japanese
+            case 7:
+                ret[0] = "あなたは";
+                ret[1] = "入場しました。";
                 break;
         }
 
@@ -177,6 +182,8 @@ public class AutoFetchService : IAutoFetchService
                 return "Guarida";
             case 6:
                 return "은신처";
+            case 7:
+                return "隠れ家";
             default:
                 return "";
         }
@@ -200,6 +207,8 @@ public class AutoFetchService : IAutoFetchService
                 return "El Puerto de los renegados";
             case 6:
                 return "도둑 항구에";
+            case 7:
+                return "ローグハーバー";
             default:
                 return "";
         }

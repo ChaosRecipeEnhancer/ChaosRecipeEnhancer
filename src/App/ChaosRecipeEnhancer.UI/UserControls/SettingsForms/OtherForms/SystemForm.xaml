@@ -83,8 +83,8 @@
             <ComboBoxItem Content="Portuguese" />
             <ComboBoxItem Content="Russian" />
             <ComboBoxItem Content="Spanish" />
-            <ComboBoxItem Content="Chinese" />
-
+            <ComboBoxItem Content="Japanese"/>
+            <ComboBoxItem Content="Korean" />
         </ComboBox>
         <!-- Language Setting End -->
 
