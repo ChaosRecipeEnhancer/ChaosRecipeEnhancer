@@ -76,7 +76,7 @@ public class LogWatcherManager
             AutoFetchAllowed = false;
             try
             {
-                setTrackerOverlay.RunFetching();
+                setTrackerOverlay.RunFetchingAsync();
 
                 // enforce cooldown on fetch button to reduce chances of rate limiting
                 try

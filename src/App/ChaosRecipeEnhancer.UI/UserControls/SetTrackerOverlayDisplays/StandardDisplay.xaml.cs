@@ -20,7 +20,7 @@ internal partial class StandardDisplay
 
     private void OnFetchButtonClicked(object sender, RoutedEventArgs e)
     {
-        _parent.RunFetching();
+        _parent.RunFetchingAsync();
     }
 
     private void OnReloadFilterButtonClicked(object sender, RoutedEventArgs e)
