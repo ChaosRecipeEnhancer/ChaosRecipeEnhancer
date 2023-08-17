@@ -38,94 +38,112 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         set => SetProperty(ref _warningMessage, value);
     }
 
-    public async void FetchDataAsync()
+    public async Task<bool> FetchDataAsync()
     {
         WarningMessage = string.Empty;
         FetchButtonEnabled = false;
 
-        // needed to craft api request
-        var targetStash = (TargetStash)Settings.TargetStash;
-        var accountName = Settings.PathOfExileAccountName;
-        var leagueName = Settings.LeagueName;
-        var secret = Settings.PathOfExileWebsiteSessionId;
-
-        // needed to update item set manager
-        var setThreshold = Settings.FullSetThreshold;
-
-        // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
-        var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
-
-        var filteredStashContents = new List<EnhancedItem>();
-        var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
-        var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
-
-        // reset item amounts before fetching new data
-        // invalidate some outdated state for our item manager
-        _itemSetManagerService.ResetCompletedSets();
-        _itemSetManagerService.ResetItemAmounts();
-
-        // update the stash tab metadata based on your target stash
-        var stashTabMetadataList = targetStash == TargetStash.Personal
-            ? await _apiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, secret)
-            : await _apiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, secret);
-
-        _itemSetManagerService.UpdateStashMetadata(stashTabMetadataList);
-
-        foreach (var index in selectedTabIndices)
-        {
-            // first we retrieve the 'raw' results from the API
-            var rawResults = targetStash == TargetStash.Personal
-                ? await _apiService.GetPersonalStashTabContentsByIndexAsync(accountName, leagueName, index, secret)
-                : await _apiService.GetGuildStashTabContentsByIndexAsync(accountName, leagueName, index, secret);
-
-            // then we convert the raw results into a list of EnhancedItem objects
-            var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
-            // manually setting index because we need to know which tab the item came from
-            foreach (var enhancedItem in enhancedItems) enhancedItem.StashTabIndex = index;
-
-            // add the enhanced items to the filtered stash contents
-            filteredStashContents.AddRange(EnhancedItemHelper.FilterItemsForRecipe(enhancedItems, includeIdentified, chaosRecipe));
-
-            _itemSetManagerService.UpdateData(
-                setThreshold,
-                selectedTabIndices,
-                filteredStashContents,
-                includeIdentified,
-                chaosRecipe
-            );
-
-            if (RateLimitManager.RateLimitExceeded)
-            {
-                WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
-                await Task.Delay(RateLimitManager.GetSecondsToWait() * 1000);
-                RateLimitManager.RequestCounter = 0;
-                RateLimitManager.RateLimitExceeded = false;
-            }
-            else if (RateLimitManager.BanTime > 0)
-            {
-                WarningMessage = "Temporary Ban from API Requests! Waiting...";
-                await Task.Delay(RateLimitManager.BanTime * 1000);
-                RateLimitManager.BanTime = 0;
-            }
-        }
-
-        // recalculate item amounts and generate item sets after fetching from api
-        _itemSetManagerService.CalculateItemAmounts();
-        _itemSetManagerService.GenerateItemSets(chaosRecipe);
-
-        // update the UI accordingly
-        UpdateDisplay();
-        UpdateNotificationMessage();
-
-        // enforce cooldown on fetch button to reduce chances of rate limiting
         try
         {
-            await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+            // needed to craft api request
+            var targetStash = (TargetStash)Settings.TargetStash;
+            var accountName = Settings.PathOfExileAccountName;
+            var leagueName = Settings.LeagueName;
+            var secret = Settings.PathOfExileWebsiteSessionId;
+
+            // needed to update item set manager
+            var setThreshold = Settings.FullSetThreshold;
+
+            // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
+            var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
+
+            var filteredStashContents = new List<EnhancedItem>();
+            var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
+            var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
+
+            // reset item amounts before fetching new data
+            // invalidate some outdated state for our item manager
+            _itemSetManagerService.ResetCompletedSets();
+            _itemSetManagerService.ResetItemAmounts();
+
+            // update the stash tab metadata based on your target stash
+            var stashTabMetadataList = targetStash == TargetStash.Personal
+                ? await _apiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, secret)
+                : await _apiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, secret);
+
+            _itemSetManagerService.UpdateStashMetadata(stashTabMetadataList);
+
+            foreach (var index in selectedTabIndices)
+            {
+                // first we retrieve the 'raw' results from the API
+                var rawResults = targetStash == TargetStash.Personal
+                    ? await _apiService.GetPersonalStashTabContentsByIndexAsync(accountName, leagueName, index, secret)
+                    : await _apiService.GetGuildStashTabContentsByIndexAsync(accountName, leagueName, index, secret);
+
+                // then we convert the raw results into a list of EnhancedItem objects
+                var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
+                // manually setting index because we need to know which tab the item came from
+                foreach (var enhancedItem in enhancedItems) enhancedItem.StashTabIndex = index;
+
+                // add the enhanced items to the filtered stash contents
+                filteredStashContents.AddRange(
+                    EnhancedItemHelper.FilterItemsForRecipe(enhancedItems, includeIdentified, chaosRecipe));
+
+                _itemSetManagerService.UpdateData(
+                    setThreshold,
+                    selectedTabIndices,
+                    filteredStashContents,
+                    includeIdentified,
+                    chaosRecipe
+                );
+
+                if (RateLimitManager.RateLimitExceeded)
+                {
+                    WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
+                    await Task.Delay(RateLimitManager.GetSecondsToWait() * 1000);
+                    RateLimitManager.RequestCounter = 0;
+                    RateLimitManager.RateLimitExceeded = false;
+                }
+                else if (RateLimitManager.BanTime > 0)
+                {
+                    WarningMessage = "Temporary Ban from API Requests! Waiting...";
+                    await Task.Delay(RateLimitManager.BanTime * 1000);
+                    RateLimitManager.BanTime = 0;
+                }
+            }
+
+            // recalculate item amounts and generate item sets after fetching from api
+            _itemSetManagerService.CalculateItemAmounts();
+            _itemSetManagerService.GenerateItemSets(chaosRecipe);
+
+            // update the UI accordingly
+            UpdateDisplay();
+            UpdateNotificationMessage();
+
+            // enforce cooldown on fetch button to reduce chances of rate limiting
+            try
+            {
+                await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+            }
+            finally
+            {
+                FetchButtonEnabled = true;
+            }
         }
-        finally
+        catch (NullReferenceException)
         {
             FetchButtonEnabled = true;
+
+            // usually we will be here if we weren't able to make a successful api request based on an expired session ID
+            Settings.PathOfExileWebsiteSessionId = string.Empty;
+            Settings.PoEAccountConnectionStatus = 0;
+
+            ErrorWindow.Spawn("It looks like your Session ID has expired. Please navigate to the 'Account > Path of Exile Account > PoE Session ID' setting and enter a new value, and try again.", "Error: Set Tracker Overlay - Fetch Data");
+
+            return false;
         }
+
+        return true;
     }
 
     public void UpdateNotificationMessage()

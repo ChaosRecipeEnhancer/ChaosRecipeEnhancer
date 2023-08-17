@@ -100,11 +100,16 @@ public partial class SetTrackerOverlayWindow
         }
     }
 
-    public void RunFetching()
+    public async void RunFetchingAsync()
     {
         if (!IsOpen) return;
 
-        _model.FetchDataAsync(); // Fire and forget async
+        var successfulResult = await _model.FetchDataAsync(); // Fire and forget async
+
+        if (!successfulResult)
+        {
+            Hide();
+        }
     }
 
     public void RunReloadFilter()

@@ -105,7 +105,7 @@ public class AutoFetchService : IAutoFetchService
             FetchAllowed = false;
             try
             {
-                setTrackerOverlay.RunFetching();
+                setTrackerOverlay.RunFetchingAsync();
                 await Task.Delay(Cooldown * 1000).ContinueWith(_ =>
                 {
                     FetchAllowed = true;
