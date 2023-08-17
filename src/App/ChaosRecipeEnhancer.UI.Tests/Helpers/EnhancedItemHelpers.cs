@@ -32,16 +32,16 @@ public static class EnhancedItemHelpers
 
     public static EnhancedItem GetItemWithXYAndTabIndex(string url, int x, int y, int tabIndex = 0)
     {
-        var itemModel = new EnhancedItem(1, 1, false, 74, 0, x, y, new BaseItemInfluences(), url);
-        itemModel.StashTabIndex = tabIndex;
-        itemModel.GetItemClass();
+        var itemModel = new EnhancedItem(1, 1, false, 74, 0, x, y, new BaseItemInfluences(), url)
+            {
+                StashTabIndex = tabIndex
+            };
         return itemModel;
     }
 
     private static EnhancedItem GetWithUrlAndDerivedItemClassSet(string url)
     {
         var itemModel = new EnhancedItem(1, 1, false, 74, 0, 25, 25, new BaseItemInfluences(), url);
-        itemModel.GetItemClass();
         return itemModel;
     }
 }

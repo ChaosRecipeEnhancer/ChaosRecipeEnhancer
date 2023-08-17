@@ -1,127 +1,44 @@
 ﻿using System.Collections;
+using ChaosRecipeEnhancer.UI.Constants;
 
-namespace ChaosRecipeEnhancer.UI.Tests.Helpers;
-
-public class ItemClassData : IEnumerable<object[]>
+namespace ChaosRecipeEnhancer.UI.Tests.Helpers
 {
-    public IEnumerator<object[]> GetEnumerator()
+    public class ItemClassData : IEnumerable<object[]>
     {
-        yield return new object[]
+        private static readonly (string, string)[] ItemData =
         {
-            ItemIconConstants.HelmetUrl,
-            "Helmets"
+            (ItemIconConstants.HelmetUrl, GameTerminology.Helmets),
+            (ItemIconConstants.BowUrl, GameTerminology.TwoHandWeapons),
+            (ItemIconConstants.ClawUrl, GameTerminology.OneHandWeapons),
+            (ItemIconConstants.DaggerUrl, GameTerminology.OneHandWeapons),
+            (ItemIconConstants.RuneDaggerUrl, GameTerminology.OneHandWeapons),
+            (ItemIconConstants.OneHandedAxeUrl, GameTerminology.OneHandWeapons),
+            (ItemIconConstants.OneHandedSwordUrl, GameTerminology.OneHandWeapons),
+            (ItemIconConstants.OneHandedMaceUrl, GameTerminology.OneHandWeapons),
+            (ItemIconConstants.ScepterUrl, GameTerminology.OneHandWeapons),
+            (ItemIconConstants.StaffUrl, GameTerminology.TwoHandWeapons),
+            (ItemIconConstants.WarstaveUrl, GameTerminology.TwoHandWeapons),
+            (ItemIconConstants.TwoHandedAxeUrl, GameTerminology.TwoHandWeapons),
+            (ItemIconConstants.TwoHandedMaceUrl, GameTerminology.TwoHandWeapons),
+            (ItemIconConstants.TwoHandedSwordUrl, GameTerminology.TwoHandWeapons),
+            (ItemIconConstants.WandUrl, GameTerminology.OneHandWeapons),
+            (ItemIconConstants.FishingRodUrl, GameTerminology.TwoHandWeapons),
+            (ItemIconConstants.BodyArmourUrl, GameTerminology.BodyArmor),
+            (ItemIconConstants.BootsUrl, GameTerminology.Boots),
+            (ItemIconConstants.GlovesUrl, GameTerminology.Gloves),
+            (ItemIconConstants.AmuletUrl, GameTerminology.Amulets),
+            (ItemIconConstants.BeltUrl, GameTerminology.Belts),
+            (ItemIconConstants.RingUrl, GameTerminology.Rings)
         };
-        yield return new object[]
-        {
-            ItemIconConstants.BowUrl,
-            "TwoHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.ClawUrl,
-            "OneHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.DaggerUrl,
-            "OneHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.RuneDaggerUrl,
-            "OneHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.OneHandedAxeUrl,
-            "OneHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.OneHandedSwordUrl,
-            "OneHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.OneHandedMaceUrl,
-            "OneHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.ScepterUrl,
-            "OneHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.StaffUrl,
-            "TwoHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.WarstaveUrl,
-            "TwoHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.TwoHandedAxeUrl,
-            "TwoHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.TwoHandedMaceUrl,
-            "TwoHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.TwoHandedSwordUrl,
-            "TwoHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.WandUrl,
-            "OneHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.FishingRodUrl,
-            "TwoHandWeapons"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.BodyArmourUrl,
-            "BodyArmours"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.BootsUrl,
-            "Boots"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.GlovesUrl,
-            "Gloves"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.QuiverUrl,
-            "Quivers"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.AmuletUrl,
-            "Amulets"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.BeltUrl,
-            "Belts"
-        };
-        yield return new object[]
-        {
-            ItemIconConstants.RingUrl,
-            "Rings"
-        };
-    }
 
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            foreach (var (itemIcon, terminology) in ItemData)
+            {
+                yield return new object[] { itemIcon, terminology };
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
 }
