@@ -2,7 +2,7 @@
 
 public static class GameTerminology
 {
-    public const string BodyArmor = "BodyArmours";
+    public const string BodyArmors = "BodyArmours";
     public const string Rings = "Rings";
     public const string Amulets = "Amulets";
     public const string Belts = "Belts";

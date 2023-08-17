@@ -13,20 +13,7 @@ public class EnhancedItemSet
 {
     public EnhancedItemSet()
     {
-        EmptyItemSlots = new List<string>
-        {
-            GameTerminology.BodyArmor,
-            GameTerminology.TwoHandWeapons,
-            GameTerminology.Helmets,
-            GameTerminology.Gloves,
-            GameTerminology.Boots,
-            GameTerminology.Belts,
-            GameTerminology.Amulets,
-            GameTerminology.Rings, // have to double up on rings
-            GameTerminology.Rings,
-            GameTerminology.OneHandWeapons, // have to double up on 1-handers
-            GameTerminology.OneHandWeapons
-        };
+        EmptyItemSlots = EmptySlots.Ordered;
     }
 
     public EnhancedItemSet(EnhancedItemSet other)
@@ -54,11 +41,11 @@ public class EnhancedItemSet
         switch (item.DerivedItemClass)
         {
             case "OneHandWeapons":
-                _ = EmptyItemSlots.Remove("TwoHandWeapons");
+                _ = EmptyItemSlots.Remove(GameTerminology.TwoHandWeapons);
                 break;
             case "TwoHandWeapons":
-                _ = EmptyItemSlots.Remove("OneHandWeapons");
-                _ = EmptyItemSlots.Remove("OneHandWeapons");
+                _ = EmptyItemSlots.Remove(GameTerminology.OneHandWeapons);
+                _ = EmptyItemSlots.Remove(GameTerminology.OneHandWeapons);
                 break;
         }
 
@@ -82,20 +69,7 @@ public class EnhancedItemSet
 
     public void OrderItemsForPicking()
     {
-        var orderedClasses = new List<string>
-        {
-            GameTerminology.BodyArmor,
-            GameTerminology.TwoHandWeapons,
-            GameTerminology.OneHandWeapons,
-            GameTerminology.OneHandWeapons,
-            GameTerminology.Helmets,
-            GameTerminology.Gloves,
-            GameTerminology.Boots,
-            GameTerminology.Belts,
-            GameTerminology.Rings,
-            GameTerminology.Rings,
-            GameTerminology.Amulets
-        };
+        var orderedClasses = EmptySlots.Ordered;
 
         Items = Items.OrderBy(d => orderedClasses.IndexOf(d.DerivedItemClass)).ToList();
     }
