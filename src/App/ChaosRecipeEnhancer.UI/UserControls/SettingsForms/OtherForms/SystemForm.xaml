@@ -106,19 +106,19 @@
         <!-- Close to Tray Setting End -->
 
         <!-- Debug Mode Setting  Start -->
-        <TextBlock Grid.Column="0"
-                   Grid.Row="4"
-                   VerticalAlignment="Center"
-                   Text="Debug Mode:"
-                   ToolTip="Enables logging to a file that you can give to the developers so they can better resolve your issue." />
-
-        <CheckBox
-            Grid.Column="1"
-            Grid.Row="4"
-            Margin="15 0 0 0"
-            VerticalAlignment="Center"
-            IsEnabled="False"
-            IsChecked="{Binding Settings.DebugMode, Mode=TwoWay}" />
+        <!-- <TextBlock Grid.Column="0" -->
+        <!--            Grid.Row="4" -->
+        <!--            VerticalAlignment="Center" -->
+        <!--            Text="Debug Mode:" -->
+        <!--            ToolTip="Enables logging to a file that you can give to the developers so they can better resolve your issue." /> -->
+        <!-- -->
+        <!-- <CheckBox -->
+        <!--     Grid.Column="1" -->
+        <!--     Grid.Row="4" -->
+        <!--     Margin="15 0 0 0" -->
+        <!--     VerticalAlignment="Center" -->
+        <!--     IsEnabled="False" -->
+        <!--     IsChecked="{Binding Settings.DebugMode, Mode=TwoWay}" /> -->
         <!-- Debug Mode Setting End -->
     </Grid>
 </UserControl>
