@@ -140,17 +140,6 @@ public class StashTabControl : INotifyPropertyChanged
         }
     }
 
-    public void MarkNextItem(EnhancedItem itemModel)
-    {
-        foreach (var cell in OverlayCellsList)
-        {
-            if (cell.ItemModel == itemModel)
-            {
-                cell.ButtonText = "X";
-            }
-        }
-    }
-
     #region INotifyPropertyChanged implementation
 
     public event PropertyChangedEventHandler PropertyChanged;
