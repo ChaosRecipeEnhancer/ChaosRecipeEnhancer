@@ -44,7 +44,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="1" />
         </Grid.RowDefinitions>
 
@@ -495,24 +494,11 @@
             Content="Fetch"
             BorderBrush="Aquamarine" />
 
-        <!-- Overlay Progress Bar -->
-        <ProgressBar
-            Grid.Column="0"
-            Grid.Row="2"
-            Grid.ColumnSpan="13"
-            Height="5"
-            Minimum="0"
-            Maximum="10"
-            IsIndeterminate="{Binding ShowProgress}"
-            Margin="5,5,0,0"
-            Foreground="Aqua"
-            Background="AntiqueWhite"
-            BorderThickness="0,0,0,0" />
-
         <!-- Warning Message Display -->
         <userControls:OutlinedTextBlock
-            Grid.Column="6"
+            Grid.Column="3"
             Grid.Row="1"
+            Grid.ColumnSpan="8"
             TextAlignment="Center"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
