@@ -107,7 +107,7 @@ public class ItemSetManagerService : IItemSetManagerService
                 case GameTerminology.Belts:
                     BeltsAmount++; // 2: belts
                     break;
-                case GameTerminology.BodyArmor:
+                case GameTerminology.BodyArmors:
                     ChestsAmount++; // 3: chests
                     break;
                 case GameTerminology.OneHandWeapons:

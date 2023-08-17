@@ -12,7 +12,7 @@ public static class EmptySlots
         {
             List<string> originalList = new()
             {
-                GameTerminology.BodyArmor,
+                GameTerminology.BodyArmors,
                 GameTerminology.TwoHandWeapons,
                 GameTerminology.Helmets,
                 GameTerminology.Gloves,

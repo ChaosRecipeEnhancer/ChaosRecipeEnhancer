@@ -23,7 +23,7 @@ namespace ChaosRecipeEnhancer.UI.Tests.Helpers
             (ItemIconConstants.TwoHandedSwordUrl, GameTerminology.TwoHandWeapons),
             (ItemIconConstants.WandUrl, GameTerminology.OneHandWeapons),
             (ItemIconConstants.FishingRodUrl, GameTerminology.TwoHandWeapons),
-            (ItemIconConstants.BodyArmourUrl, GameTerminology.BodyArmor),
+            (ItemIconConstants.BodyArmourUrl, GameTerminology.BodyArmors),
             (ItemIconConstants.BootsUrl, GameTerminology.Boots),
             (ItemIconConstants.GlovesUrl, GameTerminology.Gloves),
             (ItemIconConstants.AmuletUrl, GameTerminology.Amulets),
