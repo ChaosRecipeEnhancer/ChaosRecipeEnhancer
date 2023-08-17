@@ -6,10 +6,16 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms;
 
 public partial class LootFilterManipulationForm
 {
+    private readonly LootFilterManipulationFormViewModel _model;
     public LootFilterManipulationForm()
     {
-        DataContext = new LootFilterManipulationFormViewModel();
+        DataContext = _model = new LootFilterManipulationFormViewModel();
         InitializeComponent();
+    }
+
+    private void RunCleanFilter(object sender, RoutedEventArgs e)
+    {
+        _model.RunCleanFilter();
     }
 
     private void OnLootFilterFileDialogInputClicked(object sender, RoutedEventArgs e)

@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
+        xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
@@ -19,21 +21,16 @@
         Left="{Binding Settings.SetTrackerOverlayLeftPosition, Mode=TwoWay}"
         d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
 
-    <Border BorderThickness="1"
-            BorderBrush="Transparent"
-            ClipToBounds="True">
+    <Border BorderThickness="1" BorderBrush="Transparent" ClipToBounds="True">
 
         <Border.Background>
-            <SolidColorBrush
-                Opacity="{Binding Settings.SetTrackerOverlayOpacity}"/>
+            <SolidColorBrush Opacity="{Binding Settings.SetTrackerOverlayOpacity}"/>
         </Border.Background>
 
-        <Border Background="Transparent"
-                BorderThickness="1"
-                Margin="-2">
+        <Border BorderThickness="1" Margin="-2">
 
             <!-- Set Tracker Display -->
-            <ContentControl x:Name="MainOverlayContentControl"/>
+            <ContentControl x:Name="MainOverlayContentControl" />
 
         </Border>
     </Border>

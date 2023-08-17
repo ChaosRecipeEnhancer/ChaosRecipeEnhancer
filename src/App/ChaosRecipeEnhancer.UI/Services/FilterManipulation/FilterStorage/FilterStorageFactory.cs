@@ -1,16 +1,16 @@
 ﻿using ChaosRecipeEnhancer.UI.Properties;
 
-namespace ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterStorage;
+namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterStorage;
 
 public static class FilterStorageFactory
 {
-	private static IFilterStorage Create(string lootFilterFilePath)
-	{
-		return new FileFilterStorage(lootFilterFilePath);
-	}
+    private static IFilterStorage Create(string lootFilterFilePath)
+    {
+        return new FileFilterStorage(lootFilterFilePath);
+    }
 
-	internal static IFilterStorage Create(Settings settings)
-	{
-		return Create(settings.LootFilterFileLocation);
-	}
+    internal static IFilterStorage Create(Settings settings)
+    {
+        return Create(settings.LootFilterFileLocation);
+    }
 }
