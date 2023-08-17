@@ -75,24 +75,29 @@ public partial class SetTrackerOverlayWindow
 
     public new virtual void Show()
     {
-        try
-        {
-            IsOpen = true;
-            if (Settings.Default.AutoFetchOnRezoneEnabled) _logWatcherManager = new LogWatcherManager(this);
-            base.Show();
-        }
-        catch (ArgumentNullException)
+
+        if (_model.Settings.AutoFetchOnRezoneEnabled &&
+            string.IsNullOrWhiteSpace(_model.Settings.PathOfExileClientLogLocation))
         {
             IsOpen = false;
             _stashTabOverlay.Hide();
             base.Hide();
 
             ErrorWindow.Spawn(
-                "No PoE Client.txt file path set. Please set the file path or disable 'Fetch on New Map' setting.",
+                "You have enabled Auto-Fetching, but have no PoE Client.txt file path set. Please set the file path or disable the 'General Tab > General Section > Fetch on New Map' setting.",
                 "Error: Auto-Fetching"
             );
         }
-
+        else
+        {
+            IsOpen = true;
+            if (_model.Settings.AutoFetchOnRezoneEnabled &&
+                !string.IsNullOrWhiteSpace(_model.Settings.PathOfExileClientLogLocation))
+            {
+                _logWatcherManager = new LogWatcherManager(this);
+            }
+            base.Show();
+        }
     }
 
     public void RunFetching()
