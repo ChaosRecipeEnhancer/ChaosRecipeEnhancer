@@ -24,19 +24,12 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     private const int FetchCooldown = 30;
 
     private bool _fetchButtonEnabled = true;
-    private bool _showProgress;
     private string _warningMessage;
 
     public bool FetchButtonEnabled
     {
         get => _fetchButtonEnabled;
         set => SetProperty(ref _fetchButtonEnabled, value);
-    }
-
-    public bool ShowProgress
-    {
-        get => _showProgress;
-        set => SetProperty(ref _showProgress, value);
     }
 
     public string WarningMessage
@@ -48,7 +41,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     public async void FetchDataAsync()
     {
         WarningMessage = string.Empty;
-        ShowProgress = true;
         FetchButtonEnabled = false;
 
         // needed to craft api request
@@ -68,8 +60,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
 
         // reset item amounts before fetching new data
-        ShowProgress = true;
-
         // invalidate some outdated state for our item manager
         _itemSetManagerService.ResetCompletedSets();
         _itemSetManagerService.ResetItemAmounts();
@@ -124,7 +114,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         _itemSetManagerService.GenerateItemSets(chaosRecipe);
 
         // update the UI accordingly
-        ShowProgress = false; // <--- this is fucking us all up lmao
         UpdateDisplay();
         UpdateNotificationMessage();
 
@@ -229,7 +218,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         OnPropertyChanged(nameof(NeedsFetching));
         OnPropertyChanged(nameof(FullSets));
         OnPropertyChanged(nameof(WarningMessage));
-        OnPropertyChanged(nameof(ShowProgress));
         OnPropertyChanged(nameof(FetchButtonEnabled));
         OnPropertyChanged(nameof(ShowAmountNeeded));
     }
