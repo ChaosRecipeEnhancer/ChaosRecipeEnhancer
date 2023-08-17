@@ -80,23 +80,25 @@ public class BaseItem
         Icon = other.Icon;
     }
 
+    public BaseItem() { }
+
     // poe json props
-    [JsonPropertyName("w")] public int Width { get; }
+    [JsonPropertyName("w")] public int Width { get; set; }
 
-    [JsonPropertyName("h")] public int Height { get; }
+    [JsonPropertyName("h")] public int Height { get; set; }
 
-    [JsonPropertyName("identified")] public bool Identified { get; }
+    [JsonPropertyName("identified")] public bool Identified { get; set; }
 
-    [JsonPropertyName("ilvl")] public int? ItemLevel { get; }
+    [JsonPropertyName("ilvl")] public int? ItemLevel { get; set; }
 
-    [JsonPropertyName("frameType")] public ItemFrameType FrameType { get; }
+    [JsonPropertyName("frameType")] public ItemFrameType FrameType { get; set; }
 
-    [JsonPropertyName("x")] public int X { get; }
+    [JsonPropertyName("x")] public int X { get; set; }
 
-    [JsonPropertyName("y")] public int Y { get; }
+    [JsonPropertyName("y")] public int Y { get; set; }
 
-    [JsonPropertyName("influences")] public BaseItemInfluences BaseItemInfluences { get; }
+    [JsonPropertyName("influences")] public BaseItemInfluences BaseItemInfluences { get; set; }
 
     // Property must be set to `public` so that it can be [de]serialized
-    [JsonPropertyName("icon")] public string Icon { get; }
+    [JsonPropertyName("icon")] public string Icon { get; set; }
 }

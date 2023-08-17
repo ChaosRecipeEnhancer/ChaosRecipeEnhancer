@@ -1,21 +1,21 @@
-﻿using ChaosRecipeEnhancer.UI.BusinessLogic.Enums;
-using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterGeneration.Factory;
+﻿using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory;
 
 namespace ChaosRecipeEnhancer.UI.Tests.BusinessLogic.FilterManipulation.FilterGeneration.Factory;
 
 public class CItemClassManagerFactoryTests
 {
     [Theory]
-    [InlineData(EnumItemClass.Amulets, "Amulets")]
-    [InlineData(EnumItemClass.Belts, "Belts")]
-    [InlineData(EnumItemClass.BodyArmours, "BodyArmours")]
-    [InlineData(EnumItemClass.Boots, "Boots")]
-    [InlineData(EnumItemClass.Gloves, "Gloves")]
-    [InlineData(EnumItemClass.Helmets, "Helmets")]
-    [InlineData(EnumItemClass.OneHandWeapons, "OneHandWeapons")]
-    [InlineData(EnumItemClass.Rings, "Rings")]
-    [InlineData(EnumItemClass.TwoHandWeapons, "TwoHandWeapons")]
-    public void GetItemClassManager_GivenItemClass_ReturnsManagerWithClassName(EnumItemClass itemClass, string className)
+    [InlineData(ItemClass.Amulets, "Amulets")]
+    [InlineData(ItemClass.Belts, "Belts")]
+    [InlineData(ItemClass.BodyArmours, "BodyArmours")]
+    [InlineData(ItemClass.Boots, "Boots")]
+    [InlineData(ItemClass.Gloves, "Gloves")]
+    [InlineData(ItemClass.Helmets, "Helmets")]
+    [InlineData(ItemClass.OneHandWeapons, "OneHandWeapons")]
+    [InlineData(ItemClass.Rings, "Rings")]
+    [InlineData(ItemClass.TwoHandWeapons, "TwoHandWeapons")]
+    public void GetItemClassManager_GivenItemClass_ReturnsManagerWithClassName(ItemClass itemClass, string className)
     {
         // Arrange
         var factory = new CItemClassManagerFactory();
@@ -34,7 +34,7 @@ public class CItemClassManagerFactoryTests
         var factory = new CItemClassManagerFactory();
 
         // Act
-        Action act = () => factory.GetItemClassManager((EnumItemClass) 100000245);
+        Action act = () => factory.GetItemClassManager((ItemClass)100000245);
 
         // Assert
         act.Should().Throw<Exception>().WithMessage("Wrong item class.");

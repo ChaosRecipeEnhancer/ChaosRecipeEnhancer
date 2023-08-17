@@ -1,4 +1,4 @@
-﻿using ChaosRecipeEnhancer.UI.Utilities;
+﻿using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.Tests.Utilities.Converters;
 
@@ -16,7 +16,7 @@ public class InvertBoolConverterTests
         // Assert
         result.Should().Be(false);
     }
-    
+
     [Fact]
     public void Convert_GivenFalse_ReturnsTrue()
     {
@@ -42,7 +42,7 @@ public class InvertBoolConverterTests
         // Assert
         act.Should().Throw<ArgumentException>();
     }
-    
+
     [Fact]
     public void ConvertBack_GivenTrue_ReturnsFalse()
     {
@@ -55,7 +55,7 @@ public class InvertBoolConverterTests
         // Assert
         result.Should().Be(false);
     }
-    
+
     [Fact]
     public void ConvertBack_GivenFalse_ReturnsTrue()
     {
@@ -68,7 +68,7 @@ public class InvertBoolConverterTests
         // Assert
         result.Should().Be(true);
     }
-    
+
     [Fact]
     public void ConvertBack_GivenNonBool_ThrowsArgumentException()
     {

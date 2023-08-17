@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using ChaosRecipeEnhancer.UI.Utilities;
+using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.Tests.Utilities.Converters;
 
@@ -17,7 +17,7 @@ public class BoolVisibilityConverterTests
         // Assert
         result.Should().Be(Visibility.Visible);
     }
-    
+
     [Fact]
     public void Convert_GivenFalse_ReturnsCollapsed()
     {
@@ -30,12 +30,12 @@ public class BoolVisibilityConverterTests
         // Assert
         result.Should().Be(Visibility.Collapsed);
     }
-    
+
     [Fact]
     public void Convert_GivenTrueAndInvert_ReturnsCollapsed()
     {
         // Arrange
-        var converter = new BoolVisibilityConverter {Invert = true};
+        var converter = new BoolVisibilityConverter { Invert = true };
 
         // Act
         var result = converter.Convert(true, null, null, null);
@@ -43,12 +43,12 @@ public class BoolVisibilityConverterTests
         // Assert
         result.Should().Be(Visibility.Collapsed);
     }
-    
+
     [Fact]
     public void Convert_GivenFalseAndInvert_ReturnsVisible()
     {
         // Arrange
-        var converter = new BoolVisibilityConverter {Invert = true};
+        var converter = new BoolVisibilityConverter { Invert = true };
 
         // Act
         var result = converter.Convert(false, null, null, null);
@@ -56,12 +56,12 @@ public class BoolVisibilityConverterTests
         // Assert
         result.Should().Be(Visibility.Visible);
     }
-    
+
     [Fact]
     public void Convert_GivenTrueAndCollapseWhenNotVisible_ReturnsVisible()
     {
         // Arrange
-        var converter = new BoolVisibilityConverter {CollapseWhenNotVisible = true};
+        var converter = new BoolVisibilityConverter { CollapseWhenNotVisible = true };
 
         // Act
         var result = converter.Convert(true, null, null, null);
@@ -69,12 +69,12 @@ public class BoolVisibilityConverterTests
         // Assert
         result.Should().Be(Visibility.Visible);
     }
-    
+
     [Fact]
     public void Convert_GivenFalseAndCollapseWhenNotVisible_ReturnsCollapsed()
     {
         // Arrange
-        var converter = new BoolVisibilityConverter {CollapseWhenNotVisible = true};
+        var converter = new BoolVisibilityConverter { CollapseWhenNotVisible = true };
 
         // Act
         var result = converter.Convert(false, null, null, null);

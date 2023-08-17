@@ -21,6 +21,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -133,7 +134,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="4"
-            Margin="0 0 0 0"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Lock Position:"
             ToolTipService.InitialShowDelay="50"
@@ -142,9 +143,19 @@
         <CheckBox
             Grid.Column="1"
             Grid.Row="4"
-            Margin="10 0 0 0"
+            Margin="10 0 0 10"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.SetTrackerOverlayOverlayLockPositionEnabled, Mode=TwoWay}" />
+
+        <!-- Reset Set Tracker Overlay Position Button -->
+        <Button
+            Grid.Column="0"
+            Grid.Row="5"
+            Grid.ColumnSpan="2"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Content="Reset Set Tracker Overlay Position"
+            Click="OnResetSetTrackerOverlayClicked" />
 
     </Grid>
 </UserControl>

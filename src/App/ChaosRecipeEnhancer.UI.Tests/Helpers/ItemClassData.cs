@@ -121,7 +121,7 @@ public class ItemClassData : IEnumerable<object[]>
             ItemIconConstants.RingUrl,
             "Rings"
         };
-    } 
+    }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

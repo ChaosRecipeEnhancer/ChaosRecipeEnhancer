@@ -20,6 +20,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -88,6 +89,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="3"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Show Icon on Map:"
             ToolTipService.InitialShowDelay="50"
@@ -96,9 +98,21 @@
         <CheckBox
             Grid.Column="1"
             Grid.Row="3"
-            Margin="15 0 0 0"
+            Margin="15 0 0 10"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.LootFilterIconsEnabled, Mode=TwoWay}" />
+
+        <!-- Clean Loot Filter Button -->
+        <Button
+            Grid.Column="0"
+            Grid.Row="4"
+            Grid.ColumnSpan="2"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Content="Clean Loot Filter"
+            Click="RunCleanFilter"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="Will remove the modifications made by our app on your loot filter. Requires PoE to be running."/>
 
     </Grid>
 </UserControl>

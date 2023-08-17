@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using ChaosRecipeEnhancer.UI.BusinessLogic.FilterManipulation.FilterStorage;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers;
+using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterStorage;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
 public interface IFilterManipulationService
 {
-    public Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem);
+    public void GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem);
+    public void RemoveChaosRecipeSectionAsync();
 }
 
 public class FilterManipulationService : IFilterManipulationService
@@ -29,10 +31,10 @@ public class FilterManipulationService : IFilterManipulationService
         LoadCustomStyle();
     }
 
-    public Settings Settings { get; } = Settings.Default;
+    private Settings Settings { get; } = Settings.Default;
 
     // TODO: [Refactor] mechanism for receiving missing items from some other service and populating based on that limited information
-    public async Task<ActiveItemTypes> GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem)
+    public async void GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem)
     {
         var activeItemTypes = new ActiveItemTypes();
         var visitor = new CItemClassManagerFactory();
@@ -60,8 +62,6 @@ public class FilterManipulationService : IFilterManipulationService
         }
 
         if (Settings.Default.LootFilterManipulationEnabled) await UpdateFilterAsync(sectionList);
-
-        return activeItemTypes;
     }
 
     private string GenerateSection()
@@ -141,6 +141,24 @@ public class FilterManipulationService : IFilterManipulationService
         }
 
         return beforeSection + sectionBody + afterSection;
+    }
+
+    public async void RemoveChaosRecipeSectionAsync()
+    {
+        var filterStorage = FilterStorageFactory.Create(Settings.Default);
+        var oldFilterContent = await filterStorage.ReadLootFilterAsync();
+
+        // return if no old filter detected (usually caused by user error no path selected)
+        // in our case the manager doesn't care about setting error this should likely be an Exception
+        if (oldFilterContent == null) return;
+
+        // Define the pattern for Chaos Recipe sections
+        const string pattern = @"# Chaos Recipe START - Filter Manipulation by Chaos Recipe Enhancer[\s\S]*?# Chaos Recipe END - Filter Manipulation by Chaos Recipe Enhancer";
+        var regex = new Regex(pattern, RegexOptions.Multiline);
+
+        // Remove the Chaos Recipe sections from the content
+        var cleanedContent = regex.Replace(oldFilterContent, "");
+        await filterStorage.WriteLootFilterAsync(cleanedContent);
     }
 
     private static async Task UpdateFilterAsync(IEnumerable<string> sectionList)

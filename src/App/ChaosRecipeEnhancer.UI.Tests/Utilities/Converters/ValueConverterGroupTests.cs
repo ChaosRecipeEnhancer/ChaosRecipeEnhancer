@@ -1,6 +1,5 @@
 ﻿using System.Windows;
-using System.Windows.Data;
-using ChaosRecipeEnhancer.UI.Utilities;
+using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.Tests.Utilities.Converters;
 
@@ -15,14 +14,14 @@ public class ValueConverterGroupTests
                 new BoolVisibilityConverter(),
                 new BoolVisibilityConverter()
         };
-        
+
         // Act
-        var result = converter.Convert(new object[] {true, true}, null, null, null);
-        
+        var result = converter.Convert(new object[] { true, true }, null, null, null);
+
         // Assert
         result.Should().Be(Visibility.Collapsed);
     }
-    
+
     [Fact]
     public void Convert_GivenTrueAndFalse_ReturnsFalse()
     {
@@ -32,14 +31,14 @@ public class ValueConverterGroupTests
                 new BoolVisibilityConverter(),
                 new BoolVisibilityConverter()
         };
-        
+
         // Act
-        var result = converter.Convert(new object[] {true, false}, null, null, null);
-        
+        var result = converter.Convert(new object[] { true, false }, null, null, null);
+
         // Assert
         result.Should().Be(Visibility.Collapsed);
     }
-    
+
     [Fact]
     public void Convert_GivenFalseAndTrue_ReturnsFalse()
     {
@@ -49,14 +48,14 @@ public class ValueConverterGroupTests
                 new BoolVisibilityConverter(),
                 new BoolVisibilityConverter()
         };
-        
+
         // Act
-        var result = converter.Convert(new object[] {false, true}, null, null, null);
-        
+        var result = converter.Convert(new object[] { false, true }, null, null, null);
+
         // Assert
         result.Should().Be(Visibility.Collapsed);
     }
-    
+
     [Fact]
     public void Convert_GivenFalseAndFalse_ReturnsFalse()
     {
@@ -66,10 +65,10 @@ public class ValueConverterGroupTests
                 new BoolVisibilityConverter(),
                 new BoolVisibilityConverter()
         };
-        
+
         // Act
-        var result = converter.Convert(new object[] {false, false}, null, null, null);
-        
+        var result = converter.Convert(new object[] { false, false }, null, null, null);
+
         // Assert
         result.Should().Be(Visibility.Collapsed);
     }
