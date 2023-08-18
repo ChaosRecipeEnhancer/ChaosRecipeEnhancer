@@ -145,19 +145,19 @@ public partial class StashTabOverlayWindow
             ActivateNextCell(true, null, StashTabOverlayTabControl);
 
             // If "Set by Set" highlight mode enabled, paint all Stash Tab Headers to their respective colors
-            if (Settings.Default.StashTabOverlayHighlightMode == (int)StashTabOverlayHighlightMode.SetBySet)
-            {
-                foreach (var set in SetsToHighlight)
-                {
-                    foreach (var i in set.Items)
-                    {
-                        var currTab = GetStashTabFromItem(i);
-                        currTab.ActivateItemCells(i);
-
-                        currTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
-                    }
-                }
-            }
+            // if (Settings.Default.StashTabOverlayHighlightMode == (int)StashTabOverlayHighlightMode.SetBySet)
+            // {
+            //     foreach (var set in SetsToHighlight)
+            //     {
+            //         foreach (var i in set.Items)
+            //         {
+            //             var currTab = GetStashTabFromItem(i);
+            //             currTab.ActivateItemCells(i);
+            //
+            //             currTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+            //         }
+            //     }
+            // }
 
             NativeMouseExtensions.Start();
             base.Show();
@@ -224,6 +224,7 @@ public partial class StashTabOverlayWindow
                 {
                     var currentTab = GetStashTabFromItem(i);
                     currentTab.ActivateItemCells(i);
+                    currentTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
                 }
 
                 // Set has been completed
@@ -231,7 +232,6 @@ public partial class StashTabOverlayWindow
                 {
                     SetsToHighlight.RemoveAt(0);
 
-                    // recursion oh nooo
                     // activate next set
                     ActivateNextCell(true, null, null);
                 }
