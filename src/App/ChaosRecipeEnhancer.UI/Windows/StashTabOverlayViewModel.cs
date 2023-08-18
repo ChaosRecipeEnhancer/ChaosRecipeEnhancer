@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
-using ChaosRecipeEnhancer.UI.UserControls;
 using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
@@ -16,5 +15,4 @@ internal sealed class StashTabOverlayViewModel : ViewModelBase
     }
 
     public readonly ObservableCollection<TabItem> OverlayStashTabList = new();
-
 }

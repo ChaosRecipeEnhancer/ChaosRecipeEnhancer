@@ -22,7 +22,7 @@ public partial class StashTabOverlayWindow
     private readonly IItemSetManagerService _itemSetManagerService = Ioc.Default.GetService<IItemSetManagerService>();
 
     private readonly StashTabOverlayViewModel _model;
-    public static List<EnhancedItemSet> SetsToHighlight { get; } = new();
+    private static List<EnhancedItemSet> SetsToHighlight { get; } = new();
 
     public StashTabOverlayWindow()
     {
@@ -103,7 +103,7 @@ public partial class StashTabOverlayWindow
                 // Creating a text block that will contain the name of said Stash Tab
                 var textBlock = new TextBlock
                 {
-                    Text = stashTabData.TabName,
+                    Text = stashTabData.Name,
                     DataContext = stashTabData
                 };
 
@@ -111,7 +111,7 @@ public partial class StashTabOverlayWindow
                 textBlock.SetBinding(TextBlock.PaddingProperty, new Binding("TabHeaderWidth"));
                 textBlock.FontSize = 16;
 
-                stashTabData.TabNameContainer = textBlock;
+                stashTabData.NameContainer = textBlock;
 
                 if (stashTabData.Quad)
                 {
@@ -183,7 +183,7 @@ public partial class StashTabOverlayWindow
         foreach (var i in StashTabControlManager.StashTabControls)
         {
             i.OverlayCellsList.Clear();
-            i.TabNameContainer = null;
+            i.NameContainer = null;
         }
 
         IsOpen = false;
@@ -212,7 +212,7 @@ public partial class StashTabOverlayWindow
                         // disable tab header color if no more items in set for the current tab
                         if (SetsToHighlight[0]
                                 .Items
-                                .Where(x => x.StashTabIndex == currentTab.TabIndex)
+                                .Where(x => x.StashTabIndex == currentTab.Index)
                                 .ToList().Count == 0)
                         {
                             currentTab.TabHeaderColor = Brushes.Transparent;
@@ -330,9 +330,9 @@ public partial class StashTabOverlayWindow
         {
             foreach (var props in stashTabMetadataList.StashTabs)
             {
-                if (s.TabIndex == props.Index)
+                if (s.Index == props.Index)
                 {
-                    s.TabName = props.Name;
+                    s.Name = props.Name;
                 }
             }
         }
@@ -342,7 +342,7 @@ public partial class StashTabOverlayWindow
     {
         foreach (var s in StashTabControlManager.StashTabControls)
         {
-            if (itemModel.StashTabIndex == s.TabIndex) return s;
+            if (itemModel.StashTabIndex == s.Index) return s;
         }
 
         return null;

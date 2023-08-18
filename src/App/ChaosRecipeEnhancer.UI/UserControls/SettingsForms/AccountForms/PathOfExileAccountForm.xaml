@@ -14,8 +14,7 @@
 
     <UserControl.Resources>
         <FontFamily x:Key="PasswordFont">../../../Assets/Fonts/#Password</FontFamily>
-        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfEqual"
-                                                 ComparisonType="{x:Type system:Int32}" />
+        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfEqual" ComparisonType="{x:Type system:Int32}" />
     </UserControl.Resources>
 
     <Grid

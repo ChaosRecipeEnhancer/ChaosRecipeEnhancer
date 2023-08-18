@@ -22,7 +22,7 @@
 //
 //         // Assert
 //         itemSetManager.SelectedStashTabs.Should().Be(stashTab);
-//         Settings.Default.SelectedStashTabs[0].Should().Be(stashTab.TabName);
+//         Settings.Default.SelectedStashTabs[0].Should().Be(stashTab.Name);
 //     }
 //
 //     [Fact]

@@ -301,13 +301,13 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public double StashTabOverlayIndividualTabHeaderWidth {
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public double StashTabOverlayIndividualTabHeaderPadding {
             get {
-                return ((double)(this["StashTabOverlayIndividualTabHeaderWidth"]));
+                return ((double)(this["StashTabOverlayIndividualTabHeaderPadding"]));
             }
             set {
-                this["StashTabOverlayIndividualTabHeaderWidth"] = value;
+                this["StashTabOverlayIndividualTabHeaderPadding"] = value;
             }
         }
         

@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
-        xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
         xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
         xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
         mc:Ignorable="d"
@@ -27,12 +26,11 @@
     </Window.Background>
 
     <Window.Resources>
-        <zemotoCommon:BoolVisibilityConverter x:Key="HiddenIfFalse"
-                                           CollapseWhenNotVisible="True" />
-
-        <zemotoCommon:BoolToObjectConverter x:Key="EditButtonTextConverter"
-                                         TrueValue="Save"
-                                         FalseValue="Edit" />
+        <zemotoCommon:BoolVisibilityConverter x:Key="HiddenIfFalse" CollapseWhenNotVisible="True" />
+        <zemotoCommon:BoolToObjectConverter x:Key="EditButtonTextConverter" TrueValue="Save" FalseValue="Edit" />
+        <zemotoCommon:DoubleToLeftMarginConverter x:Key="DoubleToMarginConverter"/>
+        <zemotoCommon:DoubleToLeftRightGapThicknessConverter x:Key="DoubleToGapThicknessConverter"/>
+        <zemotoCommon:PaddingLeftRightConverter x:Key="PaddingConverter"/>
     </Window.Resources>
 
     <Grid>
@@ -89,7 +87,8 @@
 
                                         <!-- Stash Tab 'Tab' Border -->
                                         <Border Name="Border"
-                                                Margin="{Binding Settings.StashTabOverlayIndividualTabHeaderGap}"
+                                                Padding="{Binding Settings.StashTabOverlayIndividualTabHeaderPadding, Converter={StaticResource PaddingConverter}}"
+                                                Margin="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Converter={StaticResource DoubleToGapThicknessConverter}}"
                                                 BorderThickness="1,1,1,1"
                                                 BorderBrush="Gainsboro">
 
@@ -157,7 +156,7 @@
                                             x:Name="HeaderPanel"
                                             Grid.Row="0"
                                             Panel.ZIndex="1"
-                                            Margin="{Binding Settings.StashTabOverlayIndividualTabMargin}"
+                                            Margin="{Binding Settings.StashTabOverlayIndividualTabMargin, Converter={StaticResource DoubleToMarginConverter}}"
                                             IsItemsHost="True"
                                             KeyboardNavigation.TabIndex="1"
                                             Background="Transparent" />

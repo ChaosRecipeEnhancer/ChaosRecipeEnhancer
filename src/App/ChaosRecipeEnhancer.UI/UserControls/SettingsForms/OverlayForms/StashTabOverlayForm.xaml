@@ -188,12 +188,12 @@
                 Width="150"
                 VerticalAlignment="Center"
                 Minimum="0"
-                Maximum="1000"
-                TickFrequency="10"
+                Maximum="500"
+                TickFrequency="1"
+                AutoToolTipPrecision="1"
                 AutoToolTipPlacement="TopLeft"
                 IsSnapToTickEnabled="True"
                 IsMoveToPointEnabled="True"
-                AutoToolTipPrecision="1"
                 Value="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" LargeChange="100" SmallChange="10" />
 
             <TextBox
@@ -211,9 +211,9 @@
             Grid.Row="6"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Tab Header Width:"
+            Text="Tab Header Padding:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The width of the tab headers in Stash Tab Overlay." />
+            ToolTip="The padding between the tab headers in Stash Tab Overlay." />
 
         <Grid
             Grid.Column="1"
@@ -244,7 +244,10 @@
                 IsMoveToPointEnabled="True"
                 IsSnapToTickEnabled="True"
                 AutoToolTipPrecision="1"
-                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderWidth, Mode=TwoWay}" TickFrequency="1" SmallChange="1" LargeChange="10" />
+                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderPadding, Mode=TwoWay}"
+                TickFrequency="1"
+                SmallChange="1"
+                LargeChange="10" />
 
             <TextBox
                 Grid.Column="4"
@@ -252,7 +255,7 @@
                 Width="40"
                 Margin="5 0 0 0"
                 HorizontalContentAlignment="Center"
-                Text="{Binding Settings.StashTabOverlayIndividualTabHeaderWidth, Mode=TwoWay}" />
+                Text="{Binding Settings.StashTabOverlayIndividualTabHeaderPadding, Mode=TwoWay}" />
 
         </Grid>
 
@@ -288,13 +291,15 @@
                 Width="150"
                 VerticalAlignment="Center"
                 Minimum="0"
-                Maximum="100"
+                Maximum="20"
                 AutoToolTipPrecision="1"
                 TickFrequency="1"
                 AutoToolTipPlacement="TopLeft"
                 IsSnapToTickEnabled="True"
                 IsMoveToPointEnabled="True"
-                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" LargeChange="20" SmallChange="1" />
+                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}"
+                LargeChange="20"
+                SmallChange="1" />
 
             <TextBox
                 Grid.Column="4"
