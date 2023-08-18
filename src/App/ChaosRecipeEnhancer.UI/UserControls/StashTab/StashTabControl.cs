@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
@@ -12,32 +10,24 @@ namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 public class StashTabControl : ViewModelBase
 {
     private SolidColorBrush _tabHeaderColor;
-    private Thickness _tabHeaderWidth;
 
     public StashTabControl(string name, int index)
     {
-        TabName = name;
-        TabIndex = index;
+        Name = name;
+        Index = index;
         TabHeaderColor = Brushes.Transparent;
-        TabHeaderWidth = new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2, Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2);
     }
 
-    public int TabIndex { get; }
     public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = new();
-    public TextBlock TabNameContainer { get; set; }
-    public string TabName { get; set; }
+    public TextBlock NameContainer { get; set; }
+    public string Name { get; set; }
+    public int Index { get; }
     public bool Quad { get; set; }
 
     public SolidColorBrush TabHeaderColor
     {
         get => _tabHeaderColor;
         set => SetProperty(ref _tabHeaderColor, value);
-    }
-
-    public Thickness TabHeaderWidth
-    {
-        get => _tabHeaderWidth;
-        set => SetProperty(ref _tabHeaderWidth, value);
     }
 
     /// <summary>

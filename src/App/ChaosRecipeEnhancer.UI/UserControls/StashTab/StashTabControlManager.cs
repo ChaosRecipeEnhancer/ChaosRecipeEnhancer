@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Windows;
 
@@ -10,7 +9,7 @@ namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 ///     Represents various UI elements and additional metadata used in our app that is derived from the original
 ///     stash tab JSON object requested from GGG's API.
 /// </summary>
-internal static class StashTabControlManager
+public static class StashTabControlManager
 {
     public static List<StashTabControl> StashTabControls { get; set; } = new();
     public static List<int> StashTabIndices { get; private set; }

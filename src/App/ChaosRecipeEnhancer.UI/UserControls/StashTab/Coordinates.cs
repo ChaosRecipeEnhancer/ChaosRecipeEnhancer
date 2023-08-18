@@ -54,17 +54,17 @@ public static class Coordinates
         var clickX = NativeMouseExtensions.ClickLocationX;
         var clickY = NativeMouseExtensions.ClickLocationY;
 
-        var pt = GetTabNameContainerCoordinates(stashTabControl.TabNameContainer);
+        var pt = GetTabNameContainerCoordinates(stashTabControl.NameContainer);
 
         // adjust btn x,y position a bit
         pt.X -= 1;
         pt.Y -= 1;
 
         // can be null if user closes overlay while fetching with stash tab overlay open
-        if (stashTabControl.TabNameContainer == null) return false;
+        if (stashTabControl.NameContainer == null) return false;
 
-        var tabX = Convert.ToInt32(Math.Floor(pt.X + stashTabControl.TabNameContainer.ActualWidth + 1));
-        var tabY = Convert.ToInt32(Math.Floor(pt.Y + stashTabControl.TabNameContainer.ActualHeight + 1));
+        var tabX = Convert.ToInt32(Math.Floor(pt.X + stashTabControl.NameContainer.ActualWidth + 1));
+        var tabY = Convert.ToInt32(Math.Floor(pt.Y + stashTabControl.NameContainer.ActualHeight + 1));
 
         return clickX > pt.X
                && clickY > pt.Y
