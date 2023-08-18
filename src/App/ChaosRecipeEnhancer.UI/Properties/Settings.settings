@@ -71,8 +71,8 @@
     <Setting Name="StashTabOverlayIndividualTabMargin" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="StashTabOverlayIndividualTabHeaderWidth" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="StashTabOverlayIndividualTabHeaderPadding" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="StashTabOverlayIndividualTabHeaderGap" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>

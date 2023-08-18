@@ -1,4 +1,6 @@
-﻿namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms;
+﻿using System.Windows;
+
+namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms;
 
 public partial class StashTabOverlayForm
 {

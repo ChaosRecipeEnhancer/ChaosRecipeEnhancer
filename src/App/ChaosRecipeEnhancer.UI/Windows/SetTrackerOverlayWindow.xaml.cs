@@ -51,6 +51,10 @@ public partial class SetTrackerOverlayWindow
             MainOverlayContentControl.Content = new StandardDisplay(this);
         if (Settings.Default.SetTrackerOverlayDisplayMode == (int)SetTrackerOverlayMode.VerticalStandard)
             MainOverlayContentControl.Content = new VerticalStandardDisplay(this);
+        if (Settings.Default.SetTrackerOverlayDisplayMode == (int)SetTrackerOverlayMode.Minified)
+            MainOverlayContentControl.Content = new MinifiedDisplay(this);
+        if (Settings.Default.SetTrackerOverlayDisplayMode == (int)SetTrackerOverlayMode.VerticalMinified)
+            MainOverlayContentControl.Content = new VerticalMinifiedDisplay(this);
     }
 
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -75,31 +79,41 @@ public partial class SetTrackerOverlayWindow
 
     public new virtual void Show()
     {
-        try
-        {
-            IsOpen = true;
-            if (Settings.Default.AutoFetchOnRezoneEnabled) _logWatcherManager = new LogWatcherManager(this);
-            base.Show();
-        }
-        catch (ArgumentNullException)
+
+        if (_model.Settings.AutoFetchOnRezoneEnabled &&
+            string.IsNullOrWhiteSpace(_model.Settings.PathOfExileClientLogLocation))
         {
             IsOpen = false;
             _stashTabOverlay.Hide();
             base.Hide();
 
             ErrorWindow.Spawn(
-                "No PoE Client.txt file path set. Please set the file path or disable 'Fetch on New Map' setting.",
+                "You have enabled Auto-Fetching, but have no PoE Client.txt file path set. Please set the file path or disable the 'General Tab > General Section > Fetch on New Map' setting.",
                 "Error: Auto-Fetching"
             );
         }
-
+        else
+        {
+            IsOpen = true;
+            if (_model.Settings.AutoFetchOnRezoneEnabled &&
+                !string.IsNullOrWhiteSpace(_model.Settings.PathOfExileClientLogLocation))
+            {
+                _logWatcherManager = new LogWatcherManager(this);
+            }
+            base.Show();
+        }
     }
 
-    public void RunFetching()
+    public async void RunFetchingAsync()
     {
         if (!IsOpen) return;
 
-        _model.FetchDataAsync(); // Fire and forget async
+        var successfulResult = await _model.FetchDataAsync(); // Fire and forget async
+
+        if (!successfulResult)
+        {
+            Hide();
+        }
     }
 
     public void RunReloadFilter()

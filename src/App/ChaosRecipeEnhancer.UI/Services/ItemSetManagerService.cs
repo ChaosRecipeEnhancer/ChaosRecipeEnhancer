@@ -2,7 +2,6 @@
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.Enums;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
@@ -25,6 +24,7 @@ public interface IItemSetManagerService
 
     public BaseStashTabMetadataList RetrieveStashTabMetadataList();
     public bool RetrieveNeedsFetching();
+    public bool RetrieveNeedsLowerLevel();
     public int RetrieveCompletedSetCount();
     public List<EnhancedItemSet> RetrieveSetsInProgress();
 
@@ -62,6 +62,7 @@ public class ItemSetManagerService : IItemSetManagerService
     // full set amounts will also need to be rendered
     public int CompletedSetCount { get; set; }
     public bool NeedsFetching { get; set; } = true;
+    public bool NeedsLowerLevel { get; set; } = false;
 
     // temporary housing for this field that is needed by some components
     // i'd likely want to move this to its own service tbh
@@ -76,7 +77,7 @@ public class ItemSetManagerService : IItemSetManagerService
     public bool UpdateData(
         int setThreshold,
         List<int> selectedTabIndices,
-        List<EnhancedItem> filteredStashContents, // i feel like implicitly this comes pre-filtered
+        List<EnhancedItem> filteredStashContents,
         bool includeIdentified = false,
         bool chaosRecipe = true
     )
@@ -160,35 +161,57 @@ public class ItemSetManagerService : IItemSetManagerService
         if (chaosRecipe)
         {
             var noChaosItemsLeft = false;
+
+            // for every set
             for (var i = 0; i < _setThreshold; i++)
             {
                 // create new 'empty' enhanced item set
                 var enhancedItemSet = new EnhancedItemSet();
 
+                // if there are still chaos items left in our stash
                 if (!noChaosItemsLeft)
                 {
+                    // filter for chaos recipe eligible items
                     var eligibleChaosItems = _currentItemsFilteredForRecipe.Where(x => x.IsChaosRecipeEligible).ToList();
 
+                    // if there are any chaos items left (do we need this?)
                     if (eligibleChaosItems.Count != 0)
                     {
+                        // try to add a single eligible chaos item in the set (where we're iterate in our loop on line 166)
                         foreach (var attempt in eligibleChaosItems)
                         {
                             var addSuccessful = enhancedItemSet.TryAddItem(attempt);
 
+                            // if we successfully add to set (i.e. it wasn't an item slot that was already taken)
                             if (addSuccessful)
                             {
+                                // remove from our stash
                                 _currentItemsFilteredForRecipe.Remove(attempt);
+
+                                // break out of loop
                                 break;
                             }
                         }
                     }
                     else
                     {
+                        // set flag to indicate no chaos items left in our stash
                         noChaosItemsLeft = true;
+
+                        // we now know we need lower level items
+                        // this will allow us to notify dependencies of this
+                        NeedsLowerLevel = true;
                     }
+                    // we still need to loop to create the rest of the sets (even if they don't have chaos items in them)
                 }
 
                 listOfSets.Add(enhancedItemSet);
+
+                if (i == _setThreshold - 1 && !noChaosItemsLeft)
+                {
+                    // we're on the last set and we know we still have chaos items
+                    NeedsLowerLevel = false;
+                }
             }
         }
         else
@@ -260,6 +283,7 @@ public class ItemSetManagerService : IItemSetManagerService
     // workaround to expose properties as functions on our interface
     public BaseStashTabMetadataList RetrieveStashTabMetadataList() => _stashTabMetadataList;
     public bool RetrieveNeedsFetching() => NeedsFetching;
+    public bool RetrieveNeedsLowerLevel() => NeedsLowerLevel;
     public int RetrieveCompletedSetCount() => CompletedSetCount;
     public List<EnhancedItemSet> RetrieveSetsInProgress() => _setsInProgress;
 

@@ -1,58 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.Enums;
-using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
-public class StashTabControl : INotifyPropertyChanged
+public class StashTabControl : ViewModelBase
 {
     private SolidColorBrush _tabHeaderColor;
-    private Thickness _tabHeaderWidth;
 
     public StashTabControl(string name, int index)
     {
-        TabName = name;
-        TabIndex = index;
+        Name = name;
+        Index = index;
         TabHeaderColor = Brushes.Transparent;
-        TabHeaderWidth = new Thickness(Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2, Settings.Default.StashTabOverlayIndividualTabHeaderWidth, 2);
     }
 
-    public int TabIndex { get; }
     public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = new();
-
-    // used for registering clicks on tab headers
-    public TextBlock TabNameContainer { get; set; }
-    public string TabName { get; set; }
+    public TextBlock NameContainer { get; set; }
+    public string Name { get; set; }
+    public int Index { get; }
     public bool Quad { get; set; }
 
     public SolidColorBrush TabHeaderColor
     {
         get => _tabHeaderColor;
-        set
-        {
-            _tabHeaderColor = value;
-            OnPropertyChanged("TabHeaderColor");
-        }
-    }
-
-    public Thickness TabHeaderWidth
-    {
-        get => _tabHeaderWidth;
-        set
-        {
-            if (value != _tabHeaderWidth)
-            {
-                _tabHeaderWidth = value;
-                OnPropertyChanged("TabHeaderWidth");
-            }
-        }
+        set => SetProperty(ref _tabHeaderColor, value);
     }
 
     /// <summary>
@@ -80,11 +55,6 @@ public class StashTabControl : INotifyPropertyChanged
         // If quad tab, set grid to 24 x 24, else set to 12 x 12 grid
         var size = Quad ? 24 : 12;
         GenerateInteractiveStashCellGrid(size);
-    }
-
-    public void DeactivateItemCells()
-    {
-        foreach (var cell in OverlayCellsList) cell.Active = false;
     }
 
     public void DeactivateSingleItemCells(EnhancedItem itemModel)
@@ -139,28 +109,4 @@ public class StashTabControl : INotifyPropertyChanged
             }
         }
     }
-
-    public void MarkNextItem(EnhancedItem itemModel)
-    {
-        foreach (var cell in OverlayCellsList)
-        {
-            if (cell.ItemModel == itemModel)
-            {
-                cell.ButtonText = "X";
-            }
-        }
-    }
-
-    #region INotifyPropertyChanged implementation
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    // Create the OnPropertyChanged method to raise the event
-    // The calling member's name will be used as the parameter.
-    private void OnPropertyChanged(string name = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
-
-    #endregion
 }
