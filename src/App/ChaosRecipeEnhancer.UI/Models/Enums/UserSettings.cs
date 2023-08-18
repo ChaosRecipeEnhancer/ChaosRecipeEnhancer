@@ -9,8 +9,7 @@ public enum ConnectionStatusTypes
 
 public enum StashTabOverlayHighlightMode
 {
-    SetBySet,
-    ItemByItem
+    SetBySet
 }
 
 public enum StashTabQueryMode
