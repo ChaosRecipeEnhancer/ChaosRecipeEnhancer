@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
-public class StashTabControl : INotifyPropertyChanged
+public class StashTabControl : ViewModelBase
 {
     private SolidColorBrush _tabHeaderColor;
     private Thickness _tabHeaderWidth;
@@ -26,8 +24,6 @@ public class StashTabControl : INotifyPropertyChanged
 
     public int TabIndex { get; }
     public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = new();
-
-    // used for registering clicks on tab headers
     public TextBlock TabNameContainer { get; set; }
     public string TabName { get; set; }
     public bool Quad { get; set; }
@@ -35,24 +31,13 @@ public class StashTabControl : INotifyPropertyChanged
     public SolidColorBrush TabHeaderColor
     {
         get => _tabHeaderColor;
-        set
-        {
-            _tabHeaderColor = value;
-            OnPropertyChanged("TabHeaderColor");
-        }
+        set => SetProperty(ref _tabHeaderColor, value);
     }
 
     public Thickness TabHeaderWidth
     {
         get => _tabHeaderWidth;
-        set
-        {
-            if (value != _tabHeaderWidth)
-            {
-                _tabHeaderWidth = value;
-                OnPropertyChanged("TabHeaderWidth");
-            }
-        }
+        set => SetProperty(ref _tabHeaderWidth, value);
     }
 
     /// <summary>
@@ -80,11 +65,6 @@ public class StashTabControl : INotifyPropertyChanged
         // If quad tab, set grid to 24 x 24, else set to 12 x 12 grid
         var size = Quad ? 24 : 12;
         GenerateInteractiveStashCellGrid(size);
-    }
-
-    public void DeactivateItemCells()
-    {
-        foreach (var cell in OverlayCellsList) cell.Active = false;
     }
 
     public void DeactivateSingleItemCells(EnhancedItem itemModel)
@@ -139,17 +119,4 @@ public class StashTabControl : INotifyPropertyChanged
             }
         }
     }
-
-    #region INotifyPropertyChanged implementation
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    // Create the OnPropertyChanged method to raise the event
-    // The calling member's name will be used as the parameter.
-    private void OnPropertyChanged(string name = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
-
-    #endregion
 }

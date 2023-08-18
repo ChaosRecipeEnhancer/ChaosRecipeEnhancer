@@ -152,7 +152,6 @@
             SelectedIndex="{Binding Settings.StashTabOverlayHighlightMode, Mode=TwoWay}">
 
             <ComboBoxItem Content="Set by Set" />
-            <ComboBoxItem Content="Item by Item" />
 
         </ComboBox>
 
