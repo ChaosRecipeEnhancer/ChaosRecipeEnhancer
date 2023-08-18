@@ -16,6 +16,8 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 ## User Guide (Video)
 
+Note: This video guide is a tad outdated - it has not been updated for our latest v2 release. I will be putting out a new one soon. The core functionality is still the same, but the UI has changed a bit.
+
 <a href="https://www.youtube.com/watch?v=7umgTuN8bMU">
     <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
 </a>
@@ -39,7 +41,7 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 #### Set Tracker Overlay & Loot Filter Manipulation
 
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/Main-Overlay.png" width="700" alt="Set Tracker Overlay & Loot Filter Manipulation">
 
 ## Statement On Our Use Of `POESESSID`
 
