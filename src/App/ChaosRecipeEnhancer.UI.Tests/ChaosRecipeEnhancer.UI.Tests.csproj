@@ -25,4 +25,7 @@
 		<ProjectReference Include="..\ChaosRecipeEnhancer.UI\ChaosRecipeEnhancer.UI.csproj" />
 	</ItemGroup>
 
+
+
+
 </Project>
