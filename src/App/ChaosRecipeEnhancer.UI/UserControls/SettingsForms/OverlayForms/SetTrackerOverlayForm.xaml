@@ -123,10 +123,9 @@
 
             <ComboBoxItem Content="Standard" />
             <ComboBoxItem Content="Standard (Vertical)" />
-
-            <!-- <ComboBoxItem Content="Minified" /> -->
+            <ComboBoxItem Content="Minified" />
+            <ComboBoxItem Content="Minified (Vertical)" />
             <!-- <ComboBoxItem Content="Only Buttons" /> -->
-            <!-- <ComboBoxItem Content="Minified (Vertical)" /> -->
             <!-- <ComboBoxItem Content="Only Minified Buttons" /> -->
 
         </ComboBox>

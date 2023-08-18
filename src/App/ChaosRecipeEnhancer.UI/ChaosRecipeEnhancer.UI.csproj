@@ -111,11 +111,7 @@
 	<ItemGroup>
 		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs" />
 		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs" />
-		<Compile Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml.cs" />
-		<Compile Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml.cs" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml" />
-		<Page Remove="UserControls\SetTrackerOverlayDisplays\MinifiedDisplay.xaml" />
-		<Page Remove="UserControls\SetTrackerOverlayDisplays\VerticalMinifiedDisplay.xaml" />
 	</ItemGroup>
 </Project>
