@@ -41,7 +41,7 @@ Note: This video guide is a tad outdated - it has not been updated for our lates
 
 #### Set Tracker Overlay & Loot Filter Manipulation
 
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/Main-Overlay.png" width="700" alt="Set Tracker Overlay & Loot Filter Manipulation">
+<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
 
 ## Statement On Our Use Of `POESESSID`
 
