@@ -1,19 +1,16 @@
 ﻿using System.Windows;
-using ChaosRecipeEnhancer.UI.View;
+using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 
-/// <summary>
-///     Interaction logic for MinifiedDisplay.xaml
-/// </summary>
 internal partial class MinifiedDisplay
 {
-    private readonly SetTrackerOverlayView _parent;
+    private readonly SetTrackerOverlayWindow _parent;
 
-    public MinifiedDisplay(SetTrackerOverlayView parent)
+    public MinifiedDisplay(SetTrackerOverlayWindow parent)
     {
-        _parent = parent;
         InitializeComponent();
+        _parent = parent;
     }
 
     private void OnStashTabOverlayButtonClicked(object sender, RoutedEventArgs e)
@@ -23,7 +20,7 @@ internal partial class MinifiedDisplay
 
     private void OnFetchButtonClicked(object sender, RoutedEventArgs e)
     {
-        _parent.RunFetching();
+        _parent.RunFetchingAsync();
     }
 
     private void OnReloadFilterButtonClicked(object sender, RoutedEventArgs e)

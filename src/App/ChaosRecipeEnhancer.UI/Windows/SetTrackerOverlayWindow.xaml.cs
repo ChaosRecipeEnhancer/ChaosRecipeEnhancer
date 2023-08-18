@@ -51,6 +51,10 @@ public partial class SetTrackerOverlayWindow
             MainOverlayContentControl.Content = new StandardDisplay(this);
         if (Settings.Default.SetTrackerOverlayDisplayMode == (int)SetTrackerOverlayMode.VerticalStandard)
             MainOverlayContentControl.Content = new VerticalStandardDisplay(this);
+        if (Settings.Default.SetTrackerOverlayDisplayMode == (int)SetTrackerOverlayMode.Minified)
+            MainOverlayContentControl.Content = new MinifiedDisplay(this);
+        if (Settings.Default.SetTrackerOverlayDisplayMode == (int)SetTrackerOverlayMode.VerticalMinified)
+            MainOverlayContentControl.Content = new VerticalMinifiedDisplay(this);
     }
 
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)
