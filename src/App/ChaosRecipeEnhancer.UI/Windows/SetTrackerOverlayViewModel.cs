@@ -21,6 +21,8 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     private readonly IApiService _apiService = Ioc.Default.GetRequiredService<IApiService>();
 
     private const string SetsFullText = "Sets full!";
+    private const string NeedsLowerLevelText = "Need lower level items for recipe!";
+
     private const int FetchCooldown = 30;
 
     private bool _fetchButtonEnabled = true;
@@ -130,6 +132,12 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 FetchButtonEnabled = true;
             }
         }
+        catch (FormatException)
+        {
+            FetchButtonEnabled = true;
+            ErrorWindow.Spawn("It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.", "Error: Set Tracker Overlay - Fetch Data");
+            return false;
+        }
         catch (NullReferenceException)
         {
             FetchButtonEnabled = true;
@@ -139,7 +147,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             Settings.PoEAccountConnectionStatus = 0;
 
             ErrorWindow.Spawn("It looks like your Session ID has expired. Please navigate to the 'Account > Path of Exile Account > PoE Session ID' setting and enter a new value, and try again.", "Error: Set Tracker Overlay - Fetch Data");
-
             return false;
         }
 
@@ -154,6 +161,8 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             WarningMessage = string.Empty;
         else if (!NeedsFetching && FullSets >= Settings.FullSetThreshold)
             WarningMessage = SetsFullText;
+        else if (!NeedsFetching && NeedsLowerLevel)
+            WarningMessage = NeedsLowerLevelText;
         else if (WarningMessage == SetsFullText)
             WarningMessage = string.Empty;
     }
@@ -180,6 +189,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     private bool ShowAmountNeeded => Settings.SetTrackerOverlayItemCounterDisplayMode == 2;
 
     public bool NeedsFetching => _itemSetManagerService.RetrieveNeedsFetching();
+    public bool NeedsLowerLevel => _itemSetManagerService.RetrieveNeedsLowerLevel();
     public int FullSets => _itemSetManagerService.RetrieveCompletedSetCount();
 
     #region Item Amount and Visibility Properties
@@ -237,6 +247,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         OnPropertyChanged(nameof(BootsActive));
 
         OnPropertyChanged(nameof(NeedsFetching));
+        OnPropertyChanged(nameof(NeedsLowerLevel));
         OnPropertyChanged(nameof(FullSets));
         OnPropertyChanged(nameof(WarningMessage));
         OnPropertyChanged(nameof(FetchButtonEnabled));
