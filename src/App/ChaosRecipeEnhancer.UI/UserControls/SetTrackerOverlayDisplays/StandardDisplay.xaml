@@ -103,28 +103,66 @@
             </Button>
 
             <!-- Set Counter Display -->
-            <UniformGrid
-            Grid.Row="0"
-            Grid.Column="1"
-            Height="50"
-            Width="50"
-            Columns="1"
-            Rows="2"
-            Margin="5 0">
+            <Border Grid.Row="0"
+                    Grid.Column="1"
+                    Background="#202020"
+                    Margin="5 0"
+                    ToolTipService.InitialShowDelay="50">
 
-                <TextBlock
-                TextAlignment="Center"
-                VerticalAlignment="Center"
-                Text="Sets" />
+                <Border.ToolTip>
+                    <ToolTip
+                        Visibility="{Binding SetsTooltipEnabled, Converter={StaticResource VisibleIfTrue}}"
+                        Width="400"
+                        Placement="Top"
+                        VerticalOffset="-10">
 
-                <!-- Set Counter -->
-                <TextBlock
-                x:Name="FullSetsTextBlock"
-                Text="{Binding FullSets}"
-                VerticalAlignment="Center"
-                TextAlignment="Center" />
+                        <ToolTip.Resources>
+                            <Style TargetType="TextBlock" x:Key="LastTextBlockStyle">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding FullSets}" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToolTip.Resources>
 
-            </UniformGrid>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Why do my set counts not match up?" />
+                            <TextBlock Text="You are probably missing Items with an Item Level of 60-74." />
+                            <TextBlock TextWrapping="Wrap" Style="{StaticResource LastTextBlockStyle}">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="If you want to turn in {0} set(s), consider lowering your threshold to {0}. (Currently set to {1})">
+                                        <Binding Path="FullSets" />
+                                        <Binding Path="Settings.FullSetThreshold" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+
+                    </ToolTip>
+                </Border.ToolTip>
+
+                <UniformGrid
+                    Height="50"
+                    Width="50"
+                    Columns="1"
+                    Rows="2"
+                    >
+
+                    <TextBlock
+                        TextAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="Sets" />
+
+                    <!-- Set Counter -->
+                    <TextBlock
+                        x:Name="FullSetsTextBlock"
+                        Text="{Binding FullSets}"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center" />
+
+                </UniformGrid>
+            </Border>
 
             <!-- Glove Display -->
             <Border
