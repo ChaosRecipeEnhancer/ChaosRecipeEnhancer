@@ -194,18 +194,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public float SetTrackerOverlayOpacity {
-            get {
-                return ((float)(this["SetTrackerOverlayOpacity"]));
-            }
-            set {
-                this["SetTrackerOverlayOpacity"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public int SetTrackerOverlayItemCounterDisplayMode {
             get {
                 return ((int)(this["SetTrackerOverlayItemCounterDisplayMode"]));
