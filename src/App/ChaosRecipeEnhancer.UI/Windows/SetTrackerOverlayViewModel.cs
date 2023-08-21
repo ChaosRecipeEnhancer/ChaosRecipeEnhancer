@@ -26,12 +26,26 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     private const int FetchCooldown = 30;
 
     private bool _fetchButtonEnabled = true;
+    private bool _stashButtonEnabled = false;
+    private bool _stashButtonTooltipEnabled = false;
     private string _warningMessage;
 
     public bool FetchButtonEnabled
     {
         get => _fetchButtonEnabled;
         set => SetProperty(ref _fetchButtonEnabled, value);
+    }
+
+    public bool StashButtonEnabled
+    {
+        get => _stashButtonEnabled;
+        set => SetProperty(ref _stashButtonEnabled, value);
+    }
+
+    public bool StashButtonTooltipEnabled
+    {
+        get => _stashButtonTooltipEnabled;
+        set => SetProperty(ref _stashButtonTooltipEnabled, value);
     }
 
     public string WarningMessage
@@ -44,6 +58,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     {
         WarningMessage = string.Empty;
         FetchButtonEnabled = false;
+        StashButtonEnabled = false;
 
         try
         {
@@ -120,7 +135,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
             // update the UI accordingly
             UpdateDisplay();
-            UpdateNotificationMessage();
+            UpdateStashButtonAndWarningMessage();
 
             // enforce cooldown on fetch button to reduce chances of rate limiting
             try
@@ -153,18 +168,48 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         return true;
     }
 
-    public void UpdateNotificationMessage()
+    public void UpdateStashButtonAndWarningMessage()
     {
-        // update the warning message (notifications based on status)
-        // usually "Sets Full!"; sometimes rate limit warnings
+
+        // case 1: user just opened the app, hasn't hit fetch yet
         if (NeedsFetching)
+        {
             WarningMessage = string.Empty;
-        else if (!NeedsFetching && FullSets >= Settings.FullSetThreshold)
-            WarningMessage = SetsFullText;
-        else if (!NeedsFetching && NeedsLowerLevel)
-            WarningMessage = NeedsLowerLevelText;
-        else if (WarningMessage == SetsFullText)
-            WarningMessage = string.Empty;
+        }
+        else if (!NeedsFetching)
+        {
+            // case 2: user fetched data and has enough sets to turn in based on their threshold
+            if (FullSets >= Settings.FullSetThreshold)
+            {
+                WarningMessage = SetsFullText;
+
+                // stash button is enabled with no warning tooltip
+                StashButtonEnabled = true;
+                StashButtonTooltipEnabled = false;
+            }
+
+            // case 3: user fetched data and has at least 1 set, but not to their full threshold
+            else if (FullSets < Settings.FullSetThreshold && FullSets >= 1)
+            {
+                WarningMessage = string.Empty;
+
+                // stash button is disabled with warning tooltip to change threshold
+                StashButtonEnabled = false;
+                StashButtonTooltipEnabled = true;
+            }
+
+            // case 3: user has fetched and needs items for chaos recipe (needs more lower level items)
+            // this one doesn't work as expected
+            else if (NeedsLowerLevel)
+            {
+                WarningMessage = NeedsLowerLevelText;
+
+                // stash button is disabled with conditional tooltip enabled
+                // based on whether or not the user has at least 1 set
+                StashButtonEnabled = false;
+                StashButtonTooltipEnabled = FullSets >= 1;
+            }
+        }
     }
 
     public void RunReloadFilter()

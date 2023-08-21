@@ -73,13 +73,40 @@
 
             <!-- Stash Button Overlay Button Display -->
             <Button
-            x:Name="OpenStashTabOverlay"
-            Click="OnStashTabOverlayButtonClicked"
-            Width="50"
-            Height="50"
-            Grid.Column="0"
-            Grid.Row="0"
-            Content="Stash" />
+                x:Name="OpenStashTabOverlay"
+                Grid.Column="0"
+                Grid.Row="0"
+                Click="OnStashTabOverlayButtonClicked"
+                IsEnabled="{Binding StashButtonEnabled}"
+                Width="50"
+                Height="50"
+                ToolTipService.InitialShowDelay="50"
+                ToolTipService.ShowOnDisabled="True"
+                Content="Stash">
+
+                <Button.ToolTip>
+                    <ToolTip
+                        Visibility="{Binding StashButtonTooltipEnabled, Converter={StaticResource VisibleIfTrue}}"
+                        Width="400"
+                        Placement="Top"
+                        VerticalOffset="-10">
+
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="You have {0} Sets; Not at Full Set Threshold of {1}">
+                                        <Binding Path="FullSets" />
+                                        <Binding Path="Settings.FullSetThreshold" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <TextBlock Text="Lower Full Sets Threshold and Re-Fetch to enable item picking." />
+                        </StackPanel>
+
+                    </ToolTip>
+                </Button.ToolTip>
+
+            </Button>
 
             <!-- Set Counter Display -->
             <UniformGrid
