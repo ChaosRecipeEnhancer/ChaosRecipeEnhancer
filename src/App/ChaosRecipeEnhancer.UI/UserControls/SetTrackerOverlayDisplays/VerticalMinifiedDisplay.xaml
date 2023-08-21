@@ -79,11 +79,13 @@
                 Width="30"
                 CornerRadius="50"
                 Margin="0 3"
+                IsEnabled="{Binding StashButtonEnabled}"
                 PreviewMouseDown="OnStashTabOverlayButtonClicked"
+                ToolTipService.InitialShowDelay="50"
+                ToolTipService.ShowOnDisabled="True"
                 Background="#202020"
                 BorderThickness="3"
-                BorderBrush="DarkSlateGray"
-                ToolTip="Completed Item Sets">
+                BorderBrush="DarkSlateGray">
 
                 <TextBlock
                     x:Name="FullSetsTextBlock"
@@ -92,6 +94,28 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     TextAlignment="Center" />
+
+                <Border.ToolTip>
+                    <ToolTip
+                        Visibility="{Binding StashButtonTooltipEnabled, Converter={StaticResource VisibleIfTrue}}"
+                        Width="400"
+                        Placement="Top"
+                        VerticalOffset="-10">
+
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="You have {0} Sets; Not at Full Set Threshold of {1}">
+                                        <Binding Path="FullSets" />
+                                        <Binding Path="Settings.FullSetThreshold" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <TextBlock Text="Lower Full Sets Threshold and Re-Fetch to enable item picking." />
+                        </StackPanel>
+
+                    </ToolTip>
+                </Border.ToolTip>
 
             </Border>
 

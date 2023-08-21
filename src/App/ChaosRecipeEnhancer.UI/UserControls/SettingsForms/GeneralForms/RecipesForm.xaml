@@ -75,7 +75,11 @@
             Grid.Row="2"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding Settings.ChaosRecipeTrackingEnabled, Mode=TwoWay, Converter={StaticResource InvertedBoolConverter}}" />
+            IsChecked="{Binding Settings.ChaosRecipeTrackingEnabled, Mode=TwoWay, Converter={StaticResource InvertedBoolConverter}}"
+            IsEnabled="False"
+            ToolTipService.InitialShowDelay="50"
+            ToolTipService.ShowOnDisabled="True"
+            ToolTip="v2.0.1: We have temporarily disabled Regal Recipe due &#x0a;to some reported bugs." />
         <!-- Regal Recipe Selector End -->
 
         <!-- Include Identified Selector Start -->

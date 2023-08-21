@@ -44,9 +44,6 @@
     <Setting Name="PathOfExileClientLogLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SetTrackerOverlayOpacity" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1</Value>
-    </Setting>
     <Setting Name="SetTrackerOverlayItemCounterDisplayMode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>

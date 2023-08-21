@@ -42,7 +42,7 @@ public partial class SetTrackerOverlayWindow
         else if (e.PropertyName == nameof(Settings.FullSetThreshold)
                  || e.PropertyName == nameof(Settings.StashTabIndices)
                  || e.PropertyName == nameof(Settings.StashTabPrefix))
-            _model.UpdateNotificationMessage();
+            _model.UpdateStashButtonAndWarningMessage();
     }
 
     private void UpdateOverlayType()
