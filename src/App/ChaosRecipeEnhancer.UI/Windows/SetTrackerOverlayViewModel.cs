@@ -65,34 +65,46 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         FetchButtonEnabled = false;
         StashButtonEnabled = false;
 
-        try
+        // needed to craft api request
+        var targetStash = (TargetStash)Settings.TargetStash;
+        var accountName = Settings.PathOfExileAccountName;
+        var leagueName = Settings.LeagueName;
+        var secret = Settings.PathOfExileWebsiteSessionId;
+
+        // needed to update item set manager
+        var setThreshold = Settings.FullSetThreshold;
+
+        if (string.IsNullOrWhiteSpace(Settings.StashTabIndices))
         {
-            // needed to craft api request
-            var targetStash = (TargetStash)Settings.TargetStash;
-            var accountName = Settings.PathOfExileAccountName;
-            var leagueName = Settings.LeagueName;
-            var secret = Settings.PathOfExileWebsiteSessionId;
+            FetchButtonEnabled = true;
 
-            // needed to update item set manager
-            var setThreshold = Settings.FullSetThreshold;
+            ErrorWindow.Spawn(
+                "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
+                "Error: Set Tracker Overlay - Fetch Data"
+            );
 
-            // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
-            var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
+            return false;
+        }
 
-            var filteredStashContents = new List<EnhancedItem>();
-            var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
-            var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
+        // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
+        var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
 
-            // reset item amounts before fetching new data
-            // invalidate some outdated state for our item manager
-            _itemSetManagerService.ResetCompletedSets();
-            _itemSetManagerService.ResetItemAmounts();
+        var filteredStashContents = new List<EnhancedItem>();
+        var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
+        var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
 
-            // update the stash tab metadata based on your target stash
-            var stashTabMetadataList = targetStash == TargetStash.Personal
-                ? await _apiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, secret)
-                : await _apiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, secret);
+        // reset item amounts before fetching new data
+        // invalidate some outdated state for our item manager
+        _itemSetManagerService.ResetCompletedSets();
+        _itemSetManagerService.ResetItemAmounts();
 
+        // update the stash tab metadata based on your target stash
+        var stashTabMetadataList = targetStash == TargetStash.Personal
+            ? await _apiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, secret)
+            : await _apiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, secret);
+
+        if (stashTabMetadataList is not null)
+        {
             _itemSetManagerService.UpdateStashMetadata(stashTabMetadataList);
 
             foreach (var index in selectedTabIndices)
@@ -152,21 +164,9 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 FetchButtonEnabled = true;
             }
         }
-        catch (FormatException)
+        else
         {
             FetchButtonEnabled = true;
-            ErrorWindow.Spawn("It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.", "Error: Set Tracker Overlay - Fetch Data");
-            return false;
-        }
-        catch (NullReferenceException)
-        {
-            FetchButtonEnabled = true;
-
-            // usually we will be here if we weren't able to make a successful api request based on an expired session ID
-            Settings.PathOfExileWebsiteSessionId = string.Empty;
-            Settings.PoEAccountConnectionStatus = 0;
-
-            ErrorWindow.Spawn("It looks like your Session ID has expired. Please navigate to the 'Account > Path of Exile Account > PoE Session ID' setting and enter a new value, and try again.", "Error: Set Tracker Overlay - Fetch Data");
             return false;
         }
 
