@@ -22,6 +22,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{D0570BFD-2E26-406A-B4D3-3A4BB586F58F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{155F32F9-BB7B-44E4-A1F0-02E1BFFA4FF6}"
+	ProjectSection(SolutionItems) = preProject
+		src\Backend\README.md = src\Backend\README.md
+	EndProjectSection
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "ChaosRecipeEnhancer.Backend.RedirectionHandler", "src\Backend\ChaosRecipeEnhancer.Backend.RedirectionHandler\ChaosRecipeEnhancer.Backend.RedirectionHandler.njsproj", "{93A99353-34B5-47FA-87C9-63D274E18909}"
 EndProject
