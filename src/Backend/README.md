@@ -10,4 +10,9 @@ Disclaimer: This new backend is very much a work in progress. Once we integrate 
 
 ![Auth Flow Sequence Diagram](./DocumentationAssets/CRE-Auth-Sequence.png)
 
+## Acknowledgements
+
+MrTin (QT-Dev) on Discord / GitHub - author of the Exile Diary Reborn application.
+He helped me a ton setting up the OAuth flow. Thanks!
+
 ## TODO: IaC for Infrastructure
