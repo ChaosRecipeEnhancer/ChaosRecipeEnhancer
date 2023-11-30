@@ -21,10 +21,6 @@
 
     <Border BorderThickness="1" BorderBrush="Transparent" ClipToBounds="True">
 
-        <Border.Background>
-            <SolidColorBrush Opacity="{Binding Settings.SetTrackerOverlayOpacity}"/>
-        </Border.Background>
-
         <Border BorderThickness="1" Margin="-2">
 
             <!-- Set Tracker Display -->

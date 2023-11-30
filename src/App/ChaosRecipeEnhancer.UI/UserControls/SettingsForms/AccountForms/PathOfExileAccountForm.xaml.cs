@@ -31,4 +31,9 @@ internal partial class PathOfExileAccountForm
             _model.Settings.Save();
         }
     }
+
+    private void OnLoginClicked(object sender, RoutedEventArgs e)
+    {
+        _model.LoginToPoEWebsite();
+    }
 }
