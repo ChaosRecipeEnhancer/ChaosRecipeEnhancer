@@ -8,6 +8,7 @@
     // Extract 'code' and 'state' from query string parameters
     const queryStringParameters = event.queryStringParameters;
     if (!queryStringParameters || !queryStringParameters.code || !queryStringParameters.state) {
+        console.log(`Handler: Error! Missing required parameters 'code' and 'state'.`);
         return {
             statusCode: 400,
             body: JSON.stringify({ message: "Missing required parameters 'code' and 'state'." })
@@ -16,12 +17,13 @@
 
     const { code, state } = queryStringParameters;
 
-    // Validate 'code' (codeChallenge) and 'state'
-    // Assuming codeChallenge is a Base64 URL encoded SHA256 hash, and state is a Base64 URL encoded string
-    if (!isValidBase64UrlEncoded(code) || !isValidBase64UrlEncoded(state)) {
+    // Validate 'code' (codeChallenge)
+    // Assuming codeChallenge is a Base64 URL encoded SHA256 hash
+    if (!isValidBase64UrlEncoded(code)) {
+        console.log(`Handler: Error! Invalid 'code' format.`);
         return {
             statusCode: 400,
-            body: JSON.stringify({ message: "Invalid 'code' or 'state' format." })
+            body: JSON.stringify({ message: "Invalid 'code' format." })
         };
     }
 
@@ -37,11 +39,23 @@
         headers: { location }
     };
 
+    console.log(`Handler: Success! Redirecting to ${location}`);
     return response;
 };
 
 function isValidBase64UrlEncoded(str) {
+    // Decode URL encoded string
+    let decodedStr;
+    try {
+        decodedStr = decodeURIComponent(str);
+        console.log(`Utility - Info. Decoded URL encoded string: ${decodedStr}`);
+    } catch (e) {
+        console.log(`Utility - Info. Failed to decode URL encoded string: ${e}`);
+        return false;
+    }
+
     // Regex to check if string is Base64 URL encoded
-    const base64UrlRegex = /^[A-Za-z0-9_-]+$/;
-    return base64UrlRegex.test(str);
+    // This regular expression now allows for regular Base64 characters, and also '+', '/', and '='
+    const base64UrlRegex = /^[A-Za-z0-9_\-+/=]+$/;
+    return base64UrlRegex.test(decodedStr);
 }
