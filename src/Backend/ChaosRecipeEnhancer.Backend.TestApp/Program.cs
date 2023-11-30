@@ -12,7 +12,6 @@ internal static class Program
         var codeVerifier = Utilities.GenerateRandomString(128);
 
         // Create a SHA256 hash
-
         var bytes = Encoding.UTF8.GetBytes(codeVerifier);
         var hash = SHA256.HashData(bytes);
 
@@ -29,11 +28,15 @@ internal static class Program
         var state = Utilities.GenerateRandomString(32);
         Console.WriteLine("State: " + state);
 
+        // You can only request account:* scopes - NO service:* scopes
+        const string scopes = "account:leagues account:stashes account:characters account:item_filter";
+        var encodedScopes = Uri.EscapeDataString(scopes); // This will encode the scopes correctly
+
         var url =
             "https://www.pathofexile.com/oauth/authorize?" +
             "client_id=chaosrecipeenhancer" +
             "&response_type=code" +
-            "&scope=account:leagues account:stashes account:characters account:item_filter service:leagues service:psapi" +
+            "&scope=" + encodedScopes +
             $"&state=${state}" +
             "&redirect_uri=https://sandbox.chaos-recipe.com/auth/success" +
             $"&code_challenge=${codeChallenge}" +
