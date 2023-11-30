@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
@@ -17,8 +18,29 @@ internal partial class App
 
     public App()
     {
-        if (!_singleInstance.Claim()) Shutdown();
-        SetupUnhandledExceptionHandling();
+        string[] args = Environment.GetCommandLineArgs();
+        bool isSecondaryInstance = !_singleInstance.Claim();
+
+        if (isSecondaryInstance)
+        {
+            if (args.Length > 1 && args[1].StartsWith("chaosrecipe://"))
+            {
+                // If it's a URI activation, send the URI to the main instance
+                _singleInstance.PingSingleInstance(args[1]);
+                Shutdown();
+            }
+            else
+            {
+                // If it's a normal duplicate instance, just shut it down
+                Shutdown();
+            }
+        }
+        else
+        {
+            // Setup for the main instance
+            SetupUnhandledExceptionHandling();
+            // ... rest of your setup code
+        }
     }
 
     private void ConfigureServices(IServiceCollection services)
@@ -32,6 +54,14 @@ internal partial class App
 
     private void OnStartup(object sender, StartupEventArgs e)
     {
+        Trace.WriteLine("Starting app up!");
+
+        // print out all startup arguments
+        foreach (var arg in e.Args)
+        {
+            Trace.WriteLine("Startup Argument: " + arg);
+        }
+
         // Create the service collection and configure services
         var services = new ServiceCollection();
         ConfigureServices(services);
@@ -45,7 +75,31 @@ internal partial class App
         var settingsWindow = new SettingsWindow();
         settingsWindow.Show();
 
-        _singleInstance.PingedByOtherProcess += (_, _) => Dispatcher.Invoke(settingsWindow.Show);
+        _singleInstance.PingedByOtherProcess += (sender, e) =>
+        {
+            Trace.WriteLine("Pinged by other processes!");
+
+            var data = sender as string; // Assuming sender is the data
+            Trace.WriteLine($"Received data: {data}");
+
+            // Process the data
+            if (!string.IsNullOrEmpty(data) && data.StartsWith("chaosrecipe://"))
+            {
+                var uri = new Uri(data);
+                var queryParams = HttpUtility.ParseQueryString(uri.Query);
+
+                var authCode = queryParams["code"];
+                var state = queryParams["state"];
+
+                Trace.WriteLine("Auth Code: " + authCode);
+                Trace.WriteLine("State: " + state);
+
+                // TODO: Add your logic to handle the auth code and state
+                AuthHelper.RetrieveAuthToken(authCode, state);
+            }
+
+            Dispatcher.Invoke(settingsWindow.Show);
+        };
     }
 
     private void SetupUnhandledExceptionHandling()

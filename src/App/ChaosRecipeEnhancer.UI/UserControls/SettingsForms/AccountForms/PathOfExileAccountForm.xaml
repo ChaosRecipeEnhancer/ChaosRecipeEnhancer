@@ -31,6 +31,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Form Header -->
@@ -167,12 +168,22 @@
             Grid.Column="0"
             Grid.Row="4"
             Grid.ColumnSpan="2"
+            Margin="0 0 0 10"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Content="Test Connection"
             IsEnabled="{Binding TestConnectionButtonEnabled}"
             Click="OnTestConnectionClicked" />
 
+        <!-- Login Button -->
+        <Button
+            Grid.Column="0"
+            Grid.Row="5"
+            Grid.ColumnSpan="2"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Content="Login via Path of Exile"
+            Click="OnLoginClicked" />
     </Grid>
 
 </UserControl>
