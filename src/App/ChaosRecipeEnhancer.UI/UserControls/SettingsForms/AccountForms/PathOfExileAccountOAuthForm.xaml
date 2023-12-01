@@ -55,7 +55,7 @@
             Margin="10 0 0 10"
             VerticalAlignment="Center"
             Width="150"
-            Text="{Binding Settings.PathOfExileAccountName, Mode=OneWay}" />
+            Text="{Binding Settings.PathOfExileAccountName}" />
 
         <TextBlock
             Grid.Column="0"

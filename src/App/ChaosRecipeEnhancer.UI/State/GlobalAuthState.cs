@@ -17,10 +17,17 @@ public class GlobalAuthState
     private static readonly Lazy<GlobalAuthState> _instance = new(() => new GlobalAuthState());
     public static GlobalAuthState Instance => _instance.Value;
 
+    private string _username;
     private string _authToken;
     private string _refreshToken;
     private string _codeVerifier;
     private DateTime? _tokenExpiration;
+
+    public string Username
+    {
+        get => _username;
+        set => _username = value;
+    }
 
     public string AuthToken
     {
@@ -58,12 +65,12 @@ public class GlobalAuthState
         // Convert Base64 to Base64URL
         var codeChallenge = Base64UrlEncode(base64Digest);
 
-        Console.WriteLine("Code Verifier: " + codeVerifier);
-        Console.WriteLine("Code Challenge: " + codeChallenge);
+        Trace.WriteLine("Code Verifier: " + codeVerifier);
+        Trace.WriteLine("Code Challenge: " + codeChallenge);
 
         // Generate a random string for state
         var state = GenerateRandomString(32);
-        Console.WriteLine("State: " + state);
+        Trace.WriteLine("State: " + state);
 
         // You can only request account:* scopes - NO service:* scopes
         const string scopes = "account:leagues account:stashes account:characters account:item_filter";
@@ -129,15 +136,16 @@ public class GlobalAuthState
     public void UpdateLocalAuthToken(AuthTokenResponse authTokenResponse)
     {
         // Updating Global State
+        _username = authTokenResponse.Username;
         _authToken = authTokenResponse.AccessToken;
         _refreshToken = authTokenResponse.RefreshToken;
         _tokenExpiration = DateTime.UtcNow.AddSeconds(authTokenResponse.ExpiresIn);
 
         // Also update App Settings
+        Settings.Default.PathOfExileAccountName = _username;
         Settings.Default.PathOfExileApiAuthToken = _authToken;
         Settings.Default.PathOfExileApiRefreshToken = _refreshToken;
         Settings.Default.PathOfExileApiAuthTokenExpiration = (DateTime)_tokenExpiration;
-        Settings.Default.PathOfExileAccountName = authTokenResponse.Username;
         Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ValidatedConnection;
         Settings.Default.Save();
     }
