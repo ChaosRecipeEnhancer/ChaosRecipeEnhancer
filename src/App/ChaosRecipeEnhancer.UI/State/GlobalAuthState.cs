@@ -84,10 +84,15 @@ public class GlobalAuthState
         // if we don't have a token expiration, try to load it from the settings
         if (_tokenExpiration is null) _tokenExpiration = Settings.Default.PathOfExileApiAuthTokenExpiration;
 
+        var isValid = !string.IsNullOrEmpty(_authToken) && DateTime.UtcNow < _tokenExpiration
+          // we should also return false if the locally stored auth token doesn't match what's in the global state
+          || _authToken != Settings.Default.PathOfExileApiAuthToken;
+
+        // if the token is invalid, we should purge it from the global state
+        if (!isValid) PurgeLocalAuthToken();
+
         // invalidate the auth token if it's expired
-        return !string.IsNullOrEmpty(_authToken) && DateTime.UtcNow < _tokenExpiration
-            // we should also return false if the locally stored auth token doesn't match what's in the global state
-            || _authToken != Settings.Default.PathOfExileApiAuthToken;
+        return isValid;
     }
 
     public void PurgeLocalAuthToken()
