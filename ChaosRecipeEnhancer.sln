@@ -30,9 +30,9 @@ Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "ChaosRecipeEnhancer.Backend
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "ChaosRecipeEnhancer.Backend.TokenRetreivalHandler", "src\Backend\ChaosRecipeEnhancer.Backend.TokenRetreivalHandler\ChaosRecipeEnhancer.Backend.TokenRetreivalHandler.njsproj", "{E6E017CD-C6CD-42BD-88B7-E1D8281C84C2}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "ChaosRecipeEnhancer.Backend.RefreshTokenHandler", "src\Backend\ChaosRecipeEnhancer.Backend.RefreshTokenHandler\ChaosRecipeEnhancer.Backend.RefreshTokenHandler.njsproj", "{5CCF647D-C565-451E-8EAF-45D735127DB5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaosRecipeEnhancer.Backend.TestApp", "src\Backend\ChaosRecipeEnhancer.Backend.TestApp\ChaosRecipeEnhancer.Backend.TestApp.csproj", "{0F190037-817B-4923-BC5F-B69EE58A8FEC}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "ChaosRecipeEnhancer.Backend.RefreshTokenHandler", "src\Backend\ChaosRecipeEnhancer.Backend.RefreshTokenHandler\ChaosRecipeEnhancer.Backend.RefreshTokenHandler.njsproj", "{5CCF647D-C565-451E-8EAF-45D735127DB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
