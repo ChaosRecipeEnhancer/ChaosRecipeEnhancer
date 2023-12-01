@@ -37,18 +37,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string PathOfExileWebsiteSessionId {
-            get {
-                return ((string)(this["PathOfExileWebsiteSessionId"]));
-            }
-            set {
-                this["PathOfExileWebsiteSessionId"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int PoEAccountConnectionStatus {
             get {

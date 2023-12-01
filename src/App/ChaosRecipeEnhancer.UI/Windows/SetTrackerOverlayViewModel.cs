@@ -7,6 +7,7 @@ using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
+using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -51,7 +52,10 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             var targetStash = (TargetStash)Settings.TargetStash;
             var accountName = Settings.PathOfExileAccountName;
             var leagueName = Settings.LeagueName;
-            var secret = Settings.PathOfExileWebsiteSessionId;
+
+            // TODO: Use new API Service
+            // var secret = Settings.PathOfExileWebsiteSessionId;
+            var secret = string.Empty;
 
             // needed to update item set manager
             var setThreshold = Settings.FullSetThreshold;
@@ -141,12 +145,8 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         catch (NullReferenceException)
         {
             FetchButtonEnabled = true;
-
-            // usually we will be here if we weren't able to make a successful api request based on an expired session ID
-            Settings.PathOfExileWebsiteSessionId = string.Empty;
-            Settings.PoEAccountConnectionStatus = 0;
-
-            ErrorWindow.Spawn("It looks like your Session ID has expired. Please navigate to the 'Account > Path of Exile Account > PoE Session ID' setting and enter a new value, and try again.", "Error: Set Tracker Overlay - Fetch Data");
+            GlobalAuthState.Instance.PurgeLocalAuthToken();
+            ErrorWindow.Spawn("It looks like your credentials have expired. Please log back in to continue.", "Error: Set Tracker Overlay - Fetch Data");
             return false;
         }
 
@@ -187,7 +187,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     }
 
     private bool ShowAmountNeeded => Settings.SetTrackerOverlayItemCounterDisplayMode == 2;
-
     public bool NeedsFetching => _itemSetManagerService.RetrieveNeedsFetching();
     public bool NeedsLowerLevel => _itemSetManagerService.RetrieveNeedsLowerLevel();
     public int FullSets => _itemSetManagerService.RetrieveCompletedSetCount();

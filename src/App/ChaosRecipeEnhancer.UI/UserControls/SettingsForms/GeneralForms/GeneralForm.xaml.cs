@@ -78,7 +78,7 @@ internal partial class GeneralForm
         var errorMessage = "Please add: \n";
 
         if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName)) missingSettings.Add("- Account Name \n");
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileWebsiteSessionId)) missingSettings.Add("- PoE Session ID \n");
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileApiAuthToken)) missingSettings.Add("- PoE Auth Token (Not Logged In) \n");
         if (string.IsNullOrEmpty(Settings.Default.LeagueName)) missingSettings.Add("- League \n");
 
         if (missingSettings.Count == 0) return true;

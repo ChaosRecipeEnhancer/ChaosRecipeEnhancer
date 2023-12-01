@@ -90,7 +90,9 @@ internal class GeneralFormViewModel : ViewModelBase
 
     public async Task LoadStashTabNamesIndicesAsync()
     {
-        var secret = Settings.PathOfExileWebsiteSessionId;
+        // TODO: let's rewrite this to use the new api service
+        // var secret = Settings.PathOfExileWebsiteSessionId;
+        var secret = string.Empty;
         var accountName = Settings.PathOfExileAccountName;
         var leagueName = Settings.LeagueName;
 
