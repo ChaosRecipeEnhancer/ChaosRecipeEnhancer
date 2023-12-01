@@ -27,21 +27,39 @@
         };
     }
 
-    // Construct the redirect URL
-    const params = new URLSearchParams('');
-    params.append('code', code);
-    params.append('state', state);
-    const location = "chaosrecipe://auth?" + params.toString();
-
-    // Generate HTTP redirect response
-    const response = {
-        statusCode: 302,
-        headers: { location }
-    };
-
-    console.log(`Handler: Success! Redirecting to ${location}`);
-    return response;
+    return serveAuthSuccessfulPage(code, state);
 };
+
+function serveAuthSuccessfulPage(code, state) {
+    const redirectUri = `chaosrecipe://auth?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
+    const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Authentication Successful</title>
+            <script type="text/javascript">
+                function redirectToCreClient() {
+                    window.location.href = '${redirectUri}';
+                }
+                window.onload = function() {
+                    setTimeout(redirectToCreClient, 200); // Redirect after 3 seconds
+                };
+            </script>
+        </head>
+        <body>
+            <h1>Authentication for Chaos Recipe Enhancer Successful!</h1>
+            <p>This page is safe to close now.</p>
+            <p>If the app does not open automatically, <a href="javascript:redirectToCreClient()">please click here</a>.</p>
+        </body>
+    </html>
+    `;
+
+    return {
+        statusCode: 200,
+        headers: { 'Content-Type': "text/html" },
+        body: htmlContent
+    };
+}
 
 function isValidBase64UrlEncoded(str) {
     // Decode URL encoded string
