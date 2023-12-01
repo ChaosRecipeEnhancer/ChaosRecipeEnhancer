@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
+using ChaosRecipeEnhancer.UI.ServiceClients;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.State;
@@ -10,6 +13,8 @@ using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
+using Polly.Extensions.Http;
 
 namespace ChaosRecipeEnhancer.UI;
 
@@ -47,7 +52,17 @@ internal partial class App
 
     private void ConfigureServices(IServiceCollection services)
     {
-        // services-as-services registration
+        // Api Client Configuration
+        services
+            .AddHttpClient<IPathOfExileApiServiceClient, PathOfExileApiServiceClient>(client =>
+            {
+                client.Timeout = TimeSpan.FromSeconds(10);
+            })
+            .AddPolicyHandler(GetRetryPolicy())
+            .AddPolicyHandler(GetRateLimitPolicy())
+            .AddHttpMessageHandler(GetUserAgentHandler);
+
+        // Other Service Registration
         services.AddSingleton<IApiService, ApiService>();
         services.AddSingleton<IReloadFilterService, ReloadFilterService>();
         services.AddSingleton<IItemSetManagerService, ItemSetManagerService>();
@@ -178,5 +193,29 @@ internal partial class App
                 var unused = GlobalAuthState.Instance.GenerateAuthToken(authCode).Result;
             }
         }
+    }
+
+    private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+    {
+        return HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .OrResult(msg => msg.StatusCode == HttpStatusCode.TooManyRequests)
+            .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+    }
+
+    private static IAsyncPolicy<HttpResponseMessage> GetRateLimitPolicy()
+    {
+        // Define the maximum number of requests and time period for the rate limit
+        int maxRequests = 5;
+        TimeSpan timePeriod = TimeSpan.FromSeconds(1);
+
+        // Create and return the rate limit policy
+        return Policy.RateLimitAsync<HttpResponseMessage>(maxRequests, timePeriod);
+    }
+
+    private static DelegatingHandler GetUserAgentHandler()
+    {
+        const string userAgent = "OAuth chaosrecipeenhancer/3.23.0001 (contact: dev@chaos-recipe.com) StrictMode";
+        return new UserAgentHandler(userAgent);
     }
 }

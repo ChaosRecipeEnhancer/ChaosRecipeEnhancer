@@ -101,6 +101,9 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.14" />
+		<PackageReference Include="Polly.Extensions.Http" Version="3.0.0" />
 		<Reference Include="WpfToolkit">
 			<HintPath>Utilities\WpfToolkit\Xceed.Wpf.Toolkit.NET5.dll</HintPath>
 		</Reference>
@@ -113,5 +116,8 @@
 		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="ServiceClients\Configuration\NSwagTemplates\" />
 	</ItemGroup>
 </Project>

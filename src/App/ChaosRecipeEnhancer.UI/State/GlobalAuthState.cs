@@ -14,14 +14,20 @@ namespace ChaosRecipeEnhancer.UI.State;
 
 public class GlobalAuthState
 {
-    private static readonly Lazy<GlobalAuthState> _instance = new(() => new GlobalAuthState());
-    public static GlobalAuthState Instance => _instance.Value;
+    #region Fields
 
+    private static readonly Lazy<GlobalAuthState> _instance = new(() => new GlobalAuthState());
     private string _username;
     private string _authToken;
     private string _refreshToken;
     private string _codeVerifier;
     private DateTime? _tokenExpiration;
+
+    #endregion
+
+    #region Properties
+
+    public static GlobalAuthState Instance => _instance.Value;
 
     public string Username
     {
@@ -40,6 +46,10 @@ public class GlobalAuthState
         get => _tokenExpiration;
         set => _tokenExpiration = value;
     }
+
+    #endregion
+
+    #region Domain Methods
 
     public void InitializeAuthFlow()
     {
@@ -133,23 +143,6 @@ public class GlobalAuthState
         Settings.Default.Save();
     }
 
-    public void UpdateLocalAuthToken(AuthTokenResponse authTokenResponse)
-    {
-        // Updating Global State
-        _username = authTokenResponse.Username;
-        _authToken = authTokenResponse.AccessToken;
-        _refreshToken = authTokenResponse.RefreshToken;
-        _tokenExpiration = DateTime.UtcNow.AddSeconds(authTokenResponse.ExpiresIn);
-
-        // Also update App Settings
-        Settings.Default.PathOfExileAccountName = _username;
-        Settings.Default.PathOfExileApiAuthToken = _authToken;
-        Settings.Default.PathOfExileApiRefreshToken = _refreshToken;
-        Settings.Default.PathOfExileApiAuthTokenExpiration = (DateTime)_tokenExpiration;
-        Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ValidatedConnection;
-        Settings.Default.Save();
-    }
-
     public async Task<string> GenerateAuthToken(string authCode)
     {
         const string requestUri = "https://sandbox.chaos-recipe.com/auth/token";
@@ -177,7 +170,7 @@ public class GlobalAuthState
 
                 // This is an important step we cannot miss as it will also update the auth settings that persist
                 // across application restarts (and saved to the settings file on disk)
-                UpdateLocalAuthToken(authTokenResponse);
+                UpdateAuthUserSettings(authTokenResponse);
 
                 return responseContent;
             }
@@ -224,7 +217,7 @@ public class GlobalAuthState
 
                 // This is an important step we cannot miss as it will also update the auth settings that persist
                 // across application restarts (and saved to the settings file on disk)
-                UpdateLocalAuthToken(authTokenResponse);
+                UpdateAuthUserSettings(authTokenResponse);
 
                 return responseContent;
             }
@@ -243,7 +236,26 @@ public class GlobalAuthState
         return string.Empty;
     }
 
+    #endregion
+
     #region Utilities
+
+    private void UpdateAuthUserSettings(AuthTokenResponse authTokenResponse)
+    {
+        // Updating Global State
+        _username = authTokenResponse.Username;
+        _authToken = authTokenResponse.AccessToken;
+        _refreshToken = authTokenResponse.RefreshToken;
+        _tokenExpiration = DateTime.UtcNow.AddSeconds(authTokenResponse.ExpiresIn);
+
+        // Also update App Settings
+        Settings.Default.PathOfExileAccountName = _username;
+        Settings.Default.PathOfExileApiAuthToken = _authToken;
+        Settings.Default.PathOfExileApiRefreshToken = _refreshToken;
+        Settings.Default.PathOfExileApiAuthTokenExpiration = (DateTime)_tokenExpiration;
+        Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ValidatedConnection;
+        Settings.Default.Save();
+    }
 
     private static string GenerateRandomString(int length)
     {
@@ -269,7 +281,7 @@ public class GlobalAuthState
         }
         catch (Exception ex)
         {
-            Console.WriteLine("An error occurred while trying to open the URL: " + ex.Message);
+            Trace.WriteLine("An error occurred while trying to open the URL: " + ex.Message);
         }
     }
 
