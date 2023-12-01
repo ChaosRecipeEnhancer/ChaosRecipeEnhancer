@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.State;
@@ -35,6 +36,12 @@ public class GlobalAuthState
 
     public void InitializeAuthFlow()
     {
+        // Resetting global auth state
+        _authToken = string.Empty;
+        _refreshToken = string.Empty;
+        _codeVerifier = string.Empty;
+        _tokenExpiration = null;
+
         // Generate a random string
         var codeVerifier = GenerateRandomString(128);
 
@@ -89,9 +96,15 @@ public class GlobalAuthState
           || _authToken != Settings.Default.PathOfExileApiAuthToken;
 
         // if the token is invalid, we should purge it from the global state
-        if (!isValid) PurgeLocalAuthToken();
+        if (!isValid)
+        {
+            PurgeLocalAuthToken();
+            Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
+        }
 
-        // invalidate the auth token if it's expired
+        Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ValidatedConnection;
+        Settings.Default.Save();
+
         return isValid;
     }
 
@@ -104,6 +117,7 @@ public class GlobalAuthState
         Settings.Default.PathOfExileAccountName = string.Empty;
         Settings.Default.PathOfExileApiAuthToken = string.Empty;
         Settings.Default.PathOfExileApiRefreshToken = string.Empty;
+        Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
 
         // for one, we can't set this to null because it's a value type
         // in this case, we'll simply ignore it (it's not used anywhere else)
@@ -124,6 +138,7 @@ public class GlobalAuthState
         Settings.Default.PathOfExileApiRefreshToken = _refreshToken;
         Settings.Default.PathOfExileApiAuthTokenExpiration = (DateTime)_tokenExpiration;
         Settings.Default.PathOfExileAccountName = authTokenResponse.Username;
+        Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ValidatedConnection;
         Settings.Default.Save();
     }
 
@@ -161,11 +176,15 @@ public class GlobalAuthState
 
             // Handle error response
             Trace.WriteLine("RetrieveAuthToken - Error retrieving token: " + response.StatusCode);
+            Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionError;
+            Settings.Default.Save();
         }
         catch (Exception ex)
         {
             // Handle any exceptions
             Trace.WriteLine("RetrieveAuthToken - Exception occurred: " + ex.Message);
+            Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionError;
+            Settings.Default.Save();
         }
 
         return string.Empty;
@@ -204,11 +223,13 @@ public class GlobalAuthState
 
             // Handle error response
             Trace.WriteLine("RefreshAuthToken - Error retrieving token: " + response.StatusCode);
+            Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionError;
         }
         catch (Exception ex)
         {
             // Handle any exceptions
             Trace.WriteLine("RefreshAuthToken - Exception occurred: " + ex.Message);
+            Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionError;
         }
 
         return string.Empty;

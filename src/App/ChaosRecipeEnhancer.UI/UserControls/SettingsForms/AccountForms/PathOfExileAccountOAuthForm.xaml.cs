@@ -1,24 +1,28 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms;
 
-internal partial class PathOfExileAccountForm
+/// <summary>
+/// Interaction logic for PathOfExileAccountOAuthForm.xaml
+/// </summary>
+public partial class PathOfExileAccountOAuthForm : UserControl
 {
-    private readonly PathOfExileAccountFormViewModel _model;
+    private readonly PathOfExileAccountOAuthFormViewModel _model;
 
-    public PathOfExileAccountForm()
+    public PathOfExileAccountOAuthForm()
     {
         InitializeComponent();
-        DataContext = _model = new PathOfExileAccountFormViewModel();
+        DataContext = _model = new PathOfExileAccountOAuthFormViewModel();
 
         Settings.Default.PropertyChanged += OnSettingsChanged;
     }
 
-    private void OnTestConnectionClicked(object sender, RoutedEventArgs e)
+    private void OnLoginClicked(object sender, RoutedEventArgs e)
     {
-        _model.TestConnectionToPoEServers();
+        PathOfExileAccountOAuthFormViewModel.LoginToPoEWebsite();
     }
 
     private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
@@ -31,3 +35,4 @@ internal partial class PathOfExileAccountForm
         }
     }
 }
+

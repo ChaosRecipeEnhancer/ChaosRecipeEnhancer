@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
-using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms;
@@ -81,8 +80,5 @@ internal class PathOfExileAccountFormViewModel : ViewModelBase
         }
     }
 
-    public void LoginToPoEWebsite()
-    {
-        AuthHelper.Login();
-    }
+
 }
