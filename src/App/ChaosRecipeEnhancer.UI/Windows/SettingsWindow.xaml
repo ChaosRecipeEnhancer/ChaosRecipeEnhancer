@@ -85,11 +85,6 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <!-- Path of Exile Account (Legacy - Session ID) -->
-                        <!-- <accountForms:PathOfExileAccountForm -->
-                        <!--     Grid.Column="0" -->
-                        <!--     Grid.Row="0" /> -->
-
                         <!-- Path of Exile Account (New - OAuth) -->
                         <accountForms:PathOfExileAccountOAuthForm
                             Grid.Column="1"

@@ -10,7 +10,7 @@
              xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
              Background="#202020"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=accountForms:PathOfExileAccountFormViewModel}">
+             d:DataContext="{d:DesignInstance Type=accountForms:PathOfExileAccountOAuthFormViewModel}">
 
     <UserControl.Resources>
         <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfEqual" ComparisonType="{x:Type system:Int32}" />
