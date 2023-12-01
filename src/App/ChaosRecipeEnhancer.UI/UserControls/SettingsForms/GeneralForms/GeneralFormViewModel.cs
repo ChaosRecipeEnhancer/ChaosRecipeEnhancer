@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Enums;
@@ -15,7 +16,9 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 internal class GeneralFormViewModel : ViewModelBase
 {
     private readonly IApiService _apiService = Ioc.Default.GetService<IApiService>();
+    private const int FetchCooldown = 10;
 
+    private bool _fetchButtonEnabled = true;
     private bool _fetchingStashTabs;
     private bool _initialized;
 
@@ -32,6 +35,12 @@ internal class GeneralFormViewModel : ViewModelBase
     {
         get => _fetchingStashTabs;
         set => SetProperty(ref _fetchingStashTabs, value);
+    }
+
+    public bool FetchButtonEnabled
+    {
+        get => _fetchButtonEnabled;
+        set => SetProperty(ref _fetchButtonEnabled, value);
     }
 
     private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
@@ -63,11 +72,13 @@ internal class GeneralFormViewModel : ViewModelBase
 
     public async void LoadLeagueList()
     {
+        FetchButtonEnabled = false;
+
         var leagues = await _apiService.GetLeaguesAsync();
-        UpdateLeagueList(leagues);
+        await UpdateLeagueList(leagues);
     }
 
-    private void UpdateLeagueList(IEnumerable<BaseLeagueMetadata> leagueList)
+    private async Task UpdateLeagueList(IEnumerable<BaseLeagueMetadata> leagueList)
     {
         // 'backing up' app setting for league name
         var selectedLeague = Settings.LeagueName;
@@ -86,19 +97,26 @@ internal class GeneralFormViewModel : ViewModelBase
             : selectedLeague;
 
         _initialized = true;
+
+        // enforce cooldown on fetch button to reduce chances of rate limiting
+        try
+        {
+            await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+        }
+        finally
+        {
+            FetchButtonEnabled = true;
+        }
     }
 
     public async Task LoadStashTabNamesIndicesAsync()
     {
-        // TODO: let's rewrite this to use the new api service
-        // var secret = Settings.PathOfExileWebsiteSessionId;
-        var secret = string.Empty;
         var accountName = Settings.PathOfExileAccountName;
         var leagueName = Settings.LeagueName;
 
         var stashTabPropsList = Settings.TargetStash == (int)TargetStash.Personal
-            ? await _apiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, secret)
-            : await _apiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, secret);
+            ? await _apiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, string.Empty)
+            : await _apiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, string.Empty);
 
         if (stashTabPropsList is not null) UpdateStashTabNameIndexFullList(stashTabPropsList.StashTabs);
     }

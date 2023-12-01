@@ -1,6 +1,6 @@
-﻿namespace ChaosRecipeEnhancer.UI.Utilities;
+﻿namespace ChaosRecipeEnhancer.UI.State;
 
-public static class RateLimitManager
+public static class GlobalRateLimitState
 {
     public static bool RateLimitExceeded;
     public static int RequestCounter { get; set; }

@@ -103,18 +103,18 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                     chaosRecipe
                 );
 
-                if (RateLimitManager.RateLimitExceeded)
+                if (GlobalRateLimitState.RateLimitExceeded)
                 {
                     WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
-                    await Task.Delay(RateLimitManager.GetSecondsToWait() * 1000);
-                    RateLimitManager.RequestCounter = 0;
-                    RateLimitManager.RateLimitExceeded = false;
+                    await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
+                    GlobalRateLimitState.RequestCounter = 0;
+                    GlobalRateLimitState.RateLimitExceeded = false;
                 }
-                else if (RateLimitManager.BanTime > 0)
+                else if (GlobalRateLimitState.BanTime > 0)
                 {
                     WarningMessage = "Temporary Ban from API Requests! Waiting...";
-                    await Task.Delay(RateLimitManager.BanTime * 1000);
-                    RateLimitManager.BanTime = 0;
+                    await Task.Delay(GlobalRateLimitState.BanTime * 1000);
+                    GlobalRateLimitState.BanTime = 0;
                 }
             }
 
