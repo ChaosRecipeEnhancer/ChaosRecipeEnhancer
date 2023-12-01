@@ -195,6 +195,8 @@ internal partial class App
         }
     }
 
+    #region Http Client Configuration
+
     private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
     {
         return HttpPolicyExtensions
@@ -218,4 +220,6 @@ internal partial class App
         const string userAgent = "OAuth chaosrecipeenhancer/3.23.0001 (contact: dev@chaos-recipe.com) StrictMode";
         return new UserAgentHandler(userAgent);
     }
+
+    #endregion
 }
