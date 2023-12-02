@@ -9,5 +9,10 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms
         {
             GlobalAuthState.Instance.InitializeAuthFlow();
         }
+
+        public static void Logout()
+        {
+            GlobalAuthState.Instance.PurgeLocalAuthToken();
+        }
     }
 }

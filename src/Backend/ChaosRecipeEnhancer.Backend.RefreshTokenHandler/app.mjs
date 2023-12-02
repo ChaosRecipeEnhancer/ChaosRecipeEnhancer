@@ -58,7 +58,7 @@ const refreshAuthToken = async ({ secretKey, refreshToken }) => {
     urlencodedParams.append("client_secret", secretKey);
     urlencodedParams.append("grant_type", "refresh_token");
     urlencodedParams.append("refresh_token", refreshToken);
-    urlencodedParams.append("redirect_uri", "https://sandbox.chaos-recipe.com/auth/success");
+    urlencodedParams.append("redirect_uri", "https://chaos-recipe.com/auth/success");
 
     //    Debugging Issues
     //    console.log(`getAuthToken --- urlParams:${urlencodedParams.toString()}`);
