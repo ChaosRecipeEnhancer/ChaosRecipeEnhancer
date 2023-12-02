@@ -21,17 +21,36 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     private readonly IApiService _apiService = Ioc.Default.GetRequiredService<IApiService>();
 
     private const string SetsFullText = "Sets full!";
-    private const string NeedsLowerLevelText = "Need lower level items for recipe!";
-
     private const int FetchCooldown = 30;
 
     private bool _fetchButtonEnabled = true;
+    private bool _stashButtonEnabled = false;
+    private bool _stashButtonTooltipEnabled = false;
+    private bool _setsTooltipEnabled = false;
     private string _warningMessage;
 
     public bool FetchButtonEnabled
     {
         get => _fetchButtonEnabled;
         set => SetProperty(ref _fetchButtonEnabled, value);
+    }
+
+    public bool StashButtonEnabled
+    {
+        get => _stashButtonEnabled;
+        set => SetProperty(ref _stashButtonEnabled, value);
+    }
+
+    public bool StashButtonTooltipEnabled
+    {
+        get => _stashButtonTooltipEnabled;
+        set => SetProperty(ref _stashButtonTooltipEnabled, value);
+    }
+
+    public bool SetsTooltipEnabled
+    {
+        get => _setsTooltipEnabled;
+        set => SetProperty(ref _setsTooltipEnabled, value);
     }
 
     public string WarningMessage
@@ -44,27 +63,42 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     {
         WarningMessage = string.Empty;
         FetchButtonEnabled = false;
+        StashButtonEnabled = false;
 
         try
         {
             // needed to update item set manager
             var setThreshold = Settings.FullSetThreshold;
 
-            // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
-            var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
+        if (string.IsNullOrWhiteSpace(Settings.StashTabIndices))
+        {
+            FetchButtonEnabled = true;
 
-            var filteredStashContents = new List<EnhancedItem>();
-            var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
-            var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
+            ErrorWindow.Spawn(
+                "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
+                "Error: Set Tracker Overlay - Fetch Data"
+            );
 
-            // reset item amounts before fetching new data
-            // invalidate some outdated state for our item manager
-            _itemSetManagerService.ResetCompletedSets();
-            _itemSetManagerService.ResetItemAmounts();
+            return false;
+        }
+
+        // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
+        var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
+
+        var filteredStashContents = new List<EnhancedItem>();
+        var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
+        var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
+
+        // reset item amounts before fetching new data
+        // invalidate some outdated state for our item manager
+        _itemSetManagerService.ResetCompletedSets();
+        _itemSetManagerService.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
             var stashTabMetadataList = await _apiService.GetAllPersonalStashTabMetadataAsync();
 
+        if (stashTabMetadataList is not null)
+        {
             _itemSetManagerService.UpdateStashMetadata(stashTabMetadataList);
 
             // Create a new dictionary for stash index and ID pairs
@@ -128,7 +162,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
             // update the UI accordingly
             UpdateDisplay();
-            UpdateNotificationMessage();
+            UpdateStashButtonAndWarningMessage();
 
             // enforce cooldown on fetch button to reduce chances of rate limiting
             try
@@ -140,10 +174,9 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 FetchButtonEnabled = true;
             }
         }
-        catch (FormatException)
+        else
         {
             FetchButtonEnabled = true;
-            ErrorWindow.Spawn("It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.", "Error: Set Tracker Overlay - Fetch Data");
             return false;
         }
         catch (NullReferenceException)
@@ -157,18 +190,51 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         return true;
     }
 
-    public void UpdateNotificationMessage()
+    public void UpdateStashButtonAndWarningMessage()
     {
-        // update the warning message (notifications based on status)
-        // usually "Sets Full!"; sometimes rate limit warnings
+
+        // case 1: user just opened the app, hasn't hit fetch yet
         if (NeedsFetching)
+        {
             WarningMessage = string.Empty;
-        else if (!NeedsFetching && FullSets >= Settings.FullSetThreshold)
-            WarningMessage = SetsFullText;
-        else if (!NeedsFetching && NeedsLowerLevel)
-            WarningMessage = NeedsLowerLevelText;
-        else if (WarningMessage == SetsFullText)
-            WarningMessage = string.Empty;
+        }
+        else if (!NeedsFetching)
+        {
+            // case 2: user fetched data and has enough sets to turn in based on their threshold
+            if (FullSets >= Settings.FullSetThreshold)
+            {
+                WarningMessage = SetsFullText;
+
+                // stash button is enabled with no warning tooltip
+                StashButtonEnabled = true;
+                StashButtonTooltipEnabled = false;
+                SetsTooltipEnabled = false;
+            }
+
+            // case 3: user fetched data and has at least 1 set, but not to their full threshold
+            else if (FullSets < Settings.FullSetThreshold && FullSets >= 1)
+            {
+                WarningMessage = string.Empty;
+
+                // stash button is disabled with warning tooltip to change threshold
+                StashButtonEnabled = false;
+                StashButtonTooltipEnabled = true;
+                SetsTooltipEnabled = true;
+            }
+
+            // case 3: user has fetched and needs items for chaos recipe (needs more lower level items)
+            // this one doesn't work as expected
+            else if (NeedsLowerLevel)
+            {
+                WarningMessage = NeedsLowerLevelText(FullSets - Settings.FullSetThreshold);
+
+                // stash button is disabled with conditional tooltip enabled
+                // based on whether or not the user has at least 1 set
+                StashButtonEnabled = false;
+                StashButtonTooltipEnabled = FullSets >= 1;
+                SetsTooltipEnabled = true;
+            }
+        }
     }
 
     public void RunReloadFilter()
@@ -190,6 +256,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         _reloadFilterService.ReloadFilter();
     }
 
+    private string NeedsLowerLevelText(int diff) => $"Need {Math.Abs(diff)} items with iLvl 60-74!";
     private bool ShowAmountNeeded => Settings.SetTrackerOverlayItemCounterDisplayMode == 2;
     public bool NeedsFetching => _itemSetManagerService.RetrieveNeedsFetching();
     public bool NeedsLowerLevel => _itemSetManagerService.RetrieveNeedsLowerLevel();

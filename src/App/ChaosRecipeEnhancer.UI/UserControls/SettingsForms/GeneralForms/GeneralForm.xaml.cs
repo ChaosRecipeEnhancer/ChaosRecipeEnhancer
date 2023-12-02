@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Models.Enums;
@@ -12,6 +14,8 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 internal partial class GeneralForm
 {
     private readonly GeneralFormViewModel _model;
+    private bool _isStashButtonCooldown = false;
+    private bool _isLeaguesButtonCooldown = false;
 
     public GeneralForm()
     {
@@ -34,12 +38,42 @@ internal partial class GeneralForm
 
     private async void OnFetchStashTabsButtonClicked(object sender, RoutedEventArgs e)
     {
-        await _model.LoadStashTabNamesIndicesAsync();
+        if (!_isStashButtonCooldown)
+        {
+            // Set the cooldown status and disable the button
+            _isStashButtonCooldown = true;
+            FetchStashTabsButton.IsEnabled = false;
+
+            // Perform your refresh logic here
+            await _model.LoadStashTabNamesIndicesAsync();
+
+            // Wait for the cooldown period
+            await Task.Delay(TimeSpan.FromSeconds(10));
+
+            // Reset the cooldown status and re-enable the button
+            _isStashButtonCooldown = false;
+            FetchStashTabsButton.IsEnabled = true;
+        }
     }
 
-    private void OnRefreshLeaguesButtonClicked(object sender, RoutedEventArgs e)
+    private async void OnRefreshLeaguesButtonClicked(object sender, RoutedEventArgs e)
     {
-        _model.LoadLeagueList();
+        if (!_isLeaguesButtonCooldown)
+        {
+            // Set the cooldown status and disable the button
+            _isLeaguesButtonCooldown = true;
+            RefreshLeaguesButton.IsEnabled = false;
+
+            // Perform your refresh logic here
+            _model.LoadLeagueList();
+
+            // Wait for the cooldown period
+            await Task.Delay(TimeSpan.FromSeconds(10));
+
+            // Reset the cooldown status and re-enable the button
+            _isLeaguesButtonCooldown = false;
+            RefreshLeaguesButton.IsEnabled = true;
+        }
     }
 
     private void OnStashTabSelectionChanged(object sender, ItemSelectionChangedEventArgs itemSelectionChangedEventArgs)

@@ -19,14 +19,7 @@
         Left="{Binding Settings.SetTrackerOverlayLeftPosition, Mode=TwoWay}"
         d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
 
-    <Border BorderThickness="1" BorderBrush="Transparent" ClipToBounds="True">
-
-        <Border BorderThickness="1" Margin="-2">
-
-            <!-- Set Tracker Display -->
-            <ContentControl x:Name="MainOverlayContentControl" />
-
-        </Border>
-    </Border>
+    <!-- Set Tracker Display -->
+    <ContentControl x:Name="MainOverlayContentControl" />
 
 </Window>

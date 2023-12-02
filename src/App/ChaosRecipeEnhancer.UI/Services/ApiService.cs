@@ -13,6 +13,7 @@ using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Windows;
+using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
@@ -78,6 +79,33 @@ public class ApiService : IApiService
 
         // send request
         var response = await client.GetAsync(requestUri);
+
+        if (response.StatusCode == HttpStatusCode.TooManyRequests)
+        {
+            _isFetching = false;
+
+            ErrorWindow.Spawn(
+                "You are making too many requests in a short period of time - You are rate limited. Wait a minute and try again.",
+                "Error: Set Tracker Overlay - Fetch Data 429"
+            );
+
+            return null;
+        }
+
+        if (response.StatusCode == HttpStatusCode.Forbidden)
+        {
+            _isFetching = false;
+
+            ErrorWindow.Spawn(
+                "It looks like your Session ID has expired. Please navigate to the 'Account > Path of Exile Account > PoE Session ID' setting and enter a new value, and try again.",
+                "Error: Set Tracker Overlay - Fetch Data 403"
+            );
+
+            // usually we will be here if we weren't able to make a successful api request based on an expired session ID
+            Settings.Default.PathOfExileWebsiteSessionId = string.Empty;
+            Settings.Default.PoEAccountConnectionStatus = 0;
+            return null;
+        }
 
         if (!response.IsSuccessStatusCode)
         {

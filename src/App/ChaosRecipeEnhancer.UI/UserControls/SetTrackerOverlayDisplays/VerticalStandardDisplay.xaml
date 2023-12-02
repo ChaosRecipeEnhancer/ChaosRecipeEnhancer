@@ -13,8 +13,8 @@
     d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
 
     <UserControl.Resources>
+        <zemotoCommon:BoolVisibilityConverter x:Key="VisibleIfTrue" />
         <zemotoCommon:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter" TrueValue="1.0" FalseValue="0.1" />
-        <BooleanToVisibilityConverter x:Key="VisibleIfTrue" />
         <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual" Invert="True" ComparisonType="{x:Type system:Int32}" />
         <zemotoCommon:NullOrEmptyVisibilityConverter x:Key="NullOrEmptyVisibilityConverter" />
     </UserControl.Resources>
@@ -73,36 +73,126 @@
 
             <!-- Stash Button Overlay Button Display -->
             <Button
-            x:Name="OpenStashTabOverlay"
-            Click="OnStashTabOverlayButtonClicked"
-            Width="50"
-            Height="50"
-            Grid.Column="0"
-            Grid.Row="0"
-            Content="Stash" />
+                x:Name="OpenStashTabOverlay"
+                Grid.Column="0"
+                Grid.Row="0"
+                Click="OnStashTabOverlayButtonClicked"
+                IsEnabled="{Binding StashButtonEnabled}"
+                Width="50"
+                Height="50"
+                ToolTipService.InitialShowDelay="50"
+                ToolTipService.ShowOnDisabled="True"
+                Content="Stash">
+
+                <Button.ToolTip>
+                    <ToolTip
+                        Visibility="{Binding StashButtonTooltipEnabled, Converter={StaticResource VisibleIfTrue}}"
+                        Width="400"
+                        Placement="Top"
+                        VerticalOffset="-10">
+
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="You have {0} Sets; Not at Full Set Threshold of {1}">
+                                        <Binding Path="FullSets" />
+                                        <Binding Path="Settings.FullSetThreshold" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <TextBlock Text="Lower Full Sets Threshold and Re-Fetch to enable item picking." />
+                        </StackPanel>
+
+                    </ToolTip>
+                </Button.ToolTip>
+
+            </Button>
 
             <!-- Set Counter Display -->
-            <UniformGrid
-            Grid.Column="0"
-            Grid.Row="1"
-            Height="50"
-            Width="50"
-            Columns="1"
-            Rows="2"
-            Margin="0,5">
 
-                <TextBlock
-                TextAlignment="Center"
-                VerticalAlignment="Center"
-                Text="Sets" />
+            <!-- Set Counter Display -->
+            <Border Grid.Row="1"
+                    Grid.Column="0"
+                    Background="#202020"
+                    Margin="0 5"
+                    ToolTipService.InitialShowDelay="50">
 
-                <TextBlock
-                x:Name="FullSetsTextBlock"
-                Text="{Binding FullSets}"
-                VerticalAlignment="Center"
-                TextAlignment="Center" />
+                <Border.ToolTip>
+                    <ToolTip
+                        Visibility="{Binding SetsTooltipEnabled, Converter={StaticResource VisibleIfTrue}}"
+                        Width="400"
+                        Placement="Top"
+                        VerticalOffset="-10">
 
-            </UniformGrid>
+                        <ToolTip.Resources>
+                            <Style TargetType="TextBlock" x:Key="LastTextBlockStyle">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding FullSets}" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToolTip.Resources>
+
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Why do my set counts not match up?" />
+                            <TextBlock Text="You are probably missing Items with an Item Level of 60-74." />
+                            <TextBlock TextWrapping="Wrap" Style="{StaticResource LastTextBlockStyle}">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="If you want to turn in {0} set(s), consider lowering your threshold to {0}. (Currently set to {1})">
+                                        <Binding Path="FullSets" />
+                                        <Binding Path="Settings.FullSetThreshold" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+
+                    </ToolTip>
+                </Border.ToolTip>
+
+                <UniformGrid
+                    Height="50"
+                    Width="50"
+                    Columns="1"
+                    Rows="2"
+                    >
+
+                    <TextBlock
+                        TextAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="Sets" />
+
+                    <!-- Set Counter -->
+                    <TextBlock
+                        x:Name="FullSetsTextBlock"
+                        Text="{Binding FullSets}"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center" />
+
+                </UniformGrid>
+            </Border>
+
+            <!-- <UniformGrid -->
+            <!-- Grid.Column="0" -->
+            <!-- Grid.Row="1" -->
+            <!-- Height="50" -->
+            <!-- Width="50" -->
+            <!-- Columns="1" -->
+            <!-- Rows="2" -->
+            <!-- Margin="0,5"> -->
+            <!-- -->
+            <!--     <TextBlock -->
+            <!--     TextAlignment="Center" -->
+            <!--     VerticalAlignment="Center" -->
+            <!--     Text="Sets" /> -->
+            <!-- -->
+            <!--     <TextBlock -->
+            <!--     x:Name="FullSetsTextBlock" -->
+            <!--     Text="{Binding FullSets}" -->
+            <!--     VerticalAlignment="Center" -->
+            <!--     TextAlignment="Center" /> -->
+            <!-- -->
+            <!-- </UniformGrid> -->
 
             <!-- Gloves -->
             <Border

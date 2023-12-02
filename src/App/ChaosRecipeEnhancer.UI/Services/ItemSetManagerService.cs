@@ -47,6 +47,8 @@ public class ItemSetManagerService : IItemSetManagerService
     private List<EnhancedItem> _currentItemsFilteredForRecipe = new(); // filtered for chaos recipe
     private ListStashesResponse _stashTabMetadataListStashesResponse;
 
+    #region Item Amount Properties
+
     // item amounts by kind that will be exposed
     // while ItemSetManagerService doesn't know,
     // others need to render this out to users
@@ -59,6 +61,8 @@ public class ItemSetManagerService : IItemSetManagerService
     public int GlovesAmount { get; set; }
     public int HelmetsAmount { get; set; }
     public int BootsAmount { get; set; }
+
+    #endregion
 
     // full set amounts will also need to be rendered
     public int CompletedSetCount { get; set; }
@@ -199,9 +203,32 @@ public class ItemSetManagerService : IItemSetManagerService
                         // set flag to indicate no chaos items left in our stash
                         noChaosItemsLeft = true;
 
+                        // what follows is some conditional logic for display the 'needs lower level' message
+
+                        // if we have a high enough item count of each set we're good
+                        var itemCounts = new[]
+                        {
+                            RingsAmount / 2, // 2 rings per set
+                            AmuletsAmount,
+                            BeltsAmount,
+                            ChestsAmount,
+                            WeaponsBigAmount + (WeaponsSmallAmount / 2), // 2h weapons count as 2; 2 1h per set
+                            GlovesAmount,
+                            HelmetsAmount,
+                            BootsAmount
+                        };
+
+                        var haveEnoughItemsIgnoringChaosAmounts = false;
+
+                        foreach (var individualItemClassCountIgnoringChaosAmount in itemCounts)
+                        {
+                            haveEnoughItemsIgnoringChaosAmounts = _setThreshold <= individualItemClassCountIgnoringChaosAmount;
+                        }
+
                         // we now know we need lower level items
                         // this will allow us to notify dependencies of this
-                        NeedsLowerLevel = true;
+                        // if i have enough items to make a set, but i don't have enough chaos items to make a set
+                        if (haveEnoughItemsIgnoringChaosAmounts) NeedsLowerLevel = true;
                     }
                     // we still need to loop to create the rest of the sets (even if they don't have chaos items in them)
                 }

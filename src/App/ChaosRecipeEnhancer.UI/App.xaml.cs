@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
+using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.State;
@@ -59,6 +60,14 @@ internal partial class App
         Trace.WriteLine("Starting app ChaosRecipeEnhancer");
 
         ValidateAndRefreshToken();
+
+        // Updates application settings to reflect a more recent installation of the application.
+        if (Settings.Default.UpgradeSettingsAfterUpdate)
+        {
+            Settings.Default.Upgrade();
+            Settings.Default.UpgradeSettingsAfterUpdate = false;
+            Settings.Default.Save();
+        }
 
         // Create the service collection and configure services
         var services = new ServiceCollection();
