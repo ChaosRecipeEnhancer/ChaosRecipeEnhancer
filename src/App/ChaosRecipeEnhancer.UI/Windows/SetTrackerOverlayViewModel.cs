@@ -268,7 +268,12 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     #region Item Amount and Visibility Properties
 
-    public int RingsAmount => ShowAmountNeeded ? Math.Max((Settings.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount(), 0) : _itemSetManagerService.RetrieveRingsAmount();
+    public int RingsAmount => ShowAmountNeeded
+        // case where we are showing missing items (calculate total needed and subtract from threshold, but don't show negatives)
+        ? Math.Max((Settings.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount(), 0)
+        // case where we are showing total item sets (e.g. pair of rings as a single 'count')
+        : _itemSetManagerService.RetrieveRingsAmount() / 2;
+
     public bool RingsActive => Settings.LootFilterRingsAlwaysActive || (NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount() > 0);
 
     public int AmuletsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveAmuletsAmount(), 0) : _itemSetManagerService.RetrieveAmuletsAmount();
@@ -280,7 +285,11 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     public int ChestsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveChestsAmount(), 0) : _itemSetManagerService.RetrieveChestsAmount();
     public bool ChestsActive => Settings.LootFilterBodyArmourAlwaysActive || (NeedsFetching || Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveChestsAmount() > 0);
 
-    public int WeaponsAmount => ShowAmountNeeded ? Math.Max((Properties.Settings.Default.FullSetThreshold * 2) - (_itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2)), 0) : _itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2);
+    public int WeaponsAmount => ShowAmountNeeded
+        // case where we are showing missing items (calculate total needed and subtract from threshold, but don't show negatives)
+        ? Math.Max((Properties.Settings.Default.FullSetThreshold * 2) - (_itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2)), 0)
+        // case where we are showing total weapon sets (e.g. pair of one handed weapons plus two handed weapons as a 'count' each)
+        : (_itemSetManagerService.RetrieveWeaponsSmallAmount() / 2) + _itemSetManagerService.RetrieveWeaponsBigAmount();
     public bool WeaponsActive => Settings.LootFilterWeaponsAlwaysActive || (NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - (_itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2)) > 0);
 
     public int GlovesAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveGlovesAmount(), 0) : _itemSetManagerService.RetrieveGlovesAmount();
