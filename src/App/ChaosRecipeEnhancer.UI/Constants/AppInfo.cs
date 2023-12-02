@@ -2,7 +2,6 @@
 
 public static class AppInfo
 {
-    public const string VersionText = "v2.0.1";
+    public const string VersionText = "v3.23.0001-beta";
     public const string GithubReleasesUrl = "https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases";
-    public const string DefaultLeagueForHealthCheck = "Standard";
 }

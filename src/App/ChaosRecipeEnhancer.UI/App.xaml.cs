@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
+using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -18,13 +20,35 @@ internal partial class App
 
     public App()
     {
-        if (!_singleInstance.Claim()) Shutdown();
-        SetupUnhandledExceptionHandling();
+        var args = Environment.GetCommandLineArgs();
+        var isSecondaryInstance = !_singleInstance.Claim();
+
+        if (isSecondaryInstance)
+        {
+            if (args.Length > 1 && args[1].StartsWith("chaosrecipe://"))
+            {
+                // If it's a URI activation, send the URI to the main instance
+                // This specific flow is for the OAuth2 callback
+                _singleInstance.PingSingleInstance(args[1]);
+                Shutdown();
+            }
+            else
+            {
+                // If it's a normal duplicate instance, just shut it down
+                Shutdown();
+            }
+        }
+        else
+        {
+            // Setup for the main instance
+            SetupUnhandledExceptionHandling();
+            // ... rest of your setup code
+        }
     }
 
     private void ConfigureServices(IServiceCollection services)
     {
-        // services-as-services registration
+        // Other Service Registration
         services.AddSingleton<IApiService, ApiService>();
         services.AddSingleton<IReloadFilterService, ReloadFilterService>();
         services.AddSingleton<IItemSetManagerService, ItemSetManagerService>();
@@ -33,6 +57,10 @@ internal partial class App
 
     private void OnStartup(object sender, StartupEventArgs e)
     {
+        Trace.WriteLine("Starting app ChaosRecipeEnhancer");
+
+        ValidateAndRefreshToken();
+
         // Updates application settings to reflect a more recent installation of the application.
         if (Settings.Default.UpgradeSettingsAfterUpdate)
         {
@@ -54,7 +82,11 @@ internal partial class App
         var settingsWindow = new SettingsWindow();
         settingsWindow.Show();
 
-        _singleInstance.PingedByOtherProcess += (_, _) => Dispatcher.Invoke(settingsWindow.Show);
+        _singleInstance.PingedByOtherProcess += (sender, _) =>
+        {
+            HandleAuthRedirection(sender);
+            Dispatcher.Invoke(settingsWindow.Show);
+        };
     }
 
     private void SetupUnhandledExceptionHandling()
@@ -94,5 +126,67 @@ internal partial class App
         // Let the user decide if the app should die or not (if applicable).
         if (MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons) == MessageBoxResult.Yes)
             Current.Shutdown();
+    }
+
+    private static void ValidateAndRefreshToken()
+    {
+        if (GlobalAuthState.Instance.ValidateLocalAuthToken())
+        {
+            Trace.WriteLine("Local auth token is valid");
+            if (GlobalAuthState.Instance.TokenExpiration - DateTime.UtcNow <= TimeSpan.FromHours(3))
+            {
+                Trace.WriteLine("Local auth token is about to expire; refreshing");
+                GlobalAuthState.Instance.RefreshAuthToken();
+            }
+        }
+        else
+        {
+            Trace.WriteLine("Local auth token is invalid");
+            GlobalAuthState.Instance.PurgeLocalAuthToken();
+        }
+    }
+
+    private static void HandleAuthRedirection(object sender)
+    {
+        Trace.WriteLine("Pinged by other processes!");
+
+        var data = sender as string; // Assuming sender is the data
+        Trace.WriteLine($"Received data: {data}");
+
+        // Process the data
+        if (!string.IsNullOrEmpty(data) && data.StartsWith("chaosrecipe://"))
+        {
+            // we're getting a callback from the OAuth2 flow
+
+            // first we'll check if there's a valid auth token saved in local settings
+            if (GlobalAuthState.Instance.ValidateLocalAuthToken())
+            {
+                // if there is, we'll check if it's about to expire
+                Trace.WriteLine("Local auth token is valid");
+
+                // refresh the token if it's about to expire
+                if (GlobalAuthState.Instance.TokenExpiration - DateTime.UtcNow <= TimeSpan.FromHours(3))
+                {
+                    Trace.WriteLine("Local auth token is about to expire; refreshing");
+                    var unused = GlobalAuthState.Instance.RefreshAuthToken().Result;
+                }
+            }
+            else
+            {
+                // if there isn't, we'll generate a new one
+                Trace.WriteLine("Local auth token is invalid");
+
+                var uri = new Uri(data);
+                var queryParams = HttpUtility.ParseQueryString(uri.Query);
+
+                var authCode = queryParams["code"];
+                var state = queryParams["state"];
+
+                Trace.WriteLine("Auth Code: " + authCode);
+                Trace.WriteLine("State: " + state);
+
+                var unused = GlobalAuthState.Instance.GenerateAuthToken(authCode).Result;
+            }
+        }
     }
 }

@@ -85,42 +85,10 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <!-- Path of Exile Account -->
-                        <accountForms:PathOfExileAccountForm
-                            Grid.Column="0"
+                        <!-- Path of Exile Account (New - OAuth) -->
+                        <accountForms:PathOfExileAccountOAuthForm
+                            Grid.Column="1"
                             Grid.Row="0" />
-
-                        <!-- Warning Message Display -->
-                        <TextBlock
-                            Grid.Column="1"
-                            Grid.Row="0"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            TextAlignment="Center"
-                            FontSize="16"
-                            Foreground="OrangeRed"
-                            Background="WhiteSmoke"
-                            Padding="5 5"
-                            Width="300"
-                            TextWrapping="Wrap"
-                            Text="Please validate your Path of Exile Account Credentials with the 'Test Connection' button to ensure they are correct."
-                            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibilityConverter}, ConverterParameter=0}"/>
-
-                        <!-- Warning Message Display -->
-                        <TextBlock
-                            Grid.Column="1"
-                            Grid.Row="0"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            TextAlignment="Center"
-                            FontSize="16"
-                            Foreground="Red"
-                            Background="WhiteSmoke"
-                            Padding="5 5"
-                            Width="300"
-                            TextWrapping="Wrap"
-                            Text="There was an issue validating your Path of Exile Account credentials. Please check your account name spelling, or your Session ID and try again. The PoE servers could also be down."
-                            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibilityConverter}, ConverterParameter=2}"/>
 
                     </Grid>
                 </TabItem>
