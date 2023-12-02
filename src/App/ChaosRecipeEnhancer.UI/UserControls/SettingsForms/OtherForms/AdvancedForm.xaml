@@ -70,9 +70,7 @@
             Margin="15 0 0 0"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.DoNotPreserveLowItemLevelGear, Mode=TwoWay}"
-            IsEnabled="False"
             ToolTipService.InitialShowDelay="50"
-            ToolTipService.ShowOnDisabled="True"
-            ToolTip="v2.0.1: We have temporarily locked Fill Greedy Mode to 'Enabled' &#x0a;due to some reported bugs when it is turned off." />
+            ToolTipService.ShowOnDisabled="True" />
     </Grid>
 </UserControl>
