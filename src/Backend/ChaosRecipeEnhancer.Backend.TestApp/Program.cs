@@ -38,7 +38,7 @@ internal static class Program
             "&response_type=code" +
             "&scope=" + encodedScopes +
             $"&state=${state}" +
-            "&redirect_uri=https://sandbox.chaos-recipe.com/auth/success" +
+            "&redirect_uri=https://chaos-recipe.com/auth/success" +
             $"&code_challenge=${codeChallenge}" +
             "&code_challenge_method=S256";
 
