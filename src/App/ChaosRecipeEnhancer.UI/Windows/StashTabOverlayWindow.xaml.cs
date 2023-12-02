@@ -28,7 +28,6 @@ public partial class StashTabOverlayWindow
     {
         InitializeComponent();
         DataContext = _model = new StashTabOverlayViewModel();
-        StashTabOverlayTabControl.ItemsSource = _model.OverlayStashTabList;
 
         NativeMouseExtensions.MouseAction += (s, e) => Coordinates.OverlayClickEvent(this);
     }
@@ -82,17 +81,18 @@ public partial class StashTabOverlayWindow
 
     public new virtual void Show()
     {
+        StashTabOverlayTabControl.Items.Clear();
+
         // open stash overlay window
         IsOpen = true;
 
+        // fetch stash data from api
         GenerateReconstructedStashTabsFromApiResponse();
 
         // Ensure the user has fetched stash data before populating our Stash Tab Overlay
         if (StashTabControlManager.StashTabControls.Count != 0)
         {
             IsOpen = true;
-
-            _model.OverlayStashTabList.Clear();
 
             // For each individual stash tab in our query results
             foreach (var stashTabData in StashTabControlManager.StashTabControls)
@@ -135,7 +135,7 @@ public partial class StashTabOverlayWindow
                     };
                 }
 
-                _model.OverlayStashTabList.Add(newStashTab);
+                StashTabOverlayTabControl.Items.Add(newStashTab);
             }
 
             StashTabOverlayTabControl.SelectedIndex = 0;

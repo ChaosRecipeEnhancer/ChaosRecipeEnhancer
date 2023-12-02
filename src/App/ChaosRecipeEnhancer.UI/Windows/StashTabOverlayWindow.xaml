@@ -34,7 +34,9 @@
     </Window.Resources>
 
     <Grid x:Name="StashOverlayGrid">
+
         <Grid Margin="2">
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -74,8 +76,9 @@
                 </TabControl.Background>
 
                 <TabControl.Resources>
-
                     <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Gainsboro" />
                         <Setter Property="Template">
                             <Setter.Value>
 
@@ -196,9 +199,13 @@
                                 </ControlTemplate>
 
                             </Setter.Value>
+
                         </Setter>
+
                     </Style>
+
                 </TabControl.Resources>
+
             </TabControl>
 
         </Grid>
