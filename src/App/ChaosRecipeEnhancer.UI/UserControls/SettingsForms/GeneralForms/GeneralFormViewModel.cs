@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -80,21 +79,23 @@ internal class GeneralFormViewModel : ViewModelBase
 
     private async Task UpdateLeagueList(IEnumerable<BaseLeagueMetadata> leagueList)
     {
-        // 'backing up' app setting for league name
-        var selectedLeague = Settings.LeagueName;
-
         // clearing observable (ui) collection for leagues
         LeagueList.Clear();
 
         // adding new items to observable (ui) collection for leagues
         if (leagueList is not null)
+        {
             foreach (var league in leagueList)
+            {
                 LeagueList.Add(league.Name);
+            }
+        }
 
         // re-setting app setting for league name; if it was empty, set to first item in list
-        Settings.LeagueName = string.IsNullOrEmpty(selectedLeague)
-            ? LeagueList.FirstOrDefault()
-            : selectedLeague;
+        if (string.IsNullOrEmpty(Settings.LeagueName))
+        {
+            Settings.LeagueName = LeagueList.FirstOrDefault();
+        }
 
         _initialized = true;
 
@@ -111,13 +112,7 @@ internal class GeneralFormViewModel : ViewModelBase
 
     public async Task LoadStashTabNamesIndicesAsync()
     {
-        var accountName = Settings.PathOfExileAccountName;
-        var leagueName = Settings.LeagueName;
-
-        var stashTabPropsList = Settings.TargetStash == (int)TargetStash.Personal
-            ? await _apiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, string.Empty)
-            : await _apiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, string.Empty);
-
+        var stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataAsync();
         if (stashTabPropsList is not null) UpdateStashTabNameIndexFullList(stashTabPropsList.StashTabs);
     }
 
@@ -127,15 +122,37 @@ internal class GeneralFormViewModel : ViewModelBase
         StashTabIndexNameFullList.Clear();
 
         // adding new items to observable (ui) collection for stash tabs
-        foreach (var tab in stashTabProps) StashTabIndexNameFullList.Add(tab);
+        foreach (var tab in stashTabProps)
+        {
+            if (tab.Type == "Folder")
+            {
+                // adding folder tabs' children
+                foreach (var nestedTab in tab.Children)
+                {
+                    StashTabIndexNameFullList.Add(nestedTab);
+                }
+            }
+            // implicitly ignore "Folder" tabs
+            else
+            {
+                StashTabIndexNameFullList.Add(tab);
+            }
+        }
 
+        // re-setting app setting for stash tab indices
         if (Settings.StashTabIndices is not null)
         {
+            // adding (pre) selected tabs to list
             var selectedStashTabs = Settings.StashTabIndices.Split(',').ToList();
 
+            // re-selecting tabs from previous session on the ui side
             foreach (var tab in StashTabIndexNameFullList)
+            {
                 if (selectedStashTabs.Contains(tab.Index.ToString()))
+                {
                     SelectedStashTabs.Add(tab);
+                }
+            }
         }
     }
 }

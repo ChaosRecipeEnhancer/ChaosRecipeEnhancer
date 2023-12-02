@@ -1,5 +1,4 @@
-﻿using ChaosRecipeEnhancer.UI.API.Data;
-using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
+﻿using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Tests.Helpers;
@@ -21,12 +20,12 @@ public class EnhancedItemTests
         // Assert
         item.DerivedItemClass.Should().Be(expected);
     }
-    
+
     [Theory]
     [InlineData(59, false)]
     [InlineData(60, true)]
     [InlineData(74, true)]
-    [InlineData(75, false)] 
+    [InlineData(75, false)]
     public void IsChaosRecipeEligible_GivenItemLevel_ReturnsExpected(int itemLevel, bool expected)
     {
         // Arrange

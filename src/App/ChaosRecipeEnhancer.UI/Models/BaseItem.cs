@@ -1,8 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 
-namespace ChaosRecipeEnhancer.UI.API.Data;
+namespace ChaosRecipeEnhancer.UI.Models;
 
 /// <summary>
 /// Represents a JSON response object nested within the previously mentioned response object for `get-stash-items`
@@ -46,8 +45,8 @@ public class BaseItem
 {
     [JsonConstructor]
     public BaseItem(
-        int width,
-        int height,
+        uint width,
+        uint height,
         bool identified,
         int? itemLevel,
         ItemFrameType frameType,
@@ -83,9 +82,9 @@ public class BaseItem
     public BaseItem() { }
 
     // poe json props
-    [JsonPropertyName("w")] public int Width { get; set; }
+    [JsonPropertyName("w")] public uint Width { get; set; }
 
-    [JsonPropertyName("h")] public int Height { get; set; }
+    [JsonPropertyName("h")] public uint Height { get; set; }
 
     [JsonPropertyName("identified")] public bool Identified { get; set; }
 

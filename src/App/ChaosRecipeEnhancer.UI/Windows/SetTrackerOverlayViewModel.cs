@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.State;
@@ -48,15 +47,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
         try
         {
-            // needed to craft api request
-            var targetStash = (TargetStash)Settings.TargetStash;
-            var accountName = Settings.PathOfExileAccountName;
-            var leagueName = Settings.LeagueName;
-
-            // TODO: Use new API Service
-            // var secret = Settings.PathOfExileWebsiteSessionId;
-            var secret = string.Empty;
-
             // needed to update item set manager
             var setThreshold = Settings.FullSetThreshold;
 
@@ -73,23 +63,37 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             _itemSetManagerService.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
-            var stashTabMetadataList = targetStash == TargetStash.Personal
-                ? await _apiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, secret)
-                : await _apiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, secret);
+            var stashTabMetadataList = await _apiService.GetAllPersonalStashTabMetadataAsync();
 
             _itemSetManagerService.UpdateStashMetadata(stashTabMetadataList);
 
+            // Create a new dictionary for stash index and ID pairs
+            var selectedStashIndexIdPairs = new Dictionary<int, string>();
+
+            // Map indices to stash IDs
             foreach (var index in selectedTabIndices)
             {
+                var stashTab = stashTabMetadataList.StashTabs.FirstOrDefault(st => st.Index == index);
+                if (stashTab != null)
+                {
+                    selectedStashIndexIdPairs.Add(index, stashTab.Id);
+                }
+            }
+
+
+            foreach (var (index, id) in selectedStashIndexIdPairs)
+            {
                 // first we retrieve the 'raw' results from the API
-                var rawResults = targetStash == TargetStash.Personal
-                    ? await _apiService.GetPersonalStashTabContentsByIndexAsync(accountName, leagueName, index, secret)
-                    : await _apiService.GetGuildStashTabContentsByIndexAsync(accountName, leagueName, index, secret);
+                var rawResults = await _apiService.GetPersonalStashTabContentsByStashIdAsync(id);
 
                 // then we convert the raw results into a list of EnhancedItem objects
-                var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
-                // manually setting index because we need to know which tab the item came from
-                foreach (var enhancedItem in enhancedItems) enhancedItem.StashTabIndex = index;
+                var enhancedItems = rawResults.Stash.Items.Select(item => new EnhancedItem(item)).ToList();
+
+                // Manually setting index because we need to know which tab the item came from
+                foreach (var enhancedItem in enhancedItems)
+                {
+                    enhancedItem.StashTabIndex = index; // Now 'index' refers to the correct stash tab index
+                }
 
                 // add the enhanced items to the filtered stash contents
                 filteredStashContents.AddRange(

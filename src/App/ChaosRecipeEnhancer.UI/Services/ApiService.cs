@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.Enums;
-using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Windows;
 
@@ -21,20 +17,12 @@ namespace ChaosRecipeEnhancer.UI.Services;
 public interface IApiService
 {
     public Task<IEnumerable<BaseLeagueMetadata>> GetLeaguesAsync();
-
-    public Task<BaseStashTabMetadataList> GetAllPersonalStashTabMetadataAsync(string accountName, string leagueName, string secret);
-
-    public Task<BaseStashTabMetadataList> GetAllGuildStashTabMetadataAsync(string accountName, string leagueName, string secret);
-
-    public Task<BaseStashTabContents> GetPersonalStashTabContentsByIndexAsync(string accountName, string leagueName, int tabIndex, string secret);
-
-    public Task<BaseStashTabContents> GetGuildStashTabContentsByIndexAsync(string accountName, string leagueName, int tabIndex, string secret);
+    public Task<ListStashesResponse> GetAllPersonalStashTabMetadataAsync();
+    public Task<GetStashResponse> GetPersonalStashTabContentsByStashIdAsync(string stashId);
 }
 
 public class ApiService : IApiService
 {
-    private bool _isFetching;
-
     public async Task<IEnumerable<BaseLeagueMetadata>> GetLeaguesAsync()
     {
         var responseRaw = await GetAsync(ApiEndpoints.LeagueEndpoint);
@@ -44,53 +32,31 @@ public class ApiService : IApiService
             : JsonSerializer.Deserialize<BaseLeagueMetadata[]>((string)responseRaw);
     }
 
-    public async Task<BaseStashTabMetadataList> GetAllPersonalStashTabMetadataAsync(string accountName, string leagueName, string secret)
+    public async Task<ListStashesResponse> GetAllPersonalStashTabMetadataAsync()
     {
         var responseRaw = await GetAuthenticatedAsync(
-            ApiEndpoints.StashTabPropsEndpoint(TargetStash.Personal, accountName, leagueName)
+            ApiEndpoints.StashTabPropsEndpoint()
         );
 
         return responseRaw is null
             ? null
-            : JsonSerializer.Deserialize<BaseStashTabMetadataList>((string)responseRaw);
+            : JsonSerializer.Deserialize<ListStashesResponse>((string)responseRaw);
     }
 
-    public async Task<BaseStashTabMetadataList> GetAllGuildStashTabMetadataAsync(string accountName, string leagueName, string secret)
+    public async Task<GetStashResponse> GetPersonalStashTabContentsByStashIdAsync(string stashId)
     {
         var responseRaw = await GetAuthenticatedAsync(
-            ApiEndpoints.StashTabPropsEndpoint(TargetStash.Guild, accountName, leagueName)
+            ApiEndpoints.IndividualTabContentsEndpoint(stashId)
         );
 
         return responseRaw is null
             ? null
-            : JsonSerializer.Deserialize<BaseStashTabMetadataList>((string)responseRaw);
-    }
-
-    public async Task<BaseStashTabContents> GetPersonalStashTabContentsByIndexAsync(string accountName, string leagueName, int tabIndex, string secret)
-    {
-        var responseRaw = await GetAuthenticatedAsync(
-            ApiEndpoints.IndividualTabContentsEndpoint(TargetStash.Personal, accountName, leagueName, tabIndex)
-        );
-
-        return responseRaw is null
-            ? null
-            : JsonSerializer.Deserialize<BaseStashTabContents>((string)responseRaw);
-    }
-
-    public async Task<BaseStashTabContents> GetGuildStashTabContentsByIndexAsync(string accountName, string leagueName, int tabIndex, string secret)
-    {
-        var responseRaw = await GetAuthenticatedAsync(
-            ApiEndpoints.IndividualTabContentsEndpoint(TargetStash.Guild, accountName, leagueName, tabIndex)
-        );
-
-        return responseRaw is null
-            ? null
-            : JsonSerializer.Deserialize<BaseStashTabContents>((string)responseRaw);
+            : JsonSerializer.Deserialize<GetStashResponse>((string)responseRaw);
     }
 
     private async Task<object> GetAuthenticatedAsync(Uri requestUri)
     {
-        if (_isFetching || GlobalRateLimitState.CheckForBan()) return null;
+        if (GlobalRateLimitState.CheckForBan()) return null;
 
         // -1 for 1 request + 3 times if rate limit high exceeded
         if (GlobalRateLimitState.RateLimitState[0] >= GlobalRateLimitState.MaximumRequests - 4)
@@ -99,7 +65,6 @@ public class ApiService : IApiService
             return null;
         }
 
-        _isFetching = true;
 
         // create new http client that will be disposed of after request
         using var client = new HttpClient();
@@ -114,8 +79,6 @@ public class ApiService : IApiService
 
         if (!response.IsSuccessStatusCode)
         {
-            _isFetching = false;
-
             Trace.WriteLine($"Error fetching {requestUri}: {response.StatusCode}");
             Trace.WriteLine($"Response: {response.Content.ReadAsStringAsync().Result}");
 
@@ -137,22 +100,20 @@ public class ApiService : IApiService
         GlobalRateLimitState.DeserializeResponseSeconds(responseTime);
 
         using var responseHttpContent = response.Content;
-        _isFetching = false;
+
         return await responseHttpContent.ReadAsStringAsync();
     }
 
     private async Task<object> GetAsync(Uri requestUri)
     {
-        if (_isFetching || GlobalRateLimitState.CheckForBan()) return null;
+        if (GlobalRateLimitState.CheckForBan()) return null;
 
-        // -1 for 1 request + 3 times if ratelimit high exceeded
+        // -1 for 1 request + 3 times if rate limit high exceeded
         if (GlobalRateLimitState.RateLimitState[0] >= GlobalRateLimitState.MaximumRequests - 4)
         {
             GlobalRateLimitState.RateLimitExceeded = true;
             return null;
         }
-
-        _isFetching = true;
 
         // create new http client that will be disposed of after request
         using var client = new HttpClient();
@@ -161,8 +122,6 @@ public class ApiService : IApiService
 
         if (!response.IsSuccessStatusCode)
         {
-            _isFetching = false;
-
             Trace.WriteLine($"Error fetching {requestUri}: {response.StatusCode}");
             Trace.WriteLine($"Response: {response.Content.ReadAsStringAsync().Result}");
 
@@ -173,7 +132,6 @@ public class ApiService : IApiService
             return null;
         }
 
-        _isFetching = false;
         return await response.Content.ReadAsStringAsync();
     }
 }

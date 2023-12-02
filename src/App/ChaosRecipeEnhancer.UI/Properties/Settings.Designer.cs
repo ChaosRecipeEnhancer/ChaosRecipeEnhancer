@@ -110,18 +110,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int TargetStash {
-            get {
-                return ((int)(this["TargetStash"]));
-            }
-            set {
-                this["TargetStash"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int StashTabQueryMode {
             get {
                 return ((int)(this["StashTabQueryMode"]));

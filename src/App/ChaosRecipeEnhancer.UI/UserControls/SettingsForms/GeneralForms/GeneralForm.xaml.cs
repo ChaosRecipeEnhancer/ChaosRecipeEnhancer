@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Models.Enums;

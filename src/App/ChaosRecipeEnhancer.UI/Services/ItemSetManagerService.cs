@@ -7,7 +7,7 @@ namespace ChaosRecipeEnhancer.UI.Services;
 
 public interface IItemSetManagerService
 {
-    public void UpdateStashMetadata(BaseStashTabMetadataList metadata);
+    public void UpdateStashMetadata(ListStashesResponse metadata);
 
     public bool UpdateData(
         int setThreshold,
@@ -22,7 +22,7 @@ public interface IItemSetManagerService
     public void ResetCompletedSets();
     public void ResetItemAmounts();
 
-    public BaseStashTabMetadataList RetrieveStashTabMetadataList();
+    public ListStashesResponse RetrieveStashTabMetadataList();
     public bool RetrieveNeedsFetching();
     public bool RetrieveNeedsLowerLevel();
     public int RetrieveCompletedSetCount();
@@ -44,7 +44,7 @@ public class ItemSetManagerService : IItemSetManagerService
     private int _setThreshold;
     private List<EnhancedItemSet> _setsInProgress = new();
     private List<EnhancedItem> _currentItemsFilteredForRecipe = new(); // filtered for chaos recipe
-    private BaseStashTabMetadataList _stashTabMetadataList;
+    private ListStashesResponse _stashTabMetadataListStashesResponse;
 
     // item amounts by kind that will be exposed
     // while ItemSetManagerService doesn't know,
@@ -67,9 +67,9 @@ public class ItemSetManagerService : IItemSetManagerService
     // temporary housing for this field that is needed by some components
     // i'd likely want to move this to its own service tbh
 
-    public void UpdateStashMetadata(BaseStashTabMetadataList metadata)
+    public void UpdateStashMetadata(ListStashesResponse metadata)
     {
-        _stashTabMetadataList = metadata;
+        _stashTabMetadataListStashesResponse = metadata;
     }
 
     // this is the primary method being called by external entities
@@ -281,7 +281,7 @@ public class ItemSetManagerService : IItemSetManagerService
     #region Properties as Functions
 
     // workaround to expose properties as functions on our interface
-    public BaseStashTabMetadataList RetrieveStashTabMetadataList() => _stashTabMetadataList;
+    public ListStashesResponse RetrieveStashTabMetadataList() => _stashTabMetadataListStashesResponse;
     public bool RetrieveNeedsFetching() => NeedsFetching;
     public bool RetrieveNeedsLowerLevel() => NeedsLowerLevel;
     public int RetrieveCompletedSetCount() => CompletedSetCount;
