@@ -117,12 +117,14 @@ public class GlobalAuthState
         {
             PurgeLocalAuthToken();
             Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
+            Settings.Default.Save();
+            return false;
         }
 
+        // if the token is valid, we should update the global state
         Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ValidatedConnection;
         Settings.Default.Save();
-
-        return isValid;
+        return true;
     }
 
     public void PurgeLocalAuthToken()
