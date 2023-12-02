@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ChaosRecipeEnhancer.UI.Models;
+namespace ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 
 /// <summary>
 /// Represents a JSON response object nested within a response object for GGG's `/leagues` endpoint

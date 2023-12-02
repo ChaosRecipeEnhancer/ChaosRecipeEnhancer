@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 
 namespace ChaosRecipeEnhancer.UI.Models;

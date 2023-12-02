@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 
-namespace ChaosRecipeEnhancer.UI.Models;
+namespace ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 
 /// <summary>
 /// Represents a JSON response object nested within the previously mentioned response object for `get-stash-items`

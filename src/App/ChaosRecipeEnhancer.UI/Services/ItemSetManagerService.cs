@@ -2,6 +2,7 @@
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 

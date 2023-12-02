@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 
-namespace ChaosRecipeEnhancer.UI.Models;
+namespace ChaosRecipeEnhancer.UI.Models.ApiResponses;
 
 /// <summary>
 /// Represents JSON response objects from `/api/stashes/{league}` endpoint.

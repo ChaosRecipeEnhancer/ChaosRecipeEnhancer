@@ -57,7 +57,8 @@ internal partial class App
     private void OnStartup(object sender, StartupEventArgs e)
     {
         Trace.WriteLine("Starting app ChaosRecipeEnhancer");
-        ValidateAndRefreshTokenAsync();
+
+        ValidateAndRefreshToken();
 
         // Create the service collection and configure services
         var services = new ServiceCollection();
@@ -118,7 +119,7 @@ internal partial class App
             Current.Shutdown();
     }
 
-    private static async Task ValidateAndRefreshTokenAsync()
+    private static void ValidateAndRefreshToken()
     {
         if (GlobalAuthState.Instance.ValidateLocalAuthToken())
         {
@@ -126,7 +127,7 @@ internal partial class App
             if (GlobalAuthState.Instance.TokenExpiration - DateTime.UtcNow <= TimeSpan.FromHours(3))
             {
                 Trace.WriteLine("Local auth token is about to expire; refreshing");
-                await GlobalAuthState.Instance.RefreshAuthToken();
+                GlobalAuthState.Instance.RefreshAuthToken();
             }
         }
         else

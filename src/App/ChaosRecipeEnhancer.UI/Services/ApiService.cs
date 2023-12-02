@@ -9,6 +9,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Windows;
 
