@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Constants;
-using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.State;
-using ChaosRecipeEnhancer.UI.Windows;
 using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.Services;
@@ -80,43 +79,35 @@ public class ApiService : IApiService
         // send request
         var response = await client.GetAsync(requestUri);
 
-        if (response.StatusCode == HttpStatusCode.TooManyRequests)
+        Trace.WriteLine($"Fetch Result {requestUri}: {response.StatusCode}");
+        Trace.WriteLine($"Response: {response.Content.ReadAsStringAsync().Result}");
+
+        switch (response.StatusCode)
         {
-            _isFetching = false;
+            case HttpStatusCode.TooManyRequests:
+                ErrorWindow.Spawn(
+                    "You are making too many requests in a short period of time - You are rate limited. Wait a minute and try again.",
+                    "Error: Set Tracker Overlay - Fetch Data 429"
+                );
 
-            ErrorWindow.Spawn(
-                "You are making too many requests in a short period of time - You are rate limited. Wait a minute and try again.",
-                "Error: Set Tracker Overlay - Fetch Data 429"
-            );
+                return null;
+            case HttpStatusCode.Forbidden:
+                ErrorWindow.Spawn(
+                    "It looks like your Session ID has expired. Please navigate to the 'Account > Path of Exile Account > PoE Session ID' setting and enter a new value, and try again.",
+                    "Error: Set Tracker Overlay - Fetch Data 403"
+                );
 
-            return null;
-        }
+                // usually we will be here if we weren't able to make a successful api request based on an expired auth token
+                GlobalAuthState.Instance.PurgeLocalAuthToken();
 
-        if (response.StatusCode == HttpStatusCode.Forbidden)
-        {
-            _isFetching = false;
+                return null;
+            case HttpStatusCode.ServiceUnavailable:
+                ErrorWindow.Spawn(
+                    "The Path of Exile API is currently unavailable. Please try again later.",
+                    "Error: Set Tracker Overlay - Fetch Data 503"
+                );
 
-            ErrorWindow.Spawn(
-                "It looks like your Session ID has expired. Please navigate to the 'Account > Path of Exile Account > PoE Session ID' setting and enter a new value, and try again.",
-                "Error: Set Tracker Overlay - Fetch Data 403"
-            );
-
-            // usually we will be here if we weren't able to make a successful api request based on an expired session ID
-            Settings.Default.PathOfExileWebsiteSessionId = string.Empty;
-            Settings.Default.PoEAccountConnectionStatus = 0;
-            return null;
-        }
-
-        if (!response.IsSuccessStatusCode)
-        {
-            Trace.WriteLine($"Error fetching {requestUri}: {response.StatusCode}");
-            Trace.WriteLine($"Response: {response.Content.ReadAsStringAsync().Result}");
-
-            ErrorWindow.Spawn("It seems like your auth token has expired. Please re-authenticate and try again.", "Error: Unable to Fetch Data");
-
-            GlobalAuthState.Instance.PurgeLocalAuthToken();
-
-            return null;
+                return null;
         }
 
         // get new rate limit values
@@ -150,16 +141,22 @@ public class ApiService : IApiService
 
         var response = await client.GetAsync(requestUri);
 
-        if (!response.IsSuccessStatusCode)
+        switch (response.StatusCode)
         {
-            Trace.WriteLine($"Error fetching {requestUri}: {response.StatusCode}");
-            Trace.WriteLine($"Response: {response.Content.ReadAsStringAsync().Result}");
+            case HttpStatusCode.TooManyRequests:
+                ErrorWindow.Spawn(
+                    "You are making too many requests in a short period of time - You are rate limited. Wait a minute and try again.",
+                    "Error: Set Tracker Overlay - Fetch Data 429"
+                );
 
-            ErrorWindow.Spawn("It seems like your auth token has expired. Please re-authenticate and try again.", "Error: Unable to Fetch Data");
+                return null;
+            case HttpStatusCode.ServiceUnavailable:
+                ErrorWindow.Spawn(
+                    "The Path of Exile API is currently unavailable. Please try again later.",
+                    "Error: Set Tracker Overlay - Fetch Data 503"
+                );
 
-            GlobalAuthState.Instance.PurgeLocalAuthToken();
-
-            return null;
+                return null;
         }
 
         return await response.Content.ReadAsStringAsync();

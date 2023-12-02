@@ -70,120 +70,122 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             // needed to update item set manager
             var setThreshold = Settings.FullSetThreshold;
 
-        if (string.IsNullOrWhiteSpace(Settings.StashTabIndices))
-        {
-            FetchButtonEnabled = true;
+            if (string.IsNullOrWhiteSpace(Settings.StashTabIndices))
+            {
+                FetchButtonEnabled = true;
 
-            ErrorWindow.Spawn(
-                "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
-                "Error: Set Tracker Overlay - Fetch Data"
-            );
+                ErrorWindow.Spawn(
+                    "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
+                    "Error: Set Tracker Overlay - Fetch Data"
+                );
 
-            return false;
-        }
+                return false;
+            }
 
-        // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
-        var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
+            // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
+            var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
 
-        var filteredStashContents = new List<EnhancedItem>();
-        var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
-        var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
+            var filteredStashContents = new List<EnhancedItem>();
+            var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
+            var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
 
-        // reset item amounts before fetching new data
-        // invalidate some outdated state for our item manager
-        _itemSetManagerService.ResetCompletedSets();
-        _itemSetManagerService.ResetItemAmounts();
+            // reset item amounts before fetching new data
+            // invalidate some outdated state for our item manager
+            _itemSetManagerService.ResetCompletedSets();
+            _itemSetManagerService.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
             var stashTabMetadataList = await _apiService.GetAllPersonalStashTabMetadataAsync();
 
-        if (stashTabMetadataList is not null)
-        {
-            _itemSetManagerService.UpdateStashMetadata(stashTabMetadataList);
-
-            // Create a new dictionary for stash index and ID pairs
-            var selectedStashIndexIdPairs = new Dictionary<int, string>();
-
-            // Map indices to stash IDs
-            foreach (var index in selectedTabIndices)
+            if (stashTabMetadataList is not null)
             {
-                var stashTab = stashTabMetadataList.StashTabs.FirstOrDefault(st => st.Index == index);
-                if (stashTab != null)
+                _itemSetManagerService.UpdateStashMetadata(stashTabMetadataList);
+
+                // Create a new dictionary for stash index and ID pairs
+                var selectedStashIndexIdPairs = new Dictionary<int, string>();
+
+                // Map indices to stash IDs
+                foreach (var index in selectedTabIndices)
                 {
-                    selectedStashIndexIdPairs.Add(index, stashTab.Id);
+                    var stashTab = stashTabMetadataList.StashTabs.FirstOrDefault(st => st.Index == index);
+                    if (stashTab != null)
+                    {
+                        selectedStashIndexIdPairs.Add(index, stashTab.Id);
+                    }
+                }
+
+
+                foreach (var (index, id) in selectedStashIndexIdPairs)
+                {
+                    // first we retrieve the 'raw' results from the API
+                    var rawResults = await _apiService.GetPersonalStashTabContentsByStashIdAsync(id);
+
+                    // then we convert the raw results into a list of EnhancedItem objects
+                    var enhancedItems = rawResults.Stash.Items.Select(item => new EnhancedItem(item)).ToList();
+
+                    // Manually setting index because we need to know which tab the item came from
+                    foreach (var enhancedItem in enhancedItems)
+                    {
+                        enhancedItem.StashTabIndex = index; // Now 'index' refers to the correct stash tab index
+                    }
+
+                    // add the enhanced items to the filtered stash contents
+                    filteredStashContents.AddRange(
+                        EnhancedItemHelper.FilterItemsForRecipe(enhancedItems, includeIdentified, chaosRecipe));
+
+                    _itemSetManagerService.UpdateData(
+                        setThreshold,
+                        selectedTabIndices,
+                        filteredStashContents,
+                        includeIdentified,
+                        chaosRecipe
+                    );
+
+                    if (GlobalRateLimitState.RateLimitExceeded)
+                    {
+                        WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
+                        await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
+                        GlobalRateLimitState.RequestCounter = 0;
+                        GlobalRateLimitState.RateLimitExceeded = false;
+                    }
+                    else if (GlobalRateLimitState.BanTime > 0)
+                    {
+                        WarningMessage = "Temporary Ban from API Requests! Waiting...";
+                        await Task.Delay(GlobalRateLimitState.BanTime * 1000);
+                        GlobalRateLimitState.BanTime = 0;
+                    }
+                }
+
+                // recalculate item amounts and generate item sets after fetching from api
+                _itemSetManagerService.CalculateItemAmounts();
+                _itemSetManagerService.GenerateItemSets(chaosRecipe);
+
+                // update the UI accordingly
+                UpdateDisplay();
+                UpdateStashButtonAndWarningMessage();
+
+                // enforce cooldown on fetch button to reduce chances of rate limiting
+                try
+                {
+                    await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+                }
+                finally
+                {
+                    FetchButtonEnabled = true;
                 }
             }
-
-
-            foreach (var (index, id) in selectedStashIndexIdPairs)
-            {
-                // first we retrieve the 'raw' results from the API
-                var rawResults = await _apiService.GetPersonalStashTabContentsByStashIdAsync(id);
-
-                // then we convert the raw results into a list of EnhancedItem objects
-                var enhancedItems = rawResults.Stash.Items.Select(item => new EnhancedItem(item)).ToList();
-
-                // Manually setting index because we need to know which tab the item came from
-                foreach (var enhancedItem in enhancedItems)
-                {
-                    enhancedItem.StashTabIndex = index; // Now 'index' refers to the correct stash tab index
-                }
-
-                // add the enhanced items to the filtered stash contents
-                filteredStashContents.AddRange(
-                    EnhancedItemHelper.FilterItemsForRecipe(enhancedItems, includeIdentified, chaosRecipe));
-
-                _itemSetManagerService.UpdateData(
-                    setThreshold,
-                    selectedTabIndices,
-                    filteredStashContents,
-                    includeIdentified,
-                    chaosRecipe
-                );
-
-                if (GlobalRateLimitState.RateLimitExceeded)
-                {
-                    WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
-                    await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
-                    GlobalRateLimitState.RequestCounter = 0;
-                    GlobalRateLimitState.RateLimitExceeded = false;
-                }
-                else if (GlobalRateLimitState.BanTime > 0)
-                {
-                    WarningMessage = "Temporary Ban from API Requests! Waiting...";
-                    await Task.Delay(GlobalRateLimitState.BanTime * 1000);
-                    GlobalRateLimitState.BanTime = 0;
-                }
-            }
-
-            // recalculate item amounts and generate item sets after fetching from api
-            _itemSetManagerService.CalculateItemAmounts();
-            _itemSetManagerService.GenerateItemSets(chaosRecipe);
-
-            // update the UI accordingly
-            UpdateDisplay();
-            UpdateStashButtonAndWarningMessage();
-
-            // enforce cooldown on fetch button to reduce chances of rate limiting
-            try
-            {
-                await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-            }
-            finally
+            else
             {
                 FetchButtonEnabled = true;
+                return false;
             }
-        }
-        else
-        {
-            FetchButtonEnabled = true;
-            return false;
         }
         catch (NullReferenceException)
         {
             FetchButtonEnabled = true;
             GlobalAuthState.Instance.PurgeLocalAuthToken();
-            ErrorWindow.Spawn("It looks like your credentials have expired. Please log back in to continue.", "Error: Set Tracker Overlay - Fetch Data");
+            ErrorWindow.Spawn("It looks like your credentials have expired. Please log back in to continue.",
+                "Error: Set Tracker Overlay - Fetch Data");
             return false;
         }
 
