@@ -101,6 +101,16 @@ public class ApiService : IApiService
                 GlobalAuthState.Instance.PurgeLocalAuthToken();
 
                 return null;
+            case HttpStatusCode.Unauthorized:
+                ErrorWindow.Spawn(
+                   "It looks like your Session ID is invalid. Please navigate to the 'Account > Path of Exile Account > PoE Session ID' setting and enter a new value, and try again.",
+                   "Error: Set Tracker Overlay - Fetch Data 401"
+                );
+
+                // usually we will be here if we weren't able to make a successful api request based on an invalid auth token
+                GlobalAuthState.Instance.PurgeLocalAuthToken();
+
+                return null;
             case HttpStatusCode.ServiceUnavailable:
                 ErrorWindow.Spawn(
                     "The Path of Exile API is currently unavailable. Please try again later.",

@@ -14,6 +14,7 @@
 
     <UserControl.Resources>
         <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfEqual" ComparisonType="{x:Type system:Int32}" />
+        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual" Invert="True" ComparisonType="{x:Type system:Int32}" />
     </UserControl.Resources>
 
     <Grid
@@ -147,9 +148,23 @@
             Grid.Column="0"
             Grid.Row="3"
             Grid.ColumnSpan="2"
+            BorderBrush="DarkGreen"
+            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=1}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Content="Login via Path of Exile"
             Click="OnLoginClicked" />
+
+        <!-- Logout Button -->
+        <Button
+            Grid.Column="0"
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            BorderBrush="DarkRed"
+            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Content="Logout"
+            Click="OnLogoutClicked" />
     </Grid>
 </UserControl>

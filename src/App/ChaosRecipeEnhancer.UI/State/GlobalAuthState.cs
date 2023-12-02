@@ -92,7 +92,7 @@ public class GlobalAuthState
             "&response_type=code" +
             "&scope=" + encodedScopes +
             $"&state=${state}" +
-            "&redirect_uri=https://sandbox.chaos-recipe.com/auth/success" +
+            "&redirect_uri=https://chaos-recipe.com/auth/success" +
             $"&code_challenge=${codeChallenge}" +
             "&code_challenge_method=S256";
 
@@ -117,12 +117,14 @@ public class GlobalAuthState
         {
             PurgeLocalAuthToken();
             Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
+            Settings.Default.Save();
+            return false;
         }
 
+        // if the token is valid, we should update the global state
         Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ValidatedConnection;
         Settings.Default.Save();
-
-        return isValid;
+        return true;
     }
 
     public void PurgeLocalAuthToken()
@@ -145,7 +147,7 @@ public class GlobalAuthState
 
     public async Task<string> GenerateAuthToken(string authCode)
     {
-        const string requestUri = "https://sandbox.chaos-recipe.com/auth/token";
+        const string requestUri = "https://chaos-recipe.com/auth/token";
         var httpClient = new HttpClient();
 
         var content = new FormUrlEncodedContent(new[]
@@ -193,7 +195,7 @@ public class GlobalAuthState
 
     public async Task<string> RefreshAuthToken()
     {
-        const string requestUri = "https://sandbox.chaos-recipe.com/auth/token/refresh";
+        const string requestUri = "https://chaos-recipe.com/auth/token/refresh";
         var httpClient = new HttpClient();
 
         var content = new FormUrlEncodedContent(new[]

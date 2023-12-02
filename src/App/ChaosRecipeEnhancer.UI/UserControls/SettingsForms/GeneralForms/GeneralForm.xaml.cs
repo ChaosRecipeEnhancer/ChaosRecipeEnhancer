@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.State;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Primitives;
 using MessageBox = System.Windows.MessageBox;
@@ -28,7 +29,7 @@ internal partial class GeneralForm
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (CheckAccountSettings(false)
+        if (GlobalAuthState.Instance.ValidateLocalAuthToken()
             && _model.Settings.PoEAccountConnectionStatus == (int)ConnectionStatusTypes.ValidatedConnection
             && _model.StashTabIndexNameFullList.Count == 0)
         {
@@ -103,23 +104,5 @@ internal partial class GeneralForm
                 "Invalid file selected. Make sure you're selecting the \"Client.txt\" file located in your main Path of Exile installation folder.",
                 "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-    }
-
-    private static bool CheckAccountSettings(bool showError)
-    {
-        var missingSettings = new List<string>();
-        var errorMessage = "Please add: \n";
-
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName)) missingSettings.Add("- Account Name \n");
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileApiAuthToken)) missingSettings.Add("- PoE Auth Token (Not Logged In) \n");
-        if (string.IsNullOrEmpty(Settings.Default.LeagueName)) missingSettings.Add("- League \n");
-
-        if (missingSettings.Count == 0) return true;
-
-        foreach (var setting in missingSettings) errorMessage += setting;
-
-        if (showError) _ = MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
-
-        return false;
     }
 }
