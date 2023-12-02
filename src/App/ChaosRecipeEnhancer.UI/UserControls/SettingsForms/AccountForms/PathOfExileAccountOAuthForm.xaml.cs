@@ -20,5 +20,9 @@ public partial class PathOfExileAccountOAuthForm : UserControl
     {
         PathOfExileAccountOAuthFormViewModel.LoginToPoEWebsite();
     }
-}
 
+    private void OnLogoutClicked(object sender, RoutedEventArgs e)
+    {
+        PathOfExileAccountOAuthFormViewModel.Logout();
+    }
+}
