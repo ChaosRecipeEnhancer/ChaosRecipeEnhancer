@@ -6,7 +6,7 @@ namespace ChaosRecipeEnhancer.UI.Utilities;
 
 public static class EnhancedItemHelper
 {
-    public static List<EnhancedItem> FilterItemsForRecipe(List<EnhancedItem> unfilteredStashContents, bool includeIdentified = false, bool chaosRecipe = true)
+    public static List<EnhancedItem> FilterItemsForRecipe(List<EnhancedItem> unfilteredStashContents, bool includeIdentified = false)
     {
         var filteredItems = new List<EnhancedItem>();
 

@@ -705,5 +705,17 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["PathOfExileApiAuthToken"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool VendorSetsEarly {
+            get {
+                return ((bool)(this["VendorSetsEarly"]));
+            }
+            set {
+                this["VendorSetsEarly"] = value;
+            }
+        }
     }
 }

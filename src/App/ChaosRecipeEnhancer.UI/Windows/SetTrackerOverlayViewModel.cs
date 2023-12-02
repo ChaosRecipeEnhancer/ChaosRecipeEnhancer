@@ -131,14 +131,13 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
                     // add the enhanced items to the filtered stash contents
                     filteredStashContents.AddRange(
-                        EnhancedItemHelper.FilterItemsForRecipe(enhancedItems, includeIdentified, chaosRecipe));
+                        EnhancedItemHelper.FilterItemsForRecipe(enhancedItems, includeIdentified));
 
                     _itemSetManagerService.UpdateData(
                         setThreshold,
                         selectedTabIndices,
                         filteredStashContents,
-                        includeIdentified,
-                        chaosRecipe
+                        includeIdentified
                     );
 
                     if (GlobalRateLimitState.RateLimitExceeded)
@@ -158,7 +157,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
                 // recalculate item amounts and generate item sets after fetching from api
                 _itemSetManagerService.CalculateItemAmounts();
-                _itemSetManagerService.GenerateItemSets(chaosRecipe);
+                _itemSetManagerService.GenerateItemSets();
 
                 // update the UI accordingly
                 UpdateDisplay();
@@ -203,9 +202,12 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         else if (!NeedsFetching)
         {
             // case 2: user fetched data and has enough sets to turn in based on their threshold
-            if (FullSets >= Settings.FullSetThreshold)
+            if (FullSets >= Settings.FullSetThreshold || Settings.VendorSetsEarly)
             {
-                WarningMessage = SetsFullText;
+                if (!Settings.VendorSetsEarly)
+                {
+                    WarningMessage = SetsFullText;
+                }
 
                 // stash button is enabled with no warning tooltip
                 StashButtonEnabled = true;

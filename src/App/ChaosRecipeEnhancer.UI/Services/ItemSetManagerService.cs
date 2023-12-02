@@ -18,7 +18,7 @@ public interface IItemSetManagerService
         bool chaosRecipe = true
     );
 
-    public void GenerateItemSets(bool chaosRecipe);
+    public void GenerateItemSets();
     public void CalculateItemAmounts();
     public void ResetCompletedSets();
     public void ResetItemAmounts();
@@ -156,100 +156,81 @@ public class ItemSetManagerService : IItemSetManagerService
         BootsAmount = 0;
     }
 
-    public void GenerateItemSets(bool chaosRecipe)
+    public void GenerateItemSets()
     {
         _setsInProgress.Clear();
-
         var listOfSets = new List<EnhancedItemSet>();
 
-        // iterate once to create as many sets as possible that can produce recipe
-        if (chaosRecipe)
+        // filter for chaos recipe eligible items
+        var eligibleChaosItems = _currentItemsFilteredForRecipe
+            .Where(x => x.IsChaosRecipeEligible)
+            .ToList();
+
+        // for every set
+        for (var i = 0; i < _setThreshold; i++)
         {
-            var noChaosItemsLeft = false;
+            // create new 'empty' enhanced item set
+            var enhancedItemSet = new EnhancedItemSet();
 
-            // for every set
-            for (var i = 0; i < _setThreshold; i++)
+            // if there are still chaos items left in our stash
+            if (eligibleChaosItems.Count != 0)
             {
-                // create new 'empty' enhanced item set
-                var enhancedItemSet = new EnhancedItemSet();
-
-                // if there are still chaos items left in our stash
-                if (!noChaosItemsLeft)
+                // try to add a single eligible chaos item in the set (where we're iterate in our loop on line 166)
+                foreach (var attempt in eligibleChaosItems)
                 {
-                    // filter for chaos recipe eligible items
-                    var eligibleChaosItems = _currentItemsFilteredForRecipe.Where(x => x.IsChaosRecipeEligible).ToList();
+                    var addSuccessful = enhancedItemSet.TryAddItem(attempt);
 
-                    // if there are any chaos items left (do we need this?)
-                    if (eligibleChaosItems.Count != 0)
+                    // if we successfully add to set (i.e. it wasn't an item slot that was already taken)
+                    if (addSuccessful)
                     {
-                        // try to add a single eligible chaos item in the set (where we're iterate in our loop on line 166)
-                        foreach (var attempt in eligibleChaosItems)
-                        {
-                            var addSuccessful = enhancedItemSet.TryAddItem(attempt);
+                        // remove from our stash
+                        _currentItemsFilteredForRecipe.Remove(attempt);
 
-                            // if we successfully add to set (i.e. it wasn't an item slot that was already taken)
-                            if (addSuccessful)
-                            {
-                                // remove from our stash
-                                _currentItemsFilteredForRecipe.Remove(attempt);
-
-                                // break out of loop
-                                break;
-                            }
-                        }
+                        // break out of loop
+                        break;
                     }
-                    else
-                    {
-                        // set flag to indicate no chaos items left in our stash
-                        noChaosItemsLeft = true;
-
-                        // what follows is some conditional logic for display the 'needs lower level' message
-
-                        // if we have a high enough item count of each set we're good
-                        var itemCounts = new[]
-                        {
-                            RingsAmount / 2, // 2 rings per set
-                            AmuletsAmount,
-                            BeltsAmount,
-                            ChestsAmount,
-                            WeaponsBigAmount + (WeaponsSmallAmount / 2), // 2h weapons count as 2; 2 1h per set
-                            GlovesAmount,
-                            HelmetsAmount,
-                            BootsAmount
-                        };
-
-                        var haveEnoughItemsIgnoringChaosAmounts = false;
-
-                        foreach (var individualItemClassCountIgnoringChaosAmount in itemCounts)
-                        {
-                            haveEnoughItemsIgnoringChaosAmounts = _setThreshold <= individualItemClassCountIgnoringChaosAmount;
-                        }
-
-                        // we now know we need lower level items
-                        // this will allow us to notify dependencies of this
-                        // if i have enough items to make a set, but i don't have enough chaos items to make a set
-                        if (haveEnoughItemsIgnoringChaosAmounts) NeedsLowerLevel = true;
-                    }
-                    // we still need to loop to create the rest of the sets (even if they don't have chaos items in them)
-                }
-
-                listOfSets.Add(enhancedItemSet);
-
-                if (i == _setThreshold - 1 && !noChaosItemsLeft)
-                {
-                    // we're on the last set and we know we still have chaos items
-                    NeedsLowerLevel = false;
                 }
             }
-        }
-        else
-        {
-            for (var i = 0; i < _setThreshold; i++)
+            else
             {
-                listOfSets.Add(new EnhancedItemSet());
+                // what follows is some conditional logic for display the 'needs lower level' message
+
+                // if we have a high enough item count of each set we're good
+                var itemCounts = new[]
+                {
+                    RingsAmount / 2, // 2 rings per set
+                    AmuletsAmount,
+                    BeltsAmount,
+                    ChestsAmount,
+                    WeaponsBigAmount + (WeaponsSmallAmount / 2), // 2h weapons count as 2; 2 1h per set
+                    GlovesAmount,
+                    HelmetsAmount,
+                    BootsAmount
+                };
+
+                var haveEnoughItemsIgnoringChaosAmounts = false;
+
+                foreach (var individualItemClassCountIgnoringChaosAmount in itemCounts)
+                {
+                    haveEnoughItemsIgnoringChaosAmounts = _setThreshold <= individualItemClassCountIgnoringChaosAmount;
+                }
+
+                // we now know we need lower level items
+                // this will allow us to notify dependencies of this
+                // if i have enough items to make a set, but i don't have enough chaos items to make a set
+                if (haveEnoughItemsIgnoringChaosAmounts) NeedsLowerLevel = true;
+            }
+
+            listOfSets.Add(enhancedItemSet);
+
+            if (i == _setThreshold - 1 && eligibleChaosItems.Count != 0)
+            {
+                // we're on the last set and we know we still have chaos items
+                NeedsLowerLevel = false;
             }
         }
 
+        // we still need to loop to create the rest of the sets (even if they don't have chaos items in them)
         for (var i = 0; i < _setThreshold; i++)
         {
             // iterate until the end of time (jk)
@@ -284,19 +265,16 @@ public class ItemSetManagerService : IItemSetManagerService
                     break;
                 }
 
-                if (chaosRecipe)
+                var canProduce = listOfSets[i].Items.FirstOrDefault(x => x.IsChaosRecipeEligible, null);
+
+                // my reason for separating out this logic is that it's a bit more readable and debuggable
+                if (canProduce is not null)
                 {
-                    var canProduce = listOfSets[i].Items.FirstOrDefault(x => x.IsChaosRecipeEligible, null);
+                    listOfSets[i].HasRecipeQualifier = true;
 
-                    // my reason for separating out this logic is that it's a bit more readable and debuggable
-                    if (canProduce is not null)
+                    if (listOfSets[i].EmptyItemSlots.Count == 0)
                     {
-                        listOfSets[i].HasRecipeQualifier = true;
-
-                        if (listOfSets[i].EmptyItemSlots.Count == 0)
-                        {
-                            CompletedSetCount++;
-                        }
+                        CompletedSetCount++;
                     }
                 }
             }
