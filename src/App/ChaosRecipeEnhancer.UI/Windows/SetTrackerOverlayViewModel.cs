@@ -181,18 +181,18 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             );
             return false;
         }
-        // catch (ArgumentNullException)
-        // {
-        //     FetchButtonEnabled = true;
-        //     ErrorWindow.Spawn(
-        //         "It looks like your currently selected stash tabs are out of sync.\n\n" +
-        //         "You may have moved them or modified them in some way that made us unable " +
-        //         "to determine which stash tab you meant to select.\n\nPlease navigate to " +
-        //         "the 'General > Select Stash Tabs' setting and validate your tabs and try again.",
-        //         "Error: Set Tracker Overlay - Fetch Data"
-        //     );
-        //     return false;
-        // }
+        catch (ArgumentNullException)
+        {
+            FetchButtonEnabled = true;
+            ErrorWindow.Spawn(
+                "It looks like your currently selected stash tabs are out of sync.\n\n" +
+                "You may have moved them or modified them in some way that made us unable " +
+                "to determine which stash tab you meant to select.\n\nPlease navigate to " +
+                "the 'General > Select Stash Tabs' setting and validate your tabs and try again.",
+                "Error: Set Tracker Overlay - Fetch Data"
+            );
+            return false;
+        }
 
         return true;
     }
