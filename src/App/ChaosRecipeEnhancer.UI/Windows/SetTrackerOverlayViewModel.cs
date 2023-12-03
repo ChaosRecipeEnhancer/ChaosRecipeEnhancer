@@ -113,7 +113,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                     }
                 }
 
-
                 foreach (var (index, id) in selectedStashIndexIdPairs)
                 {
                     // first we retrieve the 'raw' results from the API
