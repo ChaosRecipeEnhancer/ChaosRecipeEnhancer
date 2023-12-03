@@ -249,9 +249,11 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     public void RunReloadFilter()
     {
-        // hash set of missing item classes (e.g. "ring", "amulet", etc.)
+        // number of sets in progress seems off
         var sets = _itemSetManagerService.RetrieveSetsInProgress();
         var needChaosItems = sets.Any(set => !set.HasRecipeQualifier);
+
+        // hash set of missing item classes (e.g. "ring", "amulet", etc.)
         var missingItemClasses = new HashSet<string>();
 
         foreach (var set in sets)
