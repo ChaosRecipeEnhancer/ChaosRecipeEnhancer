@@ -38,9 +38,9 @@ public class ReloadFilterService : IReloadFilterService
         if (NativeWindowExtensions.CheckIfWindowExists(poeWindow))
         {
             ErrorWindow.Spawn(
-                "Could not find PoE window! Please make sure PoE is running." +
-                StringConstruction.DoubleNewLineCharacter +
-                " If PoE is running in admin mode, try running our app in admin mode, as well.", "Error: PoE Window Not Found"
+                "Could not find PoE window! Please make sure PoE is running.\n\n" +
+                " If PoE is running in admin mode, try running our app in admin mode, as well.",
+                "Error: Reload Filter - PoE Window Not Found"
             );
 
             return;
@@ -64,7 +64,10 @@ public class ReloadFilterService : IReloadFilterService
 
         if (!string.IsNullOrEmpty(filterName)) return "/itemfilter " + filterName;
 
-        ErrorWindow.Spawn("Please configure your filter file location in the settings.", "Error: No Filter File Location Set");
+        ErrorWindow.Spawn(
+            "Please configure your filter file location in the settings.",
+            "Error: Reload Filter - No Filter File Location Set"
+            );
 
         return null;
     }
