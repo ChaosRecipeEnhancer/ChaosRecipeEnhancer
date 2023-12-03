@@ -53,6 +53,8 @@ public class GlobalAuthState
 
     public void InitializeAuthFlow()
     {
+        Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.AttemptingLogin;
+
         // Resetting global auth state
         _authToken = string.Empty;
         _refreshToken = string.Empty;
@@ -116,8 +118,6 @@ public class GlobalAuthState
         if (!isValid)
         {
             PurgeLocalAuthToken();
-            Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
-            Settings.Default.Save();
             return false;
         }
 
@@ -136,7 +136,12 @@ public class GlobalAuthState
         Settings.Default.PathOfExileAccountName = string.Empty;
         Settings.Default.PathOfExileApiAuthToken = string.Empty;
         Settings.Default.PathOfExileApiRefreshToken = string.Empty;
-        Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
+
+        // only reset this specific setting if we're not in the middle of an auth flow
+        if (Settings.Default.PoEAccountConnectionStatus != (int)ConnectionStatusTypes.AttemptingLogin)
+        {
+            Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
+        }
 
         // for one, we can't set this to null because it's a value type
         // in this case, we'll simply ignore it (it's not used anywhere else)

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.State;
@@ -84,10 +86,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
             // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
             var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
-
             var filteredStashContents = new List<EnhancedItem>();
-            var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
-            var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
 
             // reset item amounts before fetching new data
             // invalidate some outdated state for our item manager
@@ -95,7 +94,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             _itemSetManagerService.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
-            var stashTabMetadataList = await _apiService.GetAllPersonalStashTabMetadataAsync();
+            var stashTabMetadataList = FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
 
             if (stashTabMetadataList is not null)
             {
@@ -107,13 +106,12 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 // Map indices to stash IDs
                 foreach (var index in selectedTabIndices)
                 {
-                    var stashTab = stashTabMetadataList.StashTabs.FirstOrDefault(st => st.Index == index);
+                    var stashTab = stashTabMetadataList.FirstOrDefault(st => st.Index == index);
                     if (stashTab != null)
                     {
                         selectedStashIndexIdPairs.Add(index, stashTab.Id);
                     }
                 }
-
 
                 foreach (var (index, id) in selectedStashIndexIdPairs)
                 {
@@ -130,16 +128,9 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                     }
 
                     // add the enhanced items to the filtered stash contents
-                    filteredStashContents.AddRange(
-                        EnhancedItemHelper.FilterItemsForRecipe(enhancedItems, includeIdentified, chaosRecipe));
+                    filteredStashContents.AddRange(EnhancedItemHelper.FilterItemsForRecipe(enhancedItems));
 
-                    _itemSetManagerService.UpdateData(
-                        setThreshold,
-                        selectedTabIndices,
-                        filteredStashContents,
-                        includeIdentified,
-                        chaosRecipe
-                    );
+                    _itemSetManagerService.UpdateStashContents(setThreshold, selectedTabIndices, filteredStashContents);
 
                     if (GlobalRateLimitState.RateLimitExceeded)
                     {
@@ -158,7 +149,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
                 // recalculate item amounts and generate item sets after fetching from api
                 _itemSetManagerService.CalculateItemAmounts();
-                _itemSetManagerService.GenerateItemSets(chaosRecipe);
+                _itemSetManagerService.GenerateItemSets();
 
                 // update the UI accordingly
                 UpdateDisplay();
@@ -184,8 +175,22 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         {
             FetchButtonEnabled = true;
             GlobalAuthState.Instance.PurgeLocalAuthToken();
-            ErrorWindow.Spawn("It looks like your credentials have expired. Please log back in to continue.",
-                "Error: Set Tracker Overlay - Fetch Data");
+            ErrorWindow.Spawn(
+                "It looks like your credentials have expired. Please log back in to continue.",
+                "Error: Set Tracker Overlay - Fetch Data"
+            );
+            return false;
+        }
+        catch (ArgumentNullException)
+        {
+            FetchButtonEnabled = true;
+            ErrorWindow.Spawn(
+                "It looks like your currently selected stash tabs are out of sync.\n\n" +
+                "You may have moved them or modified them in some way that made us unable " +
+                "to determine which stash tab you meant to select.\n\nPlease navigate to " +
+                "the 'General > Select Stash Tabs' setting and validate your tabs and try again.",
+                "Error: Set Tracker Overlay - Fetch Data"
+            );
             return false;
         }
 
@@ -203,9 +208,12 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         else if (!NeedsFetching)
         {
             // case 2: user fetched data and has enough sets to turn in based on their threshold
-            if (FullSets >= Settings.FullSetThreshold)
+            if (FullSets >= Settings.FullSetThreshold || Settings.VendorSetsEarly)
             {
-                WarningMessage = SetsFullText;
+                if (!Settings.VendorSetsEarly || FullSets >= Settings.FullSetThreshold)
+                {
+                    WarningMessage = SetsFullText;
+                }
 
                 // stash button is enabled with no warning tooltip
                 StashButtonEnabled = true;
@@ -266,7 +274,12 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     #region Item Amount and Visibility Properties
 
-    public int RingsAmount => ShowAmountNeeded ? Math.Max((Settings.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount(), 0) : _itemSetManagerService.RetrieveRingsAmount();
+    public int RingsAmount => ShowAmountNeeded
+        // case where we are showing missing items (calculate total needed and subtract from threshold, but don't show negatives)
+        ? Math.Max((Settings.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount(), 0)
+        // case where we are showing total item sets (e.g. pair of rings as a single 'count')
+        : _itemSetManagerService.RetrieveRingsAmount() / 2;
+
     public bool RingsActive => Settings.LootFilterRingsAlwaysActive || (NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount() > 0);
 
     public int AmuletsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveAmuletsAmount(), 0) : _itemSetManagerService.RetrieveAmuletsAmount();
@@ -278,7 +291,11 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     public int ChestsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveChestsAmount(), 0) : _itemSetManagerService.RetrieveChestsAmount();
     public bool ChestsActive => Settings.LootFilterBodyArmourAlwaysActive || (NeedsFetching || Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveChestsAmount() > 0);
 
-    public int WeaponsAmount => ShowAmountNeeded ? Math.Max((Properties.Settings.Default.FullSetThreshold * 2) - (_itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2)), 0) : _itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2);
+    public int WeaponsAmount => ShowAmountNeeded
+        // case where we are showing missing items (calculate total needed and subtract from threshold, but don't show negatives)
+        ? Math.Max((Properties.Settings.Default.FullSetThreshold * 2) - (_itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2)), 0)
+        // case where we are showing total weapon sets (e.g. pair of one handed weapons plus two handed weapons as a 'count' each)
+        : (_itemSetManagerService.RetrieveWeaponsSmallAmount() / 2) + _itemSetManagerService.RetrieveWeaponsBigAmount();
     public bool WeaponsActive => Settings.LootFilterWeaponsAlwaysActive || (NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - (_itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2)) > 0);
 
     public int GlovesAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveGlovesAmount(), 0) : _itemSetManagerService.RetrieveGlovesAmount();
@@ -325,4 +342,21 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         OnPropertyChanged(nameof(FetchButtonEnabled));
         OnPropertyChanged(nameof(ShowAmountNeeded));
     }
+
+    public List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response)
+    {
+        var allTabs = new List<BaseStashTabMetadata>();
+
+        foreach (var tab in response.StashTabs)
+        {
+            allTabs.Add(tab); // Add the parent tab
+            if (tab.Children != null)
+            {
+                allTabs.AddRange(tab.Children); // Add the children if any
+            }
+        }
+
+        return allTabs;
+    }
+
 }

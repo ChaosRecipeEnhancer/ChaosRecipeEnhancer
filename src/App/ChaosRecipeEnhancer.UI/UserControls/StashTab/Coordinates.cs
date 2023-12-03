@@ -11,11 +11,19 @@ namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
 public static class Coordinates
 {
+
+    // Potential Fix:
     private static Point GetItemCoordinates(Visual item)
     {
-        return item is null
-            ? new Point(0, 0)
-            : item.PointToScreen(new Point(0, 0));
+        if (item == null || !IsVisualConnected(item))
+            return new Point(0, 0);
+
+        return item.PointToScreen(new Point(0, 0));
+    }
+
+    private static bool IsVisualConnected(Visual visual)
+    {
+        return PresentationSource.FromVisual(visual) != null;
     }
 
     private static bool CheckIfItemClicked(Point point, FrameworkElement button)

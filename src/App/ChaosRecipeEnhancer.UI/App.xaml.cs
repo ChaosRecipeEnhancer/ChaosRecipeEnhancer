@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
@@ -42,7 +44,6 @@ internal partial class App
         {
             // Setup for the main instance
             SetupUnhandledExceptionHandling();
-            // ... rest of your setup code
         }
     }
 
@@ -93,12 +94,11 @@ internal partial class App
     {
         // Catch exceptions from all threads in the AppDomain.
         AppDomain.CurrentDomain.UnhandledException += (_, args) =>
-            ShowUnhandledException(args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException",
-                false);
+            ShowUnhandledException(args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException");
 
         // Catch exceptions from each AppDomain that uses a task scheduler for async operations.
         TaskScheduler.UnobservedTaskException += (_, args) =>
-            ShowUnhandledException(args.Exception, "TaskScheduler.UnobservedTaskException", false);
+            ShowUnhandledException(args.Exception, "TaskScheduler.UnobservedTaskException");
 
         // Catch exceptions from a single specific UI dispatcher thread.
         Dispatcher.UnhandledException += (_, args) =>
@@ -107,25 +107,29 @@ internal partial class App
             if (Debugger.IsAttached) return;
 
             args.Handled = true;
-            ShowUnhandledException(args.Exception, "Dispatcher.UnhandledException", true);
+            ShowUnhandledException(args.Exception, "Dispatcher.UnhandledException");
         };
     }
 
-    private static void ShowUnhandledException(Exception e, string unhandledExceptionType, bool promptUserForShutdown)
+    private static void ShowUnhandledException(Exception e, string unhandledExceptionType)
     {
-        var messageBoxTitle = $"Unexpected Error Occurred: {unhandledExceptionType}";
-        var messageBoxMessage = $"The following exception occurred:\n\n{e}";
-        var messageBoxButtons = MessageBoxButton.OK;
+        var limitedExceptionMessage = string.Join(
+            Environment.NewLine,
+            // split the exception message into lines and take the first 30 lines
+            e.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None).Take(5)
+        );
 
-        if (promptUserForShutdown)
-        {
-            messageBoxMessage += "\n\n\nPlease report this issue on github or discord :)";
-            messageBoxButtons = MessageBoxButton.OK;
-        }
+        var messageBoxTitle = $"Error: Unhandled Exception - {unhandledExceptionType}";
+        var messageBoxMessage =
+            $"The following exception occurred: {unhandledExceptionType}" +
+            $"{limitedExceptionMessage}";
 
-        // Let the user decide if the app should die or not (if applicable).
-        if (MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons) == MessageBoxResult.Yes)
-            Current.Shutdown();
+        var dialog = new CustomDialog(
+            messageBoxTitle,
+            messageBoxMessage
+        );
+
+        dialog.ShowDialog();
     }
 
     private static void ValidateAndRefreshToken()

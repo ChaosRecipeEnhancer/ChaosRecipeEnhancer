@@ -28,7 +28,6 @@ public partial class StashTabOverlayWindow
     {
         InitializeComponent();
         DataContext = _model = new StashTabOverlayViewModel();
-        StashTabOverlayTabControl.ItemsSource = _model.OverlayStashTabList;
 
         NativeMouseExtensions.MouseAction += (s, e) => Coordinates.OverlayClickEvent(this);
     }
@@ -82,17 +81,18 @@ public partial class StashTabOverlayWindow
 
     public new virtual void Show()
     {
+        StashTabOverlayTabControl.Items.Clear();
+
         // open stash overlay window
         IsOpen = true;
 
+        // fetch stash data from api
         GenerateReconstructedStashTabsFromApiResponse();
 
         // Ensure the user has fetched stash data before populating our Stash Tab Overlay
         if (StashTabControlManager.StashTabControls.Count != 0)
         {
             IsOpen = true;
-
-            _model.OverlayStashTabList.Clear();
 
             // For each individual stash tab in our query results
             foreach (var stashTabData in StashTabControlManager.StashTabControls)
@@ -135,7 +135,7 @@ public partial class StashTabOverlayWindow
                     };
                 }
 
-                _model.OverlayStashTabList.Add(newStashTab);
+                StashTabOverlayTabControl.Items.Add(newStashTab);
             }
 
             StashTabOverlayTabControl.SelectedIndex = 0;
@@ -258,7 +258,7 @@ public partial class StashTabOverlayWindow
         {
             if (stashTabMetadataList != null)
             {
-                foreach (var tab in stashTabMetadataList.StashTabs)
+                foreach (var tab in stashTabMetadataList)
                 {
                     for (var index = StashTabControlManager.StashTabIndices.Count - 1; index > -1; index--)
                     {
@@ -288,7 +288,7 @@ public partial class StashTabOverlayWindow
 
                 ParseAllStashTabNamesFromApiResponse();
 
-                foreach (var tab in stashTabMetadataList.StashTabs)
+                foreach (var tab in stashTabMetadataList)
                 {
                     if (tab.Name.StartsWith(individualStashTabPrefix))
                     {
@@ -312,11 +312,11 @@ public partial class StashTabOverlayWindow
         var stashTabMetadataList = _itemSetManagerService.RetrieveStashTabMetadataList();
         foreach (var s in StashTabControlManager.StashTabControls)
         {
-            foreach (var props in stashTabMetadataList.StashTabs)
+            foreach (var props in stashTabMetadataList)
             {
                 if (s.Index == props.Index)
                 {
-                    s.Name = props.Name;
+                    s.Name = $"[{props.Index}] {props.Name}";
                 }
             }
         }

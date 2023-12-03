@@ -54,6 +54,8 @@
 		<Resource Include="Assets\Images\Validated.png" />
 		<Resource Include="Assets\Images\Warning.png" />
 		<Resource Include="Assets\Images\Error.png" />
+		<Resource Include="Assets\Images\Loading.png" />
+
 
 		<!-- Sounds -->
 		<Content Update="Assets\Sounds\FilterChanged.mp3">
@@ -111,6 +113,7 @@
 	<ItemGroup>
 		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs" />
 		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs" />
+		<None Remove="Assets\Images\Loading.png" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml" />
 	</ItemGroup>

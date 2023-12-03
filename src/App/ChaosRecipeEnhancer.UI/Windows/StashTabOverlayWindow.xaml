@@ -33,8 +33,10 @@
         <zemotoCommon:PaddingLeftRightConverter x:Key="PaddingConverter"/>
     </Window.Resources>
 
-    <Grid>
+    <Grid x:Name="StashOverlayGrid">
+
         <Grid Margin="2">
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -44,8 +46,8 @@
             <Rectangle Grid.Row="0"
                        Grid.RowSpan="99"
                        Visibility="{Binding IsEditing, Converter={StaticResource HiddenIfFalse}}"
-                       Stroke="White"
-                       StrokeThickness="1" />
+                       Stroke="Yellow"
+                       StrokeThickness="1.5" />
 
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -56,9 +58,10 @@
                 <Button x:Name="EditModeButton"
                         Grid.Column="1"
                         Height="20"
-                        Margin="0,0,0,10"
+                        Margin="0,5,0,5"
                         Content="{Binding IsEditing, Converter={StaticResource EditButtonTextConverter}}"
                         Foreground="White"
+                        BorderBrush="Yellow"
                         Click="OnEditModeButtonClick" />
             </Grid>
 
@@ -73,8 +76,9 @@
                 </TabControl.Background>
 
                 <TabControl.Resources>
-
                     <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Gainsboro" />
                         <Setter Property="Template">
                             <Setter.Value>
 
@@ -195,12 +199,32 @@
                                 </ControlTemplate>
 
                             </Setter.Value>
+
                         </Setter>
+
                     </Style>
+
                 </TabControl.Resources>
+
             </TabControl>
 
         </Grid>
+
+        <!-- Popup outside the Grid -->
+        <Popup IsOpen="{Binding IsEditing}"
+               Placement="RelativePoint"
+               PlacementTarget="{Binding ElementName=StashOverlayGrid}"
+               HorizontalOffset="{Binding ActualWidth, ElementName=StashOverlayGrid}"
+               VerticalOffset="{Binding ActualHeight, ElementName=StashOverlayGrid}">
+            <Border Padding="10" Background="Yellow" CornerRadius="1" BorderBrush="Black" BorderThickness="1">
+                <TextBlock Foreground="Black" FontSize="12" FontWeight="Bold" TextAlignment="Center">
+                    Drag Corner
+                    <LineBreak />
+                    To Resize
+                </TextBlock>
+            </Border>
+        </Popup>
+
     </Grid>
 
 </Window>

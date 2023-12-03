@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.Utilities;
 
 public static class EnhancedItemHelper
 {
-    public static List<EnhancedItem> FilterItemsForRecipe(List<EnhancedItem> unfilteredStashContents, bool includeIdentified = false, bool chaosRecipe = true)
+    public static List<EnhancedItem> FilterItemsForRecipe(List<EnhancedItem> unfilteredStashContents)
     {
         var filteredItems = new List<EnhancedItem>();
 
@@ -14,10 +15,10 @@ public static class EnhancedItemHelper
         foreach (var item in unfilteredStashContents)
         {
             // if it's not rare ignore item (could keep identified items if passed as true)
-            // maybe i could optimize here by pre-emptively removing all non-rare items
+            // maybe i could optimize here by preemptively removing all non-rare items
             // in the calling request? idk if it would truly 'optimize' or if it would
             // just offload the work to another service lol
-            if ((item.Identified && !includeIdentified) || item.FrameType != ItemFrameType.Rare)
+            if ((item.Identified && !Settings.Default.IncludeIdentifiedItemsEnabled) || item.FrameType != ItemFrameType.Rare)
             {
                 continue;
             }

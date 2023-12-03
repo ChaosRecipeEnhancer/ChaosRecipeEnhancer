@@ -30,6 +30,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Form Header Start -->
@@ -104,18 +105,37 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="4"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Full Set Threshold:"
-            ToolTip="Number of full sets you want. If you have collected this amount of items of an item type, item type will get deactivated. Leave at 0 for auto calculation, that means 4 sets for each normal tab and 16 sets for each quad tab.  " />
+            ToolTip="Number of full sets you want, with a minimum of 1 and maximum of 100.&#x0a;&#x0a;If you have collected this amount of items of an item type, item type will&#x0a;get deactivated and no longer included in your filter." />
 
         <TextBox
             Grid.Column="1"
             Grid.Row="4"
-            Margin="10 0 0 0"
+            Margin="10 0 0 10"
             Width="40"
             HorizontalContentAlignment="Left"
+            PreviewTextInput="NumberValidationTextBox"
+            LostFocus="TextBox_LostFocus"
             Text="{Binding Settings.FullSetThreshold, Mode=TwoWay}" />
         <!-- Full Set Threshold Setting End -->
 
+        <!-- Vendor Sets Early Setting Start -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="5"
+            VerticalAlignment="Center"
+            Text="Vendor Sets Early:"
+            ToolTip="Enabled by default.&#x0a;&#x0a;This will allow you to turn in sets even if you are not at your full set threshold." />
+
+
+        <CheckBox
+            Grid.Column="1"
+            Grid.Row="5"
+            Margin="10 0 0 0"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Settings.VendorSetsEarly, Mode=TwoWay}" />
+        <!-- Full Set Threshold Setting End -->
     </Grid>
 </UserControl>
