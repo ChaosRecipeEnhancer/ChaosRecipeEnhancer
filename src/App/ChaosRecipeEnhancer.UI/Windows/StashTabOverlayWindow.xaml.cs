@@ -14,6 +14,7 @@ using System.Linq;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
@@ -316,7 +317,7 @@ public partial class StashTabOverlayWindow
             {
                 if (s.Index == props.Index)
                 {
-                    s.Name = props.Name;
+                    s.Name = $"[{props.Index}] {props.Name}";
                 }
             }
         }
