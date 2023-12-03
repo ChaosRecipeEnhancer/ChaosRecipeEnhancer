@@ -3,28 +3,22 @@ using System.Linq;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
 public interface IItemSetManagerService
 {
-    public void UpdateStashMetadata(ListStashesResponse metadata);
-
-    public bool UpdateData(
-        int setThreshold,
-        List<int> selectedTabIndices,
-        List<EnhancedItem> filteredStashContents,
-        bool includeIdentified = false,
-        bool chaosRecipe = true
-    );
+    public void UpdateStashMetadata(List<BaseStashTabMetadata> metadata);
+    public bool UpdateStashContents(int setThreshold, List<int> selectedTabIndices, List<EnhancedItem> filteredStashContents);
 
     public void GenerateItemSets();
     public void CalculateItemAmounts();
     public void ResetCompletedSets();
     public void ResetItemAmounts();
 
-    public ListStashesResponse RetrieveStashTabMetadataList();
+    public List<BaseStashTabMetadata> RetrieveStashTabMetadataList();
     public bool RetrieveNeedsFetching();
     public bool RetrieveNeedsLowerLevel();
     public int RetrieveCompletedSetCount();
@@ -46,7 +40,7 @@ public class ItemSetManagerService : IItemSetManagerService
     private int _setThreshold;
     private List<EnhancedItemSet> _setsInProgress = new();
     private List<EnhancedItem> _currentItemsFilteredForRecipe = new(); // filtered for chaos recipe
-    private ListStashesResponse _stashTabMetadataListStashesResponse;
+    private List<BaseStashTabMetadata> _stashTabMetadataListStashesResponse;
 
     #region Item Amount Properties
 
@@ -73,20 +67,14 @@ public class ItemSetManagerService : IItemSetManagerService
     // temporary housing for this field that is needed by some components
     // i'd likely want to move this to its own service tbh
 
-    public void UpdateStashMetadata(ListStashesResponse metadata)
+    public void UpdateStashMetadata(List<BaseStashTabMetadata> metadata)
     {
         _stashTabMetadataListStashesResponse = metadata;
     }
 
     // this is the primary method being called by external entities
     // return true if successful update, false if some error (likely caller error missing important data)
-    public bool UpdateData(
-        int setThreshold,
-        List<int> selectedTabIndices,
-        List<EnhancedItem> filteredStashContents,
-        bool includeIdentified = false,
-        bool chaosRecipe = true
-    )
+    public bool UpdateStashContents(int setThreshold, List<int> selectedTabIndices, List<EnhancedItem> filteredStashContents)
     {
         // if no tabs are selected (this isn't a realistic case)
         if (selectedTabIndices.Count == 0) return false;
@@ -94,8 +82,8 @@ public class ItemSetManagerService : IItemSetManagerService
         // setting some new properties
         _setThreshold = setThreshold;
         _currentItemsFilteredForRecipe = filteredStashContents;
-
         NeedsFetching = false;
+
         return true;
     }
 
@@ -434,7 +422,7 @@ public class ItemSetManagerService : IItemSetManagerService
     #region Properties as Functions
 
     // workaround to expose properties as functions on our interface
-    public ListStashesResponse RetrieveStashTabMetadataList() => _stashTabMetadataListStashesResponse;
+    public List<BaseStashTabMetadata> RetrieveStashTabMetadataList() => _stashTabMetadataListStashesResponse;
     public bool RetrieveNeedsFetching() => NeedsFetching;
     public bool RetrieveNeedsLowerLevel() => NeedsLowerLevel;
     public int RetrieveCompletedSetCount() => CompletedSetCount;

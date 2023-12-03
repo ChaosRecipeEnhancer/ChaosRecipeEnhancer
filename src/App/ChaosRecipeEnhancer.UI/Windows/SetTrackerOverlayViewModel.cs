@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.State;
@@ -84,10 +86,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
             // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
             var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
-
             var filteredStashContents = new List<EnhancedItem>();
-            var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
-            var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
 
             // reset item amounts before fetching new data
             // invalidate some outdated state for our item manager
@@ -95,7 +94,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             _itemSetManagerService.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
-            var stashTabMetadataList = await _apiService.GetAllPersonalStashTabMetadataAsync();
+            var stashTabMetadataList = FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
 
             if (stashTabMetadataList is not null)
             {
@@ -107,7 +106,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 // Map indices to stash IDs
                 foreach (var index in selectedTabIndices)
                 {
-                    var stashTab = stashTabMetadataList.StashTabs.FirstOrDefault(st => st.Index == index);
+                    var stashTab = stashTabMetadataList.FirstOrDefault(st => st.Index == index);
                     if (stashTab != null)
                     {
                         selectedStashIndexIdPairs.Add(index, stashTab.Id);
@@ -130,15 +129,9 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                     }
 
                     // add the enhanced items to the filtered stash contents
-                    filteredStashContents.AddRange(
-                        EnhancedItemHelper.FilterItemsForRecipe(enhancedItems, includeIdentified));
+                    filteredStashContents.AddRange(EnhancedItemHelper.FilterItemsForRecipe(enhancedItems));
 
-                    _itemSetManagerService.UpdateData(
-                        setThreshold,
-                        selectedTabIndices,
-                        filteredStashContents,
-                        includeIdentified
-                    );
+                    _itemSetManagerService.UpdateStashContents(setThreshold, selectedTabIndices, filteredStashContents);
 
                     if (GlobalRateLimitState.RateLimitExceeded)
                     {
@@ -336,4 +329,21 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         OnPropertyChanged(nameof(FetchButtonEnabled));
         OnPropertyChanged(nameof(ShowAmountNeeded));
     }
+
+    public List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response)
+    {
+        var allTabs = new List<BaseStashTabMetadata>();
+
+        foreach (var tab in response.StashTabs)
+        {
+            allTabs.Add(tab); // Add the parent tab
+            if (tab.Children != null)
+            {
+                allTabs.AddRange(tab.Children); // Add the children if any
+            }
+        }
+
+        return allTabs;
+    }
+
 }

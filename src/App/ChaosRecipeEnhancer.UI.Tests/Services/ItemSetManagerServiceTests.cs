@@ -15,7 +15,7 @@ public class ItemSetManagerServiceTests
         
 
         // Act
-        var result = itemSetManagerService.UpdateData(1, new List<int> { 0 }, new List<EnhancedItem>());
+        var result = itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, new List<EnhancedItem>());
 
         // Assert
         result.Should().BeTrue();
@@ -29,7 +29,7 @@ public class ItemSetManagerServiceTests
         var itemSetManagerService = new ItemSetManagerService();
         
         // Act
-        var result = itemSetManagerService.UpdateData(1, new List<int>(), new List<EnhancedItem>());
+        var result = itemSetManagerService.UpdateStashContents(1, new List<int>(), new List<EnhancedItem>());
 
         // Assert
         result.Should().BeFalse();
@@ -41,7 +41,7 @@ public class ItemSetManagerServiceTests
         // Arrange
         var itemSetManagerService = new ItemSetManagerService();
         var itemSet = GenerateFullSet();
-        itemSetManagerService.UpdateData(1, new List<int> { 0 }, itemSet);
+        itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, itemSet);
         
         // Act
         itemSetManagerService.CalculateItemAmounts();
@@ -63,7 +63,7 @@ public class ItemSetManagerServiceTests
         // Arrange
         var itemSetManagerService = new ItemSetManagerService();
         var itemSet = new List<EnhancedItem> { new() { DerivedItemClass = GameTerminology.TwoHandWeapons, ItemLevel = 70 } };
-        itemSetManagerService.UpdateData(1, new List<int> { 0 }, itemSet);
+        itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, itemSet);
         
         // Act
         itemSetManagerService.CalculateItemAmounts();
@@ -78,7 +78,7 @@ public class ItemSetManagerServiceTests
         // Arrange
         var itemSetManagerService = new ItemSetManagerService();
         var itemSet = GenerateFullSet();
-        itemSetManagerService.UpdateData(1, new List<int> { 0 }, itemSet);
+        itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, itemSet);
         
         // Act
         itemSetManagerService.CalculateItemAmounts();
@@ -93,7 +93,7 @@ public class ItemSetManagerServiceTests
         // Arrange
         var itemSetManagerService = new ItemSetManagerService();
         var itemSet = GenerateFullSet();
-        itemSetManagerService.UpdateData(1, new List<int> { 0 }, itemSet);
+        itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, itemSet);
         itemSetManagerService.CalculateItemAmounts();
         
         // Act
@@ -110,7 +110,7 @@ public class ItemSetManagerServiceTests
         var itemSetManagerService = new ItemSetManagerService();
         var itemSet = GenerateFullSet();
         itemSet.Add(new EnhancedItem { DerivedItemClass = GameTerminology.TwoHandWeapons, ItemLevel = 70 });
-        itemSetManagerService.UpdateData(1, new List<int> { 0 }, itemSet);
+        itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, itemSet);
         itemSetManagerService.CalculateItemAmounts();
         
         // Act

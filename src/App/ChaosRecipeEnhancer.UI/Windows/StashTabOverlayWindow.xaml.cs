@@ -258,7 +258,7 @@ public partial class StashTabOverlayWindow
         {
             if (stashTabMetadataList != null)
             {
-                foreach (var tab in stashTabMetadataList.StashTabs)
+                foreach (var tab in stashTabMetadataList)
                 {
                     for (var index = StashTabControlManager.StashTabIndices.Count - 1; index > -1; index--)
                     {
@@ -288,7 +288,7 @@ public partial class StashTabOverlayWindow
 
                 ParseAllStashTabNamesFromApiResponse();
 
-                foreach (var tab in stashTabMetadataList.StashTabs)
+                foreach (var tab in stashTabMetadataList)
                 {
                     if (tab.Name.StartsWith(individualStashTabPrefix))
                     {
@@ -312,7 +312,7 @@ public partial class StashTabOverlayWindow
         var stashTabMetadataList = _itemSetManagerService.RetrieveStashTabMetadataList();
         foreach (var s in StashTabControlManager.StashTabControls)
         {
-            foreach (var props in stashTabMetadataList.StashTabs)
+            foreach (var props in stashTabMetadataList)
             {
                 if (s.Index == props.Index)
                 {
