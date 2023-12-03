@@ -167,9 +167,6 @@
     <Setting Name="PathOfExileApiAuthTokenExpiration" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="PathOfExileApiRefreshToken" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="PathOfExileApiAuthToken" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

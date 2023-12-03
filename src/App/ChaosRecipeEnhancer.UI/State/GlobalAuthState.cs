@@ -19,7 +19,6 @@ public class GlobalAuthState
     private static readonly Lazy<GlobalAuthState> _instance = new(() => new GlobalAuthState());
     private string _username;
     private string _authToken;
-    private string _refreshToken;
     private string _codeVerifier;
     private DateTime? _tokenExpiration;
 
@@ -29,23 +28,7 @@ public class GlobalAuthState
 
     public static GlobalAuthState Instance => _instance.Value;
 
-    public string Username
-    {
-        get => _username;
-        set => _username = value;
-    }
-
-    public string AuthToken
-    {
-        get => _authToken;
-        set => _authToken = value;
-    }
-
-    public DateTime? TokenExpiration
-    {
-        get => _tokenExpiration;
-        set => _tokenExpiration = value;
-    }
+    public string AuthToken => _authToken;
 
     #endregion
 
@@ -57,7 +40,6 @@ public class GlobalAuthState
 
         // Resetting global auth state
         _authToken = string.Empty;
-        _refreshToken = string.Empty;
         _codeVerifier = string.Empty;
         _tokenExpiration = null;
 
@@ -135,7 +117,6 @@ public class GlobalAuthState
         // Also update App Settings
         Settings.Default.PathOfExileAccountName = string.Empty;
         Settings.Default.PathOfExileApiAuthToken = string.Empty;
-        Settings.Default.PathOfExileApiRefreshToken = string.Empty;
 
         // only reset this specific setting if we're not in the middle of an auth flow
         if (Settings.Default.PoEAccountConnectionStatus != (int)ConnectionStatusTypes.AttemptingLogin)
@@ -198,51 +179,6 @@ public class GlobalAuthState
         return string.Empty;
     }
 
-    public async Task<string> RefreshAuthToken()
-    {
-        const string requestUri = "https://chaos-recipe.com/auth/token/refresh";
-        var httpClient = new HttpClient();
-
-        var content = new FormUrlEncodedContent(new[]
-        {
-            new KeyValuePair<string, string>("refresh_token", _refreshToken),
-        });
-
-        try
-        {
-            var response = await httpClient.PostAsync(requestUri, content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var responseContent = await response.Content.ReadAsStringAsync();
-
-                // Process the response content (token information) here
-                Trace.WriteLine("RefreshAuthToken - Token Response: " + responseContent);
-
-                // Updating global auth state
-                var authTokenResponse = JsonSerializer.Deserialize<AuthTokenResponse>(responseContent);
-
-                // This is an important step we cannot miss as it will also update the auth settings that persist
-                // across application restarts (and saved to the settings file on disk)
-                UpdateAuthUserSettings(authTokenResponse);
-
-                return responseContent;
-            }
-
-            // Handle error response
-            Trace.WriteLine("RefreshAuthToken - Error retrieving token: " + response.StatusCode);
-            Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionError;
-        }
-        catch (Exception ex)
-        {
-            // Handle any exceptions
-            Trace.WriteLine("RefreshAuthToken - Exception occurred: " + ex.Message);
-            Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionError;
-        }
-
-        return string.Empty;
-    }
-
     #endregion
 
     #region Utilities
@@ -252,13 +188,15 @@ public class GlobalAuthState
         // Updating Global State
         _username = authTokenResponse.Username;
         _authToken = authTokenResponse.AccessToken;
-        _refreshToken = authTokenResponse.RefreshToken;
-        _tokenExpiration = DateTime.UtcNow.AddSeconds(authTokenResponse.ExpiresIn);
+
+        // the included `ExpiresIn` value is likely inaccurate...
+        // i'm going to go off the docs and refresh this every 10 hours
+        // _tokenExpiration = DateTime.UtcNow.AddSeconds(authTokenResponse.ExpiresIn);
+        _tokenExpiration = DateTime.UtcNow.AddHours(10);
 
         // Also update App Settings
         Settings.Default.PathOfExileAccountName = _username;
         Settings.Default.PathOfExileApiAuthToken = _authToken;
-        Settings.Default.PathOfExileApiRefreshToken = _refreshToken;
         Settings.Default.PathOfExileApiAuthTokenExpiration = (DateTime)_tokenExpiration;
         Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ValidatedConnection;
         Settings.Default.Save();

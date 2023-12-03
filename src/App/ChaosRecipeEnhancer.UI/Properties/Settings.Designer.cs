@@ -685,18 +685,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string PathOfExileApiRefreshToken {
-            get {
-                return ((string)(this["PathOfExileApiRefreshToken"]));
-            }
-            set {
-                this["PathOfExileApiRefreshToken"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string PathOfExileApiAuthToken {
             get {
                 return ((string)(this["PathOfExileApiAuthToken"]));

@@ -32,8 +32,6 @@ Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "ChaosRecipeEnhancer.Backend
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaosRecipeEnhancer.Backend.TestApp", "src\Backend\ChaosRecipeEnhancer.Backend.TestApp\ChaosRecipeEnhancer.Backend.TestApp.csproj", "{0F190037-817B-4923-BC5F-B69EE58A8FEC}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "ChaosRecipeEnhancer.Backend.RefreshTokenHandler", "src\Backend\ChaosRecipeEnhancer.Backend.RefreshTokenHandler\ChaosRecipeEnhancer.Backend.RefreshTokenHandler.njsproj", "{5CCF647D-C565-451E-8EAF-45D735127DB5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,14 +84,6 @@ Global
 		{0F190037-817B-4923-BC5F-B69EE58A8FEC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0F190037-817B-4923-BC5F-B69EE58A8FEC}.Release|x86.ActiveCfg = Release|Any CPU
 		{0F190037-817B-4923-BC5F-B69EE58A8FEC}.Release|x86.Build.0 = Release|Any CPU
-		{5CCF647D-C565-451E-8EAF-45D735127DB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5CCF647D-C565-451E-8EAF-45D735127DB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5CCF647D-C565-451E-8EAF-45D735127DB5}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5CCF647D-C565-451E-8EAF-45D735127DB5}.Debug|x86.Build.0 = Debug|Any CPU
-		{5CCF647D-C565-451E-8EAF-45D735127DB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5CCF647D-C565-451E-8EAF-45D735127DB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5CCF647D-C565-451E-8EAF-45D735127DB5}.Release|x86.ActiveCfg = Release|Any CPU
-		{5CCF647D-C565-451E-8EAF-45D735127DB5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,7 +95,6 @@ Global
 		{93A99353-34B5-47FA-87C9-63D274E18909} = {155F32F9-BB7B-44E4-A1F0-02E1BFFA4FF6}
 		{E6E017CD-C6CD-42BD-88B7-E1D8281C84C2} = {155F32F9-BB7B-44E4-A1F0-02E1BFFA4FF6}
 		{0F190037-817B-4923-BC5F-B69EE58A8FEC} = {155F32F9-BB7B-44E4-A1F0-02E1BFFA4FF6}
-		{5CCF647D-C565-451E-8EAF-45D735127DB5} = {155F32F9-BB7B-44E4-A1F0-02E1BFFA4FF6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0905651D-961B-49A6-A01C-BCE619FCA744}
