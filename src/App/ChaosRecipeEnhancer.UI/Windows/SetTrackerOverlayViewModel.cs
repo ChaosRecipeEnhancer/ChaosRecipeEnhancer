@@ -197,7 +197,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             // case 2: user fetched data and has enough sets to turn in based on their threshold
             if (FullSets >= Settings.FullSetThreshold || Settings.VendorSetsEarly)
             {
-                if (!Settings.VendorSetsEarly)
+                if (!Settings.VendorSetsEarly || FullSets >= Settings.FullSetThreshold)
                 {
                     WarningMessage = SetsFullText;
                 }
