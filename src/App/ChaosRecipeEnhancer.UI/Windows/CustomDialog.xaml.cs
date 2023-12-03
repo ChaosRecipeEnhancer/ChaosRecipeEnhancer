@@ -10,7 +10,7 @@ public partial class CustomDialog
 {
     private readonly string _messageToCopy;
 
-    public CustomDialog(string title, string message, string githubUrl, string discordUrl)
+    public CustomDialog(string title, string message)
     {
         InitializeComponent();
 
@@ -24,12 +24,12 @@ public partial class CustomDialog
             Style = (Style)Resources["EmphasizedTextStyle"]
         };
         ReportTextBlock.Inlines.Add(reportingText);
-        ReportTextBlock.Inlines.Add(CreateHyperlink("GitHub", githubUrl, (Style)Resources["HyperlinkStyle"]));
+        ReportTextBlock.Inlines.Add(CreateHyperlink("GitHub", AppInfo.GithubIssuesUrl, (Style)Resources["HyperlinkStyle"]));
         ReportTextBlock.Inlines.Add(new Run(" or ")
         {
             Style = (Style)Resources["EmphasizedTextStyle"]
         });
-        ReportTextBlock.Inlines.Add(CreateHyperlink("Discord.", discordUrl, (Style)Resources["HyperlinkStyle"]));
+        ReportTextBlock.Inlines.Add(CreateHyperlink("Discord.", AppInfo.DiscordUrl, (Style)Resources["HyperlinkStyle"]));
 
         // Add the exception message as normal text
         var exceptionText = new Run(message);

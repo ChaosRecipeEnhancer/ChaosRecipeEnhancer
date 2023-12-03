@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
+using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
@@ -125,9 +126,7 @@ internal partial class App
 
         var dialog = new CustomDialog(
             messageBoxTitle,
-            messageBoxMessage,
-            "https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues",
-            "https://discord.gg/hy5xSgw3au"
+            messageBoxMessage
         );
 
         dialog.ShowDialog();
