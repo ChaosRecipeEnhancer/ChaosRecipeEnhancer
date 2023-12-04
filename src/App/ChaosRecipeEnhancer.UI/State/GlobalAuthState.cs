@@ -128,6 +128,9 @@ public class GlobalAuthState
         // in this case, we'll simply ignore it (it's not used anywhere else)
         // Settings.Default.PathOfExileApiAuthTokenExpiration = null;
 
+        // navigate the user back to the account tab in the settings nav
+        Settings.Default.SettingsWindowNavIndex = 0;
+
         Settings.Default.Save();
     }
 
