@@ -26,6 +26,16 @@ public partial class SettingsWindow
         InitializeComponent();
         InitializeTray();
         InitializeHotkeys();
+
+        // will force the window to resize to the size of its content.
+        // we do this in lieu of the `SizeToContent` property due to an issue
+        // with our custom styles leaving some weird black padding on the
+        // right and bottom sides of the window.
+        Loaded += (sender, e) =>
+        {
+            // This will force the window to resize to the size of its content.
+            SizeToContent = SizeToContent.WidthAndHeight;
+        };
     }
 
     private void InitializeTray()
