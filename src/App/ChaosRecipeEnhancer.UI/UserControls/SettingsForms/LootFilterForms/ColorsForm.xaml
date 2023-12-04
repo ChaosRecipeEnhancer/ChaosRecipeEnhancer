@@ -71,6 +71,10 @@
             Margin="15 0 0 10"
             Width="150"
             ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
             SelectedColor="{Binding Settings.LootFilterRingColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <!-- Rings Always Active Checkbox -->
@@ -98,6 +102,10 @@
             Margin="15 0 0 10"
             Width="150"
             ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
             SelectedColor="{Binding Settings.LootFilterAmuletColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <!-- Amulets Always Active -->
@@ -125,6 +133,10 @@
             Margin="15 0 0 10"
             Width="150"
             ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
             SelectedColor="{Binding Settings.LootFilterBeltColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <!-- Belts Always Active -->
@@ -152,6 +164,10 @@
             Margin="15 0 0 10"
             Width="150"
             ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
             SelectedColor="{Binding Settings.LootFilterBootsColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <!-- Boots Always Active -->
@@ -179,6 +195,10 @@
             Margin="15 0 0 10"
             Width="150"
             ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
             SelectedColor="{Binding Settings.LootFilterGlovesColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <!-- Gloves Always Active -->
@@ -206,6 +226,10 @@
             Margin="15 0 0 10"
             Width="150"
             ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
             SelectedColor="{Binding Settings.LootFilterHelmetColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <!-- Helmet Always Active -->
@@ -233,6 +257,10 @@
             Margin="15 0 0 10"
             Width="150"
             ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
             SelectedColor="{Binding Settings.LootFilterBodyArmourColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <!-- Body Armor Always Active -->
@@ -259,6 +287,10 @@
             Margin="15 0 0 0"
             Width="150"
             ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
             SelectedColor="{Binding Settings.LootFilterWeaponColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <!-- Weapons Always Active -->

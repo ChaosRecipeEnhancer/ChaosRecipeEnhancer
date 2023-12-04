@@ -113,6 +113,10 @@
             Margin="10 0 0 10"
             Width="200"
             ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
             SelectedColor="{Binding Settings.StashTabOverlayBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <TextBlock
@@ -131,6 +135,10 @@
             Margin="10 0 0 10"
             Width="200"
             ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
             SelectedColor="{Binding Settings.StashTabOverlayHighlightColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <TextBlock
