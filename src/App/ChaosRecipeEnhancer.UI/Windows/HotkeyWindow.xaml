@@ -1,0 +1,50 @@
+﻿<Window x:Class="ChaosRecipeEnhancer.UI.Windows.HotkeyWindow"
+        Style="{StaticResource CustomWindowStyle}"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:userControls="clr-namespace:ChaosRecipeEnhancer.UI.UserControls"
+        mc:Ignorable="d"
+        FontSize="18"
+        Topmost="True"
+        WindowStartupLocation="CenterScreen"
+        Title="Hotkey Assignment"
+        Icon="/Assets/Icons/CREIcon.ico"
+        Height="200"
+        Width="300">
+
+    <Grid Margin="20">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="Press Any Key"
+            HorizontalAlignment="Center" />
+
+        <userControls:HotkeyEditorControl
+            x:Name="CustomHotkeyToggle"
+            Grid.Row="1"
+            Grid.Column="0"
+            HorizontalAlignment="Stretch"
+            Margin="0 10" />
+
+        <Button
+            x:Name="SaveHotkeyButton"
+            Grid.Column="0"
+            Grid.Row="2"
+            Content="Save"
+            Click="SaveHotkeyButton_Click" />
+
+    </Grid>
+
+</Window>
