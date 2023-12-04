@@ -2,7 +2,6 @@
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.Properties;
 
@@ -150,6 +149,16 @@ public class ItemSetManagerService : IItemSetManagerService
         // filter for chaos recipe eligible items
         var eligibleChaosItems = _currentItemsFilteredForRecipe
             .Where(x => x.IsChaosRecipeEligible)
+            .ToList();
+
+        // sorting both of our item lists by item class
+        // it's important to prioritize two-handed weapons at the beginning so our set composition is more efficient
+        eligibleChaosItems = eligibleChaosItems.OrderByDescending(item => item.DerivedItemClass == "TwoHandWeapons")
+            .ThenBy(item => item.DerivedItemClass)
+            .ToList();
+
+        _currentItemsFilteredForRecipe = _currentItemsFilteredForRecipe.OrderByDescending(item => item.DerivedItemClass == "TwoHandWeapons")
+            .ThenBy(item => item.DerivedItemClass)
             .ToList();
 
         int trueSetThreshold;
@@ -346,6 +355,19 @@ public class ItemSetManagerService : IItemSetManagerService
                 // Remove the added chaos item from the available pools
                 eligibleChaosItems.Remove(chaosItem);
                 _currentItemsFilteredForRecipe.Remove(chaosItem);
+
+                // let's attempt to fill in gaps with one-handed weapons if possible
+                if (chaosItem.DerivedItemClass == GameTerminology.OneHandWeapons)
+                {
+                    var oneHandedWeapon = _currentItemsFilteredForRecipe
+                        .FirstOrDefault(x => x.DerivedItemClass == GameTerminology.OneHandWeapons);
+
+                    if (oneHandedWeapon is not null)
+                    {
+                        enhancedItemSet.TryAddItem(oneHandedWeapon);
+                        _currentItemsFilteredForRecipe.Remove(oneHandedWeapon);
+                    }
+                }
             }
 
             // Continuously try to fill the rest of the set with available items
@@ -371,6 +393,19 @@ public class ItemSetManagerService : IItemSetManagerService
                     enhancedItemSet.TryAddItem(closestMissingItem);
                     // Remove the item from the pool of available items
                     _currentItemsFilteredForRecipe.Remove(closestMissingItem);
+
+                    // let's attempt to fill in gaps with one-handed weapons if possible
+                    if (closestMissingItem.DerivedItemClass == GameTerminology.OneHandWeapons)
+                    {
+                        var oneHandedWeapon = _currentItemsFilteredForRecipe
+                            .FirstOrDefault(x => x.DerivedItemClass == GameTerminology.OneHandWeapons);
+
+                        if (oneHandedWeapon is not null)
+                        {
+                            enhancedItemSet.TryAddItem(oneHandedWeapon);
+                            _currentItemsFilteredForRecipe.Remove(oneHandedWeapon);
+                        }
+                    }
                 }
                 else
                 {
