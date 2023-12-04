@@ -4,9 +4,7 @@
 
 ``` This app isn't affiliated with or officially endorsed by Grinding Gear Games. ```
 
-This app fetches your stash data from the PoE servers and shows which items you need to pick up to complete the [chaos orb recipe](https://www.poewiki.net/wiki/Chaos_Orb#Vendor_recipes). When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs.
-
-Optionally, it can also manipulate your offline loot filter, so you can fully streamline your farm.
+This app fetches your stash data from the PoE servers and shows which items you need to pick up to complete the [chaos orb recipe](https://www.poewiki.net/wiki/Chaos_Orb#Vendor_recipes). When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs. Optionally, it can also manipulate your offline loot filter, so you can fully streamline your farm.
 
 [![downloads][downloads-badge]][releases-link]
 [![release][releases-badge]][releases-link]
@@ -16,7 +14,7 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 ## User Guide (Video)
 
-<a href="https://www.youtube.com/watch?v=7umgTuN8bMU">
+<a href="https://youtu.be/ChC3GNYJpl8">
     <img src="./DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
 </a>
 
@@ -33,23 +31,20 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 - Automatically fetch remaining items when you join a new instance
 - OAuth integration for a secure and simple connection to PoE data services
 
-### Screenshots
+## Screenshots
 
-#### Stash Tab Overlay
+### Stash Tab Overlay
 
 <img src="./DocumentationAssets/Stash-Tab-Overlay.gif" width="500" alt="Stash Tab Overlay">
 
-#### Set Tracker Overlay & Loot Filter Manipulation
+### Set Tracker Overlay & Loot Filter Manipulation
 
 <img src="./DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
 
-#### Secure 2-Click Integration with PoE Data Services via OAuth
+### Secure 2-Click Integration with PoE Data Services via OAuth
 
-<img src="./DocumentationAssets/Login-Prompt.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
-<img src="./DocumentationAssets/Login-Prompt-Success.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
-
-
----
+<img src="./DocumentationAssets/Login-Prompt.png" width="500" alt="Login Prompt">
+<img src="./DocumentationAssets/Login-Prompt-Success.png" width="500" alt="Login Success">
 
 ## Copyright
 
