@@ -64,11 +64,6 @@ public class ReloadFilterService : IReloadFilterService
 
         if (!string.IsNullOrEmpty(filterName)) return "/itemfilter " + filterName;
 
-        ErrorWindow.Spawn(
-            "Please configure your filter file location in the settings.",
-            "Error: Reload Filter - No Filter File Location Set"
-            );
-
         return null;
     }
 
