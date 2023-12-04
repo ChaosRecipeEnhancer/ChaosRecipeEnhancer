@@ -168,6 +168,5 @@ internal partial class App
 
             _ = GlobalAuthState.Instance.GenerateAuthToken(authCode).Result;
         }
-
     }
 }

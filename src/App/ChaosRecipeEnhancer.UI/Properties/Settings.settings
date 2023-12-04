@@ -18,7 +18,7 @@
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="LeagueName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Standard</Value>
     </Setting>
     <Setting Name="CustomLeagueEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -27,7 +27,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="StashTabIndices" Type="System.String" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="StashTabPrefix" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

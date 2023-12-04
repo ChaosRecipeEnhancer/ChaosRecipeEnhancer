@@ -195,13 +195,27 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         catch (ArgumentNullException)
         {
             FetchButtonEnabled = true;
-            ErrorWindow.Spawn(
-                "It looks like your currently selected stash tabs are out of sync.\n\n" +
-                "You may have moved them or modified them in some way that made us unable " +
-                "to determine which stash tab you meant to select.\n\nPlease navigate to " +
-                "the 'General > Select Stash Tabs', re-fetch your tabs, and validate your selections.",
-                "Error: Set Tracker Overlay - Fetch Data"
-            );
+
+            if (string.IsNullOrWhiteSpace(Settings.StashTabIndices))
+            {
+                ErrorWindow.Spawn(
+                    "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
+                    "Error: Set Tracker Overlay - Fetch Data"
+                );
+
+                return false;
+            }
+            else
+            {
+                ErrorWindow.Spawn(
+                    "It looks like your currently selected stash tabs are out of sync.\n\n" +
+                    "You may have moved them or modified them in some way that made us unable " +
+                    "to determine which stash tab you meant to select.\n\nPlease navigate to " +
+                    "the 'General > Select Stash Tabs', re-fetch your tabs, and validate your selections.",
+                    "Error: Set Tracker Overlay - Fetch Data"
+                );
+            }
+
             return false;
         }
 
