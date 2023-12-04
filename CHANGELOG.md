@@ -1,6 +1,11 @@
 ## Change Log
 
-#### 1.7.2 (WIP)
+#### 2.0.0+
+
+- Moving forward, we will not be updating this file. We will instead be including all changes in our [Github Releases](https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases) page.
+- This fill will remain for historical purposes.
+
+#### 1.7.2
 
 - continued optimizations and refactoring under the hood (includes removal of unused 3rd party dependencies)
 
