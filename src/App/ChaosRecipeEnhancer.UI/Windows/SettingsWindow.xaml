@@ -17,7 +17,6 @@
         Title="Chaos Recipe Enhancer Settings"
         Icon="/Assets/Icons/CREIcon.ico"
         FontFamily="Segoe UI Light"
-        SizeToContent="WidthAndHeight"
         ResizeMode="CanMinimize"
         ShowActivated="True"
         WindowStartupLocation="CenterScreen"
@@ -363,4 +362,5 @@
 
         </Grid>
     </Border>
+
 </Window>
