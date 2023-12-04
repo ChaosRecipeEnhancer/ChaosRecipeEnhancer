@@ -58,6 +58,10 @@
             Grid.Row="1"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
+            IsEnabled="False"
+            ToolTipService.InitialShowDelay="50"
+            ToolTipService.ShowOnDisabled="True"
+            ToolTip="v3.23: Right now Chaos Recipe is the only supported option."
             IsChecked="{Binding Settings.ChaosRecipeTrackingEnabled, Mode=TwoWay}" />
         <!-- Chaos Recipe Selector End -->
 
