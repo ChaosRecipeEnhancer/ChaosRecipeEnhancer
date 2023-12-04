@@ -74,6 +74,7 @@ public partial class HotkeyWindow
                 }
         }
 
+        Settings.Default.Save();
         Close();
     }
 
