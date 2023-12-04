@@ -3,6 +3,7 @@ using System.Linq;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.Services;
@@ -17,12 +18,12 @@ public interface IItemSetManagerService
     public void ResetCompletedSets();
     public void ResetItemAmounts();
 
+    public List<Dictionary<ItemClass, int>> RetrieveCurrentItemCountsForFilterManipulation();
     public List<BaseStashTabMetadata> RetrieveStashTabMetadataList();
     public bool RetrieveNeedsFetching();
     public bool RetrieveNeedsLowerLevel();
     public int RetrieveCompletedSetCount();
     public List<EnhancedItemSet> RetrieveSetsInProgress();
-
     public int RetrieveRingsAmount();
     public int RetrieveAmuletsAmount();
     public int RetrieveBeltsAmount();
@@ -444,6 +445,27 @@ public class ItemSetManagerService : IItemSetManagerService
         _setsInProgress = listOfSets;
         // Update the count of completed sets based on the number of sets with no empty item slots
         CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0);
+    }
+
+    public List<Dictionary<ItemClass, int>> RetrieveCurrentItemCountsForFilterManipulation()
+    {
+        var result = new List<Dictionary<ItemClass, int>>
+        {
+            new()
+            {
+                {ItemClass.Rings, RingsAmount},
+                {ItemClass.Amulets, AmuletsAmount},
+                {ItemClass.Belts, BeltsAmount},
+                {ItemClass.BodyArmours, ChestsAmount},
+                {ItemClass.OneHandWeapons, WeaponsSmallAmount},
+                {ItemClass.TwoHandWeapons, WeaponsBigAmount},
+                {ItemClass.Gloves, GlovesAmount},
+                {ItemClass.Helmets, HelmetsAmount},
+                {ItemClass.Boots, BootsAmount}
+            }
+        };
+
+        return result;
     }
 
     #region Properties as Functions
