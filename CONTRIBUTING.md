@@ -51,4 +51,5 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 TODO: We will update this as needed.
 
 1. Check spelling on all code submitted for review.
-1. Avoid adding new 3rd party dependencies (NuGet packages) unless discussed with Mario (Lead Developer)
+1. Avoid adding new 3rd party dependencies (NuGet packages) unless absolutely necessary. (Chat with us on #code-discussion)
+1. If changes are proposed to the back-end infra, any supplemental documentation would be much appreciated.

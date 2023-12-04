@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
+using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Windows;
 
@@ -93,17 +95,21 @@ public class ApiService : IApiService
                 return null;
             case HttpStatusCode.Forbidden:
                 ErrorWindow.Spawn(
-                    "It looks like your Session ID has expired. Please navigate to the 'Account > Path of Exile Account > PoE Session ID' setting and enter a new value, and try again.",
+                    "It looks like your auth token has expired. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token.",
                     "Error: Set Tracker Overlay - Fetch Data 403"
                 );
 
                 // usually we will be here if we weren't able to make a successful api request based on an expired auth token
                 GlobalAuthState.Instance.PurgeLocalAuthToken();
 
+                // manually updating this value as a work-around to some issues with importing old settings from previous installations
+                Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
+                Settings.Default.Save();
+
                 return null;
             case HttpStatusCode.Unauthorized:
                 ErrorWindow.Spawn(
-                   "It looks like your Session ID is invalid. Please navigate to the 'Account > Path of Exile Account > PoE Session ID' setting and enter a new value, and try again.",
+                   "It looks like your auth token is invalid. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token.",
                    "Error: Set Tracker Overlay - Fetch Data 401"
                 );
 

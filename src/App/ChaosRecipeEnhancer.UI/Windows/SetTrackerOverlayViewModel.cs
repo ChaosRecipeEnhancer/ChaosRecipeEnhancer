@@ -103,14 +103,25 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 // Create a new dictionary for stash index and ID pairs
                 var selectedStashIndexIdPairs = new Dictionary<int, string>();
 
-                // Map indices to stash IDs
-                foreach (var index in selectedTabIndices)
+                try
                 {
-                    var stashTab = stashTabMetadataList.FirstOrDefault(st => st.Index == index);
-                    if (stashTab != null)
+                    // Map indices to stash IDs
+                    foreach (var index in selectedTabIndices)
                     {
-                        selectedStashIndexIdPairs.Add(index, stashTab.Id);
+                        var stashTab = stashTabMetadataList.FirstOrDefault(st => st.Index == index);
+                        if (stashTab != null)
+                        {
+                            selectedStashIndexIdPairs.Add(index, stashTab.Id);
+                        }
                     }
+                }
+                // there are few reports of users attempting to add items with duplicate keys
+                // in this case it's attempting to add stash tabs with the same index
+                // this is not allowed, and is caused by stash metadata being out of sync
+                // therefore, rethrow the exception and let the user know to re-fetch their tabs
+                catch (ArgumentException)
+                {
+                    throw new ArgumentNullException();
                 }
 
                 foreach (var (index, id) in selectedStashIndexIdPairs)
@@ -188,7 +199,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 "It looks like your currently selected stash tabs are out of sync.\n\n" +
                 "You may have moved them or modified them in some way that made us unable " +
                 "to determine which stash tab you meant to select.\n\nPlease navigate to " +
-                "the 'General > Select Stash Tabs' setting and validate your tabs and try again.",
+                "the 'General > Select Stash Tabs', re-fetch your tabs, and validate your selections.",
                 "Error: Set Tracker Overlay - Fetch Data"
             );
             return false;
@@ -249,9 +260,11 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     public void RunReloadFilter()
     {
-        // hash set of missing item classes (e.g. "ring", "amulet", etc.)
+        // number of sets in progress seems off
         var sets = _itemSetManagerService.RetrieveSetsInProgress();
         var needChaosItems = sets.Any(set => !set.HasRecipeQualifier);
+
+        // hash set of missing item classes (e.g. "ring", "amulet", etc.)
         var missingItemClasses = new HashSet<string>();
 
         foreach (var set in sets)

@@ -147,21 +147,6 @@ public class ItemSetManagerService : IItemSetManagerService
 
     public void GenerateItemSets()
     {
-        if (Settings.Default.DoNotPreserveLowItemLevelGear)
-        {
-            GenerateItemSets_Greedy();
-        }
-        else
-        {
-            GenerateItemSets_ConserveChaosItems();
-        }
-    }
-
-    private void GenerateItemSets_ConserveChaosItems()
-    {
-        _setsInProgress.Clear();
-        var listOfSets = new List<EnhancedItemSet>();
-
         // filter for chaos recipe eligible items
         var eligibleChaosItems = _currentItemsFilteredForRecipe
             .Where(x => x.IsChaosRecipeEligible)
@@ -187,6 +172,21 @@ public class ItemSetManagerService : IItemSetManagerService
         {
             trueSetThreshold = _setThreshold;
         }
+
+        if (Settings.Default.DoNotPreserveLowItemLevelGear)
+        {
+            GenerateItemSets_Greedy(eligibleChaosItems, trueSetThreshold);
+        }
+        else
+        {
+            GenerateItemSets_ConserveChaosItems(eligibleChaosItems, trueSetThreshold);
+        }
+    }
+
+    private void GenerateItemSets_ConserveChaosItems(List<EnhancedItem> eligibleChaosItems, int trueSetThreshold)
+    {
+        _setsInProgress.Clear();
+        var listOfSets = new List<EnhancedItemSet>();
 
         // for every set we will start by trying to add a chaos item (and reporting if we need more low level chaos items)
         // this loop is NOT responsible for filling sets their entirety
@@ -325,22 +325,14 @@ public class ItemSetManagerService : IItemSetManagerService
         }
     }
 
-    private void GenerateItemSets_Greedy()
+    private void GenerateItemSets_Greedy(List<EnhancedItem> eligibleChaosItems, int trueSetThreshold)
     {
         // Clear any existing progress in item set generation
         _setsInProgress.Clear();
         var listOfSets = new List<EnhancedItemSet>();
 
-        // Filter items that are eligible for the chaos recipe
-        var eligibleChaosItems = _currentItemsFilteredForRecipe
-            .Where(x => x.IsChaosRecipeEligible)
-            .ToList();
-
-        // Determine the number of sets we can create based on the number of chaos items
-        int setCountBasedOnChaosItems = eligibleChaosItems.Count;
-
         // Iteratively create item sets based on the number of available chaos items
-        for (var i = 0; i < setCountBasedOnChaosItems; i++)
+        for (var i = 0; i < trueSetThreshold; i++)
         {
             // Initialize a new item set
             var enhancedItemSet = new EnhancedItemSet();
@@ -397,7 +389,7 @@ public class ItemSetManagerService : IItemSetManagerService
             listOfSets.Add(enhancedItemSet);
         }
 
-        for (var i = 0; i < setCountBasedOnChaosItems; i++)
+        for (var i = 0; i < trueSetThreshold; i++)
         {
             // my reason for separating out this logic is that it's a bit more readable and debuggable
 

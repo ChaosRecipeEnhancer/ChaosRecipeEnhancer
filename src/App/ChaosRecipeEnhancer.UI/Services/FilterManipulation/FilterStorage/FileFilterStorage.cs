@@ -1,5 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterStorage;
 
@@ -16,9 +18,24 @@ internal class FileFilterStorage : IFilterStorage
     {
         if (_fileLocation == "") return null;
 
-        using (var reader = new StreamReader(_fileLocation))
+        try
         {
-            return await reader.ReadToEndAsync();
+            using (var reader = new StreamReader(_fileLocation))
+            {
+                return await reader.ReadToEndAsync();
+            }
+        }
+        catch (FileNotFoundException)
+        {
+            ErrorWindow.Spawn(
+                "Your selected filter file seems to have been moved, renamed, or deleted. Please re-select your loot filter for manipulation.",
+                "Error: Reload Filter - File Not Found"
+            );
+
+            Settings.Default.LootFilterFileLocation = "";
+            Settings.Default.Save();
+
+            return null;
         }
     }
 
@@ -26,10 +43,8 @@ internal class FileFilterStorage : IFilterStorage
     {
         if (_fileLocation != "" && filter != "")
         {
-            using (var writer = new StreamWriter(_fileLocation))
-            {
-                await writer.WriteAsync(filter);
-            }
+            await using var writer = new StreamWriter(_fileLocation);
+            await writer.WriteAsync(filter);
         }
     }
 }

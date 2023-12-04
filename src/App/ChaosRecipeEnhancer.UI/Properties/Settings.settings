@@ -167,14 +167,23 @@
     <Setting Name="PathOfExileApiAuthTokenExpiration" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="PathOfExileApiRefreshToken" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="PathOfExileApiAuthToken" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="VendorSetsEarly" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FetchStashHotkey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt; not set &gt;</Value>
+    </Setting>
+    <Setting Name="ToggleSetTrackerOverlayHotkey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt; not set &gt;</Value>
+    </Setting>
+    <Setting Name="ToggleStashTabOverlayHotkey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt; not set &gt;</Value>
+    </Setting>
+    <Setting Name="SettingsWindowNavIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

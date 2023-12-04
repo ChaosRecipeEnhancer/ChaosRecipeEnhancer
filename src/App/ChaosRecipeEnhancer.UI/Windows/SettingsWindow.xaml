@@ -1,5 +1,4 @@
 <Window x:Class="ChaosRecipeEnhancer.UI.Windows.SettingsWindow"
-        x:ClassModifier="internal"
         Style="{StaticResource CustomWindowStyle}"
         xmlns:overlayForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms"
         xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
@@ -13,6 +12,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
         FontSize="14"
         Title="Chaos Recipe Enhancer Settings"
         Icon="/Assets/Icons/CREIcon.ico"
@@ -26,7 +26,6 @@
 
     <Window.Resources>
         <zemotoCommon:EqualityConverter x:Key="ValidateConnectionConverter" ComparisonType="{x:Type system:Int32}" />
-        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibilityConverter" ComparisonType="{x:Type system:Int32}" />
     </Window.Resources>
 
     <Border
@@ -73,7 +72,8 @@
             <!-- Tab Container Start -->
             <TabControl
                 Grid.Column="0"
-                Grid.Row="1">
+                Grid.Row="1"
+                SelectedIndex="{Binding Settings.SettingsWindowNavIndex}">
                 <!-- Account Settings Tab Start -->
                 <TabItem Header="Account">
                     <Grid>
@@ -175,6 +175,139 @@
                 </TabItem>
                 <!-- Loot Filter Settings Tab End -->
 
+                <!-- Hotkey Settings Tab Start -->
+                <TabItem
+                    Header="Hotkeys"
+                    IsEnabled="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
+
+                    <!-- Hotkeys -->
+                    <Grid Margin="10" ShowGridLines="False">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                            Margin="0 0 0 10"
+                            VerticalAlignment="Center"
+                            Text="Hotkeys"
+                            FontSize="24"
+                            FontWeight="Bold" />
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Margin="0 0 0 10"
+                            VerticalAlignment="Center"
+                            Text="Fetch Stash Contents:"
+                            ToolTipService.InitialShowDelay="50"
+                            ToolTip="Hotkey for fetching the most up-to-date stash contents. Remember that you must re-zone to force your stash contents to update on GGG's servers." />
+
+                        <Button
+                            x:Name="RefreshHotkey"
+                            Width="200"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="10 0 0 10"
+                            IsManipulationEnabled="False"
+                            Focusable="False"
+                            Content="{Binding Source={x:Static properties:Settings.Default}, Path=FetchStashHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
+                            Click="RefreshHotkey_Click">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            Margin="0 0 0 10"
+                            VerticalAlignment="Center"
+                            Text="Toggle Set Tracker Overlay:"
+                            ToolTipService.InitialShowDelay="50"
+                            ToolTip="Hotkey for showing/hiding the Set Tracker Overlay. While hidden, there will be no requests to the server." />
+
+                        <!-- TODO: [Refactor] Rename the event methods to better represent what they do (i.e. CustomHotkeyToggle -> ToggleSetTracker something something)-->
+                        <Button
+                            x:Name="CustomHotkeyToggle"
+                            Width="200"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            Margin="10 0 0 10"
+                            IsManipulationEnabled="False"
+                            Focusable="False"
+                            Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleSetTrackerOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
+                            Click="CustomHotkeyToggle_Click">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                        </Button>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            Margin="0 0 0 10"
+                            VerticalAlignment="Center"
+                            Text="Toggle Stash Tab Overlay:"
+                            ToolTipService.InitialShowDelay="50"
+                            ToolTip="Hotkey for showing/hiding the Stash Tab Overlay." />
+
+                        <Button
+                            x:Name="StashTabHotkey"
+                            Width="200"
+                            Grid.Column="1"
+                            Grid.Row="3"
+                            Margin="10 0 0 10"
+                            IsManipulationEnabled="False"
+                            Focusable="False"
+                            Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleStashTabOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
+                            Click="StashTabHotkey_Click">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                        </Button>
+
+                    </Grid>
+
+                </TabItem>
+                <!-- Hotkey Settings Tab End -->
+
                 <!-- Advanced Settings Tab Start -->
                 <TabItem Header="Advanced">
                     <Grid>
@@ -185,14 +318,17 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
+
                         <!-- Advance Form -->
                         <otherForms:AdvancedForm
                             Grid.Column="0"
                             Grid.Row="0" />
+
                         <!-- System Form -->
                         <otherForms:SystemForm
                             Grid.Column="1"
                             Grid.Row="0" />
+
                     </Grid>
                 </TabItem>
                 <!-- Advanced Settings Tab End -->
@@ -224,6 +360,7 @@
 
             </UniformGrid>
             <!-- App Footer End -->
+
         </Grid>
     </Border>
 </Window>

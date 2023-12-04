@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
-using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
@@ -60,7 +59,7 @@ internal partial class App
     {
         Trace.WriteLine("Starting app ChaosRecipeEnhancer");
 
-        ValidateAndRefreshToken();
+        ValidateTokenOnAppLaunch();
 
         // Updates application settings to reflect a more recent installation of the application.
         if (Settings.Default.UpgradeSettingsAfterUpdate)
@@ -132,16 +131,11 @@ internal partial class App
         dialog.ShowDialog();
     }
 
-    private static void ValidateAndRefreshToken()
+    private static void ValidateTokenOnAppLaunch()
     {
         if (GlobalAuthState.Instance.ValidateLocalAuthToken())
         {
             Trace.WriteLine("Local auth token is valid");
-            if (GlobalAuthState.Instance.TokenExpiration - DateTime.UtcNow <= TimeSpan.FromHours(3))
-            {
-                Trace.WriteLine("Local auth token is about to expire; refreshing");
-                GlobalAuthState.Instance.RefreshAuthToken();
-            }
         }
         else
         {
@@ -161,36 +155,19 @@ internal partial class App
         if (!string.IsNullOrEmpty(data) && data.StartsWith("chaosrecipe://"))
         {
             // we're getting a callback from the OAuth2 flow
+            Trace.WriteLine("Local auth token is invalid");
 
-            // first we'll check if there's a valid auth token saved in local settings
-            if (GlobalAuthState.Instance.ValidateLocalAuthToken())
-            {
-                // if there is, we'll check if it's about to expire
-                Trace.WriteLine("Local auth token is valid");
+            var uri = new Uri(data);
+            var queryParams = HttpUtility.ParseQueryString(uri.Query);
 
-                // refresh the token if it's about to expire
-                if (GlobalAuthState.Instance.TokenExpiration - DateTime.UtcNow <= TimeSpan.FromHours(3))
-                {
-                    Trace.WriteLine("Local auth token is about to expire; refreshing");
-                    var unused = GlobalAuthState.Instance.RefreshAuthToken().Result;
-                }
-            }
-            else
-            {
-                // if there isn't, we'll generate a new one
-                Trace.WriteLine("Local auth token is invalid");
+            var authCode = queryParams["code"];
+            var state = queryParams["state"];
 
-                var uri = new Uri(data);
-                var queryParams = HttpUtility.ParseQueryString(uri.Query);
+            Trace.WriteLine("Auth Code: " + authCode);
+            Trace.WriteLine("State: " + state);
 
-                var authCode = queryParams["code"];
-                var state = queryParams["state"];
-
-                Trace.WriteLine("Auth Code: " + authCode);
-                Trace.WriteLine("State: " + state);
-
-                var unused = GlobalAuthState.Instance.GenerateAuthToken(authCode).Result;
-            }
+            _ = GlobalAuthState.Instance.GenerateAuthToken(authCode).Result;
         }
+
     }
 }

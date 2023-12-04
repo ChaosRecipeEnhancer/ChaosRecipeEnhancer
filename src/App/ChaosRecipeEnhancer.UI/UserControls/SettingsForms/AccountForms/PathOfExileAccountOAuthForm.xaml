@@ -52,10 +52,20 @@
         <TextBlock
             Grid.Column="1"
             Grid.Row="1"
+            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=3}"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
             Width="150"
             Text="{Binding Settings.PathOfExileAccountName}" />
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="1"
+            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfEqual}, ConverterParameter=3}"
+            Margin="10 0 0 10"
+            VerticalAlignment="Center"
+            Text="Web Browser Opened" />
+
 
         <TextBlock
             Grid.Column="0"

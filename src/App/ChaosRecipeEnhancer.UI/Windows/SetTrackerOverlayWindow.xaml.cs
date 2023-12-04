@@ -134,4 +134,16 @@ public partial class SetTrackerOverlayWindow
             _stashTabOverlay.Show();
         }
     }
+
+    public void RunSetTrackerOverlay()
+    {
+        if (IsOpen)
+        {
+            Hide();
+        }
+        else
+        {
+            Show();
+        }
+    }
 }
