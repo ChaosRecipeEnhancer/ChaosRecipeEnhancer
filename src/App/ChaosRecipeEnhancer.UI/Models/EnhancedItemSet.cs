@@ -38,6 +38,10 @@ public class EnhancedItemSet
             return false;
         }
 
+        // we need to include this block (i know it looks confusing)
+        // if we get a one handed weapon, we need to remove the two handed weapon slot
+        // as we're only going to be targeting another one-handed going forward
+        // if we get a two handed weapon, we need to remove both one handed weapon slots
         switch (item.DerivedItemClass)
         {
             case "OneHandWeapons":
