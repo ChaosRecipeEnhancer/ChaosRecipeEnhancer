@@ -705,5 +705,53 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["VendorSetsEarly"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
+        public string FetchStashHotkey {
+            get {
+                return ((string)(this["FetchStashHotkey"]));
+            }
+            set {
+                this["FetchStashHotkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
+        public string ToggleSetTrackerOverlayHotkey {
+            get {
+                return ((string)(this["ToggleSetTrackerOverlayHotkey"]));
+            }
+            set {
+                this["ToggleSetTrackerOverlayHotkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
+        public string ToggleStashTabOverlayHotkey {
+            get {
+                return ((string)(this["ToggleStashTabOverlayHotkey"]));
+            }
+            set {
+                this["ToggleStashTabOverlayHotkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SettingsWindowNavIndex {
+            get {
+                return ((int)(this["SettingsWindowNavIndex"]));
+            }
+            set {
+                this["SettingsWindowNavIndex"] = value;
+            }
+        }
     }
 }
