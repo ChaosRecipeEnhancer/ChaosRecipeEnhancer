@@ -351,22 +351,25 @@ public class ItemSetManagerService : IItemSetManagerService
             if (eligibleChaosItems.Any())
             {
                 var chaosItem = eligibleChaosItems.First();
-                enhancedItemSet.TryAddItem(chaosItem);
 
-                // Remove the added chaos item from the available pools
-                eligibleChaosItems.Remove(chaosItem);
-                _currentItemsFilteredForRecipe.Remove(chaosItem);
-
-                // let's attempt to fill in gaps with one-handed weapons if possible
-                if (chaosItem.DerivedItemClass == GameTerminology.OneHandWeapons)
+                if (enhancedItemSet.TryAddItem(chaosItem))
                 {
-                    var oneHandedWeapon = _currentItemsFilteredForRecipe
-                        .FirstOrDefault(x => x.DerivedItemClass == GameTerminology.OneHandWeapons);
+                    // Remove the added chaos item from the available pools
+                    eligibleChaosItems.Remove(chaosItem);
+                    _currentItemsFilteredForRecipe.Remove(chaosItem);
 
-                    if (oneHandedWeapon is not null)
+                    // let's attempt to fill in gaps with one-handed weapons if possible
+                    if (chaosItem.DerivedItemClass == GameTerminology.OneHandWeapons)
                     {
-                        enhancedItemSet.TryAddItem(oneHandedWeapon);
-                        _currentItemsFilteredForRecipe.Remove(oneHandedWeapon);
+                        var oneHandedWeapon = _currentItemsFilteredForRecipe
+                            .FirstOrDefault(x => x.DerivedItemClass == GameTerminology.OneHandWeapons);
+
+                        if (oneHandedWeapon is not null)
+                        {
+                            enhancedItemSet.TryAddItem(oneHandedWeapon);
+                            eligibleChaosItems.Remove(oneHandedWeapon);
+                            _currentItemsFilteredForRecipe.Remove(oneHandedWeapon);
+                        }
                     }
                 }
             }
@@ -391,20 +394,24 @@ public class ItemSetManagerService : IItemSetManagerService
                 // If a closest missing item is found, add it to the set
                 if (closestMissingItem != null)
                 {
-                    enhancedItemSet.TryAddItem(closestMissingItem);
-                    // Remove the item from the pool of available items
-                    _currentItemsFilteredForRecipe.Remove(closestMissingItem);
 
-                    // let's attempt to fill in gaps with one-handed weapons if possible
-                    if (closestMissingItem.DerivedItemClass == GameTerminology.OneHandWeapons)
+                    if (enhancedItemSet.TryAddItem(closestMissingItem))
                     {
-                        var oneHandedWeapon = _currentItemsFilteredForRecipe
-                            .FirstOrDefault(x => x.DerivedItemClass == GameTerminology.OneHandWeapons);
+                        // Remove the item from the pool of available items
+                        eligibleChaosItems.Remove(closestMissingItem);
+                        _currentItemsFilteredForRecipe.Remove(closestMissingItem);
 
-                        if (oneHandedWeapon is not null)
+                        // let's attempt to fill in gaps with one-handed weapons if possible
+                        if (closestMissingItem.DerivedItemClass == GameTerminology.OneHandWeapons)
                         {
-                            enhancedItemSet.TryAddItem(oneHandedWeapon);
-                            _currentItemsFilteredForRecipe.Remove(oneHandedWeapon);
+                            var oneHandedWeapon = _currentItemsFilteredForRecipe
+                                .FirstOrDefault(x => x.DerivedItemClass == GameTerminology.OneHandWeapons);
+
+                            if (oneHandedWeapon is not null)
+                            {
+                                enhancedItemSet.TryAddItem(oneHandedWeapon);
+                                _currentItemsFilteredForRecipe.Remove(oneHandedWeapon);
+                            }
                         }
                     }
                 }
