@@ -4,7 +4,7 @@
 
 ``` This app isn't affiliated with or officially endorsed by Grinding Gear Games. ```
 
-This app fetches your stash data from the PoE servers and shows which items you need to pick up to complete the [chaos orb recipe](https://www.poewiki.net/wiki/Chaos_Orb#Recipes). When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs.
+This app fetches your stash data from the PoE servers and shows which items you need to pick up to complete the [chaos orb recipe](https://www.poewiki.net/wiki/Chaos_Orb#Vendor_recipes). When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs.
 
 Optionally, it can also manipulate your offline loot filter, so you can fully streamline your farm.
 
