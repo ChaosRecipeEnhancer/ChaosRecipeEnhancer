@@ -36,7 +36,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -125,33 +124,10 @@
             IsChecked="{Binding Settings.CustomLeagueEnabled, Mode=TwoWay}" />
         <!-- Custom League Checkbox Start -->
 
-        <!-- Target Stash Selection Start -->
-        <TextBlock
-            Grid.Column="0"
-            Grid.Row="3"
-            Margin="0 0 0 10"
-            VerticalAlignment="Center"
-            Text="Target Stash:"
-            ToolTip="The stash tab you want to use, your individual stash tab or your guild stash." />
-
-        <ComboBox
-            Grid.Column="1"
-            Grid.Row="3"
-            Margin="10 0 0 10"
-            MinWidth="200"
-            VerticalContentAlignment="Center"
-            SelectedIndex="{Binding Settings.TargetStash, Mode=TwoWay}">
-
-            <ComboBoxItem Content="My Stash" />
-            <ComboBoxItem Content="Guild Stash" />
-
-        </ComboBox>
-        <!-- Target Stash Selection Start -->
-
         <!-- Stash Tab Query Mode Selector Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="4"
+            Grid.Row="3"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Stash Tab Query Mode:"
@@ -159,7 +135,7 @@
 
         <ComboBox
             Grid.Column="1"
-            Grid.Row="4"
+            Grid.Row="3"
             Margin="10 0 0 10"
             MinWidth="200"
             VerticalContentAlignment="Center"
@@ -173,7 +149,7 @@
 
         <!-- Select Tab From List Start -->
         <TextBlock Grid.Column="0"
-                   Grid.Row="5"
+                   Grid.Row="4"
                    Margin="0 0 0 10"
                    VerticalAlignment="Center"
                    Text="Select Stash Tabs:"
@@ -181,7 +157,7 @@
 
         <Grid
             Grid.Column="1"
-            Grid.Row="5"
+            Grid.Row="4"
             Margin="10 0 0 10">
 
             <Grid.ColumnDefinitions>
@@ -245,7 +221,7 @@
         <!-- Individual Stash Tab Name Prefix Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="5"
+            Grid.Row="4"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Stash Tab Prefix:"
@@ -254,7 +230,7 @@
 
         <TextBox
             Grid.Column="1"
-            Grid.Row="5"
+            Grid.Row="4"
             Margin="10 0 0 10"
             Visibility="{Binding Settings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
             Text="{Binding Settings.StashTabPrefix, Mode=TwoWay}" />
@@ -264,7 +240,7 @@
         <!-- TODO: [Refactor] Enforce reload when this setting is changed (or at the very least, notify users it's required) -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="6"
+            Grid.Row="5"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Fetch on New Map:"
@@ -272,7 +248,7 @@
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="6"
+            Grid.Row="5"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.AutoFetchOnRezoneEnabled, Mode=TwoWay}" />
@@ -281,7 +257,7 @@
         <!-- Client Log File Location Setting (Row 13) Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="7"
+            Grid.Row="6"
             VerticalAlignment="Center"
             Text="PoE Client.txt Path:"
             Visibility="{Binding Settings.AutoFetchOnRezoneEnabled, Converter={StaticResource BoolVisibilityConverter}}"
@@ -290,7 +266,7 @@
         <Button
             x:Name="LogLocationDialog"
             Grid.Column="1"
-            Grid.Row="7"
+            Grid.Row="6"
             Margin="10 0 0 0"
             Width="200"
             Click="LogLocationDialog_Click"

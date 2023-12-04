@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.IO.Pipes;
 using System.Threading;
 
@@ -30,7 +31,6 @@ public sealed class SingleInstance : IDisposable
     {
         if (!_instanceMutex.WaitOne(TimeSpan.Zero))
         {
-            PingSingleInstance();
             return false;
         }
 
@@ -38,17 +38,20 @@ public sealed class SingleInstance : IDisposable
         return true;
     }
 
-    private void PingSingleInstance()
+    public void PingSingleInstance(string dataToSend)
     {
         // The act of connecting indicates to the single instance that another process tried to run
         using var client = new NamedPipeClientStream(".", _instanceName, PipeDirection.Out);
         try
         {
             client.Connect(0);
+            using var writer = new StreamWriter(client);
+            writer.Write(dataToSend);
+            writer.Flush();
         }
         catch
         {
-            // ignore
+            // Handle connection failure
         }
     }
 
@@ -69,19 +72,20 @@ public sealed class SingleInstance : IDisposable
 
     private void OnPipeConnection(IAsyncResult ar)
     {
-        using (var server = (NamedPipeServerStream)ar.AsyncState)
+        using var server = (NamedPipeServerStream)ar.AsyncState;
+        try
         {
-            try
-            {
-                server.EndWaitForConnection(ar);
-            }
-            catch
-            {
-                // ignore
-            }
-        }
+            server.EndWaitForConnection(ar);
+            using var reader = new StreamReader(server);
+            var dataReceived = reader.ReadToEnd();
 
-        PingedByOtherProcess?.Invoke(null, EventArgs.Empty);
+            // Invoke the event with data
+            PingedByOtherProcess?.Invoke(dataReceived, EventArgs.Empty);
+        }
+        catch
+        {
+            // Handle connection failure
+        }
 
         ListenForOtherProcesses();
     }

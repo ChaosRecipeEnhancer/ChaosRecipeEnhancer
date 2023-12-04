@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
+using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -18,13 +21,34 @@ internal partial class App
 
     public App()
     {
-        if (!_singleInstance.Claim()) Shutdown();
-        SetupUnhandledExceptionHandling();
+        var args = Environment.GetCommandLineArgs();
+        var isSecondaryInstance = !_singleInstance.Claim();
+
+        if (isSecondaryInstance)
+        {
+            if (args.Length > 1 && args[1].StartsWith("chaosrecipe://"))
+            {
+                // If it's a URI activation, send the URI to the main instance
+                // This specific flow is for the OAuth2 callback
+                _singleInstance.PingSingleInstance(args[1]);
+                Shutdown();
+            }
+            else
+            {
+                // If it's a normal duplicate instance, just shut it down
+                Shutdown();
+            }
+        }
+        else
+        {
+            // Setup for the main instance
+            SetupUnhandledExceptionHandling();
+        }
     }
 
     private void ConfigureServices(IServiceCollection services)
     {
-        // services-as-services registration
+        // Other Service Registration
         services.AddSingleton<IApiService, ApiService>();
         services.AddSingleton<IReloadFilterService, ReloadFilterService>();
         services.AddSingleton<IItemSetManagerService, ItemSetManagerService>();
@@ -33,6 +57,10 @@ internal partial class App
 
     private void OnStartup(object sender, StartupEventArgs e)
     {
+        Trace.WriteLine("Starting app ChaosRecipeEnhancer");
+
+        ValidateTokenOnAppLaunch();
+
         // Updates application settings to reflect a more recent installation of the application.
         if (Settings.Default.UpgradeSettingsAfterUpdate)
         {
@@ -54,19 +82,22 @@ internal partial class App
         var settingsWindow = new SettingsWindow();
         settingsWindow.Show();
 
-        _singleInstance.PingedByOtherProcess += (_, _) => Dispatcher.Invoke(settingsWindow.Show);
+        _singleInstance.PingedByOtherProcess += (sender, _) =>
+        {
+            HandleAuthRedirection(sender);
+            Dispatcher.Invoke(settingsWindow.Show);
+        };
     }
 
     private void SetupUnhandledExceptionHandling()
     {
         // Catch exceptions from all threads in the AppDomain.
         AppDomain.CurrentDomain.UnhandledException += (_, args) =>
-            ShowUnhandledException(args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException",
-                false);
+            ShowUnhandledException(args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException");
 
         // Catch exceptions from each AppDomain that uses a task scheduler for async operations.
         TaskScheduler.UnobservedTaskException += (_, args) =>
-            ShowUnhandledException(args.Exception, "TaskScheduler.UnobservedTaskException", false);
+            ShowUnhandledException(args.Exception, "TaskScheduler.UnobservedTaskException");
 
         // Catch exceptions from a single specific UI dispatcher thread.
         Dispatcher.UnhandledException += (_, args) =>
@@ -75,24 +106,68 @@ internal partial class App
             if (Debugger.IsAttached) return;
 
             args.Handled = true;
-            ShowUnhandledException(args.Exception, "Dispatcher.UnhandledException", true);
+            ShowUnhandledException(args.Exception, "Dispatcher.UnhandledException");
         };
     }
 
-    private static void ShowUnhandledException(Exception e, string unhandledExceptionType, bool promptUserForShutdown)
+    private static void ShowUnhandledException(Exception e, string unhandledExceptionType)
     {
-        var messageBoxTitle = $"Unexpected Error Occurred: {unhandledExceptionType}";
-        var messageBoxMessage = $"The following exception occurred:\n\n{e}";
-        var messageBoxButtons = MessageBoxButton.OK;
+        var limitedExceptionMessage = string.Join(
+            Environment.NewLine,
+            // split the exception message into lines and take the first 30 lines
+            e.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None).Take(5)
+        );
 
-        if (promptUserForShutdown)
+        var messageBoxTitle = $"Error: Unhandled Exception - {unhandledExceptionType}";
+        var messageBoxMessage =
+            $"The following exception occurred: {unhandledExceptionType}" +
+            $"{limitedExceptionMessage}";
+
+        var dialog = new CustomDialog(
+            messageBoxTitle,
+            messageBoxMessage
+        );
+
+        dialog.ShowDialog();
+    }
+
+    private static void ValidateTokenOnAppLaunch()
+    {
+        if (GlobalAuthState.Instance.ValidateLocalAuthToken())
         {
-            messageBoxMessage += "\n\n\nPlease report this issue on github or discord :)";
-            messageBoxButtons = MessageBoxButton.OK;
+            Trace.WriteLine("Local auth token is valid");
+        }
+        else
+        {
+            Trace.WriteLine("Local auth token is invalid");
+            GlobalAuthState.Instance.PurgeLocalAuthToken();
+        }
+    }
+
+    private static void HandleAuthRedirection(object sender)
+    {
+        Trace.WriteLine("Pinged by other processes!");
+
+        var data = sender as string; // Assuming sender is the data
+        Trace.WriteLine($"Received data: {data}");
+
+        // Process the data
+        if (!string.IsNullOrEmpty(data) && data.StartsWith("chaosrecipe://"))
+        {
+            // we're getting a callback from the OAuth2 flow
+            Trace.WriteLine("Local auth token is invalid");
+
+            var uri = new Uri(data);
+            var queryParams = HttpUtility.ParseQueryString(uri.Query);
+
+            var authCode = queryParams["code"];
+            var state = queryParams["state"];
+
+            Trace.WriteLine("Auth Code: " + authCode);
+            Trace.WriteLine("State: " + state);
+
+            _ = GlobalAuthState.Instance.GenerateAuthToken(authCode).Result;
         }
 
-        // Let the user decide if the app should die or not (if applicable).
-        if (MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons) == MessageBoxResult.Yes)
-            Current.Shutdown();
     }
 }

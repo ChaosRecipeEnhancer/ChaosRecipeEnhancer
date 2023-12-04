@@ -15,13 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_F31838509B3049F8B040BD0BA3F92705"
+        "MsmKey" = "8:_AB49303AC97F4B6891967A367203B1CD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F9C9C19FF76046CEB3DF4FA35FCE4378"
+        "MsmKey" = "8:_F31838509B3049F8B040BD0BA3F92705"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -198,15 +198,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Chaos Recipe Enhancer"
-        "ProductCode" = "8:{645AD3F6-CE70-4B4C-9460-C8A3F7681347}"
-        "PackageCode" = "8:{5F4B8E46-252D-4521-BA9D-228394CCFEB1}"
+        "ProductCode" = "8:{DCD6F8D2-2FD5-45C1-9A43-2F0B13E5D995}"
+        "PackageCode" = "8:{E66BAB23-7B3E-4B95-A004-53146F08497C}"
         "UpgradeCode" = "8:{EB58E5F9-0174-4601-B62A-4C0E86FACD02}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:2.0.1"
+        "ProductVersion" = "8:3.23.1000"
         "Manufacturer" = "8:CRE Team"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbUFJb1pTOWtOVnY0SmxxWnBMblY0YkJCdXNOZ3xBQ3Jtc0tsUDAzRTVTTTZNQlkzVjN0cEQ2OHIwa19sUTc1a2FFYkxWazhSYlcxSVBjWkNXbENxd0oxb1RtSEI2WXhXVUJvcFJLTzNmRFNHbjZfYmh3MnFGU2M4Vk5adWFNalpnVTBQb3pHR284OWJnTy1ybzVlOA&q=https%3A%2F%2Fdiscord.gg%2Fryss9jnRkZ&v=7umgTuN8bMU"
@@ -299,6 +299,86 @@
             {
                 "Keys"
                 {
+                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_EF232F41EB3F4144BC14C5D7DB3F5457"
+                    {
+                    "Name" = "8:chaosrecipe"
+                    "Condition" = "8:"
+                    "AlwaysCreate" = "11:FALSE"
+                    "DeleteAtUninstall" = "11:FALSE"
+                    "Transitive" = "11:FALSE"
+                        "Keys"
+                        {
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_6532A68F38EB4E5D83CF39109A000654"
+                            {
+                            "Name" = "8:shell"
+                            "Condition" = "8:"
+                            "AlwaysCreate" = "11:FALSE"
+                            "DeleteAtUninstall" = "11:FALSE"
+                            "Transitive" = "11:FALSE"
+                                "Keys"
+                                {
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_26376E286BF54261819DC34283478BA0"
+                                    {
+                                    "Name" = "8:open"
+                                    "Condition" = "8:"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "DeleteAtUninstall" = "11:FALSE"
+                                    "Transitive" = "11:FALSE"
+                                        "Keys"
+                                        {
+                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_54A8804E5C3744ABA7D26EFEE3318925"
+                                            {
+                                            "Name" = "8:command"
+                                            "Condition" = "8:"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "DeleteAtUninstall" = "11:FALSE"
+                                            "Transitive" = "11:FALSE"
+                                                "Keys"
+                                                {
+                                                }
+                                                "Values"
+                                                {
+                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_CB0B402F894344EA828CE209C6602B37"
+                                                    {
+                                                    "Name" = "8:"
+                                                    "Condition" = "8:"
+                                                    "Transitive" = "11:FALSE"
+                                                    "ValueTypes" = "3:1"
+                                                    "Value" = "8:\"[TARGETDIR]ChaosRecipeEnhancer.exe\" \"%1\""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        "Values"
+                                        {
+                                        }
+                                    }
+                                }
+                                "Values"
+                                {
+                                }
+                            }
+                        }
+                        "Values"
+                        {
+                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_864BE37C4AAB4BAF9D42812D00ED6ED5"
+                            {
+                            "Name" = "8:URL Protocol"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "ValueTypes" = "3:1"
+                            "Value" = "8:"
+                            }
+                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_F126215AF37641BCAD102177A94C35E3"
+                            {
+                            "Name" = "8:"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "ValueTypes" = "3:1"
+                            "Value" = "8:URL:Chaos Recipe Enhancer Protocol"
+                            }
+                        }
+                    }
                 }
             }
             "HKU"
@@ -327,13 +407,13 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_F9C9C19FF76046CEB3DF4FA35FCE4378"
+            "Target" = "8:_AB49303AC97F4B6891967A367203B1CD"
             "Folder" = "8:_08BB9AF3BC574D43846BCE7DD7710A66"
             "WorkingFolder" = "8:_1A0DA2048FE346078D015238542E1BFD"
             "Icon" = "8:_F31838509B3049F8B040BD0BA3F92705"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_FA5010E91E534E04A4ACDEC745F8AC75"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_FDE320BCAF0A48248806D0A6ACA1225B"
             {
             "Name" = "8:Chaos Recipe Enhancer"
             "Arguments" = "8:"
@@ -341,7 +421,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_F9C9C19FF76046CEB3DF4FA35FCE4378"
+            "Target" = "8:_AB49303AC97F4B6891967A367203B1CD"
             "Folder" = "8:_10DEB37D258043CFA169EF271427EBC2"
             "WorkingFolder" = "8:_1A0DA2048FE346078D015238542E1BFD"
             "Icon" = "8:_F31838509B3049F8B040BD0BA3F92705"
@@ -746,7 +826,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F9C9C19FF76046CEB3DF4FA35FCE4378"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AB49303AC97F4B6891967A367203B1CD"
             {
             "SourcePath" = "8:..\\ChaosRecipeEnhancer.UI\\obj\\Debug\\net7.0-windows\\apphost.exe"
             "TargetName" = "8:"

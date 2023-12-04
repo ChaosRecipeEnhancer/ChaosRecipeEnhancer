@@ -1,10 +1,10 @@
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/CRELogo.png" width="250" alt="Chaos Recipe Enhancer Logo">
+<img src="./DocumentationAssets/CRELogo.png" width="250" alt="Chaos Recipe Enhancer Logo">
 
 # Chaos Recipe Enhancer
 
 ``` This app isn't affiliated with or officially endorsed by Grinding Gear Games. ```
 
-This app fetches your stash data from the PoE servers and shows which items you need to pick up to complete the chaos, regal, or exalted shard recipe. When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs.
+This app fetches your stash data from the PoE servers and shows which items you need to pick up to complete the [chaos orb recipe](https://www.poewiki.net/wiki/Chaos_Orb#Recipes). When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs.
 
 Optionally, it can also manipulate your offline loot filter, so you can fully streamline your farm.
 
@@ -16,10 +16,8 @@ Optionally, it can also manipulate your offline loot filter, so you can fully st
 
 ## User Guide (Video)
 
-Note: This video guide is a tad outdated - it has not been updated for our latest v2 release. I will be putting out a new one soon. The core functionality is still the same, but the UI has changed a bit.
-
 <a href="https://www.youtube.com/watch?v=7umgTuN8bMU">
-    <img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
+    <img src="./DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
 </a>
 
 ## Installation
@@ -28,30 +26,28 @@ Note: This video guide is a tad outdated - it has not been updated for our lates
 
 ## Additional Features
 
-- Query from your personal stash or from your guild stash
-- Query multiple stash tabs
+- Query from your personal stash
+- Query multiple stash tabs at once
 - Customizable overlay position & sizes for different screen resolutions
-- Support for chaos & regal recipes
 - *Offline* loot filter manipulation (online filter syncing not supported)
 - Automatically fetch remaining items when you join a new instance
+- OAuth integration for a secure and simple connection to PoE data services
+
+### Screenshots
 
 #### Stash Tab Overlay
 
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/Stash-Tab-Overlay.gif" width="500" alt="Stash Tab Overlay">
+<img src="./DocumentationAssets/Stash-Tab-Overlay.gif" width="500" alt="Stash Tab Overlay">
 
 #### Set Tracker Overlay & Loot Filter Manipulation
 
-<img src="https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/blob/main/DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
+<img src="./DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
 
-## Statement On Our Use Of `POESESSID`
+#### Secure 2-Click Integration with PoE Data Services via OAuth
 
-Update Regarding GGG's [`Do not share POESESSID values with other people`](https://www.pathofexile.com/forum/view-thread/3328601) forum post:
+<img src="./DocumentationAssets/Login-Prompt.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
+<img src="./DocumentationAssets/Login-Prompt-Success.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
 
-We have used the session ID as a form of making authenticated requests against some of the GGG's in-game data through the use of their APIs. I will be working to move away from this model and moving to another form of authentication found on other PoE tool apps so that you do not have to input your PoE Session ID. I'm hoping this can be done in the future, but I won't lie, this addition will take a ton of development effort.
-
-I echo what GGG has claimed, and have always told folks to keep your session IDs secure, not share them with anyone. Treat them as you would your password. This is why we deliberately hide the value in our settings.
-
-**Chaos Recipe Enhancer does not, has not, and will *never* harvest your session ID or send it to anywhere.**
 
 ---
 
@@ -83,4 +79,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 [issues-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues
 [support-badge]: https://img.shields.io/badge/Paypal-Support-<COLOR>?style=for-the-badge&logo=paypal&color=ffae29
 [support-link]: https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS
-[dotnet-framework-link]: https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48

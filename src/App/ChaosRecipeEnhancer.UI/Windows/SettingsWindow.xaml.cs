@@ -6,17 +6,17 @@ using System.Windows;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Utilities;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
-internal partial class SettingsWindow
+public partial class SettingsWindow
 {
     private readonly SetTrackerOverlayWindow _recipeOverlay;
     private readonly NotifyIcon _trayIcon = new();
-
     private bool _closingFromTrayIcon;
 
     public SettingsWindow()
@@ -25,6 +25,7 @@ internal partial class SettingsWindow
         _recipeOverlay = new SetTrackerOverlayWindow();
         InitializeComponent();
         InitializeTray();
+        InitializeHotkeys();
     }
 
     private void InitializeTray()
@@ -53,7 +54,7 @@ internal partial class SettingsWindow
         var errorMessage = "Please add: \n";
 
         if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName)) missingSettings.Add("- Account Name \n");
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileWebsiteSessionId)) missingSettings.Add("- PoE Session ID \n");
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileApiAuthToken)) missingSettings.Add("- PoE Auth Token \n");
         if (string.IsNullOrEmpty(Settings.Default.LeagueName)) missingSettings.Add("- League \n");
 
         if (missingSettings.Count == 0) return true;
@@ -115,4 +116,72 @@ internal partial class SettingsWindow
             }
         }
     }
+
+    #region Hotkey Stuff (Move This... Later)
+
+    private void InitializeHotkeys()
+    {
+        GlobalHotkeyState.SetupSystemHook();
+        GlobalHotkeyState.GetRefreshHotkey();
+        GlobalHotkeyState.GetToggleHotkey();
+        GlobalHotkeyState.GetStashTabHotkey();
+        AddAllHotkeys();
+    }
+
+    private void CustomHotkeyToggle_Click(object sender, RoutedEventArgs e)
+    {
+        var isWindowOpen = false;
+        foreach (Window w in Application.Current.Windows)
+            if (w is HotkeyWindow)
+                isWindowOpen = true;
+
+        if (isWindowOpen) return;
+        var hotkeyDialog = new HotkeyWindow(this, "toggle");
+        hotkeyDialog.Show();
+    }
+
+    private void RefreshHotkey_Click(object sender, RoutedEventArgs e)
+    {
+        var isWindowOpen = false;
+        foreach (Window w in Application.Current.Windows)
+            if (w is HotkeyWindow)
+                isWindowOpen = true;
+
+        if (isWindowOpen) return;
+        var hotkeyDialog = new HotkeyWindow(this, "refresh");
+        hotkeyDialog.Show();
+    }
+
+    private void StashTabHotkey_Click(object sender, RoutedEventArgs e)
+    {
+        var isWindowOpen = false;
+        foreach (Window w in Application.Current.Windows)
+            if (w is HotkeyWindow)
+                isWindowOpen = true;
+
+        if (!isWindowOpen)
+        {
+            var hotkeyDialog = new HotkeyWindow(this, "stashtab");
+            hotkeyDialog.Show();
+        }
+    }
+
+    public void AddAllHotkeys()
+    {
+        if (Settings.Default.FetchStashHotkey != "< not set >")
+            GlobalHotkeyState.AddHotkey(GlobalHotkeyState.refreshModifier, GlobalHotkeyState.refreshKey, _recipeOverlay.RunFetchingAsync);
+        if (Settings.Default.ToggleSetTrackerOverlayHotkey != "< not set >")
+            GlobalHotkeyState.AddHotkey(GlobalHotkeyState.toggleModifier, GlobalHotkeyState.toggleKey, _recipeOverlay.RunSetTrackerOverlay);
+        if (Settings.Default.ToggleStashTabOverlayHotkey != "< not set >")
+            GlobalHotkeyState.AddHotkey(GlobalHotkeyState.stashTabModifier, GlobalHotkeyState.stashTabKey, _recipeOverlay.RunStashTabOverlay);
+    }
+
+    public void RemoveAllHotkeys()
+    {
+        GlobalHotkeyState.RemoveRefreshHotkey();
+        GlobalHotkeyState.RemoveStashTabHotkey();
+        GlobalHotkeyState.RemoveToggleHotkey();
+    }
+
+    #endregion
 }

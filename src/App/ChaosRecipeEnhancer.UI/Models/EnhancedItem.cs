@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
-using ChaosRecipeEnhancer.UI.API.Data;
-using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 
 namespace ChaosRecipeEnhancer.UI.Models;
@@ -10,8 +9,8 @@ namespace ChaosRecipeEnhancer.UI.Models;
 public class EnhancedItem : BaseItem
 {
     public EnhancedItem(
-        int width,
-        int height,
+        uint width,
+        uint height,
         bool identified,
         int? itemLevel,
         ItemFrameType frameType,

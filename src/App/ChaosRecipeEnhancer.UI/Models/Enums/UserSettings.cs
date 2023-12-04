@@ -4,7 +4,8 @@ public enum ConnectionStatusTypes
 {
     ConnectionNotValidated,
     ValidatedConnection,
-    ConnectionError
+    ConnectionError,
+    AttemptingLogin
 }
 
 public enum StashTabOverlayHighlightMode

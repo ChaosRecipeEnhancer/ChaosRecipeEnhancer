@@ -1,5 +1,5 @@
-﻿using ChaosRecipeEnhancer.UI.BusinessLogic.Items;
-using ChaosRecipeEnhancer.UI.Models;
+﻿using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 
 namespace ChaosRecipeEnhancer.UI.Tests.Helpers;
 
@@ -33,9 +33,9 @@ public static class EnhancedItemHelpers
     public static EnhancedItem GetItemWithXYAndTabIndex(string url, int x, int y, int tabIndex = 0)
     {
         var itemModel = new EnhancedItem(1, 1, false, 74, 0, x, y, new BaseItemInfluences(), url)
-            {
-                StashTabIndex = tabIndex
-            };
+        {
+            StashTabIndex = tabIndex
+        };
         return itemModel;
     }
 

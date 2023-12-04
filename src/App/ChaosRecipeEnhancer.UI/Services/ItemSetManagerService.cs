@@ -2,27 +2,23 @@
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
+using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
 public interface IItemSetManagerService
 {
-    public void UpdateStashMetadata(BaseStashTabMetadataList metadata);
+    public void UpdateStashMetadata(List<BaseStashTabMetadata> metadata);
+    public bool UpdateStashContents(int setThreshold, List<int> selectedTabIndices, List<EnhancedItem> filteredStashContents);
 
-    public bool UpdateData(
-        int setThreshold,
-        List<int> selectedTabIndices,
-        List<EnhancedItem> filteredStashContents,
-        bool includeIdentified = false,
-        bool chaosRecipe = true
-    );
-
-    public void GenerateItemSets(bool chaosRecipe);
+    public void GenerateItemSets();
     public void CalculateItemAmounts();
     public void ResetCompletedSets();
     public void ResetItemAmounts();
 
-    public BaseStashTabMetadataList RetrieveStashTabMetadataList();
+    public List<BaseStashTabMetadata> RetrieveStashTabMetadataList();
     public bool RetrieveNeedsFetching();
     public bool RetrieveNeedsLowerLevel();
     public int RetrieveCompletedSetCount();
@@ -44,7 +40,7 @@ public class ItemSetManagerService : IItemSetManagerService
     private int _setThreshold;
     private List<EnhancedItemSet> _setsInProgress = new();
     private List<EnhancedItem> _currentItemsFilteredForRecipe = new(); // filtered for chaos recipe
-    private BaseStashTabMetadataList _stashTabMetadataList;
+    private List<BaseStashTabMetadata> _stashTabMetadataListStashesResponse;
 
     #region Item Amount Properties
 
@@ -68,20 +64,17 @@ public class ItemSetManagerService : IItemSetManagerService
     public bool NeedsFetching { get; set; } = true;
     public bool NeedsLowerLevel { get; set; } = false;
 
-    public void UpdateStashMetadata(BaseStashTabMetadataList metadata)
+    // temporary housing for this field that is needed by some components
+    // i'd likely want to move this to its own service tbh
+
+    public void UpdateStashMetadata(List<BaseStashTabMetadata> metadata)
     {
-        _stashTabMetadataList = metadata;
+        _stashTabMetadataListStashesResponse = metadata;
     }
 
     // this is the primary method being called by external entities
     // return true if successful update, false if some error (likely caller error missing important data)
-    public bool UpdateData(
-        int setThreshold,
-        List<int> selectedTabIndices,
-        List<EnhancedItem> filteredStashContents,
-        bool includeIdentified = false,
-        bool chaosRecipe = true
-    )
+    public bool UpdateStashContents(int setThreshold, List<int> selectedTabIndices, List<EnhancedItem> filteredStashContents)
     {
         // if no tabs are selected (this isn't a realistic case)
         if (selectedTabIndices.Count == 0) return false;
@@ -89,8 +82,8 @@ public class ItemSetManagerService : IItemSetManagerService
         // setting some new properties
         _setThreshold = setThreshold;
         _currentItemsFilteredForRecipe = filteredStashContents;
-
         NeedsFetching = false;
+
         return true;
     }
 
@@ -152,101 +145,129 @@ public class ItemSetManagerService : IItemSetManagerService
         BootsAmount = 0;
     }
 
-    public void GenerateItemSets(bool chaosRecipe)
+    public void GenerateItemSets()
     {
-        _setsInProgress.Clear();
+        // filter for chaos recipe eligible items
+        var eligibleChaosItems = _currentItemsFilteredForRecipe
+            .Where(x => x.IsChaosRecipeEligible)
+            .ToList();
 
-        var listOfSets = new List<EnhancedItemSet>();
+        int trueSetThreshold;
 
-        // iterate once to create as many sets as possible that can produce recipe
-        if (chaosRecipe)
+        // if Early Set Turn In is enabled, we need to modify the upper bound to match how many sets we can possibly make
+        // if we have less chaos items than the set threshold, we can only make as many sets as we have chaos items
+        // otherwise we can make as many sets as the set threshold
+        if (Settings.Default.VendorSetsEarly)
         {
-            var noChaosItemsLeft = false;
-
-            // for every set
-            for (var i = 0; i < _setThreshold; i++)
+            if (eligibleChaosItems.Count > _setThreshold)
             {
-                // create new 'empty' enhanced item set
-                var enhancedItemSet = new EnhancedItemSet();
-
-                // if there are still chaos items left in our stash
-                if (!noChaosItemsLeft)
-                {
-                    // filter for chaos recipe eligible items
-                    var eligibleChaosItems = _currentItemsFilteredForRecipe.Where(x => x.IsChaosRecipeEligible).ToList();
-
-                    // if there are any chaos items left (do we need this?)
-                    if (eligibleChaosItems.Count != 0)
-                    {
-                        // try to add a single eligible chaos item in the set (where we're iterate in our loop on line 166)
-                        foreach (var attempt in eligibleChaosItems)
-                        {
-                            var addSuccessful = enhancedItemSet.TryAddItem(attempt);
-
-                            // if we successfully add to set (i.e. it wasn't an item slot that was already taken)
-                            if (addSuccessful)
-                            {
-                                // remove from our stash
-                                _currentItemsFilteredForRecipe.Remove(attempt);
-
-                                // break out of loop
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // set flag to indicate no chaos items left in our stash
-                        noChaosItemsLeft = true;
-
-                        // what follows is some conditional logic for display the 'needs lower level' message
-
-                        // if we have a high enough item count of each set we're good
-                        var itemCounts = new[]
-                        {
-                            RingsAmount / 2, // 2 rings per set
-                            AmuletsAmount,
-                            BeltsAmount,
-                            ChestsAmount,
-                            WeaponsBigAmount + (WeaponsSmallAmount / 2), // 2h weapons count as 2; 2 1h per set
-                            GlovesAmount,
-                            HelmetsAmount,
-                            BootsAmount
-                        };
-
-                        var haveEnoughItemsIgnoringChaosAmounts = false;
-
-                        foreach (var individualItemClassCountIgnoringChaosAmount in itemCounts)
-                        {
-                            haveEnoughItemsIgnoringChaosAmounts = _setThreshold <= individualItemClassCountIgnoringChaosAmount;
-                        }
-
-                        // we now know we need lower level items
-                        // this will allow us to notify dependencies of this
-                        // if i have enough items to make a set, but i don't have enough chaos items to make a set
-                        if (haveEnoughItemsIgnoringChaosAmounts) NeedsLowerLevel = true;
-                    }
-                    // we still need to loop to create the rest of the sets (even if they don't have chaos items in them)
-                }
-
-                listOfSets.Add(enhancedItemSet);
-
-                if (i == _setThreshold - 1 && !noChaosItemsLeft)
-                {
-                    // we're on the last set and we know we still have chaos items
-                    NeedsLowerLevel = false;
-                }
+                trueSetThreshold = _setThreshold;
+            }
+            else
+            {
+                trueSetThreshold = eligibleChaosItems.Count;
             }
         }
         else
         {
-            for (var i = 0; i < _setThreshold; i++)
+            trueSetThreshold = _setThreshold;
+        }
+
+        if (Settings.Default.DoNotPreserveLowItemLevelGear)
+        {
+            GenerateItemSets_Greedy(eligibleChaosItems, trueSetThreshold);
+        }
+        else
+        {
+            GenerateItemSets_ConserveChaosItems(eligibleChaosItems, trueSetThreshold);
+        }
+    }
+
+    private void GenerateItemSets_ConserveChaosItems(List<EnhancedItem> eligibleChaosItems, int trueSetThreshold)
+    {
+        _setsInProgress.Clear();
+        var listOfSets = new List<EnhancedItemSet>();
+
+        // for every set we will start by trying to add a chaos item (and reporting if we need more low level chaos items)
+        // this loop is NOT responsible for filling sets their entirety
+        // however, if Early Set Turn In is enabled, we need to modify the upper bound to match how many sets we can possibly make
+        // rather than trying to 'fill' the sets, we're just trying to make as many sets as possible
+        for (var i = 0; i < trueSetThreshold; i++)
+        {
+            // create new 'empty' enhanced item set
+            var enhancedItemSet = new EnhancedItemSet();
+
+            // if there are still chaos items left in our stash
+            if (eligibleChaosItems.Count != 0)
             {
-                listOfSets.Add(new EnhancedItemSet());
+                // try to add a single eligible chaos item in the set (where we're iterate in our loop on line 166)
+                foreach (var item in eligibleChaosItems)
+                {
+                    var addSuccessful = enhancedItemSet.TryAddItem(item);
+
+                    // if we successfully add to set (i.e. it wasn't an item slot that was already taken)
+                    if (addSuccessful)
+                    {
+                        // remove from our stash
+                        _currentItemsFilteredForRecipe.Remove(item);
+                        // remove from the list of eligible chaos items
+                        eligibleChaosItems.Remove(item);
+
+                        // break out of loop
+                        break;
+                    }
+                }
+            }
+            // we don't have any chaos items left
+            // what follows is some conditional logic for display the 'needs lower level' message
+            else
+            {
+                // if we have a high enough item count of each set we're good
+                var itemCounts = new[]
+                {
+                    RingsAmount / 2, // 2 rings per set
+                    AmuletsAmount,
+                    BeltsAmount,
+                    ChestsAmount,
+                    WeaponsBigAmount + (WeaponsSmallAmount / 2), // 2h weapons count as 2; 2 1h per set
+                    GlovesAmount,
+                    HelmetsAmount,
+                    BootsAmount
+                };
+
+                var haveEnoughItemsIgnoringChaosAmounts = false;
+
+                foreach (var individualItemClassCountIgnoringChaosAmount in itemCounts)
+                {
+                    haveEnoughItemsIgnoringChaosAmounts = trueSetThreshold <= individualItemClassCountIgnoringChaosAmount;
+                }
+
+                // we now know we need lower level items
+                // this will allow us to notify dependencies of this
+                // if i have enough items to make a set, but i don't have enough chaos items to make a set
+                if (haveEnoughItemsIgnoringChaosAmounts) NeedsLowerLevel = true;
+            }
+
+            listOfSets.Add(enhancedItemSet);
+
+            // previous logic: if (i == _setThreshold - 1 && eligibleChaosItems.Count != 0)
+
+            // this is flawed because if we're on the last set having 0 chaos
+            // items left might mean we had just enough to complete those sets
+            // in that case we don't need lower level items
+
+            // instead we'll check on the 2nd to last set to see if we have 1 or more chaos items left
+            if (i == trueSetThreshold - 1 - 1 && eligibleChaosItems.Count >= 1)
+            {
+                // we're on the last set and we know we still have chaos items
+                NeedsLowerLevel = false;
             }
         }
 
-        for (var i = 0; i < _setThreshold; i++)
+        // for every set we still need to loop to create the rest of the sets (even if they don't have chaos items in them)
+        // when composing sets we will always try to add the closest item to the set to enhance user experience during item picking
+        // we once again see the modified upper bound based on Early Set Turn In
+        for (var i = 0; i < trueSetThreshold; i++)
         {
             // iterate until the end of time (jk)
             while (true)
@@ -280,19 +301,21 @@ public class ItemSetManagerService : IItemSetManagerService
                     break;
                 }
 
-                if (chaosRecipe)
+                // my reason for separating out this logic is that it's a bit more readable and debuggable
+
+                // if we have a recipe qualifier we can stop looking for items
+                var canProduce = listOfSets[i].Items.FirstOrDefault(x => x.IsChaosRecipeEligible, null);
+
+                // if a set is complete (i.e. it has a recipe qualifier and no empty item slots)
+                // we can increment our completed set count
+                // for a set to be completed it needs to meet both of these conditions
+                if (canProduce is not null)
                 {
-                    var canProduce = listOfSets[i].Items.FirstOrDefault(x => x.IsChaosRecipeEligible, null);
+                    listOfSets[i].HasRecipeQualifier = true;
 
-                    // my reason for separating out this logic is that it's a bit more readable and debuggable
-                    if (canProduce is not null)
+                    if (listOfSets[i].EmptyItemSlots.Count == 0)
                     {
-                        listOfSets[i].HasRecipeQualifier = true;
-
-                        if (listOfSets[i].EmptyItemSlots.Count == 0)
-                        {
-                            CompletedSetCount++;
-                        }
+                        CompletedSetCount++;
                     }
                 }
             }
@@ -302,10 +325,96 @@ public class ItemSetManagerService : IItemSetManagerService
         }
     }
 
+    private void GenerateItemSets_Greedy(List<EnhancedItem> eligibleChaosItems, int trueSetThreshold)
+    {
+        // Clear any existing progress in item set generation
+        _setsInProgress.Clear();
+        var listOfSets = new List<EnhancedItemSet>();
+
+        // Iteratively create item sets based on the number of available chaos items
+        for (var i = 0; i < trueSetThreshold; i++)
+        {
+            // Initialize a new item set
+            var enhancedItemSet = new EnhancedItemSet();
+
+            // Add a chaos item to the set if any are available
+            if (eligibleChaosItems.Any())
+            {
+                var chaosItem = eligibleChaosItems.First();
+                enhancedItemSet.TryAddItem(chaosItem);
+
+                // Remove the added chaos item from the available pools
+                eligibleChaosItems.Remove(chaosItem);
+                _currentItemsFilteredForRecipe.Remove(chaosItem);
+            }
+
+            // Continuously try to fill the rest of the set with available items
+            while (true)
+            {
+                // Initialize variables to find the closest missing item for the set
+                EnhancedItem closestMissingItem = null;
+                var minDistance = double.PositiveInfinity;
+
+                // Iterate over all available items to find the closest needed item
+                foreach (var item in _currentItemsFilteredForRecipe
+                             .Where(item => enhancedItemSet.IsItemClassNeeded(item) && // Check if the item class is needed for the set
+                                            enhancedItemSet.GetItemDistance(item) < minDistance)) // Check if the item is closer than the current closest
+                {
+                    // Update closest item and distance if a closer item is found
+                    minDistance = enhancedItemSet.GetItemDistance(item);
+                    closestMissingItem = item;
+                }
+
+                // If a closest missing item is found, add it to the set
+                if (closestMissingItem != null)
+                {
+                    enhancedItemSet.TryAddItem(closestMissingItem);
+                    // Remove the item from the pool of available items
+                    _currentItemsFilteredForRecipe.Remove(closestMissingItem);
+                }
+                else
+                {
+                    // Break the loop if no suitable item is found
+                    break;
+                }
+
+                // Check if the current set is complete (i.e., no empty item slots)
+                if (enhancedItemSet.EmptyItemSlots.Count == 0)
+                {
+                    break;
+                }
+            }
+
+            // Add the newly created set to the list of sets
+            listOfSets.Add(enhancedItemSet);
+        }
+
+        for (var i = 0; i < trueSetThreshold; i++)
+        {
+            // my reason for separating out this logic is that it's a bit more readable and debuggable
+
+            // if we have a recipe qualifier we can stop looking for items
+            var canProduce = listOfSets[i].Items.FirstOrDefault(x => x.IsChaosRecipeEligible, null);
+
+            // if a set is complete (i.e. it has a recipe qualifier and no empty item slots)
+            // we can increment our completed set count
+            // for a set to be completed it needs to meet both of these conditions
+            if (canProduce is not null)
+            {
+                listOfSets[i].HasRecipeQualifier = true;
+            }
+        }
+
+        // Update the sets in progress with the newly created list of sets
+        _setsInProgress = listOfSets;
+        // Update the count of completed sets based on the number of sets with no empty item slots
+        CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0);
+    }
+
     #region Properties as Functions
 
     // workaround to expose properties as functions on our interface
-    public BaseStashTabMetadataList RetrieveStashTabMetadataList() => _stashTabMetadataList;
+    public List<BaseStashTabMetadata> RetrieveStashTabMetadataList() => _stashTabMetadataListStashesResponse;
     public bool RetrieveNeedsFetching() => NeedsFetching;
     public bool RetrieveNeedsLowerLevel() => NeedsLowerLevel;
     public int RetrieveCompletedSetCount() => CompletedSetCount;

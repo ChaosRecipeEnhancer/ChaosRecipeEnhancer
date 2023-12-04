@@ -12,7 +12,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -32,18 +32,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["PathOfExileAccountName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string PathOfExileWebsiteSessionId {
-            get {
-                return ((string)(this["PathOfExileWebsiteSessionId"]));
-            }
-            set {
-                this["PathOfExileWebsiteSessionId"] = value;
             }
         }
         
@@ -116,18 +104,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["CustomLeagueEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int TargetStash {
-            get {
-                return ((int)(this["TargetStash"]));
-            }
-            set {
-                this["TargetStash"] = value;
             }
         }
         
@@ -692,6 +668,89 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["UpgradeSettingsAfterUpdate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime PathOfExileApiAuthTokenExpiration {
+            get {
+                return ((global::System.DateTime)(this["PathOfExileApiAuthTokenExpiration"]));
+            }
+            set {
+                this["PathOfExileApiAuthTokenExpiration"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathOfExileApiAuthToken {
+            get {
+                return ((string)(this["PathOfExileApiAuthToken"]));
+            }
+            set {
+                this["PathOfExileApiAuthToken"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool VendorSetsEarly {
+            get {
+                return ((bool)(this["VendorSetsEarly"]));
+            }
+            set {
+                this["VendorSetsEarly"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
+        public string FetchStashHotkey {
+            get {
+                return ((string)(this["FetchStashHotkey"]));
+            }
+            set {
+                this["FetchStashHotkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
+        public string ToggleSetTrackerOverlayHotkey {
+            get {
+                return ((string)(this["ToggleSetTrackerOverlayHotkey"]));
+            }
+            set {
+                this["ToggleSetTrackerOverlayHotkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
+        public string ToggleStashTabOverlayHotkey {
+            get {
+                return ((string)(this["ToggleStashTabOverlayHotkey"]));
+            }
+            set {
+                this["ToggleStashTabOverlayHotkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SettingsWindowNavIndex {
+            get {
+                return ((int)(this["SettingsWindowNavIndex"]));
+            }
+            set {
+                this["SettingsWindowNavIndex"] = value;
             }
         }
     }

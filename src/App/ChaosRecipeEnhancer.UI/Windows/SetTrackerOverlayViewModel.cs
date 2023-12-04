@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
+using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -65,108 +67,141 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         FetchButtonEnabled = false;
         StashButtonEnabled = false;
 
-        // needed to craft api request
-        var targetStash = (TargetStash)Settings.TargetStash;
-        var accountName = Settings.PathOfExileAccountName;
-        var leagueName = Settings.LeagueName;
-        var secret = Settings.PathOfExileWebsiteSessionId;
-
-        // needed to update item set manager
-        var setThreshold = Settings.FullSetThreshold;
-
-        if (string.IsNullOrWhiteSpace(Settings.StashTabIndices))
+        try
         {
-            FetchButtonEnabled = true;
+            // needed to update item set manager
+            var setThreshold = Settings.FullSetThreshold;
 
-            ErrorWindow.Spawn(
-                "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
-                "Error: Set Tracker Overlay - Fetch Data"
-            );
-
-            return false;
-        }
-
-        // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
-        var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
-
-        var filteredStashContents = new List<EnhancedItem>();
-        var includeIdentified = Settings.IncludeIdentifiedItemsEnabled;
-        var chaosRecipe = Settings.ChaosRecipeTrackingEnabled;
-
-        // reset item amounts before fetching new data
-        // invalidate some outdated state for our item manager
-        _itemSetManagerService.ResetCompletedSets();
-        _itemSetManagerService.ResetItemAmounts();
-
-        // update the stash tab metadata based on your target stash
-        var stashTabMetadataList = targetStash == TargetStash.Personal
-            ? await _apiService.GetAllPersonalStashTabMetadataAsync(accountName, leagueName, secret)
-            : await _apiService.GetAllGuildStashTabMetadataAsync(accountName, leagueName, secret);
-
-        if (stashTabMetadataList is not null)
-        {
-            _itemSetManagerService.UpdateStashMetadata(stashTabMetadataList);
-
-            foreach (var index in selectedTabIndices)
-            {
-                // first we retrieve the 'raw' results from the API
-                var rawResults = targetStash == TargetStash.Personal
-                    ? await _apiService.GetPersonalStashTabContentsByIndexAsync(accountName, leagueName, index, secret)
-                    : await _apiService.GetGuildStashTabContentsByIndexAsync(accountName, leagueName, index, secret);
-
-                // then we convert the raw results into a list of EnhancedItem objects
-                var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
-                // manually setting index because we need to know which tab the item came from
-                foreach (var enhancedItem in enhancedItems) enhancedItem.StashTabIndex = index;
-
-                // add the enhanced items to the filtered stash contents
-                filteredStashContents.AddRange(
-                    EnhancedItemHelper.FilterItemsForRecipe(enhancedItems, includeIdentified, chaosRecipe));
-
-                _itemSetManagerService.UpdateData(
-                    setThreshold,
-                    selectedTabIndices,
-                    filteredStashContents,
-                    includeIdentified,
-                    chaosRecipe
-                );
-
-                if (RateLimitManager.RateLimitExceeded)
-                {
-                    WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
-                    await Task.Delay(RateLimitManager.GetSecondsToWait() * 1000);
-                    RateLimitManager.RequestCounter = 0;
-                    RateLimitManager.RateLimitExceeded = false;
-                }
-                else if (RateLimitManager.BanTime > 0)
-                {
-                    WarningMessage = "Temporary Ban from API Requests! Waiting...";
-                    await Task.Delay(RateLimitManager.BanTime * 1000);
-                    RateLimitManager.BanTime = 0;
-                }
-            }
-
-            // recalculate item amounts and generate item sets after fetching from api
-            _itemSetManagerService.CalculateItemAmounts();
-            _itemSetManagerService.GenerateItemSets(chaosRecipe);
-
-            // update the UI accordingly
-            UpdateDisplay();
-            UpdateStashButtonAndWarningMessage();
-
-            // enforce cooldown on fetch button to reduce chances of rate limiting
-            try
-            {
-                await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-            }
-            finally
+            if (string.IsNullOrWhiteSpace(Settings.StashTabIndices))
             {
                 FetchButtonEnabled = true;
+
+                ErrorWindow.Spawn(
+                    "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
+                    "Error: Set Tracker Overlay - Fetch Data"
+                );
+
+                return false;
+            }
+
+            // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
+            var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
+            var filteredStashContents = new List<EnhancedItem>();
+
+            // reset item amounts before fetching new data
+            // invalidate some outdated state for our item manager
+            _itemSetManagerService.ResetCompletedSets();
+            _itemSetManagerService.ResetItemAmounts();
+
+            // update the stash tab metadata based on your target stash
+            var stashTabMetadataList = FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
+
+            if (stashTabMetadataList is not null)
+            {
+                _itemSetManagerService.UpdateStashMetadata(stashTabMetadataList);
+
+                // Create a new dictionary for stash index and ID pairs
+                var selectedStashIndexIdPairs = new Dictionary<int, string>();
+
+                try
+                {
+                    // Map indices to stash IDs
+                    foreach (var index in selectedTabIndices)
+                    {
+                        var stashTab = stashTabMetadataList.FirstOrDefault(st => st.Index == index);
+                        if (stashTab != null)
+                        {
+                            selectedStashIndexIdPairs.Add(index, stashTab.Id);
+                        }
+                    }
+                }
+                // there are few reports of users attempting to add items with duplicate keys
+                // in this case it's attempting to add stash tabs with the same index
+                // this is not allowed, and is caused by stash metadata being out of sync
+                // therefore, rethrow the exception and let the user know to re-fetch their tabs
+                catch (ArgumentException)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                foreach (var (index, id) in selectedStashIndexIdPairs)
+                {
+                    // first we retrieve the 'raw' results from the API
+                    var rawResults = await _apiService.GetPersonalStashTabContentsByStashIdAsync(id);
+
+                    // then we convert the raw results into a list of EnhancedItem objects
+                    var enhancedItems = rawResults.Stash.Items.Select(item => new EnhancedItem(item)).ToList();
+
+                    // Manually setting index because we need to know which tab the item came from
+                    foreach (var enhancedItem in enhancedItems)
+                    {
+                        enhancedItem.StashTabIndex = index; // Now 'index' refers to the correct stash tab index
+                    }
+
+                    // add the enhanced items to the filtered stash contents
+                    filteredStashContents.AddRange(EnhancedItemHelper.FilterItemsForRecipe(enhancedItems));
+
+                    _itemSetManagerService.UpdateStashContents(setThreshold, selectedTabIndices, filteredStashContents);
+
+                    if (GlobalRateLimitState.RateLimitExceeded)
+                    {
+                        WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
+                        await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
+                        GlobalRateLimitState.RequestCounter = 0;
+                        GlobalRateLimitState.RateLimitExceeded = false;
+                    }
+                    else if (GlobalRateLimitState.BanTime > 0)
+                    {
+                        WarningMessage = "Temporary Ban from API Requests! Waiting...";
+                        await Task.Delay(GlobalRateLimitState.BanTime * 1000);
+                        GlobalRateLimitState.BanTime = 0;
+                    }
+                }
+
+                // recalculate item amounts and generate item sets after fetching from api
+                _itemSetManagerService.CalculateItemAmounts();
+                _itemSetManagerService.GenerateItemSets();
+
+                // update the UI accordingly
+                UpdateDisplay();
+                UpdateStashButtonAndWarningMessage();
+
+                // enforce cooldown on fetch button to reduce chances of rate limiting
+                try
+                {
+                    await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+                }
+                finally
+                {
+                    FetchButtonEnabled = true;
+                }
+            }
+            else
+            {
+                FetchButtonEnabled = true;
+                return false;
             }
         }
-        else
+        catch (NullReferenceException)
         {
             FetchButtonEnabled = true;
+            GlobalAuthState.Instance.PurgeLocalAuthToken();
+            ErrorWindow.Spawn(
+                "It looks like your credentials have expired. Please log back in to continue.",
+                "Error: Set Tracker Overlay - Fetch Data"
+            );
+            return false;
+        }
+        catch (ArgumentNullException)
+        {
+            FetchButtonEnabled = true;
+            ErrorWindow.Spawn(
+                "It looks like your currently selected stash tabs are out of sync.\n\n" +
+                "You may have moved them or modified them in some way that made us unable " +
+                "to determine which stash tab you meant to select.\n\nPlease navigate to " +
+                "the 'General > Select Stash Tabs', re-fetch your tabs, and validate your selections.",
+                "Error: Set Tracker Overlay - Fetch Data"
+            );
             return false;
         }
 
@@ -184,9 +219,12 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         else if (!NeedsFetching)
         {
             // case 2: user fetched data and has enough sets to turn in based on their threshold
-            if (FullSets >= Settings.FullSetThreshold)
+            if (FullSets >= Settings.FullSetThreshold || Settings.VendorSetsEarly)
             {
-                WarningMessage = SetsFullText;
+                if (!Settings.VendorSetsEarly || FullSets >= Settings.FullSetThreshold)
+                {
+                    WarningMessage = SetsFullText;
+                }
 
                 // stash button is enabled with no warning tooltip
                 StashButtonEnabled = true;
@@ -222,9 +260,11 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     public void RunReloadFilter()
     {
-        // hash set of missing item classes (e.g. "ring", "amulet", etc.)
+        // number of sets in progress seems off
         var sets = _itemSetManagerService.RetrieveSetsInProgress();
         var needChaosItems = sets.Any(set => !set.HasRecipeQualifier);
+
+        // hash set of missing item classes (e.g. "ring", "amulet", etc.)
         var missingItemClasses = new HashSet<string>();
 
         foreach (var set in sets)
@@ -247,7 +287,12 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     #region Item Amount and Visibility Properties
 
-    public int RingsAmount => ShowAmountNeeded ? Math.Max((Settings.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount(), 0) : _itemSetManagerService.RetrieveRingsAmount();
+    public int RingsAmount => ShowAmountNeeded
+        // case where we are showing missing items (calculate total needed and subtract from threshold, but don't show negatives)
+        ? Math.Max((Settings.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount(), 0)
+        // case where we are showing total item sets (e.g. pair of rings as a single 'count')
+        : _itemSetManagerService.RetrieveRingsAmount() / 2;
+
     public bool RingsActive => Settings.LootFilterRingsAlwaysActive || (NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount() > 0);
 
     public int AmuletsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveAmuletsAmount(), 0) : _itemSetManagerService.RetrieveAmuletsAmount();
@@ -259,7 +304,11 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     public int ChestsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveChestsAmount(), 0) : _itemSetManagerService.RetrieveChestsAmount();
     public bool ChestsActive => Settings.LootFilterBodyArmourAlwaysActive || (NeedsFetching || Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveChestsAmount() > 0);
 
-    public int WeaponsAmount => ShowAmountNeeded ? Math.Max((Properties.Settings.Default.FullSetThreshold * 2) - (_itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2)), 0) : _itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2);
+    public int WeaponsAmount => ShowAmountNeeded
+        // case where we are showing missing items (calculate total needed and subtract from threshold, but don't show negatives)
+        ? Math.Max((Properties.Settings.Default.FullSetThreshold * 2) - (_itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2)), 0)
+        // case where we are showing total weapon sets (e.g. pair of one handed weapons plus two handed weapons as a 'count' each)
+        : (_itemSetManagerService.RetrieveWeaponsSmallAmount() / 2) + _itemSetManagerService.RetrieveWeaponsBigAmount();
     public bool WeaponsActive => Settings.LootFilterWeaponsAlwaysActive || (NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - (_itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2)) > 0);
 
     public int GlovesAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveGlovesAmount(), 0) : _itemSetManagerService.RetrieveGlovesAmount();
@@ -306,4 +355,21 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         OnPropertyChanged(nameof(FetchButtonEnabled));
         OnPropertyChanged(nameof(ShowAmountNeeded));
     }
+
+    public List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response)
+    {
+        var allTabs = new List<BaseStashTabMetadata>();
+
+        foreach (var tab in response.StashTabs)
+        {
+            allTabs.Add(tab); // Add the parent tab
+            if (tab.Children != null)
+            {
+                allTabs.AddRange(tab.Children); // Add the children if any
+            }
+        }
+
+        return allTabs;
+    }
+
 }
