@@ -48,8 +48,8 @@ function serveAuthSuccessfulPage(code, state) {
         </head>
         <body>
             <h1>Authentication for Chaos Recipe Enhancer Successful!</h1>
-            <p>This page is safe to close now.</p>
-            <p>If the app does not open automatically, <a href="javascript:redirectToCreClient()">please click here</a>.</p>
+            <p>This page is safe to close now. It may take a few seconds (5-10 seconds) for your auth status to update in-app.</p>
+            <p>If the app does not open and authenticate after a few moments, <a href="javascript:redirectToCreClient()">please click here</a>.</p>
         </body>
     </html>
     `;
