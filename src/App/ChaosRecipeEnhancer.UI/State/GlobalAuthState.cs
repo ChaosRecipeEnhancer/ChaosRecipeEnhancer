@@ -16,7 +16,7 @@ public class GlobalAuthState
 {
     #region Fields
 
-    private static readonly Lazy<GlobalAuthState> _instance = new(() => new GlobalAuthState());
+    private static Lazy<GlobalAuthState> _instance = new(() => new GlobalAuthState());
     private string _username;
     private string _authToken;
     private string _codeVerifier;
@@ -111,12 +111,13 @@ public class GlobalAuthState
 
     public void PurgeLocalAuthToken()
     {
-        _authToken = string.Empty;
-        _tokenExpiration = null;
+        // Resetting global auth state
+        _instance = new Lazy<GlobalAuthState>(() => new GlobalAuthState());
 
         // Also update App Settings
         Settings.Default.PathOfExileAccountName = string.Empty;
         Settings.Default.PathOfExileApiAuthToken = string.Empty;
+        Settings.Default.PathOfExileApiAuthTokenExpiration = new DateTime();
 
         // only reset this specific setting if we're not in the middle of an auth flow
         if (Settings.Default.PoEAccountConnectionStatus != (int)ConnectionStatusTypes.AttemptingLogin)
@@ -124,13 +125,8 @@ public class GlobalAuthState
             Settings.Default.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
         }
 
-        // for one, we can't set this to null because it's a value type
-        // in this case, we'll simply ignore it (it's not used anywhere else)
-        // Settings.Default.PathOfExileApiAuthTokenExpiration = null;
-
         // navigate the user back to the account tab in the settings nav
         Settings.Default.SettingsWindowNavIndex = 0;
-
         Settings.Default.Save();
     }
 
