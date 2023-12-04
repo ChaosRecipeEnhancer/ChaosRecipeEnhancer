@@ -260,22 +260,23 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     public void RunReloadFilter()
     {
-        // number of sets in progress seems off
-        var sets = _itemSetManagerService.RetrieveSetsInProgress();
-        var needChaosItems = sets.Any(set => !set.HasRecipeQualifier);
+        var itemClassAmounts = _itemSetManagerService.RetrieveCurrentItemCountsForFilterManipulation();
 
         // hash set of missing item classes (e.g. "ring", "amulet", etc.)
         var missingItemClasses = new HashSet<string>();
 
-        foreach (var set in sets)
+        foreach (var itemCountByClass in itemClassAmounts)
         {
-            foreach (var item in set.EmptyItemSlots)
+            foreach (var itemClass in itemCountByClass)
             {
-                missingItemClasses.Add(item);
+                if (itemClass.Value < Settings.FullSetThreshold)
+                {
+                    missingItemClasses.Add(itemClass.Key.ToString());
+                }
             }
         }
 
-        _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses, needChaosItems);
+        _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses, NeedsLowerLevel);
         _reloadFilterService.ReloadFilter();
     }
 
