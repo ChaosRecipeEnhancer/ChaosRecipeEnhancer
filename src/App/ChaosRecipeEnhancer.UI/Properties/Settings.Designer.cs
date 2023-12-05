@@ -753,5 +753,17 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["SettingsWindowNavIndex"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StashTabPrefixIndices {
+            get {
+                return ((string)(this["StashTabPrefixIndices"]));
+            }
+            set {
+                this["StashTabPrefixIndices"] = value;
+            }
+        }
     }
 }
