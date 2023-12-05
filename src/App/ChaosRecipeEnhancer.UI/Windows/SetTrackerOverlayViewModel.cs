@@ -118,6 +118,9 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                     .Where(st => st.Name.StartsWith(Settings.StashTabPrefix))
                     .Select(st => st.Index)
                     .ToList();
+
+                Settings.StashTabPrefixIndices = string.Join(',', selectedTabIndices);
+                Settings.Save();
             }
 
             if (stashTabMetadataList is not null)

@@ -19,12 +19,6 @@ public enum StashTabQueryMode
     TabNamePrefix
 }
 
-public enum TargetStash
-{
-    Personal,
-    Guild
-}
-
 public enum SetTrackerOverlayMode
 {
     Standard,

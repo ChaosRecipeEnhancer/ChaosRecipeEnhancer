@@ -51,23 +51,16 @@ public static class StashTabControlManager
             }
         }
 
-        if (selectedTabIndices.Count > 0)
+        StashTabIndices = selectedTabIndices;
+
+        foreach (var s in selectedTabIndices)
         {
-            foreach (var s in selectedTabIndices)
-            {
-                if (!selectedTabIndices.Contains(s)) selectedTabIndices.Add(s);
-            }
-
-            if (selectedTabIndices.Count == 0)
-            {
-                ErrorWindow.Spawn("Stash Tab indices empty", "Error: Stash Tab Overlay");
-            }
-
-            StashTabIndices = selectedTabIndices;
+            if (!selectedTabIndices.Contains(s)) selectedTabIndices.Add(s);
         }
-        else
+
+        if (selectedTabIndices.Count == 0)
         {
-            ErrorWindow.Spawn("No valid Stash Tab indices could be found in the user settings. The 'Stash Tab Index' setting must be a number.", "Error: Stash Tab Overlay");
+            ErrorWindow.Spawn("Stash Tab indices empty", "Error: Stash Tab Overlay");
         }
     }
 }

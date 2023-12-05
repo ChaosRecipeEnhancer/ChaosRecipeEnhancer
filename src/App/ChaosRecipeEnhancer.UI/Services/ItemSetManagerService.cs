@@ -448,8 +448,11 @@ public class ItemSetManagerService : IItemSetManagerService
 
         foreach (var tab in response.StashTabs)
         {
-            allTabs.Add(tab); // Add the parent tab
-            if (tab.Children != null)
+            if (tab.Type != "Folder")
+            {
+                allTabs.Add(tab); // If not folder, add tab
+            }
+            else if (tab.Children != null)
             {
                 allTabs.AddRange(tab.Children); // Add the children if any
             }

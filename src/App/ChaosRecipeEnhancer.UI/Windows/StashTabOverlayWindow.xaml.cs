@@ -11,8 +11,10 @@ using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.UserControls.StashTab;
 using ChaosRecipeEnhancer.UI.Utilities;
 using System.Linq;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
+using ChaosRecipeEnhancer.UI.Utilities.Native;
 using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
@@ -58,12 +60,12 @@ public partial class StashTabOverlayWindow
         if (_model.IsEditing)
         {
             MakeWindowClickThrough(true);
-            MouseHook.Start();
+            MouseHookForStashTabOverlay.Start();
             _model.IsEditing = false;
         }
         else
         {
-            MouseHook.Stop();
+            MouseHookForStashTabOverlay.Stop();
             MakeWindowClickThrough(false);
             _model.IsEditing = true;
         }
@@ -141,18 +143,20 @@ public partial class StashTabOverlayWindow
             StashTabOverlayTabControl.SelectedIndex = 0;
 
             PrepareSelling();
-            ActivateNextCell(true, null, StashTabOverlayTabControl);
+            ActivateNextCell(true, null);
 
             NativeMouseExtensions.Start();
-            base.Show();
         }
         else
         {
-            MessageBox.Show("No StashTabs Available! Fetch before opening overlay.", "Error: Stash Tab Overlay",
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(
+                "No StashTabs Available! Fetch before opening overlay.",
+                "Error: Stash Tab Overlay",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error
+            );
         }
 
-        MouseHook.Start();
         base.Show();
     }
 
@@ -162,7 +166,7 @@ public partial class StashTabOverlayWindow
 
         MakeWindowClickThrough(true);
         _model.IsEditing = false;
-        MouseHook.Stop();
+        MouseHookForStashTabOverlay.Stop();
 
         foreach (var i in StashTabControlManager.StashTabControls)
         {
@@ -174,7 +178,7 @@ public partial class StashTabOverlayWindow
         base.Hide();
     }
 
-    public void ActivateNextCell(bool active, InteractiveStashTabCell stashTabCell, TabControl tabControl)
+    public void ActivateNextCell(bool active, InteractiveStashTabCell stashTabCell)
     {
         if (!active) return;
 
@@ -217,7 +221,7 @@ public partial class StashTabOverlayWindow
                     SetsToHighlight.RemoveAt(0);
 
                     // activate next set
-                    ActivateNextCell(true, null, null);
+                    ActivateNextCell(true, null);
                 }
             }
         }
@@ -249,76 +253,32 @@ public partial class StashTabOverlayWindow
     {
         var reconstructedStashTabs = new List<StashTabControl>();
 
-        if (_model.Settings.StashTabIndices != null) StashTabControlManager.GetStashTabIndices();
+        if ((Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList && !string.IsNullOrWhiteSpace(Settings.Default.StashTabIndices)) ||
+            (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix && !string.IsNullOrWhiteSpace(Settings.Default.StashTabPrefixIndices)))
+            StashTabControlManager.GetStashTabIndicesFromSettings();
 
         var stashTabMetadataList = _itemSetManagerService.RetrieveStashTabMetadataList();
 
-        // mode = Select Tab From List (default)
-        if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList)
+        if (stashTabMetadataList != null)
         {
-            if (stashTabMetadataList != null)
+            foreach (var tab in stashTabMetadataList)
             {
-                foreach (var tab in stashTabMetadataList)
+                for (var index = StashTabControlManager.StashTabIndices.Count - 1; index > -1; index--)
                 {
-                    for (var index = StashTabControlManager.StashTabIndices.Count - 1; index > -1; index--)
+                    if (StashTabControlManager.StashTabIndices[index] != tab.Index) continue;
+
+                    StashTabControlManager.StashTabIndices.RemoveAt(index);
+
+                    if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
                     {
-                        if (StashTabControlManager.StashTabIndices[index] != tab.Index) continue;
-
-                        StashTabControlManager.StashTabIndices.RemoveAt(index);
-
-                        if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
-                        {
-                            var tabToAdd = new StashTabControl(tab.Name, tab.Index);
-                            if (tab.Type == "QuadStash") tabToAdd.Quad = true;
-                            reconstructedStashTabs.Add(tabToAdd);
-                        }
+                        var tabToAdd = new StashTabControl($"[{tab.Index}] {tab.Name}", tab.Index);
+                        if (tab.Type == "QuadStash") tabToAdd.Quad = true;
+                        reconstructedStashTabs.Add(tabToAdd);
                     }
                 }
-
-                StashTabControlManager.StashTabControls = reconstructedStashTabs;
-                ParseAllStashTabNamesFromApiResponse();
             }
-        }
-        // mode = Individual Stash Tab Prefix
-        else if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix)
-        {
-            if (stashTabMetadataList != null)
-            {
-                var individualStashTabPrefix = Settings.Default.StashTabPrefix;
 
-                ParseAllStashTabNamesFromApiResponse();
-
-                foreach (var tab in stashTabMetadataList)
-                {
-                    if (tab.Name.StartsWith(individualStashTabPrefix))
-                    {
-                        if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
-                        {
-                            var tabToAdd = new StashTabControl(tab.Name, tab.Index);
-                            if (tab.Type == "QuadStash") tabToAdd.Quad = true;
-                            reconstructedStashTabs.Add(tabToAdd);
-
-                        }
-                    }
-                }
-
-                StashTabControlManager.StashTabControls = reconstructedStashTabs;
-            }
-        }
-    }
-
-    private void ParseAllStashTabNamesFromApiResponse()
-    {
-        var stashTabMetadataList = _itemSetManagerService.RetrieveStashTabMetadataList();
-        foreach (var s in StashTabControlManager.StashTabControls)
-        {
-            foreach (var props in stashTabMetadataList)
-            {
-                if (s.Index == props.Index)
-                {
-                    s.Name = $"[{props.Index}] {props.Name}";
-                }
-            }
+            StashTabControlManager.StashTabControls = reconstructedStashTabs;
         }
     }
 
