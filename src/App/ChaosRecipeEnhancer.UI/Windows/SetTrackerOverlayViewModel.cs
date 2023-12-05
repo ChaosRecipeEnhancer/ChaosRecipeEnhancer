@@ -233,8 +233,9 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         else if (!NeedsFetching)
         {
             // case 2: user fetched data and has enough sets to turn in based on their threshold
-            if (FullSets >= Settings.FullSetThreshold || Settings.VendorSetsEarly)
+            if (FullSets >= Settings.FullSetThreshold)
             {
+                // if the user has vendor sets early enabled, we don't want to show the warning message
                 if (!Settings.VendorSetsEarly || FullSets >= Settings.FullSetThreshold)
                 {
                     WarningMessage = SetsFullText;
@@ -247,14 +248,23 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             }
 
             // case 3: user fetched data and has at least 1 set, but not to their full threshold
-            else if (FullSets < Settings.FullSetThreshold && FullSets >= 1)
+            else if ((FullSets < Settings.FullSetThreshold || Settings.VendorSetsEarly) && FullSets >= 1)
             {
                 WarningMessage = string.Empty;
 
                 // stash button is disabled with warning tooltip to change threshold
-                StashButtonEnabled = false;
-                StashButtonTooltipEnabled = true;
-                SetsTooltipEnabled = true;
+                if (Settings.VendorSetsEarly)
+                {
+                    StashButtonEnabled = true;
+                    StashButtonTooltipEnabled = false;
+                    SetsTooltipEnabled = false;
+                }
+                else
+                {
+                    StashButtonEnabled = false;
+                    StashButtonTooltipEnabled = true;
+                    SetsTooltipEnabled = true;
+                }
             }
 
             // case 3: user has fetched and needs items for chaos recipe (needs more lower level items)

@@ -183,6 +183,15 @@ public class ItemSetManagerService : IItemSetManagerService
             trueSetThreshold = _setThreshold;
         }
 
+        if (eligibleChaosItems.Count < trueSetThreshold || eligibleChaosItems.Count == 0)
+        {
+            NeedsLowerLevel = true;
+        }
+        else
+        {
+            NeedsLowerLevel = false;
+        }
+
         if (Settings.Default.DoNotPreserveLowItemLevelGear)
         {
             GenerateItemSets_Greedy(eligibleChaosItems, trueSetThreshold);
@@ -228,50 +237,8 @@ public class ItemSetManagerService : IItemSetManagerService
                     }
                 }
             }
-            // we don't have any chaos items left
-            // what follows is some conditional logic for display the 'needs lower level' message
-            else
-            {
-                // if we have a high enough item count of each set we're good
-                var itemCounts = new[]
-                {
-                    RingsAmount / 2, // 2 rings per set
-                    AmuletsAmount,
-                    BeltsAmount,
-                    ChestsAmount,
-                    WeaponsBigAmount + (WeaponsSmallAmount / 2), // 2h weapons count as 2; 2 1h per set
-                    GlovesAmount,
-                    HelmetsAmount,
-                    BootsAmount
-                };
-
-                var haveEnoughItemsIgnoringChaosAmounts = false;
-
-                foreach (var individualItemClassCountIgnoringChaosAmount in itemCounts)
-                {
-                    haveEnoughItemsIgnoringChaosAmounts = trueSetThreshold <= individualItemClassCountIgnoringChaosAmount;
-                }
-
-                // we now know we need lower level items
-                // this will allow us to notify dependencies of this
-                // if i have enough items to make a set, but i don't have enough chaos items to make a set
-                if (haveEnoughItemsIgnoringChaosAmounts) NeedsLowerLevel = true;
-            }
 
             listOfSets.Add(enhancedItemSet);
-
-            // previous logic: if (i == _setThreshold - 1 && eligibleChaosItems.Count != 0)
-
-            // this is flawed because if we're on the last set having 0 chaos
-            // items left might mean we had just enough to complete those sets
-            // in that case we don't need lower level items
-
-            // instead we'll check on the 2nd to last set to see if we have 1 or more chaos items left
-            if (i == trueSetThreshold - 1 - 1 && eligibleChaosItems.Count >= 1)
-            {
-                // we're on the last set and we know we still have chaos items
-                NeedsLowerLevel = false;
-            }
         }
 
         // for every set we still need to loop to create the rest of the sets (even if they don't have chaos items in them)
