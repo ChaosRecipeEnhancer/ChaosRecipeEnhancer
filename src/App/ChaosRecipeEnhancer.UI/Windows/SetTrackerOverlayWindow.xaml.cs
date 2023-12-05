@@ -39,6 +39,8 @@ public partial class SetTrackerOverlayWindow
     {
         if (e.PropertyName == nameof(Settings.SetTrackerOverlayDisplayMode))
             UpdateOverlayType();
+        else if (e.PropertyName == nameof(Settings.SetTrackerOverlayItemCounterDisplayMode))
+            UpdateOverlayType(); // hack: force update the item counters when we change the display mode
         else if (e.PropertyName == nameof(Settings.FullSetThreshold)
                  || e.PropertyName == nameof(Settings.StashTabIndices)
                  || e.PropertyName == nameof(Settings.StashTabPrefix))
