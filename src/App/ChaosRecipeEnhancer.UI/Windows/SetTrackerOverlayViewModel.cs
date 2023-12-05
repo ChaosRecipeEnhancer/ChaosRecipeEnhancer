@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
@@ -82,7 +80,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             _itemSetManagerService.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
-            var stashTabMetadataList = FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
+            var stashTabMetadataList = _itemSetManagerService.FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
 
             List<int> selectedTabIndices = new();
             if (Settings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList)
@@ -425,21 +423,4 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         OnPropertyChanged(nameof(FetchButtonEnabled));
         OnPropertyChanged(nameof(ShowAmountNeeded));
     }
-
-    public List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response)
-    {
-        var allTabs = new List<BaseStashTabMetadata>();
-
-        foreach (var tab in response.StashTabs)
-        {
-            allTabs.Add(tab); // Add the parent tab
-            if (tab.Children != null)
-            {
-                allTabs.AddRange(tab.Children); // Add the children if any
-            }
-        }
-
-        return allTabs;
-    }
-
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
@@ -18,6 +19,7 @@ public interface IItemSetManagerService
     public void ResetItemAmounts();
     public List<Dictionary<ItemClass, int>> RetrieveCurrentItemCountsForFilterManipulation();
     public List<BaseStashTabMetadata> RetrieveStashTabMetadataList();
+    public List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response);
     public bool RetrieveNeedsFetching();
     public bool RetrieveNeedsLowerLevel();
     public int RetrieveCompletedSetCount();
@@ -438,6 +440,22 @@ public class ItemSetManagerService : IItemSetManagerService
         };
 
         return result;
+    }
+
+    public List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response)
+    {
+        var allTabs = new List<BaseStashTabMetadata>();
+
+        foreach (var tab in response.StashTabs)
+        {
+            allTabs.Add(tab); // Add the parent tab
+            if (tab.Children != null)
+            {
+                allTabs.AddRange(tab.Children); // Add the children if any
+            }
+        }
+
+        return allTabs;
     }
 
     #region Properties as Functions
