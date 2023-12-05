@@ -12,12 +12,10 @@ public interface IItemSetManagerService
 {
     public void UpdateStashMetadata(List<BaseStashTabMetadata> metadata);
     public bool UpdateStashContents(int setThreshold, List<int> selectedTabIndices, List<EnhancedItem> filteredStashContents);
-
     public void GenerateItemSets();
     public void CalculateItemAmounts();
     public void ResetCompletedSets();
     public void ResetItemAmounts();
-
     public List<Dictionary<ItemClass, int>> RetrieveCurrentItemCountsForFilterManipulation();
     public List<BaseStashTabMetadata> RetrieveStashTabMetadataList();
     public bool RetrieveNeedsFetching();

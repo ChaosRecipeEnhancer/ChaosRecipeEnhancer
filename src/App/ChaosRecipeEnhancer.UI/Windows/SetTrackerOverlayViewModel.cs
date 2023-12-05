@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.State;
@@ -288,6 +289,25 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
         // hash set of missing item classes (e.g. "ring", "amulet", etc.)
         var missingItemClasses = new HashSet<string>();
+
+        // first we check weapons since they're special and 2 item classes count for one
+        var oneHandedWeaponCount = itemClassAmounts
+            .Where(dict => dict.ContainsKey(ItemClass.OneHandWeapons))
+            .Select(dict => dict[ItemClass.OneHandWeapons])
+            .FirstOrDefault();
+
+        var twoHandedWeaponCount = itemClassAmounts
+            .Where(dict => dict.ContainsKey(ItemClass.TwoHandWeapons))
+            .Select(dict => dict[ItemClass.TwoHandWeapons])
+            .FirstOrDefault();
+
+        if (oneHandedWeaponCount / 2 + twoHandedWeaponCount >= Settings.FullSetThreshold)
+        {
+            itemClassAmounts.RemoveAll(
+                dict => dict.ContainsKey(ItemClass.OneHandWeapons) ||
+                        dict.ContainsKey(ItemClass.TwoHandWeapons)
+            );
+        }
 
         foreach (var itemCountByClass in itemClassAmounts)
         {
