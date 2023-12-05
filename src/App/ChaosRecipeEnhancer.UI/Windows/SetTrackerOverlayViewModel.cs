@@ -73,20 +73,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             // needed to update item set manager
             var setThreshold = Settings.FullSetThreshold;
 
-            if (string.IsNullOrWhiteSpace(Settings.StashTabIndices))
-            {
-                FetchButtonEnabled = true;
-
-                ErrorWindow.Spawn(
-                    "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
-                    "Error: Set Tracker Overlay - Fetch Data"
-                );
-
-                return false;
-            }
-
             // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
-            var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
             var filteredStashContents = new List<EnhancedItem>();
 
             // reset item amounts before fetching new data
@@ -96,6 +83,44 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
             // update the stash tab metadata based on your target stash
             var stashTabMetadataList = FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
+
+            List<int> selectedTabIndices = new();
+            if (Settings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList)
+            {
+                if (string.IsNullOrWhiteSpace(Settings.StashTabIndices))
+                {
+                    FetchButtonEnabled = true;
+
+                    ErrorWindow.Spawn(
+                        "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
+                        "Error: Set Tracker Overlay - Fetch Data"
+                    );
+
+                    return false;
+                }
+
+                selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
+
+            }
+            else if (Settings.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix)
+            {
+                if (string.IsNullOrWhiteSpace(Settings.StashTabPrefix))
+                {
+                    FetchButtonEnabled = true;
+
+                    ErrorWindow.Spawn(
+                        "It looks like you haven't entered a stash tab prefix. Please navigate to the 'General > General > Stash Tab Prefix' setting and enter a valid value, and try again.",
+                        "Error: Set Tracker Overlay - Fetch Data"
+                    );
+
+                    return false;
+                }
+
+                selectedTabIndices = stashTabMetadataList
+                    .Where(st => st.Name.StartsWith(Settings.StashTabPrefix))
+                    .Select(st => st.Index)
+                    .ToList();
+            }
 
             if (stashTabMetadataList is not null)
             {
