@@ -148,7 +148,7 @@
             VerticalAlignment="Center"
             Text="Item Highlight Mode:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="Item by Item: highlights each item after another. &#x0a;Set by Set: highlights a full set at once, each after another. &#x0a;All Items: highlights all items at once." />
+            ToolTip="v3.23: Disabling this control for the time being&#x0a;as I work to re-implement Item-by-Item mode." />
 
         <!-- Stash Tab Overlay Highlighted Item Picker Mode -->
         <ComboBox
@@ -157,6 +157,7 @@
             Margin="10 0 0 10"
             Width="200"
             VerticalContentAlignment="Center"
+            IsEnabled="False"
             SelectedIndex="{Binding Settings.StashTabOverlayHighlightMode, Mode=TwoWay}">
 
             <ComboBoxItem Content="Set by Set" />
