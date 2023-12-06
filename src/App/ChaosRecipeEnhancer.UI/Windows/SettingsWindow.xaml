@@ -373,7 +373,7 @@
                         Visibility="{Binding UpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Margin="0,0,5,0"
                         ToolTipService.InitialShowDelay="50"
-                        ToolTip="Update available! Click to download the latest version.">
+                        ToolTip="Update available! Click to see our latest release.">
 
                         <Image.InputBindings>
                             <MouseBinding
