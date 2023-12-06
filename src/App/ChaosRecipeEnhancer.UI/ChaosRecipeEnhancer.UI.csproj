@@ -49,6 +49,7 @@
 		<Resource Include="Assets\Images\Gloves.png" />
 		<Resource Include="Assets\Images\Helmet.png" />
 		<Resource Include="Assets\Images\Ring.png" />
+		<Resource Include="Assets\Images\UpgradeArrow.png" />
 		<Resource Include="Assets\Images\Weapon.png" />
 
 		<Resource Include="Assets\Images\Validated.png" />
@@ -114,6 +115,7 @@
 		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs" />
 		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs" />
 		<None Remove="Assets\Images\Loading.png" />
+		<None Remove="Assets\Images\UpgradeArrow.png" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml" />
 	</ItemGroup>
