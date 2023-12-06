@@ -329,10 +329,11 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
         if (oneHandedWeaponCount / 2 + twoHandedWeaponCount >= Settings.FullSetThreshold)
         {
-            itemClassAmounts.RemoveAll(
-                dict => dict.ContainsKey(ItemClass.OneHandWeapons) ||
-                        dict.ContainsKey(ItemClass.TwoHandWeapons)
-            );
+            foreach (var dict in itemClassAmounts)
+            {
+                dict.Remove(ItemClass.OneHandWeapons);
+                dict.Remove(ItemClass.TwoHandWeapons);
+            }
         }
 
         foreach (var itemCountByClass in itemClassAmounts)
