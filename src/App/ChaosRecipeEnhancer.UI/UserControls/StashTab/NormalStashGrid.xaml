@@ -11,24 +11,14 @@
               d:DataContext="{d:DesignInstance Type=stashTab:InteractiveStashTabCell}">
 
     <ItemsControl.Background>
-
-        <SolidColorBrush
-            Opacity="0"
-            Color="Transparent" />
-
+        <SolidColorBrush Opacity="0" Color="Transparent" />
     </ItemsControl.Background>
 
     <!-- ItemsPanelTemplate -->
     <ItemsControl.ItemsPanel>
-
         <ItemsPanelTemplate>
-
-            <UniformGrid
-                Columns="12"
-                Rows="12" />
-
+            <UniformGrid Columns="12" Rows="12" />
         </ItemsPanelTemplate>
-
     </ItemsControl.ItemsPanel>
 
     <!-- ItemTemplate -->
@@ -64,38 +54,30 @@
                         </Setter>
 
                         <!-- Set the default value here (if any); if you set it directly on the button that will override the trigger -->
-                        <Setter Property="Background"
-                                Value="Transparent" />
+                        <Setter Property="Background" Value="Transparent" />
 
                         <Setter Property="Opacity"
                                 Value="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayOpacity}" />
                         <Style.Triggers>
 
-                            <Trigger Property="IsMouseOver"
-                                     Value="True">
+                            <Trigger Property="IsMouseOver" Value="True">
 
-                                <Setter Property="Background"
-                                        Value="Transparent" />
+                                <Setter Property="Background" Value="Transparent" />
 
                             </Trigger>
 
-                            <DataTrigger Binding="{Binding Active}"
-                                         Value="True">
+                            <DataTrigger Binding="{Binding Active}" Value="True">
 
                                 <Setter Property="Background"
                                         Value="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayHighlightColor}" />
 
-                                <Setter Property="Opacity"
-                                        Value="1" />
+                                <Setter Property="Opacity" Value="1" />
 
-                                <Setter Property="Content"
-                                        Value="{Binding ButtonText}" />
+                                <Setter Property="Content" Value="{Binding ButtonText}" />
 
-                                <Setter Property="Foreground"
-                                        Value="White" />
+                                <Setter Property="Foreground" Value="White" />
 
-                                <Setter Property="FontSize"
-                                        Value="20" />
+                                <Setter Property="FontSize" Value="20" />
 
                             </DataTrigger>
 
