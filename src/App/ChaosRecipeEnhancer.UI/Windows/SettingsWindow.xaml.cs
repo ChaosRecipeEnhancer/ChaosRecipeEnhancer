@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Constants;
@@ -15,17 +18,21 @@ namespace ChaosRecipeEnhancer.UI.Windows;
 
 public partial class SettingsWindow
 {
+    private readonly SettingsViewModel _model;
     private readonly SetTrackerOverlayWindow _recipeOverlay;
     private readonly NotifyIcon _trayIcon = new();
     private bool _closingFromTrayIcon;
 
     public SettingsWindow()
     {
-        DataContext = new SettingsViewModel();
+        DataContext = _model = new SettingsViewModel();
         _recipeOverlay = new SetTrackerOverlayWindow();
         InitializeComponent();
         InitializeTray();
         InitializeHotkeys();
+
+        // Check for app updates on startup
+        CheckForAppUpdate();
 
         // will force the window to resize to the size of its content.
         // we do this in lieu of the `SizeToContent` property due to an issue
@@ -126,6 +133,66 @@ public partial class SettingsWindow
             }
         }
     }
+
+    #region Check For Updates Stuff
+
+    private async Task CheckForAppUpdate()
+    {
+        try
+        {
+            var currentVersion = AppInfo.VersionTextNoPrefix;
+            var latestVersion = await GetLatestReleaseVersion(AppInfo.GitHubOrgName, AppInfo.GithubRepoName);
+
+            _model.UpdateAvailable = IsUpdateAvailable(currentVersion, latestVersion);
+
+            // Notify user about the update
+            Trace.WriteLine($"A new version {latestVersion} is available!");
+
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions, like network issues
+            Trace.WriteLine("Error checking for updates: " + ex.Message);
+        }
+    }
+
+    private static async Task<string> GetLatestReleaseVersion(string user, string repo)
+    {
+        using var client = new HttpClient();
+
+        // GitHub API requires a user-agent
+        client.DefaultRequestHeaders.Add("User-Agent", "request");
+
+        var url = $"https://api.github.com/repos/{user}/{repo}/releases/latest";
+        var response = await client.GetStringAsync(url);
+
+        using var jsonDoc = JsonDocument.Parse(response);
+
+        var root = jsonDoc.RootElement;
+        var tagName = root.GetProperty("tag_name").GetString();
+        return tagName; // 'tag_name' usually contains the version
+    }
+
+    private static bool IsUpdateAvailable(string currentVersion, string latestVersion)
+    {
+        var currentParts = currentVersion.Split('.');
+        var latestParts = latestVersion.Split('.');
+
+        // Compare each part of the version numbers
+        for (var i = 0; i < Math.Max(currentParts.Length, latestParts.Length); i++)
+        {
+            var currentPart = i < currentParts.Length ? int.Parse(currentParts[i]) : 0;
+            var latestPart = i < latestParts.Length ? int.Parse(latestParts[i]) : 0;
+
+            if (currentPart < latestPart) return true; // An update is available
+            if (currentPart > latestPart) return false; // Current version is newer (unlikely, but possible)
+        }
+
+        // Versions are equal, so no update is needed
+        return false;
+    }
+
+    #endregion
 
     #region Hotkey Stuff (Move This... Later)
 
