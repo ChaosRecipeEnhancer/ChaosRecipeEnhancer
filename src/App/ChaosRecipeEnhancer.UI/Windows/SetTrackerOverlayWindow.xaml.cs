@@ -36,15 +36,7 @@ public partial class SetTrackerOverlayWindow
 
     protected override void OnClosing(CancelEventArgs e)
     {
-        Visibility = Visibility.Hidden;
-        IsOpen = false;
-
-        if (_logWatcherManager is not null)
-        {
-            _logWatcherManager.StopWatchingLogFile();
-            _logWatcherManager.Dispose();
-        }
-
+        Hide();
         e.Cancel = true;
     }
 

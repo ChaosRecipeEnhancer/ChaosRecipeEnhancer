@@ -38,7 +38,7 @@ public partial class StashTabOverlayWindow
 
     protected override void OnClosing(CancelEventArgs e)
     {
-        Visibility = Visibility.Hidden;
+        Hide();
         e.Cancel = true;
     }
 
