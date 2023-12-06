@@ -8,7 +8,7 @@ This is backend for the the Chaos Recipe Enhancer. The backend is responsible fo
 
 As the architecture diagram outlines, all back-end services as hosted on AWS (we leverage a few services across the platform).
 
-And yes, I do pay for this stuff out of pocket. 
+And yes, I do pay for this stuff out of pocket. [Would you like to chip in? :D](https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS)
 
 ## Auth Flow Sequence
 
