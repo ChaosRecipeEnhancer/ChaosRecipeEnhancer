@@ -20,6 +20,7 @@ This app fetches your stash data from the PoE servers and shows which items you 
 
 ## Installation
 
+0. Download and install the [.NET Runtime for Windows][dotnet-runtime-download-link]
 1. Download and install the [latest the ChaosRecipeEnhancerSetup.msi][releases-link]
 
 ## Additional Features
@@ -74,3 +75,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 [issues-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues
 [support-badge]: https://img.shields.io/badge/Paypal-Support-<COLOR>?style=for-the-badge&logo=paypal&color=ffae29
 [support-link]: https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS
+[dotnet-runtime-download-link]: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.14-windows-x64-installer
