@@ -15,6 +15,7 @@ using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Utilities.Native;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using System.ComponentModel;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
@@ -34,6 +35,12 @@ public partial class StashTabOverlayWindow
     public bool IsOpen { get; set; }
 
     private void OnLoaded(object sender, RoutedEventArgs e) => Win32.MakeToolWindow(this);
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        Visibility = Visibility.Hidden;
+        e.Cancel = true;
+    }
 
     private void OnEditModeButtonClick(object sender, RoutedEventArgs e) => HandleEditButton();
 

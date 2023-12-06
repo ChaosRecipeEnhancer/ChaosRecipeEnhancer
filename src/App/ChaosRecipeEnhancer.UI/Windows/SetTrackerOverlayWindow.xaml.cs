@@ -34,6 +34,20 @@ public partial class SetTrackerOverlayWindow
         Win32.MakeToolWindow(this);
     }
 
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        Visibility = Visibility.Hidden;
+        IsOpen = false;
+
+        if (_logWatcherManager is not null)
+        {
+            _logWatcherManager.StopWatchingLogFile();
+            _logWatcherManager.Dispose();
+        }
+
+        e.Cancel = true;
+    }
+
     private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Settings.SetTrackerOverlayDisplayMode))
