@@ -177,7 +177,7 @@ public static class Coordinates
                 // if we hit an item, activate the next item (and its associated cells)
                 if (isHit)
                 {
-                    stashTabOverlayWindow.ActivateNextCell(true, buttonList[hitIndex].InteractiveStashTabCell, stashTabOverlayWindow.StashTabOverlayTabControl);
+                    stashTabOverlayWindow.ActivateNextCell(true, buttonList[hitIndex].InteractiveStashTabCell);
                     Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Quad Tab Activating Next Item: {buttonList[hitIndex].InteractiveStashTabCell}");
 
                 }
@@ -222,7 +222,7 @@ public static class Coordinates
 
                 if (isHit)
                 {
-                    stashTabOverlayWindow.ActivateNextCell(true, buttonList[hitIndex].InteractiveStashTabCell, stashTabOverlayWindow.StashTabOverlayTabControl);
+                    stashTabOverlayWindow.ActivateNextCell(true, buttonList[hitIndex].InteractiveStashTabCell);
                     Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Normal Tab Activating Next Item: {buttonList[hitIndex].InteractiveStashTabCell}");
                 }
 

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.State;
-using ChaosRecipeEnhancer.UI.Utilities;
+using ChaosRecipeEnhancer.UI.Utilities.Native;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
@@ -88,7 +88,7 @@ public partial class SettingsWindow
         else if (!Settings.Default.CloseToTrayEnabled || _closingFromTrayIcon)
         {
             _trayIcon.Visible = false;
-            MouseHook.Stop();
+            MouseHookForStashTabOverlay.Stop();
             Settings.Default.Save();
             Application.Current.Shutdown();
         }

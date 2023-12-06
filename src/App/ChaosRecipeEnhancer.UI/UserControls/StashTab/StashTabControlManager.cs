@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Windows;
 
@@ -14,35 +16,51 @@ public static class StashTabControlManager
     public static List<StashTabControl> StashTabControls { get; set; } = new();
     public static List<int> StashTabIndices { get; private set; }
 
-    public static void GetStashTabIndices()
+    public static void GetStashTabIndicesFromSettings()
     {
-        if (!string.IsNullOrWhiteSpace(Settings.Default.StashTabIndices))
+        // update the stash tab metadata based on your target stash
+
+        List<int> selectedTabIndices = new();
+
+        if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList)
         {
-            var stashTabIndices = new List<int>();
-            var indices = Settings.Default.StashTabIndices;
-
-            foreach (var s in indices.Split(','))
+            if (string.IsNullOrWhiteSpace(Settings.Default.StashTabIndices))
             {
-                if (int.TryParse(s.Trim(), out var parsedIndex))
-                {
-                    if (!stashTabIndices.Contains(parsedIndex)) stashTabIndices.Add(parsedIndex);
-                }
-                else
-                {
-                    ErrorWindow.Spawn("The 'Stash Tab Index' setting must be a number.", "Error: Stash Tab Overlay");
-                }
+                ErrorWindow.Spawn(
+                    "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
+                    "Error: Stash Tab Overlay"
+                );
             }
-
-            if (stashTabIndices.Count == 0)
+            else
             {
-                ErrorWindow.Spawn("Stash Tab indices empty", "Error: Stash Tab Overlay");
+                selectedTabIndices = Settings.Default.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
             }
-
-            StashTabIndices = stashTabIndices;
         }
-        else
+        else if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix)
         {
-            ErrorWindow.Spawn("No valid Stash Tab indices could be found in the user settings. The 'Stash Tab Index' setting must be a number.", "Error: Stash Tab Overlay");
+            if (string.IsNullOrWhiteSpace(Settings.Default.StashTabPrefix))
+            {
+                ErrorWindow.Spawn(
+                    "It looks like you haven't entered a stash tab prefix or no tabs match that naming prefix. Please navigate to the 'General > General > Stash Tab Prefix' setting and enter a valid value, and try again.",
+                    "Error: Stash Tab Overlay"
+                );
+            }
+            else
+            {
+                selectedTabIndices = Settings.Default.StashTabPrefixIndices.Split(',').ToList().Select(int.Parse).ToList();
+            }
+        }
+
+        StashTabIndices = selectedTabIndices;
+
+        foreach (var s in selectedTabIndices)
+        {
+            if (!selectedTabIndices.Contains(s)) selectedTabIndices.Add(s);
+        }
+
+        if (selectedTabIndices.Count == 0)
+        {
+            ErrorWindow.Spawn("Stash Tab indices empty", "Error: Stash Tab Overlay");
         }
     }
 }

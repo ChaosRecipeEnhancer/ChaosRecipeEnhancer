@@ -2,7 +2,7 @@
 
 public static class AppInfo
 {
-    public const string VersionText = "v3.23.1001";
+    public const string VersionText = "v3.23.1002";
     public const string GithubReleasesUrl = "https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases";
     public const string GithubIssuesUrl = "https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues";
     public const string DiscordUrl = "https://discord.gg/hy5xSgw3au";
