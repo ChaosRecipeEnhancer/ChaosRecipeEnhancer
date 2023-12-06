@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -35,10 +34,18 @@ public partial class SetTrackerOverlayWindow
         Win32.MakeToolWindow(this);
     }
 
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        Hide();
+        e.Cancel = true;
+    }
+
     private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Settings.SetTrackerOverlayDisplayMode))
             UpdateOverlayType();
+        else if (e.PropertyName == nameof(Settings.SetTrackerOverlayItemCounterDisplayMode))
+            UpdateOverlayType(); // hack: force update the item counters when we change the display mode
         else if (e.PropertyName == nameof(Settings.FullSetThreshold)
                  || e.PropertyName == nameof(Settings.StashTabIndices)
                  || e.PropertyName == nameof(Settings.StashTabPrefix))

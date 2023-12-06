@@ -18,6 +18,7 @@
         <zemotoCommon:BoolVisibilityConverter x:Key="InvertedBoolVisibilityConverter" CollapseWhenNotVisible="True" Invert="True" />
         <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfEqual" ComparisonType="{x:Type system:Int32}" />
         <zemotoCommon:InvertBoolConverter x:Key="InvertBoolConverter" />
+        <zemotoCommon:NullOrEmptyToBoolConverter x:Key="NullOrEmptyToBoolConverter" />
     </UserControl.Resources>
 
     <Grid
@@ -272,26 +273,9 @@
             Click="LogLocationDialog_Click"
             Visibility="{Binding Settings.AutoFetchOnRezoneEnabled, Converter={StaticResource BoolVisibilityConverter}}"
             ToolTip="{Binding Settings.PathOfExileClientLogLocation, Mode=TwoWay}"
+            ToolTipService.IsEnabled="{Binding Settings.PathOfExileClientLogLocation, Converter={StaticResource NullOrEmptyToBoolConverter}}"
             ToolTipService.InitialShowDelay="50"
             Content="{Binding Settings.PathOfExileClientLogLocation, Mode=TwoWay}"
-            HorizontalContentAlignment="Left">
-
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter
-                        Property="Background"
-                        Value="Transparent" />
-                    <Style.Triggers>
-                        <Trigger
-                            Property="IsMouseOver"
-                            Value="True">
-                            <Setter
-                                Property="Background"
-                                Value="Transparent" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
+            HorizontalContentAlignment="Left" />
     </Grid>
 </UserControl>

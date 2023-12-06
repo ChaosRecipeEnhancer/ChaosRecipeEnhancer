@@ -74,9 +74,9 @@ public class StashTabControl : ViewModelBase
 
         foreach (var cell in OverlayCellsList)
         {
-            foreach (var coordinate in allCoordinates)
+            foreach (var (X, Y) in allCoordinates)
             {
-                if (coordinate.X == cell.XIndex && coordinate.Y == cell.YIndex)
+                if (X == cell.XIndex && Y == cell.YIndex)
                     cell.Active = false;
             }
         }
@@ -99,9 +99,9 @@ public class StashTabControl : ViewModelBase
 
         foreach (var cell in OverlayCellsList)
         {
-            foreach (var coordinate in allCoordinates)
+            foreach (var (X, Y) in allCoordinates)
             {
-                if (coordinate.X == cell.XIndex && coordinate.Y == cell.YIndex)
+                if (X == cell.XIndex && Y == cell.YIndex)
                 {
                     cell.Active = true;
                     cell.ItemModel = itemModel;

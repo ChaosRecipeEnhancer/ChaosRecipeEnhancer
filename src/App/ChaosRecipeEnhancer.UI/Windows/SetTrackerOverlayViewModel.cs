@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.State;
@@ -72,20 +71,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             // needed to update item set manager
             var setThreshold = Settings.FullSetThreshold;
 
-            if (string.IsNullOrWhiteSpace(Settings.StashTabIndices))
-            {
-                FetchButtonEnabled = true;
-
-                ErrorWindow.Spawn(
-                    "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
-                    "Error: Set Tracker Overlay - Fetch Data"
-                );
-
-                return false;
-            }
-
             // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
-            var selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
             var filteredStashContents = new List<EnhancedItem>();
 
             // reset item amounts before fetching new data
@@ -94,7 +80,48 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             _itemSetManagerService.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
-            var stashTabMetadataList = FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
+            var stashTabMetadataList = _itemSetManagerService.FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
+
+            List<int> selectedTabIndices = new();
+            if (Settings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList)
+            {
+                if (string.IsNullOrWhiteSpace(Settings.StashTabIndices))
+                {
+                    FetchButtonEnabled = true;
+
+                    ErrorWindow.Spawn(
+                        "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
+                        "Error: Set Tracker Overlay - Fetch Data"
+                    );
+
+                    return false;
+                }
+
+                selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
+
+            }
+            else if (Settings.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix)
+            {
+                if (string.IsNullOrWhiteSpace(Settings.StashTabPrefix))
+                {
+                    FetchButtonEnabled = true;
+
+                    ErrorWindow.Spawn(
+                        "It looks like you haven't entered a stash tab prefix. Please navigate to the 'General > General > Stash Tab Prefix' setting and enter a valid value, and try again.",
+                        "Error: Set Tracker Overlay - Fetch Data"
+                    );
+
+                    return false;
+                }
+
+                selectedTabIndices = stashTabMetadataList
+                    .Where(st => st.Name.StartsWith(Settings.StashTabPrefix))
+                    .Select(st => st.Index)
+                    .ToList();
+
+                Settings.StashTabPrefixIndices = string.Join(',', selectedTabIndices);
+                Settings.Save();
+            }
 
             if (stashTabMetadataList is not null)
             {
@@ -233,8 +260,9 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         else if (!NeedsFetching)
         {
             // case 2: user fetched data and has enough sets to turn in based on their threshold
-            if (FullSets >= Settings.FullSetThreshold || Settings.VendorSetsEarly)
+            if (FullSets >= Settings.FullSetThreshold)
             {
+                // if the user has vendor sets early enabled, we don't want to show the warning message
                 if (!Settings.VendorSetsEarly || FullSets >= Settings.FullSetThreshold)
                 {
                     WarningMessage = SetsFullText;
@@ -247,14 +275,23 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             }
 
             // case 3: user fetched data and has at least 1 set, but not to their full threshold
-            else if (FullSets < Settings.FullSetThreshold && FullSets >= 1)
+            else if ((FullSets < Settings.FullSetThreshold || Settings.VendorSetsEarly) && FullSets >= 1)
             {
                 WarningMessage = string.Empty;
 
                 // stash button is disabled with warning tooltip to change threshold
-                StashButtonEnabled = false;
-                StashButtonTooltipEnabled = true;
-                SetsTooltipEnabled = true;
+                if (Settings.VendorSetsEarly)
+                {
+                    StashButtonEnabled = true;
+                    StashButtonTooltipEnabled = false;
+                    SetsTooltipEnabled = false;
+                }
+                else
+                {
+                    StashButtonEnabled = false;
+                    StashButtonTooltipEnabled = true;
+                    SetsTooltipEnabled = true;
+                }
             }
 
             // case 3: user has fetched and needs items for chaos recipe (needs more lower level items)
@@ -278,6 +315,25 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
         // hash set of missing item classes (e.g. "ring", "amulet", etc.)
         var missingItemClasses = new HashSet<string>();
+
+        // first we check weapons since they're special and 2 item classes count for one
+        var oneHandedWeaponCount = itemClassAmounts
+            .Where(dict => dict.ContainsKey(ItemClass.OneHandWeapons))
+            .Select(dict => dict[ItemClass.OneHandWeapons])
+            .FirstOrDefault();
+
+        var twoHandedWeaponCount = itemClassAmounts
+            .Where(dict => dict.ContainsKey(ItemClass.TwoHandWeapons))
+            .Select(dict => dict[ItemClass.TwoHandWeapons])
+            .FirstOrDefault();
+
+        if (oneHandedWeaponCount / 2 + twoHandedWeaponCount >= Settings.FullSetThreshold)
+        {
+            itemClassAmounts.RemoveAll(
+                dict => dict.ContainsKey(ItemClass.OneHandWeapons) ||
+                        dict.ContainsKey(ItemClass.TwoHandWeapons)
+            );
+        }
 
         foreach (var itemCountByClass in itemClassAmounts)
         {
@@ -370,21 +426,4 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         OnPropertyChanged(nameof(FetchButtonEnabled));
         OnPropertyChanged(nameof(ShowAmountNeeded));
     }
-
-    public List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response)
-    {
-        var allTabs = new List<BaseStashTabMetadata>();
-
-        foreach (var tab in response.StashTabs)
-        {
-            allTabs.Add(tab); // Add the parent tab
-            if (tab.Children != null)
-            {
-                allTabs.AddRange(tab.Children); // Add the children if any
-            }
-        }
-
-        return allTabs;
-    }
-
 }

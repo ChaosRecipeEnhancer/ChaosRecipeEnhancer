@@ -130,6 +130,20 @@ public sealed class NullOrEmptyVisibilityConverter : IValueConverter
     }
 }
 
+public sealed class NullOrEmptyToBoolConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        var nullOrEmpty = value is string stringValue ? string.IsNullOrEmpty(stringValue) : value is null;
+        return nullOrEmpty ? false : true;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
 public sealed class ValueConverterGroup : List<IValueConverter>, IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
