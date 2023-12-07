@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Windows;
@@ -64,9 +65,7 @@ internal class FileFilterStorage : IFilterStorage
             }
             catch (IOException e) when (i < maxRetries - 1)
             {
-                // Log the exception details for debugging
-                // Example: Log("IOException encountered: " + e.Message);
-
+                Trace.WriteLine("IOException encountered: " + e.Message);
                 await Task.Delay(delayOnRetry);
             }
         }
