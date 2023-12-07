@@ -5,6 +5,7 @@ using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using ChaosRecipeEnhancer.UI.Utilities;
+using ChaosRecipeEnhancer.UI.Utilities.Native;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
@@ -31,7 +32,7 @@ public partial class SetTrackerOverlayWindow
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        Win32.MakeToolWindow(this);
+        WindowsUtilitiesForOverlays.MakeToolWindow(this);
     }
 
     protected override void OnClosing(CancelEventArgs e)
@@ -115,7 +116,7 @@ public partial class SetTrackerOverlayWindow
     {
         if (!IsOpen) return;
 
-        var successfulResult = await _model.FetchDataAsync(); // Fire and forget async
+        var successfulResult = await _model.FetchStashDataAsync(); // Fire and forget async
 
         if (!successfulResult)
         {
@@ -123,11 +124,14 @@ public partial class SetTrackerOverlayWindow
         }
     }
 
-    public void RunReloadFilter()
+    public async void RunReloadFilter()
     {
         if (!IsOpen) return;
 
-        _model.RunReloadFilter();
+        if (_model.Settings.LootFilterManipulationEnabled)
+        {
+            await _model.RunReloadFilter();
+        }
     }
 
     public void RunStashTabOverlay()

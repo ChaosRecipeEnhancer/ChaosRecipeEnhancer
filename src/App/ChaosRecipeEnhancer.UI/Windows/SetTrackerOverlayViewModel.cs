@@ -16,8 +16,9 @@ namespace ChaosRecipeEnhancer.UI.Windows;
 
 internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 {
+    #region Fields
+
     private readonly IFilterManipulationService _filterManipulationService = Ioc.Default.GetRequiredService<IFilterManipulationService>();
-    private readonly IItemSetManagerService _itemSetManagerService = Ioc.Default.GetRequiredService<IItemSetManagerService>();
     private readonly IReloadFilterService _reloadFilterService = Ioc.Default.GetRequiredService<IReloadFilterService>();
     private readonly IApiService _apiService = Ioc.Default.GetRequiredService<IApiService>();
 
@@ -29,6 +30,10 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     private bool _stashButtonTooltipEnabled = false;
     private bool _setsTooltipEnabled = false;
     private string _warningMessage;
+
+    #endregion
+
+    #region Properties
 
     public bool FetchButtonEnabled
     {
@@ -60,7 +65,9 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         set => SetProperty(ref _warningMessage, value);
     }
 
-    public async Task<bool> FetchDataAsync()
+    #endregion
+
+    public async Task<bool> FetchStashDataAsync()
     {
         WarningMessage = string.Empty;
         FetchButtonEnabled = false;
@@ -76,11 +83,11 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
             // reset item amounts before fetching new data
             // invalidate some outdated state for our item manager
-            _itemSetManagerService.ResetCompletedSets();
-            _itemSetManagerService.ResetItemAmounts();
+            GlobalItemSetManagerState.ResetCompletedSetCount();
+            GlobalItemSetManagerState.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
-            var stashTabMetadataList = _itemSetManagerService.FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
+            var stashTabMetadataList = GlobalItemSetManagerState.FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
 
             List<int> selectedTabIndices = new();
             if (Settings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList)
@@ -98,7 +105,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 }
 
                 selectedTabIndices = Settings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
-
             }
             else if (Settings.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix)
             {
@@ -125,7 +131,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
             if (stashTabMetadataList is not null)
             {
-                _itemSetManagerService.UpdateStashMetadata(stashTabMetadataList);
+                GlobalItemSetManagerState.UpdateStashMetadata(stashTabMetadataList);
 
                 // Create a new dictionary for stash index and ID pairs
                 var selectedStashIndexIdPairs = new Dictionary<int, string>();
@@ -168,7 +174,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                     // add the enhanced items to the filtered stash contents
                     filteredStashContents.AddRange(EnhancedItemHelper.FilterItemsForRecipe(enhancedItems));
 
-                    _itemSetManagerService.UpdateStashContents(setThreshold, selectedTabIndices, filteredStashContents);
+                    GlobalItemSetManagerState.UpdateStashContents(setThreshold, selectedTabIndices, filteredStashContents);
 
                     if (GlobalRateLimitState.RateLimitExceeded)
                     {
@@ -186,8 +192,8 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 }
 
                 // recalculate item amounts and generate item sets after fetching from api
-                _itemSetManagerService.CalculateItemAmounts();
-                _itemSetManagerService.GenerateItemSets();
+                GlobalItemSetManagerState.CalculateItemAmounts();
+                GlobalItemSetManagerState.GenerateItemSets();
 
                 // update the UI accordingly
                 UpdateDisplay();
@@ -251,7 +257,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     public void UpdateStashButtonAndWarningMessage()
     {
-
         // case 1: user just opened the app, hasn't hit fetch yet
         if (NeedsFetching)
         {
@@ -309,9 +314,9 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         }
     }
 
-    public void RunReloadFilter()
+    public async Task RunReloadFilter()
     {
-        var itemClassAmounts = _itemSetManagerService.RetrieveCurrentItemCountsForFilterManipulation();
+        var itemClassAmounts = GlobalItemSetManagerState.RetrieveCurrentItemCountsForFilterManipulation();
 
         // hash set of missing item classes (e.g. "ring", "amulet", etc.)
         var missingItemClasses = new HashSet<string>();
@@ -347,50 +352,98 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             }
         }
 
-        _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses, NeedsLowerLevel);
+        await _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses);
         _reloadFilterService.ReloadFilter();
     }
 
     private string NeedsLowerLevelText(int diff) => $"Need {Math.Abs(diff)} items with iLvl 60-74!";
     private bool ShowAmountNeeded => Settings.SetTrackerOverlayItemCounterDisplayMode == 2;
-    public bool NeedsFetching => _itemSetManagerService.RetrieveNeedsFetching();
-    public bool NeedsLowerLevel => _itemSetManagerService.RetrieveNeedsLowerLevel();
-    public int FullSets => _itemSetManagerService.RetrieveCompletedSetCount();
+    public bool NeedsFetching => GlobalItemSetManagerState.NeedsFetching;
+    public bool NeedsLowerLevel => GlobalItemSetManagerState.NeedsLowerLevel;
+    public int FullSets => GlobalItemSetManagerState.CompletedSetCount;
 
     #region Item Amount and Visibility Properties
 
+    #region Item Amount Properties
+
     public int RingsAmount => ShowAmountNeeded
         // case where we are showing missing items (calculate total needed and subtract from threshold, but don't show negatives)
-        ? Math.Max((Settings.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount(), 0)
+        ? Math.Max((Settings.FullSetThreshold * 2) - GlobalItemSetManagerState.RingsAmount, 0)
         // case where we are showing total item sets (e.g. pair of rings as a single 'count')
-        : _itemSetManagerService.RetrieveRingsAmount() / 2;
+        : GlobalItemSetManagerState.RingsAmount / 2;
 
-    public bool RingsActive => Settings.LootFilterRingsAlwaysActive || (NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - _itemSetManagerService.RetrieveRingsAmount() > 0);
+    public int AmuletsAmount =>
+        ShowAmountNeeded
+            ? Math.Max(Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.AmuletsAmount, 0)
+            : GlobalItemSetManagerState.AmuletsAmount;
 
-    public int AmuletsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveAmuletsAmount(), 0) : _itemSetManagerService.RetrieveAmuletsAmount();
-    public bool AmuletsActive => Settings.LootFilterAmuletsAlwaysActive || (NeedsFetching || Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveAmuletsAmount() > 0);
+    public int BeltsAmount =>
+        ShowAmountNeeded
+            ? Math.Max(Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.BeltsAmount, 0)
+            : GlobalItemSetManagerState.BeltsAmount;
 
-    public int BeltsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveBeltsAmount(), 0) : _itemSetManagerService.RetrieveBeltsAmount();
-    public bool BeltsActive => Settings.LootFilterBeltsAlwaysActive || (NeedsFetching || Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveBeltsAmount() > 0);
+    public int ChestsAmount => ShowAmountNeeded
+        ? Math.Max(Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.ChestsAmount, 0)
+        : GlobalItemSetManagerState.ChestsAmount;
 
-    public int ChestsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveChestsAmount(), 0) : _itemSetManagerService.RetrieveChestsAmount();
-    public bool ChestsActive => Settings.LootFilterBodyArmourAlwaysActive || (NeedsFetching || Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveChestsAmount() > 0);
+    public int GlovesAmount =>
+        ShowAmountNeeded
+            ? Math.Max(Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.GlovesAmount, 0)
+            : GlobalItemSetManagerState.GlovesAmount;
+
+    public int HelmetsAmount =>
+        ShowAmountNeeded
+            ? Math.Max(Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.HelmetsAmount, 0)
+            : GlobalItemSetManagerState.HelmetsAmount;
 
     public int WeaponsAmount => ShowAmountNeeded
         // case where we are showing missing items (calculate total needed and subtract from threshold, but don't show negatives)
-        ? Math.Max((Properties.Settings.Default.FullSetThreshold * 2) - (_itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2)), 0)
+        ? Math.Max((Properties.Settings.Default.FullSetThreshold * 2) - (GlobalItemSetManagerState.WeaponsSmallAmount + (GlobalItemSetManagerState.WeaponsBigAmount * 2)), 0)
         // case where we are showing total weapon sets (e.g. pair of one handed weapons plus two handed weapons as a 'count' each)
-        : (_itemSetManagerService.RetrieveWeaponsSmallAmount() / 2) + _itemSetManagerService.RetrieveWeaponsBigAmount();
-    public bool WeaponsActive => Settings.LootFilterWeaponsAlwaysActive || (NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - (_itemSetManagerService.RetrieveWeaponsSmallAmount() + (_itemSetManagerService.RetrieveWeaponsBigAmount() * 2)) > 0);
+        : (GlobalItemSetManagerState.WeaponsSmallAmount / 2) + GlobalItemSetManagerState.WeaponsBigAmount;
 
-    public int GlovesAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveGlovesAmount(), 0) : _itemSetManagerService.RetrieveGlovesAmount();
-    public bool GlovesActive => Settings.LootFilterGlovesAlwaysActive || (NeedsFetching || Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveGlovesAmount() > 0);
+    #endregion
 
-    public int HelmetsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveHelmetsAmount(), 0) : _itemSetManagerService.RetrieveHelmetsAmount();
-    public bool HelmetsActive => Settings.LootFilterHelmetsAlwaysActive || (NeedsFetching || Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveHelmetsAmount() > 0);
+    #region Item Class Active (Visibility) Properties
 
-    public int BootsAmount => ShowAmountNeeded ? Math.Max(Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveBootsAmount(), 0) : _itemSetManagerService.RetrieveBootsAmount();
-    public bool BootsActive => Settings.LootFilterBootsAlwaysActive || (NeedsFetching || Properties.Settings.Default.FullSetThreshold - _itemSetManagerService.RetrieveBootsAmount() > 0);
+    public bool RingsActive =>
+        Settings.LootFilterRingsAlwaysActive ||
+        (NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - GlobalItemSetManagerState.RingsAmount > 0);
+
+    public bool AmuletsActive =>
+        Settings.LootFilterAmuletsAlwaysActive ||
+        (NeedsFetching || Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.AmuletsAmount > 0);
+
+    public bool BeltsActive =>
+        Settings.LootFilterBeltsAlwaysActive ||
+        (NeedsFetching || Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.BeltsAmount > 0);
+
+    public bool ChestsActive =>
+        Settings.LootFilterBodyArmourAlwaysActive ||
+        (NeedsFetching || Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.ChestsAmount > 0);
+
+    public bool GlovesActive =>
+        Settings.LootFilterGlovesAlwaysActive ||
+        (NeedsFetching || Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.GlovesAmount > 0);
+
+    public bool HelmetsActive =>
+        Settings.LootFilterHelmetsAlwaysActive ||
+        (NeedsFetching || Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.HelmetsAmount > 0);
+
+    public int BootsAmount =>
+        ShowAmountNeeded
+            ? Math.Max(Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.BootsAmount, 0)
+            : GlobalItemSetManagerState.BootsAmount;
+
+    public bool BootsActive =>
+        Settings.LootFilterBootsAlwaysActive ||
+        (NeedsFetching || Properties.Settings.Default.FullSetThreshold - GlobalItemSetManagerState.BootsAmount > 0);
+
+    public bool WeaponsActive =>
+        Settings.LootFilterWeaponsAlwaysActive ||
+        (NeedsFetching || (Properties.Settings.Default.FullSetThreshold * 2) - (GlobalItemSetManagerState.WeaponsSmallAmount + (GlobalItemSetManagerState.WeaponsBigAmount * 2)) > 0);
+
+    #endregion
 
     #endregion
 

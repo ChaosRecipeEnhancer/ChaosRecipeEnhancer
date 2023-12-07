@@ -12,6 +12,7 @@ using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Utilities;
+using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 using ChaosRecipeEnhancer.UI.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +55,6 @@ internal partial class App
         // Other Service Registration
         services.AddSingleton<IApiService, ApiService>();
         services.AddSingleton<IReloadFilterService, ReloadFilterService>();
-        services.AddSingleton<IItemSetManagerService, ItemSetManagerService>();
         services.AddSingleton<IFilterManipulationService, FilterManipulationService>();
     }
 

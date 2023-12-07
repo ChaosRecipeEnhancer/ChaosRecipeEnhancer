@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Threading;
 
-namespace ChaosRecipeEnhancer.UI.Utilities;
+namespace ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 public sealed class SingleInstance : IDisposable
 {

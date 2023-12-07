@@ -4,24 +4,20 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using ChaosRecipeEnhancer.UI.Extensions.Native;
 using ChaosRecipeEnhancer.UI.Properties;
 using System.Windows.Media;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.UserControls.StashTab;
-using ChaosRecipeEnhancer.UI.Utilities;
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Models.Enums;
-using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Utilities.Native;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using System.ComponentModel;
+using ChaosRecipeEnhancer.UI.State;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
 public partial class StashTabOverlayWindow
 {
-    private readonly IItemSetManagerService _itemSetManagerService = Ioc.Default.GetService<IItemSetManagerService>();
     private readonly StashTabOverlayViewModel _model;
     private static List<EnhancedItemSet> SetsToHighlight { get; } = new();
 
@@ -29,12 +25,12 @@ public partial class StashTabOverlayWindow
     {
         InitializeComponent();
         DataContext = _model = new StashTabOverlayViewModel();
-        NativeMouseExtensions.MouseAction += (s, e) => Coordinates.OverlayClickEvent(this);
+        MouseHookForGeneralInteractionInStashTabOverlay.MouseAction += (s, e) => Coordinates.OverlayClickEvent(this);
     }
 
     public bool IsOpen { get; set; }
 
-    private void OnLoaded(object sender, RoutedEventArgs e) => Win32.MakeToolWindow(this);
+    private void OnLoaded(object sender, RoutedEventArgs e) => WindowsUtilitiesForOverlays.MakeToolWindow(this);
 
     protected override void OnClosing(CancelEventArgs e)
     {
@@ -55,9 +51,9 @@ public partial class StashTabOverlayWindow
     private void MakeWindowClickThrough(bool clickThrough)
     {
         if (clickThrough)
-            Win32.MakeTransparent(this);
+            WindowsUtilitiesForOverlays.MakeTransparent(this);
         else
-            Win32.MakeNormal(this);
+            WindowsUtilitiesForOverlays.MakeNormal(this);
     }
 
     public void HandleEditButton()
@@ -65,12 +61,12 @@ public partial class StashTabOverlayWindow
         if (_model.IsEditing)
         {
             MakeWindowClickThrough(true);
-            MouseHookForStashTabOverlay.Start();
+            MouseHookForEditingStashTabOverlay.Start();
         }
         else
         {
             MakeWindowClickThrough(false);
-            MouseHookForStashTabOverlay.Stop();
+            MouseHookForEditingStashTabOverlay.Stop();
         }
 
         _model.IsEditing = !_model.IsEditing;
@@ -141,7 +137,8 @@ public partial class StashTabOverlayWindow
             PrepareSelling();
             ActivateNextCell(true, null);
 
-            NativeMouseExtensions.Start();
+            MouseHookForGeneralInteractionInStashTabOverlay.Start();
+            base.Show();
         }
         else
         {
@@ -152,8 +149,6 @@ public partial class StashTabOverlayWindow
                 MessageBoxImage.Error
             );
         }
-
-        base.Show();
     }
 
     public new virtual void Hide()
@@ -162,8 +157,8 @@ public partial class StashTabOverlayWindow
 
         MakeWindowClickThrough(true);
         _model.IsEditing = false;
-        MouseHookForStashTabOverlay.Stop();
-        NativeMouseExtensions.Stop();
+        MouseHookForEditingStashTabOverlay.Stop();
+        MouseHookForGeneralInteractionInStashTabOverlay.Stop();
 
         foreach (var i in StashTabControlManager.StashTabControls)
         {
@@ -229,10 +224,8 @@ public partial class StashTabOverlayWindow
     {
         SetsToHighlight.Clear();
 
-        if (_itemSetManagerService == null) return;
-
         foreach (var s in StashTabControlManager.StashTabControls) s.PrepareOverlayList();
-        foreach (var set in _itemSetManagerService.RetrieveSetsInProgress())
+        foreach (var set in GlobalItemSetManagerState.SetsInProgress)
         {
             set.OrderItemsForPicking();
             if (set.HasRecipeQualifier)
@@ -257,7 +250,7 @@ public partial class StashTabOverlayWindow
             StashTabControlManager.GetStashTabIndicesFromSettings();
         }
 
-        var stashTabMetadataList = _itemSetManagerService.RetrieveStashTabMetadataList();
+        var stashTabMetadataList = GlobalItemSetManagerState.StashTabMetadataListStashesResponse;
 
         if (stashTabMetadataList != null)
         {

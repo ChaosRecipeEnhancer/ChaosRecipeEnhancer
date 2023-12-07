@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using ChaosRecipeEnhancer.UI.Extensions;
+using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
@@ -7,7 +7,6 @@ public partial class NormalStashGrid
 {
     public NormalStashGrid()
     {
-
         InitializeComponent();
     }
 
@@ -17,7 +16,7 @@ public partial class NormalStashGrid
             if (Items[i] == cell)
             {
                 var container = ItemContainerGenerator.ContainerFromIndex(i);
-                var t = ControlExtensions.GetChild<Button>(container);
+                var t = ControlHelpers.GetChild<Button>(container);
                 return t;
             }
 
