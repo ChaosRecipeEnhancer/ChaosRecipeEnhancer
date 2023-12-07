@@ -140,6 +140,7 @@ public partial class StashTabOverlayWindow
             ActivateNextCell(true, null);
 
             MouseHookForGeneralInteractionInStashTabOverlay.Start();
+            base.Show();
         }
         else
         {
@@ -150,8 +151,6 @@ public partial class StashTabOverlayWindow
                 MessageBoxImage.Error
             );
         }
-
-        base.Show();
     }
 
     public new virtual void Hide()
