@@ -16,17 +16,11 @@ public static class GlobalHotkeyState
 {
     public static Dictionary<HotkeyTypes, GlobalHotkey> Hotkeys { get; } = new();
 
-    /// <summary>
-    ///     Creates and adds a new hotkey to the hotkeys dictionary.
-    /// </summary>
     private static void AddHotkey(HotkeyTypes hotkeyType, ModifierKeys modifier, Key key, Action callbackMethod, TimeSpan cooldown)
     {
         Hotkeys.Add(hotkeyType, new GlobalHotkey(modifier, key, callbackMethod, cooldown, new DateTime()));
     }
 
-    /// <summary>
-    ///     Removes a hotkey from the hotkeys dictionary.
-    /// </summary>
     private static void RemoveHotkey(HotkeyTypes hotkeyType)
     {
         Hotkeys.Remove(hotkeyType);
@@ -57,7 +51,7 @@ public static class GlobalHotkeyState
 
         TimeSpan cooldown = hotkeyType switch
         {
-            HotkeyTypes.FetchStashData => HotkeyDefaults.FetchHotkeyCooldown,
+            HotkeyTypes.FetchStashData => HotkeyDefaults.FetchStashDataHotkeyCooldown,
             HotkeyTypes.ToggleSetTrackerOverlay => HotkeyDefaults.ToggleSetTrackerHotkeyCooldown,
             HotkeyTypes.ToggleStashTabOverlay => HotkeyDefaults.ToggleStashTabHotkeyCooldown,
             HotkeyTypes.ReloadItemFilter => HotkeyDefaults.ReloadFilterHotkeyCooldown,

@@ -216,10 +216,9 @@
                             VerticalAlignment="Center"
                             Text="Fetch Stash Contents:"
                             ToolTipService.InitialShowDelay="50"
-                            ToolTip="Hotkey for fetching the most up-to-date stash contents. Remember that you must re-zone to force your stash contents to update on GGG's servers." />
+                            ToolTip="Cooldown Period: 10 seconds&#x0a;&#x0a;Hotkey for fetching the most up-to-date stash contents.&#x0a;Remember that you must re-zone to force your stash&#x0a;contents to update on GGG's servers." />
 
                         <Button
-                            x:Name="RefreshHotkey"
                             Width="200"
                             Grid.Column="1"
                             Grid.Row="1"
@@ -234,56 +233,14 @@
                             Grid.Row="2"
                             Margin="0 0 0 10"
                             VerticalAlignment="Center"
-                            Text="ToggleSetTrackerOverlay Set Tracker Overlay:"
+                            Text="Reload Item Filter:"
                             ToolTipService.InitialShowDelay="50"
-                            ToolTip="Hotkey for showing/hiding the Set Tracker Overlay. While hidden, there will be no requests to the server." />
+                            ToolTip="Cooldown: 10 seconds&#x0a;&#x0a;Hotkey for reloading your item filter." />
 
-                        <!-- TODO: [Refactor] Rename the event methods to better represent what they do (i.e. CustomHotkeyToggle -> ToggleSetTracker something something)-->
                         <Button
-                            x:Name="CustomHotkeyToggle"
                             Width="200"
                             Grid.Column="1"
                             Grid.Row="2"
-                            Margin="10 0 0 10"
-                            IsManipulationEnabled="False"
-                            Focusable="False"
-                            Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleSetTrackerOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                            Click="SetHotkeyForToggleSetTrackerOverlay_Click" />
-
-                        <TextBlock
-                            Grid.Column="0"
-                            Grid.Row="3"
-                            Margin="0 0 0 10"
-                            VerticalAlignment="Center"
-                            Text="ToggleSetTrackerOverlay Stash Tab Overlay:"
-                            ToolTipService.InitialShowDelay="50"
-                            ToolTip="Hotkey for showing/hiding the Stash Tab Overlay." />
-
-                        <Button
-                            x:Name="StashTabHotkey"
-                            Width="200"
-                            Grid.Column="1"
-                            Grid.Row="3"
-                            Margin="10 0 0 10"
-                            IsManipulationEnabled="False"
-                            Focusable="False"
-                            Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleStashTabOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                            Click="SetHotkeyForToggleStashTabOverlay_Click" />
-
-                        <TextBlock
-                            Grid.Column="0"
-                            Grid.Row="4"
-                            Margin="0 0 0 10"
-                            VerticalAlignment="Center"
-                            Text="Reload Filter:"
-                            ToolTipService.InitialShowDelay="50"
-                            ToolTip="Hotkey for reloading your item filter." />
-
-                        <Button
-                            x:Name="ReloadFilterHotkey"
-                            Width="200"
-                            Grid.Column="1"
-                            Grid.Row="4"
                             Margin="10 0 0 10"
                             IsManipulationEnabled="False"
                             Focusable="False"
@@ -293,10 +250,45 @@
                             ToolTipService.IsEnabled="{Binding Settings.LootFilterManipulationEnabled, Converter={StaticResource InvertedBoolConverter}}"
                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=ReloadFilterHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
                             Click="SetHotkeyForReloadItemFilter_Click"
-                            IsEnabled="{Binding Settings.LootFilterManipulationEnabled}"
-                            />
+                            IsEnabled="{Binding Settings.LootFilterManipulationEnabled}" />
 
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            Margin="0 0 0 10"
+                            VerticalAlignment="Center"
+                            Text="Toggle Set Tracker Overlay:"
+                            ToolTipService.InitialShowDelay="50"
+                            ToolTip="Cooldown: 250 milliseconds&#x0a;&#x0a;Hotkey for showing/hiding the Set Tracker Overlay.&#x0a;While hidden, there will be no requests to the server." />
 
+                        <Button
+                            Width="200"
+                            Grid.Column="1"
+                            Grid.Row="3"
+                            Margin="10 0 0 10"
+                            IsManipulationEnabled="False"
+                            Focusable="False"
+                            Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleSetTrackerOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
+                            Click="SetHotkeyForToggleSetTrackerOverlay_Click" />
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="4"
+                            Margin="0 0 0 10"
+                            VerticalAlignment="Center"
+                            Text="Toggle Stash Tab Overlay:"
+                            ToolTipService.InitialShowDelay="50"
+                            ToolTip="Cooldown: 250 milliseconds&#x0a;&#x0a;Hotkey for showing/hiding the Stash Tab Overlay." />
+
+                        <Button
+                            Width="200"
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            Margin="10 0 0 10"
+                            IsManipulationEnabled="False"
+                            Focusable="False"
+                            Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleStashTabOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
+                            Click="SetHotkeyForToggleStashTabOverlay_Click" />
 
                     </Grid>
 
