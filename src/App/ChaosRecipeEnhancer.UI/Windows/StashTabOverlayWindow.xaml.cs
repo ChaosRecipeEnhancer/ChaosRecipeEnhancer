@@ -10,16 +10,14 @@ using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.UserControls.StashTab;
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Models.Enums;
-using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Utilities.Native;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using System.ComponentModel;
+using ChaosRecipeEnhancer.UI.State;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
 public partial class StashTabOverlayWindow
 {
-    private readonly IItemSetManagerService _itemSetManagerService = Ioc.Default.GetService<IItemSetManagerService>();
     private readonly StashTabOverlayViewModel _model;
     private static List<EnhancedItemSet> SetsToHighlight { get; } = new();
 
@@ -226,10 +224,8 @@ public partial class StashTabOverlayWindow
     {
         SetsToHighlight.Clear();
 
-        if (_itemSetManagerService == null) return;
-
         foreach (var s in StashTabControlManager.StashTabControls) s.PrepareOverlayList();
-        foreach (var set in _itemSetManagerService.RetrieveSetsInProgress())
+        foreach (var set in GlobalItemSetManagerState.SetsInProgress)
         {
             set.OrderItemsForPicking();
             if (set.HasRecipeQualifier)
@@ -254,7 +250,7 @@ public partial class StashTabOverlayWindow
             StashTabControlManager.GetStashTabIndicesFromSettings();
         }
 
-        var stashTabMetadataList = _itemSetManagerService.RetrieveStashTabMetadataList();
+        var stashTabMetadataList = GlobalItemSetManagerState.StashTabMetadataListStashesResponse;
 
         if (stashTabMetadataList != null)
         {

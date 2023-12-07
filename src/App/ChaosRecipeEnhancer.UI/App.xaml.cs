@@ -55,7 +55,6 @@ internal partial class App
         // Other Service Registration
         services.AddSingleton<IApiService, ApiService>();
         services.AddSingleton<IReloadFilterService, ReloadFilterService>();
-        services.AddSingleton<IItemSetManagerService, ItemSetManagerService>();
         services.AddSingleton<IFilterManipulationService, FilterManipulationService>();
     }
 

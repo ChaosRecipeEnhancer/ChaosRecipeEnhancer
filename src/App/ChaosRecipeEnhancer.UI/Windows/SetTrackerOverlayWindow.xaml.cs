@@ -116,7 +116,7 @@ public partial class SetTrackerOverlayWindow
     {
         if (!IsOpen) return;
 
-        var successfulResult = await _model.FetchDataAsync(); // Fire and forget async
+        var successfulResult = await _model.FetchStashDataAsync(); // Fire and forget async
 
         if (!successfulResult)
         {

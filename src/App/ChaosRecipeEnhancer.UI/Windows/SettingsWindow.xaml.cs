@@ -150,7 +150,6 @@ public partial class SettingsWindow
 
             // Notify user about the update
             Trace.WriteLine($"A new version {latestVersion} is available!");
-
         }
         catch (Exception ex)
         {
