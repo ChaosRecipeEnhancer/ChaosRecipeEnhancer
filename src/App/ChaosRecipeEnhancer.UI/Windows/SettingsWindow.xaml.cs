@@ -97,8 +97,8 @@ public partial class SettingsWindow
         else if (!Settings.Default.CloseToTrayEnabled || _closingFromTrayIcon)
         {
             _trayIcon.Visible = false;
-            MouseHookForStashTabOverlay.Stop();
-            KeyboardHookForHotkeys.ShutdownSystemHook();
+            MouseHookForEditingStashTabOverlay.Stop();
+            KeyboardHookForGlobalHotkeys.ShutdownSystemHook();
             Settings.Default.Save();
             Application.Current.Shutdown();
         }
@@ -201,7 +201,7 @@ public partial class SettingsWindow
 
     private void InitializeHotkeys()
     {
-        KeyboardHookForHotkeys.SetupSystemHook();
+        KeyboardHookForGlobalHotkeys.SetupSystemHook();
 
         // sets the hotkeys from the saved values in settings
         // associates hotkeys with their respective actions

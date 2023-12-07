@@ -20,7 +20,6 @@ public class LogWatcherManager
     public LogWatcherManager(SetTrackerOverlayWindow setTrackerOverlay)
     {
         Trace.WriteLine("LogWatcherManager created");
-
         _cancellationTokenSource = new CancellationTokenSource();
         _workerTask = Task.Run(() => StartWatchingLogFile(setTrackerOverlay));
     }

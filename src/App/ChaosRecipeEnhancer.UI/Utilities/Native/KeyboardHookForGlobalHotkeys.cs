@@ -7,7 +7,7 @@ using ChaosRecipeEnhancer.UI.State;
 
 namespace ChaosRecipeEnhancer.UI.Utilities.Native;
 
-internal static class KeyboardHookForHotkeys
+internal static class KeyboardHookForGlobalHotkeys
 {
     /// <summary>
     ///     States whether the system keyboard event hook is setup.

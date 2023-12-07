@@ -4,19 +4,19 @@ using System.Windows;
 
 namespace ChaosRecipeEnhancer.UI.Utilities.Native;
 
-internal sealed class MouseHookForStashTabOverlayEventArgs : EventArgs
+internal sealed class MouseHookForEditingStashTabOverlayEventArgs : EventArgs
 {
     public Point ClickLocation
     {
         get;
     }
 
-    public MouseHookForStashTabOverlayEventArgs(int x, int y) => ClickLocation = new Point(x, y);
+    public MouseHookForEditingStashTabOverlayEventArgs(int x, int y) => ClickLocation = new Point(x, y);
 }
 
-internal static class MouseHookForStashTabOverlay
+internal static class MouseHookForEditingStashTabOverlay
 {
-    public static event EventHandler<MouseHookForStashTabOverlayEventArgs> MouseAction = delegate { };
+    public static event EventHandler<MouseHookForEditingStashTabOverlayEventArgs> MouseAction = delegate { };
 
     public static void Start() => _hookID = SetHook(_proc);
     public static void Stop() => UnhookWindowsHookEx(_hookID);
@@ -47,7 +47,7 @@ internal static class MouseHookForStashTabOverlay
         {
             var hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
 
-            MouseAction(null, new MouseHookForStashTabOverlayEventArgs(hookStruct.pt.x, hookStruct.pt.y));
+            MouseAction(null, new MouseHookForEditingStashTabOverlayEventArgs(hookStruct.pt.x, hookStruct.pt.y));
         }
         return CallNextHookEx(_hookID, nCode, wParam, lParam);
     }

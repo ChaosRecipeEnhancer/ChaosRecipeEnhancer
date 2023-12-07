@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using ChaosRecipeEnhancer.UI.Extensions;
+using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
@@ -17,7 +17,7 @@ public partial class QuadStashGrid
             if (Items[i] == cell)
             {
                 var container = ItemContainerGenerator.ContainerFromIndex(i);
-                return ControlExtensions.GetChild<Button>(container);
+                return ControlHelpers.GetChild<Button>(container);
             }
         }
 

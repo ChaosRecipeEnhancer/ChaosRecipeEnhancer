@@ -4,12 +4,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using ChaosRecipeEnhancer.UI.Extensions.Native;
 using ChaosRecipeEnhancer.UI.Properties;
 using System.Windows.Media;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.UserControls.StashTab;
-using ChaosRecipeEnhancer.UI.Utilities;
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
@@ -29,7 +27,7 @@ public partial class StashTabOverlayWindow
     {
         InitializeComponent();
         DataContext = _model = new StashTabOverlayViewModel();
-        NativeMouseExtensions.MouseAction += (s, e) => Coordinates.OverlayClickEvent(this);
+        MouseHookForGeneralInteractionInStashTabOverlay.MouseAction += (s, e) => Coordinates.OverlayClickEvent(this);
     }
 
     public bool IsOpen { get; set; }
@@ -65,12 +63,12 @@ public partial class StashTabOverlayWindow
         if (_model.IsEditing)
         {
             MakeWindowClickThrough(true);
-            MouseHookForStashTabOverlay.Start();
+            MouseHookForEditingStashTabOverlay.Start();
         }
         else
         {
             MakeWindowClickThrough(false);
-            MouseHookForStashTabOverlay.Stop();
+            MouseHookForEditingStashTabOverlay.Stop();
         }
 
         _model.IsEditing = !_model.IsEditing;
@@ -141,7 +139,7 @@ public partial class StashTabOverlayWindow
             PrepareSelling();
             ActivateNextCell(true, null);
 
-            NativeMouseExtensions.Start();
+            MouseHookForGeneralInteractionInStashTabOverlay.Start();
         }
         else
         {
@@ -162,8 +160,8 @@ public partial class StashTabOverlayWindow
 
         MakeWindowClickThrough(true);
         _model.IsEditing = false;
-        MouseHookForStashTabOverlay.Stop();
-        NativeMouseExtensions.Stop();
+        MouseHookForEditingStashTabOverlay.Stop();
+        MouseHookForGeneralInteractionInStashTabOverlay.Stop();
 
         foreach (var i in StashTabControlManager.StashTabControls)
         {
