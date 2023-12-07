@@ -22,8 +22,6 @@ public partial class SettingsWindow
 {
     private readonly SettingsViewModel _model;
     private readonly SetTrackerOverlayWindow _recipeOverlay;
-    private readonly NotifyIcon _trayIcon = new();
-    private bool _closingFromTrayIcon;
 
     public SettingsWindow()
     {
@@ -44,26 +42,6 @@ public partial class SettingsWindow
         {
             // This will force the window to resize to the size of its content.
             SizeToContent = SizeToContent.WidthAndHeight;
-        };
-    }
-
-    private void InitializeTray()
-    {
-        _trayIcon.Icon = Properties.Resources.CREIcon;
-        _trayIcon.Visible = true;
-        _trayIcon.ContextMenuStrip = new ContextMenuStrip();
-
-        _ = _trayIcon.ContextMenuStrip.Items.Add("Check for Update", null, OnCheckForUpdatesItemMenuClicked);
-        _ = _trayIcon.ContextMenuStrip.Items.Add("Close", null, OnExitTrayItemMenuClicked);
-
-        _trayIcon.DoubleClick += (s, a) =>
-        {
-            Show();
-            _ = Activate();
-            Topmost = true;
-            Topmost = false;
-            ShowInTaskbar = true;
-            WindowState = WindowState.Normal;
         };
     }
 
@@ -104,17 +82,6 @@ public partial class SettingsWindow
         }
     }
 
-    private void OnExitTrayItemMenuClicked(object sender, EventArgs e)
-    {
-        _closingFromTrayIcon = true;
-        Close();
-    }
-
-    private void OnCheckForUpdatesItemMenuClicked(object sender, EventArgs e)
-    {
-        Process.Start(new ProcessStartInfo(AppInfo.GithubReleasesUrl) { UseShellExecute = true });
-    }
-
     private void OnSaveButtonClicked(object sender, RoutedEventArgs e)
     {
         Settings.Default.Save();
@@ -137,7 +104,49 @@ public partial class SettingsWindow
         }
     }
 
-    #region Check For Updates Stuff
+    #region Icon Tray Stuff (Move This... Later)
+
+    // one of the big 'issues' (not really an issue) is that to support multi-platform
+    // we'll have to change some of the way we do this for non-windows platforms
+    // so we'll have to revisit this for the (re-write?) for linux / mac clients
+
+    private readonly NotifyIcon _trayIcon = new();
+    private bool _closingFromTrayIcon;
+
+    private void InitializeTray()
+    {
+        _trayIcon.Icon = Properties.Resources.CREIcon;
+        _trayIcon.Visible = true;
+        _trayIcon.ContextMenuStrip = new ContextMenuStrip();
+
+        _ = _trayIcon.ContextMenuStrip.Items.Add("Check for Update", null, OnCheckForUpdatesItemMenuClicked);
+        _ = _trayIcon.ContextMenuStrip.Items.Add("Close", null, OnExitTrayItemMenuClicked);
+
+        _trayIcon.DoubleClick += (s, a) =>
+        {
+            Show();
+            _ = Activate();
+            Topmost = true;
+            Topmost = false;
+            ShowInTaskbar = true;
+            WindowState = WindowState.Normal;
+        };
+    }
+
+    private void OnExitTrayItemMenuClicked(object sender, EventArgs e)
+    {
+        _closingFromTrayIcon = true;
+        Close();
+    }
+
+    private void OnCheckForUpdatesItemMenuClicked(object sender, EventArgs e)
+    {
+        Process.Start(new ProcessStartInfo(AppInfo.GithubReleasesUrl) { UseShellExecute = true });
+    }
+
+    #endregion
+
+    #region Check For Updates Stuff (Move This... Later)
 
     private async Task CheckForAppUpdate()
     {

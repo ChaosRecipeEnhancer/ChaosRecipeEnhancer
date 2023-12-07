@@ -42,6 +42,8 @@ public static class GlobalItemSetManagerState
 
     #endregion
 
+    #region Methods
+
     public static void UpdateStashMetadata(List<BaseStashTabMetadata> metadata)
     {
         StashTabMetadataListStashesResponse = metadata;
@@ -430,4 +432,6 @@ public static class GlobalItemSetManagerState
 
         return allTabs;
     }
+
+    #endregion
 }

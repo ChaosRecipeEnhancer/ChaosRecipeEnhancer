@@ -8,10 +8,6 @@ using ChaosRecipeEnhancer.UI.Models.Enums;
 
 namespace ChaosRecipeEnhancer.UI.State;
 
-/// <summary>
-///     A class for adding/removing global hotkeys to and from your application,
-///     meaning these hotkeys can be run even if your application isn't focused.
-/// </summary>
 public static class GlobalHotkeyState
 {
     public static Dictionary<HotkeyTypes, GlobalHotkey> Hotkeys { get; } = new();
@@ -19,11 +15,6 @@ public static class GlobalHotkeyState
     private static void AddHotkey(HotkeyTypes hotkeyType, ModifierKeys modifier, Key key, Action callbackMethod, TimeSpan cooldown)
     {
         Hotkeys.Add(hotkeyType, new GlobalHotkey(modifier, key, callbackMethod, cooldown, new DateTime()));
-    }
-
-    private static void RemoveHotkey(HotkeyTypes hotkeyType)
-    {
-        Hotkeys.Remove(hotkeyType);
     }
 
     public static void SetRefreshHotkeyFromSettings(Action callback)
@@ -79,16 +70,9 @@ public static class GlobalHotkeyState
         }
     }
 
-    private static ModifierKeys ParseModifier(string modifierString)
+    private static void RemoveHotkey(HotkeyTypes hotkeyType)
     {
-        return modifierString switch
-        {
-            "Ctrl" => ModifierKeys.Control,
-            "Alt" => ModifierKeys.Alt,
-            "Win" => ModifierKeys.Windows,
-            "Shift" => ModifierKeys.Shift,
-            _ => ModifierKeys.None,
-        };
+        Hotkeys.Remove(hotkeyType);
     }
 
     public static void RemoveAllHotkeys()
@@ -101,10 +85,25 @@ public static class GlobalHotkeyState
 
     public static void RemoveToggleSetTrackerOverlayHotkey()
         => RemoveHotkey(HotkeyTypes.ToggleSetTrackerOverlay);
+
     public static void RemoveToggleStashTabOverlayHotkey()
         => RemoveHotkey(HotkeyTypes.ToggleStashTabOverlay);
+
     public static void RemoveFetchStashDataHotkey()
         => RemoveHotkey(HotkeyTypes.FetchStashData);
+
     public static void RemoveReloadItemFilterHotkey()
         => RemoveHotkey(HotkeyTypes.ReloadItemFilter);
+
+    private static ModifierKeys ParseModifier(string modifierString)
+    {
+        return modifierString switch
+        {
+            "Ctrl" => ModifierKeys.Control,
+            "Alt" => ModifierKeys.Alt,
+            "Win" => ModifierKeys.Windows,
+            "Shift" => ModifierKeys.Shift,
+            _ => ModifierKeys.None,
+        };
+    }
 }
