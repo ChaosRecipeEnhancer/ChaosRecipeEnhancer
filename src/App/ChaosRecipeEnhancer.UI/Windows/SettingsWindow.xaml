@@ -25,6 +25,7 @@
 
     <Window.Resources>
         <zemotoCommon:EqualityConverter x:Key="ValidateConnectionConverter" ComparisonType="{x:Type system:Int32}" />
+        <zemotoCommon:InvertBoolConverter x:Key="InvertedBoolConverter" />
         <zemotoCommon:BoolVisibilityConverter x:Key="BooleanToVisibilityConverter" CollapseWhenNotVisible="True" />
     </Window.Resources>
 
@@ -175,6 +176,9 @@
                 </TabItem>
                 <!-- Loot Filter Settings Tab End -->
 
+                <!-- We need to embed the Hotkey stuff directly into the main SettingsWindow
+                since we want to have access to the SetTracker and its various Run* methods-->
+
                 <!-- Hotkey Settings Tab Start -->
                 <TabItem
                     Header="Hotkeys"
@@ -188,6 +192,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -222,19 +227,7 @@
                             IsManipulationEnabled="False"
                             Focusable="False"
                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=FetchStashHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                            Click="RefreshHotkey_Click">
-
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Transparent" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
+                            Click="RefreshHotkey_Click" />
 
                         <TextBlock
                             Grid.Column="0"
@@ -255,20 +248,7 @@
                             IsManipulationEnabled="False"
                             Focusable="False"
                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleSetTrackerOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                            Click="CustomHotkeyToggle_Click">
-
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Transparent" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-
-                        </Button>
+                            Click="CustomHotkeyToggle_Click" />
 
                         <TextBlock
                             Grid.Column="0"
@@ -288,20 +268,35 @@
                             IsManipulationEnabled="False"
                             Focusable="False"
                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleStashTabOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                            Click="StashTabHotkey_Click">
+                            Click="StashTabHotkey_Click" />
 
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Transparent" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="4"
+                            Margin="0 0 0 10"
+                            VerticalAlignment="Center"
+                            Text="Reload Filter:"
+                            ToolTipService.InitialShowDelay="50"
+                            ToolTip="Hotkey for reloading your item filter." />
 
-                        </Button>
+                        <Button
+                            x:Name="ReloadFilterHotkey"
+                            Width="200"
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            Margin="10 0 0 10"
+                            IsManipulationEnabled="False"
+                            Focusable="False"
+                            ToolTip="Disabled as Loot Filter Manipulation is not enabled."
+                            ToolTipService.InitialShowDelay="50"
+                            ToolTipService.ShowOnDisabled="True"
+                            ToolTipService.IsEnabled="{Binding Settings.LootFilterManipulationEnabled, Converter={StaticResource InvertedBoolConverter}}"
+                            Content="{Binding Source={x:Static properties:Settings.Default}, Path=ReloadFilterHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
+                            Click="ReloadFilterHotkey_Click"
+                            IsEnabled="{Binding Settings.LootFilterManipulationEnabled}"
+                            />
+
+
 
                     </Grid>
 

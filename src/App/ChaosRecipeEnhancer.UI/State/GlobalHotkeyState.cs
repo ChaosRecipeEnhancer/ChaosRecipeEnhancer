@@ -3,10 +3,8 @@ using ChaosRecipeEnhancer.UI.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
-using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.State;
 
@@ -24,6 +22,9 @@ public static class GlobalHotkeyState
     private const int WH_KEYBOARD_LL = 13;
     private static readonly LowLevelKeyboardProc LowLevelProc = HookCallback;
 
+    private static Dictionary<Key, DateTime> _lastHotkeyInvokeTimes = new();
+    private static TimeSpan _hotkeyCooldown = TimeSpan.FromSeconds(1); // 1 second cooldown
+
     // The system hook ID (for storing this application's hook)
     private static IntPtr HookID = IntPtr.Zero;
 
@@ -35,6 +36,9 @@ public static class GlobalHotkeyState
 
     public static ModifierKeys stashTabModifier;
     public static Key stashTabKey;
+
+    public static ModifierKeys reloadFilterModifier;
+    public static Key reloadFilterKey;
 
     static GlobalHotkeyState()
     {
@@ -109,30 +113,25 @@ public static class GlobalHotkeyState
     /// </summary>
     private static void CheckHotkeys()
     {
-        if (RequiresModifierKey)
+        DateTime now = DateTime.Now;
+
+        foreach (var hotkey in Hotkeys)
         {
-            if (Keyboard.Modifiers != ModifierKeys.None)
-                foreach (var hotkey in Hotkeys)
-                    if (hotkey.Key != Key.None)
-                        if (Keyboard.Modifiers == hotkey.Modifier && Keyboard.IsKeyDown(hotkey.Key))
-                            if (hotkey.CanExecute)
-                            {
-                                hotkey.Callback?.Invoke();
-                                HotkeyFired?.Invoke(hotkey);
-                            }
-        }
-        else
-        {
-            foreach (var hotkey in Hotkeys)
-                if (hotkey.Key != Key.None)
-                    if (Keyboard.Modifiers == hotkey.Modifier && Keyboard.IsKeyDown(hotkey.Key))
-                        if (hotkey.CanExecute)
-                        {
-                            hotkey.Callback?.Invoke();
-                            HotkeyFired?.Invoke(hotkey);
-                        }
+            if (hotkey.Key != Key.None && Keyboard.Modifiers == hotkey.Modifier && Keyboard.IsKeyDown(hotkey.Key))
+            {
+                if (!_lastHotkeyInvokeTimes.TryGetValue(hotkey.Key, out DateTime lastInvokeTime) || now - lastInvokeTime > _hotkeyCooldown)
+                {
+                    if (hotkey.CanExecute)
+                    {
+                        hotkey.Callback?.Invoke();
+                        HotkeyFired?.Invoke(hotkey);
+                    }
+                    _lastHotkeyInvokeTimes[hotkey.Key] = now;
+                }
+            }
         }
     }
+
 
     /// <summary>
     ///     Finds and returns all hotkeys in the hotkeys list that have matching modifiers and keys given
@@ -320,11 +319,41 @@ public static class GlobalHotkeyState
         }
     }
 
+    public static void GetReloadFilterHotkey()
+    {
+        if (Settings.Default.ReloadFilterHotkey != "< not set >")
+        {
+            var reloadFilterString = Settings.Default.ReloadFilterHotkey.Split('+');
+
+            if (reloadFilterString.Length > 1)
+            {
+                if (reloadFilterString[0].Trim() == "Ctrl")
+                    reloadFilterModifier = ModifierKeys.Control;
+                else if (reloadFilterString[0].Trim() == "Alt")
+                    reloadFilterModifier = ModifierKeys.Alt;
+                else if (reloadFilterString[0].Trim() == "Win")
+                    reloadFilterModifier = ModifierKeys.Windows;
+                else if (reloadFilterString[0].Trim() == "Shift")
+                    reloadFilterModifier = ModifierKeys.Shift;
+                else
+                    reloadFilterModifier = ModifierKeys.None;
+
+                Enum.TryParse(reloadFilterString[1].Trim(), out reloadFilterKey);
+            }
+            else
+            {
+                Enum.TryParse(reloadFilterString[0].Trim(), out reloadFilterKey);
+                reloadFilterModifier = ModifierKeys.None;
+            }
+        }
+    }
+
     public static void RemoveAllHotkeys()
     {
         RemoveRefreshHotkey();
         RemoveStashTabHotkey();
         RemoveToggleHotkey();
+        RemoveReloadFilterHotkey();
     }
 
     public static void RemoveToggleHotkey()
@@ -340,6 +369,11 @@ public static class GlobalHotkeyState
     public static void RemoveRefreshHotkey()
     {
         RemoveHotkey(refreshModifier, refreshKey);
+    }
+
+    public static void RemoveReloadFilterHotkey()
+    {
+        RemoveHotkey(reloadFilterModifier, reloadFilterKey);
     }
 
     // Callbacks

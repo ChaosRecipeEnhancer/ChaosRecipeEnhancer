@@ -309,7 +309,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         }
     }
 
-    public void RunReloadFilter()
+    public async Task RunReloadFilter()
     {
         var itemClassAmounts = _itemSetManagerService.RetrieveCurrentItemCountsForFilterManipulation();
 
@@ -347,7 +347,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             }
         }
 
-        _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses, NeedsLowerLevel);
+        await _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses);
         _reloadFilterService.ReloadFilter();
     }
 

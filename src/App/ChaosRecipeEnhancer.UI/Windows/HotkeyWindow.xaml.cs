@@ -72,6 +72,22 @@ public partial class HotkeyWindow
                     ReApplyHotkeys();
                     break;
                 }
+            case "reloadfilter":
+                {
+                    GlobalHotkeyState.RemoveHotkey(GlobalHotkeyState.reloadFilterModifier, GlobalHotkeyState.reloadFilterKey);
+                    if (CustomHotkeyToggle.Hotkey == null)
+                    {
+                        Settings.Default.ReloadFilterHotkey = "< not set >";
+                    }
+                    else
+                    {
+                        Settings.Default.ReloadFilterHotkey = CustomHotkeyToggle.Hotkey.ToString();
+                        GlobalHotkeyState.GetReloadFilterHotkey();
+                    }
+
+                    ReApplyHotkeys();
+                    break;
+                }
         }
 
         Settings.Default.Save();

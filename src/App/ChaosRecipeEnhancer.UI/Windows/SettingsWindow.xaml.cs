@@ -202,6 +202,7 @@ public partial class SettingsWindow
         GlobalHotkeyState.GetRefreshHotkey();
         GlobalHotkeyState.GetToggleHotkey();
         GlobalHotkeyState.GetStashTabHotkey();
+        GlobalHotkeyState.GetReloadFilterHotkey();
         AddAllHotkeys();
     }
 
@@ -243,6 +244,20 @@ public partial class SettingsWindow
         }
     }
 
+    private void ReloadFilterHotkey_Click(object sender, RoutedEventArgs e)
+    {
+        var isWindowOpen = false;
+        foreach (Window w in Application.Current.Windows)
+            if (w is HotkeyWindow)
+                isWindowOpen = true;
+
+        if (!isWindowOpen)
+        {
+            var hotkeyDialog = new HotkeyWindow(this, "reloadfilter");
+            hotkeyDialog.Show();
+        }
+    }
+
     public void AddAllHotkeys()
     {
         if (Settings.Default.FetchStashHotkey != "< not set >")
@@ -251,6 +266,8 @@ public partial class SettingsWindow
             GlobalHotkeyState.AddHotkey(GlobalHotkeyState.toggleModifier, GlobalHotkeyState.toggleKey, _recipeOverlay.RunSetTrackerOverlay);
         if (Settings.Default.ToggleStashTabOverlayHotkey != "< not set >")
             GlobalHotkeyState.AddHotkey(GlobalHotkeyState.stashTabModifier, GlobalHotkeyState.stashTabKey, _recipeOverlay.RunStashTabOverlay);
+        if (Settings.Default.ReloadFilterHotkey != "< not set >")
+            GlobalHotkeyState.AddHotkey(GlobalHotkeyState.reloadFilterModifier, GlobalHotkeyState.reloadFilterKey, _recipeOverlay.RunReloadFilter);
     }
 
     public void RemoveAllHotkeys()
@@ -258,6 +275,7 @@ public partial class SettingsWindow
         GlobalHotkeyState.RemoveRefreshHotkey();
         GlobalHotkeyState.RemoveStashTabHotkey();
         GlobalHotkeyState.RemoveToggleHotkey();
+        GlobalHotkeyState.RemoveReloadFilterHotkey();
     }
 
     #endregion

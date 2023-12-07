@@ -765,5 +765,17 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["StashTabPrefixIndices"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
+        public string ReloadFilterHotkey {
+            get {
+                return ((string)(this["ReloadFilterHotkey"]));
+            }
+            set {
+                this["ReloadFilterHotkey"] = value;
+            }
+        }
     }
 }

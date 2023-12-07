@@ -123,11 +123,15 @@ public partial class SetTrackerOverlayWindow
         }
     }
 
-    public void RunReloadFilter()
+    public async void RunReloadFilter()
     {
         if (!IsOpen) return;
 
-        _model.RunReloadFilter();
+        if (_model.Settings.LootFilterManipulationEnabled)
+        {
+            await _model.RunReloadFilter();
+            // System.Threading.Thread.Sleep(5000);
+        }
     }
 
     public void RunStashTabOverlay()
