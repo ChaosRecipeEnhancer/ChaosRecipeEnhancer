@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace ChaosRecipeEnhancer.UI.Utilities;
+namespace ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 internal static class ControlHelpers
 {
@@ -38,7 +38,7 @@ internal static class ControlHelpers
         return null;
     }
 
-    private static T GetChild<T>(DependencyObject obj) where T : DependencyObject
+    public static T GetChild<T>(DependencyObject obj) where T : DependencyObject
     {
         if (obj is null)
         {

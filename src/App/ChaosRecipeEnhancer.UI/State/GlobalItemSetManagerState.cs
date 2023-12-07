@@ -7,89 +7,62 @@ using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 
-namespace ChaosRecipeEnhancer.UI.Services;
+namespace ChaosRecipeEnhancer.UI.State;
 
-public interface IItemSetManagerService
+public static class GlobalItemSetManagerState
 {
-    public void UpdateStashMetadata(List<BaseStashTabMetadata> metadata);
-    public bool UpdateStashContents(int setThreshold, List<int> selectedTabIndices, List<EnhancedItem> filteredStashContents);
-    public void GenerateItemSets();
-    public void CalculateItemAmounts();
-    public void ResetCompletedSets();
-    public void ResetItemAmounts();
-    public List<Dictionary<ItemClass, int>> RetrieveCurrentItemCountsForFilterManipulation();
-    public List<BaseStashTabMetadata> RetrieveStashTabMetadataList();
-    public List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response);
-    public bool RetrieveNeedsFetching();
-    public bool RetrieveNeedsLowerLevel();
-    public int RetrieveCompletedSetCount();
-    public List<EnhancedItemSet> RetrieveSetsInProgress();
-    public int RetrieveRingsAmount();
-    public int RetrieveAmuletsAmount();
-    public int RetrieveBeltsAmount();
-    public int RetrieveChestsAmount();
-    public int RetrieveWeaponsSmallAmount();
-    public int RetrieveWeaponsBigAmount();
-    public int RetrieveGlovesAmount();
-    public int RetrieveHelmetsAmount();
-    public int RetrieveBootsAmount();
-}
-
-public class ItemSetManagerService : IItemSetManagerService
-{
-    private int _setThreshold;
-    private List<EnhancedItemSet> _setsInProgress = new();
-    private List<EnhancedItem> _currentItemsFilteredForRecipe = new(); // filtered for chaos recipe
-    private List<BaseStashTabMetadata> _stashTabMetadataListStashesResponse;
+    #region Properties
 
     #region Item Amount Properties
 
     // item amounts by kind that will be exposed
-    // while ItemSetManagerService doesn't know,
+    // while GlobalItemSetManagerState doesn't know,
     // others need to render this out to users
-    public int RingsAmount { get; set; }
-    public int AmuletsAmount { get; set; }
-    public int BeltsAmount { get; set; }
-    public int ChestsAmount { get; set; }
-    public int WeaponsSmallAmount { get; set; }
-    public int WeaponsBigAmount { get; set; }
-    public int GlovesAmount { get; set; }
-    public int HelmetsAmount { get; set; }
-    public int BootsAmount { get; set; }
+    public static int RingsAmount { get; private set; }
+    public static int AmuletsAmount { get; private set; }
+    public static int BeltsAmount { get; private set; }
+    public static int ChestsAmount { get; private set; }
+    public static int WeaponsSmallAmount { get; private set; }
+    public static int WeaponsBigAmount { get; private set; }
+    public static int GlovesAmount { get; private set; }
+    public static int HelmetsAmount { get; private set; }
+    public static int BootsAmount { get; private set; }
 
     #endregion
 
+    public static int SetThreshold { get; set; }
+    public static List<EnhancedItemSet> SetsInProgress { get; set; } = new();
+    public static List<EnhancedItem> CurrentItemsFilteredForRecipe { get; set; } = new();
+    public static List<BaseStashTabMetadata> StashTabMetadataListStashesResponse { get; set; }
+
     // full set amounts will also need to be rendered
-    public int CompletedSetCount { get; set; }
-    public bool NeedsFetching { get; set; } = true;
-    public bool NeedsLowerLevel { get; set; } = false;
+    public static int CompletedSetCount { get; private set; }
+    public static bool NeedsFetching { get; private set; } = true;
+    public static bool NeedsLowerLevel { get; set; }
 
-    // temporary housing for this field that is needed by some components
-    // i'd likely want to move this to its own service tbh
+    #endregion
 
-    public void UpdateStashMetadata(List<BaseStashTabMetadata> metadata)
+    #region Methods
+
+    public static void UpdateStashMetadata(List<BaseStashTabMetadata> metadata)
     {
-        _stashTabMetadataListStashesResponse = metadata;
+        StashTabMetadataListStashesResponse = metadata;
     }
 
-    // this is the primary method being called by external entities
-    // return true if successful update, false if some error (likely caller error missing important data)
-    public bool UpdateStashContents(int setThreshold, List<int> selectedTabIndices, List<EnhancedItem> filteredStashContents)
+    public static void UpdateStashContents(int setThreshold, List<int> selectedTabIndices, List<EnhancedItem> filteredStashContents)
     {
         // if no tabs are selected (this isn't a realistic case)
-        if (selectedTabIndices.Count == 0) return false;
+        if (selectedTabIndices.Count == 0) return;
 
         // setting some new properties
-        _setThreshold = setThreshold;
-        _currentItemsFilteredForRecipe = filteredStashContents;
+        SetThreshold = setThreshold;
+        CurrentItemsFilteredForRecipe = filteredStashContents;
         NeedsFetching = false;
-
-        return true;
     }
 
-    public void CalculateItemAmounts()
+    public static void CalculateItemAmounts()
     {
-        foreach (var item in _currentItemsFilteredForRecipe)
+        foreach (var item in CurrentItemsFilteredForRecipe)
         {
             switch (item.DerivedItemClass)
             {
@@ -126,12 +99,12 @@ public class ItemSetManagerService : IItemSetManagerService
         NeedsFetching = false;
     }
 
-    public void ResetCompletedSets()
+    public static void ResetCompletedSetCount()
     {
         CompletedSetCount = 0;
     }
 
-    public void ResetItemAmounts()
+    public static void ResetItemAmounts()
     {
         // reset all item amounts
         RingsAmount = 0;
@@ -145,10 +118,10 @@ public class ItemSetManagerService : IItemSetManagerService
         BootsAmount = 0;
     }
 
-    public void GenerateItemSets()
+    public static void GenerateItemSets()
     {
         // filter for chaos recipe eligible items
-        var eligibleChaosItems = _currentItemsFilteredForRecipe
+        var eligibleChaosItems = CurrentItemsFilteredForRecipe
             .Where(x => x.IsChaosRecipeEligible)
             .ToList();
 
@@ -158,7 +131,7 @@ public class ItemSetManagerService : IItemSetManagerService
             .ThenBy(item => item.DerivedItemClass)
             .ToList();
 
-        _currentItemsFilteredForRecipe = _currentItemsFilteredForRecipe.OrderByDescending(item => item.DerivedItemClass == "TwoHandWeapons")
+        CurrentItemsFilteredForRecipe = CurrentItemsFilteredForRecipe.OrderByDescending(item => item.DerivedItemClass == "TwoHandWeapons")
             .ThenBy(item => item.DerivedItemClass)
             .ToList();
 
@@ -169,9 +142,9 @@ public class ItemSetManagerService : IItemSetManagerService
         // otherwise we can make as many sets as the set threshold
         if (Settings.Default.VendorSetsEarly)
         {
-            if (eligibleChaosItems.Count > _setThreshold)
+            if (eligibleChaosItems.Count > SetThreshold)
             {
-                trueSetThreshold = _setThreshold;
+                trueSetThreshold = SetThreshold;
             }
             else
             {
@@ -180,7 +153,7 @@ public class ItemSetManagerService : IItemSetManagerService
         }
         else
         {
-            trueSetThreshold = _setThreshold;
+            trueSetThreshold = SetThreshold;
         }
 
         if (eligibleChaosItems.Count < trueSetThreshold || eligibleChaosItems.Count == 0)
@@ -198,13 +171,13 @@ public class ItemSetManagerService : IItemSetManagerService
         }
         else
         {
-            GenerateItemSets_ConserveChaosItems(eligibleChaosItems, trueSetThreshold);
+            GenerateItemSets_Conserve(eligibleChaosItems, trueSetThreshold);
         }
     }
 
-    private void GenerateItemSets_ConserveChaosItems(List<EnhancedItem> eligibleChaosItems, int trueSetThreshold)
+    private static void GenerateItemSets_Conserve(List<EnhancedItem> eligibleChaosItems, int trueSetThreshold)
     {
-        _setsInProgress.Clear();
+        SetsInProgress.Clear();
         var listOfSets = new List<EnhancedItemSet>();
 
         // for every set we will start by trying to add a chaos item (and reporting if we need more low level chaos items)
@@ -228,7 +201,7 @@ public class ItemSetManagerService : IItemSetManagerService
                     if (addSuccessful)
                     {
                         // remove from our stash
-                        _currentItemsFilteredForRecipe.Remove(item);
+                        CurrentItemsFilteredForRecipe.Remove(item);
                         // remove from the list of eligible chaos items
                         eligibleChaosItems.Remove(item);
 
@@ -256,7 +229,7 @@ public class ItemSetManagerService : IItemSetManagerService
                 // find the for real closes item
                 // this is a nested for over each other item in our current item filtered for recipe
                 // probably could be optimized? maybe?
-                foreach (var item in _currentItemsFilteredForRecipe
+                foreach (var item in CurrentItemsFilteredForRecipe
                              .Where(item => listOfSets[i].IsItemClassNeeded(item) && // item is of a class we need
                                             listOfSets[i].GetItemDistance(item) < minDistance)) // item is closer than the current closest
                 {
@@ -270,7 +243,7 @@ public class ItemSetManagerService : IItemSetManagerService
                     _ = listOfSets[i].TryAddItem(closestMissingItem);
                     // promptly remove it from our pool of 'available' items
                     // do i actually want to do this? lol
-                    _ = _currentItemsFilteredForRecipe.Remove(closestMissingItem);
+                    _ = CurrentItemsFilteredForRecipe.Remove(closestMissingItem);
                 }
                 // you didn't find a closer item, gg break out of infinite loop
                 else
@@ -298,14 +271,14 @@ public class ItemSetManagerService : IItemSetManagerService
             }
 
             // add new enhanced item set to our list of sets in progress
-            _setsInProgress = listOfSets;
+            SetsInProgress = listOfSets;
         }
     }
 
-    private void GenerateItemSets_Greedy(List<EnhancedItem> eligibleChaosItems, int trueSetThreshold)
+    private static void GenerateItemSets_Greedy(List<EnhancedItem> eligibleChaosItems, int trueSetThreshold)
     {
         // Clear any existing progress in item set generation
-        _setsInProgress.Clear();
+        SetsInProgress.Clear();
         var listOfSets = new List<EnhancedItemSet>();
 
         // Iteratively create item sets based on the number of available chaos items
@@ -315,7 +288,7 @@ public class ItemSetManagerService : IItemSetManagerService
             var enhancedItemSet = new EnhancedItemSet();
 
             // Add a chaos item to the set if any are available
-            if (eligibleChaosItems.Any())
+            if (eligibleChaosItems.Count > 0)
             {
                 var chaosItem = eligibleChaosItems.First();
 
@@ -323,19 +296,19 @@ public class ItemSetManagerService : IItemSetManagerService
                 {
                     // Remove the added chaos item from the available pools
                     eligibleChaosItems.Remove(chaosItem);
-                    _currentItemsFilteredForRecipe.Remove(chaosItem);
+                    CurrentItemsFilteredForRecipe.Remove(chaosItem);
 
                     // let's attempt to fill in gaps with one-handed weapons if possible
                     if (chaosItem.DerivedItemClass == GameTerminology.OneHandWeapons)
                     {
-                        var oneHandedWeapon = _currentItemsFilteredForRecipe
+                        var oneHandedWeapon = CurrentItemsFilteredForRecipe
                             .FirstOrDefault(x => x.DerivedItemClass == GameTerminology.OneHandWeapons);
 
                         if (oneHandedWeapon is not null)
                         {
                             enhancedItemSet.TryAddItem(oneHandedWeapon);
                             eligibleChaosItems.Remove(oneHandedWeapon);
-                            _currentItemsFilteredForRecipe.Remove(oneHandedWeapon);
+                            CurrentItemsFilteredForRecipe.Remove(oneHandedWeapon);
                         }
                     }
                 }
@@ -349,7 +322,7 @@ public class ItemSetManagerService : IItemSetManagerService
                 var minDistance = double.PositiveInfinity;
 
                 // Iterate over all available items to find the closest needed item
-                foreach (var item in _currentItemsFilteredForRecipe
+                foreach (var item in CurrentItemsFilteredForRecipe
                              .Where(item => enhancedItemSet.IsItemClassNeeded(item) && // Check if the item class is needed for the set
                                             enhancedItemSet.GetItemDistance(item) < minDistance)) // Check if the item is closer than the current closest
                 {
@@ -361,23 +334,22 @@ public class ItemSetManagerService : IItemSetManagerService
                 // If a closest missing item is found, add it to the set
                 if (closestMissingItem != null)
                 {
-
                     if (enhancedItemSet.TryAddItem(closestMissingItem))
                     {
                         // Remove the item from the pool of available items
                         eligibleChaosItems.Remove(closestMissingItem);
-                        _currentItemsFilteredForRecipe.Remove(closestMissingItem);
+                        CurrentItemsFilteredForRecipe.Remove(closestMissingItem);
 
                         // let's attempt to fill in gaps with one-handed weapons if possible
                         if (closestMissingItem.DerivedItemClass == GameTerminology.OneHandWeapons)
                         {
-                            var oneHandedWeapon = _currentItemsFilteredForRecipe
+                            var oneHandedWeapon = CurrentItemsFilteredForRecipe
                                 .FirstOrDefault(x => x.DerivedItemClass == GameTerminology.OneHandWeapons);
 
                             if (oneHandedWeapon is not null)
                             {
                                 enhancedItemSet.TryAddItem(oneHandedWeapon);
-                                _currentItemsFilteredForRecipe.Remove(oneHandedWeapon);
+                                CurrentItemsFilteredForRecipe.Remove(oneHandedWeapon);
                             }
                         }
                     }
@@ -416,12 +388,12 @@ public class ItemSetManagerService : IItemSetManagerService
         }
 
         // Update the sets in progress with the newly created list of sets
-        _setsInProgress = listOfSets;
+        SetsInProgress = listOfSets;
         // Update the count of completed sets based on the number of sets with no empty item slots
         CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0);
     }
 
-    public List<Dictionary<ItemClass, int>> RetrieveCurrentItemCountsForFilterManipulation()
+    public static List<Dictionary<ItemClass, int>> RetrieveCurrentItemCountsForFilterManipulation()
     {
         var result = new List<Dictionary<ItemClass, int>>
         {
@@ -442,7 +414,7 @@ public class ItemSetManagerService : IItemSetManagerService
         return result;
     }
 
-    public List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response)
+    public static List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response)
     {
         var allTabs = new List<BaseStashTabMetadata>();
 
@@ -460,26 +432,6 @@ public class ItemSetManagerService : IItemSetManagerService
 
         return allTabs;
     }
-
-    #region Properties as Functions
-
-    // workaround to expose properties as functions on our interface
-    public List<BaseStashTabMetadata> RetrieveStashTabMetadataList() => _stashTabMetadataListStashesResponse;
-    public bool RetrieveNeedsFetching() => NeedsFetching;
-    public bool RetrieveNeedsLowerLevel() => NeedsLowerLevel;
-    public int RetrieveCompletedSetCount() => CompletedSetCount;
-    public List<EnhancedItemSet> RetrieveSetsInProgress() => _setsInProgress;
-
-    // item amount public properties via functions
-    public int RetrieveRingsAmount() => RingsAmount;
-    public int RetrieveAmuletsAmount() => AmuletsAmount;
-    public int RetrieveBeltsAmount() => BeltsAmount;
-    public int RetrieveChestsAmount() => ChestsAmount;
-    public int RetrieveWeaponsSmallAmount() => WeaponsSmallAmount;
-    public int RetrieveWeaponsBigAmount() => WeaponsBigAmount;
-    public int RetrieveGlovesAmount() => GlovesAmount;
-    public int RetrieveHelmetsAmount() => HelmetsAmount;
-    public int RetrieveBootsAmount() => BootsAmount;
 
     #endregion
 }

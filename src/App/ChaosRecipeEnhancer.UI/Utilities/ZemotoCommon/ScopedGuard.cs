@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ChaosRecipeEnhancer.UI.Utilities;
+namespace ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 public sealed class ScopeGuard : IDisposable
 {

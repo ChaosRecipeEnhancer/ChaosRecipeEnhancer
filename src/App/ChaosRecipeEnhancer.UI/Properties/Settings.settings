@@ -188,5 +188,8 @@
     <Setting Name="StashTabPrefixIndices" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ReloadFilterHotkey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt; not set &gt;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

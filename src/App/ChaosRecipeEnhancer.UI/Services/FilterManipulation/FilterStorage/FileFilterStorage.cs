@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Windows;
@@ -41,10 +42,33 @@ internal class FileFilterStorage : IFilterStorage
 
     public async Task WriteLootFilterAsync(string filter)
     {
-        if (_fileLocation != "" && filter != "")
+        if (string.IsNullOrEmpty(_fileLocation) || string.IsNullOrEmpty(filter))
         {
-            await using var writer = new StreamWriter(_fileLocation);
-            await writer.WriteAsync(filter);
+            return;
+        }
+
+        int maxRetries = 3;
+        int delayOnRetry = 3000; // milliseconds
+        FileMode fileMode = FileMode.Create; // Overwrites the file if it exists
+
+        for (int i = 0; i < maxRetries; i++)
+        {
+            try
+            {
+                // Using FileStream with explicit FileAccess and FileShare mode
+                using (var fileStream = new FileStream(_fileLocation, fileMode, FileAccess.Write, FileShare.None))
+                using (var writer = new StreamWriter(fileStream))
+                {
+                    await writer.WriteAsync(filter);
+                }
+                break; // success!
+            }
+            catch (IOException e) when (i < maxRetries - 1)
+            {
+                Trace.WriteLine("IOException encountered: " + e.Message);
+                await Task.Delay(delayOnRetry);
+            }
         }
     }
+
 }

@@ -17,7 +17,7 @@ namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
 public interface IFilterManipulationService
 {
-    public void GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem);
+    public Task GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses);
     public void RemoveChaosRecipeSectionAsync();
 }
 
@@ -34,7 +34,7 @@ public class FilterManipulationService : IFilterManipulationService
     private Settings Settings { get; } = Settings.Default;
 
     // TODO: [Refactor] mechanism for receiving missing items from some other service and populating based on that limited information
-    public async void GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem)
+    public async Task GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses)
     {
         var activeItemTypes = new ActiveItemTypes();
         var visitor = new CItemClassManagerFactory();

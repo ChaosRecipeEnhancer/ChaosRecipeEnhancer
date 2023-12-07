@@ -7,7 +7,7 @@ using ChaosRecipeEnhancer.UI.Windows;
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
 /// <summary>
-///     CRE-specific model of a stash tab within our app (NOT the GGG StashTab object model).
+///     CRE-specific model of a stash tab within our app (NOT the GGG ToggleStashTabOverlay object model).
 ///     Represents various UI elements and additional metadata used in our app that is derived from the original
 ///     stash tab JSON object requested from GGG's API.
 /// </summary>

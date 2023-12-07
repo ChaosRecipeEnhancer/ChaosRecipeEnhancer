@@ -17,15 +17,16 @@ public class GlobalHotkey
     /// <param name="modifier">The modifier key required to be pressed</param>
     /// <param name="key">The key required to be pressed</param>
     /// <param name="callbackMethod">The method that gets called when the hotkey is fired</param>
-    /// <param name="canExecute">
-    ///     States whether the callback can be run
-    ///     (can be changed, see <see cref="CanExecute" />)
-    /// </param>
-    public GlobalHotkey(ModifierKeys modifier, Key key, Action callbackMethod, bool canExecute = true)
+    /// <param name="cooldown">The cooldown of the hotkey.</param>
+    /// <param name="lastInvoked">The last time the hotkey was invoked.</param>
+    /// <param name="canExecute">States whether the callback can be run (can be changed, see <see cref="CanExecute" />)</param>
+    public GlobalHotkey(ModifierKeys modifier, Key key, Action callbackMethod, TimeSpan cooldown, DateTime lastInvoked, bool canExecute = true)
     {
         Modifier = modifier;
         Key = key;
         Callback = callbackMethod;
+        Cooldown = cooldown;
+        LastInvoked = lastInvoked;
         CanExecute = canExecute;
     }
 
@@ -39,10 +40,10 @@ public class GlobalHotkey
     /// </summary>
     public Key Key { get; set; }
 
-    // You could change this to a list of actions if you want
-    // multiple things to be fired when the hotkey fires.
     /// <summary>
-    ///     The method to be called when the hotkey is pressed
+    ///     The method to be called when the hotkey is pressed.
+    ///     You could change this to a list of actions if you
+    ///     want multiple things to be fired when the hotkey fires.
     /// </summary>
     public Action Callback { get; set; }
 
@@ -50,4 +51,14 @@ public class GlobalHotkey
     ///     States if the method can be executed.
     /// </summary>
     public bool CanExecute { get; set; }
+
+    /// <summary>
+    ///    The cooldown of the hotkey.
+    /// </summary>
+    public TimeSpan Cooldown { get; set; }
+
+    /// <summary>
+    ///    The last time the hotkey was invoked.
+    /// </summary>
+    public DateTime LastInvoked { get; set; }
 }

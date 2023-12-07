@@ -1,18 +1,16 @@
-﻿using ChaosRecipeEnhancer.UI.Extensions.Native;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
 using ChaosRecipeEnhancer.UI.Windows;
+using ChaosRecipeEnhancer.UI.Utilities.Native;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
 public static class Coordinates
 {
-
-    // Potential Fix:
     private static Point GetItemCoordinates(Visual item)
     {
         if (item == null || !IsVisualConnected(item))
@@ -30,8 +28,8 @@ public static class Coordinates
     {
         if (button is null) return false;
 
-        var clickX = NativeMouseExtensions.ClickLocationX;
-        var clickY = NativeMouseExtensions.ClickLocationY;
+        var clickX = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationX;
+        var clickY = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationY;
 
         // adjust btn x,y position a bit
         point.X -= 1;
@@ -52,15 +50,13 @@ public static class Coordinates
 
     private static Point GetTabNameContainerCoordinates(Visual tabNameContainer)
     {
-        return tabNameContainer is null
-            ? new Point(0, 0)
-            : tabNameContainer.PointToScreen(new Point(0, 0));
+        return tabNameContainer?.PointToScreen(new Point(0, 0)) ?? new Point(0, 0);
     }
 
     private static bool CheckIfTabNameContainerClicked(StashTabControl stashTabControl)
     {
-        var clickX = NativeMouseExtensions.ClickLocationX;
-        var clickY = NativeMouseExtensions.ClickLocationY;
+        var clickX = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationX;
+        var clickY = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationY;
 
         var pt = GetTabNameContainerCoordinates(stashTabControl.NameContainer);
 
@@ -88,8 +84,8 @@ public static class Coordinates
 
     private static bool CheckIfEditButtonClicked(FrameworkElement editButton)
     {
-        var clickX = NativeMouseExtensions.ClickLocationX;
-        var clickY = NativeMouseExtensions.ClickLocationY;
+        var clickX = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationX;
+        var clickY = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationY;
 
         var pt = GetEditButtonCoordinates(editButton);
 
