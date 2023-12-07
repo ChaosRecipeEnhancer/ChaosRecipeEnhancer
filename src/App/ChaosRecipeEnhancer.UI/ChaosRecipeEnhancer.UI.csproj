@@ -35,7 +35,6 @@
 	<ItemGroup>
 		<!-- Icons -->
 		<Resource Include="Assets\Icons\CREIcon.ico" />
-		<Resource Include="Assets\Fonts\Password.ttf" />
 		<!-- Images -->
 		<Resource Include="Assets\Images\Amulet.png" />
 		<Resource Include="Assets\Images\Belt.png" />
@@ -101,8 +100,6 @@
 	<ItemGroup>
 		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml.cs" />
 		<Compile Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml.cs" />
-		<None Remove="Assets\Images\Loading.png" />
-		<None Remove="Assets\Images\UpgradeArrow.png" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyMinifiedButtonsDisplay.xaml" />
 		<Page Remove="UserControls\SetTrackerOverlayDisplays\OnlyButtonsDisplay.xaml" />
 	</ItemGroup>
