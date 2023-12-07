@@ -227,14 +227,14 @@
                             IsManipulationEnabled="False"
                             Focusable="False"
                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=FetchStashHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                            Click="RefreshHotkey_Click" />
+                            Click="SetHotkeyForFetchStashData_Click" />
 
                         <TextBlock
                             Grid.Column="0"
                             Grid.Row="2"
                             Margin="0 0 0 10"
                             VerticalAlignment="Center"
-                            Text="Toggle Set Tracker Overlay:"
+                            Text="ToggleSetTrackerOverlay Set Tracker Overlay:"
                             ToolTipService.InitialShowDelay="50"
                             ToolTip="Hotkey for showing/hiding the Set Tracker Overlay. While hidden, there will be no requests to the server." />
 
@@ -248,14 +248,14 @@
                             IsManipulationEnabled="False"
                             Focusable="False"
                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleSetTrackerOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                            Click="CustomHotkeyToggle_Click" />
+                            Click="SetHotkeyForToggleSetTrackerOverlay_Click" />
 
                         <TextBlock
                             Grid.Column="0"
                             Grid.Row="3"
                             Margin="0 0 0 10"
                             VerticalAlignment="Center"
-                            Text="Toggle Stash Tab Overlay:"
+                            Text="ToggleSetTrackerOverlay Stash Tab Overlay:"
                             ToolTipService.InitialShowDelay="50"
                             ToolTip="Hotkey for showing/hiding the Stash Tab Overlay." />
 
@@ -268,7 +268,7 @@
                             IsManipulationEnabled="False"
                             Focusable="False"
                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=ToggleStashTabOverlayHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                            Click="StashTabHotkey_Click" />
+                            Click="SetHotkeyForToggleStashTabOverlay_Click" />
 
                         <TextBlock
                             Grid.Column="0"
@@ -292,7 +292,7 @@
                             ToolTipService.ShowOnDisabled="True"
                             ToolTipService.IsEnabled="{Binding Settings.LootFilterManipulationEnabled, Converter={StaticResource InvertedBoolConverter}}"
                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=ReloadFilterHotkey, Mode=TwoWay, TargetNullValue=&lt; not set &gt;}"
-                            Click="ReloadFilterHotkey_Click"
+                            Click="SetHotkeyForReloadItemFilter_Click"
                             IsEnabled="{Binding Settings.LootFilterManipulationEnabled}"
                             />
 

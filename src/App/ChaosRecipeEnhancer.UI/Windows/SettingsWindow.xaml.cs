@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Constants;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Utilities.Native;
@@ -96,6 +98,7 @@ public partial class SettingsWindow
         {
             _trayIcon.Visible = false;
             MouseHookForStashTabOverlay.Stop();
+            KeyboardHookForHotkeys.ShutdownSystemHook();
             Settings.Default.Save();
             Application.Current.Shutdown();
         }
@@ -198,84 +201,50 @@ public partial class SettingsWindow
 
     private void InitializeHotkeys()
     {
-        GlobalHotkeyState.SetupSystemHook();
-        GlobalHotkeyState.GetRefreshHotkey();
-        GlobalHotkeyState.GetToggleHotkey();
-        GlobalHotkeyState.GetStashTabHotkey();
-        GlobalHotkeyState.GetReloadFilterHotkey();
-        AddAllHotkeys();
+        KeyboardHookForHotkeys.SetupSystemHook();
+
+        // sets the hotkeys from the saved values in settings
+        // associates hotkeys with their respective actions
+        SetAllHotkeysFromSettings();
     }
 
-    private void CustomHotkeyToggle_Click(object sender, RoutedEventArgs e)
+    private void SetHotkeyForToggleSetTrackerOverlay_Click(object sender, RoutedEventArgs e)
+        => SetHotkey_Click(HotkeyTypes.ToggleSetTrackerOverlay);
+
+    private void SetHotkeyForFetchStashData_Click(object sender, RoutedEventArgs e)
+        => SetHotkey_Click(HotkeyTypes.FetchStashData);
+
+    private void SetHotkeyForToggleStashTabOverlay_Click(object sender, RoutedEventArgs e)
+        => SetHotkey_Click(HotkeyTypes.ToggleStashTabOverlay);
+
+    private void SetHotkeyForReloadItemFilter_Click(object sender, RoutedEventArgs e)
+        => SetHotkey_Click(HotkeyTypes.ReloadItemFilter);
+
+    private void SetHotkey_Click(HotkeyTypes hotkeyType)
     {
-        var isWindowOpen = false;
-        foreach (Window w in Application.Current.Windows)
-            if (w is HotkeyWindow)
-                isWindowOpen = true;
-
-        if (isWindowOpen) return;
-        var hotkeyDialog = new HotkeyWindow(this, "toggle");
-        hotkeyDialog.Show();
-    }
-
-    private void RefreshHotkey_Click(object sender, RoutedEventArgs e)
-    {
-        var isWindowOpen = false;
-        foreach (Window w in Application.Current.Windows)
-            if (w is HotkeyWindow)
-                isWindowOpen = true;
-
-        if (isWindowOpen) return;
-        var hotkeyDialog = new HotkeyWindow(this, "refresh");
-        hotkeyDialog.Show();
-    }
-
-    private void StashTabHotkey_Click(object sender, RoutedEventArgs e)
-    {
-        var isWindowOpen = false;
-        foreach (Window w in Application.Current.Windows)
-            if (w is HotkeyWindow)
-                isWindowOpen = true;
+        var isWindowOpen = Application.Current.Windows.OfType<HotkeyWindow>().Any();
 
         if (!isWindowOpen)
         {
-            var hotkeyDialog = new HotkeyWindow(this, "stashtab");
+            var hotkeyDialog = new HotkeyWindow(this, hotkeyType);
             hotkeyDialog.Show();
         }
     }
 
-    private void ReloadFilterHotkey_Click(object sender, RoutedEventArgs e)
+    public void SetAllHotkeysFromSettings()
     {
-        var isWindowOpen = false;
-        foreach (Window w in Application.Current.Windows)
-            if (w is HotkeyWindow)
-                isWindowOpen = true;
-
-        if (!isWindowOpen)
-        {
-            var hotkeyDialog = new HotkeyWindow(this, "reloadfilter");
-            hotkeyDialog.Show();
-        }
+        GlobalHotkeyState.SetRefreshHotkeyFromSettings(_recipeOverlay.RunFetchingAsync);
+        GlobalHotkeyState.SetToggleHotkeyFromSettings(_recipeOverlay.RunSetTrackerOverlay);
+        GlobalHotkeyState.SetStashTabHotkeyFromSettings(_recipeOverlay.RunStashTabOverlay);
+        GlobalHotkeyState.SetReloadFilterHotkeyFromSettings(_recipeOverlay.RunReloadFilter);
     }
 
-    public void AddAllHotkeys()
+    public void ResetGlobalHotkeyState()
     {
-        if (Settings.Default.FetchStashHotkey != "< not set >")
-            GlobalHotkeyState.AddHotkey(GlobalHotkeyState.refreshModifier, GlobalHotkeyState.refreshKey, _recipeOverlay.RunFetchingAsync);
-        if (Settings.Default.ToggleSetTrackerOverlayHotkey != "< not set >")
-            GlobalHotkeyState.AddHotkey(GlobalHotkeyState.toggleModifier, GlobalHotkeyState.toggleKey, _recipeOverlay.RunSetTrackerOverlay);
-        if (Settings.Default.ToggleStashTabOverlayHotkey != "< not set >")
-            GlobalHotkeyState.AddHotkey(GlobalHotkeyState.stashTabModifier, GlobalHotkeyState.stashTabKey, _recipeOverlay.RunStashTabOverlay);
-        if (Settings.Default.ReloadFilterHotkey != "< not set >")
-            GlobalHotkeyState.AddHotkey(GlobalHotkeyState.reloadFilterModifier, GlobalHotkeyState.reloadFilterKey, _recipeOverlay.RunReloadFilter);
-    }
-
-    public void RemoveAllHotkeys()
-    {
-        GlobalHotkeyState.RemoveRefreshHotkey();
-        GlobalHotkeyState.RemoveStashTabHotkey();
-        GlobalHotkeyState.RemoveToggleHotkey();
-        GlobalHotkeyState.RemoveReloadFilterHotkey();
+        GlobalHotkeyState.RemoveFetchStashDataHotkey();
+        GlobalHotkeyState.RemoveToggleStashTabOverlayHotkey();
+        GlobalHotkeyState.RemoveToggleSetTrackerOverlayHotkey();
+        GlobalHotkeyState.RemoveReloadItemFilterHotkey();
     }
 
     #endregion

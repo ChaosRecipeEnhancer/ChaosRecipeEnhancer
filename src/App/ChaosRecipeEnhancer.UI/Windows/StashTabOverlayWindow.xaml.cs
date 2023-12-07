@@ -34,7 +34,7 @@ public partial class StashTabOverlayWindow
 
     public bool IsOpen { get; set; }
 
-    private void OnLoaded(object sender, RoutedEventArgs e) => Win32.MakeToolWindow(this);
+    private void OnLoaded(object sender, RoutedEventArgs e) => WindowsUtilitiesForOverlays.MakeToolWindow(this);
 
     protected override void OnClosing(CancelEventArgs e)
     {
@@ -55,9 +55,9 @@ public partial class StashTabOverlayWindow
     private void MakeWindowClickThrough(bool clickThrough)
     {
         if (clickThrough)
-            Win32.MakeTransparent(this);
+            WindowsUtilitiesForOverlays.MakeTransparent(this);
         else
-            Win32.MakeNormal(this);
+            WindowsUtilitiesForOverlays.MakeNormal(this);
     }
 
     public void HandleEditButton()

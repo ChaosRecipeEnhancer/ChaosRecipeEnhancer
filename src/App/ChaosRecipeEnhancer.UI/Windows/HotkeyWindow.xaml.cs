@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.State;
 
@@ -10,11 +12,10 @@ namespace ChaosRecipeEnhancer.UI.Windows;
 public partial class HotkeyWindow
 {
     private readonly SettingsWindow _settingsView;
-    private readonly string _type;
+    private readonly HotkeyTypes _type;
 
-    public HotkeyWindow(SettingsWindow settingsView, string hotkeyType)
+    public HotkeyWindow(SettingsWindow settingsView, HotkeyTypes hotkeyType)
     {
-
         _settingsView = settingsView;
         _type = hotkeyType;
         InitializeComponent();
@@ -24,79 +25,50 @@ public partial class HotkeyWindow
     {
         switch (_type)
         {
-            case "refresh":
+            case HotkeyTypes.FetchStashData:
                 {
-                    GlobalHotkeyState.RemoveHotkey(GlobalHotkeyState.refreshModifier, GlobalHotkeyState.refreshKey);
-                    if (CustomHotkeyToggle.Hotkey == null)
-                    {
-                        Settings.Default.FetchStashHotkey = "< not set >";
-                    }
-                    else
-                    {
-                        Settings.Default.FetchStashHotkey = CustomHotkeyToggle.Hotkey.ToString();
-                        GlobalHotkeyState.GetRefreshHotkey();
-                    }
+                    Settings.Default.FetchStashHotkey = CustomHotkeyToggle.Hotkey == null
+                        ? "< not set >"
+                        : CustomHotkeyToggle.Hotkey.ToString();
 
-                    ReApplyHotkeys();
                     break;
                 }
-            case "toggle":
+            case HotkeyTypes.ToggleSetTrackerOverlay:
                 {
-                    GlobalHotkeyState.RemoveHotkey(GlobalHotkeyState.toggleModifier, GlobalHotkeyState.toggleKey);
-                    if (CustomHotkeyToggle.Hotkey == null)
-                    {
-                        Settings.Default.ToggleSetTrackerOverlayHotkey = "< not set >";
-                    }
-                    else
-                    {
-                        Settings.Default.ToggleSetTrackerOverlayHotkey = CustomHotkeyToggle.Hotkey.ToString();
-                        GlobalHotkeyState.GetToggleHotkey();
-                    }
+                    Settings.Default.ToggleSetTrackerOverlayHotkey = CustomHotkeyToggle.Hotkey == null
+                        ? "< not set >"
+                        : CustomHotkeyToggle.Hotkey.ToString();
 
-                    ReApplyHotkeys();
                     break;
                 }
-            case "stashtab":
+            case HotkeyTypes.ToggleStashTabOverlay:
                 {
-                    GlobalHotkeyState.RemoveHotkey(GlobalHotkeyState.stashTabModifier, GlobalHotkeyState.stashTabKey);
-                    if (CustomHotkeyToggle.Hotkey == null)
-                    {
-                        Settings.Default.ToggleStashTabOverlayHotkey = "< not set >";
-                    }
-                    else
-                    {
-                        Settings.Default.ToggleStashTabOverlayHotkey = CustomHotkeyToggle.Hotkey.ToString();
-                        GlobalHotkeyState.GetStashTabHotkey();
-                    }
+                    Settings.Default.ToggleStashTabOverlayHotkey = CustomHotkeyToggle.Hotkey == null
+                        ? "< not set >"
+                        : CustomHotkeyToggle.Hotkey.ToString();
 
-                    ReApplyHotkeys();
                     break;
                 }
-            case "reloadfilter":
+            case HotkeyTypes.ReloadItemFilter:
                 {
-                    GlobalHotkeyState.RemoveHotkey(GlobalHotkeyState.reloadFilterModifier, GlobalHotkeyState.reloadFilterKey);
-                    if (CustomHotkeyToggle.Hotkey == null)
-                    {
-                        Settings.Default.ReloadFilterHotkey = "< not set >";
-                    }
-                    else
-                    {
-                        Settings.Default.ReloadFilterHotkey = CustomHotkeyToggle.Hotkey.ToString();
-                        GlobalHotkeyState.GetReloadFilterHotkey();
-                    }
+                    Settings.Default.ReloadFilterHotkey = CustomHotkeyToggle.Hotkey == null
+                        ? "< not set >"
+                        : CustomHotkeyToggle.Hotkey.ToString();
 
-                    ReApplyHotkeys();
                     break;
                 }
+            default:
+                throw new ArgumentOutOfRangeException();
         }
 
         Settings.Default.Save();
+        ReApplyHotkeys();
         Close();
     }
 
     private void ReApplyHotkeys()
     {
-        _settingsView.RemoveAllHotkeys();
-        _settingsView.AddAllHotkeys();
+        _settingsView.ResetGlobalHotkeyState();
+        _settingsView.SetAllHotkeysFromSettings();
     }
 }
