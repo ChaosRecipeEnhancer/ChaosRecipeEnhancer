@@ -191,5 +191,11 @@
     <Setting Name="ReloadFilterHotkey" Type="System.String" Scope="User">
       <Value Profile="(Default)">&lt; not set &gt;</Value>
     </Setting>
+    <Setting Name="SilenceNeedItemsMessage" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SilenceSetsFullMessage" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
