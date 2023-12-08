@@ -262,10 +262,9 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 // if the user has vendor sets early enabled, we don't want to show the warning message
                 if (!Settings.VendorSetsEarly || FullSets >= Settings.FullSetThreshold)
                 {
-                    if (!Settings.SilenceSetsFullMessage)
-                    {
-                        WarningMessage = SetsFullText;
-                    }
+                    WarningMessage = !Settings.SilenceSetsFullMessage
+                        ? SetsFullText
+                        : string.Empty;
                 }
 
                 // stash button is enabled with no warning tooltip
@@ -294,10 +293,9 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
             // case 3: user has fetched and needs items for chaos recipe (needs more lower level items)
             else if (NeedsLowerLevel)
             {
-                if (!Settings.SilenceSetsFullMessage)
-                {
-                    WarningMessage = NeedsLowerLevelText(FullSets - Settings.FullSetThreshold);
-                }
+                WarningMessage = !Settings.SilenceNeedItemsMessage
+                    ? NeedsLowerLevelText(FullSets - Settings.FullSetThreshold)
+                    : string.Empty;
 
                 // stash button is disabled with conditional tooltip enabled
                 // based on whether or not the user has at least 1 set
