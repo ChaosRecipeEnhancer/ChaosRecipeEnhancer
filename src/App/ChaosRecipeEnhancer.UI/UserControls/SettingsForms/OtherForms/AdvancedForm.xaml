@@ -27,7 +27,7 @@
             Grid.Column="0"
             Grid.Row="0"
             Grid.ColumnSpan="2"
-            Margin="0 0 0 20"
+            Margin="0 0 0 15"
             Text="Advanced"
             FontSize="24" />
 
@@ -36,7 +36,7 @@
             Grid.Column="0"
             Grid.Row="1"
             Grid.ColumnSpan="2"
-            Margin="0 0 0 20"
+            Margin="0 0 0 15"
             HorizontalContentAlignment="Center"
             Content="Reset ALL Settings"
             FontWeight="Bold"
@@ -47,7 +47,7 @@
             Grid.Column="0"
             Grid.Row="2"
             Grid.ColumnSpan="2"
-            Margin="0 0 0 10"
+            Margin="0 0 0 15"
             VerticalAlignment="Center">
             Make sure you know what you're doing <LineBreak />
             when modifying these settings.
@@ -57,20 +57,21 @@
             Grid.Column="0"
             Grid.Row="3"
             VerticalAlignment="Center"
+            Margin="0 0 0 10"
+            Text="Do Not Preserve Low Item Level Gear:"
             ToolTipService.InitialShowDelay="50"
             ToolTipService.ShowDuration="24000"
-            ToolTip="With this checked on, you'll be able to include more than 1 lower item level &#x0a;piece of gear in your Chaos recipes. &#x0a; &#x0a;If you de-select this, the tool will try its best to only include 1 piece of &#x0a;lower item level gear so that it'll last you longer into higher tier maps. &#x0a; &#x0a;The Chaos Orb recipe only requires a single item level 60 - 75 item out of every &#x0a;set you turn in. As you get further into maps and out-level those items (i.e. &#x0a;zone level is higher than 74), you'll start to notice the amount of items you &#x0a;have for the chaos recipe will rapidly diminish. &#x0a; &#x0a;This lets you decide if you want to take a more greedy approach and use up as &#x0a;many items as possible, or potentially save some lower-level items for potentially &#x0a;more chaos in the long run.">
-            Do Not Preserve Low Item Level Gear: <LineBreak />
-            (Fill Greedy Mode)
-        </TextBlock>
+            ToolTip="With this checked on, you'll be able to include more than 1 lower item level &#x0a;piece of gear in your Chaos recipes. &#x0a; &#x0a;If you de-select this, the tool will try its best to only include 1 piece of &#x0a;lower item level gear so that it'll last you longer into higher tier maps. &#x0a; &#x0a;The Chaos Orb recipe only requires a single item level 60 - 75 item out of every &#x0a;set you turn in. As you get further into maps and out-level those items (i.e. &#x0a;zone level is higher than 74), you'll start to notice the amount of items you &#x0a;have for the chaos recipe will rapidly diminish. &#x0a; &#x0a;This lets you decide if you want to take a more greedy approach and use up as &#x0a;many items as possible, or potentially save some lower-level items for potentially &#x0a;more chaos in the long run."
+            />
 
         <CheckBox
             Grid.Column="1"
             Grid.Row="3"
-            Margin="15 0 0 0"
+            Margin="15 0 0 10"
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.DoNotPreserveLowItemLevelGear, Mode=TwoWay}"
             ToolTipService.InitialShowDelay="50"
             ToolTipService.ShowOnDisabled="True" />
+
     </Grid>
 </UserControl>

@@ -4,7 +4,8 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms;
 
 public partial class SetTrackerOverlayForm
 {
-    private SetTrackerOverlayFormViewModel _model;
+    private readonly SetTrackerOverlayFormViewModel _model;
+
     public SetTrackerOverlayForm()
     {
         DataContext = _model = new SetTrackerOverlayFormViewModel();

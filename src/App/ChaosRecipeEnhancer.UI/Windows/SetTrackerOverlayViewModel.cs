@@ -26,7 +26,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     private const int FetchCooldown = 30;
 
     private bool _fetchButtonEnabled = true;
-    private bool _stashButtonEnabled = false;
     private bool _stashButtonTooltipEnabled = false;
     private bool _setsTooltipEnabled = false;
     private string _warningMessage;
@@ -39,12 +38,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     {
         get => _fetchButtonEnabled;
         set => SetProperty(ref _fetchButtonEnabled, value);
-    }
-
-    public bool StashButtonEnabled
-    {
-        get => _stashButtonEnabled;
-        set => SetProperty(ref _stashButtonEnabled, value);
     }
 
     public bool StashButtonTooltipEnabled
@@ -71,7 +64,6 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     {
         WarningMessage = string.Empty;
         FetchButtonEnabled = false;
-        StashButtonEnabled = false;
 
         try
         {
@@ -270,11 +262,12 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 // if the user has vendor sets early enabled, we don't want to show the warning message
                 if (!Settings.VendorSetsEarly || FullSets >= Settings.FullSetThreshold)
                 {
-                    WarningMessage = SetsFullText;
+                    WarningMessage = !Settings.SilenceSetsFullMessage
+                        ? SetsFullText
+                        : string.Empty;
                 }
 
                 // stash button is enabled with no warning tooltip
-                StashButtonEnabled = true;
                 StashButtonTooltipEnabled = false;
                 SetsTooltipEnabled = false;
             }
@@ -287,28 +280,36 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 // stash button is disabled with warning tooltip to change threshold
                 if (Settings.VendorSetsEarly)
                 {
-                    StashButtonEnabled = true;
                     StashButtonTooltipEnabled = false;
                     SetsTooltipEnabled = false;
                 }
                 else
                 {
-                    StashButtonEnabled = false;
                     StashButtonTooltipEnabled = true;
                     SetsTooltipEnabled = true;
                 }
             }
 
             // case 3: user has fetched and needs items for chaos recipe (needs more lower level items)
-            // this one doesn't work as expected
             else if (NeedsLowerLevel)
             {
-                WarningMessage = NeedsLowerLevelText(FullSets - Settings.FullSetThreshold);
+                WarningMessage = !Settings.SilenceNeedItemsMessage
+                    ? NeedsLowerLevelText(FullSets - Settings.FullSetThreshold)
+                    : string.Empty;
 
                 // stash button is disabled with conditional tooltip enabled
                 // based on whether or not the user has at least 1 set
-                StashButtonEnabled = false;
                 StashButtonTooltipEnabled = FullSets >= 1;
+                SetsTooltipEnabled = true;
+            }
+
+            // case 4: user has fetched and has no sets
+            else if (FullSets == 0)
+            {
+                WarningMessage = string.Empty;
+
+                // stash button is disabled with warning tooltip to change threshold
+                StashButtonTooltipEnabled = true;
                 SetsTooltipEnabled = true;
             }
         }
