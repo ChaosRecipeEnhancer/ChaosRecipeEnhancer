@@ -77,7 +77,6 @@
                 Grid.Column="0"
                 Grid.Row="0"
                 Click="OnStashTabOverlayButtonClicked"
-                IsEnabled="{Binding StashButtonEnabled}"
                 Width="50"
                 Height="50"
                 ToolTipService.InitialShowDelay="50"

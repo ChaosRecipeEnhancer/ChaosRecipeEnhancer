@@ -3,11 +3,11 @@ using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 
-internal partial class OnlyButtonsDisplay
+internal partial class VerticalMinifiedOnlyButtonsDisplay
 {
     private readonly SetTrackerOverlayWindow _parent;
 
-    public OnlyButtonsDisplay(SetTrackerOverlayWindow parent)
+    public VerticalMinifiedOnlyButtonsDisplay(SetTrackerOverlayWindow parent)
     {
         InitializeComponent();
         _parent = parent;

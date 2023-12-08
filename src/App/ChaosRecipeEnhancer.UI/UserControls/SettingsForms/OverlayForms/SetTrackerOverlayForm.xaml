@@ -7,15 +7,16 @@
              mc:Ignorable="d"
              Background="#202020"
              d:DataContext="{d:DesignInstance Type=overlayForms:SetTrackerOverlayFormViewModel}">
-    <Grid
-        Margin="10"
-        ShowGridLines="False">
+
+    <Grid Margin="10" ShowGridLines="False">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -75,8 +76,10 @@
             <ComboBoxItem Content="Standard (Vertical)" />
             <ComboBoxItem Content="Minified" />
             <ComboBoxItem Content="Minified (Vertical)" />
-            <!-- <ComboBoxItem Content="Only Buttons" /> -->
-            <!-- <ComboBoxItem Content="Only Minified Buttons" /> -->
+            <ComboBoxItem Content="Only Buttons" />
+            <ComboBoxItem Content="Only Buttons (Vertical)" />
+            <ComboBoxItem Content="Only Minified Buttons" />
+            <ComboBoxItem Content="Only Minified Buttons (Vertical)" />
 
         </ComboBox>
 
@@ -96,10 +99,42 @@
             VerticalAlignment="Center"
             IsChecked="{Binding Settings.SetTrackerOverlayOverlayLockPositionEnabled, Mode=TwoWay}" />
 
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="4"
+            VerticalAlignment="Center"
+            Margin="0 0 0 10"
+            ToolTipService.InitialShowDelay="50"
+            Text="Silence 'Sets Full' Message:"
+            ToolTip="Disable the 'Sets Full!' notification message.&#x0a;&#x0a;This appears on the Set Tracker Overlay when&#x0a;you've met your full set threshold."/>
+
+        <CheckBox
+            Grid.Column="1"
+            Grid.Row="4"
+            Margin="10 0 0 10"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Settings.SilenceSetsFullMessage, Mode=TwoWay}" />
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="5"
+            VerticalAlignment="Center"
+            Margin="0 0 0 15"
+            ToolTipService.InitialShowDelay="50"
+            Text="Silence 'Need Items' Message:"
+            ToolTip="Disable the 'Need N items with iLvl 60-74!' notification message.&#x0a;&#x0a;This appears on the Set Tracker Overlay when you need low&#x0a;item level items to complete sets."/>
+
+        <CheckBox
+            Grid.Column="1"
+            Grid.Row="5"
+            Margin="10 0 0 15"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Settings.SilenceNeedItemsMessage, Mode=TwoWay}" />
+
         <!-- Reset Set Tracker Overlay Position Button -->
         <Button
             Grid.Column="0"
-            Grid.Row="4"
+            Grid.Row="6"
             Grid.ColumnSpan="2"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"

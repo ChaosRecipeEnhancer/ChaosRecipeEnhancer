@@ -43,26 +43,31 @@ public partial class SetTrackerOverlayWindow
 
     private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(Settings.SetTrackerOverlayDisplayMode))
-            UpdateOverlayType();
-        else if (e.PropertyName == nameof(Settings.SetTrackerOverlayItemCounterDisplayMode))
+        if (e.PropertyName == nameof(Settings.SetTrackerOverlayDisplayMode) ||
+            e.PropertyName == nameof(Settings.SetTrackerOverlayItemCounterDisplayMode))
             UpdateOverlayType(); // hack: force update the item counters when we change the display mode
-        else if (e.PropertyName == nameof(Settings.FullSetThreshold)
-                 || e.PropertyName == nameof(Settings.StashTabIndices)
-                 || e.PropertyName == nameof(Settings.StashTabPrefix))
+        else if (e.PropertyName == nameof(Settings.FullSetThreshold) ||
+                 e.PropertyName == nameof(Settings.StashTabIndices) ||
+                 e.PropertyName == nameof(Settings.StashTabPrefix) ||
+                 e.PropertyName == nameof(Settings.SilenceSetsFullMessage) ||
+                 e.PropertyName == nameof(Settings.SilenceNeedItemsMessage))
             _model.UpdateStashButtonAndWarningMessage();
     }
 
     private void UpdateOverlayType()
     {
-        if (Settings.Default.SetTrackerOverlayDisplayMode == (int)SetTrackerOverlayMode.Standard)
-            MainOverlayContentControl.Content = new StandardDisplay(this);
-        if (Settings.Default.SetTrackerOverlayDisplayMode == (int)SetTrackerOverlayMode.VerticalStandard)
-            MainOverlayContentControl.Content = new VerticalStandardDisplay(this);
-        if (Settings.Default.SetTrackerOverlayDisplayMode == (int)SetTrackerOverlayMode.Minified)
-            MainOverlayContentControl.Content = new MinifiedDisplay(this);
-        if (Settings.Default.SetTrackerOverlayDisplayMode == (int)SetTrackerOverlayMode.VerticalMinified)
-            MainOverlayContentControl.Content = new VerticalMinifiedDisplay(this);
+        MainOverlayContentControl.Content = Settings.Default.SetTrackerOverlayDisplayMode switch
+        {
+            (int)SetTrackerOverlayMode.Standard => new StandardDisplay(this),
+            (int)SetTrackerOverlayMode.VerticalStandard => new VerticalStandardDisplay(this),
+            (int)SetTrackerOverlayMode.Minified => new MinifiedDisplay(this),
+            (int)SetTrackerOverlayMode.VerticalMinified => new VerticalMinifiedDisplay(this),
+            (int)SetTrackerOverlayMode.OnlyButtons => new OnlyButtonsDisplay(this),
+            (int)SetTrackerOverlayMode.OnlyButtonsVertical => new VerticalOnlyButtons(this),
+            (int)SetTrackerOverlayMode.OnlyMinifiedButtons => new MinifiedOnlyButtonsDisplay(this),
+            (int)SetTrackerOverlayMode.OnlyMinifiedButtonsVertical => new VerticalMinifiedOnlyButtonsDisplay(this),
+            _ => MainOverlayContentControl.Content
+        };
     }
 
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)

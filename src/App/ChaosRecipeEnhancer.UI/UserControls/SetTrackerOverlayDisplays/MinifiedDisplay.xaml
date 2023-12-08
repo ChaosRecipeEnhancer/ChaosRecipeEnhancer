@@ -74,7 +74,6 @@
                 CornerRadius="50"
                 Margin="3 0"
                 PreviewMouseDown="OnStashTabOverlayButtonClicked"
-                IsEnabled="{Binding StashButtonEnabled}"
                 ToolTipService.InitialShowDelay="50"
                 ToolTipService.ShowOnDisabled="True"
                 Background="#202020"

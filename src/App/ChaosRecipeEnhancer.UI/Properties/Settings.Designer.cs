@@ -777,5 +777,29 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["ReloadFilterHotkey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SilenceNeedItemsMessage {
+            get {
+                return ((bool)(this["SilenceNeedItemsMessage"]));
+            }
+            set {
+                this["SilenceNeedItemsMessage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SilenceSetsFullMessage {
+            get {
+                return ((bool)(this["SilenceSetsFullMessage"]));
+            }
+            set {
+                this["SilenceSetsFullMessage"] = value;
+            }
+        }
     }
 }
