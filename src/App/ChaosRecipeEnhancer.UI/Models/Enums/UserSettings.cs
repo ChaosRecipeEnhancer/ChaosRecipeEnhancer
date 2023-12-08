@@ -24,5 +24,9 @@ public enum SetTrackerOverlayMode
     Standard,
     VerticalStandard,
     Minified,
-    VerticalMinified
+    VerticalMinified,
+    OnlyButtons,
+    OnlyButtonsVertical,
+    OnlyMinifiedButtons,
+    OnlyMinifiedButtonsVertical
 }
