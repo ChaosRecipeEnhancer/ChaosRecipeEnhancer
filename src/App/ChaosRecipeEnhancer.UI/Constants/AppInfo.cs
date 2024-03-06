@@ -2,8 +2,8 @@
 
 public static class AppInfo
 {
-    public const string VersionText = "v3.23.1006";
-    public const string VersionTextNoPrefix = "3.23.1006";
+    public const string VersionText = "v3.24.0001";
+    public const string VersionTextNoPrefix = "3.24.0001";
     public const string GithubReleasesUrl = "https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases";
     public const string GithubIssuesUrl = "https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues";
     public const string GitHubOrgName = "ChaosRecipeEnhancer";

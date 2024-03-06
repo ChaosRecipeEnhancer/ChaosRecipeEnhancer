@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<!--Build Settings-->
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<OutputType>WinExe</OutputType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<UseWindowsForms>True</UseWindowsForms>
@@ -13,8 +13,8 @@
 		<UseApplicationTrust>false</UseApplicationTrust>
 		<PublishWizardCompleted>true</PublishWizardCompleted>
 		<BootstrapperEnabled>true</BootstrapperEnabled>
-		<ApplicationVersion>2.0</ApplicationVersion>
-		<ApplicationRevision>1</ApplicationRevision>
+		<ApplicationVersion>3.24</ApplicationVersion>
+		<ApplicationRevision>0</ApplicationRevision>
 		<!--Update Settings-->
 		<IsWebBootstrapper>false</IsWebBootstrapper>
 		<Install>true</Install>
