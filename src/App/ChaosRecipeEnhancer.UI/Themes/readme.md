@@ -1,4 +1,6 @@
-# New Theme Library
+# Forked from: https://github.com/DerekGooding/WPFDarkTheme/tree/master
+
+## New Theme Library
 I decided to upgrade the theme library so that, instead of having each theme 
 contain all of the control styles, there is instead just a global style file.
 
