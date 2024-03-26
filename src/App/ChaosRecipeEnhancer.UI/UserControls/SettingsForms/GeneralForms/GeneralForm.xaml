@@ -57,9 +57,7 @@
             Grid.Row="1"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="League:"
-            ToolTipService.InitialShowDelay="50"
-            ToolTip="The league you are playing in." />
+            Text="League:" />
 
         <Grid
             Grid.Column="1"
@@ -106,8 +104,7 @@
             Grid.Row="2"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Stash Tab Query Mode:"
-            ToolTip="The stash tab fetching mode. Stash tabs will automatically be added." />
+            Text="Stash Tab Query Mode:" />
 
         <ComboBox
             Grid.Column="1"
@@ -214,15 +211,16 @@
             Text="{Binding StashTabPrefix, Mode=TwoWay}" />
         <!-- Individual Stash Tab Name Prefix End -->
 
-        <!-- Fetch on New Map Setting Start -->
+        <!-- Fetch on New Zone Setting Start -->
         <!-- TODO: [Refactor] Enforce reload when this setting is changed (or at the very least, notify users it's required) -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="4"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Fetch on New Map:"
-            ToolTip="Automatically fetches when you join a new Zone (Hideout excluded). REOPEN the overlay to take effect." />
+            Text="Fetch on Rezone:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="Automatically fetches new stash contents when you join a new zone.&#x0a;Requires you to 'hook up' your Client.txt file.&#x0a;&#x0a;(e.g. Entering a new map -> Fetch Stash Contents)" />
 
         <CheckBox
             Grid.Column="1"
@@ -238,6 +236,8 @@
             Grid.Row="5"
             VerticalAlignment="Center"
             Text="PoE Client.txt Path:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="Your PoE Client.txt file tracks when you rezone, so we can watch the file to&#x0a;automatically fetch stash contents.&#x0a;&#x0a;This is the same sort of behavior used by Trade Macros to watch the chat&#x0a;and display incoming and outgoing trades."
             Visibility="{Binding AutoFetchOnRezoneEnabled, Converter={StaticResource BoolVisibilityConverter}}" />
 
         <StackPanel
@@ -248,6 +248,7 @@
 
             <RadioButton Content="Default Standalone Install Location"
                          IsChecked="{Binding Path=ClientLogFileLocationMode, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static creEnums:ClientLogFileLocationMode.DefaultStandaloneLocation}}"
+                         ToolTipService.InitialShowDelay="50"
                          Margin="0 0 0 5">
                 <RadioButton.ToolTip>
                     <ToolTip>
@@ -264,6 +265,7 @@
 
             <RadioButton Content="Default Steam Install Location"
                          IsChecked="{Binding Path=ClientLogFileLocationMode, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static creEnums:ClientLogFileLocationMode.DefaultSteamLocation}}"
+                         ToolTipService.InitialShowDelay="50"
                          Margin="0 0 0 5">
                 <RadioButton.ToolTip>
                     <ToolTip>
@@ -281,6 +283,7 @@
             <RadioButton
                 Content="Custom Install Location"
                 IsChecked="{Binding Path=ClientLogFileLocationMode, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static creEnums:ClientLogFileLocationMode.CustomLocation}}"
+                ToolTipService.InitialShowDelay="50"
                 Margin="0 0 0 5">
                 <RadioButton.ToolTip>
                     <ToolTip>
