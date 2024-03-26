@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
-internal partial class RecipesForm
+public partial class RecipesForm
 {
     public RecipesForm()
     {
@@ -15,7 +15,7 @@ internal partial class RecipesForm
 
     private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
     {
-        var regex = new Regex("[^0-9]+");
+        var regex = NumberValidationRegex();
         e.Handled = regex.IsMatch(e.Text);
 
         // Check if the new text is within the range
@@ -47,4 +47,6 @@ internal partial class RecipesForm
         }
     }
 
+    [GeneratedRegex("[^0-9]+")]
+    private static partial Regex NumberValidationRegex();
 }
