@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace FramePFX.Themes.Attached;
+namespace ChaosRecipeEnhancer.UI.Assets.Themes.Attached;
 
 public static class TextBoxAutoSelect
 {
@@ -20,7 +20,7 @@ public static class TextBoxAutoSelect
     {
         if (sender is not Control control)
             return;
-        
+
         control.Focus();
         if (control is TextBoxBase textbox)
             textbox.SelectAll();

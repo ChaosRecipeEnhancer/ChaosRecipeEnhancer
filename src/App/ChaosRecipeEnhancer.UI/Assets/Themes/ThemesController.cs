@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
 
-namespace FramePFX.Themes;
+namespace ChaosRecipeEnhancer.UI.Assets.Themes;
 
 public static class ThemesController
 {

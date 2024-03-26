@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FramePFX.Themes;
+namespace ChaosRecipeEnhancer.UI.Assets.Themes;
 
 public enum ThemeType
 {

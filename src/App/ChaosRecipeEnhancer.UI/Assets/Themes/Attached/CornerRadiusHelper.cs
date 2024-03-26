@@ -1,14 +1,14 @@
 ﻿using System.Windows;
 
-namespace FramePFX.Themes.Attached
+namespace ChaosRecipeEnhancer.UI.Assets.Themes.Attached
 {
     public static class CornerRadiusHelper
     {
-        public static readonly DependencyProperty ValueProperty = 
+        public static readonly DependencyProperty ValueProperty =
             DependencyProperty.RegisterAttached(
-                "Value", 
-                typeof(CornerRadius), 
-                typeof(CornerRadiusHelper), 
+                "Value",
+                typeof(CornerRadius),
+                typeof(CornerRadiusHelper),
                 new PropertyMetadata(new CornerRadius(0)));
 
         public static void SetValue(DependencyObject element, CornerRadius value) => element.SetValue(ValueProperty, value);

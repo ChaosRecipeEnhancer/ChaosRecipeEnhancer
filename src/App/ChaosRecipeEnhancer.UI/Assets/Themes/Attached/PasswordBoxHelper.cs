@@ -2,7 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace FramePFX.Themes.Attached;
+namespace ChaosRecipeEnhancer.UI.Assets.Themes.Attached;
 
 public class PasswordBoxHelper
 {
@@ -17,7 +17,7 @@ public class PasswordBoxHelper
     {
         if (d is not PasswordBox box)
             throw new Exception("DependencyObject is not a password box. It is '" + (d == null ? "null" : d.GetType().Name) + '\'');
-        
+
         box.PasswordChanged -= BoxOnPasswordChanged;
         if (e.NewValue != null && (bool)e.NewValue)
             box.PasswordChanged += BoxOnPasswordChanged;

@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace FramePFX.Themes.Attached;
+namespace ChaosRecipeEnhancer.UI.Assets.Themes.Attached;
 
 /// <summary>
 /// An attached property class for showing a hint when a text box is empty. Set the text box's Tag property to the text
@@ -21,7 +21,7 @@ public static class TextHinting
     {
         if (control is TextBoxBase || control is PasswordBox)
             control.SetValue(ShowWhenFocusedProperty, value);
-        
+
         throw new ArgumentException("Control was not a textbox", nameof(control));
     }
 
@@ -29,7 +29,7 @@ public static class TextHinting
     {
         if (control is TextBoxBase || control is PasswordBox)
             return (bool)control.GetValue(ShowWhenFocusedProperty);
-        
+
         throw new ArgumentException("Control was not a textbox", nameof(control));
     }
 }
