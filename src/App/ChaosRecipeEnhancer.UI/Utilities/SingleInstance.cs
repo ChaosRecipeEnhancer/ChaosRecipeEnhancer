@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Threading;
 
-namespace ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
+namespace ChaosRecipeEnhancer.UI.Utilities;
 
 public sealed class SingleInstance : IDisposable
 {
@@ -61,9 +61,7 @@ public sealed class SingleInstance : IDisposable
             _instanceName,
             PipeDirection.In,
             1,
-#pragma warning disable CA1416
             PipeTransmissionMode.Message,
-#pragma warning restore CA1416
             PipeOptions.Asynchronous
         );
 

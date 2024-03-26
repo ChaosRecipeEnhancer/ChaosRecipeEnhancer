@@ -3,9 +3,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
+namespace ChaosRecipeEnhancer.UI.Utilities;
 
-internal static class ControlHelpers
+public static class ControlHelpers
 {
     public static bool HitTest(FrameworkElement frameworkElement, Point location)
     {
