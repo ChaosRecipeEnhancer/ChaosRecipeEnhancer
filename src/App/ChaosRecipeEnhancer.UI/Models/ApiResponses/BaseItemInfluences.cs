@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
+namespace ChaosRecipeEnhancer.UI.Models.ApiResponses;
 
 public class BaseItemInfluences
 {

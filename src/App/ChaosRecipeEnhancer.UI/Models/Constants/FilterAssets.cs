@@ -1,4 +1,4 @@
-﻿namespace ChaosRecipeEnhancer.UI.Constants;
+﻿namespace ChaosRecipeEnhancer.UI.Models.Constants;
 
 public static class FilterAssets
 {

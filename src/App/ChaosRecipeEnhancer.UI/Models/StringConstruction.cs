@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ChaosRecipeEnhancer.UI.Constants;
+namespace ChaosRecipeEnhancer.UI.Models;
 
 public static class StringConstruction
 {

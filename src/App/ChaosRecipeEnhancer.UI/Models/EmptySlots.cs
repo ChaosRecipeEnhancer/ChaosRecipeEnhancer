@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using ChaosRecipeEnhancer.UI.Constants;
+using System.Collections.Generic;
 
-namespace ChaosRecipeEnhancer.UI.Constants;
+namespace ChaosRecipeEnhancer.UI.Models;
 
 // Not sure on the naming of this - best I could come up with
 public static class EmptySlots
@@ -10,8 +10,8 @@ public static class EmptySlots
     {
         get
         {
-            List<string> originalList = new()
-            {
+            List<string> originalList =
+            [
                 GameTerminology.BodyArmors,
                 GameTerminology.TwoHandWeapons,
                 GameTerminology.Helmets,
@@ -23,10 +23,10 @@ public static class EmptySlots
                 GameTerminology.Rings,
                 GameTerminology.OneHandWeapons, // have to double up on 1-handers
                 GameTerminology.OneHandWeapons
-            };
-        
+            ];
+
             // Return a copy to ensure that the original is not mutable
-            return originalList.ToList();
+            return [.. originalList];
         }
     }
 }
