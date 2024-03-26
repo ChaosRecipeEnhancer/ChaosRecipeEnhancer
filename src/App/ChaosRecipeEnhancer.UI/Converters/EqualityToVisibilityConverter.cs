@@ -41,16 +41,16 @@ public sealed class EqualityToVisibilityConverter : IValueConverter
             : equalityFunction(castedParameter) ? Visibility.Visible : Visibility.Collapsed;
     }
 
-    /// <summary>
-    /// Converts a Visibility value back to an object value (not implemented).
-    /// </summary>
-    /// <param name="value">The Visibility value to convert back.</param>
-    /// <param name="targetType">The target type of the conversion.</param>
-    /// <param name="parameter">Additional parameter for the conversion (not used).</param>
-    /// <param name="culture">The culture information for the conversion.</param>
-    /// <returns>Throws a NotImplementedException.</returns>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        if (value is Visibility visibility)
+        {
+            var castedParameter = parameter;
+            if (ComparisonType is not null) castedParameter = System.Convert.ChangeType(parameter, ComparisonType);
+
+            return Invert ? visibility == Visibility.Collapsed : visibility == Visibility.Visible;
+        }
+
+        return false;
     }
 }
