@@ -1,9 +1,38 @@
-﻿using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
+﻿using ChaosRecipeEnhancer.UI.Converters;
+using System.Globalization;
 
-namespace ChaosRecipeEnhancer.UI.Tests.Utilities.Converters;
+namespace ChaosRecipeEnhancer.UI.Tests.Converters;
 
 public class MultiBoolToBoolAndConverterTests
 {
+    [Fact]
+    public void Convert_AllTrue_ReturnsTrue()
+    {
+        // Arrange
+        var converter = new MultiBoolToBoolAndConverter();
+        var values = new object[] { true, true, true };
+
+        // Act
+        var result = converter.Convert(values, null, null, CultureInfo.InvariantCulture);
+
+        // Assert
+        Assert.True((bool)result);
+    }
+
+    [Fact]
+    public void Convert_OneFalse_ReturnsFalse()
+    {
+        // Arrange
+        var converter = new MultiBoolToBoolAndConverter();
+        var values = new object[] { true, false, true };
+
+        // Act
+        var result = converter.Convert(values, null, null, CultureInfo.InvariantCulture);
+
+        // Assert
+        Assert.False((bool)result);
+    }
+
     [Fact]
     public void Convert_GivenTrueAndTrue_ReturnsTrue()
     {

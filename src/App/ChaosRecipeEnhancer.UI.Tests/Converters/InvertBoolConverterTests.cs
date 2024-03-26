@@ -1,9 +1,62 @@
-﻿using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
+﻿using ChaosRecipeEnhancer.UI.Converters;
+using System.Globalization;
 
-namespace ChaosRecipeEnhancer.UI.Tests.Utilities.Converters;
+namespace ChaosRecipeEnhancer.Tests.Converters;
 
 public class InvertBoolConverterTests
 {
+    [Fact]
+    public void Convert_True_ReturnsFalse()
+    {
+        // Arrange
+        var converter = new InvertBoolConverter();
+
+        // Act
+        var result = converter.Convert(true, null, null, CultureInfo.InvariantCulture);
+
+        // Assert
+        Assert.False((bool)result);
+    }
+
+    [Fact]
+    public void Convert_False_ReturnsTrue()
+    {
+        // Arrange
+        var converter = new InvertBoolConverter();
+
+        // Act
+        var result = converter.Convert(false, null, null, CultureInfo.InvariantCulture);
+
+        // Assert
+        Assert.True((bool)result);
+    }
+
+    [Fact]
+    public void ConvertBack_True_ReturnsFalse()
+    {
+        // Arrange
+        var converter = new InvertBoolConverter();
+
+        // Act
+        var result = converter.ConvertBack(true, null, null, CultureInfo.InvariantCulture);
+
+        // Assert
+        Assert.False((bool)result);
+    }
+
+    [Fact]
+    public void ConvertBack_False_ReturnsTrue()
+    {
+        // Arrange
+        var converter = new InvertBoolConverter();
+
+        // Act
+        var result = converter.ConvertBack(false, null, null, CultureInfo.InvariantCulture);
+
+        // Assert
+        Assert.True((bool)result);
+    }
+
     [Fact]
     public void Convert_GivenTrue_ReturnsFalse()
     {

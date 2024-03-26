@@ -1,10 +1,63 @@
-﻿using System.Windows;
-using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
+﻿using ChaosRecipeEnhancer.UI.Converters;
+using System.Globalization;
+using System.Windows;
 
-namespace ChaosRecipeEnhancer.UI.Tests.Utilities.Converters;
+namespace ChaosRecipeEnhancer.UI.Tests.Converters;
 
 public class EqualityToVisibilityConverterTests
 {
+    [Fact]
+    public void Convert_EqualValues_ReturnsVisible()
+    {
+        // Arrange
+        var converter = new EqualityToVisibilityConverter();
+
+        // Act
+        var result = converter.Convert(5, null, 5, CultureInfo.InvariantCulture);
+
+        // Assert
+        Assert.Equal(Visibility.Visible, result);
+    }
+
+    [Fact]
+    public void Convert_NotEqualValues_ReturnsCollapsed()
+    {
+        // Arrange
+        var converter = new EqualityToVisibilityConverter();
+
+        // Act
+        var result = converter.Convert(5, null, 10, CultureInfo.InvariantCulture);
+
+        // Assert
+        Assert.Equal(Visibility.Collapsed, result);
+    }
+
+    [Fact]
+    public void Convert_EqualValues_InvertTrue_ReturnsCollapsed()
+    {
+        // Arrange
+        var converter = new EqualityToVisibilityConverter { Invert = true };
+
+        // Act
+        var result = converter.Convert(5, null, 5, CultureInfo.InvariantCulture);
+
+        // Assert
+        Assert.Equal(Visibility.Collapsed, result);
+    }
+
+    [Fact]
+    public void Convert_ComparisonType_ReturnsVisible()
+    {
+        // Arrange
+        var converter = new EqualityToVisibilityConverter { ComparisonType = typeof(int) };
+
+        // Act
+        var result = converter.Convert(5, null, "5", CultureInfo.InvariantCulture);
+
+        // Assert
+        Assert.Equal(Visibility.Visible, result);
+    }
+
     [Fact]
     public void Convert_WhenValueIsNullAndParameterIsNull_ReturnsTrue()
     {
