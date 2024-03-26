@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms.GeneralForm"
              x:ClassModifier="public"
              xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
-             xmlns:creConstants="clr-namespace:ChaosRecipeEnhancer.UI.Constants"
+             xmlns:creConstants="clr-namespace:ChaosRecipeEnhancer.UI.Models.Constants"
              xmlns:creEnums="clr-namespace:ChaosRecipeEnhancer.UI.Models.Enums"
              xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -186,7 +186,7 @@
                 Width="60"
                 Margin="5 0 0 0"
                 Content="Fetch"
-                IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}"
+                IsEnabled="{Binding FetchStashTabsButtonEnabled, Converter={StaticResource InvertBoolConverter}}"
                 Command="{Binding FetchStashTabsCommand}" />
 
         </Grid>
@@ -255,7 +255,7 @@
                         <TextBlock>
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="Select this if you have installed PoE with all the default settings via Standalone Installer.&#x0a;&#x0a;Default Standalone Path:&#x0a;{0}">
-                                    <Binding Source="{x:Static creConstants:PoEClient.DefaultStandaloneInstallLocationPath}" />
+                                    <Binding Source="{x:Static creConstants:PoEClientDefaults.DefaultStandaloneInstallLocationPath}" />
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
@@ -272,7 +272,7 @@
                         <TextBlock>
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="Select this if you have installed PoE with all the default settings via Steam.&#x0a;&#x0a;Default Steam Path:&#x0a;{0}">
-                                    <Binding Source="{x:Static creConstants:PoEClient.DefaultSteamInstallLocationPath}" />
+                                    <Binding Source="{x:Static creConstants:PoEClientDefaults.DefaultSteamInstallLocationPath}" />
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>

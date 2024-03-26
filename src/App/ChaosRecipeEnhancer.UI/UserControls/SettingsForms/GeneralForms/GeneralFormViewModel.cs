@@ -1,23 +1,19 @@
-﻿using ChaosRecipeEnhancer.UI.Constants;
-using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
+﻿using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.Constants;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
-using ChaosRecipeEnhancer.UI.State;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using Serilog;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
 using System.Windows.Input;
-using Timer = System.Timers.Timer;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
@@ -27,7 +23,6 @@ public class GeneralFormViewModel : CreViewModelBase
 
     private readonly ILogger _log = Log.ForContext<GeneralFormViewModel>();
     private readonly IPoEApiService _apiService;
-    private readonly IAuthStateManager _authStateManager;
     private readonly IUserSettings _userSettings;
 
     private ICommand _fetchStashTabsCommand;
@@ -42,11 +37,6 @@ public class GeneralFormViewModel : CreViewModelBase
     private bool _leaguesLoaded = false;
     private bool _stashTabsLoaded = false;
 
-    // Timer for debouncing
-    private Timer _debounceTimer;
-    private const double DebounceTime = 500; // Time in milliseconds
-    private int _debounceAttempts = 0; // Track the number of debounce attempts
-
     #endregion
 
     #region Constructors
@@ -57,22 +47,10 @@ public class GeneralFormViewModel : CreViewModelBase
     /// <param name="apiService">The service for API interactions.</param>
     /// <param name="authStateManager">Manages authentication state.</param>
     /// <param name="userSettings">Stores user settings.</param>
-    public GeneralFormViewModel(IPoEApiService apiSevice, IAuthStateManager authStateManager, IUserSettings userSettings)
+    public GeneralFormViewModel(IPoEApiService apiSevice, IUserSettings userSettings)
     {
         _apiService = apiSevice;
-        _authStateManager = authStateManager;
         _userSettings = userSettings;
-
-        // Initialize the debounce timer
-        _debounceTimer = new Timer(DebounceTime);
-        _debounceTimer.Elapsed += OnDebounceTimerElapsed;
-        _debounceTimer.AutoReset = false; // Ensure the timer runs only once per interval
-    }
-
-    ~GeneralFormViewModel()
-    {
-        _debounceTimer?.Stop();
-        _debounceTimer?.Dispose();
     }
 
     #endregion
@@ -109,21 +87,6 @@ public class GeneralFormViewModel : CreViewModelBase
             {
                 _userSettings.LeagueName = value;
                 OnPropertyChanged(nameof(LeagueName));
-
-                // Increment debounce attempts
-                _debounceAttempts++;
-
-                // Calculate the delay with exponential backoff
-                double delay = DebounceTime * Math.Pow(2, _debounceAttempts - 1);
-
-                // Ensure the delay does not exceed a maximum value
-                const double maxDelay = 5000; // Maximum delay in milliseconds
-                delay = Math.Min(delay, maxDelay);
-
-                // Reset and start the debounce timer with the new delay
-                _debounceTimer.Stop();
-                _debounceTimer.Interval = delay;
-                _debounceTimer.Start();
             }
         }
     }
@@ -212,34 +175,14 @@ public class GeneralFormViewModel : CreViewModelBase
                 switch (value)
                 {
                     case ClientLogFileLocationMode.DefaultStandaloneLocation:
-                        PathOfExileClientLogLocation = PoEClient.DefaultStandaloneInstallLocationPath;
+                        PathOfExileClientLogLocation = PoEClientDefaults.DefaultStandaloneInstallLocationPath;
                         break;
                     case ClientLogFileLocationMode.DefaultSteamLocation:
-                        PathOfExileClientLogLocation = PoEClient.DefaultSteamInstallLocationPath;
+                        PathOfExileClientLogLocation = PoEClientDefaults.DefaultSteamInstallLocationPath;
                         break;
                 }
             }
         }
-    }
-
-    #endregion
-
-    #region Events
-
-    private void OnDebounceTimerElapsed(object sender, ElapsedEventArgs e)
-    {
-        Application.Current.Dispatcher.Invoke(async () =>
-        {
-            // Reset debounce attempts after successful API call delay
-            _debounceAttempts = 0;
-
-            // Existing method content remains unchanged
-            // Ensure UI updates are performed on the main thread
-            _stashTabsLoaded = false;
-
-            // Call the method to load stash tabs for the new league
-            await LoadStashTabNamesIndicesAsync();
-        });
     }
 
     #endregion
@@ -249,8 +192,11 @@ public class GeneralFormViewModel : CreViewModelBase
     /// </summary>
     public async Task LoadLeagueListAsync()
     {
+        _log.Information("Starting LoadLeagueListAsync");
+
         if (_leaguesLoaded)
         {
+            _log.Information("Leagues already loaded. Entering cooldown.");
             try
             {
                 await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
@@ -258,45 +204,65 @@ public class GeneralFormViewModel : CreViewModelBase
             finally
             {
                 RefreshLeagueListButtonEnabled = true;
+                _log.Information("Cooldown complete. RefreshLeagueListButtonEnabled set to true.");
             }
 
             return;
         }
 
+        _log.Information("Loading league list for the first time.");
         RefreshLeagueListButtonEnabled = false;
 
         LeagueList.Clear();
 
+        _log.Information("Calling API to fetch league list.");
         var leagueList = await _apiService.GetLeaguesAsync();
         if (leagueList != null)
         {
+            _log.Information("League list fetched successfully. Total leagues: {LeagueCount}", leagueList.Leagues.Count);
+
             foreach (var league in leagueList.Leagues)
             {
                 LeagueList.Add(league.Id);
             }
-
-            _leaguesLoaded = true;
+        }
+        else
+        {
+            _log.Warning("Failed to fetch league list from API.");
         }
 
         _userSettings.LeagueName = LeagueList.FirstOrDefault();
+        _log.Information("Default league name set to: {LeagueName}", _userSettings.LeagueName);
 
         try
         {
-            await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+            if (_leaguesLoaded)
+            {
+                _log.Information("Entering cooldown after league list load.");
+                await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+            }
         }
         finally
         {
+            _leaguesLoaded = true;
+            _log.Information("Leagues loaded and marked as loaded.");
+
             RefreshLeagueListButtonEnabled = true;
+            _log.Information("Cooldown complete. RefreshLeagueListButtonEnabled set to true.");
         }
     }
+
 
     /// <summary>
     /// Loads stash tab names and indices. Only loads once per session to reduce API calls, unless the league is changed or explicitly refreshed.
     /// </summary>
     public async Task LoadStashTabNamesIndicesAsync()
     {
+        _log.Information("Starting LoadStashTabNamesIndicesAsync");
+
         if (_stashTabsLoaded)
         {
+            _log.Information("Stash tabs already loaded. Entering cooldown.");
             try
             {
                 await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
@@ -304,27 +270,44 @@ public class GeneralFormViewModel : CreViewModelBase
             finally
             {
                 FetchStashTabsButtonEnabled = true;
+                _log.Information("Cooldown complete. FetchStashTabsButtonEnabled set to true.");
             }
 
             return;
         }
 
+        _log.Information("Loading stash tab names and indices for the first time.");
         FetchStashTabsButtonEnabled = false;
 
+        _log.Information("Calling API to fetch all personal stash tab metadata.");
         var stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataAsync();
         if (stashTabPropsList != null)
         {
+            _log.Information("Stash tab metadata fetched successfully. Total tabs: {TabCount}", stashTabPropsList.StashTabs.Count);
+
             UpdateStashTabNameIndexFullList(stashTabPropsList.StashTabs);
-            _stashTabsLoaded = true;
+
+        }
+        else
+        {
+            _log.Warning("Failed to fetch stash tab metadata from API.");
         }
 
         try
         {
-            await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+            if (_stashTabsLoaded)
+            {
+                _log.Information("Entering cooldown after loading stash tabs.");
+                await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+            }
         }
         finally
         {
+            _stashTabsLoaded = true;
+            _log.Information("Stash tabs loaded and marked as loaded.");
+
             FetchStashTabsButtonEnabled = true;
+            _log.Information("Cooldown complete. FetchStashTabsButtonEnabled set to true.");
         }
     }
 
