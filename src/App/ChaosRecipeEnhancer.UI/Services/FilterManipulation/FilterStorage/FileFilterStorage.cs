@@ -1,6 +1,7 @@
 ﻿using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.State;
 using Serilog;
+using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
@@ -75,6 +76,21 @@ public class FileFilterStorage : IFilterStorage
 
                 break;
             }
+            catch (UnauthorizedAccessException e)
+            {
+                _log.Error("UnauthorizedAccessException encountered: " + e.Message);
+
+                GlobalErrorHandler.Spawn(
+                    e.ToString(),
+                    "Error: File Filter Storage - Unauthorized Access",
+                    preamble: "This application does not have the necessary permissions to write to the loot filter file. " +
+                    "Please ensure that you have the required write permissions for the file.\n\n" +
+                    "It is also possible that the file is currently in use by another application - " +
+                    "if the filter is open in a text editor (or something similar), close it and try again."
+                );
+
+                break;
+            }
             catch (IOException e) when (i < maxRetries - 1)
             {
                 _log.Error("IOException encountered: " + e.Message);
@@ -82,5 +98,4 @@ public class FileFilterStorage : IFilterStorage
             }
         }
     }
-
 }
