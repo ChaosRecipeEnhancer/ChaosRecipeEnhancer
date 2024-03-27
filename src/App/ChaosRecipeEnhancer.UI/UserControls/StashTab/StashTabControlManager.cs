@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ChaosRecipeEnhancer.UI.Models.Enums;
+﻿using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.State;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
@@ -13,14 +13,14 @@ namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 /// </summary>
 public static class StashTabControlManager
 {
-    public static List<StashTabControl> StashTabControls { get; set; } = new();
+    public static List<StashTabControl> StashTabControls { get; set; } = [];
     public static List<int> StashTabIndices { get; private set; }
 
     public static void GetStashTabIndicesFromSettings()
     {
         // update the stash tab metadata based on your target stash
 
-        List<int> selectedTabIndices = new();
+        List<int> selectedTabIndices = [];
 
         if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList)
         {
