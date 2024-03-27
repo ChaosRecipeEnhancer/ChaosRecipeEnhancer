@@ -81,42 +81,30 @@
                         <Setter Property="BorderBrush" Value="Gainsboro" />
                         <Setter Property="Template">
                             <Setter.Value>
-
-                                <!-- Template for the Tab Item (Dynamic list of Stash Tab 'Tabs') -->
                                 <ControlTemplate TargetType="{x:Type TabItem}">
-
-                                    <!-- Stash Tab 'Container' -->
-                                    <Grid Margin="5 0 0 0">
-
-                                        <!-- Stash Tab 'Tab' Border -->
+                                    <Grid x:Name="TabItemContainer" Margin="5 0 0 0">
                                         <Border x:Name="Border"
                                                 Padding="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderPadding, Converter={StaticResource PaddingConverter}}"
                                                 Margin="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderGap, Converter={StaticResource DoubleToGapThicknessConverter}}"
                                                 BorderThickness="1,1,1,1"
                                                 BorderBrush="Gainsboro">
-
-                                            <!-- Stash Tab Name -->
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabItem}}, Path=Header.DataContext.TabHeaderColor.Color}" />
+                                            </Border.Background>
                                             <ContentPresenter
-                                                  x:Name="ContentSite"
-                                                  VerticalAlignment="Center"
-                                                  HorizontalAlignment="Center"
-                                                  ContentSource="Header"
-                                                  RecognizesAccessKey="True" />
-
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"
+                                                ContentSource="Header"
+                                                RecognizesAccessKey="True" />
                                         </Border>
-
                                     </Grid>
-
                                     <ControlTemplate.Triggers>
-                                        <!-- If Stash Tab Selected Trigger -->
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="Panel.ZIndex" Value="100" />
                                             <Setter TargetName="Border" Property="BorderThickness" Value="1,3,1,0" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>
-
                                 </ControlTemplate>
-
                             </Setter.Value>
                         </Setter>
                     </Style>
