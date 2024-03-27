@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.State;
@@ -52,10 +53,12 @@ public class ReloadFilterService : IReloadFilterService
         Clipboard.Clear();
         Clipboard.SetText(chatCommand);
 
-        SendKeys.SendWait("{ENTER}");
-        SendKeys.SendWait("^(v)");
-        SendKeys.SendWait("{ENTER}");
-    }
+		Task.Run(() => {
+			SendKeys.SendWait("{ENTER}");
+			SendKeys.SendWait("^(v)");
+			SendKeys.SendWait("{ENTER}");
+		});
+	}
 
     private string BuildFilterReloadCommand()
     {
