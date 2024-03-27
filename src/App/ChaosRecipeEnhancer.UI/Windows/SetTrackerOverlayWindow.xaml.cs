@@ -82,10 +82,11 @@ public partial class SetTrackerOverlayWindow : Window
         IsOpen = false;
         _stashTabOverlay.Hide();
 
-        if (_logWatcherManager is not null)
+        if (_logWatcherManager != null)
         {
             _logWatcherManager.StopWatchingLogFile();
             _logWatcherManager.Dispose();
+            _logWatcherManager = null;
         }
 
         base.Hide();
