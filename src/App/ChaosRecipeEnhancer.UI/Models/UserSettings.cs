@@ -1,5 +1,6 @@
 ﻿using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
+using Serilog;
 using System;
 
 namespace ChaosRecipeEnhancer.UI.Models;
@@ -14,6 +15,9 @@ public interface IUserSettings
     string PathOfExileClientLogLocation { get; set; }
 
     // CRE General Settings
+    bool ChaosRecipeTrackingEnabled { get; set; }
+    bool IncludeIdentifiedItemsEnabled { get; set; }
+    bool VendorSetsEarly { get; set; }
     int PathOfExileClientLogLocationMode { get; set; }
     string LeagueName { get; set; }
     int StashTabQueryMode { get; set; }
@@ -28,6 +32,12 @@ public interface IUserSettings
 
     // CRE Overlay Settings
     SetTrackerOverlayItemCounterDisplayMode SetTrackerOverlayItemCounterDisplayMode { get; set; }
+    SetTrackerOverlayMode SetTrackerOverlayMode { get; set; }
+    bool SetTrackerOverlayOverlayLockPositionEnabled { get; set; }
+    double SetTrackerOverlayTopPosition { get; set; }
+    double SetTrackerOverlayLeftPosition { get; set; }
+    bool SilenceNeedItemsMessage { get; set; }
+    bool SilenceSetsFullMessage { get; set; }
 
     // CRE Loot Filter Settings
     bool LootFilterRingsAlwaysActive { get; set; }
@@ -116,6 +126,45 @@ public class UserSettings : IUserSettings
 
     #region CRE General Settings
 
+    public bool ChaosRecipeTrackingEnabled
+    {
+        get => Settings.Default.ChaosRecipeTrackingEnabled;
+        set
+        {
+            if (Settings.Default.ChaosRecipeTrackingEnabled != value)
+            {
+                Settings.Default.ChaosRecipeTrackingEnabled = value;
+                Save();
+            }
+        }
+    }
+
+    public bool IncludeIdentifiedItemsEnabled
+    {
+        get => Settings.Default.IncludeIdentifiedItemsEnabled;
+        set
+        {
+            if (Settings.Default.IncludeIdentifiedItemsEnabled != value)
+            {
+                Settings.Default.IncludeIdentifiedItemsEnabled = value;
+                Save();
+            }
+        }
+    }
+
+    public bool VendorSetsEarly
+    {
+        get => Settings.Default.VendorSetsEarly;
+        set
+        {
+            if (Settings.Default.VendorSetsEarly != value)
+            {
+                Settings.Default.VendorSetsEarly = value;
+                Save();
+            }
+        }
+    }
+
     public int PathOfExileClientLogLocationMode
     {
         get => Settings.Default.PathOfExileClientLogLocationMode;
@@ -161,6 +210,7 @@ public class UserSettings : IUserSettings
         get => Settings.Default.StashTabIndices;
         set
         {
+            Log.Information("StashTabIndices: {StashTabIndices}", value);
             if (Settings.Default.StashTabIndices != value)
             {
                 Settings.Default.StashTabIndices = value;
@@ -251,6 +301,84 @@ public class UserSettings : IUserSettings
             if (Settings.Default.SetTrackerOverlayItemCounterDisplayMode != (int)value)
             {
                 Settings.Default.SetTrackerOverlayItemCounterDisplayMode = (int)value;
+                Save();
+            }
+        }
+    }
+
+    public SetTrackerOverlayMode SetTrackerOverlayMode
+    {
+        get => (SetTrackerOverlayMode)Settings.Default.SetTrackerOverlayDisplayMode;
+        set
+        {
+            if (Settings.Default.SetTrackerOverlayDisplayMode != (int)value)
+            {
+                Settings.Default.SetTrackerOverlayDisplayMode = (int)value;
+                Save();
+            }
+        }
+    }
+
+    public bool SetTrackerOverlayOverlayLockPositionEnabled
+    {
+        get => Settings.Default.SetTrackerOverlayOverlayLockPositionEnabled;
+        set
+        {
+            if (Settings.Default.SetTrackerOverlayOverlayLockPositionEnabled != value)
+            {
+                Settings.Default.SetTrackerOverlayOverlayLockPositionEnabled = value;
+                Save();
+            }
+        }
+    }
+
+    public double SetTrackerOverlayTopPosition
+    {
+        get => Settings.Default.SetTrackerOverlayTopPosition;
+        set
+        {
+            if (Settings.Default.SetTrackerOverlayTopPosition != value)
+            {
+                Settings.Default.SetTrackerOverlayTopPosition = value;
+                Save();
+            }
+        }
+    }
+
+    public double SetTrackerOverlayLeftPosition
+    {
+        get => Settings.Default.SetTrackerOverlayLeftPosition;
+        set
+        {
+            if (Settings.Default.SetTrackerOverlayLeftPosition != value)
+            {
+                Settings.Default.SetTrackerOverlayLeftPosition = value;
+                Save();
+            }
+        }
+    }
+
+    public bool SilenceNeedItemsMessage
+    {
+        get => Settings.Default.SilenceNeedItemsMessage;
+        set
+        {
+            if (Settings.Default.SilenceNeedItemsMessage != value)
+            {
+                Settings.Default.SilenceNeedItemsMessage = value;
+                Save();
+            }
+        }
+    }
+
+    public bool SilenceSetsFullMessage
+    {
+        get => Settings.Default.SilenceSetsFullMessage;
+        set
+        {
+            if (Settings.Default.SilenceSetsFullMessage != value)
+            {
+                Settings.Default.SilenceSetsFullMessage = value;
                 Save();
             }
         }

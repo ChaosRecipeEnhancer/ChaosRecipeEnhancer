@@ -1,15 +1,16 @@
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Input;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Utilities.Native;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
-public partial class SetTrackerOverlayWindow
+public partial class SetTrackerOverlayWindow : Window
 {
     private readonly SetTrackerOverlayViewModel _model;
     private readonly StashTabOverlayWindow _stashTabOverlay;
@@ -45,7 +46,7 @@ public partial class SetTrackerOverlayWindow
     {
         if (e.PropertyName == nameof(Settings.SetTrackerOverlayDisplayMode) ||
             e.PropertyName == nameof(Settings.SetTrackerOverlayItemCounterDisplayMode))
-            UpdateOverlayType(); // hack: force update the item counters when we change the display mode
+            UpdateOverlayType(); // HACK: force update the item counters when we change the display mode
         else if (e.PropertyName == nameof(Settings.FullSetThreshold) ||
                  e.PropertyName == nameof(Settings.StashTabIndices) ||
                  e.PropertyName == nameof(Settings.StashTabPrefix) ||
@@ -93,14 +94,14 @@ public partial class SetTrackerOverlayWindow
     public new virtual void Show()
     {
 
-        if (_model.Settings.AutoFetchOnRezoneEnabled &&
-            string.IsNullOrWhiteSpace(_model.Settings.PathOfExileClientLogLocation))
+        if (_model.GlobalUserSettings.AutoFetchOnRezoneEnabled &&
+            string.IsNullOrWhiteSpace(_model.GlobalUserSettings.PathOfExileClientLogLocation))
         {
             IsOpen = false;
             _stashTabOverlay.Hide();
             base.Hide();
 
-            ErrorWindow.Spawn(
+            GlobalErrorHandler.Spawn(
                 "You have enabled Auto-Fetching, but have no PoE Client.txt file path set. Please set the file path or disable the 'General Tab > General Section > Fetch on New Map' setting.",
                 "Error: Auto-Fetching"
             );
@@ -108,8 +109,8 @@ public partial class SetTrackerOverlayWindow
         else
         {
             IsOpen = true;
-            if (_model.Settings.AutoFetchOnRezoneEnabled &&
-                !string.IsNullOrWhiteSpace(_model.Settings.PathOfExileClientLogLocation))
+            if (_model.GlobalUserSettings.AutoFetchOnRezoneEnabled &&
+                !string.IsNullOrWhiteSpace(_model.GlobalUserSettings.PathOfExileClientLogLocation))
             {
                 _logWatcherManager = new LogWatcherManager(this);
             }
@@ -133,7 +134,7 @@ public partial class SetTrackerOverlayWindow
     {
         if (!IsOpen) return;
 
-        if (_model.Settings.LootFilterManipulationEnabled)
+        if (_model.GlobalUserSettings.LootFilterManipulationEnabled)
         {
             await _model.RunReloadFilter();
         }

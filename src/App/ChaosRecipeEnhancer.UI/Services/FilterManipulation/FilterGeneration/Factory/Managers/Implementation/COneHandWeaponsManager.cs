@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ChaosRecipeEnhancer.UI.Constants;
+using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers.Implementation;

@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Utilities.Native;
-using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
@@ -36,7 +36,7 @@ public class ReloadFilterService : IReloadFilterService
 
         if (WindowsUtilitiesForOverlays.CheckIfWindowExists(poeWindow))
         {
-            ErrorWindow.Spawn(
+            GlobalErrorHandler.Spawn(
                 "Could not find PoE window! Please make sure PoE is running.\n\n" +
                 " If PoE is running in admin mode, try running our app in admin mode, as well.",
                 "Error: Reload Filter - PoE Window Not Found"

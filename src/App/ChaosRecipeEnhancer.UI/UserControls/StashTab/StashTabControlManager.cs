@@ -2,7 +2,7 @@
 using System.Linq;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.Windows;
+using ChaosRecipeEnhancer.UI.State;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
@@ -26,7 +26,7 @@ public static class StashTabControlManager
         {
             if (string.IsNullOrWhiteSpace(Settings.Default.StashTabIndices))
             {
-                ErrorWindow.Spawn(
+                GlobalErrorHandler.Spawn(
                     "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
                     "Error: Stash Tab Overlay"
                 );
@@ -40,7 +40,7 @@ public static class StashTabControlManager
         {
             if (string.IsNullOrWhiteSpace(Settings.Default.StashTabPrefix))
             {
-                ErrorWindow.Spawn(
+                GlobalErrorHandler.Spawn(
                     "It looks like you haven't entered a stash tab prefix or no tabs match that naming prefix. Please navigate to the 'General > General > Stash Tab Prefix' setting and enter a valid value, and try again.",
                     "Error: Stash Tab Overlay"
                 );
@@ -60,7 +60,7 @@ public static class StashTabControlManager
 
         if (selectedTabIndices.Count == 0)
         {
-            ErrorWindow.Spawn("Stash Tab indices empty", "Error: Stash Tab Overlay");
+            GlobalErrorHandler.Spawn("Stash Tab indices empty", "Error: Stash Tab Overlay");
         }
     }
 }

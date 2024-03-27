@@ -129,15 +129,29 @@ public class PoEApiService : IPoEApiService
         // create new http client that will be disposed of after request
         var client = _httpClientFactory.CreateClient("PoEApiClient");
 
-        // Add required headers
+        // add required headers
+
+        // this useragent isn't strictly required, but it's good practice to include it (they ask for it in the spec)
+        // the api will not spit back an error if we don't include it
         client.DefaultRequestHeaders.UserAgent.ParseAdd(ApiEndpoints.UserAgent);
+
+        // the auth token is required for all calls (we only use authenticated endpoints as of 3.24)
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authStateManager.AuthToken);
 
         // send request
         var response = await client.GetAsync(requestUri);
+        var responseString = response.Content.ReadAsStringAsync().Result;
 
         _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
-        _log.Debug($"Response: {response.Content.ReadAsStringAsync().Result}");
+        _log.Debug($"Response: {responseString}");
+
+        // for some weird ass reason the status codes come back 200 even when it's not valid (for leagues endpoint)
+        // so here's a hacky work-around
+        if (response.StatusCode == HttpStatusCode.OK && !_authStateManager.ValidateAuthToken())
+        {
+            _log.Information("Status code is 200 but auth token is no good; manually replacing status code");
+            response.StatusCode = HttpStatusCode.Unauthorized;
+        }
 
         switch (response.StatusCode)
         {
@@ -145,8 +159,9 @@ public class PoEApiService : IPoEApiService
                 _log.Error("429 Too Many Requests - You are rate limited.");
 
                 GlobalErrorHandler.Spawn(
-                    "You are making too many requests in a short period of time - You are rate limited. Wait a minute and try again.",
-                    "Error: API Service - Fetch Data 429"
+                    (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
+                    "Error: API Service - 429 Too Many Requests (Rate Limit)",
+                    preamble: "You are making too many requests in a short period of time - You are rate limited. Wait a minute and try again."
                 );
 
                 return null;
@@ -154,8 +169,9 @@ public class PoEApiService : IPoEApiService
                 _log.Error("403 Forbidden - It looks like your auth token is invalid.");
 
                 GlobalErrorHandler.Spawn(
-                    "It looks like your auth token has expired. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token.",
-                    "Error: API Service - Fetch Data 403"
+                    (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
+                    "Error: API Service - 403 Forbidden",
+                    preamble: "It looks like your auth token has expired. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token."
                 );
 
                 // usually we will be here if we weren't able to make a successful api request based on an expired auth token
@@ -169,8 +185,9 @@ public class PoEApiService : IPoEApiService
                 _log.Error("401 Unauthorized - It looks like your auth token is invalid.");
 
                 GlobalErrorHandler.Spawn(
-                   "It looks like your auth token is invalid. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token.",
-                   "Error: API Service - Fetch Data 401"
+                    (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
+                    "Error: API Service - 401 Unauthorized",
+                    preamble: "It looks like your auth token is invalid. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token."
                 );
 
                 // usually we will be here if we weren't able to make a successful api request based on an invalid auth token
@@ -182,8 +199,8 @@ public class PoEApiService : IPoEApiService
                 _log.Error("503 Service Unavailable - The Path of Exile API is currently unavailable. Please try again later.");
 
                 GlobalErrorHandler.Spawn(
-                    (await response.Content.ReadAsStringAsync())[..500] + "...\n\n(Truncated for brevity)",
-                    "Error: API Service - Path of Exile API Service Unavailable",
+                    (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
+                    "Error: API Service - 503 PoE API Unavailable",
                     preamble: "The Path of Exile API is currently down. This is usually for maintenance, or DDoS, or league launch shennanigans - maybe all three!"
                 );
 
@@ -195,17 +212,18 @@ public class PoEApiService : IPoEApiService
             // get new rate limit values
             // these might end up being `X-Rate-Limit-Ip` and `X-Rate-Limit-Ip-State` instead, or possibly `X-Rate-Limit-Client` and `X-Rate-Limit-Client-State`
             // keep an eye on this if you get some weird issues...
+
             var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
             var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
-            var responseTime = response.Headers.GetValues("Date").FirstOrDefault();
+            var resultTime = response.Headers.GetValues("Date").FirstOrDefault();
 
             GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
-            GlobalRateLimitState.DeserializeResponseSeconds(responseTime);
+            GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
 
-            using var responseHttpContent = response.Content;
+            using var resultHttpContent = response.Content;
 
-            var responseString = await responseHttpContent.ReadAsStringAsync();
-            return responseString;
+            var resultString = await resultHttpContent.ReadAsStringAsync();
+            return resultString;
         }
         catch (InvalidOperationException e)
         {
@@ -213,8 +231,8 @@ public class PoEApiService : IPoEApiService
             _log.Error(e, "Error deserializing response from Path of Exile API after retries");
 
             GlobalErrorHandler.Spawn(
-                e.Message, // Exception Message
-                "Error: API Service - PoE Server Error 500 after retries", // Title
+                e.Message,
+                "Error: API Service - 500 PoE API (Temporary) Error",
                 preamble: "The Path of Exile API seems to be having unspecified intermittent issues. " +
                 "The response we got back from the API was not in the expected format, even after retries.\n\n" +
                 "Please try again later."

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
         xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
-        xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
+        xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -26,11 +26,11 @@
     </Window.Background>
 
     <Window.Resources>
-        <zemotoCommon:BoolVisibilityConverter x:Key="HiddenIfFalse" CollapseWhenNotVisible="True" />
-        <zemotoCommon:BoolToObjectConverter x:Key="EditButtonTextConverter" TrueValue="Save" FalseValue="Edit" />
-        <zemotoCommon:DoubleToLeftMarginConverter x:Key="DoubleToMarginConverter"/>
-        <zemotoCommon:DoubleToLeftRightGapThicknessConverter x:Key="DoubleToGapThicknessConverter"/>
-        <zemotoCommon:PaddingLeftRightConverter x:Key="PaddingConverter"/>
+        <creConverters:BoolVisibilityConverter x:Key="HiddenIfFalse" CollapseWhenNotVisible="True" />
+        <creConverters:BoolToObjectConverter x:Key="EditButtonTextConverter" TrueValue="Save" FalseValue="Edit" />
+        <creConverters:DoubleToLeftMarginConverter x:Key="DoubleToMarginConverter"/>
+        <creConverters:DoubleToLeftRightGapThicknessConverter x:Key="DoubleToGapThicknessConverter"/>
+        <creConverters:PaddingLeftRightConverter x:Key="PaddingConverter"/>
     </Window.Resources>
 
     <Grid x:Name="StashOverlayGrid">

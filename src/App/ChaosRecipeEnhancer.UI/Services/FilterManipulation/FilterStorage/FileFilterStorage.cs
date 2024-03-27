@@ -1,17 +1,27 @@
-﻿using System.Diagnostics;
+﻿using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.State;
+using Serilog;
 using System.IO;
+using System.IO.Abstractions;
 using System.Threading.Tasks;
-using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.Windows;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterStorage;
 
-internal class FileFilterStorage : IFilterStorage
+public interface IFilterStorage
 {
+    Task<string> ReadLootFilterAsync();
+    Task WriteLootFilterAsync(string filter);
+}
+
+public class FileFilterStorage : IFilterStorage
+{
+    private readonly ILogger _log = Log.ForContext<FileFilterStorage>();
+    private readonly IFileSystem _fileSystem;
     private readonly string _fileLocation;
 
     public FileFilterStorage(string fileLocation)
     {
+        _fileSystem = new FileSystem();
         _fileLocation = fileLocation;
     }
 
@@ -21,16 +31,18 @@ internal class FileFilterStorage : IFilterStorage
 
         try
         {
-            using (var reader = new StreamReader(_fileLocation))
-            {
-                return await reader.ReadToEndAsync();
-            }
+            using var reader = new StreamReader(_fileLocation);
+
+            return await reader.ReadToEndAsync();
         }
-        catch (FileNotFoundException)
+        catch (FileNotFoundException e)
         {
-            ErrorWindow.Spawn(
-                "Your selected filter file seems to have been moved, renamed, or deleted. Please re-select your loot filter for manipulation.",
-                "Error: Reload Filter - File Not Found"
+            _log.Error("IOException encountered: " + e.Message);
+
+            GlobalErrorHandler.Spawn(
+                e.ToString(),
+                "Error: File Filter Storage - File Not Found",
+                preamble: "Your selected filter file seems to have been moved, renamed, or deleted. Please re-select your loot filter for manipulation."
             );
 
             Settings.Default.LootFilterFileLocation = "";
@@ -56,16 +68,16 @@ internal class FileFilterStorage : IFilterStorage
             try
             {
                 // Using FileStream with explicit FileAccess and FileShare mode
-                using (var fileStream = new FileStream(_fileLocation, fileMode, FileAccess.Write, FileShare.None))
-                using (var writer = new StreamWriter(fileStream))
-                {
-                    await writer.WriteAsync(filter);
-                }
-                break; // success!
+                using var fileStream = new FileStream(_fileLocation, fileMode, FileAccess.Write, FileShare.None);
+                using var writer = new StreamWriter(fileStream);
+
+                await writer.WriteAsync(filter);
+
+                break;
             }
             catch (IOException e) when (i < maxRetries - 1)
             {
-                Trace.WriteLine("IOException encountered: " + e.Message);
+                _log.Error("IOException encountered: " + e.Message);
                 await Task.Delay(delayOnRetry);
             }
         }

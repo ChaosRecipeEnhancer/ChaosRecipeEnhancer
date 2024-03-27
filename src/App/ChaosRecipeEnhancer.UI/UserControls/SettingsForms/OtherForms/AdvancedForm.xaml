@@ -41,7 +41,7 @@
             Content="Reset ALL Settings"
             FontWeight="Bold"
             BorderBrush="DarkRed"
-            Click="OnResetButtonClicked" />
+            Command="{Binding ResetSettingsCommand}" />
 
         <TextBlock
             Grid.Column="0"
@@ -50,7 +50,7 @@
             Margin="0 0 0 15"
             VerticalAlignment="Center">
             Make sure you know what you're doing <LineBreak />
-            when modifying these settings.
+            when modifying these GlobalUserSettings.
         </TextBlock>
 
         <TextBlock
@@ -69,7 +69,7 @@
             Grid.Row="3"
             Margin="15 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding Settings.DoNotPreserveLowItemLevelGear, Mode=TwoWay}"
+            IsChecked="{Binding DoNotPreserveLowItemLevelGearIsChecked, Mode=TwoWay}"
             ToolTipService.InitialShowDelay="50"
             ToolTipService.ShowOnDisabled="True" />
 

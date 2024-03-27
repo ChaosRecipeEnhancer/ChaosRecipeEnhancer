@@ -1,22 +1,22 @@
+using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.State;
+using ChaosRecipeEnhancer.UI.UserControls.StashTab;
+using ChaosRecipeEnhancer.UI.Utilities.Native;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using ChaosRecipeEnhancer.UI.Properties;
 using System.Windows.Media;
-using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.UserControls.StashTab;
-using System.Linq;
-using ChaosRecipeEnhancer.UI.Models.Enums;
-using ChaosRecipeEnhancer.UI.Utilities.Native;
-using System.ComponentModel;
-using ChaosRecipeEnhancer.UI.State;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
-public partial class StashTabOverlayWindow
+public partial class StashTabOverlayWindow : Window
 {
     private readonly StashTabOverlayViewModel _model;
     private static List<EnhancedItemSet> SetsToHighlight { get; } = new();
@@ -228,7 +228,7 @@ public partial class StashTabOverlayWindow
         foreach (var set in GlobalItemSetManagerState.SetsInProgress)
         {
             set.OrderItemsForPicking();
-            if (set.HasRecipeQualifier)
+            if (set.HasChaosRecipeQualifier)
             {
                 SetsToHighlight.Add(new EnhancedItemSet
                 {

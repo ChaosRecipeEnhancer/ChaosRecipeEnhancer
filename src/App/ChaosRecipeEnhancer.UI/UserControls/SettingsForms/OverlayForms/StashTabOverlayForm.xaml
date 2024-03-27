@@ -6,13 +6,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
-             xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
+             xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
              mc:Ignorable="d"
              Background="#202020"
              d:DataContext="{d:DesignInstance Type=overlayForms:StashTabOverlayFormViewModel}">
 
     <UserControl.Resources>
-        <zemotoCommon:StringColorConverter x:Key="StringColorConverter" />
+        <creConverters:StringColorConverter x:Key="StringColorConverter" />
     </UserControl.Resources>
 
     <Grid
@@ -85,7 +85,7 @@
                 IsMoveToPointEnabled="True"
                 AutoToolTipPrecision="2"
                 IsSnapToTickEnabled="True"
-                Value="{Binding Settings.StashTabOverlayOpacity, Mode=TwoWay}" />
+                Value="{Binding GlobalUserSettings.StashTabOverlayOpacity, Mode=TwoWay}" />
 
             <TextBox
                 Grid.Column="4"
@@ -93,7 +93,7 @@
                 Width="40"
                 Margin="5 0 0 0"
                 HorizontalContentAlignment="Center"
-                Text="{Binding Settings.StashTabOverlayOpacity, Mode=TwoWay}" />
+                Text="{Binding GlobalUserSettings.StashTabOverlayOpacity, Mode=TwoWay}" />
 
         </Grid>
 
@@ -117,7 +117,7 @@
             HeaderForeground="White"
             TabBackground="#202020"
             DropDownBackground="#202020"
-            SelectedColor="{Binding Settings.StashTabOverlayBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+            SelectedColor="{Binding GlobalUserSettings.StashTabOverlayBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <TextBlock
             Grid.Column="0"
@@ -139,7 +139,7 @@
             HeaderForeground="White"
             TabBackground="#202020"
             DropDownBackground="#202020"
-            SelectedColor="{Binding Settings.StashTabOverlayHighlightColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+            SelectedColor="{Binding GlobalUserSettings.StashTabOverlayHighlightColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
         <TextBlock
             Grid.Column="0"
@@ -158,7 +158,7 @@
             Width="200"
             VerticalContentAlignment="Center"
             IsEnabled="False"
-            SelectedIndex="{Binding Settings.StashTabOverlayHighlightMode, Mode=TwoWay}">
+            SelectedIndex="{Binding GlobalUserSettings.StashTabOverlayHighlightMode, Mode=TwoWay}">
 
             <ComboBoxItem Content="Set by Set" />
 
@@ -203,7 +203,7 @@
                 AutoToolTipPlacement="TopLeft"
                 IsSnapToTickEnabled="True"
                 IsMoveToPointEnabled="True"
-                Value="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" LargeChange="100" SmallChange="10" />
+                Value="{Binding GlobalUserSettings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" LargeChange="100" SmallChange="10" />
 
             <TextBox
                 Grid.Column="4"
@@ -211,7 +211,7 @@
                 Width="40"
                 Margin="5 0 0 0"
                 HorizontalContentAlignment="Center"
-                Text="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" />
+                Text="{Binding GlobalUserSettings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" />
 
         </Grid>
 
@@ -253,7 +253,7 @@
                 IsMoveToPointEnabled="True"
                 IsSnapToTickEnabled="True"
                 AutoToolTipPrecision="1"
-                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderPadding, Mode=TwoWay}"
+                Value="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderPadding, Mode=TwoWay}"
                 TickFrequency="1"
                 SmallChange="1"
                 LargeChange="10" />
@@ -264,7 +264,7 @@
                 Width="40"
                 Margin="5 0 0 0"
                 HorizontalContentAlignment="Center"
-                Text="{Binding Settings.StashTabOverlayIndividualTabHeaderPadding, Mode=TwoWay}" />
+                Text="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderPadding, Mode=TwoWay}" />
 
         </Grid>
 
@@ -306,7 +306,7 @@
                 AutoToolTipPlacement="TopLeft"
                 IsSnapToTickEnabled="True"
                 IsMoveToPointEnabled="True"
-                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}"
+                Value="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}"
                 LargeChange="20"
                 SmallChange="1" />
 
@@ -316,7 +316,7 @@
                 Width="40"
                 Margin="5 0 0 0"
                 HorizontalContentAlignment="Center"
-                Text="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" />
+                Text="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" />
 
         </Grid>
     </Grid>

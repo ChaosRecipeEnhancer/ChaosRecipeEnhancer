@@ -174,6 +174,7 @@ public class AuthStateManager : IAuthStateManager
     public bool ValidateAuthToken()
     {
         _log.Debug("Validating authentication token.");
+
         var isValid = !string.IsNullOrEmpty(_userSettings.PathOfExileApiAuthToken) && DateTime.UtcNow < _userSettings.PathOfExileApiAuthTokenExpiration;
 
         if (!isValid)

@@ -3,8 +3,8 @@ using ChaosRecipeEnhancer.UI.Properties;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using ChaosRecipeEnhancer.UI.Constants;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.Constants;
 
 namespace ChaosRecipeEnhancer.UI.State;
 
