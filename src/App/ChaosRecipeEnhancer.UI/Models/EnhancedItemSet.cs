@@ -1,38 +1,77 @@
-﻿using System;
+﻿using ChaosRecipeEnhancer.UI.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using ChaosRecipeEnhancer.UI.Constants;
 
 namespace ChaosRecipeEnhancer.UI.Models;
 
 /// <summary>
-/// This is an Item Set that will only ever have 1 of each item class.
-/// In the case of one-handed weapons or rings, a pair of each will be needed.
+/// Represents a set of items for the Chaos or Regal vendor recipe in Path of Exile.
+/// Ensures a complete set can be formed with one item per slot, with exceptions for rings and one-handed weapons.
 /// </summary>
 public class EnhancedItemSet
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EnhancedItemSet"/> class with empty item slots based on the game's requirements.
+    /// </summary>
     public EnhancedItemSet()
     {
         EmptyItemSlots = EmptySlots.Ordered;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EnhancedItemSet"/> class, copying the items and empty slots from another instance.
+    /// </summary>
+    /// <param name="other">The other instance of <see cref="EnhancedItemSet"/> to copy from.</param>
     public EnhancedItemSet(EnhancedItemSet other)
     {
         Items = other.Items;
         EmptyItemSlots = other.EmptyItemSlots;
     }
 
-    public bool HasRecipeQualifier { get; set; }
-    public List<EnhancedItem> Items { get; set; } = new();
+    /// <summary>
+    /// Gets or sets a value indicating whether this set contains at least one item eligible for the Chaos recipe.
+    /// Chaos Recipe Item Sets only require 1 of their items to be between 60 and 74; the rest can be any level above 60.
+    /// </summary>
+    public bool HasChaosRecipeQualifier { get; set; }
+
+    /// <summary>
+    /// Gets a value indicating whether all items in this set are eligible for the Regal recipe.
+    /// Regal Recipe Item Sets require all items to be 75 or higher.
+    /// </summary>
+    public bool IsRegalRecipeEligible => Items.All(d => d.IsRegalRecipeEligible);
+
+    /// <summary>
+    /// Gets or sets the collection of items currently in this set.
+    /// </summary>
+    public List<EnhancedItem> Items { get; set; } = [];
+
+    /// <summary>
+    /// Gets or sets the list of item slots that are currently empty and need to be filled to complete the set.
+    /// </summary>
     public List<string> EmptyItemSlots { get; set; }
 
     /// <summary>
-    /// This will attempt to add an item. If it is not needed, it will not be added.
+    /// Attempts to add an item to the set if it is needed for the recipe being targeted.
     /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public bool TryAddItem(EnhancedItem item)
+    /// <param name="item">The item to add.</param>
+    /// <param name="regalRecipe">Whether the Regal recipe is being targeted.</param>
+    /// <returns><c>true</c> if the item was added; otherwise, <c>false</c>.</returns>
+    public bool TryAddItem(EnhancedItem item, bool regalRecipe)
     {
+        // If we're targeting a Regal Recipe, we need to ensure all items are 75 or higher.
+        if (regalRecipe)
+        {
+            // If the item is not eligible for the Regal Recipe, we can't add it.
+            if (!item.IsRegalRecipeEligible) return false;
+        }
+        // If we're targeting a Chaos Recipe, we need to ensure at least one item is between 60 and 74.
+        else
+        {
+            // If the item is not eligible for the Chaos Recipe, we can't add it.
+            if (!(item.ItemLevel.Value >= 60)) return false;
+        }
+
         if (!EmptyItemSlots.Contains(item.DerivedItemClass))
         {
             return false;
@@ -60,6 +99,11 @@ public class EnhancedItemSet
         return true;
     }
 
+    /// <summary>
+    /// Calculates the distance between the last item added to the set and the given item, considering their positions and stash tabs.
+    /// </summary>
+    /// <param name="item">The item to calculate the distance to.</param>
+    /// <returns>The calculated distance as a <see cref="double"/>.</returns>
     public double GetItemDistance(EnhancedItem item)
     {
         var lastItemAdded = Items.LastOrDefault();
@@ -69,12 +113,20 @@ public class EnhancedItemSet
               * Math.Pow(2, Math.Abs(item.StashTabIndex - lastItemAdded.StashTabIndex));
     }
 
+    /// <summary>
+    /// Checks if the given item's class is needed to complete the set.
+    /// </summary>
+    /// <param name="item">The item to check.</param>
+    /// <returns><c>true</c> if the item class is needed; otherwise, <c>false</c>.</returns>
     public bool IsItemClassNeeded(EnhancedItem item) => EmptyItemSlots.Contains(item.DerivedItemClass);
 
+    /// <summary>
+    /// Orders the items in the set based on a predefined priority of item classes.
+    /// </summary>
     public void OrderItemsForPicking()
     {
         var orderedClasses = EmptySlots.Ordered;
 
-        Items = Items.OrderBy(d => orderedClasses.IndexOf(d.DerivedItemClass)).ToList();
+        Items = [.. Items.OrderBy(d => orderedClasses.IndexOf(d.DerivedItemClass))];
     }
 }

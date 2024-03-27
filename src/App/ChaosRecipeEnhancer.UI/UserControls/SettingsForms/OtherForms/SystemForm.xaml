@@ -47,7 +47,7 @@
         <!--     Width="150" -->
         <!--     HorizontalAlignment="Center" -->
         <!--     SelectionChanged="ComboBox_ThemeSelectionChanged" -->
-        <!--     SelectedIndex="{Binding Settings.AppTheme, Mode=TwoWay}"> -->
+        <!--     SelectedIndex="{Binding GlobalUserSettings.AppTheme, Mode=TwoWay}"> -->
 
         <!--     <ComboBoxItem Content="Deep Dark" /> -->
         <!--     <ComboBoxItem Content="Dark Grey" /> -->
@@ -75,7 +75,7 @@
             Margin="15 0 0 10"
             Width="150"
             HorizontalAlignment="Center"
-            SelectedIndex="{Binding Settings.Language, Mode=TwoWay}">
+            SelectedIndex="{Binding GlobalUserSettings.Language, Mode=TwoWay}">
 
             <ComboBoxItem Content="English" />
             <ComboBoxItem Content="French" />
@@ -102,7 +102,7 @@
             Grid.Row="3"
             Margin="15 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding Settings.CloseToTrayEnabled, Mode=TwoWay}" />
+            IsChecked="{Binding GlobalUserSettings.CloseToTrayEnabled, Mode=TwoWay}" />
         <!-- Close to Tray Setting End -->
 
         <!-- Debug Mode Setting  Start -->
@@ -118,7 +118,7 @@
         <!--     Margin="15 0 0 0" -->
         <!--     VerticalAlignment="Center" -->
         <!--     IsEnabled="False" -->
-        <!--     IsChecked="{Binding Settings.DebugMode, Mode=TwoWay}" /> -->
+        <!--     IsChecked="{Binding GlobalUserSettings.DebugMode, Mode=TwoWay}" /> -->
         <!-- Debug Mode Setting End -->
     </Grid>
 </UserControl>

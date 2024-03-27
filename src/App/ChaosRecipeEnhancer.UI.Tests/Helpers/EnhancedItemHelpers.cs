@@ -1,5 +1,5 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses.BaseModels;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 
 namespace ChaosRecipeEnhancer.UI.Tests.Helpers;
 

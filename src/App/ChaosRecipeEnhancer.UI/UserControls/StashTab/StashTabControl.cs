@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using ChaosRecipeEnhancer.UI.Models;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Media;
-using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
-public class StashTabControl : ViewModelBase
+public class StashTabControl : CreViewModelBase
 {
     private SolidColorBrush _tabHeaderColor;
 

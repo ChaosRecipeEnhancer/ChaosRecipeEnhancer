@@ -30,3 +30,17 @@ public enum SetTrackerOverlayMode
     OnlyMinifiedButtons,
     OnlyMinifiedButtonsVertical
 }
+
+public enum SetTrackerOverlayItemCounterDisplayMode
+{
+    None,
+    TotalItems,
+    ItemsMissing
+}
+
+public enum ClientLogFileLocationMode
+{
+    DefaultStandaloneLocation,
+    DefaultSteamLocation,
+    CustomLocation
+}

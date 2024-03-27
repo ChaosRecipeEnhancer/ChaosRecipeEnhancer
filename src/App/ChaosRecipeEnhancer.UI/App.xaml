@@ -1,5 +1,5 @@
 ﻿<Application x:Class="ChaosRecipeEnhancer.UI.App"
-             x:ClassModifier="internal"
+             x:ClassModifier="public"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Startup="OnStartup">
@@ -8,12 +8,12 @@
             <FontFamily x:Key="PasswordFont">pack://application:,,,/Assets/#password</FontFamily>
             <ResourceDictionary.MergedDictionaries>
                 <!-- Contains all of the colors and brushes for a theme -->
-                <ResourceDictionary Source="Themes/ColourDictionaries/DeepDark.xaml" />
+                <ResourceDictionary Source="Assets/Themes/ColourDictionaries/DeepDark.xaml" />
                 <!-- Contains most of the control-specific brushes which reference -->
                 <!-- the above theme. I aim for this to contain ALL brushes, not most  -->
-                <ResourceDictionary Source="Themes/ControlColours.xaml" />
+                <ResourceDictionary Source="Assets/Themes/ControlColours.xaml" />
                 <!-- Contains all of the control styles (Button, ListBox, etc) -->
-                <ResourceDictionary Source="Themes/Controls.xaml" />
+                <ResourceDictionary Source="Assets/Themes/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

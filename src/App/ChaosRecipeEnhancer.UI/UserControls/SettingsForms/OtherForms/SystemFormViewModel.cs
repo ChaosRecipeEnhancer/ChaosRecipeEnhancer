@@ -1,8 +1,5 @@
-﻿using ChaosRecipeEnhancer.UI.Utilities;
-using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
+﻿namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms;
 
-namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms;
-
-public class SystemFormViewModel : ViewModelBase
+public class SystemFormViewModel : CreViewModelBase
 {
 }
