@@ -89,7 +89,7 @@
                                     <Grid Margin="5 0 0 0">
 
                                         <!-- Stash Tab 'Tab' Border -->
-                                        <Border Name="Border"
+                                        <Border x:Name="Border"
                                                 Padding="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderPadding, Converter={StaticResource PaddingConverter}}"
                                                 Margin="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderGap, Converter={StaticResource DoubleToGapThicknessConverter}}"
                                                 BorderThickness="1,1,1,1"
@@ -97,7 +97,7 @@
 
                                             <!-- Stash Tab Name -->
                                             <ContentPresenter
-                                                x:Name="ContentSite"
+                                                  x:Name="ContentSite"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"
                                                   ContentSource="Header"
