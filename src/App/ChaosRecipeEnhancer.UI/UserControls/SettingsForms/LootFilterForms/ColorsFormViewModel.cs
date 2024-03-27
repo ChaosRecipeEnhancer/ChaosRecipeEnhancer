@@ -1,8 +1,5 @@
-﻿using ChaosRecipeEnhancer.UI.Utilities;
-using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
+﻿namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms;
 
-namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms;
-
-public class ColorsFormViewModel : ViewModelBase
+public class ColorsFormViewModel : CreViewModelBase
 {
 }
