@@ -195,7 +195,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="PathOfExileClientLogLocationMode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -792,7 +792,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int PathOfExileClientLogLocationMode {
             get {
                 return ((int)(this["PathOfExileClientLogLocationMode"]));
