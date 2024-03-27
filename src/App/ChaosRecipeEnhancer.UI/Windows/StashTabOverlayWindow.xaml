@@ -90,8 +90,8 @@
 
                                         <!-- Stash Tab 'Tab' Border -->
                                         <Border Name="Border"
-                                                Padding="{Binding Settings.StashTabOverlayIndividualTabHeaderPadding, Converter={StaticResource PaddingConverter}}"
-                                                Margin="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Converter={StaticResource DoubleToGapThicknessConverter}}"
+                                                Padding="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderPadding, Converter={StaticResource PaddingConverter}}"
+                                                Margin="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderGap, Converter={StaticResource DoubleToGapThicknessConverter}}"
                                                 BorderThickness="1,1,1,1"
                                                 BorderBrush="Gainsboro">
 
@@ -159,7 +159,7 @@
                                             x:Name="HeaderPanel"
                                             Grid.Row="0"
                                             Panel.ZIndex="1"
-                                            Margin="{Binding Settings.StashTabOverlayIndividualTabMargin, Converter={StaticResource DoubleToMarginConverter}}"
+                                            Margin="{Binding GlobalUserSettings.StashTabOverlayIndividualTabMargin, Converter={StaticResource DoubleToMarginConverter}}"
                                             IsItemsHost="True"
                                             KeyboardNavigation.TabIndex="1"
                                             Background="Transparent" />
