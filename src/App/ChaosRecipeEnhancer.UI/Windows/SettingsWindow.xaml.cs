@@ -75,7 +75,7 @@ public partial class SettingsWindow
         else if (!Settings.Default.CloseToTrayEnabled || _closingFromTrayIcon)
         {
             _trayIcon.Visible = false;
-            MouseHookForEditingStashTabOverlay.Stop();
+            MouseHookForStashTabOverlay.Stop();
             KeyboardHookForGlobalHotkeys.ShutdownSystemHook();
             Settings.Default.Save();
             Application.Current.Shutdown();

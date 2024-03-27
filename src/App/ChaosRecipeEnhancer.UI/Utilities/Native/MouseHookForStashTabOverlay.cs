@@ -4,34 +4,17 @@ using System.Windows;
 
 namespace ChaosRecipeEnhancer.UI.Utilities.Native;
 
-internal sealed class MouseHookForEditingStashTabOverlayEventArgs : EventArgs
+public static class MouseHookForStashTabOverlay
 {
-    public Point ClickLocation
-    {
-        get;
-    }
+    private const int WH_MOUSE_LL = 14;
 
-    public MouseHookForEditingStashTabOverlayEventArgs(int x, int y) => ClickLocation = new Point(x, y);
-}
-
-internal static class MouseHookForEditingStashTabOverlay
-{
-    public static event EventHandler<MouseHookForEditingStashTabOverlayEventArgs> MouseAction = delegate { };
-
-    public static void Start() => _hookID = SetHook(_proc);
-    public static void Stop() => UnhookWindowsHookEx(_hookID);
-
-    public static int ClickLocationX
-    {
-        get; set;
-    }
-    public static int ClickLocationY
-    {
-        get; set;
-    }
-
-    private static readonly LowLevelMouseProc _proc = HookCallback;
+    private static readonly LowLevelMouseProc MouseProcess = HookCallback;
     private static IntPtr _hookID = IntPtr.Zero;
+
+    public static event EventHandler<MouseHookEventArgs> MouseAction = delegate { };
+
+    public static void Start() => _hookID = SetHook(MouseProcess);
+    public static void Stop() => UnhookWindowsHookEx(_hookID);
 
     private static IntPtr SetHook(LowLevelMouseProc proc)
     {
@@ -43,20 +26,28 @@ internal static class MouseHookForEditingStashTabOverlay
 
     private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
     {
-        if (nCode >= 0 && MouseMessages.WM_LBUTTONDOWN == (MouseMessages)wParam)
+        if (nCode >= 0 && (MouseMessages.WM_LBUTTONDOWN == (MouseMessages)wParam || MouseMessages.WM_LBUTTONUP == (MouseMessages)wParam))
         {
             var hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
+            var mouseArgs = new MouseHookEventArgs(hookStruct.pt.x, hookStruct.pt.y, (MouseMessages)wParam);
 
-            MouseAction(null, new MouseHookForEditingStashTabOverlayEventArgs(hookStruct.pt.x, hookStruct.pt.y));
+            // Dispatch the MouseAction event to the main UI thread
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                MouseAction(null, mouseArgs);
+            }));
         }
         return CallNextHookEx(_hookID, nCode, wParam, lParam);
     }
 
-    private const int WH_MOUSE_LL = 14;
-
-    private enum MouseMessages
+    public enum MouseMessages
     {
         WM_LBUTTONDOWN = 0x0201,
+        WM_LBUTTONUP = 0x0202,
+        WM_MOUSEMOVE = 0x0200,
+        WM_MOUSEWHEEL = 0x020A,
+        WM_RBUTTONDOWN = 0x0204,
+        WM_RBUTTONUP = 0x0205
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -86,4 +77,18 @@ internal static class MouseHookForEditingStashTabOverlay
 
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     private static extern IntPtr GetModuleHandle(string lpModuleName);
+}
+
+public class MouseHookEventArgs : EventArgs
+{
+    public int X { get; }
+    public int Y { get; }
+    public MouseHookForStashTabOverlay.MouseMessages Message { get; }
+
+    public MouseHookEventArgs(int x, int y, MouseHookForStashTabOverlay.MouseMessages message)
+    {
+        X = x;
+        Y = y;
+        Message = message;
+    }
 }

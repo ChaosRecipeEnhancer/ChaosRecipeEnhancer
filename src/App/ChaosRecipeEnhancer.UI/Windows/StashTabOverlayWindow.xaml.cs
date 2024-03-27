@@ -26,7 +26,21 @@ public partial class StashTabOverlayWindow : Window
     {
         InitializeComponent();
         DataContext = _model = new StashTabOverlayViewModel();
-        MouseHookForGeneralInteractionInStashTabOverlay.MouseAction += (s, e) => Coordinates.OverlayClickEvent(this);
+        MouseHookForStashTabOverlay.MouseAction += HandleMouseAction;
+    }
+
+    private void HandleMouseAction(object sender, MouseHookEventArgs e)
+    {
+        Dispatcher.Invoke(() =>
+        {
+            if (e.Message == MouseHookForStashTabOverlay.MouseMessages.WM_LBUTTONDOWN)
+            {
+                if (!_model.IsEditing)
+                {
+                    Coordinates.OverlayClickEvent(this, e);
+                }
+            }
+        });
     }
 
     public bool IsOpen { get; set; }
@@ -62,12 +76,10 @@ public partial class StashTabOverlayWindow : Window
         if (_model.IsEditing)
         {
             MakeWindowClickThrough(true);
-            MouseHookForEditingStashTabOverlay.Start();
         }
         else
         {
             MakeWindowClickThrough(false);
-            MouseHookForEditingStashTabOverlay.Stop();
         }
 
         _model.IsEditing = !_model.IsEditing;
@@ -138,7 +150,7 @@ public partial class StashTabOverlayWindow : Window
             PrepareSelling();
             ActivateNextCell(true, null);
 
-            MouseHookForGeneralInteractionInStashTabOverlay.Start();
+            MouseHookForStashTabOverlay.Start();
             base.Show();
         }
         else
@@ -158,8 +170,8 @@ public partial class StashTabOverlayWindow : Window
 
         MakeWindowClickThrough(true);
         _model.IsEditing = false;
-        MouseHookForEditingStashTabOverlay.Stop();
-        MouseHookForGeneralInteractionInStashTabOverlay.Stop();
+        MouseHookForStashTabOverlay.Stop();
+
 
         foreach (var i in StashTabControlManager.StashTabControls)
         {
