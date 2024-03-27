@@ -1,8 +1,8 @@
+using ChaosRecipeEnhancer.UI.Models.Constants;
+using ChaosRecipeEnhancer.UI.Utilities;
+using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
 using System.Windows.Input;
-using ChaosRecipeEnhancer.UI.Constants;
-using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
@@ -28,7 +28,7 @@ internal class SettingsViewModel : ViewModelBase
     {
         var psi = new ProcessStartInfo
         {
-            FileName = AppInfo.GithubReleasesUrl,
+            FileName = SiteUrls.CreGithubReleasesUrl,
             UseShellExecute = true
         };
         Process.Start(psi);

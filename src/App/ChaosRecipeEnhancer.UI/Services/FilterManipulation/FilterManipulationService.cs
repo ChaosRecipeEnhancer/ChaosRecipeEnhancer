@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using ChaosRecipeEnhancer.UI.Constants;
+﻿using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.Constants;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterStorage;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
@@ -74,12 +75,24 @@ public class FilterManipulationService : IFilterManipulationService
 
         if (!Settings.Default.IncludeIdentifiedItemsEnabled) result += "Identified False" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
+        // Setting item level section based on whether Chaoss Recipe Tracking is enabled (or disabled, in which the Regal Recipe is used)
         result += Settings.ChaosRecipeTrackingEnabled switch
         {
-            false when !_itemClassManager.AlwaysActive => "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "ItemLevel <= 74" +
-                                                          StringConstruction.NewLineCharacter + StringConstruction.TabCharacter,
-            false => "ItemLevel >= 75" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter,
-            _ => "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter
+            // Chaos Recipe Tracking disabled, item class is NOT always active
+            false when !_itemClassManager.AlwaysActive =>
+                "ItemLevel >= 60" + StringConstruction.NewLineCharacter +
+                StringConstruction.TabCharacter + "ItemLevel <= 74" + StringConstruction.NewLineCharacter +
+                StringConstruction.TabCharacter,
+
+            // Chaos Recipe Tracking diasbled, Regal Recipe is used
+            false =>
+                "ItemLevel >= 75" + StringConstruction.NewLineCharacter +
+                StringConstruction.TabCharacter,
+
+            // Chaos Recipe Tracking enabled or item class is always active
+            _ =>
+                "ItemLevel >= 60" + StringConstruction.NewLineCharacter +
+                StringConstruction.TabCharacter
         };
 
         var baseType = _itemClassManager.SetBaseType();

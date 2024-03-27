@@ -1,3 +1,8 @@
+using ChaosRecipeEnhancer.UI.Models.Constants;
+using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.State;
+using ChaosRecipeEnhancer.UI.Utilities.Native;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,11 +13,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-using ChaosRecipeEnhancer.UI.Constants;
-using ChaosRecipeEnhancer.UI.Models.Enums;
-using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.State;
-using ChaosRecipeEnhancer.UI.Utilities.Native;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
@@ -31,8 +31,8 @@ public partial class SettingsWindow
         InitializeTray();
         InitializeHotkeys();
 
-        // Check for app updates on startup
-        CheckForAppUpdate();
+        // Check for app updates on startup (async method)
+        Task.Run(CheckForAppUpdate);
 
         // will force the window to resize to the size of its content.
         // we do this in lieu of the `SizeToContent` property due to an issue
@@ -58,7 +58,7 @@ public partial class SettingsWindow
 
         foreach (var setting in missingSettings) errorMessage += setting;
 
-        if (showError) _ = MessageBox.Show(errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error);
+        if (showError) _ = MessageBox.Show(errorMessage, "Missing GlobalUserSettings", MessageBoxButton.OK, MessageBoxImage.Error);
 
         return false;
     }
@@ -141,7 +141,7 @@ public partial class SettingsWindow
 
     private void OnCheckForUpdatesItemMenuClicked(object sender, EventArgs e)
     {
-        Process.Start(new ProcessStartInfo(AppInfo.GithubReleasesUrl) { UseShellExecute = true });
+        Process.Start(new ProcessStartInfo(SiteUrls.CreGithubReleasesUrl) { UseShellExecute = true });
     }
 
     #endregion

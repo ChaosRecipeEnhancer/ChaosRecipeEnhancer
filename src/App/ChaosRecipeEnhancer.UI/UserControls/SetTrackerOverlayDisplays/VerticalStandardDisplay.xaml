@@ -2,21 +2,21 @@
     x:Class="ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays.VerticalStandardDisplay"
     xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
     xmlns:userControls="clr-namespace:ChaosRecipeEnhancer.UI.UserControls"
-    xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
     FontSize="14"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
 
     <UserControl.Resources>
-        <zemotoCommon:BoolVisibilityConverter x:Key="VisibleIfTrue" />
-        <zemotoCommon:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter" TrueValue="1.0" FalseValue="0.1" />
-        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual" Invert="True" ComparisonType="{x:Type system:Int32}" />
-        <zemotoCommon:NullOrEmptyVisibilityConverter x:Key="NullOrEmptyVisibilityConverter" />
+        <creConverters:BoolVisibilityConverter x:Key="VisibleIfTrue" />
+        <creConverters:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter" TrueValue="1.0" FalseValue="0.1" />
+        <creConverters:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual" Invert="True" ComparisonType="{x:Type system:Int32}" />
+        <creConverters:NullOrEmptyVisibilityConverter x:Key="NullOrEmptyVisibilityConverter" />
     </UserControl.Resources>
 
     <Grid>
@@ -95,7 +95,7 @@
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="You have {0} Sets; Not at Full Set Threshold of {1}">
                                         <Binding Path="FullSets" />
-                                        <Binding Path="Settings.FullSetThreshold" />
+                                        <Binding Path="GlobalUserSettings.FullSetThreshold" />
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
@@ -140,7 +140,7 @@
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="If you want to turn in {0} set(s), consider lowering your threshold to {0}. (Currently set to {1})">
                                         <Binding Path="FullSets" />
-                                        <Binding Path="Settings.FullSetThreshold" />
+                                        <Binding Path="GlobalUserSettings.FullSetThreshold" />
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
@@ -201,7 +201,7 @@
             Height="50"
             Width="50"
             Margin="0,5"
-            Background="{Binding Settings.LootFilterGlovesColor}"
+            Background="{Binding GlobalUserSettings.LootFilterGlovesColor}"
             Opacity="{Binding GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}">
 
                 <Grid>
@@ -214,7 +214,7 @@
                     <Border
                     Width="20"
                     Height="20"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
+                    Visibility="{Binding GlobalUserSettings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -246,7 +246,7 @@
             Width="50"
             Margin="0,5"
             Opacity="{Binding BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding Settings.LootFilterBootsColor}">
+            Background="{Binding GlobalUserSettings.LootFilterBootsColor}">
 
                 <Grid>
 
@@ -262,7 +262,7 @@
                     HorizontalAlignment="Right"
                     CornerRadius="50"
                     Background="White"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
+                    Visibility="{Binding GlobalUserSettings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                         <TextBlock
                         FontSize="12"
@@ -290,7 +290,7 @@
             Width="50"
             Margin="0,5"
             Opacity="{Binding ChestsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding Settings.LootFilterBodyArmourColor}">
+            Background="{Binding GlobalUserSettings.LootFilterBodyArmourColor}">
 
                 <Grid>
 
@@ -306,7 +306,7 @@
                     HorizontalAlignment="Right"
                     CornerRadius="50"
                     Background="White"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
+                    Visibility="{Binding GlobalUserSettings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
 
                         <TextBlock
@@ -335,7 +335,7 @@
             Width="50"
             Margin="0,5"
             Opacity="{Binding WeaponsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding Settings.LootFilterWeaponColor}">
+            Background="{Binding GlobalUserSettings.LootFilterWeaponColor}">
 
                 <Grid>
 
@@ -351,7 +351,7 @@
                     HorizontalAlignment="Right"
                     CornerRadius="50"
                     Background="White"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
+                    Visibility="{Binding GlobalUserSettings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
 
                         <TextBlock
@@ -380,7 +380,7 @@
             Width="50"
             Margin="0,5"
             Opacity="{Binding HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding Settings.LootFilterHelmetColor}">
+            Background="{Binding GlobalUserSettings.LootFilterHelmetColor}">
 
                 <Grid>
 
@@ -396,7 +396,7 @@
                     HorizontalAlignment="Right"
                     CornerRadius="50"
                     Background="White"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
+                    Visibility="{Binding GlobalUserSettings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
 
                         <TextBlock
@@ -425,7 +425,7 @@
             Width="50"
             Margin="0,5"
             Opacity="{Binding RingsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding Settings.LootFilterRingColor}">
+            Background="{Binding GlobalUserSettings.LootFilterRingColor}">
 
                 <Grid>
 
@@ -441,7 +441,7 @@
                     HorizontalAlignment="Right"
                     CornerRadius="50"
                     Background="White"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
+                    Visibility="{Binding GlobalUserSettings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                         <TextBlock
                         FontSize="12"
@@ -469,7 +469,7 @@
             Width="50"
             Margin="0,5"
             Opacity="{Binding AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding Settings.LootFilterAmuletColor}">
+            Background="{Binding GlobalUserSettings.LootFilterAmuletColor}">
 
                 <Grid>
 
@@ -485,7 +485,7 @@
                     HorizontalAlignment="Right"
                     CornerRadius="50"
                     Background="White"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
+                    Visibility="{Binding GlobalUserSettings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                         <TextBlock
                         FontSize="12"
@@ -513,7 +513,7 @@
             Width="50"
             Margin="0,5"
             Opacity="{Binding BeltsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding Settings.LootFilterBeltColor}">
+            Background="{Binding GlobalUserSettings.LootFilterBeltColor}">
 
                 <Grid>
 
@@ -529,7 +529,7 @@
                     HorizontalAlignment="Right"
                     CornerRadius="50"
                     Background="White"
-                    Visibility="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
+                    Visibility="{Binding GlobalUserSettings.SetTrackerOverlayItemCounterDisplayMode, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}">
 
                         <TextBlock
                         FontSize="12"
@@ -557,7 +557,7 @@
             Width="50"
             Height="50"
             Margin="0,5"
-            Visibility="{Binding Settings.LootFilterManipulationEnabled, Converter={StaticResource VisibleIfTrue}}"
+            Visibility="{Binding GlobalUserSettings.LootFilterManipulationEnabled, Converter={StaticResource VisibleIfTrue}}"
             Background="#202020">
 
                 <!-- Content with Line Break (Not sure if there's an easier way to do this...) -->
@@ -569,7 +569,7 @@
                         <Setter Property="Visibility" Value="Visible" />
                         <Style.Triggers>
                             <DataTrigger
-                            Binding="{Binding Settings.LootFilterManipulationEnabled}"
+                            Binding="{Binding GlobalUserSettings.LootFilterManipulationEnabled}"
                             Value="False">
                                 <Setter Property="Visibility" Value="Collapsed" />
                             </DataTrigger>

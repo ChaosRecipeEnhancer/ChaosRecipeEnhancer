@@ -1,5 +1,5 @@
-﻿using System.Windows.Controls;
-using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
+﻿using ChaosRecipeEnhancer.UI.Utilities;
+using System.Windows.Controls;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 

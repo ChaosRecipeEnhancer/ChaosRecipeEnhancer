@@ -15,8 +15,8 @@
         Background="Transparent"
         ShowInTaskbar="False"
         Loaded="OnLoaded"
-        Top="{Binding Settings.SetTrackerOverlayTopPosition, Mode=TwoWay}"
-        Left="{Binding Settings.SetTrackerOverlayLeftPosition, Mode=TwoWay}"
+        Top="{Binding GlobalUserSettings.SetTrackerOverlayTopPosition, Mode=TwoWay}"
+        Left="{Binding GlobalUserSettings.SetTrackerOverlayLeftPosition, Mode=TwoWay}"
         d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
 
     <!-- Set Tracker Display -->

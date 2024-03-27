@@ -198,15 +198,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Chaos Recipe Enhancer"
-        "ProductCode" = "8:{D17093BC-4004-4ADD-B01C-5CCC1452002D}"
-        "PackageCode" = "8:{37633142-DC39-478C-B591-A5D29C94381E}"
+        "ProductCode" = "8:{E8CB544A-0EF0-4B99-8CDE-EEB93FD2E02E}"
+        "PackageCode" = "8:{6AC6C9D2-9E6B-4A03-8CB7-51C2DD85BF59}"
         "UpgradeCode" = "8:{EB58E5F9-0174-4601-B62A-4C0E86FACD02}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:3.23.1005"
+        "ProductVersion" = "8:3.24.0001"
         "Manufacturer" = "8:CRE Team"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbUFJb1pTOWtOVnY0SmxxWnBMblY0YkJCdXNOZ3xBQ3Jtc0tsUDAzRTVTTTZNQlkzVjN0cEQ2OHIwa19sUTc1a2FFYkxWazhSYlcxSVBjWkNXbENxd0oxb1RtSEI2WXhXVUJvcFJLTzNmRFNHbjZfYmh3MnFGU2M4Vk5adWFNalpnVTBQb3pHR284OWJnTy1ybzVlOA&q=https%3A%2F%2Fdiscord.gg%2Fryss9jnRkZ&v=7umgTuN8bMU"
@@ -828,7 +828,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AB49303AC97F4B6891967A367203B1CD"
             {
-            "SourcePath" = "8:..\\ChaosRecipeEnhancer.UI\\obj\\Debug\\net7.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\ChaosRecipeEnhancer.UI\\obj\\Debug\\net8.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_1A0DA2048FE346078D015238542E1BFD"

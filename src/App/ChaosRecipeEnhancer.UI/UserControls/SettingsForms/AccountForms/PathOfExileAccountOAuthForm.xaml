@@ -6,15 +6,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
-             xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
              Background="#202020"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=accountForms:PathOfExileAccountOAuthFormViewModel}">
-
-    <UserControl.Resources>
-        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfEqual" ComparisonType="{x:Type system:Int32}" />
-        <zemotoCommon:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual" Invert="True" ComparisonType="{x:Type system:Int32}" />
-    </UserControl.Resources>
 
     <Grid
         Margin="10"
@@ -52,16 +46,16 @@
         <TextBlock
             Grid.Column="1"
             Grid.Row="1"
-            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=3}"
+            Visibility="{Binding LoggedInTextVisibility}"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
             Width="150"
-            Text="{Binding Settings.PathOfExileAccountName}" />
+            Text="{Binding GlobalUserSettings.PathOfExileAccountName}" />
 
         <TextBlock
             Grid.Column="1"
             Grid.Row="1"
-            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfEqual}, ConverterParameter=3}"
+            Visibility="{Binding AttemptingLoginTextVisibility}"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
             Text="Web Browser Opened" />
@@ -78,7 +72,7 @@
             Grid.Column="1"
             Grid.Row="2"
             Margin="10 0 0 10"
-            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfEqual}, ConverterParameter=0}">
+            Visibility="{Binding ConnectionNotValidatedTextVisibility}">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -104,7 +98,7 @@
             Grid.Column="1"
             Grid.Row="2"
             Margin="10 0 0 10"
-            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}">
+            Visibility="{Binding LoggedInTextVisibility}">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -130,7 +124,7 @@
             Grid.Column="1"
             Grid.Row="2"
             Margin="10 0 0 10"
-            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfEqual}, ConverterParameter=2}">
+            Visibility="{Binding ConnectionErrorTextVisibility}">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -156,7 +150,7 @@
             Grid.Column="1"
             Grid.Row="2"
             Margin="10 0 0 10"
-            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfEqual}, ConverterParameter=3}">
+            Visibility="{Binding AttemptingLoginTextVisibility}">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -184,11 +178,11 @@
             Grid.Row="3"
             Grid.ColumnSpan="2"
             BorderBrush="DarkGreen"
-            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=1}"
+            Visibility="{Binding LoginButtonVisibility}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Content="Login via Path of Exile"
-            Click="OnLoginClicked" />
+            Command="{Binding LoginCommand}" />
 
         <!-- Logout Button -->
         <Button
@@ -196,10 +190,10 @@
             Grid.Row="3"
             Grid.ColumnSpan="2"
             BorderBrush="DarkRed"
-            Visibility="{Binding Settings.PoEAccountConnectionStatus, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
+            Visibility="{Binding LogoutButtonVisibility}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Content="Logout"
-            Click="OnLogoutClicked" />
+            Command="{Binding LogoutCommand}" />
     </Grid>
 </UserControl>

@@ -1,4 +1,4 @@
-using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
+using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 

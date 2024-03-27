@@ -1,5 +1,6 @@
 ﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms.SetTrackerOverlayForm"
              xmlns:overlayForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms"
+             xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -47,7 +48,7 @@
             Margin="10 0 0 10"
             Width="200"
             VerticalContentAlignment="Center"
-            SelectedIndex="{Binding Settings.SetTrackerOverlayItemCounterDisplayMode, Mode=TwoWay}">
+            SelectedIndex="{Binding SetTrackerOverlayItemCounterDisplayMode, Mode=TwoWay}">
 
             <ComboBoxItem Content="None" />
             <ComboBoxItem Content="Total Items" />
@@ -70,7 +71,7 @@
             Margin="10 0 0 10"
             Width="200"
             VerticalContentAlignment="Center"
-            SelectedIndex="{Binding Settings.SetTrackerOverlayDisplayMode, Mode=TwoWay}">
+            SelectedIndex="{Binding SetTrackerOverlayMode, Mode=TwoWay}">
 
             <ComboBoxItem Content="Standard" />
             <ComboBoxItem Content="Standard (Vertical)" />
@@ -97,7 +98,7 @@
             Grid.Row="3"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding Settings.SetTrackerOverlayOverlayLockPositionEnabled, Mode=TwoWay}" />
+            IsChecked="{Binding SetTrackerOverlayOverlayLockPositionEnabled, Mode=TwoWay}" />
 
         <TextBlock
             Grid.Column="0"
@@ -113,7 +114,7 @@
             Grid.Row="4"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding Settings.SilenceSetsFullMessage, Mode=TwoWay}" />
+            IsChecked="{Binding SilenceSetsFullMessage, Mode=TwoWay}" />
 
         <TextBlock
             Grid.Column="0"
@@ -129,7 +130,7 @@
             Grid.Row="5"
             Margin="10 0 0 15"
             VerticalAlignment="Center"
-            IsChecked="{Binding Settings.SilenceNeedItemsMessage, Mode=TwoWay}" />
+            IsChecked="{Binding SilenceNeedItemsMessage, Mode=TwoWay}" />
 
         <!-- Reset Set Tracker Overlay Position Button -->
         <Button
@@ -139,7 +140,7 @@
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Content="Reset Set Tracker Overlay Position"
-            Click="OnResetSetTrackerOverlayClicked" />
+            Command="{Binding ResetSetTrackerOverlayPositionCommand}" />
 
     </Grid>
 </UserControl>
