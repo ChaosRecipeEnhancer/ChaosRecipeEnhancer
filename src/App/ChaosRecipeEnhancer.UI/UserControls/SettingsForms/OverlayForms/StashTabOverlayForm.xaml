@@ -5,7 +5,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
              xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
              mc:Ignorable="d"
              Background="#202020"
@@ -157,10 +156,10 @@
             Margin="10 0 0 10"
             Width="200"
             VerticalContentAlignment="Center"
-            IsEnabled="False"
             SelectedIndex="{Binding GlobalUserSettings.StashTabOverlayHighlightMode, Mode=TwoWay}">
 
             <ComboBoxItem Content="Set by Set" />
+            <ComboBoxItem Content="Item by Item" />
 
         </ComboBox>
 

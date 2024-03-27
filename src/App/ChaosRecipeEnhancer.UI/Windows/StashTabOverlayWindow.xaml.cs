@@ -7,6 +7,7 @@ using ChaosRecipeEnhancer.UI.Utilities.Native;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -174,51 +175,119 @@ public partial class StashTabOverlayWindow : Window
     {
         if (!active) return;
 
-        if (SetsToHighlight != null && SetsToHighlight.Count > 0)
+        if (Settings.Default.StashTabOverlayHighlightMode == (int)StashTabOverlayHighlightMode.ItemByItem)
         {
-            // check for full sets
-            if (SetsToHighlight[0].EmptyItemSlots != null && SetsToHighlight[0].EmptyItemSlots.Count == 0)
+            ActivateNextItemByItem(active, stashTabCell);
+        }
+        else
+        {
+            if (SetsToHighlight != null && SetsToHighlight.Count > 0)
             {
-                if (stashTabCell != null && stashTabCell.ItemModel != null)
+                // check for full sets
+                if (SetsToHighlight[0].EmptyItemSlots != null && SetsToHighlight[0].EmptyItemSlots.Count == 0)
                 {
-                    var highlightItem = stashTabCell.ItemModel;
-                    var currentTab = GetStashTabFromItem(highlightItem);
-
-                    if (currentTab != null)
+                    if (stashTabCell != null && stashTabCell.ItemModel != null)
                     {
-                        currentTab.DeactivateSingleItemCells(stashTabCell.ItemModel);
-                        if (SetsToHighlight[0].Items != null)
-                        {
-                            SetsToHighlight[0].Items.Remove(highlightItem);
-                        }
+                        var highlightItem = stashTabCell.ItemModel;
+                        var currentTab = GetStashTabFromItem(highlightItem);
 
-                        // disable tab header color if no more items in set for the current tab
-                        if (SetsToHighlight[0].Items != null &&
-                            SetsToHighlight[0].Items.Where(x => x.StashTabIndex == currentTab.Index).ToList().Count == 0)
+                        if (currentTab != null)
                         {
-                            currentTab.TabHeaderColor = Brushes.Transparent;
+                            currentTab.DeactivateSingleItemCells(stashTabCell.ItemModel);
+                            if (SetsToHighlight[0].Items != null)
+                            {
+                                SetsToHighlight[0].Items.Remove(highlightItem);
+                            }
+
+                            // disable tab header color if no more items in set for the current tab
+                            if (SetsToHighlight[0].Items != null &&
+                                SetsToHighlight[0].Items.Where(x => x.StashTabIndex == currentTab.Index).ToList().Count == 0)
+                            {
+                                currentTab.TabHeaderColor = Brushes.Transparent;
+                            }
                         }
                     }
-                }
-
-                // activate next set
-                if (SetsToHighlight[0].Items != null)
-                {
-                    foreach (var i in SetsToHighlight[0].Items.ToList())
-                    {
-                        var currentTab = GetStashTabFromItem(i);
-                        currentTab?.ActivateItemCells(i);
-                        currentTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
-                    }
-                }
-
-                // Set has been completed
-                if (SetsToHighlight[0].Items != null && SetsToHighlight[0].Items.Count == 0)
-                {
-                    SetsToHighlight.RemoveAt(0);
 
                     // activate next set
-                    ActivateNextCell(true, null);
+                    if (SetsToHighlight[0].Items != null)
+                    {
+                        foreach (var i in SetsToHighlight[0].Items.ToList())
+                        {
+                            var currentTab = GetStashTabFromItem(i);
+                            currentTab?.ActivateItemCells(i);
+                            currentTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                        }
+                    }
+
+                    // Set has been completed
+                    if (SetsToHighlight[0].Items != null && SetsToHighlight[0].Items.Count == 0)
+                    {
+                        SetsToHighlight.RemoveAt(0);
+
+                        // activate next set
+                        ActivateNextCell(true, null);
+                    }
+                }
+            }
+        }
+    }
+
+    private void ActivateNextItemByItem(bool active, InteractiveStashTabCell stashTabCell)
+    {
+        if (!active) return;
+
+        // Remove if SetsToHighlight is empty
+        if (SetsToHighlight.Count == 0)
+        {
+            return;
+        }
+
+        // Get the current item set
+        var currentSet = SetsToHighlight[0];
+
+        // Check if the current set has any items left
+        if (currentSet.Items.Count > 0)
+        {
+            if (stashTabCell != null && stashTabCell.ItemModel != null)
+            {
+                var highlightItem = stashTabCell.ItemModel;
+                var currentTab = GetStashTabFromItem(highlightItem);
+
+                if (currentTab != null)
+                {
+                    currentTab.DeactivateSingleItemCells(stashTabCell.ItemModel);
+                    currentSet.Items.Remove(highlightItem);
+
+                    // Set the tab header color to transparent
+                    currentTab.TabHeaderColor = Brushes.Transparent;
+
+                    // Check if the current set is empty
+                    if (currentSet.Items.Count == 0)
+                    {
+                        SetsToHighlight.RemoveAt(0);
+                    }
+                }
+            }
+
+            // Activate the next item in the current set
+            if (currentSet.Items.Count > 0)
+            {
+                var nextHighlightItem = currentSet.Items[0];
+                var nextTab = GetStashTabFromItem(nextHighlightItem);
+
+                if (nextTab != null)
+                {
+                    nextTab.ActivateItemCells(nextHighlightItem);
+
+                    // Set the tab header color based on the settings
+                    if (!string.IsNullOrEmpty(Settings.Default.StashTabOverlayHighlightColor))
+                    {
+                        nextTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                    }
+                    else
+                    {
+                        nextTab.TabHeaderColor = Brushes.Transparent;
+                    }
                 }
             }
         }
@@ -229,20 +298,47 @@ public partial class StashTabOverlayWindow : Window
         SetsToHighlight.Clear();
 
         foreach (var s in StashTabControlManager.StashTabControls) s.PrepareOverlayList();
-        foreach (var set in GlobalItemSetManagerState.SetsInProgress)
-        {
-            set.OrderItemsForPicking();
 
-            if ((set.HasChaosRecipeQualifier && Settings.Default.ChaosRecipeTrackingEnabled) ||
-                (set.IsRegalRecipeEligible && !Settings.Default.ChaosRecipeTrackingEnabled))
+        if (Settings.Default.StashTabOverlayHighlightMode == (int)StashTabOverlayHighlightMode.ItemByItem)
+        {
+            var itemsToHighlight = new List<EnhancedItem>();
+
+            foreach (var set in GlobalItemSetManagerState.SetsInProgress)
             {
-                SetsToHighlight.Add(new EnhancedItemSet
+                set.OrderItemsForPicking();
+
+                if ((set.HasChaosRecipeQualifier && Settings.Default.ChaosRecipeTrackingEnabled) ||
+                    (set.IsRegalRecipeEligible && !Settings.Default.ChaosRecipeTrackingEnabled))
                 {
-                    Items = new List<EnhancedItem>(set.Items),
-                    EmptyItemSlots = new List<string>(set.EmptyItemSlots)
-                });
+                    itemsToHighlight.AddRange(set.Items);
+                }
+            }
+
+            SetsToHighlight.Add(new EnhancedItemSet
+            {
+                Items = itemsToHighlight,
+                EmptyItemSlots = new List<string>()
+            });
+        }
+        else
+        {
+            foreach (var set in GlobalItemSetManagerState.SetsInProgress)
+            {
+                set.OrderItemsForPicking();
+
+                if ((set.HasChaosRecipeQualifier && Settings.Default.ChaosRecipeTrackingEnabled) ||
+                    (set.IsRegalRecipeEligible && !Settings.Default.ChaosRecipeTrackingEnabled))
+                {
+                    SetsToHighlight.Add(new EnhancedItemSet
+                    {
+                        Items = new List<EnhancedItem>(set.Items),
+                        EmptyItemSlots = new List<string>(set.EmptyItemSlots)
+                    });
+                }
             }
         }
+
+        Trace.WriteLine("Sets to highlight: " + SetsToHighlight.Count);
     }
 
     private void GenerateReconstructedStashTabsFromApiResponse()

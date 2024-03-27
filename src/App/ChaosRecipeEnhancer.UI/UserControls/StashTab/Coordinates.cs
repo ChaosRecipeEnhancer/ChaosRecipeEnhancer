@@ -1,11 +1,11 @@
-﻿using System;
+﻿using ChaosRecipeEnhancer.UI.Utilities.Native;
+using ChaosRecipeEnhancer.UI.Windows;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
-using ChaosRecipeEnhancer.UI.Windows;
-using ChaosRecipeEnhancer.UI.Utilities.Native;
+using System.Windows.Media;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
