@@ -228,7 +228,9 @@ public partial class StashTabOverlayWindow : Window
         foreach (var set in GlobalItemSetManagerState.SetsInProgress)
         {
             set.OrderItemsForPicking();
-            if (set.HasChaosRecipeQualifier)
+
+            if ((set.HasChaosRecipeQualifier && Settings.Default.ChaosRecipeTrackingEnabled) ||
+                (set.IsRegalRecipeEligible && !Settings.Default.ChaosRecipeTrackingEnabled))
             {
                 SetsToHighlight.Add(new EnhancedItemSet
                 {
