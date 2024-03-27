@@ -223,7 +223,7 @@ public class GeneralFormViewModel : CreViewModelBase
 
         FetchStashTabsButtonEnabled = false;
         var stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataAsync();
-        if (stashTabPropsList != null)
+        if (stashTabPropsList != null && stashTabPropsList.StashTabs != null)
         {
             UpdateStashTabNameIndexFullList(stashTabPropsList.StashTabs);
         }
@@ -262,26 +262,29 @@ public class GeneralFormViewModel : CreViewModelBase
         // clearing observable (ui) collection for stash tabs
         StashTabIndexNameFullList.Clear();
 
-        // adding new items to observable (ui) collection for stash tabs
-        foreach (var tab in stashTabProps)
+        if (stashTabProps != null)
         {
-            if (tab.Type == "Folder")
+            // adding new items to observable (ui) collection for stash tabs
+            foreach (var tab in stashTabProps)
             {
-                // adding folder tabs' children
-                foreach (var nestedTab in tab.Children)
+                if (tab.Type == "Folder" && tab.Children != null)
                 {
-                    StashTabIndexNameFullList.Add(nestedTab);
+                    // adding folder tabs' children
+                    foreach (var nestedTab in tab.Children)
+                    {
+                        StashTabIndexNameFullList.Add(nestedTab);
+                    }
                 }
-            }
-            // implicitly ignore "Folder" tabs
-            else
-            {
-                StashTabIndexNameFullList.Add(tab);
+                // implicitly ignore "Folder" tabs
+                else
+                {
+                    StashTabIndexNameFullList.Add(tab);
+                }
             }
         }
 
         // re-setting app setting for stash tab indices
-        if (_userSettings.StashTabIndices is not null)
+        if (!string.IsNullOrWhiteSpace(_userSettings.StashTabIndices))
         {
             // adding (pre) selected tabs to list
             var selectedStashTabs = _userSettings.StashTabIndices.Split(',').ToList();
