@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows;
 
-namespace ChaosRecipeEnhancer.Tests.Converters;
+namespace ChaosRecipeEnhancer.UI.Tests.Converters;
 
 public class PaddingLeftRightConverterTests
 {

@@ -1,7 +1,7 @@
 ﻿using ChaosRecipeEnhancer.UI.Converters;
 using System.Globalization;
 
-namespace ChaosRecipeEnhancer.Tests.Converters;
+namespace ChaosRecipeEnhancer.UI.Tests.Converters;
 
 public class NullOrEmptyToBoolConverterTests
 {
