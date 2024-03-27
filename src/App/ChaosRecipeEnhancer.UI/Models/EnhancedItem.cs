@@ -36,6 +36,7 @@ public class EnhancedItem : BaseItem
         string icon
     ) : base(width, height, identified, itemLevel, frameType, x, y, baseItemInfluences, icon)
     {
+        Id = Guid.NewGuid().ToString();
         GetItemClass();
     }
 
@@ -45,13 +46,22 @@ public class EnhancedItem : BaseItem
     /// <param name="other">The base item to copy properties from.</param>
     public EnhancedItem(BaseItem other) : base(other)
     {
+        Id = Guid.NewGuid().ToString();
         GetItemClass();
     }
 
     /// <summary>
     /// Initializes a new instance of the EnhancedItem class with default properties.
     /// </summary>
-    public EnhancedItem() { }
+    public EnhancedItem()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
+
+    /// <summary>
+    /// Gets or sets the unique identifier of the item.
+    /// </summary>
+    public string Id { get; }
 
     /// <summary>
     /// Gets a value indicating whether the item is eligible for the Chaos Orb vendor recipe.
