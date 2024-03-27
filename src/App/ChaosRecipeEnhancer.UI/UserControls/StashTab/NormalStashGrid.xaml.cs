@@ -1,6 +1,5 @@
-﻿using System.Windows;
+﻿using ChaosRecipeEnhancer.UI.Utilities;
 using System.Windows.Controls;
-using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
