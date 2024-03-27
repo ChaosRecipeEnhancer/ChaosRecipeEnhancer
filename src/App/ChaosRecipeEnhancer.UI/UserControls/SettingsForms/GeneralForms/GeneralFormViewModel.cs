@@ -81,14 +81,7 @@ public class GeneralFormViewModel : CreViewModelBase
     public string LeagueName
     {
         get => _userSettings.LeagueName;
-        set
-        {
-            if (_userSettings.LeagueName != value)
-            {
-                _userSettings.LeagueName = value;
-                OnPropertyChanged(nameof(LeagueName));
-            }
-        }
+        set => _ = UpdateLeagueNameAsync(value);
     }
 
     public int StashTabQueryMode
@@ -148,7 +141,6 @@ public class GeneralFormViewModel : CreViewModelBase
         get => _userSettings.PathOfExileClientLogLocation;
         set
         {
-            _log.Information("Setting Path of Exile client log location to: {Path}", value);
             if (_userSettings.PathOfExileClientLogLocation != value)
             {
                 _userSettings.PathOfExileClientLogLocation = value;
@@ -162,27 +154,7 @@ public class GeneralFormViewModel : CreViewModelBase
     public ClientLogFileLocationMode ClientLogFileLocationMode
     {
         get => (ClientLogFileLocationMode)_userSettings.PathOfExileClientLogLocationMode;
-        set
-        {
-            _log.Information("Setting client log file location mode to: {Mode}", value);
-            if (_userSettings.PathOfExileClientLogLocationMode != (int)value)
-            {
-                _userSettings.PathOfExileClientLogLocationMode = (int)value;
-                OnPropertyChanged(nameof(ClientLogFileLocationMode));
-
-                _userSettings.PathOfExileClientLogLocationMode = (int)value;
-
-                switch (value)
-                {
-                    case ClientLogFileLocationMode.DefaultStandaloneLocation:
-                        PathOfExileClientLogLocation = PoEClientDefaults.DefaultStandaloneInstallLocationPath;
-                        break;
-                    case ClientLogFileLocationMode.DefaultSteamLocation:
-                        PathOfExileClientLogLocation = PoEClientDefaults.DefaultSteamInstallLocationPath;
-                        break;
-                }
-            }
-        }
+        set => UpdateClientLogFileLocationMode(value);
     }
 
     #endregion
@@ -192,11 +164,8 @@ public class GeneralFormViewModel : CreViewModelBase
     /// </summary>
     public async Task LoadLeagueListAsync()
     {
-        _log.Information("Starting LoadLeagueListAsync");
-
         if (_leaguesLoaded)
         {
-            _log.Information("Leagues already loaded. Entering cooldown.");
             try
             {
                 await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
@@ -204,65 +173,43 @@ public class GeneralFormViewModel : CreViewModelBase
             finally
             {
                 RefreshLeagueListButtonEnabled = true;
-                _log.Information("Cooldown complete. RefreshLeagueListButtonEnabled set to true.");
             }
-
             return;
         }
 
-        _log.Information("Loading league list for the first time.");
         RefreshLeagueListButtonEnabled = false;
-
         LeagueList.Clear();
-
-        _log.Information("Calling API to fetch league list.");
         var leagueList = await _apiService.GetLeaguesAsync();
         if (leagueList != null)
         {
-            _log.Information("League list fetched successfully. Total leagues: {LeagueCount}", leagueList.Leagues.Count);
-
             foreach (var league in leagueList.Leagues)
             {
                 LeagueList.Add(league.Id);
             }
         }
-        else
-        {
-            _log.Warning("Failed to fetch league list from API.");
-        }
 
         _userSettings.LeagueName = LeagueList.FirstOrDefault();
-        _log.Information("Default league name set to: {LeagueName}", _userSettings.LeagueName);
-
         try
         {
             if (_leaguesLoaded)
             {
-                _log.Information("Entering cooldown after league list load.");
                 await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
             }
         }
         finally
         {
             _leaguesLoaded = true;
-            _log.Information("Leagues loaded and marked as loaded.");
-
             RefreshLeagueListButtonEnabled = true;
-            _log.Information("Cooldown complete. RefreshLeagueListButtonEnabled set to true.");
         }
     }
-
 
     /// <summary>
     /// Loads stash tab names and indices. Only loads once per session to reduce API calls, unless the league is changed or explicitly refreshed.
     /// </summary>
     public async Task LoadStashTabNamesIndicesAsync()
     {
-        _log.Information("Starting LoadStashTabNamesIndicesAsync");
-
         if (_stashTabsLoaded)
         {
-            _log.Information("Stash tabs already loaded. Entering cooldown.");
             try
             {
                 await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
@@ -270,47 +217,29 @@ public class GeneralFormViewModel : CreViewModelBase
             finally
             {
                 FetchStashTabsButtonEnabled = true;
-                _log.Information("Cooldown complete. FetchStashTabsButtonEnabled set to true.");
             }
-
             return;
         }
 
-        _log.Information("Loading stash tab names and indices for the first time.");
         FetchStashTabsButtonEnabled = false;
-
-        _log.Information("Calling API to fetch all personal stash tab metadata.");
         var stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataAsync();
         if (stashTabPropsList != null)
         {
-            _log.Information("Stash tab metadata fetched successfully. Total tabs: {TabCount}", stashTabPropsList.StashTabs.Count);
-
             UpdateStashTabNameIndexFullList(stashTabPropsList.StashTabs);
-
         }
-        else
-        {
-            _log.Warning("Failed to fetch stash tab metadata from API.");
-        }
-
         try
         {
             if (_stashTabsLoaded)
             {
-                _log.Information("Entering cooldown after loading stash tabs.");
                 await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
             }
         }
         finally
         {
             _stashTabsLoaded = true;
-            _log.Information("Stash tabs loaded and marked as loaded.");
-
             FetchStashTabsButtonEnabled = true;
-            _log.Information("Cooldown complete. FetchStashTabsButtonEnabled set to true.");
         }
     }
-
 
     public void UpdateSelectedTabList(IList selectedStashTabProps)
     {
@@ -414,6 +343,38 @@ public class GeneralFormViewModel : CreViewModelBase
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
+            }
+        }
+    }
+
+    private async Task UpdateLeagueNameAsync(string leagueName)
+    {
+        if (_userSettings.LeagueName != leagueName)
+        {
+            _userSettings.LeagueName = leagueName;
+            OnPropertyChanged(nameof(LeagueName));
+
+            // re-fetching stash tabs if league is changed
+            _stashTabsLoaded = false;
+            await LoadStashTabNamesIndicesAsync();
+        }
+    }
+
+    private void UpdateClientLogFileLocationMode(ClientLogFileLocationMode mode)
+    {
+        if (_userSettings.PathOfExileClientLogLocationMode != (int)mode)
+        {
+            _userSettings.PathOfExileClientLogLocationMode = (int)mode;
+            OnPropertyChanged(nameof(ClientLogFileLocationMode));
+
+            switch (mode)
+            {
+                case ClientLogFileLocationMode.DefaultStandaloneLocation:
+                    PathOfExileClientLogLocation = PoEClientDefaults.DefaultStandaloneInstallLocationPath;
+                    break;
+                case ClientLogFileLocationMode.DefaultSteamLocation:
+                    PathOfExileClientLogLocation = PoEClientDefaults.DefaultSteamInstallLocationPath;
+                    break;
             }
         }
     }

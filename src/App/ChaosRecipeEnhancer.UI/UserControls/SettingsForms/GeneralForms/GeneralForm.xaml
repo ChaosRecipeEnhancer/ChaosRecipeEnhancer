@@ -19,7 +19,6 @@
         <creConverters:BoolVisibilityConverter x:Key="BoolVisibilityConverter" CollapseWhenNotVisible="True" />
         <creConverters:BoolVisibilityConverter x:Key="InvertedBoolVisibilityConverter" CollapseWhenNotVisible="True" Invert="True" />
         <creConverters:EqualityToVisibilityConverter x:Key="VisibleIfEqual" ComparisonType="{x:Type system:Int32}" />
-        <creConverters:InvertBoolConverter x:Key="InvertBoolConverter" />
         <creConverters:NullOrEmptyToBoolConverter x:Key="NullOrEmptyToBoolConverter" />
         <creConverters:EnumBooleanConverter x:Key="EnumBooleanConverter" />
         <creConverters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
@@ -186,7 +185,7 @@
                 Width="60"
                 Margin="5 0 0 0"
                 Content="Fetch"
-                IsEnabled="{Binding FetchStashTabsButtonEnabled, Converter={StaticResource InvertBoolConverter}}"
+                IsEnabled="{Binding FetchStashTabsButtonEnabled}"
                 Command="{Binding FetchStashTabsCommand}" />
 
         </Grid>
