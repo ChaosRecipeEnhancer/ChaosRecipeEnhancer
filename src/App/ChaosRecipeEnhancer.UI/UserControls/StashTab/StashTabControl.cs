@@ -17,7 +17,7 @@ public class StashTabControl : CreViewModelBase
         TabHeaderColor = Brushes.Transparent;
     }
 
-    public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = new();
+    public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = [];
     public TextBlock NameContainer { get; set; }
     public string Name { get; set; }
     public int Index { get; }
