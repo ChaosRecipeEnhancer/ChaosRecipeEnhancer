@@ -1,111 +1,120 @@
-﻿using ChaosRecipeEnhancer.UI.Utilities.Native;
+﻿using ChaosRecipeEnhancer.UI.Utilities;
+using ChaosRecipeEnhancer.UI.Utilities.Native;
 using ChaosRecipeEnhancer.UI.Windows;
+using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
+/// <summary>
+/// Represents a combination of a button and its corresponding stash tab cell.
+/// </summary>
+internal class ButtonAndCell
+{
+    /// <summary>
+    /// Gets the WPF Button associated with a stash tab cell.
+    /// </summary>
+    public Button Button { get; init; }
+
+    /// <summary>
+    /// Gets the stash tab cell associated with the button.
+    /// </summary>
+    public InteractiveStashTabCell InteractiveStashTabCell { get; init; }
+}
+
+/// <summary>
+/// Provides functionality to determine interactions within the stash tab overlay window.
+/// </summary>
 public static class Coordinates
 {
-    private static Point GetItemCoordinates(Visual item)
+    /// <summary>
+    /// Handles click events within the stash tab overlay, determining whether specific elements were clicked.
+    /// </summary>
+    /// <param name="stashTabOverlayWindow">The stash tab overlay window instance.</param>
+    public static void OverlayClickEvent(StashTabOverlayWindow stashTabOverlayWindow)
     {
-        if (item == null || !IsVisualConnected(item))
-            return new Point(0, 0);
+        if (StashTabControlManager.StashTabControls.Count == 0)
+        {
+            Log.Debug("OverlayClickEvent: No tabs are selected. Hiding overlay.");
+            stashTabOverlayWindow.Hide();
+            return;
+        }
 
-        return item.PointToScreen(new Point(0, 0));
+        if (!stashTabOverlayWindow.IsOpen)
+        {
+            Log.Debug("OverlayClickEvent: Overlay is not open.");
+            return;
+        }
+
+        var isHit = false;
+        var hitIndex = -1;
+        var buttonList = new List<ButtonAndCell>();
+        var selectedIndex = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex;
+        var activeCells = GetAllActiveCells(selectedIndex);
+
+        if (CheckIfEditButtonClicked(stashTabOverlayWindow.EditModeButton))
+        {
+            stashTabOverlayWindow.HandleEditButton();
+            Log.Information("OverlayClickEvent: Edit button click handled.");
+        }
+
+        dynamic control = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedContent;
+
+        if (control != null)
+        {
+            foreach (var cell in activeCells)
+            {
+                var button = control.GetButtonFromCell(cell);
+                if (button != null)
+                {
+                    buttonList.Add(new ButtonAndCell
+                    {
+                        Button = button,
+                        InteractiveStashTabCell = cell
+                    });
+                }
+            }
+        }
+
+        foreach (var buttonCell in buttonList)
+        {
+            if (CheckIfItemClicked(buttonCell.Button))
+            {
+                Log.Information("OverlayClickEvent: Successful item hit detected.");
+                isHit = true;
+                hitIndex = buttonList.IndexOf(buttonCell);
+                break;
+            }
+        }
+
+        if (isHit)
+        {
+            stashTabOverlayWindow.ActivateNextCell(true, buttonList[hitIndex].InteractiveStashTabCell);
+            Log.Information($"OverlayClickEvent: Activating next item at: {buttonList[hitIndex].InteractiveStashTabCell.ItemModel.X}, {buttonList[hitIndex].InteractiveStashTabCell.ItemModel.Y}.");
+        }
+
+        for (var stash = 0; stash < StashTabControlManager.StashTabControls.Count; stash++)
+        {
+            if (CheckIfTabNameContainerClicked(StashTabControlManager.StashTabControls[stash]))
+            {
+                stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex = stash;
+                Log.Information($"OverlayClickEvent: Tab name container clicked. Switched to tab at index {stash}.");
+                break;
+            }
+        }
     }
 
-    private static bool IsVisualConnected(Visual visual)
-    {
-        return PresentationSource.FromVisual(visual) != null;
-    }
-
-    private static bool CheckIfItemClicked(Point point, FrameworkElement button)
-    {
-        if (button is null) return false;
-
-        var clickX = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationX;
-        var clickY = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationY;
-
-        // adjust btn x,y position a bit
-        point.X -= 1;
-        point.Y -= 1;
-
-        // +1 border thickness
-        // TODO: lots of null pointer exceptions here let's see if we can fix the root cause
-        // might want to go off of zemoto's code for this
-        // might want to check if the item is null before we do anything but that won't actually fix it
-        var btnX = Convert.ToInt32(Math.Ceiling(point.X + button.ActualWidth + 1));
-        var btnY = Convert.ToInt32(Math.Ceiling(point.Y + button.ActualHeight + 1));
-
-        return clickX > point.X
-               && clickY > point.Y
-               && clickX < btnX
-               && clickY < btnY;
-    }
-
-    private static Point GetTabNameContainerCoordinates(Visual tabNameContainer)
-    {
-        return tabNameContainer?.PointToScreen(new Point(0, 0)) ?? new Point(0, 0);
-    }
-
-    private static bool CheckIfTabNameContainerClicked(StashTabControl stashTabControl)
-    {
-        var clickX = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationX;
-        var clickY = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationY;
-
-        var pt = GetTabNameContainerCoordinates(stashTabControl.NameContainer);
-
-        // adjust btn x,y position a bit
-        pt.X -= 1;
-        pt.Y -= 1;
-
-        // can be null if user closes overlay while fetching with stash tab overlay open
-        if (stashTabControl.NameContainer == null) return false;
-
-        var tabX = Convert.ToInt32(Math.Floor(pt.X + stashTabControl.NameContainer.ActualWidth + 1));
-        var tabY = Convert.ToInt32(Math.Floor(pt.Y + stashTabControl.NameContainer.ActualHeight + 1));
-
-        return clickX > pt.X
-               && clickY > pt.Y
-               && clickX < tabX
-               && clickY < tabY;
-    }
-
-    private static Point GetEditButtonCoordinates(Visual button)
-    {
-        if (button == null) return new Point(0, 0);
-        return button.PointToScreen(new Point(0, 0));
-    }
-
-    private static bool CheckIfEditButtonClicked(FrameworkElement editButton)
-    {
-        var clickX = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationX;
-        var clickY = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationY;
-
-        var pt = GetEditButtonCoordinates(editButton);
-
-        // adjust btn x,y position a bit
-        pt.X -= 1;
-        pt.Y -= 1;
-
-        var btnX = Convert.ToInt32(Math.Floor(pt.X + editButton.ActualWidth + 1));
-        var btnY = Convert.ToInt32(Math.Floor(pt.Y + editButton.ActualHeight + 1));
-
-        return clickX > pt.X
-               && clickY > pt.Y
-               && clickX < btnX
-               && clickY < btnY;
-    }
-
+    /// <summary>
+    /// Retrieves all active cells for a given stash tab.
+    /// </summary>
+    /// <param name="index">The index of the stash tab.</param>
+    /// <returns>A list of all active stash tab cells.</returns>
     private static List<InteractiveStashTabCell> GetAllActiveCells(int index)
     {
         var activeCells = new List<InteractiveStashTabCell>();
-
         foreach (var cell in StashTabControlManager.StashTabControls[index].OverlayCellsList)
         {
             if (cell.Active)
@@ -114,131 +123,64 @@ public static class Coordinates
             }
         }
 
+        Log.Debug($"GetAllActiveCells: Found {activeCells.Count} active cells in stash tab at index {index}.");
         return activeCells;
     }
 
-    public static void OverlayClickEvent(StashTabOverlayWindow stashTabOverlayWindow)
+    /// <summary>
+    /// Determines if a tab name container was clicked based on the mouse click coordinates.
+    /// </summary>
+    /// <param name="stashTabControl">The stash tab control.</param>
+    /// <returns>True if the tab name container was clicked; otherwise, false.</returns>
+    private static bool CheckIfTabNameContainerClicked(StashTabControl stashTabControl)
+        => CheckIfClicked(stashTabControl.NameContainer);
+
+    /// <summary>
+    /// Determines if the edit button was clicked based on the mouse click coordinates.
+    /// </summary>
+    /// <param name="editButton">The edit button.</param>
+    /// <returns>True if the edit button was clicked; otherwise, false.</returns>
+    private static bool CheckIfEditButtonClicked(FrameworkElement editButton)
+        => CheckIfClicked(editButton);
+
+    /// <summary>
+    /// Determines if an item represented by a button was clicked based on the mouse click coordinates.
+    /// </summary>
+    /// <param name="button">The button representing an item in the stash tab.</param>
+    /// <returns>True if the item was clicked; otherwise, false.</returns>
+    private static bool CheckIfItemClicked(FrameworkElement button)
+        => CheckIfClicked(button);
+
+    /// <summary>
+    /// Checks if a given element was clicked by comparing the click coordinates with the element's screen position and dimensions.
+    /// </summary>
+    /// <param name="element">The framework element to check.</param>
+    /// <param name="elementName">The name of the element for logging.</param>
+    /// <returns>True if the element was clicked; otherwise, false.</returns>
+    private static bool CheckIfClicked(FrameworkElement element)
     {
-        // if no tabs are selected, hide overlay
-        if (StashTabControlManager.StashTabControls.Count == 0)
+        if (element == null)
         {
-            stashTabOverlayWindow.Hide();
+            return false;
         }
 
-        // if overlay is open
-        if (stashTabOverlayWindow.IsOpen)
-        {
-            var isHit = false;
-            var hitIndex = -1;
-            var buttonList = new List<ButtonAndCell>();
-            var selectedIndex = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex;
-            var activeCells = GetAllActiveCells(selectedIndex);
+        var clickX = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationX;
+        var clickY = MouseHookForGeneralInteractionInStashTabOverlay.ClickLocationY;
+        var elementPosition = VisualUtilities.GetScreenCoordinates(element);
 
-            if (CheckIfEditButtonClicked(stashTabOverlayWindow.EditModeButton))
-            {
-                stashTabOverlayWindow.HandleEditButton();
-            }
+        // Define the element's boundaries
+        var leftBoundary = Convert.ToInt32(Math.Floor(elementPosition.X));
+        var topBoundary = Convert.ToInt32(Math.Floor(elementPosition.Y));
+        var rightBoundary = Convert.ToInt32(Math.Floor(elementPosition.X + element.ActualWidth));
+        var bottomBoundary = Convert.ToInt32(Math.Floor(elementPosition.Y + element.ActualHeight));
 
-            // if currently selected tab is a quad tab
-            if (StashTabControlManager.StashTabControls[selectedIndex].Quad)
-            {
-                // force us to view grid as normal tab grid
-                var control = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedContent as QuadStashGrid;
+        // Determine if the click coordinates are within the element's boundaries (like a rectangular hitbox)
+        var isClicked =
+            clickX > leftBoundary &&
+            clickY > topBoundary &&
+            clickX < rightBoundary &&
+            clickY < bottomBoundary;
 
-                // if the control is null, we will populate it with new cells
-                if (control != null)
-                {
-                    foreach (var cell in activeCells)
-                    {
-                        buttonList.Add(new ButtonAndCell
-                        {
-                            Button = control.GetButtonFromCell(cell),
-                            InteractiveStashTabCell = cell
-                        });
-                    }
-                }
-
-                // iterate through every cell to see if an item associated with that cell was clicked
-                for (var b = 0; b < buttonList.Count; b++)
-                {
-                    if (CheckIfItemClicked(GetItemCoordinates(buttonList[b].Button), buttonList[b].Button))
-                    {
-                        Trace.WriteLine("[Coordinates:OverlayClickEvent()]: Quad Tab Successful Item Hit");
-
-                        isHit = true;
-                        hitIndex = b;
-                    }
-                }
-
-                // if we hit an item, activate the next item (and its associated cells)
-                if (isHit)
-                {
-                    stashTabOverlayWindow.ActivateNextCell(true, buttonList[hitIndex].InteractiveStashTabCell);
-                    Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Quad Tab Activating Next Item: {buttonList[hitIndex].InteractiveStashTabCell}");
-
-                }
-
-                for (var stash = 0; stash < StashTabControlManager.StashTabControls.Count; stash++)
-                {
-                    if (CheckIfTabNameContainerClicked(StashTabControlManager.StashTabControls[stash]))
-                    {
-                        stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex = stash;
-                    }
-                }
-            }
-            // if currently selected tab is a normal tab
-            else
-            {
-                // force us to view grid as normal tab grid
-                var control = stashTabOverlayWindow.StashTabOverlayTabControl.SelectedContent as NormalStashGrid;
-
-                // simple null check on quad stash grid control
-                if (control != null)
-                {
-                    foreach (var cell in activeCells)
-                    {
-                        buttonList.Add(new ButtonAndCell
-                        {
-                            Button = control.GetButtonFromCell(cell),
-                            InteractiveStashTabCell = cell
-                        });
-                    }
-                }
-
-                for (var b = 0; b < buttonList.Count; b++)
-                {
-                    if (CheckIfItemClicked(GetItemCoordinates(buttonList[b].Button), buttonList[b].Button))
-                    {
-                        Trace.WriteLine("[Coordinates:OverlayClickEvent()]: Normal Tab Successful Item Hit");
-
-                        isHit = true;
-                        hitIndex = b;
-                    }
-                }
-
-                if (isHit)
-                {
-                    stashTabOverlayWindow.ActivateNextCell(true, buttonList[hitIndex].InteractiveStashTabCell);
-                    Trace.WriteLine($"[Coordinates:OverlayClickEvent()]: Normal Tab Activating Next Item: {buttonList[hitIndex].InteractiveStashTabCell}");
-                }
-
-                for (var stash = 0; stash < StashTabControlManager.StashTabControls.Count; stash++)
-                {
-                    if (CheckIfTabNameContainerClicked(StashTabControlManager.StashTabControls[stash]))
-                    {
-                        stashTabOverlayWindow.StashTabOverlayTabControl.SelectedIndex = stash;
-                    }
-                }
-            }
-        }
+        return isClicked;
     }
-}
-
-internal class ButtonAndCell
-{
-    // actual wpf button we click
-    public Button Button { get; init; }
-
-    // represents our item in the stash tab grid
-    public InteractiveStashTabCell InteractiveStashTabCell { get; init; }
 }
