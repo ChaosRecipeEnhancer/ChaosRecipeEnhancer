@@ -57,7 +57,7 @@
             Grid.Row="1"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding GlobalUserSettings.ChaosRecipeTrackingEnabled, Mode=TwoWay}" />
+            IsChecked="{Binding ChaosRecipeTrackingEnabled, Mode=TwoWay}" />
         <!-- Chaos Recipe Selector End -->
 
         <!-- Regal Recipe Selector Start -->
@@ -75,7 +75,7 @@
             Grid.Row="2"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding GlobalUserSettings.ChaosRecipeTrackingEnabled, Mode=TwoWay, Converter={StaticResource InvertedBoolConverter}}" />
+            IsChecked="{Binding ChaosRecipeTrackingEnabled, Mode=TwoWay, Converter={StaticResource InvertedBoolConverter}}" />
         <!-- Regal Recipe Selector End -->
 
         <!-- Include Identified Selector Start -->
@@ -93,7 +93,7 @@
             Grid.Row="3"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding GlobalUserSettings.IncludeIdentifiedItemsEnabled, Mode=TwoWay}" />
+            IsChecked="{Binding IncludeIdentifiedItemsEnabled, Mode=TwoWay}" />
         <!-- Include Identified Selector End -->
 
         <!-- Full Set Threshold Setting Start -->
@@ -114,7 +114,7 @@
             HorizontalContentAlignment="Left"
             PreviewTextInput="NumberValidationTextBox"
             LostFocus="TextBox_LostFocus"
-            Text="{Binding GlobalUserSettings.FullSetThreshold, Mode=TwoWay}" />
+            Text="{Binding FullSetThreshold, Mode=TwoWay}" />
         <!-- Full Set Threshold Setting End -->
 
         <!-- Vendor Sets Early Setting Start -->
@@ -132,7 +132,7 @@
             Grid.Row="5"
             Margin="10 0 0 0"
             VerticalAlignment="Center"
-            IsChecked="{Binding GlobalUserSettings.VendorSetsEarly, Mode=TwoWay}" />
-        <!-- Full Set Threshold Setting End -->
+            IsChecked="{Binding VendorSetsEarly, Mode=TwoWay}" />
+        <!-- Vendor Sets Early Setting End -->
     </Grid>
 </UserControl>

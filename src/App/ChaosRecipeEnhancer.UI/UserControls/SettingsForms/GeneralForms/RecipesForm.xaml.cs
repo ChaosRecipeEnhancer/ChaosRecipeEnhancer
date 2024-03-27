@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,8 +10,8 @@ public partial class RecipesForm
 {
     public RecipesForm()
     {
-        DataContext = new RecipesFormViewModel();
         InitializeComponent();
+        DataContext = Ioc.Default.GetService<RecipesFormViewModel>();
     }
 
     private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
