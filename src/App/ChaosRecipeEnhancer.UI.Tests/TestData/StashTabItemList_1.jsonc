@@ -1,0 +1,2141 @@
+{
+  "stash": {
+    "id": "e046794b07",
+    "name": "CRE (High iLvl)",
+    "type": "PremiumStash",
+    "index": 1,
+    "metadata": {
+      "colour": "dddddd"
+    },
+    "items": [
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQ3IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/58942b1ab3/Amulet7.png",
+        "league": "Standard",
+        "id": "1e4e9ca071491419ed6ac3e210d15f29876614155f276fdd6c016ea208396fa7",
+        "name": "",
+        "typeLine": "Onyx Amulet",
+        "baseType": "Onyx Amulet",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": false,
+        "implicitMods": [
+          "+12 to all Attributes"
+        ],
+        "frameType": 2,
+        "x": 7,
+        "y": 2,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9UdXJxdW9pc2VBbXVsZXQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/605b4da0e1/TurquoiseAmulet.png",
+        "league": "Standard",
+        "id": "3b001a3dcc86d94b062f754d3aa6b555b274b60f6d702de872b6ae38995ee9a3",
+        "name": "",
+        "typeLine": "Turquoise Amulet",
+        "baseType": "Turquoise Amulet",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": false,
+        "implicitMods": [
+          "+20 to Dexterity and Intelligence"
+        ],
+        "frameType": 2,
+        "x": 9,
+        "y": 4,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Cb290c0RleEludDQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/bad1ba72df/BootsDexInt4.png",
+        "league": "Standard",
+        "id": "ef9a9f05093c6dad05d393d45ef54c653a72d550fa78d461f514442ebbfcb7df",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "D",
+            "sColour": "G"
+          }
+        ],
+        "name": "",
+        "typeLine": "Carnal Boots",
+        "baseType": "Carnal Boots",
+        "rarity": "Rare",
+        "ilvl": 76,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Evasion Rating",
+            "values": [
+              [
+                "112",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 17
+          },
+          {
+            "name": "Energy Shield",
+            "values": [
+              [
+                "23",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 18
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Dex",
+            "values": [
+              [
+                "52",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 64
+          },
+          {
+            "name": "Int",
+            "values": [
+              [
+                "52",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "frameType": 2,
+        "x": 2,
+        "y": 10,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzSW50MyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/abe163b992/GlovesInt3.png",
+        "league": "Standard",
+        "id": "0dcdb17720dd35977c2ad6b1435f8d3a71d18ae3a75391ead8477b1f5029f963",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Silk Gloves",
+        "baseType": "Silk Gloves",
+        "rarity": "Rare",
+        "ilvl": 77,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Energy Shield",
+            "values": [
+              [
+                "22",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 18
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "39",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "frameType": 2,
+        "x": 4,
+        "y": 2,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzU3RyMyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/f5896830bf/GlovesStr3.png",
+        "league": "Standard",
+        "id": "37972d97094660a1a7bbcf211c97ad8fc7403acd1eb42e5fbc88e2485c375475",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          }
+        ],
+        "name": "",
+        "typeLine": "Vaal Gauntlets",
+        "baseType": "Vaal Gauntlets",
+        "rarity": "Rare",
+        "ilvl": 76,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Armour",
+            "values": [
+              [
+                "250",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 16
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Strength",
+            "values": [
+              [
+                "100",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 63
+          }
+        ],
+        "frameType": 2,
+        "x": 4,
+        "y": 10,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVG9wYXpSdWJ5IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/8878077651/TopazRuby.png",
+        "league": "Standard",
+        "id": "f25580b8d908e7ce784846c3cdb1ce251e26cffee95798064b71c33ab639421c",
+        "name": "",
+        "typeLine": "Two-Stone Ring",
+        "baseType": "Two-Stone Ring",
+        "rarity": "Rare",
+        "ilvl": 86,
+        "identified": false,
+        "implicitMods": [
+          "+16% to Fire and Lightning Resistances"
+        ],
+        "frameType": 2,
+        "x": 0,
+        "y": 11,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldFN0cjgiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/8bd91531d0/HelmetStr8.png",
+        "league": "Standard",
+        "id": "a09f227293c5d9270a07912dfa6077bbb7d69cbc600e633210403867502f0e97",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 1,
+            "attr": "S",
+            "sColour": "R"
+          }
+        ],
+        "name": "",
+        "typeLine": "Samnite Helmet",
+        "baseType": "Samnite Helmet",
+        "rarity": "Rare",
+        "ilvl": 79,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Armour",
+            "values": [
+              [
+                "303",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 16
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Strength",
+            "values": [
+              [
+                "114",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 63
+          }
+        ],
+        "frameType": 2,
+        "x": 9,
+        "y": 2,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/2164e44179/Ring4.png",
+        "league": "Standard",
+        "id": "e1ca6526b228a57153a8b27c615fa32c189627c81d1cd6b684255a3d0f074985",
+        "name": "",
+        "typeLine": "Gold Ring",
+        "baseType": "Gold Ring",
+        "rarity": "Rare",
+        "ilvl": 78,
+        "identified": false,
+        "implicitMods": [
+          "9% increased Rarity of Items found"
+        ],
+        "frameType": 2,
+        "x": 1,
+        "y": 2,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9Db252b2tpbmdXYW5kIiwidyI6MSwiaCI6Mywic2NhbGUiOjF9XQ/fc10997b84/ConvokingWand.png",
+        "league": "Standard",
+        "id": "d2384332d2389296313c2736b302e507c123a91b44fa40ae1a3c7103a2c8f74e",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "D",
+            "sColour": "G"
+          },
+          {
+            "group": 1,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 1,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Convening Wand",
+        "baseType": "Convening Wand",
+        "rarity": "Rare",
+        "ilvl": 76,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Wand",
+            "values": [],
+            "displayMode": 0
+          },
+          {
+            "name": "Physical Damage",
+            "values": [
+              [
+                "27-50",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 9
+          },
+          {
+            "name": "Critical Strike Chance",
+            "values": [
+              [
+                "7.00%",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 12
+          },
+          {
+            "name": "Attacks per Second",
+            "values": [
+              [
+                "1.40",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 13
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "183",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "implicitMods": [
+          "Minions deal 24% increased Damage"
+        ],
+        "frameType": 2,
+        "x": 5,
+        "y": 7,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XYW5kNiIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/30763e0fe7/Wand6.png",
+        "league": "Standard",
+        "id": "7ee72f4a7cc2f27a8469161a92f2edfd5c34f27acc1c969307c1a9a4cc0fa2fb",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 1,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Omen Wand",
+        "baseType": "Omen Wand",
+        "rarity": "Rare",
+        "ilvl": 75,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Wand",
+            "values": [],
+            "displayMode": 0
+          },
+          {
+            "name": "Physical Damage",
+            "values": [
+              [
+                "33-61",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 9
+          },
+          {
+            "name": "Critical Strike Chance",
+            "values": [
+              [
+                "8.00%",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 12
+          },
+          {
+            "name": "Attacks per Second",
+            "values": [
+              [
+                "1.20",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 13
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "200",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "implicitMods": [
+          "27% increased Spell Damage"
+        ],
+        "frameType": 2,
+        "x": 4,
+        "y": 4,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzU3RyNCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/468f466568/GlovesStr4.png",
+        "league": "Standard",
+        "id": "b132eff5d06e6bcf90d579c81e5f269f99749fb893d5b4a10588abc2b9e26981",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          }
+        ],
+        "name": "",
+        "typeLine": "Steel Gauntlets",
+        "baseType": "Steel Gauntlets",
+        "rarity": "Rare",
+        "ilvl": 76,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Armour",
+            "values": [
+              [
+                "122",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 16
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Strength",
+            "values": [
+              [
+                "52",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 63
+          }
+        ],
+        "frameType": 2,
+        "x": 8,
+        "y": 9,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldEludDEwIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/79abe1a202/HelmetInt10.png",
+        "league": "Standard",
+        "id": "d460df093add041e844ec4d3c3f02d2574e002679900f3353eb26719f7af0093",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 1,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Mind Cage",
+        "baseType": "Mind Cage",
+        "rarity": "Rare",
+        "ilvl": 79,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Energy Shield",
+            "values": [
+              [
+                "78",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 18
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "138",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "frameType": 2,
+        "x": 9,
+        "y": 0,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XYW5kNyIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/84ced52bef/Wand7.png",
+        "league": "Standard",
+        "id": "8a90d81d5722b8718c551e5740760ff8ceaf30b1753d22500070583ddfa3af4a",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          }
+        ],
+        "name": "",
+        "typeLine": "Profane Wand",
+        "baseType": "Profane Wand",
+        "rarity": "Rare",
+        "ilvl": 78,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Wand",
+            "values": [],
+            "displayMode": 0
+          },
+          {
+            "name": "Physical Damage",
+            "values": [
+              [
+                "33-61",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 9
+          },
+          {
+            "name": "Critical Strike Chance",
+            "values": [
+              [
+                "7.00%",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 12
+          },
+          {
+            "name": "Attacks per Second",
+            "values": [
+              [
+                "1.35",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 13
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "237",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "implicitMods": [
+          "14% increased Cast Speed"
+        ],
+        "frameType": 2,
+        "x": 8,
+        "y": 2,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzU3RyRGV4MyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/01471b423e/GlovesStrDex3.png",
+        "league": "Standard",
+        "id": "69d2b3e9ab6f29a435056b56725bba34897c89f658a3ccd86dc5b372b695e205",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "D",
+            "sColour": "G"
+          }
+        ],
+        "name": "",
+        "typeLine": "Wyrmscale Gauntlets",
+        "baseType": "Wyrmscale Gauntlets",
+        "rarity": "Rare",
+        "ilvl": 75,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Armour",
+            "values": [
+              [
+                "97",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 16
+          },
+          {
+            "name": "Evasion Rating",
+            "values": [
+              [
+                "97",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 17
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Str",
+            "values": [
+              [
+                "38",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 63
+          },
+          {
+            "name": "Dex",
+            "values": [
+              [
+                "38",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 64
+          }
+        ],
+        "frameType": 2,
+        "x": 6,
+        "y": 8,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0RhZ2dlcjkiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/ac5b740611/Dagger9.png",
+        "league": "Standard",
+        "id": "4f670ce4adddab9e207254c3a3b96593bf385f9dee92e8079c988605290d44a9",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "D",
+            "sColour": "G"
+          },
+          {
+            "group": 0,
+            "attr": "D",
+            "sColour": "G"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Sai",
+        "baseType": "Sai",
+        "rarity": "Rare",
+        "ilvl": 76,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Dagger",
+            "values": [],
+            "displayMode": 0
+          },
+          {
+            "name": "Physical Damage",
+            "values": [
+              [
+                "22-88",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 9
+          },
+          {
+            "name": "Critical Strike Chance",
+            "values": [
+              [
+                "6.20%",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 12
+          },
+          {
+            "name": "Attacks per Second",
+            "values": [
+              [
+                "1.35",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 13
+          },
+          {
+            "name": "Weapon Range: {0} metre",
+            "values": [
+              [
+                "1",
+                0
+              ]
+            ],
+            "displayMode": 3,
+            "type": 14
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Dex",
+            "values": [
+              [
+                "121",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 64
+          },
+          {
+            "name": "Int",
+            "values": [
+              [
+                "121",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "implicitMods": [
+          "6% Chance to Block Attack Damage"
+        ],
+        "frameType": 2,
+        "x": 8,
+        "y": 6,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldFN0ckludDkiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/6ad7c513a8/HelmetStrInt9.png",
+        "league": "Standard",
+        "id": "9832e43e7f6079bafb4bf65545f86512bb33dea9cb811b9bbd34e20750467983",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Prophet Crown",
+        "baseType": "Prophet Crown",
+        "rarity": "Rare",
+        "ilvl": 78,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Armour",
+            "values": [
+              [
+                "249",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 16
+          },
+          {
+            "name": "Energy Shield",
+            "values": [
+              [
+                "36",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 18
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Str",
+            "values": [
+              [
+                "85",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 63
+          },
+          {
+            "name": "Int",
+            "values": [
+              [
+                "62",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "frameType": 2,
+        "x": 1,
+        "y": 0,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Cb290c1N0ckRleDIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/d5b5430d4c/BootsStrDex2.png",
+        "league": "Standard",
+        "id": "d121dcc2583b6dff5fd90d3e714ebe53afadd7b155acf32ea220bf1e8b22c916",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "D",
+            "sColour": "G"
+          }
+        ],
+        "name": "",
+        "typeLine": "Hydrascale Boots",
+        "baseType": "Hydrascale Boots",
+        "rarity": "Rare",
+        "ilvl": 79,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Armour",
+            "values": [
+              [
+                "115",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 16
+          },
+          {
+            "name": "Evasion Rating",
+            "values": [
+              [
+                "115",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 17
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Str",
+            "values": [
+              [
+                "56",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 63
+          },
+          {
+            "name": "Dex",
+            "values": [
+              [
+                "56",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 64
+          }
+        ],
+        "frameType": 2,
+        "x": 1,
+        "y": 3,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldEludDciLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/52f5eb243a/HelmetInt7.png",
+        "league": "Standard",
+        "id": "b14113228aec56c15100d0475c5b2dca84235c62e64ff35eb20ee1f6c0494c19",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 1,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Superior Steel Circlet",
+        "baseType": "Steel Circlet",
+        "rarity": "Rare",
+        "ilvl": 79,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Quality",
+            "values": [
+              [
+                "+5%",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 6
+          },
+          {
+            "name": "Energy Shield",
+            "values": [
+              [
+                "52",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 18
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "101",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "frameType": 2,
+        "x": 6,
+        "y": 10,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzSW50NCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/484e9bd879/GlovesInt4.png",
+        "league": "Standard",
+        "id": "2d5e238a24ad9c923a7b4d0cf10f342996338ce42d4f9905e91d62687952b1a9",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Conjurer Gloves",
+        "baseType": "Conjurer Gloves",
+        "rarity": "Rare",
+        "ilvl": 79,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Energy Shield",
+            "values": [
+              [
+                "41",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 18
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "79",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "frameType": 2,
+        "x": 0,
+        "y": 9,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Cb2R5SW50MUIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/906a100c16/BodyInt1B.png",
+        "league": "Standard",
+        "id": "b63a240d66a08894ac9c18ff93517effec017252e60c1d6b7cd730b7ff40368a",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 1,
+            "attr": "S",
+            "sColour": "R"
+          }
+        ],
+        "name": "",
+        "typeLine": "Savant's Robe",
+        "baseType": "Savant's Robe",
+        "rarity": "Rare",
+        "ilvl": 79,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Energy Shield",
+            "values": [
+              [
+                "128",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 18
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "152",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "frameType": 2,
+        "x": 3,
+        "y": 7,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmVsdDQiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/fce1729448/Belt4.png",
+        "league": "Standard",
+        "id": "425c9195d2877891fe745ff820df835cbd48d572acc5716dcb9f7b9e456ae0b3",
+        "name": "",
+        "typeLine": "Cloth Belt",
+        "baseType": "Cloth Belt",
+        "rarity": "Rare",
+        "ilvl": 79,
+        "identified": false,
+        "implicitMods": [
+          "21% increased Stun and Block Recovery"
+        ],
+        "frameType": 2,
+        "x": 8,
+        "y": 5,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmVsdDMiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/93af17affd/Belt3.png",
+        "league": "Standard",
+        "id": "0cdc6cf9299a846acfa5c8049bcdb7f8dd079c4eedf6568b7ebb304022923891",
+        "name": "",
+        "typeLine": "Leather Belt",
+        "baseType": "Leather Belt",
+        "rarity": "Rare",
+        "ilvl": 76,
+        "identified": false,
+        "implicitMods": [
+          "+26 to maximum Life"
+        ],
+        "frameType": 2,
+        "x": 6,
+        "y": 7,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XYW5kMiIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/896948eee2/Wand2.png",
+        "league": "Standard",
+        "id": "f75286fc5682f92e59cfd118151b0b0cb99079a8b95a0bd9706427be1f8e5be7",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Demon's Horn",
+        "baseType": "Demon's Horn",
+        "rarity": "Rare",
+        "ilvl": 76,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Wand",
+            "values": [],
+            "displayMode": 0
+          },
+          {
+            "name": "Physical Damage",
+            "values": [
+              [
+                "38-71",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 9
+          },
+          {
+            "name": "Critical Strike Chance",
+            "values": [
+              [
+                "7.00%",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 12
+          },
+          {
+            "name": "Attacks per Second",
+            "values": [
+              [
+                "1.20",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 13
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "179",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "implicitMods": [
+          "Adds 26 to 54 Fire Damage to Spells and Attacks"
+        ],
+        "frameType": 2,
+        "x": 5,
+        "y": 4,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0RhZ2dlcjUiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/3431875aaf/Dagger5.png",
+        "league": "Standard",
+        "id": "211a458ee9f2bc117a75f7a20d6e564fc6c361de52029fe6c3647a13d23667db",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "D",
+            "sColour": "G"
+          },
+          {
+            "group": 1,
+            "attr": "D",
+            "sColour": "G"
+          }
+        ],
+        "name": "",
+        "typeLine": "Ezomyte Dagger",
+        "baseType": "Ezomyte Dagger",
+        "rarity": "Rare",
+        "ilvl": 76,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Rune Dagger",
+            "values": [],
+            "displayMode": 0
+          },
+          {
+            "name": "Physical Damage",
+            "values": [
+              [
+                "20-79",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 9
+          },
+          {
+            "name": "Critical Strike Chance",
+            "values": [
+              [
+                "6.30%",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 12
+          },
+          {
+            "name": "Attacks per Second",
+            "values": [
+              [
+                "1.40",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 13
+          },
+          {
+            "name": "Weapon Range: {0} metre",
+            "values": [
+              [
+                "1",
+                0
+              ]
+            ],
+            "displayMode": 3,
+            "type": 14
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Dex",
+            "values": [
+              [
+                "95",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 64
+          },
+          {
+            "name": "Int",
+            "values": [
+              [
+                "131",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "implicitMods": [
+          "30% increased Global Critical Strike Chance"
+        ],
+        "frameType": 2,
+        "x": 3,
+        "y": 2,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/6f90cd3c4b/Ring5.png",
+        "league": "Standard",
+        "id": "0692d5b30315922c0259504fc083e76f5edeaa099b0bf41db1d9bf20afa9bf6a",
+        "name": "",
+        "typeLine": "Topaz Ring",
+        "baseType": "Topaz Ring",
+        "rarity": "Rare",
+        "ilvl": 76,
+        "identified": false,
+        "implicitMods": [
+          "+21% to Lightning Resistance"
+        ],
+        "frameType": 2,
+        "x": 1,
+        "y": 11,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzYiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/74a5d719fd/Ring6.png",
+        "league": "Standard",
+        "id": "24210b4f0a31304a365a2b44672ac11ad98aa342c720cb9485199700c95e2257",
+        "name": "",
+        "typeLine": "Sapphire Ring",
+        "baseType": "Sapphire Ring",
+        "rarity": "Rare",
+        "ilvl": 76,
+        "identified": false,
+        "implicitMods": [
+          "+22% to Cold Resistance"
+        ],
+        "frameType": 2,
+        "x": 6,
+        "y": 2,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XYW5kNSIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/a28035d7c4/Wand5.png",
+        "league": "Standard",
+        "id": "cb80da5d47b0164f9f746d26ae1ee772bf87c95393eb389910503257cfcf7aa6",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Coiled Wand",
+        "baseType": "Coiled Wand",
+        "rarity": "Rare",
+        "ilvl": 75,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Wand",
+            "values": [],
+            "displayMode": 0
+          },
+          {
+            "name": "Physical Damage",
+            "values": [
+              [
+                "21-64",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 9
+          },
+          {
+            "name": "Critical Strike Chance",
+            "values": [
+              [
+                "7.00%",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 12
+          },
+          {
+            "name": "Attacks per Second",
+            "values": [
+              [
+                "1.30",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 13
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "158",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "implicitMods": [
+          "Adds 1 to 23 Lightning Damage to Spells and Attacks"
+        ],
+        "frameType": 2,
+        "x": 2,
+        "y": 7,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0RhZ2dlcjgiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/e0bade03f8/Dagger8.png",
+        "league": "Standard",
+        "id": "b679d1f44afaabb983bb47a8594a3c956d5a5f641ec6113ff5112d30556ddd18",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Demon Dagger",
+        "baseType": "Demon Dagger",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Rune Dagger",
+            "values": [],
+            "displayMode": 0
+          },
+          {
+            "name": "Physical Damage",
+            "values": [
+              [
+                "24-97",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 9
+          },
+          {
+            "name": "Critical Strike Chance",
+            "values": [
+              [
+                "6.50%",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 12
+          },
+          {
+            "name": "Attacks per Second",
+            "values": [
+              [
+                "1.20",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 13
+          },
+          {
+            "name": "Weapon Range: {0} metre",
+            "values": [
+              [
+                "1",
+                0
+              ]
+            ],
+            "displayMode": 3,
+            "type": 14
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Dex",
+            "values": [
+              [
+                "76",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 64
+          },
+          {
+            "name": "Int",
+            "values": [
+              [
+                "149",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "implicitMods": [
+          "40% increased Global Critical Strike Chance"
+        ],
+        "frameType": 2,
+        "x": 0,
+        "y": 3,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XYW5kNiIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/30763e0fe7/Wand6.png",
+        "league": "Standard",
+        "id": "9d916cad1e675ce754e2c0f8a5a037c82dd3228406093f6201c6d9a1b29f656a",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 1,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Prophecy Wand",
+        "baseType": "Prophecy Wand",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Wand",
+            "values": [],
+            "displayMode": 0
+          },
+          {
+            "name": "Physical Damage",
+            "values": [
+              [
+                "35-64",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 9
+          },
+          {
+            "name": "Critical Strike Chance",
+            "values": [
+              [
+                "8.00%",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 12
+          },
+          {
+            "name": "Attacks per Second",
+            "values": [
+              [
+                "1.20",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 13
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "245",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "implicitMods": [
+          "37% increased Spell Damage"
+        ],
+        "frameType": 2,
+        "x": 0,
+        "y": 0,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzYiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/74a5d719fd/Ring6.png",
+        "league": "Standard",
+        "id": "4566a8a1340170a45673b005cdbb4164d6e3dcb51a9561530c02a6ccca53833e",
+        "name": "",
+        "typeLine": "Sapphire Ring",
+        "baseType": "Sapphire Ring",
+        "rarity": "Rare",
+        "ilvl": 85,
+        "identified": false,
+        "implicitMods": [
+          "+21% to Cold Resistance"
+        ],
+        "frameType": 2,
+        "x": 1,
+        "y": 5,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzSW50NCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/484e9bd879/GlovesInt4.png",
+        "league": "Standard",
+        "id": "fb9c8257d8179cbd89dd3442feb76e148c2c6da23734195e135ee1e5b0e09c46",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          }
+        ],
+        "name": "",
+        "typeLine": "Embroidered Gloves",
+        "baseType": "Embroidered Gloves",
+        "rarity": "Rare",
+        "ilvl": 85,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Energy Shield",
+            "values": [
+              [
+                "28",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 18
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "54",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "frameType": 2,
+        "x": 3,
+        "y": 0,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BZ2F0ZUFtdWxldCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/710a5a8ec4/AgateAmulet.png",
+        "league": "Standard",
+        "id": "a9a551789baecff4002ac96454953b25d6408cedf7a876d580e3fd2e0c5fb0ba",
+        "name": "",
+        "typeLine": "Agate Amulet",
+        "baseType": "Agate Amulet",
+        "rarity": "Rare",
+        "ilvl": 85,
+        "identified": false,
+        "implicitMods": [
+          "+22 to Strength and Intelligence"
+        ],
+        "frameType": 2,
+        "x": 9,
+        "y": 6,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Cb290c0RleEludDQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/bad1ba72df/BootsDexInt4.png",
+        "league": "Standard",
+        "id": "ba14c8c45551363f206151c58bc93a05be39e70b3430a4d3947d669da2b082aa",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 0,
+            "attr": "D",
+            "sColour": "G"
+          }
+        ],
+        "name": "",
+        "typeLine": "Carnal Boots",
+        "baseType": "Carnal Boots",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Evasion Rating",
+            "values": [
+              [
+                "102",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 17
+          },
+          {
+            "name": "Energy Shield",
+            "values": [
+              [
+                "21",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 18
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Dex",
+            "values": [
+              [
+                "52",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 64
+          },
+          {
+            "name": "Int",
+            "values": [
+              [
+                "52",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "frameType": 2,
+        "x": 2,
+        "y": 5,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BZ2F0ZUFtdWxldCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/710a5a8ec4/AgateAmulet.png",
+        "league": "Standard",
+        "id": "5e5a1f6a93fbc276f5e9cac8fa2f0e9dcfe8cb7c5358809c2506802749382cb4",
+        "name": "",
+        "typeLine": "Agate Amulet",
+        "baseType": "Agate Amulet",
+        "rarity": "Rare",
+        "ilvl": 85,
+        "identified": false,
+        "implicitMods": [
+          "+24 to Strength and Intelligence"
+        ],
+        "frameType": 2,
+        "x": 9,
+        "y": 8,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Cb2R5SW50MUMiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/9ea39de510/BodyInt1C.png",
+        "league": "Standard",
+        "id": "1a571003c663a9bb750cd3ba5060f8064d0a4cbcf7ed3a949ee3029049e59cc6",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          }
+        ],
+        "name": "",
+        "typeLine": "Mage's Vestment",
+        "baseType": "Mage's Vestment",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": false,
+        "properties": [
+          {
+            "name": "Energy Shield",
+            "values": [
+              [
+                "63",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 18
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Intelligence",
+            "values": [
+              [
+                "81",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "frameType": 2,
+        "x": 0,
+        "y": 6,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmVsdDIiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/3a6ece4e40/Belt2.png",
+        "league": "Standard",
+        "id": "92316ea663c6eff3251db3221ef7d5c0d31cd4d3b3489f1050e28b692d7ca2ba",
+        "name": "",
+        "typeLine": "Chain Belt",
+        "baseType": "Chain Belt",
+        "rarity": "Rare",
+        "ilvl": 85,
+        "identified": false,
+        "implicitMods": [
+          "+15 to maximum Energy Shield"
+        ],
+        "frameType": 2,
+        "x": 8,
+        "y": 11,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9DaXRyaW5lQW11bGV0IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/95804f838b/CitrineAmulet.png",
+        "league": "Standard",
+        "id": "36b6d3098b5e6ace0ad0b46967b6efb02767278754c1c1a3642c68715ac8cd8d",
+        "name": "",
+        "typeLine": "Citrine Amulet",
+        "baseType": "Citrine Amulet",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": false,
+        "implicitMods": [
+          "+22 to Strength and Dexterity"
+        ],
+        "frameType": 2,
+        "x": 10,
+        "y": 4,
+        "inventoryId": "Stash1"
+      }
+    ]
+  }
+}

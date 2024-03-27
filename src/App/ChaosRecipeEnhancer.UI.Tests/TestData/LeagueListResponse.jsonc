@@ -1,0 +1,381 @@
+{
+  "leagues": [
+    {
+      "id": "Standard",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/Standard",
+      "startAt": "2013-01-23T21:00:00Z",
+      "endAt": null,
+      "description": "The default game mode.",
+      "category": {
+        "id": "Standard"
+      },
+      "registerAt": "2019-09-06T19:00:00Z",
+      "delveEvent": true,
+      "rules": []
+    },
+    {
+      "id": "Hardcore",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/Hardcore",
+      "startAt": "2013-01-23T21:00:00Z",
+      "endAt": null,
+      "description": "A character killed in the Hardcore league is moved to the Standard league.",
+      "category": {
+        "id": "Standard"
+      },
+      "registerAt": "2019-09-06T19:00:00Z",
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "Hardcore",
+          "name": "Hardcore",
+          "description": "A character killed in Hardcore is moved to its parent league."
+        }
+      ]
+    },
+    {
+      "id": "Solo Self-Found",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/Solo+Self-Found",
+      "startAt": "2013-01-23T21:00:00Z",
+      "endAt": null,
+      "description": "SSF Standard",
+      "category": {
+        "id": "Standard"
+      },
+      "registerAt": "2019-09-06T19:00:00Z",
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "NoParties",
+          "name": "Solo",
+          "description": "You may not party in this league."
+        }
+      ]
+    },
+    {
+      "id": "Hardcore SSF",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/Hardcore+SSF",
+      "startAt": "2013-01-23T21:00:00Z",
+      "endAt": null,
+      "description": "SSF Hardcore",
+      "category": {
+        "id": "Standard"
+      },
+      "registerAt": "2019-09-06T19:00:00Z",
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "Hardcore",
+          "name": "Hardcore",
+          "description": "A character killed in Hardcore is moved to its parent league."
+        },
+        {
+          "id": "NoParties",
+          "name": "Solo",
+          "description": "You may not party in this league."
+        }
+      ]
+    },
+    {
+      "id": "Ruthless",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/Ruthless",
+      "startAt": null,
+      "endAt": null,
+      "description": "Ruthless",
+      "category": {
+        "id": "Standard"
+      },
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "HardMode",
+          "name": "Ruthless",
+          "description": "A significantly different game experience with extreme item scarcity, among other changes."
+        }
+      ]
+    },
+    {
+      "id": "Hardcore Ruthless",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/Hardcore+Ruthless",
+      "startAt": null,
+      "endAt": null,
+      "description": "Hardcore Ruthless",
+      "category": {
+        "id": "Standard"
+      },
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "Hardcore",
+          "name": "Hardcore",
+          "description": "A character killed in Hardcore is moved to its parent league."
+        },
+        {
+          "id": "HardMode",
+          "name": "Ruthless",
+          "description": "A significantly different game experience with extreme item scarcity, among other changes."
+        }
+      ]
+    },
+    {
+      "id": "SSF Ruthless",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/SSF+Ruthless",
+      "startAt": null,
+      "endAt": null,
+      "description": "SSF Ruthless",
+      "category": {
+        "id": "Standard"
+      },
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "NoParties",
+          "name": "Solo",
+          "description": "You may not party in this league."
+        },
+        {
+          "id": "HardMode",
+          "name": "Ruthless",
+          "description": "A significantly different game experience with extreme item scarcity, among other changes."
+        }
+      ]
+    },
+    {
+      "id": "Hardcore SSF Ruthless",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/Hardcore+SSF+Ruthless",
+      "startAt": null,
+      "endAt": null,
+      "description": "Hardcore SSF Ruthless",
+      "category": {
+        "id": "Standard"
+      },
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "Hardcore",
+          "name": "Hardcore",
+          "description": "A character killed in Hardcore is moved to its parent league."
+        },
+        {
+          "id": "NoParties",
+          "name": "Solo",
+          "description": "You may not party in this league."
+        },
+        {
+          "id": "HardMode",
+          "name": "Ruthless",
+          "description": "A significantly different game experience with extreme item scarcity, among other changes."
+        }
+      ]
+    },
+    {
+      "id": "Affliction",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/Affliction",
+      "startAt": "2023-12-08T19:00:00Z",
+      "endAt": "2024-03-26T21:00:00Z",
+      "description": "Venture into the Viridian Wildwood and cleanse it of its Affliction.",
+      "category": {
+        "id": "Affliction",
+        "current": true
+      },
+      "registerAt": "2023-12-08T16:00:00Z",
+      "delveEvent": true,
+      "rules": []
+    },
+    {
+      "id": "Hardcore Affliction",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/Hardcore+Affliction",
+      "startAt": "2023-12-08T19:00:00Z",
+      "endAt": "2024-03-26T21:00:00Z",
+      "description": "Venture into the Viridian Wildwood and cleanse it of its Affliction.",
+      "category": {
+        "id": "Affliction",
+        "current": true
+      },
+      "registerAt": "2023-12-08T16:00:00Z",
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "Hardcore",
+          "name": "Hardcore",
+          "description": "A character killed in Hardcore is moved to its parent league."
+        }
+      ]
+    },
+    {
+      "id": "SSF Affliction",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/SSF+Affliction",
+      "startAt": "2023-12-08T19:00:00Z",
+      "endAt": "2024-03-26T21:00:00Z",
+      "description": "Venture into the Viridian Wildwood and cleanse it of its Affliction.",
+      "category": {
+        "id": "Affliction",
+        "current": true
+      },
+      "registerAt": "2023-12-08T16:00:00Z",
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "NoParties",
+          "name": "Solo",
+          "description": "You may not party in this league."
+        }
+      ]
+    },
+    {
+      "id": "HC SSF Affliction",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/HC+SSF+Affliction",
+      "startAt": "2023-12-08T19:00:00Z",
+      "endAt": "2024-03-26T21:00:00Z",
+      "description": "Venture into the Viridian Wildwood and cleanse it of its Affliction.",
+      "category": {
+        "id": "Affliction",
+        "current": true
+      },
+      "registerAt": "2023-12-08T16:00:00Z",
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "Hardcore",
+          "name": "Hardcore",
+          "description": "A character killed in Hardcore is moved to its parent league."
+        },
+        {
+          "id": "NoParties",
+          "name": "Solo",
+          "description": "You may not party in this league."
+        }
+      ]
+    },
+    {
+      "id": "Ruthless Affliction",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/Ruthless+Affliction",
+      "startAt": "2023-12-08T19:00:00Z",
+      "endAt": "2024-03-26T21:00:00Z",
+      "description": "Venture into the Viridian Wildwood and cleanse it of its Affliction.",
+      "category": {
+        "id": "Affliction",
+        "current": true
+      },
+      "registerAt": "2023-12-08T16:00:00Z",
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "HardMode",
+          "name": "Ruthless",
+          "description": "A significantly different game experience with extreme item scarcity, among other changes."
+        }
+      ]
+    },
+    {
+      "id": "HC Ruthless Affliction",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/HC+Ruthless+Affliction",
+      "startAt": "2023-12-08T19:00:00Z",
+      "endAt": "2024-03-26T21:00:00Z",
+      "description": "Venture into the Viridian Wildwood and cleanse it of its Affliction.",
+      "category": {
+        "id": "Affliction",
+        "current": true
+      },
+      "registerAt": "2023-12-08T16:00:00Z",
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "Hardcore",
+          "name": "Hardcore",
+          "description": "A character killed in Hardcore is moved to its parent league."
+        },
+        {
+          "id": "HardMode",
+          "name": "Ruthless",
+          "description": "A significantly different game experience with extreme item scarcity, among other changes."
+        }
+      ]
+    },
+    {
+      "id": "SSF R Affliction",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/SSF+R+Affliction",
+      "startAt": "2023-12-08T19:00:00Z",
+      "endAt": "2024-03-26T21:00:00Z",
+      "description": "Venture into the Viridian Wildwood and cleanse it of its Affliction.",
+      "category": {
+        "id": "Affliction",
+        "current": true
+      },
+      "registerAt": "2023-12-08T16:00:00Z",
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "NoParties",
+          "name": "Solo",
+          "description": "You may not party in this league."
+        },
+        {
+          "id": "HardMode",
+          "name": "Ruthless",
+          "description": "A significantly different game experience with extreme item scarcity, among other changes."
+        }
+      ]
+    },
+    {
+      "id": "HC SSF R Affliction",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/HC+SSF+R+Affliction",
+      "startAt": "2023-12-08T19:00:00Z",
+      "endAt": "2024-03-26T21:00:00Z",
+      "description": "Venture into the Viridian Wildwood and cleanse it of its Affliction.",
+      "category": {
+        "id": "Affliction",
+        "current": true
+      },
+      "registerAt": "2023-12-08T16:00:00Z",
+      "delveEvent": true,
+      "rules": [
+        {
+          "id": "Hardcore",
+          "name": "Hardcore",
+          "description": "A character killed in Hardcore is moved to its parent league."
+        },
+        {
+          "id": "NoParties",
+          "name": "Solo",
+          "description": "You may not party in this league."
+        },
+        {
+          "id": "HardMode",
+          "name": "Ruthless",
+          "description": "A significantly different game experience with extreme item scarcity, among other changes."
+        }
+      ]
+    },
+    {
+      "id": "Meatbox Mania (PL46268)",
+      "realm": "pc",
+      "url": "https://www.pathofexile.com/ladders/league/Meatbox+Mania+%28PL46268%29",
+      "startAt": "2024-03-26T06:08:14Z",
+      "endAt": "2024-04-15T06:08:14Z",
+      "description": "Novynn's Affliction Private League",
+      "category": {
+        "id": "Affliction",
+        "current": true
+      },
+      "privateLeagueUrl": "https://www.pathofexile.com/private-leagues/league/Meatbox+Mania+%28PL46268%29",
+      "delveEvent": true,
+      "rules": []
+    }
+  ]
+}
