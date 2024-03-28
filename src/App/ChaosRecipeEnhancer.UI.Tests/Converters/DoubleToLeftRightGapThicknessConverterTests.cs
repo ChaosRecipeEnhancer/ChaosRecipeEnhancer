@@ -17,7 +17,7 @@ public class DoubleToLeftRightGapThicknessConverterTests
 
         // Assert
         Assert.IsType<Thickness>(result);
-        Assert.Equal(new Thickness(10.5, 0, 10.5, 0), result);
+        Assert.Equal(new Thickness(10.5, 5, 10.5, 0), result);
     }
 
     [Fact]
