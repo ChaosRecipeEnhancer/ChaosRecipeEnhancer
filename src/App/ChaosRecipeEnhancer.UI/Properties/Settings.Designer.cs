@@ -12,7 +12,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.10.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -92,18 +92,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["LeagueName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool CustomLeagueEnabled {
-            get {
-                return ((bool)(this["CustomLeagueEnabled"]));
-            }
-            set {
-                this["CustomLeagueEnabled"] = value;
             }
         }
         
@@ -799,6 +787,90 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["SilenceSetsFullMessage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int PathOfExileClientLogLocationMode {
+            get {
+                return ((int)(this["PathOfExileClientLogLocationMode"]));
+            }
+            set {
+                this["PathOfExileClientLogLocationMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SoundEnabled {
+            get {
+                return ((bool)(this["SoundEnabled"]));
+            }
+            set {
+                this["SoundEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public double SoundLevel {
+            get {
+                return ((double)(this["SoundLevel"]));
+            }
+            set {
+                this["SoundLevel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StashTabIdentifiers {
+            get {
+                return ((string)(this["StashTabIdentifiers"]));
+            }
+            set {
+                this["StashTabIdentifiers"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#00000000")]
+        public string StashTabOverlayTabDefaultBackgroundColor {
+            get {
+                return ((string)(this["StashTabOverlayTabDefaultBackgroundColor"]));
+            }
+            set {
+                this["StashTabOverlayTabDefaultBackgroundColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double StashTabOverlayTabGroupBottomMargin {
+            get {
+                return ((double)(this["StashTabOverlayTabGroupBottomMargin"]));
+            }
+            set {
+                this["StashTabOverlayTabGroupBottomMargin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public float StashTabOverlayTabOpacity {
+            get {
+                return ((float)(this["StashTabOverlayTabOpacity"]));
+            }
+            set {
+                this["StashTabOverlayTabOpacity"] = value;
             }
         }
     }

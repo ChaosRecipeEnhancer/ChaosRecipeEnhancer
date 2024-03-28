@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using ChaosRecipeEnhancer.UI.Models;
+﻿using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
+using System.Collections.Generic;
 
 namespace ChaosRecipeEnhancer.UI.Utilities;
 

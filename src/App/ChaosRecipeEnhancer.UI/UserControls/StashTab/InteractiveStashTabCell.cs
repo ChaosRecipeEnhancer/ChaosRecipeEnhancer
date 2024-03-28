@@ -1,9 +1,8 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.StashTab;
 
-public sealed class InteractiveStashTabCell : ViewModelBase
+public sealed class InteractiveStashTabCell : CreViewModelBase
 {
     private bool _active;
     private string _buttonText;

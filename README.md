@@ -1,4 +1,4 @@
-<img src="./DocumentationAssets/CRELogo.png" width="250" alt="Chaos Recipe Enhancer Logo">
+﻿<img src="./DocumentationAssets/CRELogo.png" width="250" alt="Chaos Recipe Enhancer Logo">
 
 # Chaos Recipe Enhancer
 
@@ -14,23 +14,29 @@ This app fetches your stash data from the PoE servers and shows which items you 
 
 ## User Guide (Video)
 
+_Note: This video was published for version 3.23, but the core features are the same. I consider this up-to-date for 3.24 Necropolis league._
+
 <a href="https://youtu.be/ChC3GNYJpl8">
     <img src="./DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
 </a>
 
+There's a lot of features in the app, so we made a video to help you get started. If you have any questions, feel free to ask in the [Discord][discord-link].
+
 ## Installation
 
-0. Download and install the [.NET Runtime for Windows][dotnet-runtime-download-link]
+0. ⚠️ _**[ New system requirement for 3.24 Necropolis League]**_ ⚠️ Install the [latest .NET 8 Desktop Runtime (Clicking will download the installer)][dotnet-installer-link]
 1. Download and install the [latest the ChaosRecipeEnhancerSetup.msi][releases-link]
 
-## Additional Features
+## Feature Highlights
 
-- Query from your personal stash
+- Query from your personal stash on all leagues (even private leagues)
 - Query multiple stash tabs at once
 - Customizable overlay position & sizes for different screen resolutions
 - *Offline* loot filter manipulation (online filter syncing not supported)
 - Automatically fetch remaining items when you join a new instance
 - OAuth integration for a secure and simple connection to PoE data services
+- Sound notifications for completed sets
+- Customizable hotkeys for core features (set tracking, stash overlay, etc.)
 
 ## Screenshots
 
@@ -75,4 +81,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 [issues-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues
 [support-badge]: https://img.shields.io/badge/Paypal-Support-<COLOR>?style=for-the-badge&logo=paypal&color=ffae29
 [support-link]: https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS
-[dotnet-runtime-download-link]: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.14-windows-x64-installer
+[dotnet-installer-link]: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-8.0.3-windows-x64-installer

@@ -1,0 +1,1828 @@
+{
+  "stash": {
+    "id": "606affbc82",
+    "folder": "52f587f23a",
+    "name": "Ward Loop",
+    "type": "PremiumStash",
+    "index": 54,
+    "metadata": {
+      "colour": "dddddd"
+    },
+    "items": [
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL05ld0dlbUJhc2UyIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/78f6bf8356/NewGemBase2.png",
+        "league": "Standard",
+        "id": "8dde00ce243043f6ffb444afc371db6eaac0f8e528ea1696322d73c5ed299548",
+        "name": "Bramble Wound",
+        "typeLine": "Medium Cluster Jewel",
+        "baseType": "Medium Cluster Jewel",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": true,
+        "note": "~price 99999 exalted",
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "67",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "enchantMods": [
+          "Adds 6 Passive Skills",
+          "1 Added Passive Skill is a Jewel Socket",
+          "Added Small Passive Skills grant: 10% increased Life Recovery from Flasks\nAdded Small Passive Skills grant: 10% increased Mana Recovery from Flasks"
+        ],
+        "explicitMods": [
+          "Added Small Passive Skills also grant: 3% increased Flask Charges gained",
+          "Added Small Passive Skills also grant: +10 to Maximum Mana",
+          "Added Small Passive Skills also grant: +4 to Strength",
+          "Added Small Passive Skills have 35% increased Effect"
+        ],
+        "descrText": "Place into an allocated Medium or Large Jewel Socket on the Passive Skill Tree. Added passives do not interact with jewel radiuses. Right click to remove from the Socket.",
+        "frameType": 2,
+        "x": 10,
+        "y": 0,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvSGVhcnRib3VuZFJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/c214aff507/HeartboundRing.png",
+        "league": "Standard",
+        "id": "46c483c8955be5293828fe97b85ae90913314140cc152458d42d12a25afa8c65",
+        "name": "Heartbound Loop",
+        "typeLine": "Moonstone Ring",
+        "baseType": "Moonstone Ring",
+        "rarity": "Unique",
+        "ilvl": 83,
+        "identified": true,
+        "corrupted": true,
+        "properties": [
+          {
+            "name": "Quality (Physical and Chaos Damage Modifiers)",
+            "values": [
+              [
+                "+20%",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 6
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "44",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "implicitMods": [
+          "Grants Level 21 Hatred Skill"
+        ],
+        "explicitMods": [
+          "Regenerate 11.9 Life per second",
+          "37% increased Mana Regeneration Rate",
+          "Minions have 15% increased maximum Life",
+          "Minions have 10% increased Area of Effect",
+          "420 Physical Damage taken on Minion Death"
+        ],
+        "flavourText": [
+          "When the axe finally fell, Seryl shared his pain,\r",
+          "and the last thought that flickered through his\r",
+          "fading mind was her broken, shattered scream."
+        ],
+        "frameType": 3,
+        "x": 11,
+        "y": 9,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL01hcmFrZXRoQ2l2aWxpemF0aW9uIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/8e18d378b4/MarakethCivilization.png",
+        "league": "Standard",
+        "id": "95683305644edc77ad9d220e1795fd9bc4c6a62811b931c3359918de19ff0d76",
+        "name": "Brutal Restraint",
+        "typeLine": "Timeless Jewel",
+        "baseType": "Timeless Jewel",
+        "rarity": "Unique",
+        "ilvl": 86,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Limited to",
+            "values": [
+              [
+                "1 Historic",
+                0
+              ]
+            ],
+            "displayMode": 0
+          },
+          {
+            "name": "Radius",
+            "values": [
+              [
+                "Large",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 26
+          }
+        ],
+        "explicitMods": [
+          "Denoted service of 7953 dekhara in the akhara of Balbala\nPassives in radius are Conquered by the Maraketh",
+          "Historic"
+        ],
+        "descrText": "Place into an allocated Jewel Socket on the Passive Skill Tree. Right click to remove from the Socket.",
+        "flavourText": [
+          "They believed themselves the most ordered, but that tradition turned their forests to salt."
+        ],
+        "frameType": 3,
+        "x": 1,
+        "y": 0,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3Mvc3ByaW50IiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxLCJmaSI6dHJ1ZX1d/3f8edd74f2/sprint.png",
+        "league": "Standard",
+        "id": "9d186556658b3c4d3f625c95e8d9063b5df9de496cc2c217ec9cc7da4e0694f0",
+        "name": "",
+        "typeLine": "Alchemist's Quicksilver Flask of the Cheetah",
+        "baseType": "Quicksilver Flask",
+        "rarity": "Magic",
+        "ilvl": 85,
+        "identified": true,
+        "note": "~skip ",
+        "properties": [
+          {
+            "name": "Quality",
+            "values": [
+              [
+                "+20%",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 6
+          },
+          {
+            "name": "Lasts {0} Seconds",
+            "values": [
+              [
+                "5.80",
+                1
+              ]
+            ],
+            "displayMode": 3
+          },
+          {
+            "name": "Consumes {0} of {1} Charges on use",
+            "values": [
+              [
+                "30",
+                0
+              ],
+              [
+                "60",
+                0
+              ]
+            ],
+            "displayMode": 3
+          },
+          {
+            "name": "Currently has {0} Charges",
+            "values": [
+              [
+                "0",
+                0
+              ]
+            ],
+            "displayMode": 3
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "68",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "utilityMods": [
+          "40% increased Movement Speed"
+        ],
+        "enchantMods": [
+          "Reused at the end of this Flask's effect"
+        ],
+        "explicitMods": [
+          "23% reduced Duration",
+          "25% increased effect",
+          "14% increased Movement Speed during Effect"
+        ],
+        "descrText": "Right click to drink. Can only hold charges while in belt. Refills as you kill monsters.",
+        "frameType": 1,
+        "x": 7,
+        "y": 10,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL01hcmFrZXRoQ2l2aWxpemF0aW9uIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/8e18d378b4/MarakethCivilization.png",
+        "league": "Standard",
+        "id": "330766bc7670a9b6208c70ccf09564f37f2c56280ede1e974fc9e95cc8ab484b",
+        "name": "Brutal Restraint",
+        "typeLine": "Timeless Jewel",
+        "baseType": "Timeless Jewel",
+        "rarity": "Unique",
+        "ilvl": 86,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Limited to",
+            "values": [
+              [
+                "1 Historic",
+                0
+              ]
+            ],
+            "displayMode": 0
+          },
+          {
+            "name": "Radius",
+            "values": [
+              [
+                "Large",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 26
+          }
+        ],
+        "explicitMods": [
+          "Denoted service of 739 dekhara in the akhara of Balbala\nPassives in radius are Conquered by the Maraketh",
+          "Historic"
+        ],
+        "descrText": "Place into an allocated Jewel Socket on the Passive Skill Tree. Right click to remove from the Socket.",
+        "flavourText": [
+          "They believed themselves the most ordered, but that tradition turned their forests to salt."
+        ],
+        "frameType": 3,
+        "x": 11,
+        "y": 3,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL05ld0dlbUJhc2UyIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/78f6bf8356/NewGemBase2.png",
+        "league": "Standard",
+        "id": "cfa9596db7abafb90e83c5015bc8376fc4a73da695a2c6deef21049971708902",
+        "name": "",
+        "typeLine": "Potent Medium Cluster Jewel of Overflowing",
+        "baseType": "Medium Cluster Jewel",
+        "rarity": "Magic",
+        "ilvl": 84,
+        "identified": true,
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "67",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "enchantMods": [
+          "Adds 6 Passive Skills",
+          "1 Added Passive Skill is a Jewel Socket",
+          "Added Small Passive Skills grant: 10% increased Life Recovery from Flasks\nAdded Small Passive Skills grant: 10% increased Mana Recovery from Flasks"
+        ],
+        "explicitMods": [
+          "Added Small Passive Skills also grant: 3% increased Flask Charges gained",
+          "Added Small Passive Skills have 25% increased Effect"
+        ],
+        "descrText": "Place into an allocated Medium or Large Jewel Socket on the Passive Skill Tree. Added passives do not interact with jewel radiuses. Right click to remove from the Socket.",
+        "frameType": 1,
+        "x": 9,
+        "y": 0,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 2,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0NoaXR1c0FwZXgiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/65697b1d09/ChitusApex.png",
+        "league": "Standard",
+        "id": "7c5fa49799e3162e3356a51389c55a025773ae5bbae98b62f5c531070d13d02c",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "I",
+            "sColour": "B"
+          },
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          }
+        ],
+        "name": "Chitus' Apex",
+        "typeLine": "Necromancer Circlet",
+        "baseType": "Necromancer Circlet",
+        "rarity": "Unique",
+        "ilvl": 72,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Quality",
+            "values": [
+              [
+                "+20%",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 6
+          },
+          {
+            "name": "Energy Shield",
+            "values": [
+              [
+                "72",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 18
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "54",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          },
+          {
+            "name": "Int",
+            "values": [
+              [
+                "112",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "explicitMods": [
+          "+28 to Strength",
+          "+29 to maximum Mana",
+          "5% increased Experience gain",
+          "+10% to all Elemental Resistances",
+          "17% increased Elemental Damage"
+        ],
+        "flavourText": [
+          "\"It takes true strength to hold power,\r",
+          "and my grip grows tighter by the day.\"\r",
+          " - Emperor Chitus"
+        ],
+        "frameType": 3,
+        "x": 3,
+        "y": 6,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL05ld0dlbUJhc2UyIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/78f6bf8356/NewGemBase2.png",
+        "league": "Standard",
+        "id": "34f6ef3399c9cfe3ad620b1257c44c4f963f002385bcd1043609b08410b60adb",
+        "name": "Foe Sliver",
+        "typeLine": "Medium Cluster Jewel",
+        "baseType": "Medium Cluster Jewel",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": true,
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "67",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "enchantMods": [
+          "Adds 5 Passive Skills",
+          "1 Added Passive Skill is a Jewel Socket",
+          "Added Small Passive Skills grant: 15% increased Critical Strike Chance"
+        ],
+        "explicitMods": [
+          "Added Small Passive Skills also grant: +4% to all Elemental Resistances",
+          "Added Small Passive Skills also grant: +8 to Intelligence",
+          "1 Added Passive Skill is Basics of Pain",
+          "1 Added Passive Skill is Precise Retaliation"
+        ],
+        "descrText": "Place into an allocated Medium or Large Jewel Socket on the Passive Skill Tree. Added passives do not interact with jewel radiuses. Right click to remove from the Socket.",
+        "frameType": 2,
+        "x": 9,
+        "y": 9,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Cb2R5U3RyM0NVbmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/1027cdf1ad/BodyStr3CUnique.png",
+        "league": "Standard",
+        "id": "0ba1121f0e09820e863b15c49081383f38bb22e55f47e7c6c7d7bc706fdeacaa",
+        "name": "Kaom's Heart",
+        "typeLine": "Glorious Plate",
+        "baseType": "Glorious Plate",
+        "rarity": "Unique",
+        "ilvl": 78,
+        "identified": true,
+        "corrupted": true,
+        "properties": [
+          {
+            "name": "Armour",
+            "values": [
+              [
+                "828",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 16
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "68",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          },
+          {
+            "name": "Str",
+            "values": [
+              [
+                "191",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 63
+          }
+        ],
+        "explicitMods": [
+          "Has no Sockets",
+          "33% increased Fire Damage",
+          "+500 to maximum Life"
+        ],
+        "flavourText": [
+          "The warrior who\r",
+          "fears will fall."
+        ],
+        "frameType": 3,
+        "x": 3,
+        "y": 3,
+        "inventoryId": "Stash1",
+        "incubatedItem": {
+          "name": "6-Linked Armour Item",
+          "level": 68,
+          "progress": 21290,
+          "total": 30030
+        }
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvSGVhcnRib3VuZFJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/c214aff507/HeartboundRing.png",
+        "league": "Standard",
+        "id": "bf94b76ff0d497c47979ca3f5323cc92c6c048c8b09d58a2df137b1bd144a72b",
+        "name": "Heartbound Loop",
+        "typeLine": "Moonstone Ring",
+        "baseType": "Moonstone Ring",
+        "rarity": "Unique",
+        "ilvl": 85,
+        "identified": true,
+        "corrupted": true,
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "20",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "implicitMods": [
+          "+24 to maximum Energy Shield"
+        ],
+        "explicitMods": [
+          "Regenerate 12.4 Life per second",
+          "35% increased Mana Regeneration Rate",
+          "Minions have 15% increased maximum Life",
+          "Minions have 10% increased Area of Effect",
+          "350 Physical Damage taken on Minion Death"
+        ],
+        "flavourText": [
+          "When the axe finally fell, Seryl shared his pain,\r",
+          "and the last thought that flickered through his\r",
+          "fading mind was her broken, shattered scream."
+        ],
+        "frameType": 3,
+        "x": 11,
+        "y": 11,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvSGVhcnRib3VuZFJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/c214aff507/HeartboundRing.png",
+        "league": "Standard",
+        "id": "71b76e2204fd220ec279b21bdb1ee9007144858f5d49a0679df9d76f9c4d5c03",
+        "name": "Heartbound Loop",
+        "typeLine": "Moonstone Ring",
+        "baseType": "Moonstone Ring",
+        "rarity": "Unique",
+        "ilvl": 70,
+        "identified": true,
+        "corrupted": true,
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "20",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "implicitMods": [
+          "+16 to maximum Energy Shield"
+        ],
+        "explicitMods": [
+          "Regenerate 14.3 Life per second",
+          "28% increased Mana Regeneration Rate",
+          "Minions have 15% increased maximum Life",
+          "Minions have 10% increased Area of Effect",
+          "350 Physical Damage taken on Minion Death"
+        ],
+        "flavourText": [
+          "When the axe finally fell, Seryl shared his pain,\r",
+          "and the last thought that flickered through his\r",
+          "fading mind was her broken, shattered scream."
+        ],
+        "frameType": 3,
+        "x": 11,
+        "y": 10,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvSGVhcnRib3VuZFJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/c214aff507/HeartboundRing.png",
+        "league": "Standard",
+        "id": "477182a00b63b0b896f27475c2776a8546a38f295ebd1dcb4d8d2eaaee3b245f",
+        "name": "Heartbound Loop",
+        "typeLine": "Moonstone Ring",
+        "baseType": "Moonstone Ring",
+        "rarity": "Unique",
+        "ilvl": 81,
+        "identified": true,
+        "corrupted": true,
+        "properties": [
+          {
+            "name": "Quality (Physical and Chaos Damage Modifiers)",
+            "values": [
+              [
+                "+20%",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 6
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "36",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "implicitMods": [
+          "Grants Level 21 Wrath Skill"
+        ],
+        "explicitMods": [
+          "Regenerate 11.4 Life per second",
+          "33% increased Mana Regeneration Rate",
+          "Minions have 15% increased maximum Life",
+          "Minions have 10% increased Area of Effect",
+          "420 Physical Damage taken on Minion Death"
+        ],
+        "flavourText": [
+          "When the axe finally fell, Seryl shared his pain,\r",
+          "and the last thought that flickered through his\r",
+          "fading mind was her broken, shattered scream."
+        ],
+        "frameType": 3,
+        "x": 11,
+        "y": 7,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9UaGVzdXByZW1ldHJ1dGgiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/1f03434324/Thesupremetruth.png",
+        "league": "Standard",
+        "id": "4c370f0091f8abdbf22812047f5a604ac49116482460ba5a1d5e453db0696a4c",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 0,
+            "attr": "D",
+            "sColour": "G"
+          },
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          }
+        ],
+        "name": "The Supreme Truth",
+        "typeLine": "Crystal Sceptre",
+        "baseType": "Crystal Sceptre",
+        "rarity": "Unique",
+        "ilvl": 83,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Sceptre",
+            "values": [],
+            "displayMode": 0
+          },
+          {
+            "name": "Quality",
+            "values": [
+              [
+                "+20%",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 6
+          },
+          {
+            "name": "Physical Damage",
+            "values": [
+              [
+                "70-105",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 9
+          },
+          {
+            "name": "Critical Strike Chance",
+            "values": [
+              [
+                "6.50%",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 12
+          },
+          {
+            "name": "Attacks per Second",
+            "values": [
+              [
+                "1.46",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 13
+          },
+          {
+            "name": "Weapon Range: {0} metres",
+            "values": [
+              [
+                "1.1",
+                0
+              ]
+            ],
+            "displayMode": 3,
+            "type": 14
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "41",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          },
+          {
+            "name": "Str",
+            "values": [
+              [
+                "59",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 63
+          },
+          {
+            "name": "Int",
+            "values": [
+              [
+                "136",
+                1
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "implicitMods": [
+          "30% increased Elemental Damage"
+        ],
+        "explicitMods": [
+          "+1 to Level of Socketed Gems",
+          "60% increased Intelligence Requirement",
+          "81% increased Physical Damage",
+          "17% increased Attack Speed",
+          "3% increased Experience gain",
+          "20% increased Elemental Damage"
+        ],
+        "flavourText": [
+          "Knowledge brings power, and with power you can\r",
+          "grab truth by the throat and shape it as you wish."
+        ],
+        "frameType": 3,
+        "x": 5,
+        "y": 3,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL05ld0dlbUJhc2UzIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/db35e60885/NewGemBase3.png",
+        "league": "Standard",
+        "id": "96357651e6e5f2306bb48b8d3d21793eb438214d3aa42ea890a90f78042ca050",
+        "name": "Spirit Ornament",
+        "typeLine": "Large Cluster Jewel",
+        "baseType": "Large Cluster Jewel",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": true,
+        "enchantMods": [
+          "Adds 12 Passive Skills",
+          "2 Added Passive Skills are Jewel Sockets",
+          "Added Small Passive Skills grant: 12% increased Cold Damage"
+        ],
+        "explicitMods": [
+          "Added Small Passive Skills also grant: +2% to Lightning Resistance",
+          "Added Small Passive Skills also grant: +4 to Maximum Energy Shield",
+          "1 Added Passive Skill is Deep Chill",
+          "1 Added Passive Skill is Widespread Destruction"
+        ],
+        "descrText": "Place into an allocated Large Jewel Socket on the Passive Skill Tree. Added passives do not interact with jewel radiuses. Right click to remove from the Socket.",
+        "frameType": 2,
+        "x": 9,
+        "y": 10,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvSGVhcnRib3VuZFJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/c214aff507/HeartboundRing.png",
+        "league": "Standard",
+        "id": "d3a44e48582f638f7d830c01866a7549cb433b208a835e2fa310bc02e80cad69",
+        "name": "Heartbound Loop",
+        "typeLine": "Moonstone Ring",
+        "baseType": "Moonstone Ring",
+        "rarity": "Unique",
+        "ilvl": 81,
+        "identified": true,
+        "corrupted": true,
+        "properties": [
+          {
+            "name": "Quality (Physical and Chaos Damage Modifiers)",
+            "values": [
+              [
+                "+20%",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 6
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "44",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "implicitMods": [
+          "Grants Level 23 Frostbite Skill"
+        ],
+        "explicitMods": [
+          "Regenerate 14.3 Life per second",
+          "37% increased Mana Regeneration Rate",
+          "Minions have 15% increased maximum Life",
+          "Minions have 10% increased Area of Effect",
+          "420 Physical Damage taken on Minion Death"
+        ],
+        "flavourText": [
+          "When the axe finally fell, Seryl shared his pain,\r",
+          "and the last thought that flickered through his\r",
+          "fading mind was her broken, shattered scream."
+        ],
+        "frameType": 3,
+        "x": 11,
+        "y": 6,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvSGVhcnRib3VuZFJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/c214aff507/HeartboundRing.png",
+        "league": "Standard",
+        "id": "262308a1dd60cb0e8384c1edbc0d769fbdf1ddbec416ccad4fa3dca085b8c254",
+        "name": "Heartbound Loop",
+        "typeLine": "Moonstone Ring",
+        "baseType": "Moonstone Ring",
+        "rarity": "Unique",
+        "ilvl": 77,
+        "identified": true,
+        "corrupted": true,
+        "properties": [
+          {
+            "name": "Quality (Physical and Chaos Damage Modifiers)",
+            "values": [
+              [
+                "+20%",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 6
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "36",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "implicitMods": [
+          "Pride has 20% increased Aura Effect"
+        ],
+        "explicitMods": [
+          "Regenerate 10.9 Life per second",
+          "31% increased Mana Regeneration Rate",
+          "Minions have 15% increased maximum Life",
+          "Minions have 10% increased Area of Effect",
+          "420 Physical Damage taken on Minion Death"
+        ],
+        "flavourText": [
+          "When the axe finally fell, Seryl shared his pain,\r",
+          "and the last thought that flickered through his\r",
+          "fading mind was her broken, shattered scream."
+        ],
+        "frameType": 3,
+        "x": 11,
+        "y": 8,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvRGVsdmUvUmVyb2xsMXgxQiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/399e119936/Reroll1x1B.png",
+        "stackSize": 1,
+        "maxStackSize": 10,
+        "league": "Standard",
+        "id": "7fd8ec2972c86f1d3e993292dc92e687b24574382e54bfeede22db9f4158b8c2",
+        "delve": true,
+        "name": "",
+        "typeLine": "Primitive Chaotic Resonator",
+        "baseType": "Primitive Chaotic Resonator",
+        "ilvl": 0,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Stack Size",
+            "values": [
+              [
+                "1/10",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 32
+          }
+        ],
+        "explicitMods": [
+          "Reforges a rare item with new random modifiers",
+          "More Defence modifiers",
+          "No Life modifiers"
+        ],
+        "descrText": "Right click this item then left click a rare item to apply it.",
+        "frameType": 5,
+        "x": 1,
+        "y": 10,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL05ld0dlbUJhc2UyIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/78f6bf8356/NewGemBase2.png",
+        "league": "Standard",
+        "id": "15b4dbe69f16d2f070f352d34b804399b7abc8fd4a9f269ad690cb9167a21fc0",
+        "name": "Ghoul Eye",
+        "typeLine": "Medium Cluster Jewel",
+        "baseType": "Medium Cluster Jewel",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": true,
+        "note": "~b/o 99999 exalted",
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "67",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "enchantMods": [
+          "Adds 6 Passive Skills",
+          "1 Added Passive Skill is a Jewel Socket",
+          "Added Small Passive Skills grant: 10% increased Life Recovery from Flasks\nAdded Small Passive Skills grant: 10% increased Mana Recovery from Flasks"
+        ],
+        "explicitMods": [
+          "Added Small Passive Skills also grant: 3% increased Flask Charges gained",
+          "Added Small Passive Skills also grant: +6% to Lightning Resistance",
+          "Added Small Passive Skills have 35% increased Effect",
+          "1 Added Passive Skill is Fasting"
+        ],
+        "descrText": "Place into an allocated Medium or Large Jewel Socket on the Passive Skill Tree. Added passives do not interact with jewel radiuses. Right click to remove from the Socket.",
+        "frameType": 2,
+        "x": 11,
+        "y": 0,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL05ld0dlbUJhc2UzIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/db35e60885/NewGemBase3.png",
+        "league": "Standard",
+        "id": "e78b22538db26391aaf910eb2e1738fe0bf593325789aab1e83afe5b71808c0d",
+        "name": "Behemoth Spark",
+        "typeLine": "Large Cluster Jewel",
+        "baseType": "Large Cluster Jewel",
+        "rarity": "Rare",
+        "ilvl": 84,
+        "identified": true,
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "67",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "enchantMods": [
+          "Adds 8 Passive Skills",
+          "2 Added Passive Skills are Jewel Sockets",
+          "Added Small Passive Skills grant: 12% increased Cold Damage"
+        ],
+        "explicitMods": [
+          "Added Small Passive Skills also grant: 1% increased Attack and Cast Speed with Cold Skills",
+          "Added Small Passive Skills also grant: +10 to Maximum Mana",
+          "1 Added Passive Skill is Prismatic Heart"
+        ],
+        "descrText": "Place into an allocated Large Jewel Socket on the Passive Skill Tree. Added passives do not interact with jewel radiuses. Right click to remove from the Socket.",
+        "frameType": 2,
+        "x": 9,
+        "y": 11,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0VsZGVySmV3ZWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/278c673716/ElderJewel.png",
+        "league": "Standard",
+        "id": "319f01dd12cd46156cab5d13e6db113858ef878163f1d24ad60e30f99fd3dae2",
+        "name": "Watcher's Eye",
+        "typeLine": "Prismatic Jewel",
+        "baseType": "Prismatic Jewel",
+        "rarity": "Unique",
+        "ilvl": 80,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Limited to",
+            "values": [
+              [
+                "1",
+                0
+              ]
+            ],
+            "displayMode": 0
+          }
+        ],
+        "explicitMods": [
+          "6% increased maximum Energy Shield",
+          "6% increased maximum Life",
+          "5% increased maximum Mana",
+          "Immune to Shock while affected by Purity of Lightning",
+          "Unaffected by Conductivity while affected by Purity of Lightning"
+        ],
+        "descrText": "Place into an allocated Jewel Socket on the Passive Skill Tree. Right click to remove from the Socket.",
+        "flavourText": [
+          "One by one, they stood their ground against a creature \r",
+          "they had no hope of understanding, let alone defeating,\r",
+          "and one by one, they became a part of it."
+        ],
+        "frameType": 3,
+        "x": 7,
+        "y": 0,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvRGVsdmUvUmVyb2xsMXgxQiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/399e119936/Reroll1x1B.png",
+        "stackSize": 1,
+        "maxStackSize": 10,
+        "league": "Standard",
+        "id": "17533e8974964e7270e7eb9a23524f68507c49dba30cbcef80cd5133af7c42dd",
+        "delve": true,
+        "name": "",
+        "typeLine": "Primitive Chaotic Resonator",
+        "baseType": "Primitive Chaotic Resonator",
+        "ilvl": 0,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Stack Size",
+            "values": [
+              [
+                "1/10",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 32
+          }
+        ],
+        "explicitMods": [
+          "Reforges a rare item with new random modifiers",
+          "More Defence modifiers",
+          "No Life modifiers"
+        ],
+        "descrText": "Right click this item then left click a rare item to apply it.",
+        "frameType": 5,
+        "x": 1,
+        "y": 9,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvRGVsdmUvUmVyb2xsMXgxQiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/399e119936/Reroll1x1B.png",
+        "stackSize": 1,
+        "maxStackSize": 10,
+        "league": "Standard",
+        "id": "018bc29dcfdfe7b8582f9a35b017ec4523d441e5dcceaa297c7377db2fd174c0",
+        "delve": true,
+        "name": "",
+        "typeLine": "Primitive Chaotic Resonator",
+        "baseType": "Primitive Chaotic Resonator",
+        "ilvl": 0,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Stack Size",
+            "values": [
+              [
+                "1/10",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 32
+          }
+        ],
+        "explicitMods": [
+          "Reforges a rare item with new random modifiers",
+          "More Defence modifiers",
+          "No Life modifiers"
+        ],
+        "descrText": "Right click this item then left click a rare item to apply it.",
+        "frameType": 5,
+        "x": 0,
+        "y": 10,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvRGVsdmUvUmVyb2xsMXgxQiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/399e119936/Reroll1x1B.png",
+        "stackSize": 1,
+        "maxStackSize": 10,
+        "league": "Standard",
+        "id": "144a430559a4f42a8b54969030485c914df8b407bfd23bc267ad10715b4e3002",
+        "delve": true,
+        "name": "",
+        "typeLine": "Primitive Chaotic Resonator",
+        "baseType": "Primitive Chaotic Resonator",
+        "ilvl": 0,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Stack Size",
+            "values": [
+              [
+                "1/10",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 32
+          }
+        ],
+        "explicitMods": [
+          "Reforges a rare item with new random modifiers",
+          "More Defence modifiers",
+          "No Life modifiers"
+        ],
+        "descrText": "Right click this item then left click a rare item to apply it.",
+        "frameType": 5,
+        "x": 1,
+        "y": 11,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvRGVsdmUvUmVyb2xsMXgxQiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/399e119936/Reroll1x1B.png",
+        "stackSize": 1,
+        "maxStackSize": 10,
+        "league": "Standard",
+        "id": "73c1ca8d6d5b8f77c55f81603a831e2bb6fb2a55c6dd569cdceff6e687f8ff6b",
+        "delve": true,
+        "name": "",
+        "typeLine": "Primitive Chaotic Resonator",
+        "baseType": "Primitive Chaotic Resonator",
+        "ilvl": 0,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Stack Size",
+            "values": [
+              [
+                "1/10",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 32
+          }
+        ],
+        "explicitMods": [
+          "Reforges a rare item with new random modifiers",
+          "More Defence modifiers",
+          "No Life modifiers"
+        ],
+        "descrText": "Right click this item then left click a rare item to apply it.",
+        "frameType": 5,
+        "x": 0,
+        "y": 11,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvRGVsdmUvUmVyb2xsMXgxQiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/399e119936/Reroll1x1B.png",
+        "stackSize": 1,
+        "maxStackSize": 10,
+        "league": "Standard",
+        "id": "4d47faf71ac97254a37bc724a80d0f691db87f01f6da56a21b09cab86885453e",
+        "delve": true,
+        "name": "",
+        "typeLine": "Primitive Chaotic Resonator",
+        "baseType": "Primitive Chaotic Resonator",
+        "ilvl": 0,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Stack Size",
+            "values": [
+              [
+                "1/10",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 32
+          }
+        ],
+        "explicitMods": [
+          "Reforges a rare item with new random modifiers",
+          "More Defence modifiers",
+          "No Life modifiers"
+        ],
+        "descrText": "Right click this item then left click a rare item to apply it.",
+        "frameType": 5,
+        "x": 0,
+        "y": 9,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQ3IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/58942b1ab3/Amulet7.png",
+        "league": "Standard",
+        "id": "de6554d3f118b23031d27c6b38396ba6f3a2a1d44ce9180aa3634f132c2cdb88",
+        "name": "Onslaught Collar",
+        "typeLine": "Onyx Amulet",
+        "baseType": "Onyx Amulet",
+        "rarity": "Rare",
+        "ilvl": 83,
+        "identified": true,
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "65",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "implicitMods": [
+          "+13 to all Attributes"
+        ],
+        "explicitMods": [
+          "+53 to Strength",
+          "+48 to maximum Energy Shield",
+          "+8% to Chaos Resistance",
+          "+1 to Level of all Chaos Skill Gems",
+          "24% increased Elemental Damage with Attack Skills"
+        ],
+        "frameType": 2,
+        "x": 5,
+        "y": 6,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lJbXByaW50IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/78304c421e/CurrencyImprint.png",
+        "league": "Standard",
+        "id": "01f2aa3bd73c6e754f0fa9293d0cf6cdf74078f2bdd20b96c41128132d2b9aa7",
+        "name": "",
+        "typeLine": "Imprint",
+        "baseType": "Imprint",
+        "ilvl": 0,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Imprinted",
+            "values": [
+              [
+                "Powerful Large Cluster Jewel of the Bear",
+                8
+              ]
+            ],
+            "displayMode": 0
+          }
+        ],
+        "explicitMods": [
+          "Restores an imprinted item onto the original\r\nCan't be applied to Fractured Items"
+        ],
+        "descrText": "Right click this item then left click on the imprinted original item to restore its modifiers. An imprint cannot be dropped or traded to other players.",
+        "frameType": 5,
+        "x": 9,
+        "y": 1,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lJbXByaW50IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/78304c421e/CurrencyImprint.png",
+        "league": "Standard",
+        "id": "f24f1b636e1ffe17fa5fe3369fbc267c8a6e3ca2d1470e300be81ee7822b8daf",
+        "name": "",
+        "typeLine": "Imprint",
+        "baseType": "Imprint",
+        "ilvl": 0,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Imprinted",
+            "values": [
+              [
+                "Powerful Medium Cluster Jewel of Overflowing",
+                8
+              ]
+            ],
+            "displayMode": 0
+          }
+        ],
+        "explicitMods": [
+          "Restores an imprinted item onto the original\r\nCan't be applied to Fractured Items"
+        ],
+        "descrText": "Right click this item then left click on the imprinted original item to restore its modifiers. An imprint cannot be dropped or traded to other players.",
+        "frameType": 5,
+        "x": 11,
+        "y": 1,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lJbXByaW50IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/78304c421e/CurrencyImprint.png",
+        "league": "Standard",
+        "id": "4d6bbbe3f1549991c224f8071500135f6954e1224ea833ec737553f7e8dcc6cc",
+        "name": "",
+        "typeLine": "Imprint",
+        "baseType": "Imprint",
+        "ilvl": 0,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Imprinted",
+            "values": [
+              [
+                "Powerful Medium Cluster Jewel of Overflowing",
+                8
+              ]
+            ],
+            "displayMode": 0
+          }
+        ],
+        "explicitMods": [
+          "Restores an imprinted item onto the original\r\nCan't be applied to Fractured Items"
+        ],
+        "descrText": "Right click this item then left click on the imprinted original item to restore its modifiers. An imprint cannot be dropped or traded to other players.",
+        "frameType": 5,
+        "x": 10,
+        "y": 1,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lJbXByaW50IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/78304c421e/CurrencyImprint.png",
+        "league": "Standard",
+        "id": "01487bbecf9ff8530685b51b0b26561e33d46f296148e3fdddea3192081363da",
+        "name": "",
+        "typeLine": "Imprint",
+        "baseType": "Imprint",
+        "ilvl": 0,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Imprinted",
+            "values": [
+              [
+                "Powerful Medium Cluster Jewel of Overflowing",
+                8
+              ]
+            ],
+            "displayMode": 0
+          }
+        ],
+        "explicitMods": [
+          "Restores an imprinted item onto the original\r\nCan't be applied to Fractured Items"
+        ],
+        "descrText": "Right click this item then left click on the imprinted original item to restore its modifiers. An imprint cannot be dropped or traded to other players.",
+        "frameType": 5,
+        "x": 11,
+        "y": 5,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 2,
+        "h": 3,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9UaGVzdXByZW1ldHJ1dGgiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/1f03434324/Thesupremetruth.png",
+        "league": "Standard",
+        "id": "0c47f36faba2ec216b75cfe1ab3df000ed02e0901d420c3961ab83c9ac24b6dd",
+        "sockets": [
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          },
+          {
+            "group": 0,
+            "attr": "S",
+            "sColour": "R"
+          }
+        ],
+        "name": "The Supreme Truth",
+        "typeLine": "Crystal Sceptre",
+        "baseType": "Crystal Sceptre",
+        "rarity": "Unique",
+        "ilvl": 78,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Sceptre",
+            "values": [],
+            "displayMode": 0
+          },
+          {
+            "name": "Quality",
+            "values": [
+              [
+                "+20%",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 6
+          },
+          {
+            "name": "Physical Damage",
+            "values": [
+              [
+                "71-105",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 9
+          },
+          {
+            "name": "Critical Strike Chance",
+            "values": [
+              [
+                "6.50%",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 12
+          },
+          {
+            "name": "Attacks per Second",
+            "values": [
+              [
+                "1.48",
+                1
+              ]
+            ],
+            "displayMode": 0,
+            "type": 13
+          },
+          {
+            "name": "Weapon Range: {0} metres",
+            "values": [
+              [
+                "1.1",
+                0
+              ]
+            ],
+            "displayMode": 3,
+            "type": 14
+          }
+        ],
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "41",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          },
+          {
+            "name": "Str",
+            "values": [
+              [
+                "59",
+                0
+              ]
+            ],
+            "displayMode": 1,
+            "type": 63
+          },
+          {
+            "name": "Int",
+            "values": [
+              [
+                "136",
+                1
+              ]
+            ],
+            "displayMode": 1,
+            "type": 65
+          }
+        ],
+        "implicitMods": [
+          "30% increased Elemental Damage"
+        ],
+        "explicitMods": [
+          "+1 to Level of Socketed Gems",
+          "60% increased Intelligence Requirement",
+          "82% increased Physical Damage",
+          "18% increased Attack Speed",
+          "3% increased Experience gain",
+          "20% increased Elemental Damage"
+        ],
+        "flavourText": [
+          "Knowledge brings power, and with power you can\r",
+          "grab truth by the throat and shape it as you wish."
+        ],
+        "frameType": 3,
+        "x": 7,
+        "y": 3,
+        "inventoryId": "Stash1",
+        "socketedItems": []
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lJbXByaW50IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/78304c421e/CurrencyImprint.png",
+        "league": "Standard",
+        "id": "49146eaedea2002a45290852adf65f6d017010713db339da8cdf9995cb918463",
+        "name": "",
+        "typeLine": "Imprint",
+        "baseType": "Imprint",
+        "ilvl": 0,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Imprinted",
+            "values": [
+              [
+                "Powerful Medium Cluster Jewel of Overflowing",
+                8
+              ]
+            ],
+            "displayMode": 0
+          }
+        ],
+        "explicitMods": [
+          "Restores an imprinted item onto the original\r\nCan't be applied to Fractured Items"
+        ],
+        "descrText": "Right click this item then left click on the imprinted original item to restore its modifiers. An imprint cannot be dropped or traded to other players.",
+        "frameType": 5,
+        "x": 11,
+        "y": 4,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTW9vbnN0b25lUmluZyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/6dbab29358/MoonstoneRing.png",
+        "league": "Standard",
+        "id": "4154dd2b37e419d3389e4b1c07e754890ce1cc783b0a1993cb70f50803ddf12f",
+        "influences": {
+          "shaper": true
+        },
+        "shaper": true,
+        "name": "Oblivion Hold",
+        "typeLine": "Moonstone Ring",
+        "baseType": "Moonstone Ring",
+        "rarity": "Rare",
+        "ilvl": 85,
+        "identified": true,
+        "requirements": [
+          {
+            "name": "Level",
+            "values": [
+              [
+                "68",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 62
+          }
+        ],
+        "implicitMods": [
+          "+24 to maximum Energy Shield"
+        ],
+        "explicitMods": [
+          "+14 to all Attributes",
+          "Adds 1 to 2 Physical Damage to Attacks",
+          "Adds 2 to 28 Lightning Damage to Attacks",
+          "3% increased Experience gain"
+        ],
+        "craftedMods": [
+          "+15% to Cold and Chaos Resistances"
+        ],
+        "frameType": 2,
+        "x": 6,
+        "y": 6,
+        "inventoryId": "Stash1"
+      },
+      {
+        "verified": false,
+        "w": 1,
+        "h": 1,
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL01hcmFrZXRoQ2l2aWxpemF0aW9uIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/8e18d378b4/MarakethCivilization.png",
+        "league": "Standard",
+        "id": "196a54e600c35873fa76eee5ac79ea4f689514e45c08c91920c93277db7efd02",
+        "name": "Brutal Restraint",
+        "typeLine": "Timeless Jewel",
+        "baseType": "Timeless Jewel",
+        "rarity": "Unique",
+        "ilvl": 86,
+        "identified": true,
+        "properties": [
+          {
+            "name": "Limited to",
+            "values": [
+              [
+                "1 Historic",
+                0
+              ]
+            ],
+            "displayMode": 0
+          },
+          {
+            "name": "Radius",
+            "values": [
+              [
+                "Large",
+                0
+              ]
+            ],
+            "displayMode": 0,
+            "type": 26
+          }
+        ],
+        "explicitMods": [
+          "Denoted service of 7026 dekhara in the akhara of Balbala\nPassives in radius are Conquered by the Maraketh",
+          "Historic"
+        ],
+        "descrText": "Place into an allocated Jewel Socket on the Passive Skill Tree. Right click to remove from the Socket.",
+        "flavourText": [
+          "They believed themselves the most ordered, but that tradition turned their forests to salt."
+        ],
+        "frameType": 3,
+        "x": 0,
+        "y": 0,
+        "inventoryId": "Stash1"
+      }
+    ]
+  }
+}

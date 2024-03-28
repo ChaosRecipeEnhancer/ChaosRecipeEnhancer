@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:ChaosRecipeEnhancer.UI.Properties"
         xmlns:windows="clr-namespace:ChaosRecipeEnhancer.UI.Windows"
-        xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
+        xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -21,16 +21,16 @@
         d:DataContext="{d:DesignInstance Type=windows:StashTabOverlayViewModel}">
 
     <Window.Background>
-        <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayOpacity}"
-                         Color="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayBackgroundColor}" />
+        <SolidColorBrush Opacity="0.05" Color="White" />
     </Window.Background>
 
     <Window.Resources>
-        <zemotoCommon:BoolVisibilityConverter x:Key="HiddenIfFalse" CollapseWhenNotVisible="True" />
-        <zemotoCommon:BoolToObjectConverter x:Key="EditButtonTextConverter" TrueValue="Save" FalseValue="Edit" />
-        <zemotoCommon:DoubleToLeftMarginConverter x:Key="DoubleToMarginConverter"/>
-        <zemotoCommon:DoubleToLeftRightGapThicknessConverter x:Key="DoubleToGapThicknessConverter"/>
-        <zemotoCommon:PaddingLeftRightConverter x:Key="PaddingConverter"/>
+        <creConverters:BoolVisibilityConverter x:Key="HiddenIfFalse" CollapseWhenNotVisible="True" />
+        <creConverters:BoolToObjectConverter x:Key="EditButtonTextConverter" TrueValue="Save" FalseValue="Edit" />
+        <creConverters:DoubleToLeftMarginConverter x:Key="DoubleToLeftMarginConverter"/>
+        <creConverters:DoubleToLeftRightThicknessConverter x:Key="DoubleToLeftRightThicknessConverter"/>
+        <creConverters:DoubleToTopThicknessConverter x:Key="DoubleToTopThicknessConverter"/>
+        <creConverters:PaddingLeftRightConverter x:Key="PaddingConverter"/>
     </Window.Resources>
 
     <Grid x:Name="StashOverlayGrid">
@@ -42,7 +42,6 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <!-- ReSharper disable once Xaml.IndexOutOfGridDefinition -->
             <Rectangle Grid.Row="0"
                        Grid.RowSpan="99"
                        Visibility="{Binding IsEditing, Converter={StaticResource HiddenIfFalse}}"
@@ -76,47 +75,45 @@
                 </TabControl.Background>
 
                 <TabControl.Resources>
+
                     <Style TargetType="{x:Type TabItem}">
                         <Setter Property="Background" Value="Transparent" />
                         <Setter Property="BorderBrush" Value="Gainsboro" />
                         <Setter Property="Template">
                             <Setter.Value>
-
-                                <!-- Template for the Tab Item (Dynamic list of Stash Tab 'Tabs') -->
                                 <ControlTemplate TargetType="{x:Type TabItem}">
 
-                                    <!-- Stash Tab 'Container' -->
-                                    <Grid Margin="5 0 0 0">
+                                    <Grid x:Name="TabItemContainer" Margin="5 0 0 0">
+                                        <Border
+                                            x:Name="Border"
+                                            Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayTabOpacity}"
+                                            Padding="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderPadding, Converter={StaticResource PaddingConverter}}"
+                                            Margin="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderGap, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
+                                            BorderThickness="1,1,1,1"
+                                            BorderBrush="Gainsboro">
 
-                                        <!-- Stash Tab 'Tab' Border -->
-                                        <Border Name="Border"
-                                                Padding="{Binding Settings.StashTabOverlayIndividualTabHeaderPadding, Converter={StaticResource PaddingConverter}}"
-                                                Margin="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Converter={StaticResource DoubleToGapThicknessConverter}}"
-                                                BorderThickness="1,1,1,1"
-                                                BorderBrush="Gainsboro">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabItem}}, Path=Header.DataContext.TabHeaderColor.Color}" />
+                                            </Border.Background>
 
-                                            <!-- Stash Tab Name -->
-                                            <ContentPresenter
-                                                x:Name="ContentSite"
-                                                  VerticalAlignment="Center"
-                                                  HorizontalAlignment="Center"
-                                                  ContentSource="Header"
-                                                  RecognizesAccessKey="True" />
+                                                <ContentPresenter
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    ContentSource="Header"
+                                                    RecognizesAccessKey="True" />
 
                                         </Border>
-
                                     </Grid>
 
                                     <ControlTemplate.Triggers>
-                                        <!-- If Stash Tab Selected Trigger -->
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="Panel.ZIndex" Value="100" />
-                                            <Setter TargetName="Border" Property="BorderThickness" Value="1,3,1,0" />
+                                            <Setter TargetName="Border" Property="BorderThickness" Value="2,4,2,0" />
+                                            <Setter TargetName="Border" Property="BorderBrush" Value="White" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>
 
                                 </ControlTemplate>
-
                             </Setter.Value>
                         </Setter>
                     </Style>
@@ -131,47 +128,25 @@
                                 <ControlTemplate TargetType="{x:Type TabControl}">
 
                                     <!-- Stash Tab 'Container' -->
-                                    <Grid KeyboardNavigation.TabNavigation="Local">
+                                    <DockPanel KeyboardNavigation.TabNavigation="Local">
 
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
-
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Disabled">
-                                                    <Storyboard>
-                                                        <ColorAnimationUsingKeyFrames
-                                                            Storyboard.TargetName="Border"
-                                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
-
-                                                            <EasingColorKeyFrame KeyTime="0" Value="#FFAAAAAA" />
-
-                                                        </ColorAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-
-                                        <!-- Stash Tab 'Tab' Header containing individual 'TabItem' -->
                                         <TabPanel
                                             x:Name="HeaderPanel"
-                                            Grid.Row="0"
+                                            DockPanel.Dock="Top"
                                             Panel.ZIndex="1"
-                                            Margin="{Binding Settings.StashTabOverlayIndividualTabMargin, Converter={StaticResource DoubleToMarginConverter}}"
+                                            Margin="{Binding GlobalUserSettings.StashTabOverlayIndividualTabMargin, Converter={StaticResource DoubleToLeftRightThicknessConverter}}"
                                             IsItemsHost="True"
                                             KeyboardNavigation.TabIndex="1"
                                             Background="Transparent" />
 
-                                        <!-- Stash Tab Content Grid Border -->
-                                        <Border x:Name="Border"
-                                            Grid.Row="1"
+                                        <Border
+                                            x:Name="Border"
                                             BorderThickness="1"
                                             CornerRadius="2"
                                             KeyboardNavigation.TabNavigation="Local"
                                             KeyboardNavigation.DirectionalNavigation="Contained"
-                                            KeyboardNavigation.TabIndex="2">
+                                            KeyboardNavigation.TabIndex="2"
+                                            Margin="{Binding GlobalUserSettings.StashTabOverlayTabGroupBottomMargin, Converter={StaticResource DoubleToTopThicknessConverter}}">
 
                                             <!-- Grid Background -->
                                             <Border.Background>
@@ -190,11 +165,12 @@
                                             <ContentPresenter
                                                 x:Name="PART_SelectedContentHost"
                                                 Margin="4"
+                                                VerticalAlignment="Stretch"
                                                 ContentSource="SelectedContent" />
 
                                         </Border>
 
-                                    </Grid>
+                                    </DockPanel>
 
                                 </ControlTemplate>
 

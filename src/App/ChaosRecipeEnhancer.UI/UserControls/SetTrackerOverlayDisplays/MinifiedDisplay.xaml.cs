@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using ChaosRecipeEnhancer.UI.Windows;
+﻿using ChaosRecipeEnhancer.UI.Windows;
+using System.Windows;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 

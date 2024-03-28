@@ -5,14 +5,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:utilities="clr-namespace:ChaosRecipeEnhancer.UI.Utilities"
-             xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
+             xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
              mc:Ignorable="d"
              Background="#202020"
              d:DataContext="{d:DesignInstance Type=overlayForms:StashTabOverlayFormViewModel}">
 
     <UserControl.Resources>
-        <zemotoCommon:StringColorConverter x:Key="StringColorConverter" />
+        <creConverters:StringColorConverter x:Key="StringColorConverter" />
     </UserControl.Resources>
 
     <Grid
@@ -33,6 +32,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -43,16 +45,15 @@
             Text="Stash Tab Overlay"
             FontSize="24" />
 
+        <!-- Grid Opacity Setting Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Stash Tab Overlay Opacity:"
+            Text="Grid Opacity:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The background opacity of the stash Tabs overlay from 0 (0%) to 1 (100%)." />
-
-        <!-- Stash Tab Overlay Opacity Slider -->
+            ToolTip="The opacity of the stash grid." />
         <Grid
             Grid.Column="1"
             Grid.Row="1"
@@ -81,11 +82,9 @@
                 SmallChange=".05"
                 LargeChange=".1"
                 TickFrequency="0.01"
-                AutoToolTipPlacement="TopLeft"
                 IsMoveToPointEnabled="True"
-                AutoToolTipPrecision="2"
                 IsSnapToTickEnabled="True"
-                Value="{Binding Settings.StashTabOverlayOpacity, Mode=TwoWay}" />
+                Value="{Binding GlobalUserSettings.StashTabOverlayOpacity, Mode=TwoWay}" />
 
             <TextBox
                 Grid.Column="4"
@@ -93,20 +92,20 @@
                 Width="40"
                 Margin="5 0 0 0"
                 HorizontalContentAlignment="Center"
-                Text="{Binding Settings.StashTabOverlayOpacity, Mode=TwoWay}" />
+                Text="{Binding GlobalUserSettings.StashTabOverlayOpacity, Mode=TwoWay, StringFormat={}{0:F2}}" />
 
         </Grid>
+        <!-- Grid Opacity Setting End -->
 
+        <!-- Grid Background Color Setting Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="2"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Stash Tab Background Color:"
+            Text="Grid Background Color:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The color of the background of the Stash Tab Overlay. Make this opaque if you want." />
-
-        <!-- Stash Tab Overlay Color Picker -->
+            ToolTip="The color of the background of the stash grid." />
         <xctk:ColorPicker
             Grid.Column="1"
             Grid.Row="2"
@@ -117,65 +116,139 @@
             HeaderForeground="White"
             TabBackground="#202020"
             DropDownBackground="#202020"
-            SelectedColor="{Binding Settings.StashTabOverlayBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+            SelectedColor="{Binding GlobalUserSettings.StashTabOverlayBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
 
+        <!-- Tab Opacity Setting Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="3"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Item Highlight Color:"
+            Text="Tab Opacity:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The color that highlights the items in your Stash Tab Overlay." />
-
-        <!-- Stash Tab Overlay Highlighted Items Color Picker -->
-        <xctk:ColorPicker
+            ToolTip="The opacity of the individual stash tabs." />
+        <Grid
             Grid.Column="1"
             Grid.Row="3"
-            Margin="10 0 0 10"
-            Width="200"
-            ColorMode="ColorCanvas"
-            HeaderBackground="#202020"
-            HeaderForeground="White"
-            TabBackground="#202020"
-            DropDownBackground="#202020"
-            SelectedColor="{Binding Settings.StashTabOverlayHighlightColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+            Margin="10 0 0 10">
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Slider
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.ColumnSpan="4"
+                Margin="0 0 5 0"
+                Width="150"
+                VerticalAlignment="Center"
+                Minimum="0"
+                Maximum="1"
+                SmallChange=".05"
+                LargeChange=".1"
+                TickFrequency="0.01"
+                IsMoveToPointEnabled="True"
+                IsSnapToTickEnabled="True"
+                Value="{Binding GlobalUserSettings.StashTabOverlayTabOpacity, Mode=TwoWay}" />
+
+            <TextBox
+                Grid.Column="4"
+                Grid.Row="0"
+                Width="40"
+                Margin="5 0 0 0"
+                HorizontalContentAlignment="Center"
+                Text="{Binding GlobalUserSettings.StashTabOverlayTabOpacity, Mode=TwoWay, StringFormat={}{0:F2}}" />
+
+        </Grid>
+        <!-- Tab Opacity Setting End -->
+
+        <!-- Grid Background Color Setting End -->
+
+        <!-- Default Tab Background Color Setting Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="4"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Item Highlight Mode:"
+            Text="Default Tab Background Color:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="v3.23: Disabling this control for the time being&#x0a;as I work to re-implement Item-by-Item mode." />
+            ToolTip="The color of the background of non-highlighted tabs." />
+        <xctk:ColorPicker
+            Grid.Column="1"
+            Grid.Row="4"
+            Margin="10 0 0 10"
+            Width="200"
+            ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
+            SelectedColor="{Binding GlobalUserSettings.StashTabOverlayTabDefaultBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+        <!-- Default Tab Background Color Setting End -->
 
-        <!-- Stash Tab Overlay Highlighted Item Picker Mode -->
+        <!-- Highlighted Items Color Setting Start -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="5"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
+            Text="Highlight Color:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The color that highlights the items to pick and their associated tabs." />
+        <xctk:ColorPicker
+            Grid.Column="1"
+            Grid.Row="5"
+            Margin="10 0 0 10"
+            Width="200"
+            ColorMode="ColorCanvas"
+            HeaderBackground="#202020"
+            HeaderForeground="White"
+            TabBackground="#202020"
+            DropDownBackground="#202020"
+            SelectedColor="{Binding GlobalUserSettings.StashTabOverlayHighlightColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+        <!-- Highlighted Items Color Setting End -->
+
+        <!-- Item Picker Mode Setting Start -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="6"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
+            Text="Item Picker Mode:" />
         <ComboBox
             Grid.Column="1"
-            Grid.Row="4"
+            Grid.Row="6"
             Margin="10 0 0 10"
             Width="200"
             VerticalContentAlignment="Center"
-            IsEnabled="False"
-            SelectedIndex="{Binding Settings.StashTabOverlayHighlightMode, Mode=TwoWay}">
+            SelectedIndex="{Binding GlobalUserSettings.StashTabOverlayHighlightMode, Mode=TwoWay}">
 
             <ComboBoxItem Content="Set by Set" />
+            <ComboBoxItem Content="Item by Item" />
 
         </ComboBox>
+        <!-- Item Picker Mode Setting Start -->
 
+        <!-- Tab Container Left Padding Setting Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="5"
+            Grid.Row="7"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Tab Header Margin:"
+            Text="Tab Container Left Padding:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The starting margin of the tab headers in the Stash Tab Overlay." />
-
+            ToolTip="Adds some padding to the start (leftmost side) of the tab group in the Stash Tab Overlay.&#x0a;&#x0a;This is a setting to be used if you are looking at tabs in a folder where the tabs are centered&#x0a;in game, and you want to align your overlay to match them perfectly." />
         <Grid
             Grid.Column="1"
-            Grid.Row="5"
+            Grid.Row="7"
             Margin="10 0 0 10">
 
             <Grid.ColumnDefinitions>
@@ -203,7 +276,7 @@
                 AutoToolTipPlacement="TopLeft"
                 IsSnapToTickEnabled="True"
                 IsMoveToPointEnabled="True"
-                Value="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" LargeChange="100" SmallChange="10" />
+                Value="{Binding GlobalUserSettings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" LargeChange="100" SmallChange="10" />
 
             <TextBox
                 Grid.Column="4"
@@ -211,22 +284,23 @@
                 Width="40"
                 Margin="5 0 0 0"
                 HorizontalContentAlignment="Center"
-                Text="{Binding Settings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" />
+                Text="{Binding GlobalUserSettings.StashTabOverlayIndividualTabMargin, Mode=TwoWay}" />
 
         </Grid>
+        <!-- Tab Container Left Padding Setting End -->
 
+        <!-- Tab Width Setting Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="6"
+            Grid.Row="8"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Tab Header Padding:"
+            Text="Tab Width:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The padding between the tab headers in Stash Tab Overlay." />
-
+            ToolTip="Modifies the width of the tabs - the space 'inside' the tab, if you will."/>
         <Grid
             Grid.Column="1"
-            Grid.Row="6"
+            Grid.Row="8"
             Margin="10 0 0 10">
 
             <Grid.ColumnDefinitions>
@@ -253,7 +327,7 @@
                 IsMoveToPointEnabled="True"
                 IsSnapToTickEnabled="True"
                 AutoToolTipPrecision="1"
-                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderPadding, Mode=TwoWay}"
+                Value="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderPadding, Mode=TwoWay}"
                 TickFrequency="1"
                 SmallChange="1"
                 LargeChange="10" />
@@ -264,22 +338,22 @@
                 Width="40"
                 Margin="5 0 0 0"
                 HorizontalContentAlignment="Center"
-                Text="{Binding Settings.StashTabOverlayIndividualTabHeaderPadding, Mode=TwoWay}" />
+                Text="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderPadding, Mode=TwoWay}" />
 
         </Grid>
+        <!-- Tab Width Setting End -->
 
+        <!-- Gap Between Tabs Setting Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="7"
+            Grid.Row="9"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Tab Header Gap:"
-            ToolTipService.InitialShowDelay="50"
-            ToolTip="The gap between tab headers in the Stash Tab Overlay." />
-
+            Text="Vertical Gap Between Tabs:" />
         <Grid
             Grid.Column="1"
-            Grid.Row="7"
-            Margin="10 0 0 0">
+            Grid.Row="9"
+            Margin="10 0 0 10">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -306,7 +380,7 @@
                 AutoToolTipPlacement="TopLeft"
                 IsSnapToTickEnabled="True"
                 IsMoveToPointEnabled="True"
-                Value="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}"
+                Value="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}"
                 LargeChange="20"
                 SmallChange="1" />
 
@@ -316,8 +390,62 @@
                 Width="40"
                 Margin="5 0 0 0"
                 HorizontalContentAlignment="Center"
-                Text="{Binding Settings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" />
+                Text="{Binding GlobalUserSettings.StashTabOverlayIndividualTabHeaderGap, Mode=TwoWay}" />
 
         </Grid>
+        <!-- Gap Between Tabs Setting Start -->
+
+        <!-- Horizontal Gap to Stash Grid Start -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="10"
+            VerticalAlignment="Center"
+            Text="Horizontal Gap to Stash Grid:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="Modifies the gap between the container that 'holds' all the tabs, and the grid." />
+        <Grid
+            Grid.Column="1"
+            Grid.Row="10"
+            Margin="10 0 0 0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Slider
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.ColumnSpan="4"
+                Margin="0 0 5 0"
+                Width="150"
+                VerticalAlignment="Center"
+                Minimum="0"
+                Maximum="100"
+                AutoToolTipPrecision="1"
+                TickFrequency="1"
+                AutoToolTipPlacement="TopLeft"
+                IsSnapToTickEnabled="True"
+                IsMoveToPointEnabled="True"
+                Value="{Binding GlobalUserSettings.StashTabOverlayTabGroupBottomMargin, Mode=TwoWay}"
+                LargeChange="20"
+                SmallChange="1" />
+
+            <TextBox
+                Grid.Column="4"
+                Grid.Row="0"
+                Width="40"
+                Margin="5 0 0 0"
+                HorizontalContentAlignment="Center"
+                Text="{Binding GlobalUserSettings.StashTabOverlayTabGroupBottomMargin, Mode=TwoWay}" />
+
+        </Grid>
+        <!-- Horizontal Gap to Stash Grid End -->
     </Grid>
 </UserControl>

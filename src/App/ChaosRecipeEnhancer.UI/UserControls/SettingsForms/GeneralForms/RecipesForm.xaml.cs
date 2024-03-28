@@ -1,21 +1,22 @@
-﻿using System.Text.RegularExpressions;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
-internal partial class RecipesForm
+public partial class RecipesForm
 {
     public RecipesForm()
     {
-        DataContext = new RecipesFormViewModel();
         InitializeComponent();
+        DataContext = Ioc.Default.GetService<RecipesFormViewModel>();
     }
 
     private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
     {
-        var regex = new Regex("[^0-9]+");
+        var regex = NumberValidationRegex();
         e.Handled = regex.IsMatch(e.Text);
 
         // Check if the new text is within the range
@@ -47,4 +48,6 @@ internal partial class RecipesForm
         }
     }
 
+    [GeneratedRegex("[^0-9]+")]
+    private static partial Regex NumberValidationRegex();
 }

@@ -1,10 +1,12 @@
-﻿namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+
+namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms;
 
 public partial class SystemForm
 {
     public SystemForm()
     {
-        DataContext = new SystemFormViewModel();
+        DataContext = Ioc.Default.GetService<SystemFormViewModel>();
         InitializeComponent();
     }
 }

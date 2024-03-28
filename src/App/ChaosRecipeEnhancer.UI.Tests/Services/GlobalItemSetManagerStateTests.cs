@@ -14,7 +14,7 @@
 //
 //
 //         // Act
-//         var result = itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, new List<EnhancedItem>());
+//         var result = itemSetManagerService.UpdateStashContentsByIndex(1, new List<int> { 0 }, new List<EnhancedItem>());
 //
 //         // Assert
 //         result.Should().BeTrue();
@@ -28,7 +28,7 @@
 //         var itemSetManagerService = new GlobalItemSetManagerState();
 //
 //         // Act
-//         var result = itemSetManagerService.UpdateStashContents(1, new List<int>(), new List<EnhancedItem>());
+//         var result = itemSetManagerService.UpdateStashContentsByIndex(1, new List<int>(), new List<EnhancedItem>());
 //
 //         // Assert
 //         result.Should().BeFalse();
@@ -40,7 +40,7 @@
 //         // Arrange
 //         var itemSetManagerService = new GlobalItemSetManagerState();
 //         var itemSet = GenerateFullSet();
-//         itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, itemSet);
+//         itemSetManagerService.UpdateStashContentsByIndex(1, new List<int> { 0 }, itemSet);
 //
 //         // Act
 //         itemSetManagerService.CalculateItemAmounts();
@@ -62,7 +62,7 @@
 //         // Arrange
 //         var itemSetManagerService = new GlobalItemSetManagerState();
 //         var itemSet = new List<EnhancedItem> { new() { DerivedItemClass = GameTerminology.TwoHandWeapons, ItemLevel = 70 } };
-//         itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, itemSet);
+//         itemSetManagerService.UpdateStashContentsByIndex(1, new List<int> { 0 }, itemSet);
 //
 //         // Act
 //         itemSetManagerService.CalculateItemAmounts();
@@ -77,7 +77,7 @@
 //         // Arrange
 //         var itemSetManagerService = new GlobalItemSetManagerState();
 //         var itemSet = GenerateFullSet();
-//         itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, itemSet);
+//         itemSetManagerService.UpdateStashContentsByIndex(1, new List<int> { 0 }, itemSet);
 //
 //         // Act
 //         itemSetManagerService.CalculateItemAmounts();
@@ -92,7 +92,7 @@
 //         // Arrange
 //         var itemSetManagerService = new GlobalItemSetManagerState();
 //         var itemSet = GenerateFullSet();
-//         itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, itemSet);
+//         itemSetManagerService.UpdateStashContentsByIndex(1, new List<int> { 0 }, itemSet);
 //         itemSetManagerService.CalculateItemAmounts();
 //
 //         // Act
@@ -109,7 +109,7 @@
 //         var itemSetManagerService = new GlobalItemSetManagerState();
 //         var itemSet = GenerateFullSet();
 //         itemSet.Add(new EnhancedItem { DerivedItemClass = GameTerminology.TwoHandWeapons, ItemLevel = 70 });
-//         itemSetManagerService.UpdateStashContents(1, new List<int> { 0 }, itemSet);
+//         itemSetManagerService.UpdateStashContentsByIndex(1, new List<int> { 0 }, itemSet);
 //         itemSetManagerService.CalculateItemAmounts();
 //
 //         // Act

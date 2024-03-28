@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms"
-             xmlns:zemotoCommon="clr-namespace:ChaosRecipeEnhancer.UI.Utilities.ZemotoCommon"
+             xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
              mc:Ignorable="d"
              Background="#202020"
              d:DataContext="{d:DesignInstance Type=local:LootFilterManipulationFormViewModel}">
 
     <UserControl.Resources>
-        <zemotoCommon:NullOrEmptyToBoolConverter x:Key="NullOrEmptyToBoolConverter" />
+        <creConverters:NullOrEmptyToBoolConverter x:Key="NullOrEmptyToBoolConverter" />
     </UserControl.Resources>
 
     <Grid
@@ -51,7 +51,7 @@
             Grid.Row="1"
             Margin="15 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding Settings.LootFilterManipulationEnabled, Mode=TwoWay}" />
+            IsChecked="{Binding GlobalUserSettings.LootFilterManipulationEnabled, Mode=TwoWay}" />
 
         <TextBlock
             Grid.Column="0"
@@ -69,10 +69,10 @@
             Margin="15 0 0 10"
             Width="150"
             Click="OnLootFilterFileDialogInputClicked"
-            ToolTip="{Binding Settings.LootFilterFileLocation, Mode=OneWay}"
-            ToolTipService.IsEnabled="{Binding Settings.LootFilterFileLocation, Converter={StaticResource NullOrEmptyToBoolConverter}}"
+            ToolTip="{Binding GlobalUserSettings.LootFilterFileLocation, Mode=OneWay}"
+            ToolTipService.IsEnabled="{Binding GlobalUserSettings.LootFilterFileLocation, Converter={StaticResource NullOrEmptyToBoolConverter}}"
             ToolTipService.InitialShowDelay="50"
-            Content="{Binding Settings.LootFilterFileLocation, Mode=OneWay}"
+            Content="{Binding GlobalUserSettings.LootFilterFileLocation, Mode=OneWay}"
             HorizontalContentAlignment="Left" />
 
         <TextBlock
@@ -89,7 +89,7 @@
             Grid.Row="3"
             Margin="15 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding Settings.LootFilterIconsEnabled, Mode=TwoWay}" />
+            IsChecked="{Binding GlobalUserSettings.LootFilterIconsEnabled, Mode=TwoWay}" />
 
         <!-- Clean Loot Filter Button -->
         <Button
