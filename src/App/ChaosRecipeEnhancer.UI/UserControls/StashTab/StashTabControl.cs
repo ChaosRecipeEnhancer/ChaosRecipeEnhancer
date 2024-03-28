@@ -1,4 +1,7 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Properties;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
@@ -14,7 +17,21 @@ public class StashTabControl : CreViewModelBase
     {
         Name = name;
         Index = index;
-        TabHeaderColor = Brushes.Transparent;
+
+        var tabHeaderColor = !string.IsNullOrWhiteSpace(Settings.Default.StashTabOverlayTabDefaultBackgroundColor)
+            ? (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayTabDefaultBackgroundColor)
+            : Colors.Transparent;
+
+        var opacity = Settings.Default.StashTabOverlayTabOpacity;
+        var tabHeaderColorWithOpacity = new Color
+        {
+            A = (byte)(opacity * 255),
+            R = tabHeaderColor.R,
+            G = tabHeaderColor.G,
+            B = tabHeaderColor.B
+        };
+
+        TabHeaderColor = new SolidColorBrush(tabHeaderColorWithOpacity);
     }
 
     public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = [];
@@ -28,6 +45,40 @@ public class StashTabControl : CreViewModelBase
         get => _tabHeaderColor;
         set => SetProperty(ref _tabHeaderColor, value);
     }
+
+    public void SetTabHeaderColorForHighlightingFromUserSettings()
+    {
+        Color tabHeaderColor = Colors.Transparent; // Default to transparent color
+
+        // Check if the setting value is not null or whitespace
+        if (!string.IsNullOrWhiteSpace(Settings.Default.StashTabOverlayHighlightColor))
+        {
+            try
+            {
+                // Attempt to convert the setting string to a Color
+                tabHeaderColor = (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor);
+            }
+            catch (FormatException e)
+            {
+                Log.Error(e, "Failed to convert the setting string to a Color object.");
+                // If the conversion fails, tabHeaderColor remains as the default transparent color
+            }
+        }
+
+        // Ensure opacity is within a valid range [0, 1]
+        var opacity = Math.Max(0, Math.Min(1, Settings.Default.StashTabOverlayTabOpacity));
+
+        var tabHeaderColorWithOpacity = new Color
+        {
+            A = (byte)(opacity * 255), // Apply opacity
+            R = tabHeaderColor.R,
+            G = tabHeaderColor.G,
+            B = tabHeaderColor.B
+        };
+
+        TabHeaderColor = new SolidColorBrush(tabHeaderColorWithOpacity);
+    }
+
 
     /// <summary>
     /// Creates an N x N grid of interactive <see cref="InteractiveStashTabCell"/> objects. All objects are initialized to inactive.
