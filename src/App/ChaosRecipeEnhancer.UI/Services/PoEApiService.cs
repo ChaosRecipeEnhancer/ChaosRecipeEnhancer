@@ -158,10 +158,12 @@ public class PoEApiService : IPoEApiService
             case HttpStatusCode.TooManyRequests:
                 _log.Error("429 Too Many Requests - You are rate limited.");
 
+                var timeoutString = GenerateTimeoutString(response);
+
                 GlobalErrorHandler.Spawn(
                     (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
                     "Error: API Service - 429 Too Many Requests (Rate Limit)",
-                    preamble: "You are making too many requests in a short period of time - You are rate limited. Wait a minute and try again."
+                    preamble: $"You are making too many requests in a short period of time - You are rate limited. Wait at least {timeoutString} and try again."
                 );
 
                 return null;
@@ -240,6 +242,56 @@ public class PoEApiService : IPoEApiService
 
             return null;
         }
+    }
+
+    private static string GenerateTimeoutString(HttpResponseMessage response)
+    {
+        const string retryHeader = "Retry-After";
+        
+        var retryAfter = response.Headers.GetValues(retryHeader).Select(int.Parse).ToList();
+        
+        // Multiple timeout rules may apply, take the longest timeout
+        if (retryAfter.Count > 1)
+        {
+            retryAfter = retryAfter.OrderByDescending(x => x).ToList();
+        }
+
+        var latestTimeoutInSeconds = retryAfter.First();
+
+        var timeSpan = TimeSpan.FromSeconds(latestTimeoutInSeconds);
+
+        var formattedTimeoutString = "";
+
+        if (timeSpan.Hours > 0)
+        {
+            formattedTimeoutString += $"{timeSpan.Hours} hour{(timeSpan.Hours > 1 ? "s" : "")}, ";
+        }
+
+        if (timeSpan.Minutes > 0)
+        {
+            formattedTimeoutString += $"{timeSpan.Minutes} minute{(timeSpan.Minutes > 1 ? "s" : "")}, ";
+        }
+
+        if (timeSpan.Seconds > 0)
+        {
+            formattedTimeoutString += $"{timeSpan.Seconds} second{(timeSpan.Seconds > 1 ? "s" : "")}";
+        }
+        
+        // If there is a trailing comma and space, remove it (e.g. "1 minute, )" -> "1 minute")
+        if (formattedTimeoutString.EndsWith(", "))
+        {
+            formattedTimeoutString = formattedTimeoutString.Substring(0, formattedTimeoutString.Length - 2);
+        }
+
+        // If the timeout is only seconds, we do not need an 'and' before the seconds
+        if (!formattedTimeoutString.Contains(','))
+        {
+            return formattedTimeoutString;
+        }
+        var lastCommaIndex = formattedTimeoutString.LastIndexOf(',');
+        formattedTimeoutString = formattedTimeoutString.Remove(lastCommaIndex, 1).Insert(lastCommaIndex, " and");
+
+        return formattedTimeoutString;
     }
 
     #endregion
