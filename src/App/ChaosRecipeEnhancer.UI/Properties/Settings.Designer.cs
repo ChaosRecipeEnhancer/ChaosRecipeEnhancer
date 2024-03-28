@@ -825,5 +825,53 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["SoundLevel"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StashTabIdentifiers {
+            get {
+                return ((string)(this["StashTabIdentifiers"]));
+            }
+            set {
+                this["StashTabIdentifiers"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#00000000")]
+        public string StashTabOverlayTabDefaultBackgroundColor {
+            get {
+                return ((string)(this["StashTabOverlayTabDefaultBackgroundColor"]));
+            }
+            set {
+                this["StashTabOverlayTabDefaultBackgroundColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double StashTabOverlayTabGroupBottomMargin {
+            get {
+                return ((double)(this["StashTabOverlayTabGroupBottomMargin"]));
+            }
+            set {
+                this["StashTabOverlayTabGroupBottomMargin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public float StashTabOverlayTabOpacity {
+            get {
+                return ((float)(this["StashTabOverlayTabOpacity"]));
+            }
+            set {
+                this["StashTabOverlayTabOpacity"] = value;
+            }
+        }
     }
 }
