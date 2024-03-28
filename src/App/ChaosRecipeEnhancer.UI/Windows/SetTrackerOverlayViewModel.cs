@@ -450,7 +450,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
         return true;
     }
 
-    public void UpdateStashButtonAndWarningMessage()
+    public void UpdateStashButtonAndWarningMessage(bool playNotificationSound = true)
     {
         // case 1: user just opened the app, hasn't hit fetch yet
         if (NeedsFetching)
@@ -474,7 +474,10 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                 StashButtonTooltipEnabled = false;
                 SetsTooltipEnabled = false;
 
-                PlayItemSetStateChangedNotificationSound();
+                if (playNotificationSound)
+                {
+                    PlayItemSetStateChangedNotificationSound();
+                }
             }
 
             // case 3: user fetched data and has at least 1 set, but not to their full threshold

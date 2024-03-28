@@ -52,7 +52,7 @@ public partial class SetTrackerOverlayWindow : Window
                  e.PropertyName == nameof(Settings.StashTabPrefix) ||
                  e.PropertyName == nameof(Settings.SilenceSetsFullMessage) ||
                  e.PropertyName == nameof(Settings.SilenceNeedItemsMessage))
-            _model.UpdateStashButtonAndWarningMessage();
+            _model.UpdateStashButtonAndWarningMessage(false);
     }
 
     private void UpdateOverlayType()
