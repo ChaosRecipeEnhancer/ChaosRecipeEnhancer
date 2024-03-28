@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Properties;
+using ChaosRecipeEnhancer.UI.State;
+using ChaosRecipeEnhancer.UI.Utilities.Native;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.State;
-using ChaosRecipeEnhancer.UI.Utilities.Native;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
@@ -16,6 +17,13 @@ public interface IReloadFilterService
 
 public class ReloadFilterService : IReloadFilterService
 {
+    private readonly INotificationSoundService _notificationSoundService;
+
+    public ReloadFilterService(INotificationSoundService notificationSoundService)
+    {
+        _notificationSoundService = notificationSoundService;
+    }
+
     public void ReloadFilter()
     {
         var chatCommand = BuildFilterReloadCommand();
@@ -53,12 +61,15 @@ public class ReloadFilterService : IReloadFilterService
         Clipboard.Clear();
         Clipboard.SetText(chatCommand);
 
-		Task.Run(() => {
-			SendKeys.SendWait("{ENTER}");
-			SendKeys.SendWait("^(v)");
-			SendKeys.SendWait("{ENTER}");
-		});
-	}
+        Task.Run(() =>
+        {
+            SendKeys.SendWait("{ENTER}");
+            SendKeys.SendWait("^(v)");
+            SendKeys.SendWait("{ENTER}");
+        });
+
+        _notificationSoundService.PlayNotificationSound(NotificationSoundType.FilterReloaded);
+    }
 
     private string BuildFilterReloadCommand()
     {

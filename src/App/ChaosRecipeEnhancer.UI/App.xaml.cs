@@ -64,6 +64,7 @@ public partial class App
         services.AddSingleton<IUserSettings, UserSettings>();
         services.AddSingleton<IReloadFilterService, ReloadFilterService>();
         services.AddSingleton<IFilterManipulationService, FilterManipulationService>();
+        services.AddSingleton<INotificationSoundService, NotificationSoundService>();
 
         // HttpClient Registration
         services.AddHttpClient<IAuthStateManager, AuthStateManager>();
@@ -91,11 +92,15 @@ public partial class App
         services.AddSingleton<IPoEApiService, PoEApiService>();
 
         // ViewModel Registration
-        services.AddTransient<PathOfExileAccountOAuthFormViewModel>();
         services.AddTransient<GeneralFormViewModel>();
-        services.AddTransient<RecipesFormViewModel>();
         services.AddTransient<SetTrackerOverlayFormViewModel>();
+        services.AddTransient<StashTabOverlayViewModel>();
+        services.AddTransient<PathOfExileAccountOAuthFormViewModel>();
+        services.AddTransient<RecipesFormViewModel>();
         services.AddTransient<AdvancedFormViewModel>();
+        services.AddTransient<SystemFormViewModel>();
+
+        // Eventually we will want to hook up more ViewModels here...
     }
 
     private void OnStartup(object sender, StartupEventArgs e)

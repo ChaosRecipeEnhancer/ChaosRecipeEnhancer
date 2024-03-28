@@ -2,6 +2,7 @@
 using ChaosRecipeEnhancer.UI.Properties;
 using Serilog;
 using System;
+using System.Collections.Generic;
 
 namespace ChaosRecipeEnhancer.UI.Models;
 
@@ -21,14 +22,17 @@ public interface IUserSettings
     int PathOfExileClientLogLocationMode { get; set; }
     string LeagueName { get; set; }
     int StashTabQueryMode { get; set; }
-    string StashTabIndices { get; set; }
+    public HashSet<string> StashTabIds { get; set; }
+    public HashSet<string> StashTabIndices { get; set; }
     string StashTabPrefix { get; set; }
     bool AutoFetchOnRezoneEnabled { get; set; }
     int FullSetThreshold { get; set; }
     bool DoNotPreserveLowItemLevelGear { get; set; }
 
     // CRE Window Settings
+    bool CloseToTrayEnabled { get; set; }
     int SettingsWindowNavIndex { get; set; }
+    Language Language { get; set; }
 
     // CRE Overlay Settings
     SetTrackerOverlayItemCounterDisplayMode SetTrackerOverlayItemCounterDisplayMode { get; set; }
@@ -48,6 +52,10 @@ public interface IUserSettings
     bool LootFilterHelmetsAlwaysActive { get; set; }
     bool LootFilterBodyArmourAlwaysActive { get; set; }
     bool LootFilterWeaponsAlwaysActive { get; set; }
+
+    // CRE Sound Settings
+    bool SoundEnabled { get; set; }
+    double SoundLevel { get; set; }
 
     void Reset();
 }
@@ -184,6 +192,8 @@ public class UserSettings : IUserSettings
         get => Settings.Default.LeagueName;
         set
         {
+            Log.Information("UserSettings - LeagueName set to {LeagueName}", value);
+
             if (Settings.Default.LeagueName != value)
             {
                 Settings.Default.LeagueName = value;
@@ -205,15 +215,29 @@ public class UserSettings : IUserSettings
         }
     }
 
-    public string StashTabIndices
+    public HashSet<string> StashTabIndices
     {
-        get => Settings.Default.StashTabIndices;
+        get => new HashSet<string>((Settings.Default.StashTabIndices ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries));
         set
         {
-            Log.Information("StashTabIndices: {StashTabIndices}", value);
-            if (Settings.Default.StashTabIndices != value)
+            var indicesString = value != null ? string.Join(",", value) : "";
+            if (Settings.Default.StashTabIndices != indicesString)
             {
-                Settings.Default.StashTabIndices = value;
+                Settings.Default.StashTabIndices = indicesString;
+                Save();
+            }
+        }
+    }
+
+    public HashSet<string> StashTabIds
+    {
+        get => new HashSet<string>((Settings.Default.StashTabIdentifiers ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries));
+        set
+        {
+            var idsString = value != null ? string.Join(",", value) : "";
+            if (Settings.Default.StashTabIdentifiers != idsString)
+            {
+                Settings.Default.StashTabIdentifiers = idsString;
                 Save();
             }
         }
@@ -271,10 +295,22 @@ public class UserSettings : IUserSettings
         }
     }
 
-
     #endregion
 
     #region CRE Window Settings
+
+    public bool CloseToTrayEnabled
+    {
+        get => Settings.Default.CloseToTrayEnabled;
+        set
+        {
+            if (Settings.Default.CloseToTrayEnabled != value)
+            {
+                Settings.Default.CloseToTrayEnabled = value;
+                Save();
+            }
+        }
+    }
 
     public int SettingsWindowNavIndex
     {
@@ -284,6 +320,19 @@ public class UserSettings : IUserSettings
             if (Settings.Default.SettingsWindowNavIndex != value)
             {
                 Settings.Default.SettingsWindowNavIndex = value;
+                Save();
+            }
+        }
+    }
+
+    public Language Language
+    {
+        get => (Language)Settings.Default.Language;
+        set
+        {
+            if (Settings.Default.Language != (int)value)
+            {
+                Settings.Default.Language = (int)value;
                 Save();
             }
         }
@@ -487,6 +536,36 @@ public class UserSettings : IUserSettings
             if (Settings.Default.LootFilterWeaponsAlwaysActive != value)
             {
                 Settings.Default.LootFilterWeaponsAlwaysActive = value;
+                Save();
+            }
+        }
+    }
+
+    #endregion
+
+    #region CRE Sound Settings
+
+    public bool SoundEnabled
+    {
+        get => Settings.Default.SoundEnabled;
+        set
+        {
+            if (Settings.Default.SoundEnabled != value)
+            {
+                Settings.Default.SoundEnabled = value;
+                Save();
+            }
+        }
+    }
+
+    public double SoundLevel
+    {
+        get => Settings.Default.SoundLevel;
+        set
+        {
+            if (Settings.Default.SoundLevel != value)
+            {
+                Settings.Default.SoundLevel = value;
                 Save();
             }
         }

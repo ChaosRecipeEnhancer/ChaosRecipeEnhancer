@@ -10,13 +10,15 @@ public enum ConnectionStatusTypes
 
 public enum StashTabOverlayHighlightMode
 {
-    SetBySet
+    SetBySet,
+    ItemByItem
 }
 
 public enum StashTabQueryMode
 {
-    SelectTabsFromList,
-    TabNamePrefix
+    SelectTabsByIndex,
+    TabNamePrefix,
+    SelectTabsById
 }
 
 public enum SetTrackerOverlayMode
@@ -43,4 +45,16 @@ public enum ClientLogFileLocationMode
     DefaultStandaloneLocation,
     DefaultSteamLocation,
     CustomLocation
+}
+
+public enum Language
+{
+    English,
+    French,
+    German,
+    Portuguese,
+    Russian,
+    Spanish,
+    Japanese,
+    Korean
 }

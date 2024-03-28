@@ -52,7 +52,7 @@ public partial class SetTrackerOverlayWindow : Window
                  e.PropertyName == nameof(Settings.StashTabPrefix) ||
                  e.PropertyName == nameof(Settings.SilenceSetsFullMessage) ||
                  e.PropertyName == nameof(Settings.SilenceNeedItemsMessage))
-            _model.UpdateStashButtonAndWarningMessage();
+            _model.UpdateStashButtonAndWarningMessage(false);
     }
 
     private void UpdateOverlayType()
@@ -94,7 +94,6 @@ public partial class SetTrackerOverlayWindow : Window
 
     public new virtual void Show()
     {
-
         if (_model.GlobalUserSettings.AutoFetchOnRezoneEnabled &&
             string.IsNullOrWhiteSpace(_model.GlobalUserSettings.PathOfExileClientLogLocation))
         {
@@ -123,7 +122,7 @@ public partial class SetTrackerOverlayWindow : Window
     {
         if (!IsOpen) return;
 
-        var successfulResult = await _model.FetchStashDataAsync(); // Fire and forget async
+        var successfulResult = await _model.FetchStashDataAsync();
 
         if (!successfulResult)
         {

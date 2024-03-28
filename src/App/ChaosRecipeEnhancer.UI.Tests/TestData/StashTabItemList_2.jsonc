@@ -1,0 +1,174 @@
+{
+    "stash": {
+        "id": "a127431fb8",
+        "name": "CRE (Bone Ring Test)",
+        "type": "PremiumStash",
+        "index": 0,
+        "metadata": {
+            "colour": "dddddd"
+        },
+        "items": [
+            {
+                "verified": false,
+                "w": 1,
+                "h": 1,
+                "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQm9uZVJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/4ed569fff9/BoneRing.png",
+                "league": "Standard",
+                "id": "d5772e511ab70ab26569ccc0252ea08bb2ef0bba3f4aa56400cccf93a49cf226",
+                "name": "Pain Grip",
+                "typeLine": "Bone Ring",
+                "baseType": "Bone Ring",
+                "rarity": "Rare",
+                "ilvl": 74,
+                "identified": true,
+                "requirements": [
+                    {
+                        "name": "Level",
+                        "values": [
+                            [
+                                "57",
+                                0
+                            ]
+                        ],
+                        "displayMode": 0,
+                        "type": 62
+                    }
+                ],
+                "implicitMods": [
+                    "Minions have +14% to all Elemental Resistances"
+                ],
+                "explicitMods": [
+                    "+29 to maximum Energy Shield",
+                    "+43% to Lightning Resistance",
+                    "Minions have +12% to all Elemental Resistances",
+                    "Minions have 14% increased Attack and Cast Speed"
+                ],
+                "frameType": 2,
+                "x": 2,
+                "y": 0,
+                "inventoryId": "Stash1"
+            },
+            {
+                "verified": false,
+                "w": 1,
+                "h": 1,
+                "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTW9vbnN0b25lUmluZyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/6dbab29358/MoonstoneRing.png",
+                "league": "Standard",
+                "id": "2322f714a78eba3e9a3a447c86d7256a250b6adeeea07a8dca45bb2ae6cd10e3",
+                "name": "Glyph Coil",
+                "typeLine": "Moonstone Ring",
+                "baseType": "Moonstone Ring",
+                "rarity": "Rare",
+                "ilvl": 85,
+                "identified": true,
+                "requirements": [
+                    {
+                        "name": "Level",
+                        "values": [
+                            [
+                                "60",
+                                0
+                            ]
+                        ],
+                        "displayMode": 0,
+                        "type": 62
+                    }
+                ],
+                "implicitMods": [
+                    "+24 to maximum Energy Shield"
+                ],
+                "explicitMods": [
+                    "+23 to Dexterity",
+                    "+22 to maximum Life",
+                    "+66 to maximum Mana",
+                    "+1 to Minimum Power Charges",
+                    "3% chance to gain a Power Charge on Kill"
+                ],
+                "frameType": 2,
+                "x": 0,
+                "y": 0,
+                "inventoryId": "Stash1"
+            },
+            {
+                "verified": false,
+                "w": 1,
+                "h": 1,
+                "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/0e04df86a3/Ring7.png",
+                "league": "Standard",
+                "id": "0fc662c5a101b33825afea603dfdf2eea470dfa1900537641009f6eca55b4369",
+                "name": "Glyph Coil",
+                "typeLine": "Ruby Ring",
+                "baseType": "Ruby Ring",
+                "rarity": "Rare",
+                "ilvl": 77,
+                "identified": true,
+                "requirements": [
+                    {
+                        "name": "Level",
+                        "values": [
+                            [
+                                "59",
+                                0
+                            ]
+                        ],
+                        "displayMode": 0,
+                        "type": 62
+                    }
+                ],
+                "implicitMods": [
+                    "+27% to Fire Resistance"
+                ],
+                "explicitMods": [
+                    "+19% to Global Critical Strike Multiplier",
+                    "+40 to maximum Energy Shield",
+                    "14% increased Mana Regeneration Rate",
+                    "+14% to all Elemental Resistances"
+                ],
+                "frameType": 2,
+                "x": 0,
+                "y": 1,
+                "inventoryId": "Stash1"
+            },
+            {
+                "verified": false,
+                "w": 1,
+                "h": 1,
+                "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQm9uZVJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/4ed569fff9/BoneRing.png",
+                "league": "Standard",
+                "id": "8bb6e887a0385fa94d4a25cb5dd9dc7514c16e4691f53f5e090aa98315d649de",
+                "name": "Apocalypse Nail",
+                "typeLine": "Bone Ring",
+                "baseType": "Bone Ring",
+                "rarity": "Rare",
+                "ilvl": 86,
+                "identified": true,
+                "requirements": [
+                    {
+                        "name": "Level",
+                        "values": [
+                            [
+                                "57",
+                                0
+                            ]
+                        ],
+                        "displayMode": 0,
+                        "type": 62
+                    }
+                ],
+                "implicitMods": [
+                    "Minions have +12% to all Elemental Resistances"
+                ],
+                "explicitMods": [
+                    "Adds 4 to 10 Physical Damage to Attacks",
+                    "+42% to Lightning Resistance",
+                    "Minions have 32% increased maximum Life",
+                    "33% increased Elemental Damage with Attack Skills"
+                ],
+                "frameType": 2,
+                "x": 2,
+                "y": 1,
+                "inventoryId": "Stash1"
+            }
+        ]
+    }
+}

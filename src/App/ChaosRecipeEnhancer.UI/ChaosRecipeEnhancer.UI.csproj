@@ -14,7 +14,7 @@
 		<PublishWizardCompleted>true</PublishWizardCompleted>
 		<BootstrapperEnabled>true</BootstrapperEnabled>
 		<ApplicationVersion>3.24</ApplicationVersion>
-		<ApplicationRevision>0</ApplicationRevision>
+		<ApplicationRevision>1</ApplicationRevision>
 		<!--Update Settings-->
 		<IsWebBootstrapper>false</IsWebBootstrapper>
 		<Install>true</Install>
@@ -60,9 +60,6 @@
 		<Content Update="Assets\Sounds\FilterChanged.mp3">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Assets\Sounds\ItemPickedUp.mp3">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
 		<!-- Filters -->
 		<None Update="Assets\FilterStyles\NormalItemsStyle.txt">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -83,6 +80,21 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Settings.settings</DependentUpon>
 		</Compile>
+		<None Update="Assets\Sounds\FilterReloaded.wav">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Sounds\ItemSetStateChanged.mp3">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Sounds\ItemSetStateChanged.wav">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Sounds\SetPickingComplete.mp3">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Sounds\SetPickingComplete.wav">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Properties\Settings.settings">
 			<Generator>PublicSettingsSingleFileGenerator</Generator>
 			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -97,6 +109,7 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="8.0.3" />
+		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="TestableIO.System.IO.Abstractions" Version="21.0.2" />
