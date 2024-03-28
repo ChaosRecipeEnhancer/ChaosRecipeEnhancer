@@ -22,7 +22,7 @@ public static class StashTabControlManager
 
         List<int> selectedTabIndices = [];
 
-        if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList)
+        if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsByIndex)
         {
             if (string.IsNullOrWhiteSpace(Settings.Default.StashTabIndices))
             {
