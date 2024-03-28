@@ -113,13 +113,14 @@
             VerticalContentAlignment="Center"
             SelectedIndex="{Binding StashTabQueryMode, Mode=TwoWay}">
 
-            <ComboBoxItem Content="Select Tabs From List" />
+            <ComboBoxItem Content="Select Tab By Index" />
             <ComboBoxItem Content="Tab Name Prefix" />
+            <ComboBoxItem Content="Select Tab By ID (Experimental)" />
 
         </ComboBox>
         <!-- Stash Tab Query Mode Selector Start -->
 
-        <!-- Select Tab From List Start -->
+        <!-- Select Tab By Index Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="3"
@@ -154,8 +155,8 @@
                 SelectAllContent="Select All / Clear All"
                 MaxDropDownHeight="300"
                 ItemSelectionChanged="OnStashTabSelectionChanged"
-                SelectedItemsOverride="{Binding Path=SelectedStashTabs, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                ItemsSource="{Binding StashTabIndexNameFullList}"
+                SelectedItemsOverride="{Binding Path=SelectedStashTabsByIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                ItemsSource="{Binding StashTabFullListForSelectionByIndex}"
                 ValueMemberPath="Index"
                 VerticalContentAlignment="Center"
                 HorizontalAlignment="Center"
@@ -172,7 +173,14 @@
 
                 <xctk:CheckComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" Foreground="#202020" />
+                        <TextBlock Foreground="#202020">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="[Index {0}] {1}">
+                                    <Binding Path="Index"/>
+                                    <Binding Path="Name"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </DataTemplate>
                 </xctk:CheckComboBox.ItemTemplate>
 
@@ -189,8 +197,7 @@
                 Command="{Binding FetchStashTabsCommand}" />
 
         </Grid>
-
-        <!-- Select Tab From List End -->
+        <!-- Select Tab By Index End -->
 
         <!-- Individual Stash Tab Name Prefix Start -->
         <TextBlock
@@ -209,6 +216,85 @@
             Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
             Text="{Binding StashTabPrefix, Mode=TwoWay}" />
         <!-- Individual Stash Tab Name Prefix End -->
+
+        <!-- Select Tab By Id Start -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="3"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
+            Text="Select Stash Tabs:"
+            Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=2}"/>
+
+        <Grid
+            Grid.Column="1"
+            Grid.Row="3"
+            Margin="10 0 0 10"
+            Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=2}">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <xctk:CheckComboBox
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.ColumnSpan="3"
+                Margin="0 0 5 0"
+                Width="160"
+                IsSelectAllActive="True"
+                SelectAllContent="Select All / Clear All"
+                MaxDropDownHeight="300"
+                ItemSelectionChanged="OnStashTabSelectionChanged"
+                SelectedItemsOverride="{Binding Path=SelectedStashTabsById, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                ItemsSource="{Binding StashTabFullListForSelectionById}"
+                ValueMemberPath="Id"
+                VerticalContentAlignment="Center"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+                <xctk:CheckComboBox.Resources>
+                    <Style TargetType="{x:Type CheckBox}">
+                        <Setter Property="Background" Value="White" />
+                    </Style>
+                    <Style TargetType="{x:Type xctk:SelectAllSelectorItem}">
+                        <Setter Property="Background" Value="#202020" />
+                    </Style>
+                </xctk:CheckComboBox.Resources>
+
+                <xctk:CheckComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="#202020">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="[ID {0}] {1}">
+                                    <Binding Path="Id"/>
+                                    <Binding Path="Name"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </xctk:CheckComboBox.ItemTemplate>
+
+            </xctk:CheckComboBox>
+
+            <Button
+                x:Name="SelectTabById_FetchStashTabsButton"
+                Grid.Column="3"
+                Grid.Row="0"
+                Width="60"
+                Margin="5 0 0 0"
+                Content="Fetch"
+                IsEnabled="{Binding FetchStashTabsButtonEnabled}"
+                Command="{Binding FetchStashTabsCommand}" />
+
+        </Grid>
+        <!-- Select Tab By Id End -->
 
         <!-- Fetch on New Zone Setting Start -->
         <!-- TODO: [Refactor] Enforce reload when this setting is changed (or at the very least, notify users it's required) -->
