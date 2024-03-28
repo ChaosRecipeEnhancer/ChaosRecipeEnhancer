@@ -801,5 +801,29 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["PathOfExileClientLogLocationMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SoundEnabled {
+            get {
+                return ((bool)(this["SoundEnabled"]));
+            }
+            set {
+                this["SoundEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double SoundLevel {
+            get {
+                return ((double)(this["SoundLevel"]));
+            }
+            set {
+                this["SoundLevel"] = value;
+            }
+        }
     }
 }
