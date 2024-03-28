@@ -195,13 +195,13 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="PathOfExileClientLogLocationMode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="SoundEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SoundLevel" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">0.5</Value>
     </Setting>
     <Setting Name="StashTabIdentifiers" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
