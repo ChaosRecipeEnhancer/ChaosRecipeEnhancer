@@ -2,6 +2,7 @@
 using ChaosRecipeEnhancer.UI.Properties;
 using Serilog;
 using System;
+using System.Collections.Generic;
 
 namespace ChaosRecipeEnhancer.UI.Models;
 
@@ -21,7 +22,8 @@ public interface IUserSettings
     int PathOfExileClientLogLocationMode { get; set; }
     string LeagueName { get; set; }
     int StashTabQueryMode { get; set; }
-    string StashTabIndices { get; set; }
+    public HashSet<string> StashTabIds { get; set; }
+    public HashSet<string> StashTabIndices { get; set; }
     string StashTabPrefix { get; set; }
     bool AutoFetchOnRezoneEnabled { get; set; }
     int FullSetThreshold { get; set; }
@@ -190,6 +192,8 @@ public class UserSettings : IUserSettings
         get => Settings.Default.LeagueName;
         set
         {
+            Log.Information("UserSettings - LeagueName set to {LeagueName}", value);
+
             if (Settings.Default.LeagueName != value)
             {
                 Settings.Default.LeagueName = value;
@@ -211,15 +215,29 @@ public class UserSettings : IUserSettings
         }
     }
 
-    public string StashTabIndices
+    public HashSet<string> StashTabIndices
     {
-        get => Settings.Default.StashTabIndices;
+        get => new HashSet<string>((Settings.Default.StashTabIndices ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries));
         set
         {
-            Log.Information("StashTabIndices: {StashTabIndices}", value);
-            if (Settings.Default.StashTabIndices != value)
+            var indicesString = value != null ? string.Join(",", value) : "";
+            if (Settings.Default.StashTabIndices != indicesString)
             {
-                Settings.Default.StashTabIndices = value;
+                Settings.Default.StashTabIndices = indicesString;
+                Save();
+            }
+        }
+    }
+
+    public HashSet<string> StashTabIds
+    {
+        get => new HashSet<string>((Settings.Default.StashTabIdentifiers ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries));
+        set
+        {
+            var idsString = value != null ? string.Join(",", value) : "";
+            if (Settings.Default.StashTabIdentifiers != idsString)
+            {
+                Settings.Default.StashTabIdentifiers = idsString;
                 Save();
             }
         }
