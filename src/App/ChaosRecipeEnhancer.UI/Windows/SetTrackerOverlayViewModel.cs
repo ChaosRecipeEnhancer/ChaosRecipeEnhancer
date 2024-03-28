@@ -262,6 +262,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                         // Manually setting index because we need to know which tab the item came from
                         foreach (var enhancedItem in enhancedItems)
                         {
+                            enhancedItem.StashTabId = id; // we will use the id later
                             enhancedItem.StashTabIndex = index; // Now 'index' refers to the correct stash tab index
                         }
 

@@ -13,8 +13,9 @@ public class StashTabControl : CreViewModelBase
 {
     private SolidColorBrush _tabHeaderColor;
 
-    public StashTabControl(string name, int index)
+    public StashTabControl(string id, string name, int index)
     {
+        Id = id;
         Name = name;
         Index = index;
 
@@ -34,11 +35,12 @@ public class StashTabControl : CreViewModelBase
         TabHeaderColor = new SolidColorBrush(tabHeaderColorWithOpacity);
     }
 
-    public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = [];
+    public string Id { get; set; }
     public TextBlock NameContainer { get; set; }
     public string Name { get; set; }
     public int Index { get; }
     public bool Quad { get; set; }
+    public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = [];
 
     public SolidColorBrush TabHeaderColor
     {
