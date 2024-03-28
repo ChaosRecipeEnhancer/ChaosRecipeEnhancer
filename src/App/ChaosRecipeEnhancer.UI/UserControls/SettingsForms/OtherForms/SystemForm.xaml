@@ -21,6 +21,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -31,39 +33,57 @@
             Text="System"
             FontSize="24" />
 
-        <!-- App Theme Setting Start -->
+        <!-- Sounds Enabled Setting Start -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="1"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
+            Text="Sounds Enabled:" />
 
-        <!-- <TextBlock -->
-        <!--     Grid.Column="0" -->
-        <!--     Grid.Row="1" -->
-        <!--     Margin="0 0 0 10" -->
-        <!--     VerticalAlignment="Center" -->
-        <!--     Text="App Theme:" /> -->
+        <CheckBox
+            Grid.Column="1"
+            Grid.Row="1"
+            Margin="15 0 0 10"
+            VerticalAlignment="Center"
+            IsChecked="{Binding SoundEnabled, Mode=TwoWay}" />
+        <!-- Sounds Enabled Setting End -->
 
-        <!-- <ComboBox -->
-        <!--     Grid.Column="1" -->
-        <!--     Grid.Row="1" -->
-        <!--     Margin="15 0 0 10" -->
-        <!--     Width="150" -->
-        <!--     HorizontalAlignment="Center" -->
-        <!--     SelectionChanged="ComboBox_ThemeSelectionChanged" -->
-        <!--     SelectedIndex="{Binding GlobalUserSettings.AppTheme, Mode=TwoWay}"> -->
+        <!-- Volume Setting Start -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="2"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
+            Text="Volume Level:"
+            ToolTip="Minimizes to Tray when closing the application." />
 
-        <!--     <ComboBoxItem Content="Deep Dark" /> -->
-        <!--     <ComboBoxItem Content="Dark Grey" /> -->
-        <!--     <ComboBoxItem Content="Soft Dark" /> -->
-        <!--     <ComboBoxItem Content="Grey" /> -->
-        <!--     <ComboBoxItem Content="Light" /> -->
-        <!--     <ComboBoxItem Content="Red &amp; Black" /> -->
+        <Slider
+            Grid.Column="1"
+            Grid.Row="2"
+            Margin="15 0 0 10"
+            VerticalAlignment="Center"
+            Minimum="0"
+            Maximum="1"
+            TickFrequency="0.1"
+            IsSnapToTickEnabled="True"
+            IsMoveToPointEnabled="True"
+            Value="{Binding SoundLevel, Mode=TwoWay}" />
+        <!-- Volume Setting End -->
 
-        <!-- </ComboBox> -->
-
-        <!-- App Theme Setting End -->
+        <Button
+            Grid.Column="0"
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Margin="0 0 0 10"
+            Content="Test Sound"
+            IsEnabled="{Binding SoundEnabled, Mode=OneWay}"
+            Command="{Binding TestSoundCommand}" />
 
         <!-- Language Setting Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="2"
+            Grid.Row="4"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Language:"
@@ -71,11 +91,11 @@
 
         <ComboBox
             Grid.Column="1"
-            Grid.Row="2"
+            Grid.Row="4"
             Margin="15 0 0 10"
             Width="150"
             HorizontalAlignment="Center"
-            SelectedIndex="{Binding GlobalUserSettings.Language, Mode=TwoWay}">
+            SelectedIndex="{Binding Language, Mode=TwoWay}">
 
             <ComboBoxItem Content="English" />
             <ComboBoxItem Content="French" />
@@ -91,7 +111,7 @@
         <!-- Close to Tray Setting Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="3"
+            Grid.Row="5"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Close to Tray:"
@@ -99,10 +119,10 @@
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="3"
+            Grid.Row="5"
             Margin="15 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding GlobalUserSettings.CloseToTrayEnabled, Mode=TwoWay}" />
+            IsChecked="{Binding CloseToTrayEnabled, Mode=TwoWay}" />
         <!-- Close to Tray Setting End -->
 
         <!-- Debug Mode Setting  Start -->

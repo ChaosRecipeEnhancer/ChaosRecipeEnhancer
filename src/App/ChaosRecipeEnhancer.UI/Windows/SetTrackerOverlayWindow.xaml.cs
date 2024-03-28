@@ -94,7 +94,6 @@ public partial class SetTrackerOverlayWindow : Window
 
     public new virtual void Show()
     {
-
         if (_model.GlobalUserSettings.AutoFetchOnRezoneEnabled &&
             string.IsNullOrWhiteSpace(_model.GlobalUserSettings.PathOfExileClientLogLocation))
         {
@@ -123,7 +122,7 @@ public partial class SetTrackerOverlayWindow : Window
     {
         if (!IsOpen) return;
 
-        var successfulResult = await _model.FetchStashDataAsync(); // Fire and forget async
+        var successfulResult = await _model.FetchStashDataAsync();
 
         if (!successfulResult)
         {

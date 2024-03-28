@@ -28,7 +28,9 @@ public interface IUserSettings
     bool DoNotPreserveLowItemLevelGear { get; set; }
 
     // CRE Window Settings
+    bool CloseToTrayEnabled { get; set; }
     int SettingsWindowNavIndex { get; set; }
+    Language Language { get; set; }
 
     // CRE Overlay Settings
     SetTrackerOverlayItemCounterDisplayMode SetTrackerOverlayItemCounterDisplayMode { get; set; }
@@ -48,6 +50,10 @@ public interface IUserSettings
     bool LootFilterHelmetsAlwaysActive { get; set; }
     bool LootFilterBodyArmourAlwaysActive { get; set; }
     bool LootFilterWeaponsAlwaysActive { get; set; }
+
+    // CRE Sound Settings
+    bool SoundEnabled { get; set; }
+    double SoundLevel { get; set; }
 
     void Reset();
 }
@@ -271,10 +277,22 @@ public class UserSettings : IUserSettings
         }
     }
 
-
     #endregion
 
     #region CRE Window Settings
+
+    public bool CloseToTrayEnabled
+    {
+        get => Settings.Default.CloseToTrayEnabled;
+        set
+        {
+            if (Settings.Default.CloseToTrayEnabled != value)
+            {
+                Settings.Default.CloseToTrayEnabled = value;
+                Save();
+            }
+        }
+    }
 
     public int SettingsWindowNavIndex
     {
@@ -284,6 +302,19 @@ public class UserSettings : IUserSettings
             if (Settings.Default.SettingsWindowNavIndex != value)
             {
                 Settings.Default.SettingsWindowNavIndex = value;
+                Save();
+            }
+        }
+    }
+
+    public Language Language
+    {
+        get => (Language)Settings.Default.Language;
+        set
+        {
+            if (Settings.Default.Language != (int)value)
+            {
+                Settings.Default.Language = (int)value;
                 Save();
             }
         }
@@ -487,6 +518,36 @@ public class UserSettings : IUserSettings
             if (Settings.Default.LootFilterWeaponsAlwaysActive != value)
             {
                 Settings.Default.LootFilterWeaponsAlwaysActive = value;
+                Save();
+            }
+        }
+    }
+
+    #endregion
+
+    #region CRE Sound Settings
+
+    public bool SoundEnabled
+    {
+        get => Settings.Default.SoundEnabled;
+        set
+        {
+            if (Settings.Default.SoundEnabled != value)
+            {
+                Settings.Default.SoundEnabled = value;
+                Save();
+            }
+        }
+    }
+
+    public double SoundLevel
+    {
+        get => Settings.Default.SoundLevel;
+        set
+        {
+            if (Settings.Default.SoundLevel != value)
+            {
+                Settings.Default.SoundLevel = value;
                 Save();
             }
         }

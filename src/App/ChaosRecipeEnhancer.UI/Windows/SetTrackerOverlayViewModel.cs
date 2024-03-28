@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
-internal sealed class SetTrackerOverlayViewModel : ViewModelBase
+public sealed class SetTrackerOverlayViewModel : ViewModelBase
 {
     #region Fields
 
@@ -22,6 +22,7 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
     private readonly IPoEApiService _apiService = Ioc.Default.GetRequiredService<IPoEApiService>();
     private readonly IUserSettings _userSettings = Ioc.Default.GetRequiredService<IUserSettings>();
     private readonly IAuthStateManager _authStateManager = Ioc.Default.GetRequiredService<IAuthStateManager>();
+    private readonly INotificationSoundService _notificationSoundService = Ioc.Default.GetRequiredService<INotificationSoundService>();
 
     private const string SetsFullText = "Sets full!";
     private const int FetchCooldown = 30;
@@ -369,6 +370,8 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
                 // stash button is enabled with no warning tooltip
                 StashButtonTooltipEnabled = false;
                 SetsTooltipEnabled = false;
+
+                PlayItemSetStateChangedNotificationSound();
             }
 
             // case 3: user fetched data and has at least 1 set, but not to their full threshold
@@ -494,6 +497,17 @@ internal sealed class SetTrackerOverlayViewModel : ViewModelBase
         OnPropertyChanged(nameof(WarningMessage));
         OnPropertyChanged(nameof(FetchButtonEnabled));
         OnPropertyChanged(nameof(ShowAmountNeeded));
+    }
+
+    public void PlayItemSetStateChangedNotificationSound()
+    {
+        _notificationSoundService.PlayNotificationSound(NotificationSoundType.ItemSetStateChanged);
+    }
+
+    public void PlayFilterReloadedNotificationSound()
+    {
+        // for now we'll just use the same sound as the item set state change
+        _notificationSoundService.PlayNotificationSound(NotificationSoundType.ItemSetStateChanged);
     }
 
     #endregion

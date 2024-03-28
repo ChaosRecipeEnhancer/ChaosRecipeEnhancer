@@ -45,3 +45,15 @@ public enum ClientLogFileLocationMode
     DefaultSteamLocation,
     CustomLocation
 }
+
+public enum Language
+{
+    English,
+    French,
+    German,
+    Portuguese,
+    Russian,
+    Spanish,
+    Japanese,
+    Korean
+}

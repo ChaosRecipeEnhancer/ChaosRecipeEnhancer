@@ -193,6 +193,20 @@ public partial class StashTabOverlayWindow : Window
         }
         else
         {
+            ActivateNextSetBySet(active, stashTabCell);
+        }
+    }
+
+    public void ActivateNextSetBySet(bool active, InteractiveStashTabCell stashTabCell)
+    {
+        if (!active) return;
+
+        if (Settings.Default.StashTabOverlayHighlightMode == (int)StashTabOverlayHighlightMode.ItemByItem)
+        {
+            ActivateNextItemByItem(active, stashTabCell);
+        }
+        else
+        {
             if (SetsToHighlight != null && SetsToHighlight.Count > 0)
             {
                 // check for full sets
@@ -236,6 +250,9 @@ public partial class StashTabOverlayWindow : Window
                     {
                         SetsToHighlight.RemoveAt(0);
 
+                        // play sound to notify user that a set has been completed
+                        _model.PlaySetPickingCompletedNotificationSound();
+
                         // activate next set
                         ActivateNextCell(true, null);
                     }
@@ -273,10 +290,13 @@ public partial class StashTabOverlayWindow : Window
                     // Set the tab header color to transparent
                     currentTab.TabHeaderColor = Brushes.Transparent;
 
-                    // Check if the current set is empty
+                    // Check if the current set is empty after removing the item
                     if (currentSet.Items.Count == 0)
                     {
                         SetsToHighlight.RemoveAt(0);
+
+                        // Play the notification sound when the set is completed
+                        _model.PlaySetPickingCompletedNotificationSound();
                     }
                 }
             }
@@ -302,6 +322,11 @@ public partial class StashTabOverlayWindow : Window
                     }
                 }
             }
+            else
+            {
+                // If the current set is empty, activate the next set
+                ActivateNextItemByItem(active, null);
+            }
         }
     }
 
@@ -313,7 +338,7 @@ public partial class StashTabOverlayWindow : Window
 
         if (Settings.Default.StashTabOverlayHighlightMode == (int)StashTabOverlayHighlightMode.ItemByItem)
         {
-            var itemsToHighlight = new List<EnhancedItem>();
+            var completeSets = new List<EnhancedItemSet>();
 
             foreach (var set in GlobalItemSetManagerState.SetsInProgress)
             {
@@ -322,15 +347,25 @@ public partial class StashTabOverlayWindow : Window
                 if ((set.HasChaosRecipeQualifier && Settings.Default.ChaosRecipeTrackingEnabled) ||
                     (set.IsRegalRecipeEligible && !Settings.Default.ChaosRecipeTrackingEnabled))
                 {
-                    itemsToHighlight.AddRange(set.Items);
+                    if (set.EmptyItemSlots == null || set.EmptyItemSlots.Count == 0)
+                    {
+                        completeSets.Add(new EnhancedItemSet
+                        {
+                            Items = new List<EnhancedItem>(set.Items),
+                            EmptyItemSlots = new List<string>()
+                        });
+                    }
                 }
             }
 
-            SetsToHighlight.Add(new EnhancedItemSet
+            foreach (var completeSet in completeSets)
             {
-                Items = itemsToHighlight,
-                EmptyItemSlots = new List<string>()
-            });
+                SetsToHighlight.Add(new EnhancedItemSet
+                {
+                    Items = new List<EnhancedItem>(completeSet.Items),
+                    EmptyItemSlots = new List<string>()
+                });
+            }
         }
         else
         {
