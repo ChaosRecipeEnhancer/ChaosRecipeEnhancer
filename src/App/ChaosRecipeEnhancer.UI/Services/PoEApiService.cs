@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ChaosRecipeEnhancer.UI.Models.Exceptions;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
@@ -158,7 +159,8 @@ public class PoEApiService : IPoEApiService
             case HttpStatusCode.TooManyRequests:
                 _log.Error("429 Too Many Requests - You are rate limited.");
 
-                var timeoutString = GenerateTimeoutString(response);
+                var retryAfterSeconds = GetRetryAfterSeconds(response);
+                var timeoutString = GenerateTimeoutString(retryAfterSeconds);
 
                 GlobalErrorHandler.Spawn(
                     (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
@@ -166,7 +168,7 @@ public class PoEApiService : IPoEApiService
                     preamble: $"You are making too many requests in a short period of time - You are rate limited. Wait at least {timeoutString} and try again."
                 );
 
-                return null;
+                throw new RateLimitException(retryAfterSeconds);
             case HttpStatusCode.Forbidden:
                 _log.Error("403 Forbidden - It looks like your auth token is invalid.");
 
@@ -244,21 +246,24 @@ public class PoEApiService : IPoEApiService
         }
     }
 
-    private static string GenerateTimeoutString(HttpResponseMessage response)
+    private static int GetRetryAfterSeconds(HttpResponseMessage response)
     {
         const string retryHeader = "Retry-After";
-        
+
         var retryAfter = response.Headers.GetValues(retryHeader).Select(int.Parse).ToList();
-        
+
         // Multiple timeout rules may apply, take the longest timeout
         if (retryAfter.Count > 1)
         {
             retryAfter = retryAfter.OrderByDescending(x => x).ToList();
         }
 
-        var latestTimeoutInSeconds = retryAfter.First();
+        return retryAfter.First();
+    }
 
-        var timeSpan = TimeSpan.FromSeconds(latestTimeoutInSeconds);
+    private static string GenerateTimeoutString(int retryAfterSeconds)
+    {
+        var timeSpan = TimeSpan.FromSeconds(retryAfterSeconds);
 
         var formattedTimeoutString = "";
 
