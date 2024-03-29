@@ -19,12 +19,8 @@ public partial class GeneralForm
     {
         if (_model.NeedsToFetchData())
         {
-            // Dispatch any UI updates back to the UI thread
-            await Dispatcher.InvokeAsync(async () =>
-            {
-                await _model.LoadLeagueListAsync();
-                await _model.LoadStashTabsAsync();
-            });
+            await _model.LoadLeagueListAsync();
+            await _model.LoadStashTabsAsync();
         }
     }
 

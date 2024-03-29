@@ -59,7 +59,13 @@ const getAuthToken = async ({ secretKey, code, codeVerifier }) => {
     urlencodedParams.append("client_secret", secretKey);
     urlencodedParams.append("grant_type", "authorization_code");
     urlencodedParams.append("code", code);
+
+    // Prod Redirect Url
     urlencodedParams.append("redirect_uri", "https://chaos-recipe.com/auth/success");
+
+    // Sandbox Redirect Url
+    // urlencodedParams.append("redirect_uri", "https://sandbox.chaos-recipe.com/auth/success");
+
     urlencodedParams.append("scope", "account:leagues account:stashes account:characters account:item_filter");
     urlencodedParams.append("code_verifier", codeVerifier);
 
@@ -70,6 +76,11 @@ const getAuthToken = async ({ secretKey, code, codeVerifier }) => {
 
     if (!tokenResponse.ok) {
         console.log(`getAuthToken --- Failed to retrieve token: ${tokenResponse.statusText}`);
+
+        // Log the complete error response
+        const errorResponse = await tokenResponse.text();
+        console.log(`getAuthToken --- Error response: ${errorResponse}`);
+
         throw new Error(`Failed to retrieve token: ${tokenResponse.statusText}`);
     }
 
