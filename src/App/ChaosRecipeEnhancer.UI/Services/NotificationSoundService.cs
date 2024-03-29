@@ -1,5 +1,5 @@
-﻿using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.Enums;
+﻿using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using NAudio.Wave;
 using Serilog;
 using System;

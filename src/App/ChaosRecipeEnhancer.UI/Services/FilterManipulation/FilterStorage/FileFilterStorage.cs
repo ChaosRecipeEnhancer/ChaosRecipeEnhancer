@@ -1,5 +1,4 @@
 ﻿using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.State;
 using Serilog;
 using System;
 using System.IO;

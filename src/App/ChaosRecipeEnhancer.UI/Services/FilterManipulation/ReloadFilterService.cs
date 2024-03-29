@@ -1,7 +1,6 @@
 ﻿using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.State;
-using ChaosRecipeEnhancer.UI.Utilities.Native;
+using ChaosRecipeEnhancer.UI.Utilities;
 using System;
 using System.IO;
 using System.Linq;
@@ -30,7 +29,7 @@ public class ReloadFilterService : IReloadFilterService
         if (chatCommand is null) return;
 
         // Map all current window names to their associated "handle to a window" pointers (HWND)
-        var openWindows = WindowsUtilitiesForOverlays.GetOpenWindows();
+        var openWindows = WindowsUtilities.GetOpenWindows();
 
         foreach (var window in openWindows)
         {
@@ -43,7 +42,7 @@ public class ReloadFilterService : IReloadFilterService
         // Find the Process ID associated with the 'Path of Exile' game window
         var poeWindow = openWindows.FirstOrDefault(x => x.Value == "Path of Exile").Key;
 
-        if (WindowsUtilitiesForOverlays.CheckIfWindowExists(poeWindow))
+        if (WindowsUtilities.CheckIfWindowExists(poeWindow))
         {
             GlobalErrorHandler.Spawn(
                 "Could not find PoE window! Please make sure PoE is running.\n\n" +
@@ -55,7 +54,7 @@ public class ReloadFilterService : IReloadFilterService
         }
 
         // Get 'Path of Exile' window in the foreground to actually send input to said window
-        WindowsUtilitiesForOverlays.SetForegroundWindow(poeWindow);
+        WindowsUtilities.SetForegroundWindow(poeWindow);
 
         // Always clear the clipboard first
         Clipboard.Clear();

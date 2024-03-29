@@ -1,6 +1,7 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Utilities;
 using Serilog;
 using System;
@@ -11,7 +12,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ChaosRecipeEnhancer.UI.State;
+namespace ChaosRecipeEnhancer.UI.Services;
 
 public interface IAuthStateManager
 {

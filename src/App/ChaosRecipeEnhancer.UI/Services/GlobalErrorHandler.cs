@@ -1,6 +1,6 @@
 ﻿using ChaosRecipeEnhancer.UI.Windows;
 
-namespace ChaosRecipeEnhancer.UI.State;
+namespace ChaosRecipeEnhancer.UI.Services;
 
 public static class GlobalErrorHandler
 {

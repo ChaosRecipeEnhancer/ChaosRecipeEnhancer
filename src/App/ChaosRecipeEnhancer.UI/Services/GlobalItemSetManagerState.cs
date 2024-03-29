@@ -6,7 +6,7 @@ using ChaosRecipeEnhancer.UI.Properties;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ChaosRecipeEnhancer.UI.State;
+namespace ChaosRecipeEnhancer.UI.Services;
 
 public static class GlobalItemSetManagerState
 {

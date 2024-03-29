@@ -6,7 +6,7 @@ using System.Windows.Input;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Constants;
 
-namespace ChaosRecipeEnhancer.UI.State;
+namespace ChaosRecipeEnhancer.UI.Services;
 
 public static class GlobalHotkeyState
 {
