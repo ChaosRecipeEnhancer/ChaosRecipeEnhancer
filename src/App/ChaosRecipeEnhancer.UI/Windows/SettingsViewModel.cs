@@ -1,5 +1,5 @@
+using ChaosRecipeEnhancer.UI.Common;
 using ChaosRecipeEnhancer.UI.Models.Constants;
-using ChaosRecipeEnhancer.UI.Utilities;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
 using System.Windows.Input;

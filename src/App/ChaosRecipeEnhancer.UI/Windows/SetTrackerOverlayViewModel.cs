@@ -1,8 +1,9 @@
+using ChaosRecipeEnhancer.UI.Common;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
-using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.Utilities;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using System;
@@ -267,7 +268,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                         }
 
                         // add the enhanced items to the filtered stash contents
-                        filteredStashContents.AddRange(EnhancedItemHelper.FilterItemsForRecipe(enhancedItems));
+                        filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
 
                         GlobalItemSetManagerState.UpdateStashContentsByIndex(setThreshold, selectedTabIndices, filteredStashContents);
 
@@ -358,7 +359,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                         }
 
                         // add the enhanced items to the filtered stash contents
-                        filteredStashContents.AddRange(EnhancedItemHelper.FilterItemsForRecipe(enhancedItems));
+                        filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
 
                         GlobalItemSetManagerState.UpdateStashContentsById(setThreshold, selectedTabIds, filteredStashContents);
 

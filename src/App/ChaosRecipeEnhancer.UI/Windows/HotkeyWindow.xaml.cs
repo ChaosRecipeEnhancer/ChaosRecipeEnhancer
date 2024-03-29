@@ -1,8 +1,7 @@
-﻿using System;
-using System.Windows;
-using ChaosRecipeEnhancer.UI.Models.Enums;
+﻿using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.State;
+using System;
+using System.Windows;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
