@@ -21,19 +21,19 @@ public static class GlobalRateLimitState
     /// </summary>
     public static int BanTime { get; set; }
 
-    private static DateTime _rateLimitExpiresOn;
     public static DateTime RateLimitExpiresOn
     {
-        get { return _rateLimitExpiresOn; }
+        get => Properties.Settings.Default.RateLimitExpiresOn;
         set
         {
-            _rateLimitExpiresOn = value;
-
             Log.Information("Rate limit expires on: {RateLimitExpiresOn}", value);
 
-            // Update the user setting whenever the value is set
-            Properties.Settings.Default.RateLimitExpiresOn = value;
-            Properties.Settings.Default.Save();
+            if (Properties.Settings.Default.RateLimitExpiresOn != value)
+            {
+                // Update the user setting whenever the value is set
+                Properties.Settings.Default.RateLimitExpiresOn = value;
+                Properties.Settings.Default.Save();
+            }
         }
     }
 
@@ -86,23 +86,20 @@ public static class GlobalRateLimitState
     /// <returns>True if the client is currently banned, otherwise false.</returns>
     public static bool CheckForBan()
     {
-        if (
-            // first we check our user settings to see if
-            // there's a rate limit from a previous session
-            DateTime.Now < RateLimitExpiresOn ||
-            // The third element indicates the ban time; a
-            // value greater than 0 means the client is banned.
-            RateLimitState[2] > 0
-        )
+        // Check if there's a rate limit from a previous session
+        if (DateTime.Now < RateLimitExpiresOn)
         {
-            if (RateLimitState[2] > 0)
-            {
-                // If the client is banned, update the rate limit expiry time.
-                RateLimitExpiresOn = DateTime.Now.AddSeconds(RateLimitState[2]);
-                BanTime = RateLimitState[2];
-                RateLimitExceeded = true;
-            }
+            RateLimitExceeded = true;
+            return true;
+        }
 
+        // Check the current rate limit state
+        if (RateLimitState[2] > 0)
+        {
+            // If the client is banned, update the rate limit expiry time
+            RateLimitExpiresOn = DateTime.Now.AddSeconds(RateLimitState[2]);
+            BanTime = RateLimitState[2];
+            RateLimitExceeded = true;
             return true;
         }
 
