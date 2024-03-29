@@ -126,6 +126,7 @@ public class AuthStateManager : IAuthStateManager
         // Reset user settings
         _userSettings.PathOfExileAccountName = string.Empty;
         _userSettings.PathOfExileApiAuthToken = string.Empty;
+        _userSettings.PathOfExileApiAuthTokenExpiration = DateTime.MinValue;
 
         // Reset connection status if not in the middle of an auth flow
         if (_userSettings.PoEAccountConnectionStatus != ConnectionStatusTypes.AttemptingLogin)
@@ -176,6 +177,10 @@ public class AuthStateManager : IAuthStateManager
     public bool ValidateAuthToken()
     {
         _log.Debug("Validating authentication token.");
+
+        // I really REALLY need to implement a proper token validation here
+        // I have sent out a request to the PoE API team to see if they can provide
+        // my app with the `oath:introspect` scope so I can validate the token
 
         var isValid =
             !string.IsNullOrEmpty(_userSettings.PathOfExileApiAuthToken) &&
