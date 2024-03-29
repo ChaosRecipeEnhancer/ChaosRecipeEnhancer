@@ -3,9 +3,9 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
-using ChaosRecipeEnhancer.UI.State;
+using ChaosRecipeEnhancer.UI.Services;
 
-namespace ChaosRecipeEnhancer.UI.Utilities.Native;
+namespace ChaosRecipeEnhancer.UI.Native;
 
 internal static class KeyboardHookForGlobalHotkeys
 {
@@ -23,10 +23,10 @@ internal static class KeyboardHookForGlobalHotkeys
     private static readonly LowLevelKeyboardProc LowLevelProc = HookCallback;
 
     // The system hook ID (for storing this application's hook)
-    private static IntPtr HookID = IntPtr.Zero;
+    private static nint HookID = nint.Zero;
 
     // Callbacks
-    private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
+    private delegate nint LowLevelKeyboardProc(int nCode, nint wParam, nint lParam);
 
     /// <summary>
     ///     Fired when a hotkey is fired (duh lol).
@@ -56,7 +56,7 @@ internal static class KeyboardHookForGlobalHotkeys
     /// </summary>
     /// <param name="proc">The callback method to be called when a key up/down occurs</param>
     /// <returns></returns>
-    private static IntPtr SetHook(LowLevelKeyboardProc proc)
+    private static nint SetHook(LowLevelKeyboardProc proc)
     {
         using (var curProcess = Process.GetCurrentProcess())
         {
@@ -74,7 +74,7 @@ internal static class KeyboardHookForGlobalHotkeys
     /// <param name="wParam"></param>
     /// <param name="lParam">LPARAM, contains the key that was pressed. not used atm</param>
     /// <returns>LRESULT</returns>
-    private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+    private static nint HookCallback(int nCode, nint wParam, nint lParam)
     {
         // Checks if this is called from keydown only because key ups aren't used.
         if (nCode >= 0)
@@ -119,16 +119,16 @@ internal static class KeyboardHookForGlobalHotkeys
     }
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
+    private static extern nint SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, nint hMod, uint dwThreadId);
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool UnhookWindowsHookEx(IntPtr hhk);
+    private static extern bool UnhookWindowsHookEx(nint hhk);
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+    private static extern nint CallNextHookEx(nint hhk, int nCode, nint wParam, nint lParam);
 
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern IntPtr GetModuleHandle(string lpModuleName);
+    private static extern nint GetModuleHandle(string lpModuleName);
 }
 

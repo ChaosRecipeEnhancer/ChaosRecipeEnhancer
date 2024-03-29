@@ -2,29 +2,29 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 
-namespace ChaosRecipeEnhancer.UI.Utilities.Native;
+namespace ChaosRecipeEnhancer.UI.Native;
 
 public static class MouseHookForStashTabOverlay
 {
     private const int WH_MOUSE_LL = 14;
 
     private static readonly LowLevelMouseProc MouseProcess = HookCallback;
-    private static IntPtr _hookID = IntPtr.Zero;
+    private static nint _hookID = nint.Zero;
 
     public static event EventHandler<MouseHookEventArgs> MouseAction = delegate { };
 
     public static void Start() => _hookID = SetHook(MouseProcess);
     public static void Stop() => UnhookWindowsHookEx(_hookID);
 
-    private static IntPtr SetHook(LowLevelMouseProc proc)
+    private static nint SetHook(LowLevelMouseProc proc)
     {
         var hook = SetWindowsHookEx(WH_MOUSE_LL, proc, GetModuleHandle("user32"), 0);
-        return hook == IntPtr.Zero ? throw new System.ComponentModel.Win32Exception() : hook;
+        return hook == nint.Zero ? throw new System.ComponentModel.Win32Exception() : hook;
     }
 
-    private delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
+    private delegate nint LowLevelMouseProc(int nCode, nint wParam, nint lParam);
 
-    private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+    private static nint HookCallback(int nCode, nint wParam, nint lParam)
     {
         if (nCode >= 0 && (MouseMessages.WM_LBUTTONDOWN == (MouseMessages)wParam || MouseMessages.WM_LBUTTONUP == (MouseMessages)wParam))
         {
@@ -62,21 +62,21 @@ public static class MouseHookForStashTabOverlay
     {
         public POINT pt;
         public uint mouseData, flags, time;
-        public IntPtr dwExtraInfo;
+        public nint dwExtraInfo;
     }
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelMouseProc lpfn, IntPtr hMod, uint dwThreadId);
+    private static extern nint SetWindowsHookEx(int idHook, LowLevelMouseProc lpfn, nint hMod, uint dwThreadId);
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool UnhookWindowsHookEx(IntPtr hhk);
+    private static extern bool UnhookWindowsHookEx(nint hhk);
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+    private static extern nint CallNextHookEx(nint hhk, int nCode, nint wParam, nint lParam);
 
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern IntPtr GetModuleHandle(string lpModuleName);
+    private static extern nint GetModuleHandle(string lpModuleName);
 }
 
 public class MouseHookEventArgs : EventArgs
