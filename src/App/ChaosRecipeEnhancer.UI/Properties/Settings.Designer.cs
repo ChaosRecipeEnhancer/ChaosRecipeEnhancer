@@ -873,5 +873,16 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["StashTabOverlayTabOpacity"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime RateLimitExpiresOn {
+            get {
+                return ((global::System.DateTime)(this["RateLimitExpiresOn"]));
+            }
+            set {
+                this["RateLimitExpiresOn"] = value;
+            }
+        }
     }
 }

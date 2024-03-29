@@ -34,7 +34,7 @@ public partial class App
         }
         else
         {
-            UpgradeConfiguration.UpgradeSettings();
+            SettingsConfiguration.UpgradeSettings();
             LoggingConfiguration.ConfigureSerilogLogging();
             ExceptionHandlingConfiguration.SetupUnhandledExceptionHandling();
         }
@@ -63,6 +63,7 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
+        SettingsConfiguration.OnClose();
         Log.CloseAndFlush();
         base.OnExit(e);
     }
