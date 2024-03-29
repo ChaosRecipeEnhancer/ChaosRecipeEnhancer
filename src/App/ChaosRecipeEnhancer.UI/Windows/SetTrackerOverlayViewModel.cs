@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ChaosRecipeEnhancer.UI.Models.Exceptions;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
@@ -405,6 +406,15 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
             }
 
             #endregion
+        }
+        catch (RateLimitException e)
+        {
+            FetchButtonEnabled = false;
+            
+            // Cooldown the refresh button until the rate limit is lifted
+            await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));
+            FetchButtonEnabled = true;
+            return false;
         }
         catch (NullReferenceException e)
         {
