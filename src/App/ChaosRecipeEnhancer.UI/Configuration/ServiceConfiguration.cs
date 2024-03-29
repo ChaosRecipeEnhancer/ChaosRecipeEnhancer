@@ -21,6 +21,9 @@ public static class ServiceConfiguration
         ConfigureHttpClients(services);
         ConfigureViewModels(services);
 
+        // Order matters a lot here - these have to be registered
+        // last since they depend on other services
+
         services.AddSingleton<IAuthStateManager, AuthStateManager>();
         services.AddSingleton<IPoEApiService, PoEApiService>();
     }
