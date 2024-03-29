@@ -192,11 +192,7 @@ public class GeneralFormViewModel : CreViewModelBase
         {
             try
             {
-                Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-                {
-                    await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-                });
-                
+                await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
             }
             finally
             {
@@ -364,12 +360,10 @@ public class GeneralFormViewModel : CreViewModelBase
             
             Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
             {
-                await Task.Delay(FetchCooldown * 1000);    
+                await Task.Delay(FetchCooldown * 1000); 
+                // Re-enable the button after the cooldown
+                FetchStashTabsButtonEnabled = true;   
             });
-            
-
-            // Re-enable the button after the cooldown
-            FetchStashTabsButtonEnabled = true;
 
             return;
         }

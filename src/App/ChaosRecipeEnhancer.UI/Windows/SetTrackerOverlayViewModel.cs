@@ -281,10 +281,10 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                             Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                             {
                                 await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
+                                
+                                GlobalRateLimitState.RequestCounter = 0;
+                                GlobalRateLimitState.RateLimitExceeded = false;
                             });
-                            
-                            GlobalRateLimitState.RequestCounter = 0;
-                            GlobalRateLimitState.RateLimitExceeded = false;
                         }
                         else if (GlobalRateLimitState.BanTime > 0)
                         {
@@ -293,9 +293,9 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                             Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                             {
                                 await Task.Delay(GlobalRateLimitState.BanTime * 1000);
+                                
+                                GlobalRateLimitState.BanTime = 0;
                             });
-                            
-                            GlobalRateLimitState.BanTime = 0;
                         }
                     }
 
@@ -385,10 +385,12 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                             Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                             {
                                 await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
+                                
+                                GlobalRateLimitState.RequestCounter = 0;
+                                GlobalRateLimitState.RateLimitExceeded = false;
                             });
                             
-                            GlobalRateLimitState.RequestCounter = 0;
-                            GlobalRateLimitState.RateLimitExceeded = false;
+                            
                         }
                         else if (GlobalRateLimitState.BanTime > 0)
                         {
@@ -396,9 +398,9 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                             Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                             {
                                 await Task.Delay(GlobalRateLimitState.BanTime * 1000);
+                                
+                                GlobalRateLimitState.BanTime = 0;
                             });
-                            
-                            GlobalRateLimitState.BanTime = 0;
                         }
                     }
 

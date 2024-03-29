@@ -81,10 +81,7 @@ public class LogWatcherManager
                 // enforce cooldown on fetch button to reduce chances of rate limiting
                 try
                 {
-                    Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-                    {
-                        await Task.Factory.StartNew(() => Thread.Sleep(AutoFetchCooldown * 1000));
-                    });
+                    await Task.Factory.StartNew(() => Thread.Sleep(AutoFetchCooldown * 1000));
                 }
                 finally
                 {
