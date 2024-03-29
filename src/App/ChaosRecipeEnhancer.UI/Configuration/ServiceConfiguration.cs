@@ -48,27 +48,34 @@ public static class ServiceConfiguration
                     {
                         // Log stuff
                         Log.Information(
-                            "Request {RequestUri} failed with status code {StatusCode}",
+                            "Request {RequestUri} with status code {StatusCode}",
                             response.RequestMessage.RequestUri,
                             response.StatusCode
                         );
 
-                        return response.StatusCode != System.Net.HttpStatusCode.TooManyRequests;
+                        // Retry on 5xx status codes only
+                        // The reason we don't retry 4XX status
+                        // codes is because they are client errors
+                        // i.e. the request was malformed or missing
+                        // so retrying the same request will not help
+
+                        int statusCode = (int)response.StatusCode;
+                        return statusCode >= 500 && statusCode <= 599;
                     })
-                    .WaitAndRetryAsync(
-                        retryCount: 3,
-                        sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                        onRetry: (response, retryCount, context) =>
-                        {
-                            // Log the retry attempts
-                            Log.Information(
-                                "Retrying request {RequestUri} - {StatusCode} - {RetryCount}",
-                                response.Result.RequestMessage.RequestUri,
-                                response.Result.StatusCode,
-                                retryCount
-                            );
-                        }
-                    )
+                .WaitAndRetryAsync(
+                    retryCount: 1,
+                    sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(3), // retry after 3 seconds
+                    onRetry: (response, retryCount, context) =>
+                    {
+                        // Log the retry attempts
+                        Log.Information(
+                            "Retrying request {RequestUri} - {StatusCode} - {RetryCount}",
+                            response.Result.RequestMessage.RequestUri,
+                            response.Result.StatusCode,
+                            retryCount
+                        );
+                    }
+                )
             );
     }
 
