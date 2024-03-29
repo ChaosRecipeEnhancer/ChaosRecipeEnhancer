@@ -10,21 +10,21 @@ public class DoubleToLeftRightGapThicknessConverterTests
     public void Convert_DoubleValue_ReturnsThicknessWithLeftRightGap()
     {
         // Arrange
-        var converter = new DoubleToLeftRightGapThicknessConverter();
+        var converter = new DoubleToLeftRightThicknessConverter();
 
         // Act
         var result = converter.Convert(10.5, null, null, CultureInfo.InvariantCulture);
 
         // Assert
         Assert.IsType<Thickness>(result);
-        Assert.Equal(new Thickness(10.5, 0, 10.5, 0), result);
+        Assert.Equal(new Thickness(10.5, 5, 10.5, 0), result);
     }
 
     [Fact]
     public void Convert_NonDoubleValue_ReturnsUnsetValue()
     {
         // Arrange
-        var converter = new DoubleToLeftRightGapThicknessConverter();
+        var converter = new DoubleToLeftRightThicknessConverter();
 
         // Act
         var result = converter.Convert("InvalidValue", null, null, CultureInfo.InvariantCulture);
@@ -37,7 +37,7 @@ public class DoubleToLeftRightGapThicknessConverterTests
     public void ConvertBack_ThrowsNotImplementedException()
     {
         // Arrange
-        var converter = new DoubleToLeftRightGapThicknessConverter();
+        var converter = new DoubleToLeftRightThicknessConverter();
 
         // Act and Assert
         Assert.Throws<NotImplementedException>(() =>

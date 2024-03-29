@@ -18,7 +18,7 @@ public partial class GeneralForm
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (_model.ReadyToFetchData())
+        if (_model.NeedsToFetchData())
         {
             await Task.Run(async () =>
             {
@@ -26,7 +26,7 @@ public partial class GeneralForm
                 await Dispatcher.InvokeAsync(async () =>
                 {
                     await _model.LoadLeagueListAsync();
-                    await _model.LoadStashTabNamesIndicesAsync();
+                    await _model.LoadStashTabsAsync();
                 });
             });
         }
@@ -35,6 +35,6 @@ public partial class GeneralForm
     private void OnStashTabSelectionChanged(object sender, ItemSelectionChangedEventArgs itemSelectionChangedEventArgs)
     {
         var checkComboBox = (CheckComboBox)sender;
-        _model.UpdateSelectedTabList(checkComboBox.SelectedItems);
+        _model.UpdateUserSettingsForSelectedTabIdentifiers(checkComboBox.SelectedItems);
     }
 }

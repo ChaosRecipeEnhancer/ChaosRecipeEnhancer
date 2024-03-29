@@ -12,22 +12,15 @@
               d:DataContext="{d:DesignInstance Type=local:InteractiveStashTabCell}">
 
     <ItemsControl.Background>
-
-        <SolidColorBrush Opacity="0"
-                         Color="Transparent" />
-
+        <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayOpacity}"
+                         Color="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabOverlayBackgroundColor}" />
     </ItemsControl.Background>
 
     <!-- ItemsPanelTemplate -->
     <ItemsControl.ItemsPanel>
-
         <ItemsPanelTemplate>
-
-            <UniformGrid Columns="24"
-                         Rows="24" />
-
+            <UniformGrid Columns="24" Rows="24" />
         </ItemsPanelTemplate>
-
     </ItemsControl.ItemsPanel>
 
     <!-- ItemTemplate -->

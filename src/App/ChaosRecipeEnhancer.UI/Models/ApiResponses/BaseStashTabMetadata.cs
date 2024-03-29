@@ -34,5 +34,5 @@ public class BaseStashTabMetadata
 
     [JsonPropertyName("items")] public List<BaseItem> Items { get; set; }
 
-    public override string ToString() => $"[Index {Index}] {Name}";
+    public override string ToString() => Name;
 }

@@ -1,4 +1,5 @@
-﻿using ChaosRecipeEnhancer.UI.Models.Enums;
+﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.State;
 using System.Collections.Generic;
@@ -16,13 +17,13 @@ public static class StashTabControlManager
     public static List<StashTabControl> StashTabControls { get; set; } = [];
     public static List<int> StashTabIndices { get; private set; }
 
-    public static void GetStashTabIndicesFromSettings()
+    public static void GetStashTabIndicesFromSettingsForQueryByIndex()
     {
         // update the stash tab metadata based on your target stash
 
         List<int> selectedTabIndices = [];
 
-        if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList)
+        if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsByIndex)
         {
             if (string.IsNullOrWhiteSpace(Settings.Default.StashTabIndices))
             {
@@ -48,6 +49,36 @@ public static class StashTabControlManager
             else
             {
                 selectedTabIndices = Settings.Default.StashTabPrefixIndices.Split(',').ToList().Select(int.Parse).ToList();
+            }
+        }
+
+        StashTabIndices = selectedTabIndices;
+
+        foreach (var s in selectedTabIndices)
+        {
+            if (!selectedTabIndices.Contains(s)) selectedTabIndices.Add(s);
+        }
+
+        if (selectedTabIndices.Count == 0)
+        {
+            GlobalErrorHandler.Spawn("Stash Tab indices empty", "Error: Stash Tab Overlay");
+        }
+    }
+
+    public static void GetStashTabIndicesFromSettingsForQueryById(List<BaseStashTabMetadata> stashData)
+    {
+        // update the stash tab metadata based on your target stash
+
+        List<int> selectedTabIndices = [];
+
+        var selectedStashIds = Settings.Default.StashTabIdentifiers.Split(',').ToList();
+
+        foreach (var id in selectedStashIds)
+        {
+            var tab = stashData.FirstOrDefault(x => x.Id == id);
+            if (tab != null)
+            {
+                selectedTabIndices.Add(tab.Index);
             }
         }
 

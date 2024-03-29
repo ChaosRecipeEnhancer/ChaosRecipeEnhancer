@@ -55,7 +55,7 @@ public class BaseStashTabMetadataTests
             Index = 0,
             Name = "Chaos Recipe"
         };
-        var expectedString = "[Index 0] Chaos Recipe";
+        var expectedString = "Chaos Recipe";
 
         // Act
         var result = stashTab.ToString();

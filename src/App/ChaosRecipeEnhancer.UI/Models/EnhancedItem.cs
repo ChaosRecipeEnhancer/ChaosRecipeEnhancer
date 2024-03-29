@@ -88,6 +88,11 @@ public class EnhancedItem : BaseItem
     public int StashTabIndex { get; set; }
 
     /// <summary>
+    /// Gets or sets the ID of the stash tab where the item is located.
+    /// </summary>
+    public string StashTabId { get; set; }
+
+    /// <summary>
     /// Derives the item class based on the encoded information within the item's icon URL.
     /// This method is a workaround for the absence of a direct item class reference in the default response object.
     /// <br /> <br />

@@ -80,6 +80,9 @@ public partial class StashTabOverlayWindow : Window
         else
         {
             MakeWindowClickThrough(false);
+
+            // save the position of the window after it's been moved
+            Settings.Default.Save();
         }
 
         _model.IsEditing = !_model.IsEditing;
@@ -116,6 +119,7 @@ public partial class StashTabOverlayWindow : Window
 
                 textBlock.SetBinding(TextBlock.BackgroundProperty, new Binding("TabHeaderColor"));
                 textBlock.FontSize = 16;
+                textBlock.FontWeight = FontWeights.DemiBold;
 
                 stashTabData.NameContainer = textBlock;
 
@@ -227,7 +231,7 @@ public partial class StashTabOverlayWindow : Window
 
                             // disable tab header color if no more items in set for the current tab
                             if (SetsToHighlight[0].Items != null &&
-                                SetsToHighlight[0].Items.Where(x => x.StashTabIndex == currentTab.Index).ToList().Count == 0)
+                                SetsToHighlight[0].Items.Where(x => x.Id == currentTab.Id).ToList().Count == 0)
                             {
                                 currentTab.TabHeaderColor = Brushes.Transparent;
                             }
@@ -237,11 +241,11 @@ public partial class StashTabOverlayWindow : Window
                     // activate next set
                     if (SetsToHighlight[0].Items != null)
                     {
-                        foreach (var i in SetsToHighlight[0].Items.ToList())
+                        foreach (var enhancedItem in SetsToHighlight[0].Items.ToList())
                         {
-                            var currentTab = GetStashTabFromItem(i);
-                            currentTab?.ActivateItemCells(i);
-                            currentTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                            var currentTab = GetStashTabFromItem(enhancedItem);
+                            currentTab?.ActivateItemCells(enhancedItem);
+                            currentTab.SetTabHeaderColorForHighlightingFromUserSettings();
                         }
                     }
 
@@ -314,7 +318,7 @@ public partial class StashTabOverlayWindow : Window
                     // Set the tab header color based on the settings
                     if (!string.IsNullOrEmpty(Settings.Default.StashTabOverlayHighlightColor))
                     {
-                        nextTab.TabHeaderColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayHighlightColor));
+                        nextTab.SetTabHeaderColorForHighlightingFromUserSettings();
                     }
                     else
                     {
@@ -391,14 +395,17 @@ public partial class StashTabOverlayWindow : Window
     private void GenerateReconstructedStashTabsFromApiResponse()
     {
         var reconstructedStashTabs = new List<StashTabControl>();
+        var stashTabMetadataList = GlobalItemSetManagerState.StashTabMetadataListStashesResponse;
 
-        if ((Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsFromList && !string.IsNullOrWhiteSpace(Settings.Default.StashTabIndices)) ||
+        if ((Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsByIndex && !string.IsNullOrWhiteSpace(Settings.Default.StashTabIndices)) ||
             (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix && !string.IsNullOrWhiteSpace(Settings.Default.StashTabPrefixIndices)))
         {
-            StashTabControlManager.GetStashTabIndicesFromSettings();
+            StashTabControlManager.GetStashTabIndicesFromSettingsForQueryByIndex();
         }
-
-        var stashTabMetadataList = GlobalItemSetManagerState.StashTabMetadataListStashesResponse;
+        else if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsById && !string.IsNullOrWhiteSpace(Settings.Default.StashTabIdentifiers))
+        {
+            StashTabControlManager.GetStashTabIndicesFromSettingsForQueryById(stashTabMetadataList);
+        }
 
         if (stashTabMetadataList != null && StashTabControlManager.StashTabIndices != null)
         {
@@ -412,8 +419,14 @@ public partial class StashTabOverlayWindow : Window
 
                     if (tab.Type == "PremiumStash" || tab.Type == "QuadStash" || tab.Type == "NormalStash")
                     {
-                        var tabToAdd = new StashTabControl($"[{tab.Index}] {tab.Name}", tab.Index);
+                        var tabToAdd = new StashTabControl(
+                            tab.Id,
+                            tab.Name,
+                            tab.Index
+                        );
+
                         if (tab.Type == "QuadStash") tabToAdd.Quad = true;
+
                         reconstructedStashTabs.Add(tabToAdd);
                     }
                 }
@@ -427,7 +440,7 @@ public partial class StashTabOverlayWindow : Window
     {
         foreach (var s in StashTabControlManager.StashTabControls)
         {
-            if (itemModel.StashTabIndex == s.Index) return s;
+            if (itemModel.StashTabId == s.Id) return s;
         }
 
         return null;
