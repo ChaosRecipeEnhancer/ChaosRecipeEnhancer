@@ -1,6 +1,7 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using Serilog;
 using System;
@@ -10,7 +11,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ChaosRecipeEnhancer.UI.Models.Exceptions;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
@@ -128,7 +128,7 @@ public class PoEApiService : IPoEApiService
         }
 
         // create new http client that will be disposed of after request
-        var client = _httpClientFactory.CreateClient("PoEApiClient");
+        var client = _httpClientFactory.CreateClient(ApiEndpoints.PoeApiHttpClientName);
 
         // add required headers
 
@@ -281,7 +281,7 @@ public class PoEApiService : IPoEApiService
         {
             formattedTimeoutString += $"{timeSpan.Seconds} second{(timeSpan.Seconds > 1 ? "s" : "")}";
         }
-        
+
         // If there is a trailing comma and space, remove it (e.g. "1 minute, )" -> "1 minute")
         if (formattedTimeoutString.EndsWith(", "))
         {

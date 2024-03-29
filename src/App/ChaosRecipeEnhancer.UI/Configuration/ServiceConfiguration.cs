@@ -1,4 +1,5 @@
-﻿using ChaosRecipeEnhancer.UI.Models.UserSettings;
+﻿using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms;
@@ -39,23 +40,24 @@ public static class ServiceConfiguration
     private static void ConfigureHttpClients(IServiceCollection services)
     {
         services.AddHttpClient<IAuthStateManager, AuthStateManager>();
-        services.AddHttpClient("PoEApiClient")
-            // Standard retry policy for transient errors
+        services.AddHttpClient(ApiEndpoints.PoeApiHttpClientName)
+            // Custom retry policy for transient errors, excluding 429 status code
             .AddTransientHttpErrorPolicy(builder =>
-                builder.WaitAndRetryAsync(
-                    retryCount: 3,
-                    sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                    onRetry: (exception, retryCount, context) =>
-                    {
-                        // Log the retry attempts
-                        Log.Information(
-                            "Retrying request {RequestUri} - {ExceptionMessage} - {RetryCount}",
-                            context,
-                            exception.Exception.Message,
-                            retryCount
-                        );
-                    }
-                )
+                builder.OrResult(response => response.StatusCode != System.Net.HttpStatusCode.TooManyRequests)
+                    .WaitAndRetryAsync(
+                        retryCount: 3,
+                        sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                        onRetry: (response, retryCount, context) =>
+                        {
+                            // Log the retry attempts
+                            Log.Information(
+                                "Retrying request {RequestUri} - {StatusCode} - {RetryCount}",
+                                response.Result.RequestMessage.RequestUri,
+                                response.Result.StatusCode,
+                                retryCount
+                            );
+                        }
+                    )
             );
     }
 
