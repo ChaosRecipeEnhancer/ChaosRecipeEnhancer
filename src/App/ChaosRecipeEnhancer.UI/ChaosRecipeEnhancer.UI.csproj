@@ -14,7 +14,7 @@
 		<PublishWizardCompleted>true</PublishWizardCompleted>
 		<BootstrapperEnabled>true</BootstrapperEnabled>
 		<ApplicationVersion>3.24</ApplicationVersion>
-		<ApplicationRevision>1</ApplicationRevision>
+		<ApplicationRevision>2</ApplicationRevision>
 		<!--Update Settings-->
 		<IsWebBootstrapper>false</IsWebBootstrapper>
 		<Install>true</Install>
