@@ -41,7 +41,7 @@ public sealed class SingleInstance : IDisposable
     /// <summary>
     /// Occurs when the single instance application is pinged by another process.
     /// </summary>
-    public event EventHandler PingedByOtherProcess;
+    public event EventHandler<PingedEventArgs> PingedByOtherProcess;
 
     /// <summary>
     /// Attempts to claim the single instance ownership.
@@ -115,7 +115,7 @@ public sealed class SingleInstance : IDisposable
             var dataReceived = reader.ReadToEnd();
 
             // Invoke the event to handle the received data
-            PingedByOtherProcess?.Invoke(dataReceived, EventArgs.Empty);
+            PingedByOtherProcess?.Invoke(this, new PingedEventArgs(dataReceived));
         }
         catch
         {
@@ -124,5 +124,15 @@ public sealed class SingleInstance : IDisposable
 
         // Continue listening for the next connection
         ListenForOtherProcesses();
+    }
+}
+
+public class PingedEventArgs : EventArgs
+{
+    public string Data { get; }
+
+    public PingedEventArgs(string data)
+    {
+        Data = data;
     }
 }
