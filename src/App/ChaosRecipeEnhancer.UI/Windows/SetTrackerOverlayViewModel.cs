@@ -1,4 +1,3 @@
-using ChaosRecipeEnhancer.UI.Common;
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
@@ -13,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
+using ChaosRecipeEnhancer.UI.UserControls;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
