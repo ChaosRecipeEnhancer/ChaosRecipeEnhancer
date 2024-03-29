@@ -61,7 +61,7 @@ public partial class ErrorWindow
     {
         // Create a template with placeholders for the version and message
         var template =
-            $"Reporting an exception I received while using Chaos Recipe Enhancer {AppInfo.VersionText}:\n\n" +
+            $"Reporting an exception I received while using Chaos Recipe Enhancer {CreAppConstants.VersionText}:\n\n" +
             (_preamble is not null ? $"Error Context:\n```\n{_preamble}\n```\n" : string.Empty) +
             $"Error Details:\n```\n{_messageToCopy}\n```";
 

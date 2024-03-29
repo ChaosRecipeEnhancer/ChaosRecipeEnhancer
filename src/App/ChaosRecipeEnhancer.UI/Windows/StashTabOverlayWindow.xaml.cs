@@ -1,9 +1,10 @@
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Native;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.State;
+using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.UserControls.StashTab;
-using ChaosRecipeEnhancer.UI.Utilities.Native;
+using ChaosRecipeEnhancer.UI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,7 +46,7 @@ public partial class StashTabOverlayWindow : Window
 
     public bool IsOpen { get; set; }
 
-    private void OnLoaded(object sender, RoutedEventArgs e) => WindowsUtilitiesForOverlays.MakeToolWindow(this);
+    private void OnLoaded(object sender, RoutedEventArgs e) => WindowsUtilities.MakeToolWindow(this);
 
     protected override void OnClosing(CancelEventArgs e)
     {
@@ -66,9 +67,9 @@ public partial class StashTabOverlayWindow : Window
     private void MakeWindowClickThrough(bool clickThrough)
     {
         if (clickThrough)
-            WindowsUtilitiesForOverlays.MakeTransparent(this);
+            WindowsUtilities.MakeTransparent(this);
         else
-            WindowsUtilitiesForOverlays.MakeNormal(this);
+            WindowsUtilities.MakeNormal(this);
     }
 
     public void HandleEditButton()

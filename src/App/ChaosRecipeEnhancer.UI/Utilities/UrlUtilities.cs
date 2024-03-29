@@ -40,5 +40,4 @@ public static class UrlUtilities
         Log.Debug("Encoded string to Base64 URL: Original {Input}, Encoded {Encoded}", input, encoded);
         return encoded;
     }
-
 }

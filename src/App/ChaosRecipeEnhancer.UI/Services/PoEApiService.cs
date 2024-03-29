@@ -1,7 +1,7 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.Enums;
-using ChaosRecipeEnhancer.UI.State;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using Serilog;
 using System;
 using System.Linq;

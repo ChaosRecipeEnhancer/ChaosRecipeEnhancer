@@ -1,6 +1,6 @@
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Services;
-using ChaosRecipeEnhancer.UI.Utilities;
+using ChaosRecipeEnhancer.UI.UserControls;
 using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace ChaosRecipeEnhancer.UI.Windows;

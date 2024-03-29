@@ -16,7 +16,7 @@ public class StashGridBase : ItemsControl
             if (Items[i] == cell)
             {
                 var container = ItemContainerGenerator.ContainerFromIndex(i);
-                return ControlHelpers.GetChild<Button>(container);
+                return VisualUtilities.GetChild<Button>(container);
             }
         }
         return null;

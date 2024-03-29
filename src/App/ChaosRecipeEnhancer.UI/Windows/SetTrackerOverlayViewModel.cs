@@ -1,8 +1,10 @@
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.Exceptions;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
-using ChaosRecipeEnhancer.UI.State;
+using ChaosRecipeEnhancer.UI.UserControls;
 using ChaosRecipeEnhancer.UI.Utilities;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using System;
@@ -10,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ChaosRecipeEnhancer.UI.Models.Exceptions;
+using System.Windows.Threading;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
@@ -268,22 +270,32 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                         }
 
                         // add the enhanced items to the filtered stash contents
-                        filteredStashContents.AddRange(EnhancedItemHelper.FilterItemsForRecipe(enhancedItems));
+                        filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
 
                         GlobalItemSetManagerState.UpdateStashContentsByIndex(setThreshold, selectedTabIndices, filteredStashContents);
 
                         if (GlobalRateLimitState.RateLimitExceeded)
                         {
                             WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
-                            await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
-                            GlobalRateLimitState.RequestCounter = 0;
-                            GlobalRateLimitState.RateLimitExceeded = false;
+
+                            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+                            {
+                                await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
+
+                                GlobalRateLimitState.RequestCounter = 0;
+                                GlobalRateLimitState.RateLimitExceeded = false;
+                            });
                         }
                         else if (GlobalRateLimitState.BanTime > 0)
                         {
                             WarningMessage = "Temporary Ban from API Requests! Waiting...";
-                            await Task.Delay(GlobalRateLimitState.BanTime * 1000);
-                            GlobalRateLimitState.BanTime = 0;
+
+                            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+                            {
+                                await Task.Delay(GlobalRateLimitState.BanTime * 1000);
+
+                                GlobalRateLimitState.BanTime = 0;
+                            });
                         }
                     }
 
@@ -298,14 +310,17 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                     UpdateStashButtonAndWarningMessage();
 
                     // enforce cooldown on fetch button to reduce chances of rate limiting
-                    try
+                    await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                     {
-                        await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-                    }
-                    finally
-                    {
-                        FetchButtonEnabled = true;
-                    }
+                        try
+                        {
+                            await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+                        }
+                        finally
+                        {
+                            FetchButtonEnabled = true;
+                        }
+                    });
                 }
                 else
                 {
@@ -359,22 +374,32 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                         }
 
                         // add the enhanced items to the filtered stash contents
-                        filteredStashContents.AddRange(EnhancedItemHelper.FilterItemsForRecipe(enhancedItems));
+                        filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
 
                         GlobalItemSetManagerState.UpdateStashContentsById(setThreshold, selectedTabIds, filteredStashContents);
 
                         if (GlobalRateLimitState.RateLimitExceeded)
                         {
                             WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
-                            await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
-                            GlobalRateLimitState.RequestCounter = 0;
-                            GlobalRateLimitState.RateLimitExceeded = false;
+
+                            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+                            {
+                                await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
+
+                                GlobalRateLimitState.RequestCounter = 0;
+                                GlobalRateLimitState.RateLimitExceeded = false;
+                            });
                         }
                         else if (GlobalRateLimitState.BanTime > 0)
                         {
                             WarningMessage = "Temporary Ban from API Requests! Waiting...";
-                            await Task.Delay(GlobalRateLimitState.BanTime * 1000);
-                            GlobalRateLimitState.BanTime = 0;
+
+                            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+                            {
+                                await Task.Delay(GlobalRateLimitState.BanTime * 1000);
+
+                                GlobalRateLimitState.BanTime = 0;
+                            });
                         }
                     }
 
@@ -389,14 +414,18 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                     UpdateStashButtonAndWarningMessage();
 
                     // enforce cooldown on fetch button to reduce chances of rate limiting
-                    try
+                    await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                     {
-                        await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-                    }
-                    finally
-                    {
-                        FetchButtonEnabled = true;
-                    }
+                        try
+                        {
+                            await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+                        }
+                        finally
+                        {
+                            FetchButtonEnabled = true;
+                        }
+                    });
+
                 }
                 else
                 {
@@ -410,11 +439,16 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
         catch (RateLimitException e)
         {
             FetchButtonEnabled = false;
-            
+
             // Cooldown the refresh button until the rate limit is lifted
-            await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));
-            FetchButtonEnabled = true;
-            return false;
+            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            {
+                await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));
+                FetchButtonEnabled = true;
+            });
+
+
+            return true;
         }
         catch (NullReferenceException e)
         {

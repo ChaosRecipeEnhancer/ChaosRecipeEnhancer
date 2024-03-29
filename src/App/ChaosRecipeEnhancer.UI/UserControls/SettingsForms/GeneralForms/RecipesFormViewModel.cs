@@ -1,4 +1,4 @@
-﻿using ChaosRecipeEnhancer.UI.Models;
+﻿using ChaosRecipeEnhancer.UI.Models.UserSettings;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
