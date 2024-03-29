@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
@@ -80,7 +81,10 @@ public class LogWatcherManager
                 // enforce cooldown on fetch button to reduce chances of rate limiting
                 try
                 {
-                    await Task.Factory.StartNew(() => Thread.Sleep(AutoFetchCooldown * 1000));
+                    Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+                    {
+                        await Task.Factory.StartNew(() => Thread.Sleep(AutoFetchCooldown * 1000));
+                    });
                 }
                 finally
                 {
