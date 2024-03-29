@@ -69,7 +69,7 @@ public class LogWatcherManager
         }
     }
 
-    private async void FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
+    private void FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
     {
         if (AutoFetchAllowed)
         {

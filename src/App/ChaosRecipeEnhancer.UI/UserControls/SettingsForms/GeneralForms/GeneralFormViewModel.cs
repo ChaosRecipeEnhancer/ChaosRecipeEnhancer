@@ -1,6 +1,7 @@
 ﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.Constants;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Services;
 using CommunityToolkit.Mvvm.Input;
@@ -197,7 +198,22 @@ public class GeneralFormViewModel : CreViewModelBase
         RefreshLeagueListButtonEnabled = false;
 
         LeagueList.Clear();
-        var leagueList = await _apiService.GetLeaguesAsync();
+        LeagueResponse leagueList;
+        try
+        {
+            leagueList = await _apiService.GetLeaguesAsync();
+        }
+        catch (RateLimitException e)
+        {
+            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            {
+                await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));
+                RefreshLeagueListButtonEnabled = true;
+            });
+
+            return;
+        }
+
         if (leagueList != null)
         {
             foreach (var league in leagueList.Leagues)
@@ -359,7 +375,24 @@ public class GeneralFormViewModel : CreViewModelBase
         FetchStashTabsButtonEnabled = false;
 
         // Fetch the stash tabs - this is the biggest call in this component
-        var stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataAsync();
+        ListStashesResponse stashTabPropsList;
+        try
+        {
+            stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataAsync();
+        }
+        catch (RateLimitException e)
+        {
+            FetchStashTabsButtonEnabled = false;
+            _stashTabsLoaded = false;
+            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            {
+                await Task.Delay(e.SecondsToWait * 1000);
+                FetchStashTabsButtonEnabled = true;
+            });
+
+            return;
+        }
+
 
         // If the response is valid and we have stash tabs
         if (stashTabPropsList != null && stashTabPropsList.StashTabs != null)
