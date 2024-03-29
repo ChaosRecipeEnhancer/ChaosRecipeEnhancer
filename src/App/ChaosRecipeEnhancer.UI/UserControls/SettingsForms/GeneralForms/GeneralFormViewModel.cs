@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using ChaosRecipeEnhancer.UI.Models.Exceptions;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
@@ -190,20 +191,39 @@ public class GeneralFormViewModel : CreViewModelBase
     {
         if (_leaguesLoaded)
         {
-            try
+            Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
             {
-                await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-            }
-            finally
-            {
-                RefreshLeagueListButtonEnabled = true;
-            }
+                try
+                {
+                    await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+                }
+                finally
+                {
+                    RefreshLeagueListButtonEnabled = true;
+                }
+            });
+            
             return;
         }
 
         RefreshLeagueListButtonEnabled = false;
         LeagueList.Clear();
-        var leagueList = await _apiService.GetLeaguesAsync();
+        LeagueResponse leagueList;
+        try
+        {
+            leagueList = await _apiService.GetLeaguesAsync();
+        }
+        catch (RateLimitException e)
+        {
+            Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            {
+                await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));
+                RefreshLeagueListButtonEnabled = true;
+            });
+
+            return;
+        }
+        
         if (leagueList != null)
         {
             foreach (var league in leagueList.Leagues)
@@ -373,7 +393,24 @@ public class GeneralFormViewModel : CreViewModelBase
         FetchStashTabsButtonEnabled = false;
 
         // Fetch the stash tabs - this is the biggest call in this component
-        var stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataAsync();
+        ListStashesResponse stashTabPropsList;
+        try
+        {
+            stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataAsync();
+        }
+        catch (RateLimitException e)
+        {
+            FetchStashTabsButtonEnabled = false;
+            _stashTabsLoaded = false;
+            Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            {
+                await Task.Delay(e.SecondsToWait * 1000);
+                FetchStashTabsButtonEnabled = true;
+            });
+
+            return;
+        }
+        
 
         // If the response is valid and we have stash tabs
         if (stashTabPropsList != null && stashTabPropsList.StashTabs != null)
