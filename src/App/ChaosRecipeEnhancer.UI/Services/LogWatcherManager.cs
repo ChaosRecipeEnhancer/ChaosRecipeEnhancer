@@ -1,6 +1,6 @@
 ﻿using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Windows;
-using System.Diagnostics;
+using Serilog;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,14 +20,14 @@ public class LogWatcherManager
 
     public LogWatcherManager(SetTrackerOverlayWindow setTrackerOverlay)
     {
-        Trace.WriteLine("LogWatcherManager created");
+        Log.Information("LogWatcherManager - New Instance Created");
         _cancellationTokenSource = new CancellationTokenSource();
         _workerTask = Task.Run(() => StartWatchingLogFile(setTrackerOverlay));
     }
 
     private void StartWatchingLogFile(SetTrackerOverlayWindow setTrackerOverlay)
     {
-        Trace.WriteLine("starting watching");
+        Log.Information("LogWatcherManager - Starting Watching Client.txt Log File");
 
         using var wh = new AutoResetEvent(false);
         using var fsw = new FileSystemWatcher(Path.GetDirectoryName(@"" + Settings.Default.PathOfExileClientLogLocation))
@@ -56,8 +56,8 @@ public class LogWatcherManager
                     LastZone = NewZone;
                     NewZone = s.Substring(s.IndexOf(phrase[0]));
 
-                    Trace.WriteLine("entered new zone");
-                    Trace.WriteLine(NewZone);
+                    Log.Information("LogWatcherManager - Entered New Zone");
+                    Log.Information(NewZone);
 
                     FetchIfPossible(setTrackerOverlay);
                 }
@@ -88,7 +88,7 @@ public class LogWatcherManager
                     finally
                     {
                         AutoFetchAllowed = true;
-                        Trace.WriteLine("allow fetch");
+                        Log.Information("LogWatcherManager - Allowing Auto-Fetch");
                     }
                 });
             }
@@ -185,12 +185,11 @@ public class LogWatcherManager
         }
     }
 
-
     public void StopWatchingLogFile()
     {
         _cancellationTokenSource.Cancel();
         _workerTask.Wait();
-        Trace.WriteLine("stop watch");
+        Log.Information("LogWatcherManager - Stopped Watching Client.txt Log File");
     }
 
     public void Dispose()
