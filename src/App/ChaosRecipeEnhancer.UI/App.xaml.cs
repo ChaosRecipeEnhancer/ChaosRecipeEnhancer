@@ -1,13 +1,12 @@
-﻿using ChaosRecipeEnhancer.UI.Models;
+﻿using ChaosRecipeEnhancer.UI.Common;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
-using ChaosRecipeEnhancer.UI.State;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms;
-using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +25,7 @@ namespace ChaosRecipeEnhancer.UI;
 
 public partial class App
 {
-    private readonly SingleInstance _singleInstance = new("EnhancePoE");
+    private readonly SingleInstance _singleInstance = new("ChaosRecipeEnhancer");
 
     public App()
     {

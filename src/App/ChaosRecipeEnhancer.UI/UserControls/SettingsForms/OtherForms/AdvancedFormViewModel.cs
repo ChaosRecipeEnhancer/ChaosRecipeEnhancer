@@ -1,5 +1,5 @@
-﻿using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.State;
+﻿using ChaosRecipeEnhancer.UI.Models.UserSettings;
+using ChaosRecipeEnhancer.UI.Services;
 using CommunityToolkit.Mvvm.Input;
 using Serilog;
 using System.Windows;

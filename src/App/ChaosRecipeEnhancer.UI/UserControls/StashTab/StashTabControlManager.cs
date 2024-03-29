@@ -1,7 +1,7 @@
 ﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.State;
+using ChaosRecipeEnhancer.UI.Services;
 using System.Collections.Generic;
 using System.Linq;
 

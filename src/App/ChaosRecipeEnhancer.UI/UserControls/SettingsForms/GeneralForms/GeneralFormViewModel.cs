@@ -1,7 +1,7 @@
-﻿using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.Constants;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Services;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
