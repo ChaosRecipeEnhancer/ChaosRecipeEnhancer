@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using System.Threading.Tasks;
 using System.Windows;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Primitives;
@@ -20,14 +19,11 @@ public partial class GeneralForm
     {
         if (_model.NeedsToFetchData())
         {
-            await Task.Run(async () =>
+            // Dispatch any UI updates back to the UI thread
+            await Dispatcher.InvokeAsync(async () =>
             {
-                // Dispatch any UI updates back to the UI thread
-                await Dispatcher.InvokeAsync(async () =>
-                {
-                    await _model.LoadLeagueListAsync();
-                    await _model.LoadStashTabsAsync();
-                });
+                await _model.LoadLeagueListAsync();
+                await _model.LoadStashTabsAsync();
             });
         }
     }
