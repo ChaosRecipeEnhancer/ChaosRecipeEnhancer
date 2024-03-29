@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
     <!-- These are what controls in Controls.xaml use. Instead of having say RedBlackTheme stuff in a separate file -->
     <!-- You could put them all in here (or copy this file and edit) for more customisation (e.g "material design accents" maybe) -->
 
