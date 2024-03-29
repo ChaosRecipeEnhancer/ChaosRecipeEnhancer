@@ -15,7 +15,7 @@ internal class SettingsViewModel : ViewModelBase
         OpenLatestReleasePageCommand = new RelayCommand(OpenLatestReleasePage);
     }
 
-    public string Version => AppInfo.VersionText;
+    public string Version => CreAppConstants.VersionText;
     public ICommand OpenLatestReleasePageCommand { get; }
 
     public bool UpdateAvailable
