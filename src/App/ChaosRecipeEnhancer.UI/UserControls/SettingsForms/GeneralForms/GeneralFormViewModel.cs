@@ -30,7 +30,7 @@ public class GeneralFormViewModel : CreViewModelBase
     private ICommand _refreshLeaguesCommand;
     private ICommand _selectLogFileCommand;
 
-    private const int FetchCooldown = 5; // cooldown in seconds
+    private const int FetchCooldown = 3; // cooldown in seconds
     private bool _refreshLeagueListButtonEnabled = true;
     private bool _fetchStashTabButtonEnabled = true;
 
@@ -190,18 +190,12 @@ public class GeneralFormViewModel : CreViewModelBase
     {
         if (_leaguesLoaded)
         {
-            try
-            {
-                await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-            }
-            finally
-            {
-                RefreshLeagueListButtonEnabled = true;
-            }
+            await TriggerFetchLeaguesCooldown();
             return;
         }
 
         RefreshLeagueListButtonEnabled = false;
+
         LeagueList.Clear();
         var leagueList = await _apiService.GetLeaguesAsync();
         if (leagueList != null)
@@ -212,23 +206,16 @@ public class GeneralFormViewModel : CreViewModelBase
             }
         }
 
-        Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+        await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
         {
-            try
+            if (_leaguesLoaded)
             {
-                if (_leaguesLoaded)
-                {
-                    await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-                }
+                await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
             }
-            finally
-            {
-                _leaguesLoaded = true;
-                RefreshLeagueListButtonEnabled = true;
-            }
+
+            _leaguesLoaded = true;
+            RefreshLeagueListButtonEnabled = true;
         });
-        
-        
     }
 
     /// <summary>
@@ -314,12 +301,20 @@ public class GeneralFormViewModel : CreViewModelBase
         {
             _userSettings.LeagueName = leagueName;
 
+            RefreshLeagueListButtonEnabled = false;
+
             // re-fetching stash tabs if league is changed
             _stashTabsLoaded = false;
 
             await LoadStashTabsAsync();
 
             OnPropertyChanged(nameof(LeagueName));
+
+            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            {
+                await Task.Delay(FetchCooldown * 1000);
+                RefreshLeagueListButtonEnabled = true;
+            });
         }
     }
 
@@ -356,16 +351,7 @@ public class GeneralFormViewModel : CreViewModelBase
         // If the stash tabs are already loaded, wait for the cooldown and re-enable the button
         if (_stashTabsLoaded)
         {
-            // TODO: maybe create a sort of "CooldownEnabledButton" control?
-            // Cooldown for button to prevent spamming the API
-            
-            Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-            {
-                await Task.Delay(FetchCooldown * 1000); 
-                // Re-enable the button after the cooldown
-                FetchStashTabsButtonEnabled = true;   
-            });
-
+            await TriggerFetchStashTabsCooldown();
             return;
         }
 
@@ -384,7 +370,12 @@ public class GeneralFormViewModel : CreViewModelBase
 
         // Indicate that the tabs have been and re-enable the fetch button
         _stashTabsLoaded = true;
-        FetchStashTabsButtonEnabled = true;
+
+        await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+        {
+            await Task.Delay(FetchCooldown * 1000);
+            FetchStashTabsButtonEnabled = true;
+        });
     }
 
     /// <summary>
@@ -398,6 +389,8 @@ public class GeneralFormViewModel : CreViewModelBase
         {
             _userSettings.StashTabQueryMode = stashTabQueryMode;
 
+            FetchStashTabsButtonEnabled = false;
+
             // reset the loaded state to force a reload of the stash tab data
             _stashTabsLoaded = false;
 
@@ -406,6 +399,12 @@ public class GeneralFormViewModel : CreViewModelBase
 
             // Notify the UI of the change
             OnPropertyChanged(nameof(StashTabQueryMode));
+
+            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            {
+                await Task.Delay(FetchCooldown * 1000);
+                FetchStashTabsButtonEnabled = true;
+            });
         }
     }
 
@@ -553,6 +552,40 @@ public class GeneralFormViewModel : CreViewModelBase
                 _userSettings.StashTabIds = tempSelectedItems;
             }
         }
+    }
+
+    private async Task TriggerFetchLeaguesCooldown()
+    {
+        RefreshLeagueListButtonEnabled = false;
+
+        await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+        {
+            try
+            {
+                await Task.Delay(FetchCooldown * 1000);
+            }
+            finally
+            {
+                RefreshLeagueListButtonEnabled = true;
+            }
+        });
+    }
+
+    private async Task TriggerFetchStashTabsCooldown()
+    {
+        FetchStashTabsButtonEnabled = false;
+
+        await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+        {
+            try
+            {
+                await Task.Delay(FetchCooldown * 1000);
+            }
+            finally
+            {
+                FetchStashTabsButtonEnabled = true;
+            }
+        });
     }
 
     #endregion
