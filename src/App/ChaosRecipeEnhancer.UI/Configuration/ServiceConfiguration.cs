@@ -43,7 +43,18 @@ public static class ServiceConfiguration
         services.AddHttpClient(ApiEndpoints.PoeApiHttpClientName)
             // Custom retry policy for transient errors, excluding 429 status code
             .AddTransientHttpErrorPolicy(builder =>
-                builder.OrResult(response => response.StatusCode != System.Net.HttpStatusCode.TooManyRequests)
+                builder
+                    .OrResult(response =>
+                    {
+                        // Log stuff
+                        Log.Information(
+                            "Request {RequestUri} failed with status code {StatusCode}",
+                            response.RequestMessage.RequestUri,
+                            response.StatusCode
+                        );
+
+                        return response.StatusCode != System.Net.HttpStatusCode.TooManyRequests;
+                    })
                     .WaitAndRetryAsync(
                         retryCount: 3,
                         sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
