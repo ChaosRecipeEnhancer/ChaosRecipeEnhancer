@@ -14,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
@@ -211,18 +212,23 @@ public class GeneralFormViewModel : CreViewModelBase
             }
         }
 
-        try
+        Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
         {
-            if (_leaguesLoaded)
+            try
             {
-                await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+                if (_leaguesLoaded)
+                {
+                    await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+                }
             }
-        }
-        finally
-        {
-            _leaguesLoaded = true;
-            RefreshLeagueListButtonEnabled = true;
-        }
+            finally
+            {
+                _leaguesLoaded = true;
+                RefreshLeagueListButtonEnabled = true;
+            }
+        });
+        
+        
     }
 
     /// <summary>
@@ -352,10 +358,13 @@ public class GeneralFormViewModel : CreViewModelBase
         {
             // TODO: maybe create a sort of "CooldownEnabledButton" control?
             // Cooldown for button to prevent spamming the API
-            await Task.Delay(FetchCooldown * 1000);
-
-            // Re-enable the button after the cooldown
-            FetchStashTabsButtonEnabled = true;
+            
+            Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            {
+                await Task.Delay(FetchCooldown * 1000); 
+                // Re-enable the button after the cooldown
+                FetchStashTabsButtonEnabled = true;   
+            });
 
             return;
         }

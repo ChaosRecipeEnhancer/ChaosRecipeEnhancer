@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
@@ -64,7 +65,7 @@ public class ReloadFilterService : IReloadFilterService
         {
             SendKeys.SendWait("{ENTER}");
             SendKeys.SendWait("^(v)");
-            SendKeys.SendWait("{ENTER}");
+            SendKeys.SendWait("{ENTER}"); 
         });
 
         _notificationSoundService.PlayNotificationSound(NotificationSoundType.FilterReloaded);

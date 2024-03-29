@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Windows;
 
@@ -106,10 +107,13 @@ public class AutoFetchService : IAutoFetchService
             try
             {
                 setTrackerOverlay.RunFetchingAsync();
-                await Task.Delay(Cooldown * 1000).ContinueWith(_ =>
+                Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                 {
-                    FetchAllowed = true;
-                    Trace.WriteLine("allow fetch");
+                    await Task.Delay(Cooldown * 1000).ContinueWith(_ =>
+                    {
+                        FetchAllowed = true;
+                        Trace.WriteLine("allow fetch");
+                    });
                 });
             }
             catch

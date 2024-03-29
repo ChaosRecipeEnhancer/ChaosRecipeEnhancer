@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterStorage;
 
@@ -93,6 +94,7 @@ public class FileFilterStorage : IFilterStorage
             catch (IOException e) when (i < maxRetries - 1)
             {
                 _log.Error("IOException encountered: " + e.Message);
+                
                 await Task.Delay(delayOnRetry);
             }
         }
