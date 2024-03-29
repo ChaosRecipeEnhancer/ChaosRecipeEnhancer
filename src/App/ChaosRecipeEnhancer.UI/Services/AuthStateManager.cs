@@ -1,5 +1,6 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.Constants;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Utilities;
@@ -7,10 +8,9 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
@@ -22,6 +22,7 @@ public interface IAuthStateManager
     void Logout();
     Task<string> GenerateAuthToken(string authCode);
     bool ValidateAuthToken();
+    public Task HandleAuthRedirection(string data);
 }
 
 /// <summary>
@@ -92,14 +93,14 @@ public class AuthStateManager : IAuthStateManager
             OnAuthStateChanged();
 
             // Generate code verifier and state
-            var codeVerifier = GenerateCodeVerifier();
-            var state = GenerateState();
+            var codeVerifier = AuthUtilities.GenerateCodeVerifier();
+            var state = AuthUtilities.GenerateState();
 
             // Needs to be persisted for the token request that will be made by the browser
             _codeVerifier = codeVerifier;
 
             // Generate code challenge from the code verifier
-            var codeChallenge = GenerateCodeChallenge(codeVerifier);
+            var codeChallenge = AuthUtilities.GenerateCodeChallenge(codeVerifier);
 
             _log.Information($"Code Verifier: {codeVerifier}");
             _log.Information($"Code Challenge: {codeChallenge}");
@@ -176,7 +177,9 @@ public class AuthStateManager : IAuthStateManager
     {
         _log.Debug("Validating authentication token.");
 
-        var isValid = !string.IsNullOrEmpty(_userSettings.PathOfExileApiAuthToken) && DateTime.UtcNow < _userSettings.PathOfExileApiAuthTokenExpiration;
+        var isValid =
+            !string.IsNullOrEmpty(_userSettings.PathOfExileApiAuthToken) &&
+            DateTime.UtcNow < _userSettings.PathOfExileApiAuthTokenExpiration;
 
         if (!isValid)
         {
@@ -187,6 +190,30 @@ public class AuthStateManager : IAuthStateManager
 
         _log.Information("Authentication token validated successfully. Global state updated.");
         return true;
+    }
+
+    /// <summary>
+    /// Handles the redirection from the OAuth flow.
+    /// </summary>
+    /// <param name="data">The data received from the redirection.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    public async Task HandleAuthRedirection(string data)
+    {
+        _log.Information($"Pinged by other processes - Received data: {data}");
+
+        if (!string.IsNullOrEmpty(data) && data.StartsWith(CreAppConstants.ProtocolPrefix))
+        {
+            var uri = new Uri(data);
+            var queryParams = HttpUtility.ParseQueryString(uri.Query);
+
+            var authCode = queryParams["code"];
+            var state = queryParams["state"];
+
+            _log.Information("Auth Code: " + authCode);
+            _log.Information("State: " + state);
+
+            await GenerateAuthToken(authCode);
+        }
     }
 
     #endregion
@@ -231,6 +258,15 @@ public class AuthStateManager : IAuthStateManager
     }
 
     /// <summary>
+    /// Handles authentication token retrieval errors.
+    /// </summary>
+    private void HandleAuthTokenError()
+    {
+        _userSettings.PoEAccountConnectionStatus = ConnectionStatusTypes.ConnectionError;
+        OnAuthStateChanged();
+    }
+
+    /// <summary>
     /// Updates the user settings with the authentication token response and notifies subscribers.
     /// </summary>
     /// <param name="authTokenResponse">The authentication token response.</param>
@@ -238,9 +274,12 @@ public class AuthStateManager : IAuthStateManager
     {
         _log.Information("Updating user auth settings");
 
+        // Calculate the expiration DateTime from now + expires_in seconds
+        var tokenExpiration = DateTime.UtcNow.AddSeconds(authTokenResponse.ExpiresIn);
+
         _userSettings.PathOfExileAccountName = authTokenResponse.Username;
         _userSettings.PathOfExileApiAuthToken = authTokenResponse.AccessToken;
-        _userSettings.PathOfExileApiAuthTokenExpiration = DateTime.UtcNow.AddHours(AuthConfig.DefaultTokenExpirationHours);
+        _userSettings.PathOfExileApiAuthTokenExpiration = tokenExpiration;
         _userSettings.PoEAccountConnectionStatus = ConnectionStatusTypes.ValidatedConnection;
         OnAuthStateChanged();
 
@@ -251,44 +290,11 @@ public class AuthStateManager : IAuthStateManager
             _userSettings.PathOfExileApiAuthTokenExpiration,
             _userSettings.PoEAccountConnectionStatus
         );
-    }
 
-    /// <summary>
-    /// Handles authentication token retrieval errors.
-    /// </summary>
-    private void HandleAuthTokenError()
-    {
-        _userSettings.PoEAccountConnectionStatus = ConnectionStatusTypes.ConnectionError;
-        OnAuthStateChanged();
-    }
+        // log tokenExpiration and PathofExileApiAuthTokenExpiration
+        _log.Information("Token expiration: {TokenExpiration}", tokenExpiration);
+        _log.Information("PathOfExileApiAuthTokenExpiration: {PathOfExileApiAuthTokenExpiration}", _userSettings.PathOfExileApiAuthTokenExpiration);
 
-    /// <summary>
-    /// Generates a random code verifier.
-    /// </summary>
-    /// <returns>The generated code verifier.</returns>
-    private static string GenerateCodeVerifier()
-    {
-        return StringUtilities.GenerateRandomString(128);
-    }
-
-    /// <summary>
-    /// Generates a code challenge from the provided code verifier.
-    /// </summary>
-    /// <param name="codeVerifier">The code verifier.</param>
-    /// <returns>The generated code challenge.</returns>
-    private static string GenerateCodeChallenge(string codeVerifier)
-    {
-        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(codeVerifier));
-        return UrlUtilities.Base64UrlEncode(Convert.ToBase64String(hash));
-    }
-
-    /// <summary>
-    /// Generates a random state.
-    /// </summary>
-    /// <returns>The generated state.</returns>
-    private static string GenerateState()
-    {
-        return StringUtilities.GenerateRandomString(32);
     }
 
     #endregion
