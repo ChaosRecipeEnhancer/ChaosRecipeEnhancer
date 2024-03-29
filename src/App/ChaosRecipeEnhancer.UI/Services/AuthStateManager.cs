@@ -94,6 +94,8 @@ public class AuthStateManager : IAuthStateManager
 
             // Generate code verifier and state
             var codeVerifier = AuthUtilities.GenerateCodeVerifier();
+
+            // generates random string of 16 characters to be our state
             var state = AuthUtilities.GenerateState();
 
             // Needs to be persisted for the token request that will be made by the browser
@@ -101,15 +103,18 @@ public class AuthStateManager : IAuthStateManager
 
             // Generate code challenge from the code verifier
             var codeChallenge = AuthUtilities.GenerateCodeChallenge(codeVerifier);
+            var encodedCreClientVersion = UrlUtilities.Base64UrlEncode(AuthConfig.CreClientVersionAuthParam);
 
             _log.Information($"Code Verifier: {codeVerifier}");
             _log.Information($"Code Challenge: {codeChallenge}");
             _log.Information($"State: {state}");
+            _log.Information($"Encoded Client Version: {encodedCreClientVersion}");
 
             // Open the URL in the default browser (disabled for unit tests)
             if (autoRedirect)
             {
-                UrlUtilities.OpenUrl(AuthConfig.RedirectUri(state, codeChallenge));
+                // note: the code challenge is based on the code verifier; the code verifier is a random string
+                UrlUtilities.OpenUrl(AuthConfig.RedirectUri(state, codeChallenge, encodedCreClientVersion));
             }
         }
         catch (Exception ex)
@@ -151,6 +156,8 @@ public class AuthStateManager : IAuthStateManager
         try
         {
             HttpResponseMessage response = await SendTokenRequest(authCode);
+            _log.Information("GenerateAuthToken - Token Request Response: {Response}", response);
+
             string responseContent = await ProcessTokenResponse(response);
 
             if (!string.IsNullOrEmpty(responseContent))
@@ -163,7 +170,7 @@ public class AuthStateManager : IAuthStateManager
         }
         catch (Exception ex)
         {
-            _log.Error("RetrieveAuthToken - Exception occurred: {ExceptionMessage}", ex.Message);
+            _log.Error("GenerateAuthToken - Exception occurred: {ExceptionMessage}", ex.Message);
             HandleAuthTokenError();
         }
 
@@ -232,13 +239,30 @@ public class AuthStateManager : IAuthStateManager
     /// <returns>The HTTP response message.</returns>
     private async Task<HttpResponseMessage> SendTokenRequest(string authCode)
     {
-        var content = new FormUrlEncodedContent(
-        [
+        try
+        {
+            var content = new FormUrlEncodedContent(new[]
+            {
             new KeyValuePair<string, string>("code", authCode),
             new KeyValuePair<string, string>("code_verifier", _codeVerifier),
-        ]);
+        });
 
-        return await _httpClient.PostAsync(AuthConfig.OAuthTokenEndpoint, content);
+            _log.Information($"Sending token request to: {AuthConfig.OAuthTokenEndpoint}");
+            _log.Information($"Request content: {await content.ReadAsStringAsync()}");
+
+            var result = await _httpClient.PostAsync(AuthConfig.OAuthTokenEndpoint, content);
+
+            _log.Information($"Token request response status: {result.StatusCode}");
+            _log.Information($"Token request response content: {await result.Content.ReadAsStringAsync()}");
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _log.Error($"Error occurred while sending token request: {ex.Message}");
+            _log.Error($"Exception details: {ex}");
+            throw; // Re-throwing the exception to ensure that calling code is aware of the failure.
+        }
     }
 
     /// <summary>
@@ -251,12 +275,12 @@ public class AuthStateManager : IAuthStateManager
         if (response.IsSuccessStatusCode)
         {
             string responseContent = await response.Content.ReadAsStringAsync();
-            _log.Information("RetrieveAuthToken - Token Response: {ResponseContent}", responseContent);
+            _log.Information("ProcessTokenResponse - Token Response: {ResponseContent}", responseContent);
             return responseContent;
         }
         else
         {
-            _log.Information("RetrieveAuthToken - Error retrieving token: {StatusCode}", response.StatusCode);
+            _log.Information("ProcessTokenResponse - Error retrieving token: {StatusCode}", response.StatusCode);
             HandleAuthTokenError();
             return null;
         }

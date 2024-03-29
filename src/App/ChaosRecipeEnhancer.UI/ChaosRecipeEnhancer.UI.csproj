@@ -14,7 +14,12 @@
 		<PublishWizardCompleted>true</PublishWizardCompleted>
 		<BootstrapperEnabled>true</BootstrapperEnabled>
 		<ApplicationVersion>3.24</ApplicationVersion>
-		<ApplicationRevision>2</ApplicationRevision>
+
+		<!--Bump this by 1 for minor patches; Bump by 10 for major patches-->
+		<!--Minor Patch Bump: v3.24.1000 -> v3.24.1001-->
+		<!--Minor Patch Bump: v3.24.1000 -> v3.24.2000-->
+		<ApplicationRevision>10</ApplicationRevision>
+
 		<!--Update Settings-->
 		<IsWebBootstrapper>false</IsWebBootstrapper>
 		<Install>true</Install>
