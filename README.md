@@ -81,4 +81,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 [issues-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues
 [support-badge]: https://img.shields.io/badge/Paypal-Support-<COLOR>?style=for-the-badge&logo=paypal&color=ffae29
 [support-link]: https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS
-[dotnet-installer-link]: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-8.0.3-windows-x64-installer
+[dotnet-installer-link]: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.3-windows-x64-installer
