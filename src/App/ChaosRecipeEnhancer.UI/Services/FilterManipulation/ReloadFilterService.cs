@@ -61,16 +61,12 @@ public class ReloadFilterService : IReloadFilterService
         Clipboard.Clear();
         Clipboard.SetText(chatCommand);
 
-        Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-        { 
-            await Task.Run(() =>
-            {
-                SendKeys.SendWait("{ENTER}");
-                SendKeys.SendWait("^(v)");
-                SendKeys.SendWait("{ENTER}");
-            });
+        Task.Run(() =>
+        {
+            SendKeys.SendWait("{ENTER}");
+            SendKeys.SendWait("^(v)");
+            SendKeys.SendWait("{ENTER}"); 
         });
-
 
         _notificationSoundService.PlayNotificationSound(NotificationSoundType.FilterReloaded);
     }

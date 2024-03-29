@@ -441,11 +441,12 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
             // Cooldown the refresh button until the rate limit is lifted
             Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
             {
-                await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));     
+                await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));
+                FetchButtonEnabled = true;     
             });
             
-            FetchButtonEnabled = true;
-            return false;
+            
+            return true;
         }
         catch (NullReferenceException e)
         {
