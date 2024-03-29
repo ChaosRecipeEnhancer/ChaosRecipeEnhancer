@@ -163,6 +163,9 @@ public class PoEApiService : IPoEApiService
                 var retryAfterSeconds = GetRetryAfterSeconds(response);
                 var timeoutString = GenerateTimeoutString(retryAfterSeconds);
 
+                // Set the rate limit expiration via GlobalRateLimitState
+                GlobalRateLimitState.SetRateLimitExpiresOn(retryAfterSeconds);
+
                 if (!_errorAlreadyShown)
                 {
                     GlobalErrorHandler.Spawn(

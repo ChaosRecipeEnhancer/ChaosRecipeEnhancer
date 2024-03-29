@@ -89,7 +89,6 @@ public static class GlobalRateLimitState
         // Check if there's a rate limit from a previous session
         if (DateTime.Now < RateLimitExpiresOn)
         {
-            RateLimitExceeded = true;
             return true;
         }
 
@@ -99,10 +98,10 @@ public static class GlobalRateLimitState
             // If the client is banned, update the rate limit expiry time
             RateLimitExpiresOn = DateTime.Now.AddSeconds(RateLimitState[2]);
             BanTime = RateLimitState[2];
-            RateLimitExceeded = true;
             return true;
         }
 
+        // If the client is not banned, reset the rate limit state
         RateLimitExceeded = false;
         return false;
     }
@@ -116,5 +115,11 @@ public static class GlobalRateLimitState
         // Calculate the remaining time until the rate limit expires
         TimeSpan remainingTime = RateLimitExpiresOn - DateTime.Now;
         return (int)remainingTime.TotalSeconds;
+    }
+
+    public static void SetRateLimitExpiresOn(int retryAfterSeconds)
+    {
+        RateLimitExpiresOn = DateTime.Now.AddSeconds(retryAfterSeconds);
+        BanTime = retryAfterSeconds;
     }
 }
