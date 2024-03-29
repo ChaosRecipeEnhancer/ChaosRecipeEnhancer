@@ -410,6 +410,8 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
         catch (RateLimitException e)
         {
             FetchButtonEnabled = false;
+            
+            // Cooldown the refresh button until the rate limit is lifted
             await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));
             FetchButtonEnabled = true;
             return false;
