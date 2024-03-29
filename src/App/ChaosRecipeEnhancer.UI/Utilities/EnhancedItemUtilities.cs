@@ -5,7 +5,10 @@ using System.Collections.Generic;
 
 namespace ChaosRecipeEnhancer.UI.Utilities;
 
-public static class EnhancedItemHelper
+/// <summary>
+/// Provides utility methods for filtering and processing EnhancedItem objects.
+/// </summary>
+public static class EnhancedItemUtilities
 {
     public static List<EnhancedItem> FilterItemsForRecipe(List<EnhancedItem> unfilteredStashContents)
     {
