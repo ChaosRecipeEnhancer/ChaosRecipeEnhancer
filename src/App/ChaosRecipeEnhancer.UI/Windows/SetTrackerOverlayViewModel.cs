@@ -310,17 +310,18 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                     UpdateStashButtonAndWarningMessage();
 
                     // enforce cooldown on fetch button to reduce chances of rate limiting
-                    try
+                    Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                     {
-                        Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+                        try
                         {
                             await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-                        });
-                    }
-                    finally
-                    {
-                        FetchButtonEnabled = true;
-                    }
+                        }
+                        finally
+                        {
+                            FetchButtonEnabled = true;
+                        }
+                    });
+
                 }
                 else
                 {
@@ -389,8 +390,6 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                                 GlobalRateLimitState.RequestCounter = 0;
                                 GlobalRateLimitState.RateLimitExceeded = false;
                             });
-                            
-                            
                         }
                         else if (GlobalRateLimitState.BanTime > 0)
                         {
@@ -415,17 +414,18 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                     UpdateStashButtonAndWarningMessage();
 
                     // enforce cooldown on fetch button to reduce chances of rate limiting
-                    try
+                    Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                     {
-                        Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+                        try
                         {
                             await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-                        });
-                    }
-                    finally
-                    {
-                        FetchButtonEnabled = true;
-                    }
+                        }
+                        finally
+                        {
+                            FetchButtonEnabled = true;
+                        }
+                    });
+                    
                 }
                 else
                 {

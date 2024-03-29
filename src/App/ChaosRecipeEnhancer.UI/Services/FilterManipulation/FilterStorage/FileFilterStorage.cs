@@ -95,11 +95,7 @@ public class FileFilterStorage : IFilterStorage
             {
                 _log.Error("IOException encountered: " + e.Message);
                 
-                Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-                {
-                    await Task.Delay(delayOnRetry);
-                });
-                
+                await Task.Delay(delayOnRetry);
             }
         }
     }

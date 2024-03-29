@@ -212,22 +212,23 @@ public class GeneralFormViewModel : CreViewModelBase
             }
         }
 
-        try
+        Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
         {
-            if (_leaguesLoaded)
+            try
             {
-                Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+                if (_leaguesLoaded)
                 {
                     await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-                });
-                
+                }
             }
-        }
-        finally
-        {
-            _leaguesLoaded = true;
-            RefreshLeagueListButtonEnabled = true;
-        }
+            finally
+            {
+                _leaguesLoaded = true;
+                RefreshLeagueListButtonEnabled = true;
+            }
+        });
+        
+        
     }
 
     /// <summary>
