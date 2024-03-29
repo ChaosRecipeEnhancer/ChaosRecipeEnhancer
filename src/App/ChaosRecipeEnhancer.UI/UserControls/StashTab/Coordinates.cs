@@ -1,6 +1,6 @@
-﻿using ChaosRecipeEnhancer.UI.Properties;
+﻿using ChaosRecipeEnhancer.UI.Native;
+using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities;
-using ChaosRecipeEnhancer.UI.Utilities.Native;
 using ChaosRecipeEnhancer.UI.Windows;
 using Serilog;
 using System;

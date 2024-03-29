@@ -1,9 +1,8 @@
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.State;
+using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using ChaosRecipeEnhancer.UI.Utilities;
-using ChaosRecipeEnhancer.UI.Utilities.Native;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -33,7 +32,7 @@ public partial class SetTrackerOverlayWindow : Window
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        WindowsUtilitiesForOverlays.MakeToolWindow(this);
+        WindowsUtilities.MakeToolWindow(this);
     }
 
     protected override void OnClosing(CancelEventArgs e)

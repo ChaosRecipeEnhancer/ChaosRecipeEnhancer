@@ -16,6 +16,7 @@
              d:DataContext="{d:DesignInstance Type=generalForms:GeneralFormViewModel}">
 
     <UserControl.Resources>
+        <creConverters:InvertBoolConverter x:Key="InvertBoolConverter" />
         <creConverters:BoolVisibilityConverter x:Key="BoolVisibilityConverter" CollapseWhenNotVisible="True" />
         <creConverters:BoolVisibilityConverter x:Key="InvertedBoolVisibilityConverter" CollapseWhenNotVisible="True" Invert="True" />
         <creConverters:EqualityToVisibilityConverter x:Key="VisibleIfEqual" ComparisonType="{x:Type system:Int32}" />
@@ -81,6 +82,7 @@
                 Margin="0 0 5 0"
                 VerticalContentAlignment="Center"
                 IsSynchronizedWithCurrentItem="True"
+                IsEnabled="{Binding RefreshLeagueListButtonEnabled}"
                 ItemsSource="{Binding LeagueList, Mode=OneWay}"
                 SelectedItem="{Binding LeagueName, Mode=TwoWay}" />
 
@@ -92,6 +94,7 @@
                 Margin="5 0 0 0"
                 HorizontalContentAlignment="Center"
                 Content="Refresh"
+                IsEnabled="{Binding RefreshLeagueListButtonEnabled}"
                 Command="{Binding RefreshLeaguesCommand}" />
 
         </Grid>

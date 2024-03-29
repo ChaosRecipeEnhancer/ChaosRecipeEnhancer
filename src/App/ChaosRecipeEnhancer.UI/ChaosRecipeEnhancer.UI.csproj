@@ -14,7 +14,7 @@
 		<PublishWizardCompleted>true</PublishWizardCompleted>
 		<BootstrapperEnabled>true</BootstrapperEnabled>
 		<ApplicationVersion>3.24</ApplicationVersion>
-		<ApplicationRevision>1</ApplicationRevision>
+		<ApplicationRevision>2</ApplicationRevision>
 		<!--Update Settings-->
 		<IsWebBootstrapper>false</IsWebBootstrapper>
 		<Install>true</Install>
@@ -114,8 +114,10 @@
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="TestableIO.System.IO.Abstractions" Version="21.0.2" />
 		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="21.0.2" />
-		<Reference Include="WpfToolkit">
-			<HintPath>Utilities\WpfToolkit\Xceed.Wpf.Toolkit.NET5.dll</HintPath>
-		</Reference>
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="Xceed.Wpf.Toolkit.NET5">
+	    <HintPath>Common\Libs\Xceed.Wpf.Toolkit.NET5.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 </Project>
