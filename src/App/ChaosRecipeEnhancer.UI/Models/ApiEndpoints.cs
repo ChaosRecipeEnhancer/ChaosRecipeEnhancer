@@ -6,6 +6,8 @@ namespace ChaosRecipeEnhancer.UI.Models;
 
 public static class ApiEndpoints
 {
+    public const string PoeApiHttpClientName = "PoEApiClient";
+
     private const string PoeApiBaseUrl = "https://api.pathofexile.com";
 
     public static readonly Uri LeagueEndpoint = new("https://api.pathofexile.com/leagues?type=main&realm=pc");

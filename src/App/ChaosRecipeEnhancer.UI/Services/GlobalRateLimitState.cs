@@ -1,8 +1,11 @@
-﻿namespace ChaosRecipeEnhancer.UI.Services;
+﻿using Serilog;
+using System;
+
+namespace ChaosRecipeEnhancer.UI.Services;
 
 public static class GlobalRateLimitState
 {
-    public static bool RateLimitExceeded;
+    public static bool RateLimitExceeded { get; set; }
 
     public static int RequestCounter { get; set; }
 
@@ -17,6 +20,22 @@ public static class GlobalRateLimitState
     /// Represents the duration in seconds for which the client is banned from making requests.
     /// </summary>
     public static int BanTime { get; set; }
+
+    public static DateTime RateLimitExpiresOn
+    {
+        get => Properties.Settings.Default.RateLimitExpiresOn;
+        set
+        {
+            Log.Information("Rate limit expires on: {RateLimitExpiresOn}", value);
+
+            if (Properties.Settings.Default.RateLimitExpiresOn != value)
+            {
+                // Update the user setting whenever the value is set
+                Properties.Settings.Default.RateLimitExpiresOn = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+    }
 
     /// <summary>
     /// Stores the number of seconds since the last successful request was made.
@@ -67,12 +86,23 @@ public static class GlobalRateLimitState
     /// <returns>True if the client is currently banned, otherwise false.</returns>
     public static bool CheckForBan()
     {
-        // The third element indicates the ban time; a value greater than 0 means the client is banned.
+        // Check if there's a rate limit from a previous session
+        if (DateTime.Now < RateLimitExpiresOn)
+        {
+            return true;
+        }
+
+        // Check the current rate limit state
         if (RateLimitState[2] > 0)
         {
+            // If the client is banned, update the rate limit expiry time
+            RateLimitExpiresOn = DateTime.Now.AddSeconds(RateLimitState[2]);
             BanTime = RateLimitState[2];
             return true;
         }
+
+        // If the client is not banned, reset the rate limit state
+        RateLimitExceeded = false;
         return false;
     }
 
@@ -80,5 +110,16 @@ public static class GlobalRateLimitState
     /// Calculates the wait time based on the rate limit state and the response time.
     /// </summary>
     /// <returns>The number of seconds to wait before making another request.</returns>
-    public static int GetSecondsToWait() => 60 - ResponseSeconds;
+    public static int GetSecondsToWait()
+    {
+        // Calculate the remaining time until the rate limit expires
+        TimeSpan remainingTime = RateLimitExpiresOn - DateTime.Now;
+        return (int)remainingTime.TotalSeconds;
+    }
+
+    public static void SetRateLimitExpiresOn(int retryAfterSeconds)
+    {
+        RateLimitExpiresOn = DateTime.Now.AddSeconds(retryAfterSeconds);
+        BanTime = retryAfterSeconds;
+    }
 }

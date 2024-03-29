@@ -1,6 +1,7 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using Serilog;
 using System;
@@ -10,7 +11,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ChaosRecipeEnhancer.UI.Models.Exceptions;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
@@ -50,6 +50,7 @@ public class PoEApiService : IPoEApiService
     private readonly IUserSettings _userSettings;
     private readonly IAuthStateManager _authStateManager;
     private readonly IHttpClientFactory _httpClientFactory;
+    private bool _errorAlreadyShown = false;
 
     #endregion
 
@@ -128,7 +129,7 @@ public class PoEApiService : IPoEApiService
         }
 
         // create new http client that will be disposed of after request
-        var client = _httpClientFactory.CreateClient("PoEApiClient");
+        var client = _httpClientFactory.CreateClient(ApiEndpoints.PoeApiHttpClientName);
 
         // add required headers
 
@@ -162,21 +163,32 @@ public class PoEApiService : IPoEApiService
                 var retryAfterSeconds = GetRetryAfterSeconds(response);
                 var timeoutString = GenerateTimeoutString(retryAfterSeconds);
 
-                GlobalErrorHandler.Spawn(
-                    (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                    "Error: API Service - 429 Too Many Requests (Rate Limit)",
-                    preamble: $"You are making too many requests in a short period of time - You are rate limited. Wait at least {timeoutString} and try again."
-                );
+                // Set the rate limit expiration via GlobalRateLimitState
+                GlobalRateLimitState.SetRateLimitExpiresOn(retryAfterSeconds);
+
+                if (!_errorAlreadyShown)
+                {
+                    GlobalErrorHandler.Spawn(
+                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
+                        "Error: API Service - 429 Too Many Requests (Rate Limit)",
+                        preamble: $"You are making too many requests in a short period of time - You are rate limited. Wait at least {timeoutString} and try again."
+                    );
+                }
+                _errorAlreadyShown = true;
 
                 throw new RateLimitException(retryAfterSeconds);
             case HttpStatusCode.Forbidden:
                 _log.Error("403 Forbidden - It looks like your auth token is invalid.");
 
-                GlobalErrorHandler.Spawn(
-                    (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                    "Error: API Service - 403 Forbidden",
-                    preamble: "It looks like your auth token has expired. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token."
-                );
+                if (!_errorAlreadyShown)
+                {
+                    GlobalErrorHandler.Spawn(
+                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
+                        "Error: API Service - 403 Forbidden",
+                        preamble: "It looks like your auth token has expired. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token."
+                    );
+                }
+                _errorAlreadyShown = true;
 
                 // usually we will be here if we weren't able to make a successful api request based on an expired auth token
                 _authStateManager.Logout();
@@ -188,11 +200,16 @@ public class PoEApiService : IPoEApiService
             case HttpStatusCode.Unauthorized:
                 _log.Error("401 Unauthorized - It looks like your auth token is invalid.");
 
-                GlobalErrorHandler.Spawn(
-                    (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                    "Error: API Service - 401 Unauthorized",
-                    preamble: "It looks like your auth token is invalid. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token."
-                );
+
+                if (!_errorAlreadyShown)
+                {
+                    GlobalErrorHandler.Spawn(
+                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
+                        "Error: API Service - 401 Unauthorized",
+                        preamble: "It looks like your auth token is invalid. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token."
+                    );
+                }
+                _errorAlreadyShown = true;
 
                 // usually we will be here if we weren't able to make a successful api request based on an invalid auth token
                 _authStateManager.Logout();
@@ -202,11 +219,16 @@ public class PoEApiService : IPoEApiService
 
                 _log.Error("503 Service Unavailable - The Path of Exile API is currently unavailable. Please try again later.");
 
-                GlobalErrorHandler.Spawn(
-                    (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                    "Error: API Service - 503 PoE API Unavailable",
-                    preamble: "The Path of Exile API is currently down. This is usually for maintenance, or DDoS, or league launch shennanigans - maybe all three!"
-                );
+
+                if (!_errorAlreadyShown)
+                {
+                    GlobalErrorHandler.Spawn(
+                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
+                        "Error: API Service - 503 PoE API Unavailable",
+                        preamble: "The Path of Exile API is currently down. This is usually for maintenance, or DDoS, or league launch shennanigans - maybe all three!"
+                    );
+                }
+                _errorAlreadyShown = true;
 
                 return null;
         }
@@ -227,6 +249,8 @@ public class PoEApiService : IPoEApiService
             using var resultHttpContent = response.Content;
 
             var resultString = await resultHttpContent.ReadAsStringAsync();
+
+            _errorAlreadyShown = false;
             return resultString;
         }
         catch (InvalidOperationException e)
@@ -234,13 +258,17 @@ public class PoEApiService : IPoEApiService
             // Status code 500 is a server error
             _log.Error(e, "Error deserializing response from Path of Exile API after retries");
 
-            GlobalErrorHandler.Spawn(
-                e.Message,
-                "Error: API Service - 500 PoE API (Temporary) Error",
-                preamble: "The Path of Exile API seems to be having unspecified intermittent issues. " +
-                "The response we got back from the API was not in the expected format, even after retries.\n\n" +
-                "Please try again later."
-            );
+            if (!_errorAlreadyShown)
+            {
+                GlobalErrorHandler.Spawn(
+                    e.Message,
+                    "Error: API Service - 500 PoE API (Temporary) Error",
+                    preamble: "The Path of Exile API seems to be having unspecified intermittent issues. " +
+                    "The response we got back from the API was not in the expected format, even after retries.\n\n" +
+                    "Please try again later."
+                );
+            }
+            _errorAlreadyShown = true;
 
             return null;
         }
@@ -281,7 +309,7 @@ public class PoEApiService : IPoEApiService
         {
             formattedTimeoutString += $"{timeSpan.Seconds} second{(timeSpan.Seconds > 1 ? "s" : "")}";
         }
-        
+
         // If there is a trailing comma and space, remove it (e.g. "1 minute, )" -> "1 minute")
         if (formattedTimeoutString.EndsWith(", "))
         {
