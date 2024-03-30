@@ -4,8 +4,7 @@ public static class CreAppConstants
 {
     public const string InstanceName = "ChaosRecipeEnhancer";
     public const string ProtocolPrefix = "chaosrecipe://";
-    public const string VersionText = "v3.24.2000";
-    public const string VersionTextNoPrefix = "3.24.2000";
+    public const string VersionText = "3.24.3000";
     public const string GitHubOrgName = "ChaosRecipeEnhancer";
     public const string GithubRepoName = "ChaosRecipeEnhancer";
 }
