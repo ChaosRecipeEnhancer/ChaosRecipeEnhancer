@@ -22,7 +22,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     private readonly IFilterManipulationService _filterManipulationService = Ioc.Default.GetRequiredService<IFilterManipulationService>();
     private readonly IReloadFilterService _reloadFilterService = Ioc.Default.GetRequiredService<IReloadFilterService>();
-    private readonly IPoEApiService _apiService = Ioc.Default.GetRequiredService<IPoEApiService>();
+    private readonly IPoeApiService _apiService = Ioc.Default.GetRequiredService<IPoeApiService>();
     private readonly IUserSettings _userSettings = Ioc.Default.GetRequiredService<IUserSettings>();
     private readonly IAuthStateManager _authStateManager = Ioc.Default.GetRequiredService<IAuthStateManager>();
     private readonly INotificationSoundService _notificationSoundService = Ioc.Default.GetRequiredService<INotificationSoundService>();

@@ -24,7 +24,7 @@ public class GeneralFormViewModel : CreViewModelBase
     #region Fields
 
     private readonly ILogger _log = Log.ForContext<GeneralFormViewModel>();
-    private readonly IPoEApiService _apiService;
+    private readonly IPoeApiService _apiService;
     private readonly IUserSettings _userSettings;
 
     private ICommand _fetchStashTabsCommand;
@@ -49,7 +49,7 @@ public class GeneralFormViewModel : CreViewModelBase
     /// <param name="apiService">The service for API interactions.</param>
     /// <param name="authStateManager">Manages authentication state.</param>
     /// <param name="userSettings">Stores user settings.</param>
-    public GeneralFormViewModel(IPoEApiService apiSevice, IUserSettings userSettings)
+    public GeneralFormViewModel(IPoeApiService apiSevice, IUserSettings userSettings)
     {
         _apiService = apiSevice;
         _userSettings = userSettings;

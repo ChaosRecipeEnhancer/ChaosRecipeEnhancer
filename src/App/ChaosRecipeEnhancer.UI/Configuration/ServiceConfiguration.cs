@@ -26,7 +26,7 @@ public static class ServiceConfiguration
         // last since they depend on other services
 
         services.AddSingleton<IAuthStateManager, AuthStateManager>();
-        services.AddSingleton<IPoEApiService, PoEApiService>();
+        services.AddSingleton<IPoeApiService, PoeApiService>();
     }
 
     private static void ConfigureCoreServices(IServiceCollection services)

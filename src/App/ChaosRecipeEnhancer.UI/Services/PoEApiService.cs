@@ -1,6 +1,5 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses;
-using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using Serilog;
@@ -17,7 +16,7 @@ namespace ChaosRecipeEnhancer.UI.Services;
 /// <summary>
 /// Defines the contract for the PoE API service.
 /// </summary>
-public interface IPoEApiService
+public interface IPoeApiService
 {
     /// <summary>
     /// Retrieves the list of leagues asynchronously.
@@ -42,11 +41,11 @@ public interface IPoEApiService
 /// <summary>
 /// Provides methods to interact with the Path of Exile API.
 /// </summary>
-public class PoEApiService : IPoEApiService
+public class PoeApiService : IPoeApiService
 {
     #region Fields
 
-    private readonly ILogger _log = Log.ForContext<PoEApiService>();
+    private readonly ILogger _log = Log.ForContext<PoeApiService>();
     private readonly IUserSettings _userSettings;
     private readonly IAuthStateManager _authStateManager;
     private readonly IHttpClientFactory _httpClientFactory;
@@ -57,11 +56,11 @@ public class PoEApiService : IPoEApiService
     #region Constructors
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PoEApiService"/> class.
+    /// Initializes a new instance of the <see cref="PoeApiService"/> class.
     /// </summary>
     /// <param name="userSettings">The user settings.</param>
     /// <param name="authStateManager">The authentication state manager.</param>
-    public PoEApiService(IHttpClientFactory httpClientFactory, IUserSettings userSettings, IAuthStateManager authStateManager)
+    public PoeApiService(IHttpClientFactory httpClientFactory, IUserSettings userSettings, IAuthStateManager authStateManager)
     {
         _httpClientFactory = httpClientFactory;
         _userSettings = userSettings;
@@ -157,86 +156,39 @@ public class PoEApiService : IPoEApiService
 
         switch (response.StatusCode)
         {
-            case HttpStatusCode.TooManyRequests:
-                _log.Error("429 Too Many Requests - You are rate limited.");
-
-                var retryAfterSeconds = GetRetryAfterSeconds(response);
-                var timeoutString = GenerateTimeoutString(retryAfterSeconds);
-
-                // Set the rate limit expiration via GlobalRateLimitState
-                GlobalRateLimitState.SetRateLimitExpiresOn(retryAfterSeconds);
-
-                if (!_errorAlreadyShown)
-                {
-                    GlobalErrorHandler.Spawn(
-                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                        "Error: API Service - 429 Too Many Requests (Rate Limit)",
-                        preamble: $"You are making too many requests in a short period of time - You are rate limited. Wait at least {timeoutString} and try again."
-                    );
-                }
-                _errorAlreadyShown = true;
-
-                throw new RateLimitException(retryAfterSeconds);
             case HttpStatusCode.Forbidden:
-                _log.Error("403 Forbidden - It looks like your auth token is invalid.");
-
-                if (!_errorAlreadyShown)
-                {
-                    GlobalErrorHandler.Spawn(
-                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                        "Error: API Service - 403 Forbidden",
-                        preamble: "It looks like your auth token has expired. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token."
-                    );
-                }
-                _errorAlreadyShown = true;
+                GlobalErrorHandler.HandleError403FromApi(responseString);
 
                 // usually we will be here if we weren't able to make a successful api request based on an expired auth token
                 _authStateManager.Logout();
 
-                // manually updating this value as a work-around to some issues with importing old settings from previous installations
-                _userSettings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
-
                 return null;
             case HttpStatusCode.Unauthorized:
-                _log.Error("401 Unauthorized - It looks like your auth token is invalid.");
+                GlobalErrorHandler.HandleError401FromApi(responseString);
 
-
-                if (!_errorAlreadyShown)
-                {
-                    GlobalErrorHandler.Spawn(
-                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                        "Error: API Service - 401 Unauthorized",
-                        preamble: "It looks like your auth token is invalid. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token."
-                    );
-                }
-                _errorAlreadyShown = true;
-
-                // usually we will be here if we weren't able to make a successful api request based on an invalid auth token
+                // if we're here, the auth token is invalid
+                // so we need to log out and reset auth state
                 _authStateManager.Logout();
 
                 return null;
+            case HttpStatusCode.TooManyRequests:
+                var retryAfterSeconds = GlobalErrorHandler.HandleError429FromApi(response, responseString);
+                throw new RateLimitException(retryAfterSeconds);
             case HttpStatusCode.ServiceUnavailable:
-
-                _log.Error("503 Service Unavailable - The Path of Exile API is currently unavailable. Please try again later.");
-
-
-                if (!_errorAlreadyShown)
-                {
-                    GlobalErrorHandler.Spawn(
-                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                        "Error: API Service - 503 PoE API Unavailable",
-                        preamble: "The Path of Exile API is currently down. This is usually for maintenance, or DDoS, or league launch shennanigans - maybe all three!"
-                    );
-                }
-                _errorAlreadyShown = true;
-
+                GlobalErrorHandler.HandleError503FromApi(responseString);
                 return null;
         }
 
         try
         {
             // get new rate limit values
-            // these might end up being `X-Rate-Limit-Ip` and `X-Rate-Limit-Ip-State` instead, or possibly `X-Rate-Limit-Client` and `X-Rate-Limit-Client-State`
+            // these might end up being:
+            //
+            //      `X-Rate-Limit-Ip`
+            //      `X-Rate-Limit-Ip-State`
+            //      `X-Rate-Limit-Client`
+            //      `X-Rate-Limit-Client-State`
+            //
             // keep an eye on this if you get some weird issues...
 
             var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
@@ -255,76 +207,9 @@ public class PoEApiService : IPoEApiService
         }
         catch (InvalidOperationException e)
         {
-            // Status code 500 is a server error
-            _log.Error(e, "Error deserializing response from Path of Exile API after retries");
-
-            if (!_errorAlreadyShown)
-            {
-                GlobalErrorHandler.Spawn(
-                    e.Message,
-                    "Error: API Service - 500 PoE API (Temporary) Error",
-                    preamble: "The Path of Exile API seems to be having unspecified intermittent issues. " +
-                    "The response we got back from the API was not in the expected format, even after retries.\n\n" +
-                    "Please try again later."
-                );
-            }
-            _errorAlreadyShown = true;
-
+            GlobalErrorHandler.HandleError500FromApi(e);
             return null;
         }
-    }
-
-    private static int GetRetryAfterSeconds(HttpResponseMessage response)
-    {
-        const string retryHeader = "Retry-After";
-
-        var retryAfter = response.Headers.GetValues(retryHeader).Select(int.Parse).ToList();
-
-        // Multiple timeout rules may apply, take the longest timeout
-        if (retryAfter.Count > 1)
-        {
-            retryAfter = retryAfter.OrderByDescending(x => x).ToList();
-        }
-
-        return retryAfter.First();
-    }
-
-    private static string GenerateTimeoutString(int retryAfterSeconds)
-    {
-        var timeSpan = TimeSpan.FromSeconds(retryAfterSeconds);
-
-        var formattedTimeoutString = "";
-
-        if (timeSpan.Hours > 0)
-        {
-            formattedTimeoutString += $"{timeSpan.Hours} hour{(timeSpan.Hours > 1 ? "s" : "")}, ";
-        }
-
-        if (timeSpan.Minutes > 0)
-        {
-            formattedTimeoutString += $"{timeSpan.Minutes} minute{(timeSpan.Minutes > 1 ? "s" : "")}, ";
-        }
-
-        if (timeSpan.Seconds > 0)
-        {
-            formattedTimeoutString += $"{timeSpan.Seconds} second{(timeSpan.Seconds > 1 ? "s" : "")}";
-        }
-
-        // If there is a trailing comma and space, remove it (e.g. "1 minute, )" -> "1 minute")
-        if (formattedTimeoutString.EndsWith(", "))
-        {
-            formattedTimeoutString = formattedTimeoutString.Substring(0, formattedTimeoutString.Length - 2);
-        }
-
-        // If the timeout is only seconds, we do not need an 'and' before the seconds
-        if (!formattedTimeoutString.Contains(','))
-        {
-            return formattedTimeoutString;
-        }
-        var lastCommaIndex = formattedTimeoutString.LastIndexOf(',');
-        formattedTimeoutString = formattedTimeoutString.Remove(lastCommaIndex, 1).Insert(lastCommaIndex, " and");
-
-        return formattedTimeoutString;
     }
 
     #endregion
