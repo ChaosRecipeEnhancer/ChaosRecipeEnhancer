@@ -241,11 +241,11 @@ public class AuthStateManager : IAuthStateManager
     {
         try
         {
-            var content = new FormUrlEncodedContent(new[]
-            {
-            new KeyValuePair<string, string>("code", authCode),
-            new KeyValuePair<string, string>("code_verifier", _codeVerifier),
-        });
+            var content = new FormUrlEncodedContent(
+            [
+                new KeyValuePair<string, string>("code", authCode),
+                new KeyValuePair<string, string>("code_verifier", _codeVerifier),
+            ]);
 
             _log.Information($"Sending token request to: {AuthConfig.OAuthTokenEndpoint}");
             _log.Information($"Request content: {await content.ReadAsStringAsync()}");
