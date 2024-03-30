@@ -19,8 +19,6 @@ public static class GlobalErrorHandler
 
     #region API Error Handling
 
-    #region Handle 4XX Errors
-
     private static void HandleApiError(string responseString, string errorMessage, string preamble)
     {
         _log.Error(errorMessage);
@@ -31,6 +29,13 @@ public static class GlobalErrorHandler
         }
         _errorAlreadyShown = true;
     }
+
+    public static void HandleUnspecifiedErrorFromApi(string responseString)
+    {
+        HandleApiError(responseString, "Unspecified Error", "An unspecified error occurred while communicating with the Path of Exile API.");
+    }
+
+    #region Handle 4XX Errors
 
     public static void HandleError401FromApi(string responseString)
     {
@@ -58,21 +63,9 @@ public static class GlobalErrorHandler
 
     #region Handle 5XX Errors
 
-    public static void HandleError500FromApi(InvalidOperationException e)
+    public static void HandleError500FromApi(string responseString)
     {
-        _log.Error(e, "Error deserializing response from Path of Exile API after retries");
-
-        if (!_errorAlreadyShown)
-        {
-            Spawn(
-                e.Message,
-                "Error: API Service - 500 PoE API (Temporary) Error",
-                preamble: "The Path of Exile API seems to be having unspecified intermittent issues. " +
-                "The response we got back from the API was not in the expected format, even after retries.\n\n" +
-                "Please try again later."
-            );
-        }
-        _errorAlreadyShown = true;
+        HandleApiError(responseString, "500 Internal Server Error", "The Path of Exile API is currently experiencing an internal server error. Please try again later.");
     }
 
     public static void HandleError503FromApi(string responseString)

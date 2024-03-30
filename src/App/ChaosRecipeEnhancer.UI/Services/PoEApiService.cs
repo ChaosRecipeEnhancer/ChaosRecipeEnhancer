@@ -146,14 +146,49 @@ public class PoeApiService : IPoeApiService
         _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
         _log.Debug($"Response: {responseString}");
 
-        // for some weird ass reason the status codes come back 200 even when it's not valid (for leagues endpoint)
+        // for some weird ass reason the status codes come
+        // back 200 even when it's not valid (for leagues endpoint)
         // so here's a hacky work-around
+        // HACK: GGG Fix ur shit
         if (response.StatusCode == HttpStatusCode.OK && !_authStateManager.ValidateAuthToken())
         {
             _log.Information("Status code is 200 but auth token is no good; manually replacing status code");
             response.StatusCode = HttpStatusCode.Unauthorized;
         }
 
+        if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
+
+        // get new rate limit values
+        // these might end up being:
+        //
+        //      `X-Rate-Limit-Ip`
+        //      `X-Rate-Limit-Ip-State`
+        //      `X-Rate-Limit-Client`
+        //      `X-Rate-Limit-Client-State`
+        //
+        // keep an eye on this if you get some weird issues...
+
+        var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
+        var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
+        var resultTime = response.Headers.GetValues("Date").FirstOrDefault();
+
+        GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
+        GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
+
+        using var resultHttpContent = response.Content;
+
+        var resultString = await resultHttpContent.ReadAsStringAsync();
+
+        _errorAlreadyShown = false;
+        return resultString;
+    }
+
+    #endregion
+
+    #region Utility Methods
+
+    private bool CheckIfResponseStatusCodeIsValid(HttpResponseMessage response, string responseString)
+    {
         switch (response.StatusCode)
         {
             case HttpStatusCode.Forbidden:
@@ -162,7 +197,8 @@ public class PoeApiService : IPoeApiService
                 // usually we will be here if we weren't able to make a successful api request based on an expired auth token
                 _authStateManager.Logout();
 
-                return null;
+                return false;
+
             case HttpStatusCode.Unauthorized:
                 GlobalErrorHandler.HandleError401FromApi(responseString);
 
@@ -170,46 +206,33 @@ public class PoeApiService : IPoeApiService
                 // so we need to log out and reset auth state
                 _authStateManager.Logout();
 
-                return null;
+                return false;
+
             case HttpStatusCode.TooManyRequests:
                 var retryAfterSeconds = GlobalErrorHandler.HandleError429FromApi(response, responseString);
                 throw new RateLimitException(retryAfterSeconds);
+
+            case HttpStatusCode.InternalServerError:
+                GlobalErrorHandler.HandleError500FromApi(responseString);
+                return false;
+
             case HttpStatusCode.ServiceUnavailable:
                 GlobalErrorHandler.HandleError503FromApi(responseString);
-                return null;
+                return false;
+
+            default:
+
+                // handle any other 4xx or 5XX errors
+                if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+                {
+                    GlobalErrorHandler.HandleUnspecifiedErrorFromApi(responseString);
+                    return false;
+                }
+
+                break;
         }
 
-        try
-        {
-            // get new rate limit values
-            // these might end up being:
-            //
-            //      `X-Rate-Limit-Ip`
-            //      `X-Rate-Limit-Ip-State`
-            //      `X-Rate-Limit-Client`
-            //      `X-Rate-Limit-Client-State`
-            //
-            // keep an eye on this if you get some weird issues...
-
-            var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
-            var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
-            var resultTime = response.Headers.GetValues("Date").FirstOrDefault();
-
-            GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
-            GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
-
-            using var resultHttpContent = response.Content;
-
-            var resultString = await resultHttpContent.ReadAsStringAsync();
-
-            _errorAlreadyShown = false;
-            return resultString;
-        }
-        catch (InvalidOperationException e)
-        {
-            GlobalErrorHandler.HandleError500FromApi(e);
-            return null;
-        }
+        return true;
     }
 
     #endregion
