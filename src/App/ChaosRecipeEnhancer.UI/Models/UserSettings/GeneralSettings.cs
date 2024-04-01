@@ -23,6 +23,19 @@ public partial class UserSettings : IUserSettings
         }
     }
 
+    public bool CustomLeagueEnabled
+    {
+        get => Settings.Default.CustomLeagueEnabled;
+        set
+        {
+            if (Settings.Default.CustomLeagueEnabled != value)
+            {
+                Settings.Default.CustomLeagueEnabled = value;
+                Save();
+            }
+        }
+    }
+
     public string StashTabPrefix
     {
         get => Settings.Default.StashTabPrefix;

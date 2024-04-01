@@ -1,9 +1,10 @@
-﻿using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,20 +20,22 @@ namespace ChaosRecipeEnhancer.UI.Services;
 public interface IPoeApiService
 {
     /// <summary>
-    /// Retrieves the list of leagues asynchronously.
+    /// Gets a list of league asynchronously.
     /// </summary>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the league response.</returns>
-    public Task<LeagueResponse> GetLeaguesAsync();
+    /// <returns>A task that represents the asynchronous operation. The task result contains the list of league names.</returns>
+    public Task<List<string>> GetLeaguesAsync();
 
     /// <summary>
     /// Retrieves the metadata for all personal stash tabs asynchronously.
     /// </summary>
+    /// <remarks>This API call counts towards the shared CRE rate limit.</remarks>
     /// <returns>A task that represents the asynchronous operation. The task result contains the list of stashes response.</returns>
     public Task<ListStashesResponse> GetAllPersonalStashTabMetadataAsync();
 
     /// <summary>
     /// Retrieves the contents of a personal stash tab by its ID asynchronously.
     /// </summary>
+    /// <remarks>This API call counts towards the shared CRE rate limit.</remarks>
     /// <param name="stashId">The ID of the stash tab.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the get stash response.</returns>
     public Task<GetStashResponse> GetPersonalStashTabContentsByStashIdAsync(string stashId);
@@ -49,7 +52,6 @@ public class PoeApiService : IPoeApiService
     private readonly IUserSettings _userSettings;
     private readonly IAuthStateManager _authStateManager;
     private readonly IHttpClientFactory _httpClientFactory;
-    private bool _errorAlreadyShown = false;
 
     #endregion
 
@@ -69,12 +71,58 @@ public class PoeApiService : IPoeApiService
 
     #endregion
 
+    #region Properties
+
+    public bool CustomLeagueEnabled => _userSettings.CustomLeagueEnabled;
+
+    #endregion
+
     #region Domain Methods
 
     /// <inheritdoc />
-    public async Task<LeagueResponse> GetLeaguesAsync()
+    public async Task<List<string>> GetLeaguesAsync()
     {
-        var responseRaw = await GetAuthenticatedAsync(ApiEndpoints.LeaguesEndpoint());
+        List<string> leagueNames;
+
+        if (CustomLeagueEnabled)
+        {
+            var results = await GetPersonalLeaguesAsync();
+
+            leagueNames = results.Leagues
+                .Where(league => !string.IsNullOrEmpty(league.PrivateLeagueUrl))
+                .Select(league => league.Id)
+                .ToList();
+        }
+        else
+        {
+            var results = await GetPublicLeaguesAsync();
+            leagueNames = results.Select(league => league.Id).ToList();
+        }
+
+        return leagueNames;
+    }
+
+    /// <summary>
+    /// Get a list of public leagues asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the list of public leagues.</returns>
+    private async Task<IEnumerable<League>> GetPublicLeaguesAsync()
+    {
+        var responseRaw = await GetAsync(PoeApiConfig.PublicLeagueEndpoint);
+
+        return responseRaw is null
+            ? null
+            : JsonSerializer.Deserialize<League[]>((string)responseRaw);
+    }
+
+    /// <summary>
+    /// Get a list of personal leagues asynchronously.
+    /// </summary>
+    /// <remarks>This API call counts towards the shared CRE rate limit.</remarks>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the list of personal leagues.</returns>
+    private async Task<LeagueResponse> GetPersonalLeaguesAsync()
+    {
+        var responseRaw = await GetAuthenticatedAsync(PoeApiConfig.PersonalLeaguesEndpoint());
 
         var response = responseRaw is null
             ? null
@@ -87,7 +135,7 @@ public class PoeApiService : IPoeApiService
     public async Task<ListStashesResponse> GetAllPersonalStashTabMetadataAsync()
     {
         var responseRaw = await GetAuthenticatedAsync(
-            ApiEndpoints.StashTabPropsEndpoint()
+            PoeApiConfig.PersonalStashTabPropsEndpoint()
         );
 
         return responseRaw is null
@@ -99,7 +147,7 @@ public class PoeApiService : IPoeApiService
     public async Task<GetStashResponse> GetPersonalStashTabContentsByStashIdAsync(string stashId)
     {
         var responseRaw = await GetAuthenticatedAsync(
-            ApiEndpoints.IndividualTabContentsEndpoint(stashId)
+            PoeApiConfig.PersonalIndividualTabContentsEndpoint(stashId)
         );
 
         return responseRaw is null
@@ -128,13 +176,13 @@ public class PoeApiService : IPoeApiService
         }
 
         // create new http client that will be disposed of after request
-        var client = _httpClientFactory.CreateClient(ApiEndpoints.PoeApiHttpClientName);
+        var client = _httpClientFactory.CreateClient(PoeApiConfig.PoeApiHttpClientName);
 
         // add required headers
 
         // this useragent isn't strictly required, but it's good practice to include it (they ask for it in the spec)
         // the api will not spit back an error if we don't include it
-        client.DefaultRequestHeaders.UserAgent.ParseAdd(ApiEndpoints.UserAgent);
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(PoeApiConfig.UserAgent);
 
         // the auth token is required for all calls (we only use authenticated endpoints as of 3.24)
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authStateManager.AuthToken);
@@ -179,13 +227,30 @@ public class PoeApiService : IPoeApiService
 
         var resultString = await resultHttpContent.ReadAsStringAsync();
 
-        _errorAlreadyShown = false;
         return resultString;
     }
 
-    #endregion
+    private async Task<object> GetAsync(Uri requestUri)
+    {
+        if (GlobalRateLimitState.CheckForBan()) return null;
 
-    #region Utility Methods
+        // -1 for 1 request + 3 times if rate limit high exceeded
+        if (GlobalRateLimitState.RateLimitState[0] >= GlobalRateLimitState.MaximumRequests - 4)
+        {
+            GlobalRateLimitState.RateLimitExceeded = true;
+            return null;
+        }
+
+        // create new http client that will be disposed of after request
+        using var client = new HttpClient();
+
+        var response = await client.GetAsync(requestUri);
+        var responseString = response.Content.ReadAsStringAsync().Result;
+
+        if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
+
+        return responseString;
+    }
 
     private bool CheckIfResponseStatusCodeIsValid(HttpResponseMessage response, string responseString)
     {
