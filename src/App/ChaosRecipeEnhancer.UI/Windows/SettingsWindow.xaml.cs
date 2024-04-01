@@ -4,6 +4,7 @@ using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Native;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -158,13 +159,14 @@ public partial class SettingsWindow
 
             _model.UpdateAvailable = IsUpdateAvailable(currentVersion, latestVersion);
 
-            // Notify user about the update
-            Trace.WriteLine($"A new version {latestVersion} is available!");
+            if (_model.UpdateAvailable)
+            {
+                Log.Information($"SettingsWindow - A new version {latestVersion} is available!");
+            }
         }
         catch (Exception ex)
         {
-            // Handle exceptions, like network issues
-            Trace.WriteLine("Error checking for updates: " + ex.Message);
+            Log.Information($"SettingsWindow - Error checking for updates: " + ex.Message);
         }
     }
 
