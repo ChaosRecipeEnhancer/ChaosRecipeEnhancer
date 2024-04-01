@@ -1,6 +1,6 @@
 ﻿using ChaosRecipeEnhancer.UI.Common;
 using ChaosRecipeEnhancer.UI.Configuration;
-using ChaosRecipeEnhancer.UI.Models.Constants;
+using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -13,7 +13,7 @@ namespace ChaosRecipeEnhancer.UI;
 
 public partial class App
 {
-    private readonly SingleInstance _singleInstance = new(CreAppConstants.InstanceName);
+    private readonly SingleInstance _singleInstance = new(CreAppConfig.InstanceName);
 
     public App()
     {
@@ -22,7 +22,7 @@ public partial class App
 
         if (isSecondaryInstance)
         {
-            if (args.Length > 1 && args[1].StartsWith(CreAppConstants.ProtocolPrefix))
+            if (args.Length > 1 && args[1].StartsWith(CreAppConfig.ProtocolPrefix))
             {
                 _singleInstance.PingSingleInstance(args[1]);
                 Shutdown();

@@ -7,12 +7,17 @@
 ];
 
 const isClientVersionAllowed = (version) => {
+    // Eventually we will enforce the version to be present in the state.
+    // For now, we want to maintain backward compatibility with older versions.
+    // I'm targetting... 3.25? 3.26? to enforce this.
+
+    if (!version) return true;
 
     // versions before 3.24.200 will not include the version in the state
-    if (!version || /^\s*$/.test(version)) {
-        console.log(`Handler: Error! Missing or invalid 'cre_client_id' in request.`);
-        return false;
-    }
+    //if (!version || /^\s*$/.test(version)) {
+    //    console.log(`Handler: Error! Missing or invalid 'cre_client_id' in request.`);
+    //    return false;
+    //}
 
     // Check if the version is in the list of versions to exclude
     if (listOfCreClientVersionsToExclude.includes(version)) {
@@ -70,7 +75,11 @@ export const handler = async (event, context) => {
         };
     }
 
-    return serveAuthSuccessfulPage(code, state, creClientVersion);
+    if (!creClientVersion) {
+        return serveAuthSuccessfulPageWithCreClientVersion(code, state, creClientVersion);
+    } else {
+        return serveAuthSuccessfulPage(code, state);
+    }
 };
 
 function isValidBase64UrlEncoded(str) {
@@ -90,8 +99,54 @@ function isValidBase64UrlEncoded(str) {
     return base64UrlRegex.test(decodedStr);
 }
 
-function serveAuthSuccessfulPage(code, state, creClientVersion) {
+function serveAuthSuccessfulPageWithCreClientVersion(code, state, creClientVersion) {
     const redirectUri = `chaosrecipe://auth?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}&cre_client_version=${encodeURIComponent(creClientVersion)}`;
+    const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Authentication Successful</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #1c1c1c;
+                    color: #f0f0f0;
+                    margin: 20px;
+                }
+                a {
+                    color: #007bff;
+                    text-decoration: none;
+                }
+                a:hover {
+                    text-decoration: underline;
+                }
+            </style>
+            <script type="text/javascript">
+                function redirectToCreClient() {
+                    window.location.href = '${redirectUri}';
+                }
+                window.onload = function() {
+                    setTimeout(redirectToCreClient, 200); // Redirect after 3 seconds
+                };
+            </script>
+        </head>
+        <body>
+            <h1>Authentication for Chaos Recipe Enhancer Successful!</h1>
+            <p>This page is safe to close now. It may take a few seconds (5-10 seconds) for your auth status to update in-app.</p>
+            <p>If the app does not open and authenticate after a few moments, <a href="javascript:redirectToCreClient()">please click here</a>.</p>
+        </body>
+    </html>
+    `;
+
+    return {
+        statusCode: 200,
+        headers: { 'Content-Type': "text/html" },
+        body: htmlContent
+    };
+}
+
+function serveAuthSuccessfulPage(code, state) {
+    const redirectUri = `chaosrecipe://auth?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}}`;
     const htmlContent = `
     <!DOCTYPE html>
     <html>

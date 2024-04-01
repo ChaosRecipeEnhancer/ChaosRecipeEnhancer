@@ -22,7 +22,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     private readonly IFilterManipulationService _filterManipulationService = Ioc.Default.GetRequiredService<IFilterManipulationService>();
     private readonly IReloadFilterService _reloadFilterService = Ioc.Default.GetRequiredService<IReloadFilterService>();
-    private readonly IPoEApiService _apiService = Ioc.Default.GetRequiredService<IPoEApiService>();
+    private readonly IPoeApiService _apiService = Ioc.Default.GetRequiredService<IPoeApiService>();
     private readonly IUserSettings _userSettings = Ioc.Default.GetRequiredService<IUserSettings>();
     private readonly IAuthStateManager _authStateManager = Ioc.Default.GetRequiredService<IAuthStateManager>();
     private readonly INotificationSoundService _notificationSoundService = Ioc.Default.GetRequiredService<INotificationSoundService>();
@@ -273,30 +273,6 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                         filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
 
                         GlobalItemSetManagerState.UpdateStashContentsByIndex(setThreshold, selectedTabIndices, filteredStashContents);
-
-                        if (GlobalRateLimitState.RateLimitExceeded)
-                        {
-                            WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
-
-                            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-                            {
-                                await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
-
-                                GlobalRateLimitState.RequestCounter = 0;
-                                GlobalRateLimitState.RateLimitExceeded = false;
-                            });
-                        }
-                        else if (GlobalRateLimitState.BanTime > 0)
-                        {
-                            WarningMessage = "Temporary Ban from API Requests! Waiting...";
-
-                            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-                            {
-                                await Task.Delay(GlobalRateLimitState.BanTime * 1000);
-
-                                GlobalRateLimitState.BanTime = 0;
-                            });
-                        }
                     }
 
                     // recalculate item amounts and generate item sets after fetching from api
@@ -377,30 +353,6 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                         filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
 
                         GlobalItemSetManagerState.UpdateStashContentsById(setThreshold, selectedTabIds, filteredStashContents);
-
-                        if (GlobalRateLimitState.RateLimitExceeded)
-                        {
-                            WarningMessage = "Rate Limit Exceeded! Selecting less tabs may help. Waiting...";
-
-                            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-                            {
-                                await Task.Delay(GlobalRateLimitState.GetSecondsToWait() * 1000);
-
-                                GlobalRateLimitState.RequestCounter = 0;
-                                GlobalRateLimitState.RateLimitExceeded = false;
-                            });
-                        }
-                        else if (GlobalRateLimitState.BanTime > 0)
-                        {
-                            WarningMessage = "Temporary Ban from API Requests! Waiting...";
-
-                            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-                            {
-                                await Task.Delay(GlobalRateLimitState.BanTime * 1000);
-
-                                GlobalRateLimitState.BanTime = 0;
-                            });
-                        }
                     }
 
                     // recalculate item amounts and generate item sets after fetching from api
@@ -439,12 +391,14 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
         catch (RateLimitException e)
         {
             FetchButtonEnabled = false;
+            WarningMessage = $"Rate Limit Exceeded! Waiting {e.SecondsToWait} seconds...";
 
             // Cooldown the refresh button until the rate limit is lifted
             await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
             {
                 await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));
                 FetchButtonEnabled = true;
+                WarningMessage = string.Empty;
             });
 
 

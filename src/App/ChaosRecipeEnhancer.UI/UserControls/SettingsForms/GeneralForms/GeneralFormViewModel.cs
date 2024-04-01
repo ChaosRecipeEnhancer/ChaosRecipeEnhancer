@@ -1,5 +1,5 @@
 ﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
-using ChaosRecipeEnhancer.UI.Models.Constants;
+using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
@@ -23,19 +23,26 @@ public class GeneralFormViewModel : CreViewModelBase
 {
     #region Fields
 
-    private readonly ILogger _log = Log.ForContext<GeneralFormViewModel>();
-    private readonly IPoEApiService _apiService;
+    // cooldown in milliseconds
+    private const int FETCH_COOLDOWN = 1500;
+
+    private readonly IPoeApiService _apiService;
     private readonly IUserSettings _userSettings;
 
-    private ICommand _fetchStashTabsCommand;
-    private ICommand _refreshLeaguesCommand;
+    private ICommand _stashTabButtonCommand;
+    private ICommand _leagueButtonCommand;
     private ICommand _selectLogFileCommand;
 
-    private const int FetchCooldown = 3; // cooldown in seconds
-    private bool _refreshLeagueListButtonEnabled = true;
-    private bool _fetchStashTabButtonEnabled = true;
+    // button states (enabled by default)
+    private bool _leagueButtonEnabled = true;
+    private bool _stashTabButtonEnabled = true;
+    private bool _privateLeagueCheckboxEnabled = true;
 
-    // Indicates whether data has been loaded to prevent unnecessary API calls
+    // dropdown states (disabled on first load)
+    private bool _leagueDropDownEnabled = false;
+    private bool _stashTabDropDownEnabled = false;
+
+    // state flags (assume user has has settings = loaded true)
     private bool _leaguesLoaded = false;
     private bool _stashTabsLoaded = false;
 
@@ -49,41 +56,65 @@ public class GeneralFormViewModel : CreViewModelBase
     /// <param name="apiService">The service for API interactions.</param>
     /// <param name="authStateManager">Manages authentication state.</param>
     /// <param name="userSettings">Stores user settings.</param>
-    public GeneralFormViewModel(IPoEApiService apiSevice, IUserSettings userSettings)
+    public GeneralFormViewModel(IPoeApiService apiSevice, IUserSettings userSettings)
     {
         _apiService = apiSevice;
         _userSettings = userSettings;
+
+        InitializeDataFromUserSettings();
     }
 
     #endregion
 
     #region Properties
 
-    public ICommand FetchStashTabsCommand => _fetchStashTabsCommand ??= new AsyncRelayCommand(ForceRefreshStashTabsAsync);
-    public ICommand RefreshLeaguesCommand => _refreshLeaguesCommand ??= new AsyncRelayCommand(LoadLeagueListAsync);
-    public ICommand SelectLogFileCommand => _selectLogFileCommand ??= new RelayCommand(SelectLogFile);
-    public ObservableCollection<string> LeagueList { get; } = [];
+    #region Commands
 
-    // selection by index has its own set of properties
-    // i realized it's a lot harder to combine the two selection modes into one set of properties
+    public ICommand StashTabButtonCommand => _stashTabButtonCommand ??= new AsyncRelayCommand(ForceRefreshStashTabsAsync);
+    public ICommand LeagueButtonCommand => _leagueButtonCommand ??= new AsyncRelayCommand(ForceRefreshLeaguesAsync);
+    public ICommand SelectLogFileCommand => _selectLogFileCommand ??= new RelayCommand(SelectLogFile);
+
+    #endregion
+
+    public ObservableCollection<string> LeagueList { get; set; } = [];
     public ObservableCollection<BaseStashTabMetadata> StashTabFullListForSelectionByIndex { get; set; } = [];
     public ObservableCollection<BaseStashTabMetadata> SelectedStashTabsByIndex { get; set; } = [];
-
-    // selection by ID has its own set of properties
     public ObservableCollection<BaseStashTabMetadata> StashTabFullListForSelectionById { get; set; } = [];
     public ObservableCollection<BaseStashTabMetadata> SelectedStashTabsById { get; set; } = [];
 
-    public bool RefreshLeagueListButtonEnabled
+    #region UI Enabled States
+
+    public bool LeagueDropDownEnabled
     {
-        get => _refreshLeagueListButtonEnabled;
-        set => SetProperty(ref _refreshLeagueListButtonEnabled, value);
+        get => _leagueDropDownEnabled;
+        set => SetProperty(ref _leagueDropDownEnabled, value);
     }
 
-    public bool FetchStashTabsButtonEnabled
+    public bool LeagueButtonEnabled
     {
-        get => _fetchStashTabButtonEnabled;
-        set => SetProperty(ref _fetchStashTabButtonEnabled, value);
+        get => _leagueButtonEnabled;
+        set => SetProperty(ref _leagueButtonEnabled, value);
     }
+
+    public bool PrivateLeagueCheckboxEnabled
+    {
+        get => _privateLeagueCheckboxEnabled;
+        set => SetProperty(ref _privateLeagueCheckboxEnabled, value);
+    }
+
+    public bool StashTabButtonEnabled
+    {
+        get => _stashTabButtonEnabled;
+        set => SetProperty(ref _stashTabButtonEnabled, value);
+    }
+
+    public bool StashTabDropDownEnabled
+    {
+        get => _stashTabDropDownEnabled;
+        set => SetProperty(ref _stashTabDropDownEnabled, value);
+    }
+
+    #endregion
 
     #region User Settings Properties
 
@@ -91,6 +122,12 @@ public class GeneralFormViewModel : CreViewModelBase
     {
         get => _userSettings.LeagueName;
         set => _ = UpdateLeagueNameAsync(value);
+    }
+
+    public bool CustomLeagueEnabled
+    {
+        get => _userSettings.CustomLeagueEnabled;
+        set => _ = UpdateIsPrivateLeague(value);
     }
 
     public int StashTabQueryMode
@@ -112,6 +149,12 @@ public class GeneralFormViewModel : CreViewModelBase
         }
     }
 
+    public string StashTabIndicesToString
+    {
+        get => string.Join(",", StashTabIndices);
+        set { return; }
+    }
+
     public HashSet<string> StashTabIds
     {
         get => _userSettings.StashTabIds;
@@ -123,6 +166,12 @@ public class GeneralFormViewModel : CreViewModelBase
                 OnPropertyChanged(nameof(StashTabIds));
             }
         }
+    }
+
+    public string StashTabIdsToString
+    {
+        get => string.Join(",", StashTabIds);
+        set { return; }
     }
 
     public string StashTabPrefix
@@ -174,6 +223,31 @@ public class GeneralFormViewModel : CreViewModelBase
 
     #endregion
 
+    #region Methods
+
+    private void InitializeDataFromUserSettings()
+    {
+        Log.Information("GeneralFormViewModel - Initializing data from user settings...");
+        Log.Information("Current LeagueName Property: {LeagueName}", LeagueName);
+
+        // Set LeagueName from user settings if it's valid
+        if (!string.IsNullOrWhiteSpace(_userSettings.LeagueName))
+        {
+            LeagueName = _userSettings.LeagueName;
+
+            // Force a refresh of the leagues list property for UI updates
+            OnPropertyChanged(nameof(LeagueName));
+
+            Log.Information("Post Change LeagueName Property: {LeagueName}", LeagueName);
+        }
+    }
+
+    public async Task ForceRefreshLeaguesAsync()
+    {
+        _leaguesLoaded = false;
+        await LoadLeagueListAsync(isFirstLoad: true);
+    }
+
     /// <summary>
     /// Forces a refresh of the stash tabs asynchronously. Used by our button command.
     /// </summary>
@@ -181,105 +255,68 @@ public class GeneralFormViewModel : CreViewModelBase
     public async Task ForceRefreshStashTabsAsync()
     {
         _stashTabsLoaded = false;
-        await LoadStashTabsAsync();
+        await LoadStashTabsAsync(isFirstLoad: true);
     }
 
     /// <summary>
     /// Loads the league list asynchronously. Ensures leagues are only loaded once unless explicitly refreshed.
     /// </summary>
-    public async Task LoadLeagueListAsync()
+    public async Task LoadLeagueListAsync(bool isFirstLoad = false)
     {
+        Log.Information("GeneralFormViewModel - Loading {LeagueType} league names...", CustomLeagueEnabled ? "private" : "public");
+
         if (_leaguesLoaded)
         {
-            await TriggerFetchLeaguesCooldown();
+            await TriggerUICooldown();
             return;
         }
 
-        RefreshLeagueListButtonEnabled = false;
-
+        SetUIEnabledState(false);
         LeagueList.Clear();
-        LeagueResponse leagueList;
+        List<string> leagueList;
+
         try
         {
             leagueList = await _apiService.GetLeaguesAsync();
         }
         catch (RateLimitException e)
         {
+            SetUIEnabledState(false);
+            _leaguesLoaded = false;
+
             await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
             {
                 await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));
-                RefreshLeagueListButtonEnabled = true;
+                SetUIEnabledState(true);
             });
 
             return;
         }
 
+        // If the response is valid and we have leagues
         if (leagueList != null)
         {
-            foreach (var league in leagueList.Leagues)
+            foreach (var league in leagueList)
             {
-                LeagueList.Add(league.Id);
+                LeagueList.Add(league);
             }
         }
 
-        await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-        {
-            if (_leaguesLoaded)
-            {
-                await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-            }
+        // Indicate that the leagues have been loaded
+        _leaguesLoaded = true;
 
-            _leaguesLoaded = true;
-            RefreshLeagueListButtonEnabled = true;
-        });
-    }
-
-    /// <summary>
-    /// Determines if the user needs to fetch data from the API.
-    /// <br /><br />
-    /// The main purpose of this is so that we don't spam the API with requests when the user to fetch data,
-    /// which includes instances of data already fetched and stored in the application.
-    /// This can also include instances where the user is not yet authenticated to make API calls.
-    /// </summary>
-    /// <returns>True if the user needs to fetch some data, false otherwise.</returns>
-    public bool NeedsToFetchData()
-    {
-        // TODO: should this instead be delegated through the auth state manager?
-        // if the user is NOT connected to the PoE account, we can't fetch any data to begin with
-        if (_userSettings.PoEAccountConnectionStatus != ConnectionStatusTypes.ValidatedConnection)
+        if (isFirstLoad)
         {
-            return false;
+            SetUIEnabledState(true);
         }
-
-        // we have 2 data dependencies: leagues and stash tabs
-        // we will separate the logical checks for both, starting with leagues.
-
-        // if the leagues are not loaded or the list is empty (first time loading)
-        if (!_leaguesLoaded || LeagueList.Count == 0)
+        else
         {
-            return true;
-        }
-
-        if (
-            // if the query mode is by index and its associated list is empty
-            (_userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsByIndex && StashTabFullListForSelectionByIndex.Count == 0) ||
-            // if the query mode is by ID and its associated list is empty
-            (_userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsById && StashTabFullListForSelectionById.Count == 0)
-        )
-        {
-            if (!_stashTabsLoaded)
+            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
             {
-                return true;
-            }
-            // if the stash tabs are already loaded for the current
-            // query mode, we don't need to fetch them again
-            else
-            {
-                return false;
-            }
+                await Task.Factory.StartNew(() => Thread.Sleep(FETCH_COOLDOWN));
+                SetUIEnabledState(true);
+            });
         }
-
-        return false;
     }
 
     public void SelectLogFile()
@@ -311,25 +348,102 @@ public class GeneralFormViewModel : CreViewModelBase
         }
     }
 
+    #region Property Setters
+
     private async Task UpdateLeagueNameAsync(string leagueName)
     {
         if (_userSettings.LeagueName != leagueName)
         {
             _userSettings.LeagueName = leagueName;
 
-            RefreshLeagueListButtonEnabled = false;
+            SetUIEnabledState(false);
 
             // re-fetching stash tabs if league is changed
             _stashTabsLoaded = false;
 
-            await LoadStashTabsAsync();
+            // only update the stash tab list if the dropdown is enabled
+            // if the user changes this setting while the dropdown is disabled,
+            // we don't need to update the list automatically
+            if (StashTabDropDownEnabled && !string.IsNullOrWhiteSpace(leagueName))
+            {
+                await LoadStashTabsAsync();
+            }
 
             OnPropertyChanged(nameof(LeagueName));
 
+            if (StashTabDropDownEnabled)
+            {
+                await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+                {
+                    await Task.Delay(FETCH_COOLDOWN);
+                    SetUIEnabledState(true);
+                });
+            }
+            else
+            {
+                SetUIEnabledState(true);
+            }
+        }
+    }
+
+    private async Task UpdateIsPrivateLeague(bool isPrivateLeague)
+    {
+        if (_userSettings.CustomLeagueEnabled != isPrivateLeague)
+        {
+            _userSettings.CustomLeagueEnabled = isPrivateLeague;
+
+            // reset the selected league name
+            LeagueName = string.Empty;
+
+            SetUIEnabledState(false);
+
+            // reset the loaded state to force a reload of the league data
+            _leaguesLoaded = false;
+
+            // only update the league list if the dropdown is enabled
+            // if the user changes this setting while the dropdown is disabled,
+            // we don't need to update the list automatically
+            if (LeagueDropDownEnabled)
+            {
+                await LoadLeagueListAsync();
+            }
+
+            OnPropertyChanged(nameof(CustomLeagueEnabled));
+
             await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
             {
-                await Task.Delay(FetchCooldown * 1000);
-                RefreshLeagueListButtonEnabled = true;
+                await Task.Delay(FETCH_COOLDOWN);
+                SetUIEnabledState(true);
+            });
+        }
+    }
+
+    /// <summary>
+    /// Updates the stash tab query mode property.
+    /// </summary>
+    /// <param name="stashTabQueryMode">The new query mode.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    private async Task UpdateStashTabQueryModeAsync(int stashTabQueryMode)
+    {
+        if (_userSettings.StashTabQueryMode != stashTabQueryMode)
+        {
+            _userSettings.StashTabQueryMode = stashTabQueryMode;
+
+            StashTabButtonEnabled = false;
+
+            // reset the loaded state to force a reload of the stash tab data
+            _stashTabsLoaded = false;
+
+            // Load tabs for the new mode
+            await LoadStashTabsAsync();
+
+            // Notify the UI of the change
+            OnPropertyChanged(nameof(StashTabQueryMode));
+
+            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            {
+                await Task.Delay(FETCH_COOLDOWN);
+                StashTabButtonEnabled = true;
             });
         }
     }
@@ -344,14 +458,16 @@ public class GeneralFormViewModel : CreViewModelBase
             switch (mode)
             {
                 case ClientLogFileLocationMode.DefaultStandaloneLocation:
-                    PathOfExileClientLogLocation = PoEClientDefaults.DefaultStandaloneInstallLocationPath;
+                    PathOfExileClientLogLocation = PoeClientConfigs.DefaultStandaloneInstallLocationPath;
                     break;
                 case ClientLogFileLocationMode.DefaultSteamLocation:
-                    PathOfExileClientLogLocation = PoEClientDefaults.DefaultSteamInstallLocationPath;
+                    PathOfExileClientLogLocation = PoeClientConfigs.DefaultSteamInstallLocationPath;
                     break;
             }
         }
     }
+
+    #endregion
 
     #region Stash Tab Selection Methods
 
@@ -360,19 +476,26 @@ public class GeneralFormViewModel : CreViewModelBase
     /// Ensures stash tabs are only loaded once unless explicitly refreshed.
     /// </summary>
     /// <returns></returns>
-    public async Task LoadStashTabsAsync()
+    public async Task LoadStashTabsAsync(bool isFirstLoad = false)
     {
-        Log.Information("Loading stash tabs for {LeagueName}...", _userSettings.LeagueName);
+
+        if (string.IsNullOrWhiteSpace(LeagueName))
+        {
+            Log.Information("GeneralFormViewModel - League name is empty. Skipping stash tab fetch.");
+            return;
+        }
+
+        Log.Information("GeneralFormViewModel - Loading stash tabs for {LeagueName}...", _userSettings.LeagueName);
 
         // If the stash tabs are already loaded, wait for the cooldown and re-enable the button
         if (_stashTabsLoaded)
         {
-            await TriggerFetchStashTabsCooldown();
+            await TriggerUICooldown();
             return;
         }
 
         // Disable the button to prevent multiple requests while waiting for the API response
-        FetchStashTabsButtonEnabled = false;
+        SetUIEnabledState(false);
 
         // Fetch the stash tabs - this is the biggest call in this component
         ListStashesResponse stashTabPropsList;
@@ -382,17 +505,17 @@ public class GeneralFormViewModel : CreViewModelBase
         }
         catch (RateLimitException e)
         {
-            FetchStashTabsButtonEnabled = false;
+            SetUIEnabledState(false);
             _stashTabsLoaded = false;
+
             await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
             {
                 await Task.Delay(e.SecondsToWait * 1000);
-                FetchStashTabsButtonEnabled = true;
+                SetUIEnabledState(true);
             });
 
             return;
         }
-
 
         // If the response is valid and we have stash tabs
         if (stashTabPropsList != null && stashTabPropsList.StashTabs != null)
@@ -404,39 +527,18 @@ public class GeneralFormViewModel : CreViewModelBase
         // Indicate that the tabs have been and re-enable the fetch button
         _stashTabsLoaded = true;
 
-        await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+        // If this is the first load, we don't need to wait for the cooldown
+        if (isFirstLoad)
         {
-            await Task.Delay(FetchCooldown * 1000);
-            FetchStashTabsButtonEnabled = true;
-        });
-    }
-
-    /// <summary>
-    /// Updates the stash tab query mode property.
-    /// </summary>
-    /// <param name="stashTabQueryMode">The new query mode.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    private async Task UpdateStashTabQueryModeAsync(int stashTabQueryMode)
-    {
-        if (_userSettings.StashTabQueryMode != stashTabQueryMode)
+            SetUIEnabledState(true);
+        }
+        // Otherwise, wait for the cooldown and re-enable the button
+        else
         {
-            _userSettings.StashTabQueryMode = stashTabQueryMode;
-
-            FetchStashTabsButtonEnabled = false;
-
-            // reset the loaded state to force a reload of the stash tab data
-            _stashTabsLoaded = false;
-
-            // Load tabs for the new mode
-            await LoadStashTabsAsync();
-
-            // Notify the UI of the change
-            OnPropertyChanged(nameof(StashTabQueryMode));
-
             await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
             {
-                await Task.Delay(FetchCooldown * 1000);
-                FetchStashTabsButtonEnabled = true;
+                await Task.Delay(FETCH_COOLDOWN);
+                SetUIEnabledState(true);
             });
         }
     }
@@ -548,6 +650,35 @@ public class GeneralFormViewModel : CreViewModelBase
         }
     }
 
+    #endregion
+
+    private async Task TriggerUICooldown()
+    {
+        SetUIEnabledState(false);
+
+        await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+        {
+            try
+            {
+                await Task.Delay(FETCH_COOLDOWN);
+            }
+            finally
+            {
+                SetUIEnabledState(true);
+            }
+        });
+    }
+
+    private void SetUIEnabledState(bool isEnabled)
+    {
+        // Set the enabled state of all UI elements involved in fetching operations
+        LeagueButtonEnabled = isEnabled;
+        StashTabButtonEnabled = isEnabled;
+        PrivateLeagueCheckboxEnabled = isEnabled;
+        LeagueDropDownEnabled = isEnabled && _leaguesLoaded; // Only enable if leagues have been successfully loaded
+        StashTabDropDownEnabled = isEnabled && _stashTabsLoaded; // Only enable if stash tabs have been successfully loaded
+    }
+
     /// <summary>
     /// Updates the user settings based on the selected stash tabs.
     /// </summary>
@@ -587,38 +718,19 @@ public class GeneralFormViewModel : CreViewModelBase
         }
     }
 
-    private async Task TriggerFetchLeaguesCooldown()
+    public void UpdateUserSettingsForSelectedLeague(object selectedItem)
     {
-        RefreshLeagueListButtonEnabled = false;
 
-        await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+        if (selectedItem == null)
         {
-            try
-            {
-                await Task.Delay(FetchCooldown * 1000);
-            }
-            finally
-            {
-                RefreshLeagueListButtonEnabled = true;
-            }
-        });
-    }
+            LeagueName = _userSettings.LeagueName;
+            return;
+        }
 
-    private async Task TriggerFetchStashTabsCooldown()
-    {
-        FetchStashTabsButtonEnabled = false;
+        if (string.IsNullOrWhiteSpace(selectedItem.ToString())) return;
 
-        await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-        {
-            try
-            {
-                await Task.Delay(FetchCooldown * 1000);
-            }
-            finally
-            {
-                FetchStashTabsButtonEnabled = true;
-            }
-        });
+        LeagueName = selectedItem.ToString();
+        LeagueDropDownEnabled = false;
     }
 
     #endregion
