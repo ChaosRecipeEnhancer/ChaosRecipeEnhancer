@@ -1,7 +1,8 @@
-using ChaosRecipeEnhancer.UI.Models.Constants;
+using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.UserControls;
+using ChaosRecipeEnhancer.UI.Utilities;
 using CommunityToolkit.Mvvm.Input;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
@@ -15,7 +16,7 @@ internal class SettingsViewModel : ViewModelBase
         OpenLatestReleasePageCommand = new RelayCommand(OpenLatestReleasePage);
     }
 
-    public string Version => CreAppConstants.VersionText;
+    public static string Version => CreAppConfig.VersionText;
     public ICommand OpenLatestReleasePageCommand { get; }
 
     public bool UpdateAvailable
@@ -26,11 +27,6 @@ internal class SettingsViewModel : ViewModelBase
 
     private void OpenLatestReleasePage()
     {
-        var psi = new ProcessStartInfo
-        {
-            FileName = SiteUrls.CreGithubReleasesUrl,
-            UseShellExecute = true
-        };
-        Process.Start(psi);
+        UrlUtilities.OpenUrl(SiteUrls.CreGithubReleasesUrl);
     }
 }

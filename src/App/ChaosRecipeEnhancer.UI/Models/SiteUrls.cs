@@ -1,4 +1,4 @@
-﻿namespace ChaosRecipeEnhancer.UI.Models.Constants;
+﻿namespace ChaosRecipeEnhancer.UI.Models;
 
 public static class SiteUrls
 {

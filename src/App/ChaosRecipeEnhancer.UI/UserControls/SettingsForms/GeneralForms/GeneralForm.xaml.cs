@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using System.Windows;
+using System.Windows.Controls;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Primitives;
 
@@ -15,18 +15,15 @@ public partial class GeneralForm
         DataContext = _model = Ioc.Default.GetService<GeneralFormViewModel>();
     }
 
-    private async void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        if (_model.NeedsToFetchData())
-        {
-            await _model.LoadLeagueListAsync();
-            await _model.LoadStashTabsAsync();
-        }
-    }
-
     private void OnStashTabSelectionChanged(object sender, ItemSelectionChangedEventArgs itemSelectionChangedEventArgs)
     {
         var checkComboBox = (CheckComboBox)sender;
         _model.UpdateUserSettingsForSelectedTabIdentifiers(checkComboBox.SelectedItems);
+    }
+
+    private void LeagueComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var comboBox = (ComboBox)sender;
+        _model.UpdateUserSettingsForSelectedLeague(comboBox.SelectedItem);
     }
 }

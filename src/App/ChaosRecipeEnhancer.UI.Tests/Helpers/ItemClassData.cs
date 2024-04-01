@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using ChaosRecipeEnhancer.UI.Constants;
+using ChaosRecipeEnhancer.UI.Models;
 
 namespace ChaosRecipeEnhancer.UI.Tests.Helpers
 {

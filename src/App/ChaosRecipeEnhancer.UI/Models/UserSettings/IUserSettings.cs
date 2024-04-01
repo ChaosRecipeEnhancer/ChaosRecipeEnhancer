@@ -26,6 +26,7 @@ public interface IUserSettings
     bool VendorSetsEarly { get; set; }
     int PathOfExileClientLogLocationMode { get; set; }
     string LeagueName { get; set; }
+    bool CustomLeagueEnabled { get; set; }
     int StashTabQueryMode { get; set; }
     public HashSet<string> StashTabIds { get; set; }
     public HashSet<string> StashTabIndices { get; set; }

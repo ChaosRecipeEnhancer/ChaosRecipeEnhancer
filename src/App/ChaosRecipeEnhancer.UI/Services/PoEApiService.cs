@@ -1,10 +1,10 @@
-﻿using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses;
-using ChaosRecipeEnhancer.UI.Models.Enums;
+﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -17,23 +17,25 @@ namespace ChaosRecipeEnhancer.UI.Services;
 /// <summary>
 /// Defines the contract for the PoE API service.
 /// </summary>
-public interface IPoEApiService
+public interface IPoeApiService
 {
     /// <summary>
-    /// Retrieves the list of leagues asynchronously.
+    /// Gets a list of league asynchronously.
     /// </summary>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the league response.</returns>
-    public Task<LeagueResponse> GetLeaguesAsync();
+    /// <returns>A task that represents the asynchronous operation. The task result contains the list of league names.</returns>
+    public Task<List<string>> GetLeaguesAsync();
 
     /// <summary>
     /// Retrieves the metadata for all personal stash tabs asynchronously.
     /// </summary>
+    /// <remarks>This API call counts towards the shared CRE rate limit.</remarks>
     /// <returns>A task that represents the asynchronous operation. The task result contains the list of stashes response.</returns>
     public Task<ListStashesResponse> GetAllPersonalStashTabMetadataAsync();
 
     /// <summary>
     /// Retrieves the contents of a personal stash tab by its ID asynchronously.
     /// </summary>
+    /// <remarks>This API call counts towards the shared CRE rate limit.</remarks>
     /// <param name="stashId">The ID of the stash tab.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the get stash response.</returns>
     public Task<GetStashResponse> GetPersonalStashTabContentsByStashIdAsync(string stashId);
@@ -42,26 +44,25 @@ public interface IPoEApiService
 /// <summary>
 /// Provides methods to interact with the Path of Exile API.
 /// </summary>
-public class PoEApiService : IPoEApiService
+public class PoeApiService : IPoeApiService
 {
     #region Fields
 
-    private readonly ILogger _log = Log.ForContext<PoEApiService>();
+    private readonly ILogger _log = Log.ForContext<PoeApiService>();
     private readonly IUserSettings _userSettings;
     private readonly IAuthStateManager _authStateManager;
     private readonly IHttpClientFactory _httpClientFactory;
-    private bool _errorAlreadyShown = false;
 
     #endregion
 
     #region Constructors
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PoEApiService"/> class.
+    /// Initializes a new instance of the <see cref="PoeApiService"/> class.
     /// </summary>
     /// <param name="userSettings">The user settings.</param>
     /// <param name="authStateManager">The authentication state manager.</param>
-    public PoEApiService(IHttpClientFactory httpClientFactory, IUserSettings userSettings, IAuthStateManager authStateManager)
+    public PoeApiService(IHttpClientFactory httpClientFactory, IUserSettings userSettings, IAuthStateManager authStateManager)
     {
         _httpClientFactory = httpClientFactory;
         _userSettings = userSettings;
@@ -70,12 +71,58 @@ public class PoEApiService : IPoEApiService
 
     #endregion
 
+    #region Properties
+
+    public bool CustomLeagueEnabled => _userSettings.CustomLeagueEnabled;
+
+    #endregion
+
     #region Domain Methods
 
     /// <inheritdoc />
-    public async Task<LeagueResponse> GetLeaguesAsync()
+    public async Task<List<string>> GetLeaguesAsync()
     {
-        var responseRaw = await GetAuthenticatedAsync(ApiEndpoints.LeaguesEndpoint());
+        List<string> leagueNames;
+
+        if (CustomLeagueEnabled)
+        {
+            var results = await GetPersonalLeaguesAsync();
+
+            leagueNames = results.Leagues
+                .Where(league => !string.IsNullOrEmpty(league.PrivateLeagueUrl))
+                .Select(league => league.Id)
+                .ToList();
+        }
+        else
+        {
+            var results = await GetPublicLeaguesAsync();
+            leagueNames = results.Select(league => league.Id).ToList();
+        }
+
+        return leagueNames;
+    }
+
+    /// <summary>
+    /// Get a list of public leagues asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the list of public leagues.</returns>
+    private async Task<IEnumerable<League>> GetPublicLeaguesAsync()
+    {
+        var responseRaw = await GetAsync(PoeApiConfig.PublicLeagueEndpoint);
+
+        return responseRaw is null
+            ? null
+            : JsonSerializer.Deserialize<League[]>((string)responseRaw);
+    }
+
+    /// <summary>
+    /// Get a list of personal leagues asynchronously.
+    /// </summary>
+    /// <remarks>This API call counts towards the shared CRE rate limit.</remarks>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the list of personal leagues.</returns>
+    private async Task<LeagueResponse> GetPersonalLeaguesAsync()
+    {
+        var responseRaw = await GetAuthenticatedAsync(PoeApiConfig.PersonalLeaguesEndpoint());
 
         var response = responseRaw is null
             ? null
@@ -88,7 +135,7 @@ public class PoEApiService : IPoEApiService
     public async Task<ListStashesResponse> GetAllPersonalStashTabMetadataAsync()
     {
         var responseRaw = await GetAuthenticatedAsync(
-            ApiEndpoints.StashTabPropsEndpoint()
+            PoeApiConfig.PersonalStashTabPropsEndpoint()
         );
 
         return responseRaw is null
@@ -100,7 +147,7 @@ public class PoEApiService : IPoEApiService
     public async Task<GetStashResponse> GetPersonalStashTabContentsByStashIdAsync(string stashId)
     {
         var responseRaw = await GetAuthenticatedAsync(
-            ApiEndpoints.IndividualTabContentsEndpoint(stashId)
+            PoeApiConfig.PersonalIndividualTabContentsEndpoint(stashId)
         );
 
         return responseRaw is null
@@ -129,13 +176,13 @@ public class PoEApiService : IPoEApiService
         }
 
         // create new http client that will be disposed of after request
-        var client = _httpClientFactory.CreateClient(ApiEndpoints.PoeApiHttpClientName);
+        var client = _httpClientFactory.CreateClient(PoeApiConfig.PoeApiHttpClientName);
 
         // add required headers
 
         // this useragent isn't strictly required, but it's good practice to include it (they ask for it in the spec)
         // the api will not spit back an error if we don't include it
-        client.DefaultRequestHeaders.UserAgent.ParseAdd(ApiEndpoints.UserAgent);
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(PoeApiConfig.UserAgent);
 
         // the auth token is required for all calls (we only use authenticated endpoints as of 3.24)
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authStateManager.AuthToken);
@@ -147,184 +194,110 @@ public class PoEApiService : IPoEApiService
         _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
         _log.Debug($"Response: {responseString}");
 
-        // for some weird ass reason the status codes come back 200 even when it's not valid (for leagues endpoint)
+        // for some weird ass reason the status codes come
+        // back 200 even when it's not valid (for leagues endpoint)
         // so here's a hacky work-around
+        // HACK: GGG Fix ur shit
         if (response.StatusCode == HttpStatusCode.OK && !_authStateManager.ValidateAuthToken())
         {
             _log.Information("Status code is 200 but auth token is no good; manually replacing status code");
             response.StatusCode = HttpStatusCode.Unauthorized;
         }
 
+        if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
+
+        // get new rate limit values
+        // these might end up being:
+        //
+        //      `X-Rate-Limit-Ip`
+        //      `X-Rate-Limit-Ip-State`
+        //      `X-Rate-Limit-Client`
+        //      `X-Rate-Limit-Client-State`
+        //
+        // keep an eye on this if you get some weird issues...
+
+        var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
+        var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
+        var resultTime = response.Headers.GetValues("Date").FirstOrDefault();
+
+        GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
+        GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
+
+        using var resultHttpContent = response.Content;
+
+        var resultString = await resultHttpContent.ReadAsStringAsync();
+
+        return resultString;
+    }
+
+    private async Task<object> GetAsync(Uri requestUri)
+    {
+        if (GlobalRateLimitState.CheckForBan()) return null;
+
+        // -1 for 1 request + 3 times if rate limit high exceeded
+        if (GlobalRateLimitState.RateLimitState[0] >= GlobalRateLimitState.MaximumRequests - 4)
+        {
+            GlobalRateLimitState.RateLimitExceeded = true;
+            return null;
+        }
+
+        // create new http client that will be disposed of after request
+        using var client = new HttpClient();
+
+        var response = await client.GetAsync(requestUri);
+        var responseString = response.Content.ReadAsStringAsync().Result;
+
+        if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
+
+        return responseString;
+    }
+
+    private bool CheckIfResponseStatusCodeIsValid(HttpResponseMessage response, string responseString)
+    {
         switch (response.StatusCode)
         {
-            case HttpStatusCode.TooManyRequests:
-                _log.Error("429 Too Many Requests - You are rate limited.");
-
-                var retryAfterSeconds = GetRetryAfterSeconds(response);
-                var timeoutString = GenerateTimeoutString(retryAfterSeconds);
-
-                // Set the rate limit expiration via GlobalRateLimitState
-                GlobalRateLimitState.SetRateLimitExpiresOn(retryAfterSeconds);
-
-                if (!_errorAlreadyShown)
-                {
-                    GlobalErrorHandler.Spawn(
-                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                        "Error: API Service - 429 Too Many Requests (Rate Limit)",
-                        preamble: $"You are making too many requests in a short period of time - You are rate limited. Wait at least {timeoutString} and try again."
-                    );
-                }
-                _errorAlreadyShown = true;
-
-                throw new RateLimitException(retryAfterSeconds);
             case HttpStatusCode.Forbidden:
-                _log.Error("403 Forbidden - It looks like your auth token is invalid.");
-
-                if (!_errorAlreadyShown)
-                {
-                    GlobalErrorHandler.Spawn(
-                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                        "Error: API Service - 403 Forbidden",
-                        preamble: "It looks like your auth token has expired. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token."
-                    );
-                }
-                _errorAlreadyShown = true;
+                GlobalErrorHandler.HandleError403FromApi(responseString);
 
                 // usually we will be here if we weren't able to make a successful api request based on an expired auth token
                 _authStateManager.Logout();
 
-                // manually updating this value as a work-around to some issues with importing old settings from previous installations
-                _userSettings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
+                return false;
 
-                return null;
             case HttpStatusCode.Unauthorized:
-                _log.Error("401 Unauthorized - It looks like your auth token is invalid.");
+                GlobalErrorHandler.HandleError401FromApi(responseString);
 
-
-                if (!_errorAlreadyShown)
-                {
-                    GlobalErrorHandler.Spawn(
-                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                        "Error: API Service - 401 Unauthorized",
-                        preamble: "It looks like your auth token is invalid. Please navigate to the 'Account > Path of Exile Account > Login via Path of Exile' to log back in and get a new auth token."
-                    );
-                }
-                _errorAlreadyShown = true;
-
-                // usually we will be here if we weren't able to make a successful api request based on an invalid auth token
+                // if we're here, the auth token is invalid
+                // so we need to log out and reset auth state
                 _authStateManager.Logout();
 
-                return null;
+                return false;
+
+            case HttpStatusCode.TooManyRequests:
+                var retryAfterSeconds = GlobalErrorHandler.HandleError429FromApi(response, responseString);
+                throw new RateLimitException(retryAfterSeconds);
+
+            case HttpStatusCode.InternalServerError:
+                GlobalErrorHandler.HandleError500FromApi(responseString);
+                return false;
+
             case HttpStatusCode.ServiceUnavailable:
+                GlobalErrorHandler.HandleError503FromApi(responseString);
+                return false;
 
-                _log.Error("503 Service Unavailable - The Path of Exile API is currently unavailable. Please try again later.");
+            default:
 
-
-                if (!_errorAlreadyShown)
+                // handle any other 4xx or 5XX errors
+                if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
                 {
-                    GlobalErrorHandler.Spawn(
-                        (responseString)[..(responseString.Length > 500 ? 500 : responseString.Length)] + (responseString.Length > 500 ? "...\n\n(Truncated for brevity)" : string.Empty),
-                        "Error: API Service - 503 PoE API Unavailable",
-                        preamble: "The Path of Exile API is currently down. This is usually for maintenance, or DDoS, or league launch shennanigans - maybe all three!"
-                    );
+                    GlobalErrorHandler.HandleUnspecifiedErrorFromApi(responseString);
+                    return false;
                 }
-                _errorAlreadyShown = true;
 
-                return null;
+                break;
         }
 
-        try
-        {
-            // get new rate limit values
-            // these might end up being `X-Rate-Limit-Ip` and `X-Rate-Limit-Ip-State` instead, or possibly `X-Rate-Limit-Client` and `X-Rate-Limit-Client-State`
-            // keep an eye on this if you get some weird issues...
-
-            var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
-            var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
-            var resultTime = response.Headers.GetValues("Date").FirstOrDefault();
-
-            GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
-            GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
-
-            using var resultHttpContent = response.Content;
-
-            var resultString = await resultHttpContent.ReadAsStringAsync();
-
-            _errorAlreadyShown = false;
-            return resultString;
-        }
-        catch (InvalidOperationException e)
-        {
-            // Status code 500 is a server error
-            _log.Error(e, "Error deserializing response from Path of Exile API after retries");
-
-            if (!_errorAlreadyShown)
-            {
-                GlobalErrorHandler.Spawn(
-                    e.Message,
-                    "Error: API Service - 500 PoE API (Temporary) Error",
-                    preamble: "The Path of Exile API seems to be having unspecified intermittent issues. " +
-                    "The response we got back from the API was not in the expected format, even after retries.\n\n" +
-                    "Please try again later."
-                );
-            }
-            _errorAlreadyShown = true;
-
-            return null;
-        }
-    }
-
-    private static int GetRetryAfterSeconds(HttpResponseMessage response)
-    {
-        const string retryHeader = "Retry-After";
-
-        var retryAfter = response.Headers.GetValues(retryHeader).Select(int.Parse).ToList();
-
-        // Multiple timeout rules may apply, take the longest timeout
-        if (retryAfter.Count > 1)
-        {
-            retryAfter = retryAfter.OrderByDescending(x => x).ToList();
-        }
-
-        return retryAfter.First();
-    }
-
-    private static string GenerateTimeoutString(int retryAfterSeconds)
-    {
-        var timeSpan = TimeSpan.FromSeconds(retryAfterSeconds);
-
-        var formattedTimeoutString = "";
-
-        if (timeSpan.Hours > 0)
-        {
-            formattedTimeoutString += $"{timeSpan.Hours} hour{(timeSpan.Hours > 1 ? "s" : "")}, ";
-        }
-
-        if (timeSpan.Minutes > 0)
-        {
-            formattedTimeoutString += $"{timeSpan.Minutes} minute{(timeSpan.Minutes > 1 ? "s" : "")}, ";
-        }
-
-        if (timeSpan.Seconds > 0)
-        {
-            formattedTimeoutString += $"{timeSpan.Seconds} second{(timeSpan.Seconds > 1 ? "s" : "")}";
-        }
-
-        // If there is a trailing comma and space, remove it (e.g. "1 minute, )" -> "1 minute")
-        if (formattedTimeoutString.EndsWith(", "))
-        {
-            formattedTimeoutString = formattedTimeoutString.Substring(0, formattedTimeoutString.Length - 2);
-        }
-
-        // If the timeout is only seconds, we do not need an 'and' before the seconds
-        if (!formattedTimeoutString.Contains(','))
-        {
-            return formattedTimeoutString;
-        }
-        var lastCommaIndex = formattedTimeoutString.LastIndexOf(',');
-        formattedTimeoutString = formattedTimeoutString.Remove(lastCommaIndex, 1).Insert(lastCommaIndex, " and");
-
-        return formattedTimeoutString;
+        return true;
     }
 
     #endregion

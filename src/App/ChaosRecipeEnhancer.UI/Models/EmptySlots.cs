@@ -1,5 +1,4 @@
-﻿using ChaosRecipeEnhancer.UI.Constants;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ChaosRecipeEnhancer.UI.Models;
 

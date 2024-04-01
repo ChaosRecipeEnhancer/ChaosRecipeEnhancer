@@ -1,4 +1,4 @@
-﻿using ChaosRecipeEnhancer.UI.Models;
+﻿using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
@@ -26,7 +26,7 @@ public static class ServiceConfiguration
         // last since they depend on other services
 
         services.AddSingleton<IAuthStateManager, AuthStateManager>();
-        services.AddSingleton<IPoEApiService, PoEApiService>();
+        services.AddSingleton<IPoeApiService, PoeApiService>();
     }
 
     private static void ConfigureCoreServices(IServiceCollection services)
@@ -40,7 +40,7 @@ public static class ServiceConfiguration
     private static void ConfigureHttpClients(IServiceCollection services)
     {
         services.AddHttpClient<IAuthStateManager, AuthStateManager>();
-        services.AddHttpClient(ApiEndpoints.PoeApiHttpClientName)
+        services.AddHttpClient(PoeApiConfig.PoeApiHttpClientName)
             // Custom retry policy for transient errors, excluding 429 status code
             .AddTransientHttpErrorPolicy(builder =>
                 builder

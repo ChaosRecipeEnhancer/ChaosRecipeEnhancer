@@ -1,11 +1,10 @@
-﻿namespace ChaosRecipeEnhancer.UI.Models.Constants;
+﻿namespace ChaosRecipeEnhancer.UI.Models.Config;
 
-public static class CreAppConstants
+public static class CreAppConfig
 {
     public const string InstanceName = "ChaosRecipeEnhancer";
     public const string ProtocolPrefix = "chaosrecipe://";
-    public const string VersionText = "v3.24.2000";
-    public const string VersionTextNoPrefix = "3.24.2000";
+    public const string VersionText = "3.24.3000";
     public const string GitHubOrgName = "ChaosRecipeEnhancer";
     public const string GithubRepoName = "ChaosRecipeEnhancer";
 }

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using ChaosRecipeEnhancer.UI.Models.Enums;
-using ChaosRecipeEnhancer.UI.Models.Constants;
+using ChaosRecipeEnhancer.UI.Models.Config;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
@@ -42,10 +42,10 @@ public static class GlobalHotkeyState
 
         TimeSpan cooldown = hotkeyType switch
         {
-            HotkeyTypes.FetchStashData => HotkeyDefaults.FetchStashDataHotkeyCooldown,
-            HotkeyTypes.ToggleSetTrackerOverlay => HotkeyDefaults.ToggleSetTrackerHotkeyCooldown,
-            HotkeyTypes.ToggleStashTabOverlay => HotkeyDefaults.ToggleStashTabHotkeyCooldown,
-            HotkeyTypes.ReloadItemFilter => HotkeyDefaults.ReloadFilterHotkeyCooldown,
+            HotkeyTypes.FetchStashData => HotkeyConfig.FetchStashDataHotkeyCooldown,
+            HotkeyTypes.ToggleSetTrackerOverlay => HotkeyConfig.ToggleSetTrackerHotkeyCooldown,
+            HotkeyTypes.ToggleStashTabOverlay => HotkeyConfig.ToggleStashTabHotkeyCooldown,
+            HotkeyTypes.ReloadItemFilter => HotkeyConfig.ReloadFilterHotkeyCooldown,
             _ => throw new ArgumentException("Hotkey type not supported")
         };
 

@@ -1,5 +1,4 @@
-﻿using ChaosRecipeEnhancer.UI.Constants;
-using ChaosRecipeEnhancer.UI.Models;
+﻿using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Tests.Helpers;
 
 namespace ChaosRecipeEnhancer.UI.Tests.Models;

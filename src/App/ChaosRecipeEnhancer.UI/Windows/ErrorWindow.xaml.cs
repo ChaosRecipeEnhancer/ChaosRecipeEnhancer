@@ -1,4 +1,5 @@
-﻿using ChaosRecipeEnhancer.UI.Models.Constants;
+﻿using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.Config;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -61,7 +62,7 @@ public partial class ErrorWindow
     {
         // Create a template with placeholders for the version and message
         var template =
-            $"Reporting an exception I received while using Chaos Recipe Enhancer {CreAppConstants.VersionText}:\n\n" +
+            $"Reporting an exception I received while using Chaos Recipe Enhancer {CreAppConfig.VersionText}:\n\n" +
             (_preamble is not null ? $"Error Context:\n```\n{_preamble}\n```\n" : string.Empty) +
             $"Error Details:\n```\n{_messageToCopy}\n```";
 
