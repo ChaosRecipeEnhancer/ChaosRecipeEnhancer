@@ -1,6 +1,6 @@
-﻿namespace ChaosRecipeEnhancer.UI.Models.Constants;
+﻿namespace ChaosRecipeEnhancer.UI.Models.Config;
 
-public static class SoundAssets
+public static class SoundConfig
 {
     public const string SoundFileExtensionFilter = "MP3|*.mp3";
 

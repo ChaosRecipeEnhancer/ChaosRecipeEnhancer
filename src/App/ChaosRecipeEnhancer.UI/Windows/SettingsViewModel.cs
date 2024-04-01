@@ -1,4 +1,5 @@
-using ChaosRecipeEnhancer.UI.Models.Constants;
+using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.UserControls;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
@@ -15,7 +16,7 @@ internal class SettingsViewModel : ViewModelBase
         OpenLatestReleasePageCommand = new RelayCommand(OpenLatestReleasePage);
     }
 
-    public string Version => CreAppConstants.VersionText;
+    public string Version => CreAppConfig.VersionText;
     public ICommand OpenLatestReleasePageCommand { get; }
 
     public bool UpdateAvailable

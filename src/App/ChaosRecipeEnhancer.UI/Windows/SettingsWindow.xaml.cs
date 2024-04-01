@@ -1,4 +1,5 @@
-using ChaosRecipeEnhancer.UI.Models.Constants;
+using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Native;
 using ChaosRecipeEnhancer.UI.Properties;
@@ -152,8 +153,8 @@ public partial class SettingsWindow
     {
         try
         {
-            var currentVersion = CreAppConstants.VersionTextNoPrefix;
-            var latestVersion = await GetLatestReleaseVersion(CreAppConstants.GitHubOrgName, CreAppConstants.GithubRepoName);
+            var currentVersion = CreAppConfig.VersionText;
+            var latestVersion = await GetLatestReleaseVersion(CreAppConfig.GitHubOrgName, CreAppConfig.GithubRepoName);
 
             _model.UpdateAvailable = IsUpdateAvailable(currentVersion, latestVersion);
 

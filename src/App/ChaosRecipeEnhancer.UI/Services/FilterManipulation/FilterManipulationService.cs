@@ -1,5 +1,5 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.Constants;
+using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration;
@@ -223,7 +223,7 @@ public class FilterManipulationService : IFilterManipulationService
     {
         _customStyle.Clear();
 
-        var pathNormalItemsStyle = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty, FilterAssets.DefaultNormalItemFilterStyleFilePath);
+        var pathNormalItemsStyle = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty, FilterConfig.DefaultNormalItemFilterStyleFilePath);
 
         var style = File.ReadAllLines(pathNormalItemsStyle);
 

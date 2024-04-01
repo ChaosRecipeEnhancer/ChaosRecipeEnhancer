@@ -1,7 +1,6 @@
-﻿using ChaosRecipeEnhancer.UI.Models.Constants;
-using System;
+﻿using System;
 
-namespace ChaosRecipeEnhancer.UI.Models;
+namespace ChaosRecipeEnhancer.UI.Models.Config;
 
 // Production Setup
 
@@ -18,7 +17,7 @@ public static class AuthConfig
     //    public static readonly Uri OAuthTokenEndpoint = new("https://sandbox.chaos-recipe.com/auth/token");
     //    public static readonly string OAuthRedirectUri = "https://sandbox.chaos-recipe.com/auth/success";
 
-    public static string CreClientVersionAuthParam => CreAppConstants.VersionText;
+    public static string CreClientVersionAuthParam => CreAppConfig.VersionText;
 
     // You can only request account:* scopes - NO service:* scopes
     public static readonly string Scopes = Uri.EscapeDataString("account:leagues account:stashes account:characters account:item_filter");

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ChaosRecipeEnhancer.UI.Models.Constants;
+namespace ChaosRecipeEnhancer.UI.Models.Config;
 
-public static class HotkeyDefaults
+public static class HotkeyConfig
 {
     public static readonly TimeSpan FetchStashDataHotkeyCooldown = TimeSpan.FromSeconds(10);
     public static readonly TimeSpan ToggleSetTrackerHotkeyCooldown = TimeSpan.FromMilliseconds(250);

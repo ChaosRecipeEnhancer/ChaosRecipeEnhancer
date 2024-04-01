@@ -1,6 +1,6 @@
-﻿namespace ChaosRecipeEnhancer.UI.Models.Constants;
+﻿namespace ChaosRecipeEnhancer.UI.Models.Config;
 
-public static class CreAppConstants
+public static class CreAppConfig
 {
     public const string InstanceName = "ChaosRecipeEnhancer";
     public const string ProtocolPrefix = "chaosrecipe://";
