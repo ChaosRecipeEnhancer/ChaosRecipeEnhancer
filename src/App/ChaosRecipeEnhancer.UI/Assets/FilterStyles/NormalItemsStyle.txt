@@ -12,7 +12,6 @@
 # 	Identified False
 # 	BaseType --- MODIFY THIS IN THE BASES FOLDER
 # 	SetBackgroundColor 0 251 238 255 --- MODIFY THIS IN THE APPLICATION
-    Corrupted False
     Sockets < 6
     LinkedSockets < 5
     SetFontSize 40
