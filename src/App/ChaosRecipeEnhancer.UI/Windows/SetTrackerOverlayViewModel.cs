@@ -28,6 +28,9 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
     private readonly INotificationSoundService _notificationSoundService = Ioc.Default.GetRequiredService<INotificationSoundService>();
 
     private const string SetsFullText = "Sets full!";
+
+    // this should match the cooldown we apply in the log watcher manager
+    /// <see cref="LogWatcherManager.AutoFetchCooldown"/>
     private const int FetchCooldown = 15;
 
     private bool _fetchButtonEnabled = true;

@@ -13,6 +13,7 @@ public class LogWatcherManager
     private static bool AutoFetchAllowed { get; set; } = true;
 
     // this should match the cooldown we apply in the set tracker view model
+    /// <see cref="SetTrackerOverlayViewModel.FetchCooldown"/>
     private const int AutoFetchCooldown = 15;
     private static string LastZone { get; set; } = "";
     private static string NewZone { get; set; } = "";
