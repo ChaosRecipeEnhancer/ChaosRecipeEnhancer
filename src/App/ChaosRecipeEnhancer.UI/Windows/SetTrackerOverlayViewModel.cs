@@ -28,7 +28,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
     private readonly INotificationSoundService _notificationSoundService = Ioc.Default.GetRequiredService<INotificationSoundService>();
 
     private const string SetsFullText = "Sets full!";
-    private const int FetchCooldown = 30;
+    private const int FetchCooldown = 15;
 
     private bool _fetchButtonEnabled = true;
     private bool _stashButtonTooltipEnabled = false;
@@ -288,14 +288,8 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                     // enforce cooldown on fetch button to reduce chances of rate limiting
                     await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                     {
-                        try
-                        {
-                            await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-                        }
-                        finally
-                        {
-                            FetchButtonEnabled = true;
-                        }
+                        await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown));
+                        FetchButtonEnabled = true;
                     });
                 }
                 else
@@ -368,16 +362,9 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                     // enforce cooldown on fetch button to reduce chances of rate limiting
                     await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                     {
-                        try
-                        {
-                            await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
-                        }
-                        finally
-                        {
-                            FetchButtonEnabled = true;
-                        }
+                        await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+                        FetchButtonEnabled = true;
                     });
-
                 }
                 else
                 {
@@ -444,6 +431,13 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
 
             return false;
         }
+
+        // if we get here, we can assume the fetch was successful
+        // so we can enable the fetch button again and trigger a
+        // manual ui update (this might be uneccessary)
+
+        FetchButtonEnabled = true;
+        UpdateDisplay();
 
         return true;
     }
