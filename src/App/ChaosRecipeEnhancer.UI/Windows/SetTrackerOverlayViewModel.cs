@@ -30,8 +30,8 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
     private const string SetsFullText = "Sets full!";
 
     // this should match the cooldown we apply in the log watcher manager
-    /// <see cref="LogWatcherManager.AutoFetchCooldown"/>
-    private const int FetchCooldown = 15;
+    /// <see cref="LogWatcherManager.AutoFetchCooldownSeconds"/>
+    private const int FetchCooldownSeconds = 15;
 
     private bool _fetchButtonEnabled = true;
     private bool _stashButtonTooltipEnabled = false;
@@ -291,7 +291,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                     // enforce cooldown on fetch button to reduce chances of rate limiting
                     await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                     {
-                        await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown));
+                        await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldownSeconds * 1000));
                         FetchButtonEnabled = true;
                     });
                 }
@@ -365,7 +365,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                     // enforce cooldown on fetch button to reduce chances of rate limiting
                     await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
                     {
-                        await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldown * 1000));
+                        await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldownSeconds * 1000));
                         FetchButtonEnabled = true;
                     });
                 }

@@ -13,8 +13,8 @@ public class LogWatcherManager
     private static bool AutoFetchAllowed { get; set; } = true;
 
     // this should match the cooldown we apply in the set tracker view model
-    /// <see cref="SetTrackerOverlayViewModel.FetchCooldown"/>
-    private const int AutoFetchCooldown = 15;
+    /// <see cref="SetTrackerOverlayViewModel.FetchCooldownSeconds"/>
+    private const int AutoFetchCooldownSeconds = 15;
     private static string LastZone { get; set; } = "";
     private static string NewZone { get; set; } = "";
 
@@ -89,9 +89,9 @@ public class LogWatcherManager
                 // Note: No need to dispatch this back to the UI thread
                 // as we are already on the UI thread (this will differ
                 // from our other async cooldown methods)
-                await Task.Factory.StartNew(() => Thread.Sleep(AutoFetchCooldown * 1000));
+                await Task.Factory.StartNew(() => Thread.Sleep(AutoFetchCooldownSeconds * 1000));
 
-                // this will re-enable the fetch button after our AutoFetchCooldown
+                // this will re-enable the fetch button after our AutoFetchCooldownSeconds
                 setTrackerOverlay.OverrideFetchButtonEnabled();
                 AutoFetchAllowed = true;
             }
