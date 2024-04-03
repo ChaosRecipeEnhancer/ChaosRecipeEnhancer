@@ -45,8 +45,6 @@ public class NotificationSoundService : INotificationSoundService, IDisposable
         {
             if (_userSettings.SoundEnabled)
             {
-                throw new MmException(new MmResult(), "Some Function");
-
                 players = new Dictionary<NotificationSoundType, AudioResource>
                 {
                     { NotificationSoundType.ItemSetStateChanged, new AudioResource(@"Assets\Sounds\ItemSetStateChanged.wav") },
