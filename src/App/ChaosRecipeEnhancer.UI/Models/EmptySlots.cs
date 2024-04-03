@@ -22,7 +22,6 @@ public static class EmptySlots
                 GameTerminology.Amulets,
                 GameTerminology.Rings, // have to double up on rings
                 GameTerminology.Rings
-
             ];
 
             // Return a copy to ensure that the original is not mutable
