@@ -12,6 +12,8 @@ public static class EmptySlots
             List<string> originalList =
             [
                 GameTerminology.BodyArmors,
+                GameTerminology.OneHandWeapons, // have to double up on 1-handers
+                GameTerminology.OneHandWeapons,
                 GameTerminology.TwoHandWeapons,
                 GameTerminology.Helmets,
                 GameTerminology.Gloves,
@@ -19,9 +21,8 @@ public static class EmptySlots
                 GameTerminology.Belts,
                 GameTerminology.Amulets,
                 GameTerminology.Rings, // have to double up on rings
-                GameTerminology.Rings,
-                GameTerminology.OneHandWeapons, // have to double up on 1-handers
-                GameTerminology.OneHandWeapons
+                GameTerminology.Rings
+
             ];
 
             // Return a copy to ensure that the original is not mutable

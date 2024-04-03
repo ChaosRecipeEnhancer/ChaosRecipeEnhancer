@@ -326,6 +326,7 @@ public static class GlobalItemSetManagerState
         // Clear any existing progress in item set generation
         SetsInProgress.Clear();
         var listOfSets = new List<EnhancedItemSet>();
+        bool containsChaosRecipe = false;
 
         // Iteratively create item sets based on the number of available recipe items
         for (var i = 0; i < trueSetThreshold; i++)
@@ -435,6 +436,7 @@ public static class GlobalItemSetManagerState
                 if (canProduce is not null)
                 {
                     listOfSets[i].HasChaosRecipeQualifier = true;
+                    containsChaosRecipe = true;
                 }
             }
         }
@@ -450,8 +452,20 @@ public static class GlobalItemSetManagerState
 
         // Update the sets in progress with the newly created list of sets
         SetsInProgress = listOfSets;
+
         // Update the count of completed sets based on the number of sets with no empty item slots
-        CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0);
+
+        // if we aren't doing regal recipes and we don't have any chaos sets completed
+        if (!regalRecipe && !containsChaosRecipe)
+        {
+            // we need more lower level items to complete sets
+            NeedsLowerLevel = true;
+            CompletedSetCount = 0;
+        }
+        else
+        {
+            CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0);
+        }
     }
 
     public static List<Dictionary<ItemClass, int>> RetrieveCurrentItemCountsForFilterManipulation()
