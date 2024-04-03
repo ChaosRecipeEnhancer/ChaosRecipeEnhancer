@@ -72,8 +72,14 @@ public partial class SetTrackerOverlayWindow : Window
 
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.ChangedButton == MouseButton.Left && !Settings.Default.SetTrackerOverlayOverlayLockPositionEnabled && Mouse.LeftButton == MouseButtonState.Pressed)
+        if (
+            e.ChangedButton == MouseButton.Left &&
+            !Settings.Default.SetTrackerOverlayOverlayLockPositionEnabled &&
+            Mouse.LeftButton == MouseButtonState.Pressed
+        )
+        {
             DragMove();
+        }
     }
 
     public new virtual void Hide()
@@ -108,11 +114,13 @@ public partial class SetTrackerOverlayWindow : Window
         else
         {
             IsOpen = true;
+
             if (_model.GlobalUserSettings.AutoFetchOnRezoneEnabled &&
                 !string.IsNullOrWhiteSpace(_model.GlobalUserSettings.PathOfExileClientLogLocation))
             {
                 _logWatcherManager = new LogWatcherManager(this);
             }
+
             base.Show();
         }
     }
@@ -161,5 +169,10 @@ public partial class SetTrackerOverlayWindow : Window
         {
             Show();
         }
+    }
+
+    public void OverrideFetchButtonEnabled()
+    {
+        _model.FetchButtonEnabled = true;
     }
 }

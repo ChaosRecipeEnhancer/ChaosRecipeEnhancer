@@ -11,7 +11,10 @@ namespace ChaosRecipeEnhancer.UI.Services;
 public class LogWatcherManager
 {
     private static bool AutoFetchAllowed { get; set; } = true;
-    private const int AutoFetchCooldown = 60;
+
+    // this should match the cooldown we apply in the set tracker view model
+    /// <see cref="SetTrackerOverlayViewModel.FetchCooldown"/>
+    private const int AutoFetchCooldown = 15;
     private static string LastZone { get; set; } = "";
     private static string NewZone { get; set; } = "";
 
@@ -22,10 +25,14 @@ public class LogWatcherManager
     {
         Log.Information("LogWatcherManager - New Instance Created");
         _cancellationTokenSource = new CancellationTokenSource();
-        _workerTask = Task.Run(() => StartWatchingLogFile(setTrackerOverlay));
+
+        _workerTask = Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+        {
+            Task.Factory.StartNew(() => StartWatchingLogFile(setTrackerOverlay));
+        }).Task;
     }
 
-    private void StartWatchingLogFile(SetTrackerOverlayWindow setTrackerOverlay)
+    private async Task StartWatchingLogFile(SetTrackerOverlayWindow setTrackerOverlay)
     {
         Log.Information("LogWatcherManager - Starting Watching Client.txt Log File");
 
@@ -59,7 +66,7 @@ public class LogWatcherManager
                     Log.Information("LogWatcherManager - Entered New Zone");
                     Log.Information(NewZone);
 
-                    FetchIfPossible(setTrackerOverlay);
+                    await FetchIfPossible(setTrackerOverlay);
                 }
             }
             else
@@ -69,28 +76,24 @@ public class LogWatcherManager
         }
     }
 
-    private void FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
+    private async Task FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
     {
         if (AutoFetchAllowed)
         {
             AutoFetchAllowed = false;
+
             try
             {
                 setTrackerOverlay.RunFetchingAsync();
 
-                // enforce cooldown on fetch button to reduce chances of rate limiting
-                Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-                {
-                    try
-                    {
-                        await Task.Factory.StartNew(() => Thread.Sleep(AutoFetchCooldown * 1000));
-                    }
-                    finally
-                    {
-                        AutoFetchAllowed = true;
-                        Log.Information("LogWatcherManager - Allowing Auto-Fetch");
-                    }
-                });
+                // Note: No need to dispatch this back to the UI thread
+                // as we are already on the UI thread (this will differ
+                // from our other async cooldown methods)
+                await Task.Factory.StartNew(() => Thread.Sleep(AutoFetchCooldown * 1000));
+
+                // this will re-enable the fetch button after our AutoFetchCooldown
+                setTrackerOverlay.OverrideFetchButtonEnabled();
+                AutoFetchAllowed = true;
             }
             catch
             {
