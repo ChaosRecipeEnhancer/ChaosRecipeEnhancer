@@ -32,6 +32,16 @@ public class AdvancedFormViewModel : CreViewModelBase
         }
     }
 
+    public bool DebugModeIsChecked
+    {
+        get => _userSettings.DebugMode;
+        set
+        {
+            _userSettings.DebugMode = value;
+            OnPropertyChanged();
+        }
+    }
+
     private void ResetSettings()
     {
         _log.Warning("User initiated reset settings");

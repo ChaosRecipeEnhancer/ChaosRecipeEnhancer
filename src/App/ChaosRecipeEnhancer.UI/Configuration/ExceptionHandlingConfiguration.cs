@@ -55,6 +55,7 @@ public static class ExceptionHandlingConfiguration
                 messageBoxTitle,
                 messageBoxMessage
             );
+
             dialog.ShowDialog();
         }
         finally
