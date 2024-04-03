@@ -7,11 +7,11 @@ using ChaosRecipeEnhancer.UI.Services;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using Serilog;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -23,8 +23,8 @@ public class GeneralFormViewModel : CreViewModelBase
 {
     #region Fields
 
-    // cooldown in milliseconds
-    private const int FETCH_COOLDOWN = 1500;
+    // cooldown in seconds
+    private const int FetchCooldownSeconds = 1;
 
     private readonly IPoeApiService _apiService;
     private readonly IUserSettings _userSettings;
@@ -245,7 +245,7 @@ public class GeneralFormViewModel : CreViewModelBase
     public async Task ForceRefreshLeaguesAsync()
     {
         _leaguesLoaded = false;
-        await LoadLeagueListAsync(isFirstLoad: true);
+        await LoadLeagueListAsync();
     }
 
     /// <summary>
@@ -255,41 +255,35 @@ public class GeneralFormViewModel : CreViewModelBase
     public async Task ForceRefreshStashTabsAsync()
     {
         _stashTabsLoaded = false;
-        await LoadStashTabsAsync(isFirstLoad: true);
+        await LoadStashTabsAsync();
     }
 
     /// <summary>
     /// Loads the league list asynchronously. Ensures leagues are only loaded once unless explicitly refreshed.
     /// </summary>
-    public async Task LoadLeagueListAsync(bool isFirstLoad = false)
+    public async Task LoadLeagueListAsync()
     {
         Log.Information("GeneralFormViewModel - Loading {LeagueType} league names...", CustomLeagueEnabled ? "private" : "public");
 
         if (_leaguesLoaded)
         {
-            await TriggerUICooldown();
+            Log.Information("GeneralFormViewModel - Leagues already loaded. Skipping fetch.");
             return;
         }
 
-        SetUIEnabledState(false);
         LeagueList.Clear();
         List<string> leagueList;
 
         try
         {
             leagueList = await _apiService.GetLeaguesAsync();
+            Log.Information("GeneralFormViewModel - Leagues fetched successfully.");
         }
         catch (RateLimitException e)
         {
-            SetUIEnabledState(false);
+            Log.Error(e, "GeneralFormViewModel - Rate limit exceeded while fetching stash tabs. Waiting {SecondsToWait} seconds...", e.SecondsToWait);
             _leaguesLoaded = false;
-
-            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-            {
-                await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));
-                SetUIEnabledState(true);
-            });
-
+            TriggerGeneralFormFetchCooldown();
             return;
         }
 
@@ -304,19 +298,7 @@ public class GeneralFormViewModel : CreViewModelBase
 
         // Indicate that the leagues have been loaded
         _leaguesLoaded = true;
-
-        if (isFirstLoad)
-        {
-            SetUIEnabledState(true);
-        }
-        else
-        {
-            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-            {
-                await Task.Factory.StartNew(() => Thread.Sleep(FETCH_COOLDOWN));
-                SetUIEnabledState(true);
-            });
-        }
+        TriggerGeneralFormFetchCooldown();
     }
 
     public void SelectLogFile()
@@ -373,11 +355,7 @@ public class GeneralFormViewModel : CreViewModelBase
 
             if (StashTabDropDownEnabled)
             {
-                await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-                {
-                    await Task.Delay(FETCH_COOLDOWN);
-                    SetUIEnabledState(true);
-                });
+                TriggerGeneralFormFetchCooldown();
             }
             else
             {
@@ -410,11 +388,7 @@ public class GeneralFormViewModel : CreViewModelBase
 
             OnPropertyChanged(nameof(CustomLeagueEnabled));
 
-            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-            {
-                await Task.Delay(FETCH_COOLDOWN);
-                SetUIEnabledState(true);
-            });
+            TriggerGeneralFormFetchCooldown();
         }
     }
 
@@ -440,11 +414,7 @@ public class GeneralFormViewModel : CreViewModelBase
             // Notify the UI of the change
             OnPropertyChanged(nameof(StashTabQueryMode));
 
-            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-            {
-                await Task.Delay(FETCH_COOLDOWN);
-                StashTabButtonEnabled = true;
-            });
+            TriggerGeneralFormFetchCooldown();
         }
     }
 
@@ -481,7 +451,7 @@ public class GeneralFormViewModel : CreViewModelBase
 
         if (string.IsNullOrWhiteSpace(LeagueName))
         {
-            Log.Information("GeneralFormViewModel - League name is empty. Skipping stash tab fetch.");
+            Log.Information("GeneralFormViewModel - League name not defined; cannot fetch Stash Tabs. Skipping fetch.");
             return;
         }
 
@@ -490,7 +460,7 @@ public class GeneralFormViewModel : CreViewModelBase
         // If the stash tabs are already loaded, wait for the cooldown and re-enable the button
         if (_stashTabsLoaded)
         {
-            await TriggerUICooldown();
+            Log.Information("GeneralFormViewModel - StashTabs already loaded. Skipping fetch.");
             return;
         }
 
@@ -499,21 +469,17 @@ public class GeneralFormViewModel : CreViewModelBase
 
         // Fetch the stash tabs - this is the biggest call in this component
         ListStashesResponse stashTabPropsList;
+
         try
         {
             stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataAsync();
+            Log.Information("GeneralFormViewModel - StashTabs fetched successfully.");
         }
         catch (RateLimitException e)
         {
-            SetUIEnabledState(false);
+            Log.Error(e, "GeneralFormViewModel - Rate limit exceeded while fetching stash tabs. Waiting {SecondsToWait} seconds...", e.SecondsToWait);
             _stashTabsLoaded = false;
-
-            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-            {
-                await Task.Delay(e.SecondsToWait * 1000);
-                SetUIEnabledState(true);
-            });
-
+            TriggerGeneralFormFetchCooldown();
             return;
         }
 
@@ -528,19 +494,7 @@ public class GeneralFormViewModel : CreViewModelBase
         _stashTabsLoaded = true;
 
         // If this is the first load, we don't need to wait for the cooldown
-        if (isFirstLoad)
-        {
-            SetUIEnabledState(true);
-        }
-        // Otherwise, wait for the cooldown and re-enable the button
-        else
-        {
-            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-            {
-                await Task.Delay(FETCH_COOLDOWN);
-                SetUIEnabledState(true);
-            });
-        }
+        TriggerGeneralFormFetchCooldown();
     }
 
     /// <summary>
@@ -652,20 +606,27 @@ public class GeneralFormViewModel : CreViewModelBase
 
     #endregion
 
-    private async Task TriggerUICooldown()
+    private void TriggerGeneralFormFetchCooldown()
     {
-        SetUIEnabledState(false);
-
-        await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+        // Ensure operation on the UI thread if called from another thread
+        Application.Current.Dispatcher.Invoke(() =>
         {
-            try
+            var timer = new DispatcherTimer
             {
-                await Task.Delay(FETCH_COOLDOWN);
-            }
-            finally
+                Interval = TimeSpan.FromMilliseconds(FetchCooldownSeconds * 1000)
+            };
+
+            // Set the action to be executed after the cooldown
+            timer.Tick += (sender, args) =>
             {
-                SetUIEnabledState(true);
-            }
+                SetUIEnabledState(true); // Re-enable the UI elements
+                timer.Stop(); // Stop the timer to avoid it triggering again
+                Log.Information("GeneralFormViewModel - Fetch cooldown timer has ended");
+            };
+
+            Log.Information("GeneralFormViewModel - Starting fetch cooldown timer for {SecondsToWait} seconds", FetchCooldownSeconds);
+            SetUIEnabledState(false); // Disable the UI elements before starting the timer
+            timer.Start(); // Start the cooldown timer
         });
     }
 

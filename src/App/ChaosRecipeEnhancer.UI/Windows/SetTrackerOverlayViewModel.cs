@@ -7,11 +7,12 @@ using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.UserControls;
 using ChaosRecipeEnhancer.UI.Utilities;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
@@ -289,11 +290,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                     UpdateStashButtonAndWarningMessage();
 
                     // enforce cooldown on fetch button to reduce chances of rate limiting
-                    await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-                    {
-                        await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldownSeconds * 1000));
-                        FetchButtonEnabled = true;
-                    });
+                    TriggerSetTrackerFetchCooldown(FetchCooldownSeconds);
                 }
                 else
                 {
@@ -363,11 +360,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                     UpdateStashButtonAndWarningMessage();
 
                     // enforce cooldown on fetch button to reduce chances of rate limiting
-                    await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-                    {
-                        await Task.Factory.StartNew(() => Thread.Sleep(FetchCooldownSeconds * 1000));
-                        FetchButtonEnabled = true;
-                    });
+                    TriggerSetTrackerFetchCooldown(FetchCooldownSeconds);
                 }
                 else
                 {
@@ -384,13 +377,9 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
             WarningMessage = $"Rate Limit Exceeded! Waiting {e.SecondsToWait} seconds...";
 
             // Cooldown the refresh button until the rate limit is lifted
-            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
-            {
-                await Task.Factory.StartNew(() => Thread.Sleep(e.SecondsToWait * 1000));
-                FetchButtonEnabled = true;
-                WarningMessage = string.Empty;
-            });
+            TriggerSetTrackerFetchCooldown(e.SecondsToWait);
 
+            WarningMessage = string.Empty;
 
             return true;
         }
@@ -434,13 +423,6 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
 
             return false;
         }
-
-        // if we get here, we can assume the fetch was successful
-        // so we can enable the fetch button again and trigger a
-        // manual ui update (this might be uneccessary)
-
-        FetchButtonEnabled = true;
-        UpdateDisplay();
 
         return true;
     }
@@ -603,6 +585,30 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
     public void PlayItemSetStateChangedNotificationSound()
     {
         _notificationSoundService.PlayNotificationSound(NotificationSoundType.ItemSetStateChanged);
+    }
+
+    public void TriggerSetTrackerFetchCooldown(int secondsToWait)
+    {
+        // Ensure operation on the UI thread if called from another thread
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            var timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(secondsToWait)
+            };
+
+            // define the action to take when the timer ticks
+            timer.Tick += (sender, args) =>
+            {
+                FetchButtonEnabled = true; // Re-enable the fetch button
+                timer.Stop(); // Stop the timer to avoid it triggering again
+                Log.Information("SetTrackerOverlayViewModel - Fetch cooldown timer has ended");
+            };
+
+            Log.Information("SetTrackerOverlayViewModel - Starting fetch cooldown timer for {SecondsToWait} seconds", secondsToWait);
+            FetchButtonEnabled = false; // Disable the fetch button before starting the timer
+            timer.Start(); // Start the cooldown timer
+        });
     }
 
     #endregion
