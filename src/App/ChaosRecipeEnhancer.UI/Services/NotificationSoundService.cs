@@ -1,5 +1,6 @@
 ﻿using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
+using NAudio;
 using NAudio.Wave;
 using Serilog;
 using System;
@@ -21,12 +22,7 @@ public class NotificationSoundService : INotificationSoundService, IDisposable
     public NotificationSoundService(IUserSettings userSettings)
     {
         _userSettings = userSettings;
-        _soundPlayers = new Dictionary<NotificationSoundType, AudioResource>
-        {
-            { NotificationSoundType.ItemSetStateChanged, new AudioResource(@"Assets\Sounds\ItemSetStateChanged.wav") },
-            { NotificationSoundType.SetPickingComplete, new AudioResource(@"Assets\Sounds\SetPickingComplete.wav") },
-            { NotificationSoundType.FilterReloaded, new AudioResource(@"Assets\Sounds\FilterReloaded.wav") },
-        };
+        _soundPlayers = InitializeSoundPlayers();
     }
 
     public void PlayNotificationSound(NotificationSoundType soundType)
@@ -39,6 +35,43 @@ public class NotificationSoundService : INotificationSoundService, IDisposable
                 audioResource.Play((float)_userSettings.SoundLevel);
             }
         }
+    }
+
+    private Dictionary<NotificationSoundType, AudioResource> InitializeSoundPlayers()
+    {
+        Dictionary<NotificationSoundType, AudioResource> players = [];
+
+        try
+        {
+            if (_userSettings.SoundEnabled)
+            {
+                throw new MmException(new MmResult(), "Some Function");
+
+                players = new Dictionary<NotificationSoundType, AudioResource>
+                {
+                    { NotificationSoundType.ItemSetStateChanged, new AudioResource(@"Assets\Sounds\ItemSetStateChanged.wav") },
+                    { NotificationSoundType.SetPickingComplete, new AudioResource(@"Assets\Sounds\SetPickingComplete.wav") },
+                    { NotificationSoundType.FilterReloaded, new AudioResource(@"Assets\Sounds\FilterReloaded.wav") },
+                };
+            }
+        }
+        catch (MmException ex)
+        {
+            // Log the error
+            _log.Error($"Failed to initialize audio devices. Exception: {ex.Message}");
+
+            // Notify the user of the error and offer options (this part depends on your UI implementation)
+            GlobalErrorHandler.Spawn(
+                ex.ToString(),
+                "Error: Audio Device Initialization",
+                "Failed to initialize audio devices. This is usually caused by not having a default sound device selected, or a sound driver issue. Disabling sound to prevent further errors."
+            );
+
+            // Disabling sound to prevent further errors
+            _userSettings.SoundEnabled = false;
+        }
+
+        return players;
     }
 
     #region IDisposable Support
