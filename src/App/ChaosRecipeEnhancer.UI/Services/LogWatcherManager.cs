@@ -1,9 +1,11 @@
 ﻿using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Windows;
 using Serilog;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace ChaosRecipeEnhancer.UI.Services;
@@ -32,7 +34,7 @@ public class LogWatcherManager
         }).Task;
     }
 
-    private async Task StartWatchingLogFile(SetTrackerOverlayWindow setTrackerOverlay)
+    private void StartWatchingLogFile(SetTrackerOverlayWindow setTrackerOverlay)
     {
         Log.Information("LogWatcherManager - Starting Watching Client.txt Log File");
 
@@ -49,60 +51,51 @@ public class LogWatcherManager
         fs.Position = fs.Length;
 
         using var sr = new StreamReader(fs);
-        while (!_cancellationTokenSource.Token.IsCancellationRequested)
+
+        try
         {
-            var s = sr.ReadLine();
-            if (s != null)
+            while (!_cancellationTokenSource.Token.IsCancellationRequested)
             {
-                var phrase = GetPhraseTranslation();
-                var hideout = GetHideoutTranslation();
-                var harbour = GetHarbourTranslation();
-
-                if (s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout) && !s.Contains(harbour))
+                var s = sr.ReadLine();
+                if (s != null)
                 {
-                    LastZone = NewZone;
-                    NewZone = s.Substring(s.IndexOf(phrase[0]));
+                    var phrase = GetPhraseTranslation();
+                    var hideout = GetHideoutTranslation();
+                    var harbour = GetHarbourTranslation();
 
-                    Log.Information("LogWatcherManager - Entered New Zone");
-                    Log.Information(NewZone);
+                    if (s.Contains(phrase[0]) && s.Contains(phrase[1]) && !s.Contains(hideout) && !s.Contains(harbour))
+                    {
+                        LastZone = NewZone;
+                        NewZone = s.Substring(s.IndexOf(phrase[0]));
 
-                    await FetchIfPossible(setTrackerOverlay);
+                        Log.Information("LogWatcherManager - Entered New Zone");
+                        Log.Information(NewZone);
+
+                        FetchIfPossible(setTrackerOverlay);
+                    }
+                }
+                else
+                {
+                    wh.WaitOne(1000);
                 }
             }
-            else
-            {
-                wh.WaitOne(1000);
-            }
+        }
+        catch (ObjectDisposedException ex)
+        {
+            Log.Error(ex, "LogWatcherManager - Log File Disposed");
         }
     }
 
-    private async Task FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
+    private static void FetchIfPossible(SetTrackerOverlayWindow setTrackerOverlay)
     {
         if (AutoFetchAllowed)
         {
-            AutoFetchAllowed = false;
-
-            try
-            {
-                setTrackerOverlay.RunFetchingAsync();
-
-                // Note: No need to dispatch this back to the UI thread
-                // as we are already on the UI thread (this will differ
-                // from our other async cooldown methods)
-                await Task.Factory.StartNew(() => Thread.Sleep(AutoFetchCooldownSeconds * 1000));
-
-                // this will re-enable the fetch button after our AutoFetchCooldownSeconds
-                setTrackerOverlay.OverrideFetchButtonEnabled();
-                AutoFetchAllowed = true;
-            }
-            catch
-            {
-                AutoFetchAllowed = true;
-            }
+            setTrackerOverlay.RunFetchingAsync();
+            TriggerAutoFetchCooldown(AutoFetchCooldownSeconds);
         }
     }
 
-    private string[] GetPhraseTranslation()
+    private static string[] GetPhraseTranslation()
     {
         var ret = new string[2];
         ret[1] = "";
@@ -142,7 +135,7 @@ public class LogWatcherManager
         return ret;
     }
 
-    private string GetHideoutTranslation()
+    private static string GetHideoutTranslation()
     {
         switch (Settings.Default.Language)
         {
@@ -165,7 +158,7 @@ public class LogWatcherManager
         }
     }
 
-    private string GetHarbourTranslation()
+    private static string GetHarbourTranslation()
     {
         switch (Settings.Default.Language)
         {
@@ -192,7 +185,32 @@ public class LogWatcherManager
     {
         _cancellationTokenSource.Cancel();
         _workerTask.Wait();
+
         Log.Information("LogWatcherManager - Stopped Watching Client.txt Log File");
+    }
+
+    public static void TriggerAutoFetchCooldown(int secondsToWait)
+    {
+        // Ensure operation on the UI thread if called from another thread
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            var timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(secondsToWait)
+            };
+
+            // define the action to take when the timer ticks
+            timer.Tick += (sender, args) =>
+            {
+                AutoFetchAllowed = true; // Re-enable the auto fetch functionality
+                timer.Stop(); // Stop the timer to avoid it triggering again
+                Log.Information("LogWatcherManager - Fetch cooldown timer has ended");
+            };
+
+            Log.Information("LogWatcherManager - Starting fetch cooldown timer for {SecondsToWait} seconds", secondsToWait);
+            AutoFetchAllowed = false; // Disable the fetch button before starting the timer
+            timer.Start(); // Start the cooldown timer
+        });
     }
 
     public void Dispose()
