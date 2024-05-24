@@ -180,8 +180,8 @@ public class PoeApiService : IPoeApiService
 
         // add required headers
 
-        // this useragent isn't strictly required, but it's good practice to include it (they ask for it in the spec)
-        // the api will not spit back an error if we don't include it
+        // as of some point between 3.24 and 3.25, this is now a required field so definitely include it!
+        // ty to Novynn for ur help ur a g
         client.DefaultRequestHeaders.UserAgent.ParseAdd(PoeApiConfig.UserAgent);
 
         // the auth token is required for all calls (we only use authenticated endpoints as of 3.24)
@@ -192,7 +192,7 @@ public class PoeApiService : IPoeApiService
         var responseString = response.Content.ReadAsStringAsync().Result;
 
         _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
-        _log.Debug($"Response: {responseString}");
+        _log.Information($"Response: {responseString}");
 
         // for some weird ass reason the status codes come
         // back 200 even when it's not valid (for leagues endpoint)
@@ -244,8 +244,15 @@ public class PoeApiService : IPoeApiService
         // create new http client that will be disposed of after request
         using var client = new HttpClient();
 
+        // as of some point between 3.24 and 3.25, this is now a required field so definitely include it!
+        // ty to Novynn for ur help ur a g
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(PoeApiConfig.UserAgent);
+
         var response = await client.GetAsync(requestUri);
         var responseString = response.Content.ReadAsStringAsync().Result;
+
+        _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
+        _log.Information($"Response: {responseString}");
 
         if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
 
