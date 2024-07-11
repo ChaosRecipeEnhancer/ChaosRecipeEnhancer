@@ -4,4 +4,4 @@ We manually include the WPF Toolkit in our project because it is not available a
 
 This shaves quite a few MB from our final package size, which is definitely something I want to be mindful of.
 
-(For my own record-keeping) Most recently updateded this package to [v4.6.0](https://github.com/xceedsoftware/wpftoolkit/releases/tag/4.6.0)
+(For my own record-keeping) Most recently updateded this package to [v4.6.1](https://github.com/xceedsoftware/wpftoolkit/releases/tag/4.6.1)
