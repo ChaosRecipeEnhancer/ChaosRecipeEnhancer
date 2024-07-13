@@ -84,7 +84,7 @@
                 Margin="0 0 5 0"
                 VerticalContentAlignment="Center"
                 ItemsSource="{Binding LeagueList, Mode=OneWay}"
-                SelectedItem="{Binding LeagueName, Mode=OneWay}"
+                SelectedItem="{Binding SelectedLeagueName, Mode=OneWay}"
                 SelectionChanged="LeagueComboBox_SelectionChanged"
                 IsEnabled="{Binding LeagueDropDownEnabled, Mode=OneWay}"
                 Visibility="{Binding LeagueDropDownEnabled, Converter={StaticResource BoolVisibilityConverter}}"
@@ -100,7 +100,7 @@
                 Width="160"
                 Margin="0 0 5 0"
                 VerticalContentAlignment="Center"
-                Text="{Binding LeagueName, Mode=OneWay}"
+                Text="{Binding SelectedLeagueName, Mode=OneWay}"
                 IsEnabled="False"
                 Visibility="{Binding LeagueDropDownEnabled, Converter={StaticResource InvertedBoolVisibilityConverter}}" />
 
@@ -274,7 +274,7 @@
                 <Button.IsEnabled>
                     <MultiBinding Converter="{StaticResource FetchButtonEnabledConverter}">
                         <Binding Path="StashTabButtonEnabled"/>
-                        <Binding Path="LeagueName"/>
+                        <Binding Path="SelectedLeagueName"/>
                     </MultiBinding>
                 </Button.IsEnabled>
 
@@ -413,7 +413,7 @@
                 <Button.IsEnabled>
                     <MultiBinding Converter="{StaticResource FetchButtonEnabledConverter}">
                         <Binding Path="StashTabButtonEnabled"/>
-                        <Binding Path="LeagueName"/>
+                        <Binding Path="SelectedLeagueName"/>
                     </MultiBinding>
                 </Button.IsEnabled>
 
