@@ -1,4 +1,4 @@
-﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
@@ -65,7 +65,7 @@ public static class StashTabControlManager
         }
     }
 
-    public static void GetStashTabIndicesFromSettingsForQueryById(List<BaseStashTabMetadata> stashData)
+    public static void GetStashTabIndicesFromSettingsForQueryById(List<UnifiedStashTabMetadata> stashData)
     {
         // update the stash tab metadata based on your target stash
 

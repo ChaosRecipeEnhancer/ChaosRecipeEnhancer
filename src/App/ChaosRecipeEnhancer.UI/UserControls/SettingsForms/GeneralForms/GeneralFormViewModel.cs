@@ -1,4 +1,4 @@
-﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
@@ -77,10 +77,10 @@ public class GeneralFormViewModel : CreViewModelBase
     #endregion
 
     public ObservableCollection<string> LeagueList { get; set; } = [];
-    public ObservableCollection<BaseStashTabMetadata> StashTabFullListForSelectionByIndex { get; set; } = [];
-    public ObservableCollection<BaseStashTabMetadata> SelectedStashTabsByIndex { get; set; } = [];
-    public ObservableCollection<BaseStashTabMetadata> StashTabFullListForSelectionById { get; set; } = [];
-    public ObservableCollection<BaseStashTabMetadata> SelectedStashTabsById { get; set; } = [];
+    public ObservableCollection<UnifiedStashTabMetadata> StashTabFullListForSelectionByIndex { get; set; } = [];
+    public ObservableCollection<UnifiedStashTabMetadata> SelectedStashTabsByIndex { get; set; } = [];
+    public ObservableCollection<UnifiedStashTabMetadata> StashTabFullListForSelectionById { get; set; } = [];
+    public ObservableCollection<UnifiedStashTabMetadata> SelectedStashTabsById { get; set; } = [];
 
     #region UI Enabled States
 
@@ -468,11 +468,11 @@ public class GeneralFormViewModel : CreViewModelBase
         SetUIEnabledState(false);
 
         // Fetch the stash tabs - this is the biggest call in this component
-        ListStashesResponse stashTabPropsList;
+        List<UnifiedStashTabMetadata> stashTabPropsList;
 
         try
         {
-            stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataAsync();
+            stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataWithOAuthAsync();
             Log.Information("GeneralFormViewModel - StashTabs fetched successfully.");
         }
         catch (RateLimitException e)
@@ -484,10 +484,10 @@ public class GeneralFormViewModel : CreViewModelBase
         }
 
         // If the response is valid and we have stash tabs
-        if (stashTabPropsList != null && stashTabPropsList.StashTabs != null)
+        if (stashTabPropsList != null)
         {
             // update the full list of stash tabs
-            UpdateStashTabListForSelection(stashTabPropsList.StashTabs);
+            UpdateStashTabListForSelection(stashTabPropsList);
         }
 
         // Indicate that the tabs have been and re-enable the fetch button
@@ -501,7 +501,7 @@ public class GeneralFormViewModel : CreViewModelBase
     /// Updates the full list of stash tabs for selection in the UI.
     /// </summary>
     /// <param name="stashTabProps">The list of stash tabs to update the UI with.</param>
-    private void UpdateStashTabListForSelection(List<BaseStashTabMetadata> stashTabProps)
+    private void UpdateStashTabListForSelection(List<UnifiedStashTabMetadata> stashTabProps)
     {
         // Depending on the query mode, select the appropriate observable list to update
         var StashTabFullListForSelection = _userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsByIndex
@@ -651,7 +651,7 @@ public class GeneralFormViewModel : CreViewModelBase
         // Temporary collection to accumulate selected identifiers
         var tempSelectedItems = new HashSet<string>();
 
-        foreach (var tab in selectedStashTabProps.Cast<BaseStashTabMetadata>())
+        foreach (var tab in selectedStashTabProps.Cast<UnifiedStashTabMetadata>())
         {
             var identifier = _userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsByIndex
                 ? tab.Index.ToString()

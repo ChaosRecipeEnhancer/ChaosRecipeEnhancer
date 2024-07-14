@@ -1,4 +1,5 @@
 using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
@@ -180,9 +181,16 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
             GlobalItemSetManagerState.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
-            var stashTabMetadataList = GlobalItemSetManagerState.FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
+            var stashTabMetadataList = !GlobalUserSettings.LegacyAuthMode
+                ? await _apiService.GetAllPersonalStashTabMetadataWithOAuthAsync()
+                : GlobalUserSettings.GuildStashMode
+                    ? await _apiService.GetAllGuildStashTabMetadataWithSessionIdAsync()
+                    : await _apiService.GetAllPersonalStashTabMetadataWithSessionIdAsync();
 
-            // the following regions will need to be cleaned up and refactored at some point becaues this method is too long
+            // If you still need to flatten the stash tabs, you can do it here:
+            var flattenedStashTabs = GlobalItemSetManagerState.FlattenStashTabs(stashTabMetadataList);
+
+            // TODO: The following regions will need to be cleaned up and refactored at some point becaues this method is too long
 
             #region OPERATIONS THAT REQUIRE STASH TAB INDEXES
 
@@ -260,17 +268,24 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
 
                     foreach (var (index, id) in selectedStashIndexIdPairs)
                     {
-                        // first we retrieve the 'raw' results from the API
-                        var rawResults = await _apiService.GetPersonalStashTabContentsByStashIdAsync(id);
+                        UnifiedStashTabContents rawResults;
+                        if (!GlobalUserSettings.LegacyAuthMode)
+                        {
+                            rawResults = await _apiService.GetPersonalStashTabContentsByStashIdWithOAuthAsync(id);
+                        }
+                        else
+                        {
+                            rawResults = await _apiService.GetPersonalStashTabContentsByIndexWithSessionIdAsync(index);
+                        }
 
                         // then we convert the raw results into a list of EnhancedItem objects
-                        var enhancedItems = rawResults.Stash.Items.Select(item => new EnhancedItem(item)).ToList();
+                        var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
 
                         // Manually setting index because we need to know which tab the item came from
                         foreach (var enhancedItem in enhancedItems)
                         {
-                            enhancedItem.StashTabId = id; // we will use the id later
-                            enhancedItem.StashTabIndex = index; // Now 'index' refers to the correct stash tab index
+                            enhancedItem.StashTabId = rawResults.Id;
+                            enhancedItem.StashTabIndex = rawResults.Index;
                         }
 
                         // add the enhanced items to the filtered stash contents
@@ -331,22 +346,34 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
 
                     foreach (var id in selectedTabIds)
                     {
-                        // first we retrieve the 'raw' results from the API using the stash id
-                        var rawResults = await _apiService.GetPersonalStashTabContentsByStashIdAsync(id);
+                        UnifiedStashTabContents rawResults;
+                        if (!GlobalUserSettings.LegacyAuthMode)
+                        {
+                            rawResults = await _apiService.GetPersonalStashTabContentsByStashIdWithOAuthAsync(id);
+                        }
+                        else
+                        {
+                            // For SessionId auth, we need to find the index corresponding to this id
+                            var stashTab = stashTabMetadataList.FirstOrDefault(st => st.Id == id);
+                            if (stashTab == null)
+                            {
+                                continue; // Skip this tab if we can't find its metadata
+                            }
+                            rawResults = await _apiService.GetPersonalStashTabContentsByIndexWithSessionIdAsync(stashTab.Index);
+                        }
 
                         // then we convert the raw results into a list of EnhancedItem objects
-                        var enhancedItems = rawResults.Stash.Items.Select(item => new EnhancedItem(item)).ToList();
+                        var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
 
                         // Manually setting id because we need to know which tab the item came from
                         foreach (var enhancedItem in enhancedItems)
                         {
-                            enhancedItem.StashTabId = id;
+                            enhancedItem.StashTabId = rawResults.Id;
+                            enhancedItem.StashTabIndex = rawResults.Index;
                         }
 
                         // add the enhanced items to the filtered stash contents
                         filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
-
-                        GlobalItemSetManagerState.UpdateStashContentsById(setThreshold, selectedTabIds, filteredStashContents);
                     }
 
                     // recalculate item amounts and generate item sets after fetching from api

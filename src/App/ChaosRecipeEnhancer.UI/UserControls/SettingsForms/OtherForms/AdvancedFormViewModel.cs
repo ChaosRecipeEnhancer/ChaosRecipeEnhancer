@@ -32,6 +32,16 @@ public class AdvancedFormViewModel : CreViewModelBase
         }
     }
 
+    public bool LegacyAuthModeIsChecked
+    {
+        get => _userSettings.LegacyAuthMode;
+        set
+        {
+            _userSettings.LegacyAuthMode = value;
+            OnPropertyChanged();
+        }
+    }
+
     public bool DebugModeIsChecked
     {
         get => _userSettings.DebugMode;

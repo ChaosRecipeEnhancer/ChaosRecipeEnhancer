@@ -84,7 +84,8 @@ public static class ServiceConfiguration
         services.AddTransient<GeneralFormViewModel>();
         services.AddTransient<SetTrackerOverlayFormViewModel>();
         services.AddTransient<StashTabOverlayViewModel>();
-        services.AddTransient<PathOfExileAccountOAuthFormViewModel>();
+        services.AddTransient<OAuthFormViewModel>();
+        services.AddTransient<LegacyAuthFormViewModel>();
         services.AddTransient<RecipesFormViewModel>();
         services.AddTransient<AdvancedFormViewModel>();
         services.AddTransient<SystemFormViewModel>();

@@ -52,8 +52,8 @@ public partial class SettingsWindow
         var missingSettings = new List<string>();
         var errorMessage = "Please add: \n";
 
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName)) missingSettings.Add("- Account Name \n");
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileApiAuthToken)) missingSettings.Add("- PoE Auth Token \n");
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName) && string.IsNullOrEmpty(Settings.Default.LegacyAuthAccountName)) missingSettings.Add("- Account Name \n");
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileApiAuthToken) && string.IsNullOrEmpty(Settings.Default.LegacyAuthSessionId)) missingSettings.Add("- PoE Auth Token \n");
         if (string.IsNullOrEmpty(Settings.Default.LeagueName)) missingSettings.Add("- League \n");
 
         if (missingSettings.Count == 0) return true;

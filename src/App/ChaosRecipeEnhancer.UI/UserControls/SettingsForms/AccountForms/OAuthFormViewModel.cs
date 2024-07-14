@@ -8,11 +8,11 @@ using System.Windows.Input;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms;
 
-public class PathOfExileAccountOAuthFormViewModel : CreViewModelBase
+public class OAuthFormViewModel : CreViewModelBase
 {
     #region Fields
 
-    private readonly ILogger _log = Log.ForContext<PathOfExileAccountOAuthFormViewModel>();
+    private readonly ILogger _log = Log.ForContext<OAuthFormViewModel>();
     private readonly IAuthStateManager _authStateManager;
     private ICommand _loginCommand;
     private ICommand _logoutCommand;
@@ -27,14 +27,14 @@ public class PathOfExileAccountOAuthFormViewModel : CreViewModelBase
 
     #region Constructors
 
-    public PathOfExileAccountOAuthFormViewModel(IAuthStateManager authState)
+    public OAuthFormViewModel(IAuthStateManager authState)
     {
         _authStateManager = authState;
 
         _authStateManager.AuthStateChanged += AuthStateManager_AuthStateChanged;
     }
 
-    ~PathOfExileAccountOAuthFormViewModel()
+    ~OAuthFormViewModel()
     {
         // Unsubscribe to avoid memory leaks
         _authStateManager.AuthStateChanged -= AuthStateManager_AuthStateChanged;

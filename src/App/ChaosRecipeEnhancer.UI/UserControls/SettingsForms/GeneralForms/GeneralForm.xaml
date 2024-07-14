@@ -452,7 +452,7 @@
             IsChecked="{Binding AutoFetchOnRezoneEnabled, Mode=TwoWay}" />
         <!-- Fetch on New Map Setting End -->
 
-        <!-- Client Log File Location Setting (Row 13) Start -->
+        <!-- Client Log File Location Setting Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="6"
@@ -528,7 +528,7 @@
                 Visibility="{Binding Path=ClientLogFileLocationMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static creEnums:ClientLogFileLocationMode.CustomLocation}}" />
 
         </StackPanel>
-        <!-- Client Log File Location Setting (Row 13) End -->
+        <!-- Client Log File Location Setting End -->
 
     </Grid>
 </UserControl>

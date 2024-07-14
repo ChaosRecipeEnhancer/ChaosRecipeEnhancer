@@ -1,14 +1,17 @@
-﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms.PathOfExileAccountOAuthForm"
+﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms.LegacyAuthForm"
              x:ClassModifier="public"
              xmlns:accountForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              Background="#202020"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=accountForms:PathOfExileAccountOAuthFormViewModel}">
+             d:DataContext="{d:DesignInstance Type=accountForms:LegacyAuthFormViewModel}">
+
+    <UserControl.Resources>
+        <FontFamily x:Key="PasswordFont">../../../Assets/Fonts/#Password</FontFamily>
+    </UserControl.Resources>
 
     <Grid
         Margin="10"
@@ -23,6 +26,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Form Header -->
@@ -30,47 +35,67 @@
             Grid.Column="0"
             Grid.Row="0"
             Grid.ColumnSpan="2"
-            Margin="0 0 0 10"
             Text="Path of Exile Account"
             FontSize="24" />
 
+        <!-- Form Sub-Title -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Margin="0 0 0 10"
+            Text="Session ID Login Form"
+            ToolTip="This is the legacy login method for our app.&#x0a;&#x0a;You can switch to the OAuth 2.0 auth mode in the 'Advanced' tab.&#x0a;&#x0a;Certain features, like Guild Stash Picking, are only available on Legacy Auth mode."
+            ToolTipService.InitialShowDelay="50"
+            FontSize="16" />
+
+        <!-- Account Name -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="2"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Account Name:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="The name of your account" />
+            ToolTip="The name of your Path of Exile account" />
 
-        <TextBlock
+        <TextBox
             Grid.Column="1"
-            Grid.Row="1"
-            Visibility="{Binding LoggedInTextVisibility}"
+            Grid.Row="2"
             Margin="10 0 0 10"
             VerticalAlignment="Center"
             Width="150"
-            Text="{Binding GlobalUserSettings.PathOfExileAccountName}" />
+            Text="{Binding GlobalUserSettings.LegacyAuthAccountName, Mode=TwoWay}" />
 
-        <TextBlock
-            Grid.Column="1"
-            Grid.Row="1"
-            Visibility="{Binding AttemptingLoginTextVisibility}"
-            Margin="10 0 0 10"
-            VerticalAlignment="Center"
-            Text="Web Browser Opened" />
-
-
+        <!-- PoE Session ID -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="2"
+            Grid.Row="3"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
+            Text="PoE Session ID:" />
+
+        <TextBox
+            Grid.Column="1"
+            Grid.Row="3"
+            Margin="10 0 0 10"
+            VerticalAlignment="Center"
+            Width="150"
+            FontFamily="{StaticResource PasswordFont}"
+            Text="{Binding GlobalUserSettings.LegacyAuthSessionId, Mode=TwoWay}" />
+
+        <!-- Connection Status -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="4"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Connection Status:" />
 
+        <!-- Connection Not Validated Notification -->
         <Grid
             Grid.Column="1"
-            Grid.Row="2"
+            Grid.Row="4"
             Margin="10 0 0 10"
             Visibility="{Binding ConnectionNotValidatedTextVisibility}">
 
@@ -91,12 +116,13 @@
                 Grid.Column="1"
                 VerticalAlignment="Center"
                 Foreground="DarkOrange"
-                Text="Not Logged In" />
+                Text="Not Validated" />
         </Grid>
 
+        <!-- Connection Validated Notification -->
         <Grid
             Grid.Column="1"
-            Grid.Row="2"
+            Grid.Row="4"
             Margin="10 0 0 10"
             Visibility="{Binding LoggedInTextVisibility}">
 
@@ -117,12 +143,13 @@
                 Grid.Column="1"
                 VerticalAlignment="Center"
                 Foreground="Green"
-                Text="Logged In" />
+                Text="Validated" />
         </Grid>
 
+        <!-- Connection Issues Notification -->
         <Grid
             Grid.Column="1"
-            Grid.Row="2"
+            Grid.Row="4"
             Margin="10 0 0 10"
             Visibility="{Binding ConnectionErrorTextVisibility}">
 
@@ -146,54 +173,16 @@
                 Text="Connection Issues" />
         </Grid>
 
-        <Grid
-            Grid.Column="1"
-            Grid.Row="2"
-            Margin="10 0 0 10"
-            Visibility="{Binding AttemptingLoginTextVisibility}">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <Image
-                Grid.Column="0"
-                MaxHeight="20"
-                MaxWidth="20"
-                Margin="0 0 5 0"
-                VerticalAlignment="Center"
-                Source="../../../Assets/Images/Loading.png" />
-
-            <TextBlock
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                Foreground="DodgerBlue"
-                Text="Logging in..." />
-        </Grid>
-
-        <!-- Login Button -->
+        <!-- Validate Connection Button -->
         <Button
             Grid.Column="0"
-            Grid.Row="3"
+            Grid.Row="5"
             Grid.ColumnSpan="2"
-            BorderBrush="DarkGreen"
-            Visibility="{Binding LoginButtonVisibility}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
-            Content="Login via Path of Exile"
+            Content="Test Connection"
             Command="{Binding LoginCommand}" />
 
-        <!-- Logout Button -->
-        <Button
-            Grid.Column="0"
-            Grid.Row="3"
-            Grid.ColumnSpan="2"
-            BorderBrush="DarkRed"
-            Visibility="{Binding LogoutButtonVisibility}"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Content="Logout"
-            Command="{Binding LogoutCommand}" />
     </Grid>
+
 </UserControl>
