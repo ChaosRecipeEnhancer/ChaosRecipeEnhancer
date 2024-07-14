@@ -13,12 +13,12 @@
 		<UseApplicationTrust>false</UseApplicationTrust>
 		<PublishWizardCompleted>true</PublishWizardCompleted>
 		<BootstrapperEnabled>true</BootstrapperEnabled>
-		<ApplicationVersion>3.24</ApplicationVersion>
+		<ApplicationVersion>3.25</ApplicationVersion>
 
 		<!--Bump this by 1 for minor patches; Bump by 10 for major patches-->
-		<!--Minor Patch Bump: v3.24.1000 -> v3.24.1001-->
-		<!--Minor Patch Bump: v3.24.1000 -> v3.24.2000-->
-		<ApplicationRevision>32</ApplicationRevision>
+		<!--Minor Patch Bump: v3.24.1000 -> v3.24.1001; App Revision 10 -> 11-->
+		<!--Minor Patch Bump: v3.24.1000 -> v3.24.2000; App Revision 10 -> 20-->
+		<ApplicationRevision>01</ApplicationRevision>
 
 		<!--Update Settings-->
 		<IsWebBootstrapper>false</IsWebBootstrapper>
@@ -45,6 +45,8 @@
 	</PropertyGroup>
 	<!-- Project Assets -->
 	<ItemGroup>
+		<!-- Fonts -->
+		<Resource Include="Assets\Fonts\Password.ttf" />
 		<!-- Icons -->
 		<Resource Include="Assets\Icons\CREIcon.ico" />
 		<!-- Images -->
@@ -121,8 +123,11 @@
 		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="21.0.22" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Reference Include="Xceed.Wpf.Toolkit.NET5">
-	    <HintPath>Common\Libs\Xceed.Wpf.Toolkit.NET5.dll</HintPath>
+	  <Reference Include="Xceed.Wpf.Toolkit">
+	    <HintPath>Common\Libs\Xceed.Wpf.Toolkit.dll</HintPath>
 	  </Reference>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Assets\Fonts\" />
 	</ItemGroup>
 </Project>
