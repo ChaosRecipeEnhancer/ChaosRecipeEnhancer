@@ -14,8 +14,6 @@ This app fetches your stash data from the PoE servers and shows which items you 
 
 ## User Guide (Video)
 
-_Note: This video was published for version 3.23, but the core features are the same. I consider this up-to-date for 3.24 Necropolis league._
-
 <a href="https://youtu.be/ChC3GNYJpl8">
     <img src="./DocumentationAssets/User-Guide-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
 </a>
@@ -24,8 +22,8 @@ There's a lot of features in the app, so we made a video to help you get started
 
 ## Installation
 
-0. ⚠️ _**[ New system requirement for 3.24 Necropolis League]**_ ⚠️ Install the [latest .NET 8 Desktop Runtime (Clicking will download the installer)][dotnet-installer-link]
-1. Download and install the [latest the ChaosRecipeEnhancerSetup.msi][releases-link]
+0. Install the latest .NET 8 Windows Desktop Runtime [(Clicking here will download the installer)][dotnet-installer-link]
+1. Download and install the [latest ChaosRecipeEnhancerSetup.msi][releases-link]
 
 ## Feature Highlights
 
