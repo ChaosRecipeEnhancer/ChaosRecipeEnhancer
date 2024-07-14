@@ -1,7 +1,7 @@
-﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses.OAuthEndpointResponses;
 using System.Text.Json;
 
-namespace ChaosRecipeEnhancer.UI.Tests.Models.ApiResponses;
+namespace ChaosRecipeEnhancer.UI.Tests.Models.ApiResponses.OAuthEndpointResponses;
 
 public class ListStashesResponseTests
 {

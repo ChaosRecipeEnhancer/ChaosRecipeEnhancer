@@ -1,14 +1,14 @@
 ﻿using ChaosRecipeEnhancer.UI.Models.Enums;
 using System.Text.Json.Serialization;
 
-namespace ChaosRecipeEnhancer.UI.Models.ApiResponses;
+namespace ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 
 /// <summary>
 /// Represents a JSON response object nested within the previously mentioned response object for `get-stash-items`
 /// and `get-guild-stash-items` endpoints.
-///
+/// <br /><br />
 /// The (nested) item object structure is as follows:
-///
+/// <br /><br />
 /// {
 ///     "verified": false,
 ///     "w": 1,
@@ -37,7 +37,7 @@ namespace ChaosRecipeEnhancer.UI.Models.ApiResponses;
 ///     "y": 22,
 ///     "inventoryId": "Stash218"
 /// },
-///
+/// <br /><br />
 /// Notice how there are more fields in the example than in our defined object.
 /// </summary>
 // This class is instantiated when serialized from JSON API response.

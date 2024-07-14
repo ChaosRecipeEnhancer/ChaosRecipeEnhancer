@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace ChaosRecipeEnhancer.UI.Models.ApiResponses;
+namespace ChaosRecipeEnhancer.UI.Models.ApiResponses.OAuthEndpointResponses;
 
 public class LeagueResponse
 {

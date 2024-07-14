@@ -1,7 +1,7 @@
-﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using System.Text.Json;
 
-namespace ChaosRecipeEnhancer.UI.Tests.Models.ApiResponses;
+namespace ChaosRecipeEnhancer.UI.Tests.Models.ApiResponses.Shared;
 
 public class BaseItemInfluencesTests
 {

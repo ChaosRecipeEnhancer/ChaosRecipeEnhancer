@@ -1,8 +1,8 @@
-﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using System.Text.Json;
 
-namespace ChaosRecipeEnhancer.UI.Tests.Models.ApiResponses;
+namespace ChaosRecipeEnhancer.UI.Tests.Models.ApiResponses.Shared;
 
 public class BaseItemTests
 {
