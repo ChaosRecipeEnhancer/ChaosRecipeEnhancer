@@ -119,8 +119,8 @@
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
-		<PackageReference Include="TestableIO.System.IO.Abstractions" Version="21.0.22" />
-		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="21.0.22" />
+		<PackageReference Include="TestableIO.System.IO.Abstractions" Version="21.0.26" />
+		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="21.0.26" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Xceed.Wpf.Toolkit">
