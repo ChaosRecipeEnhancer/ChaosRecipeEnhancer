@@ -13,6 +13,11 @@ public static class SettingsConfiguration
         {
             Settings.Default.Upgrade();
             Settings.Default.UpgradeSettingsAfterUpdate = false;
+
+            // Reset sensitive auth-related settings after an upgrade
+            Settings.Default.PathOfExileApiAuthToken = string.Empty;
+            Settings.Default.LegacyAuthSessionId = string.Empty;
+
             Settings.Default.Save();
         }
     }

@@ -19,12 +19,21 @@ public interface IUserSettings
 
     # endregion
 
+    #region Legacy Auth Settings
+
+    bool LegacyAuthMode { get; set; }
+    string LegacyAuthAccountName { get; set; }
+    string LegacyAuthSessionId { get; set; }
+
+    #endregion
+
     # region Recipe Settings
 
     bool ChaosRecipeTrackingEnabled { get; set; }
     bool IncludeIdentifiedItemsEnabled { get; set; }
     bool VendorSetsEarly { get; set; }
     int PathOfExileClientLogLocationMode { get; set; }
+    bool GuildStashMode { get; set; }
     string LeagueName { get; set; }
     bool CustomLeagueEnabled { get; set; }
     int StashTabQueryMode { get; set; }
@@ -121,5 +130,5 @@ public interface IUserSettings
 
     #endregion
 
-    void Reset();
+    public void Reset();
 }

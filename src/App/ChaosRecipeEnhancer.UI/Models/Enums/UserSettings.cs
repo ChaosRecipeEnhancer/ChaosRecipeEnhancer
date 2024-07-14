@@ -8,6 +8,12 @@ public enum ConnectionStatusTypes
     AttemptingLogin
 }
 
+public enum TargetStash
+{
+    Personal,
+    Guild
+}
+
 public enum StashTabOverlayHighlightMode
 {
     SetBySet,

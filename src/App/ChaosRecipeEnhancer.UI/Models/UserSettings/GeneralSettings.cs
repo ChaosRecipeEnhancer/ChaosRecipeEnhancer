@@ -9,6 +9,20 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 /// </summary>
 public partial class UserSettings : IUserSettings
 {
+    public bool GuildStashMode
+    {
+
+        get => Settings.Default.GuildStashMode;
+        set
+        {
+            if (Settings.Default.GuildStashMode != value)
+            {
+                Settings.Default.GuildStashMode = value;
+                Save();
+            }
+        }
+    }
+
     public string LeagueName
     {
 

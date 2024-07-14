@@ -27,6 +27,7 @@
         <creConverters:EqualityConverter x:Key="ValidateConnectionConverter" ComparisonType="{x:Type system:Int32}" />
         <creConverters:InvertBoolConverter x:Key="InvertedBoolConverter" />
         <creConverters:BoolVisibilityConverter x:Key="BooleanToVisibilityConverter" CollapseWhenNotVisible="True" />
+        <creConverters:BoolVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" CollapseWhenNotVisible="True" Invert="True"/>
     </Window.Resources>
 
     <Border
@@ -81,15 +82,22 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <!-- Path of Exile Account (New - OAuth) -->
-                        <accountForms:PathOfExileAccountOAuthForm
+                        <accountForms:OAuthForm
                             Grid.Column="1"
-                            Grid.Row="0" />
+                            Grid.Row="0"
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
+
+                        <accountForms:LegacyAuthForm
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                     </Grid>
                 </TabItem>
@@ -97,10 +105,12 @@
 
                 <!-- General Settings Tab Start -->
                 <TabItem
-                    Header="General"
-                    IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
+                    Header="General">
+                    <!--IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}"-->
+
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
@@ -116,7 +126,14 @@
                         <!-- General -->
                         <generalForms:GeneralForm
                             Grid.Column="1"
-                            Grid.Row="0" />
+                            Grid.Row="0"
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
+
+                        <!-- General (Legacy - Session ID) -->
+                        <generalForms:LegacyGeneralForm
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                     </Grid>
                 </TabItem>
