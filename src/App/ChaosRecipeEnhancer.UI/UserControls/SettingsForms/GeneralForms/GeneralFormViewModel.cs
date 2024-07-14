@@ -118,7 +118,7 @@ public class GeneralFormViewModel : CreViewModelBase
 
     #region User Settings Properties
 
-    public string LeagueName
+    public string SelectedLeagueName
     {
         get => _userSettings.LeagueName;
         set => _ = UpdateLeagueNameAsync(value);
@@ -228,17 +228,17 @@ public class GeneralFormViewModel : CreViewModelBase
     private void InitializeDataFromUserSettings()
     {
         Log.Information("GeneralFormViewModel - Initializing data from user settings...");
-        Log.Information("Current LeagueName Property: {LeagueName}", LeagueName);
+        Log.Information("Current LeagueName Property: {LeagueName}", SelectedLeagueName);
 
         // Set LeagueName from user settings if it's valid
         if (!string.IsNullOrWhiteSpace(_userSettings.LeagueName))
         {
-            LeagueName = _userSettings.LeagueName;
+            SelectedLeagueName = _userSettings.LeagueName;
 
             // Force a refresh of the leagues list property for UI updates
-            OnPropertyChanged(nameof(LeagueName));
+            OnPropertyChanged(nameof(SelectedLeagueName));
 
-            Log.Information("Post Change LeagueName Property: {LeagueName}", LeagueName);
+            Log.Information("Post Change LeagueName Property: {LeagueName}", SelectedLeagueName);
         }
     }
 
@@ -337,6 +337,7 @@ public class GeneralFormViewModel : CreViewModelBase
         if (_userSettings.LeagueName != leagueName)
         {
             _userSettings.LeagueName = leagueName;
+            StashTabIndices = [];
 
             SetUIEnabledState(false);
 
@@ -351,7 +352,7 @@ public class GeneralFormViewModel : CreViewModelBase
                 await LoadStashTabsAsync();
             }
 
-            OnPropertyChanged(nameof(LeagueName));
+            OnPropertyChanged(nameof(SelectedLeagueName));
 
             if (StashTabDropDownEnabled)
             {
@@ -371,7 +372,7 @@ public class GeneralFormViewModel : CreViewModelBase
             _userSettings.CustomLeagueEnabled = isPrivateLeague;
 
             // reset the selected league name
-            LeagueName = string.Empty;
+            SelectedLeagueName = string.Empty;
 
             SetUIEnabledState(false);
 
@@ -449,7 +450,7 @@ public class GeneralFormViewModel : CreViewModelBase
     public async Task LoadStashTabsAsync(bool isFirstLoad = false)
     {
 
-        if (string.IsNullOrWhiteSpace(LeagueName))
+        if (string.IsNullOrWhiteSpace(SelectedLeagueName))
         {
             Log.Information("GeneralFormViewModel - League name not defined; cannot fetch Stash Tabs. Skipping fetch.");
             return;
@@ -684,13 +685,13 @@ public class GeneralFormViewModel : CreViewModelBase
 
         if (selectedItem == null)
         {
-            LeagueName = _userSettings.LeagueName;
+            SelectedLeagueName = _userSettings.LeagueName;
             return;
         }
 
         if (string.IsNullOrWhiteSpace(selectedItem.ToString())) return;
 
-        LeagueName = selectedItem.ToString();
+        SelectedLeagueName = selectedItem.ToString();
         LeagueDropDownEnabled = false;
     }
 
