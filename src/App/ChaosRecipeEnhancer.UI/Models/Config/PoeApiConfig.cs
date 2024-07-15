@@ -19,6 +19,9 @@ public static class PoeApiConfig
 
     #region Session ID Endpoints
 
+    public static Uri HealthCheckSessionIdEndpoint() =>
+        new("https://www.pathofexile.com/api/account-avatar?page=1&perPage=1&custom=false");
+
     public static Uri IndividualTabContentsSessionIdEndpoint(TargetStash targetStash, int stashTabIndex) =>
         targetStash == TargetStash.Personal
             ? PersonalStashIndividualTabSessionIdEndpoint(stashTabIndex)

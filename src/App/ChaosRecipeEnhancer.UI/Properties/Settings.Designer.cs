@@ -110,18 +110,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string StashTabIndices {
-            get {
-                return ((string)(this["StashTabIndices"]));
-            }
-            set {
-                this["StashTabIndices"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string StashTabPrefix {
             get {
                 return ((string)(this["StashTabPrefix"]));
@@ -739,18 +727,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["SettingsWindowNavIndex"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string StashTabPrefixIndices {
-            get {
-                return ((string)(this["StashTabPrefixIndices"]));
-            }
-            set {
-                this["StashTabPrefixIndices"] = value;
             }
         }
         

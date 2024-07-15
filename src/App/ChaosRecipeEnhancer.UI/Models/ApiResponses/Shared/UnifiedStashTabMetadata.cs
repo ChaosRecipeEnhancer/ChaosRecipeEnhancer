@@ -51,7 +51,7 @@ public static class StashTabMetadataExtensions
     {
         return response.StashTabs.Select(tab => new UnifiedStashTabMetadata
         {
-            Id = tab.Index.ToString(), // Since there's no Id in this version, use Index as a string
+            Id = tab.Id,
             Name = tab.Name,
             Type = tab.Type,
             Index = tab.Index

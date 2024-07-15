@@ -14,8 +14,10 @@ public class OAuthFormViewModel : CreViewModelBase
 
     private readonly ILogger _log = Log.ForContext<OAuthFormViewModel>();
     private readonly IAuthStateManager _authStateManager;
+
     private ICommand _loginCommand;
     private ICommand _logoutCommand;
+
     private Visibility _connectionNotValidatedTextVisibility;
     private Visibility _loggedInTextVisibility;
     private Visibility _connectionErrorTextVisibility;

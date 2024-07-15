@@ -82,7 +82,7 @@
             VerticalAlignment="Center"
             Width="150"
             FontFamily="{StaticResource PasswordFont}"
-            Text="{Binding GlobalUserSettings.LegacyAuthSessionId, Mode=TwoWay}" />
+            Text="{Binding LegacyAuthSessionId, Mode=TwoWay}" />
 
         <!-- Connection Status -->
         <TextBlock

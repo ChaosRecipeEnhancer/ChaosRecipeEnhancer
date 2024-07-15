@@ -15,15 +15,15 @@ public partial class GeneralForm
         DataContext = _model = Ioc.Default.GetService<GeneralFormViewModel>();
     }
 
-    private void OnStashTabSelectionChanged(object sender, ItemSelectionChangedEventArgs itemSelectionChangedEventArgs)
-    {
-        var checkComboBox = (CheckComboBox)sender;
-        _model.UpdateUserSettingsForSelectedTabIdentifiers(checkComboBox.SelectedItems);
-    }
-
     private void LeagueComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var comboBox = (ComboBox)sender;
         _model.UpdateUserSettingsForSelectedLeague(comboBox.SelectedItem);
+    }
+
+    private void TabsCheckComboBox_SelectionChanged(object sender, ItemSelectionChangedEventArgs itemSelectionChangedEventArgs)
+    {
+        var checkComboBox = (CheckComboBox)sender;
+        _model.UpdateUserSettingsForSelectedTabIdentifiers(checkComboBox.SelectedItems);
     }
 }

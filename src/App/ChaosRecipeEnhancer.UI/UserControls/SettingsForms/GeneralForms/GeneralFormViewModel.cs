@@ -1,11 +1,8 @@
 ﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
-using ChaosRecipeEnhancer.UI.Models.Config;
-using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Services;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Win32;
 using Serilog;
 using System;
 using System.Collections;
@@ -31,7 +28,6 @@ public class GeneralFormViewModel : CreViewModelBase
 
     private ICommand _stashTabButtonCommand;
     private ICommand _leagueButtonCommand;
-    private ICommand _selectLogFileCommand;
 
     // button states (enabled by default)
     private bool _leagueButtonEnabled = true;
@@ -72,13 +68,10 @@ public class GeneralFormViewModel : CreViewModelBase
 
     public ICommand StashTabButtonCommand => _stashTabButtonCommand ??= new AsyncRelayCommand(ForceRefreshStashTabsAsync);
     public ICommand LeagueButtonCommand => _leagueButtonCommand ??= new AsyncRelayCommand(ForceRefreshLeaguesAsync);
-    public ICommand SelectLogFileCommand => _selectLogFileCommand ??= new RelayCommand(SelectLogFile);
 
     #endregion
 
     public ObservableCollection<string> LeagueList { get; set; } = [];
-    public ObservableCollection<UnifiedStashTabMetadata> StashTabFullListForSelectionByIndex { get; set; } = [];
-    public ObservableCollection<UnifiedStashTabMetadata> SelectedStashTabsByIndex { get; set; } = [];
     public ObservableCollection<UnifiedStashTabMetadata> StashTabFullListForSelectionById { get; set; } = [];
     public ObservableCollection<UnifiedStashTabMetadata> SelectedStashTabsById { get; set; } = [];
 
@@ -136,25 +129,6 @@ public class GeneralFormViewModel : CreViewModelBase
         set => _ = UpdateStashTabQueryModeAsync(value);
     }
 
-    public HashSet<string> StashTabIndices
-    {
-        get => _userSettings.StashTabIndices;
-        set
-        {
-            if (_userSettings.StashTabIndices != value)
-            {
-                _userSettings.StashTabIndices = value;
-                OnPropertyChanged(nameof(StashTabIndices));
-            }
-        }
-    }
-
-    public string StashTabIndicesToString
-    {
-        get => string.Join(",", StashTabIndices);
-        set { return; }
-    }
-
     public HashSet<string> StashTabIds
     {
         get => _userSettings.StashTabIds;
@@ -185,38 +159,6 @@ public class GeneralFormViewModel : CreViewModelBase
                 OnPropertyChanged(nameof(StashTabPrefix));
             }
         }
-    }
-
-    public bool AutoFetchOnRezoneEnabled
-    {
-        get => _userSettings.AutoFetchOnRezoneEnabled;
-        set
-        {
-            if (_userSettings.AutoFetchOnRezoneEnabled != value)
-            {
-                _userSettings.AutoFetchOnRezoneEnabled = value;
-                OnPropertyChanged(nameof(AutoFetchOnRezoneEnabled));
-            }
-        }
-    }
-
-    public string PathOfExileClientLogLocation
-    {
-        get => _userSettings.PathOfExileClientLogLocation;
-        set
-        {
-            if (_userSettings.PathOfExileClientLogLocation != value)
-            {
-                _userSettings.PathOfExileClientLogLocation = value;
-                OnPropertyChanged(nameof(PathOfExileClientLogLocation));
-            }
-        }
-    }
-
-    public ClientLogFileLocationMode ClientLogFileLocationMode
-    {
-        get => (ClientLogFileLocationMode)_userSettings.PathOfExileClientLogLocationMode;
-        set => UpdateClientLogFileLocationMode(value);
     }
 
     #endregion
@@ -271,6 +213,12 @@ public class GeneralFormViewModel : CreViewModelBase
             return;
         }
 
+        if (CustomLeagueEnabled && _userSettings.LegacyAuthMode)
+        {
+            Log.Information("GeneralFormViewModel - Legacy Auth Mode with Custom Leagues is enabled, manually input league name.");
+            return;
+        }
+
         LeagueList.Clear();
         List<string> leagueList;
 
@@ -301,35 +249,6 @@ public class GeneralFormViewModel : CreViewModelBase
         TriggerGeneralFormFetchCooldown();
     }
 
-    public void SelectLogFile()
-    {
-        var openFileDialog = new OpenFileDialog
-        {
-            Filter = "Text Files (*.txt)|*.txt",
-            FilterIndex = 1,
-            FileName = "Client.txt"
-        };
-
-        if (openFileDialog.ShowDialog() == true)
-        {
-            var filename = openFileDialog.FileName;
-
-            if (filename.EndsWith("Client.txt"))
-            {
-                PathOfExileClientLogLocation = filename;
-            }
-            else
-            {
-                MessageBox.Show(
-                    "Invalid file selected. Make sure you're selecting the \"Client.txt\" file located in your main Path of Exile installation folder.",
-                    "Missing Settings",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
-                );
-            }
-        }
-    }
-
     #region Property Setters
 
     private async Task UpdateLeagueNameAsync(string leagueName)
@@ -337,7 +256,7 @@ public class GeneralFormViewModel : CreViewModelBase
         if (_userSettings.LeagueName != leagueName)
         {
             _userSettings.LeagueName = leagueName;
-            StashTabIndices = [];
+            StashTabIds = [];
 
             SetUIEnabledState(false);
 
@@ -419,25 +338,6 @@ public class GeneralFormViewModel : CreViewModelBase
         }
     }
 
-    private void UpdateClientLogFileLocationMode(ClientLogFileLocationMode mode)
-    {
-        if (_userSettings.PathOfExileClientLogLocationMode != (int)mode)
-        {
-            _userSettings.PathOfExileClientLogLocationMode = (int)mode;
-            OnPropertyChanged(nameof(ClientLogFileLocationMode));
-
-            switch (mode)
-            {
-                case ClientLogFileLocationMode.DefaultStandaloneLocation:
-                    PathOfExileClientLogLocation = PoeClientConfigs.DefaultStandaloneInstallLocationPath;
-                    break;
-                case ClientLogFileLocationMode.DefaultSteamLocation:
-                    PathOfExileClientLogLocation = PoeClientConfigs.DefaultSteamInstallLocationPath;
-                    break;
-            }
-        }
-    }
-
     #endregion
 
     #region Stash Tab Selection Methods
@@ -474,6 +374,7 @@ public class GeneralFormViewModel : CreViewModelBase
         try
         {
             stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataWithOAuthAsync();
+
             Log.Information("GeneralFormViewModel - StashTabs fetched successfully.");
         }
         catch (RateLimitException e)
@@ -505,9 +406,7 @@ public class GeneralFormViewModel : CreViewModelBase
     private void UpdateStashTabListForSelection(List<UnifiedStashTabMetadata> stashTabProps)
     {
         // Depending on the query mode, select the appropriate observable list to update
-        var StashTabFullListForSelection = _userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsByIndex
-            ? StashTabFullListForSelectionByIndex
-            : StashTabFullListForSelectionById;
+        var StashTabFullListForSelection = StashTabFullListForSelectionById;
 
         // Clear the current list based on the query mode
         StashTabFullListForSelection.Clear();
@@ -542,15 +441,11 @@ public class GeneralFormViewModel : CreViewModelBase
     private void PreselectTabs()
     {
         // Depending on the query mode, select the appropriate observable list to update
-        var StashTabFullListForSelection = _userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsByIndex
-            ? StashTabFullListForSelectionByIndex
-            : StashTabFullListForSelectionById;
+        var StashTabFullListForSelection = StashTabFullListForSelectionById;
 
         // Depending on the mode, select tabs by either index or ID
         // We'll store the set of selected stash tab in this local variable
-        var selectedIdentifiers = _userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsByIndex
-            ? _userSettings.StashTabIndices
-            : _userSettings.StashTabIds;
+        var selectedIdentifiers = _userSettings.StashTabIds;
 
         // If there are selected tabs from the settings, pre-select them
         if (selectedIdentifiers.Count > 0)
@@ -558,40 +453,15 @@ public class GeneralFormViewModel : CreViewModelBase
             // for each tab in the full list, check if it's in the selected list
             foreach (var tab in StashTabFullListForSelection)
             {
-                // if we are searching by index, check if the index is in the list
-                if (_userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsByIndex)
+                if (selectedIdentifiers.Contains(tab.Id))
                 {
-                    if (selectedIdentifiers.Contains(tab.Index.ToString()))
-                    {
-                        SelectedStashTabsByIndex.Add(tab);
-                    }
-                }
-                // if we are searching by ID, check if the ID is in the list
-                else if (_userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsById)
-                {
-                    if (selectedIdentifiers.Contains(tab.Id))
-                    {
-                        SelectedStashTabsById.Add(tab);
-                    }
+                    SelectedStashTabsById.Add(tab);
                 }
             }
         }
 
-        // if we are searching by index, check if the index is in the list
-        if (_userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsByIndex)
-        {
-            var settingsLength = _userSettings.StashTabIndices.Count;
-            var selectedLength = SelectedStashTabsByIndex.Count;
-
-            Log.Information("(Should be the same) Settings Collection Length: {SettingsLength} - Selected Collection Length: {SelectedLength}", settingsLength, selectedLength);
-
-            for (int i = 0; i < settingsLength; i++)
-            {
-                Log.Information("(Should be the same) Settings Value: {SettingsIndex} - Selected Value: {SelectedIndex}", _userSettings.StashTabIndices.ElementAt(i), SelectedStashTabsByIndex.ElementAt(i).Index);
-            }
-        }
         // if we are searching by ID, check if the ID is in the list
-        else if (_userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsById)
+        if (_userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.TabsById)
         {
             var settingsLength = _userSettings.StashTabIds.Count;
             var selectedLength = SelectedStashTabsById.Count;
@@ -654,23 +524,13 @@ public class GeneralFormViewModel : CreViewModelBase
 
         foreach (var tab in selectedStashTabProps.Cast<UnifiedStashTabMetadata>())
         {
-            var identifier = _userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsByIndex
-                ? tab.Index.ToString()
-                : tab.Id;
+            var identifier = tab.Id;
 
             tempSelectedItems.Add(identifier);
         }
 
         // Update the user settings based on the temporary collection
-        if (_userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsByIndex)
-        {
-            // Ensure only to update if there's a change to minimize setter calls
-            if (!_userSettings.StashTabIndices.SetEquals(tempSelectedItems))
-            {
-                _userSettings.StashTabIndices = tempSelectedItems;
-            }
-        }
-        else if (_userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.SelectTabsById)
+        if (_userSettings.StashTabQueryMode == (int)Models.Enums.StashTabQueryMode.TabsById)
         {
             // Ensure only to update if there's a change to minimize setter calls
             if (!_userSettings.StashTabIds.SetEquals(tempSelectedItems))

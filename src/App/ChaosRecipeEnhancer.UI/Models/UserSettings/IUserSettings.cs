@@ -38,7 +38,6 @@ public interface IUserSettings
     bool CustomLeagueEnabled { get; set; }
     int StashTabQueryMode { get; set; }
     public HashSet<string> StashTabIds { get; set; }
-    public HashSet<string> StashTabIndices { get; set; }
     string StashTabPrefix { get; set; }
     bool AutoFetchOnRezoneEnabled { get; set; }
     int FullSetThreshold { get; set; }

@@ -23,9 +23,6 @@
     <Setting Name="StashTabQueryMode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="StashTabIndices" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="StashTabPrefix" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -181,9 +178,6 @@
     </Setting>
     <Setting Name="SettingsWindowNavIndex" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="StashTabPrefixIndices" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ReloadFilterHotkey" Type="System.String" Scope="User">
       <Value Profile="(Default)">&lt; not set &gt;</Value>

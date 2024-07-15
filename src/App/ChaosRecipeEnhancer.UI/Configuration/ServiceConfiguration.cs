@@ -82,6 +82,8 @@ public static class ServiceConfiguration
     private static void ConfigureViewModels(IServiceCollection services)
     {
         services.AddTransient<GeneralFormViewModel>();
+        services.AddTransient<LegacyGeneralFormViewModel>();
+        services.AddTransient<FetchOnRezoneFormViewModel>();
         services.AddTransient<SetTrackerOverlayFormViewModel>();
         services.AddTransient<StashTabOverlayViewModel>();
         services.AddTransient<OAuthFormViewModel>();

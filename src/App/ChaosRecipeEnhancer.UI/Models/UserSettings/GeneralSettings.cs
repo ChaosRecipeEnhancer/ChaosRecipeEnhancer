@@ -63,20 +63,6 @@ public partial class UserSettings : IUserSettings
         }
     }
 
-    public HashSet<string> StashTabIndices
-    {
-        get => new((Settings.Default.StashTabIndices ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries));
-        set
-        {
-            var indicesString = value != null ? string.Join(",", value) : "";
-            if (Settings.Default.StashTabIndices != indicesString)
-            {
-                Settings.Default.StashTabIndices = indicesString;
-                Save();
-            }
-        }
-    }
-
     public HashSet<string> StashTabIds
     {
         get => new((Settings.Default.StashTabIdentifiers ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries));

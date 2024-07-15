@@ -22,9 +22,8 @@ public enum StashTabOverlayHighlightMode
 
 public enum StashTabQueryMode
 {
-    SelectTabsByIndex,
-    TabNamePrefix,
-    SelectTabsById
+    TabsById,
+    TabsByNamePrefix
 }
 
 public enum SetTrackerOverlayMode

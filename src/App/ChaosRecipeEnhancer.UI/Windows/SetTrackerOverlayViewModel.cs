@@ -170,7 +170,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
         try
         {
             // needed to update item set manager
-            var setThreshold = GlobalUserSettings.FullSetThreshold;
+            var setThreshold = _userSettings.FullSetThreshold;
 
             // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
             var filteredStashContents = new List<EnhancedItem>();
@@ -181,222 +181,134 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
             GlobalItemSetManagerState.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
-            var stashTabMetadataList = !GlobalUserSettings.LegacyAuthMode
+            var stashTabMetadataList = !_userSettings.LegacyAuthMode
                 ? await _apiService.GetAllPersonalStashTabMetadataWithOAuthAsync()
-                : GlobalUserSettings.GuildStashMode
-                    ? await _apiService.GetAllGuildStashTabMetadataWithSessionIdAsync()
-                    : await _apiService.GetAllPersonalStashTabMetadataWithSessionIdAsync();
+                : _userSettings.GuildStashMode
+                    ? await _apiService.GetAllGuildStashTabMetadataWithSessionIdAsync(_userSettings.LegacyAuthSessionId)
+                    : await _apiService.GetAllPersonalStashTabMetadataWithSessionIdAsync(_userSettings.LegacyAuthSessionId);
 
-            // If you still need to flatten the stash tabs, you can do it here:
+            // 'Flatten' the stash tab structure (unwrap children tabs from folders)
             var flattenedStashTabs = GlobalItemSetManagerState.FlattenStashTabs(stashTabMetadataList);
 
-            // TODO: The following regions will need to be cleaned up and refactored at some point becaues this method is too long
+            List<string> selectedTabIds = [];
 
-            #region OPERATIONS THAT REQUIRE STASH TAB INDEXES
-
-            // if the user has selected stash tabs by index or by tab name prefix (which also uses indices)
-            if (GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsByIndex ||
-                GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix)
+            if (_userSettings.StashTabQueryMode == (int)StashTabQueryMode.TabsById)
             {
-                List<int> selectedTabIndices = [];
-                if (GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsByIndex)
-                {
-                    if (string.IsNullOrWhiteSpace(GlobalUserSettings.StashTabIndices))
-                    {
-                        FetchButtonEnabled = true;
-
-                        GlobalErrorHandler.Spawn(
-                            "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
-                            "Error: Set Tracker Overlay - Fetch Data"
-                        );
-
-                        return false;
-                    }
-
-                    selectedTabIndices = GlobalUserSettings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
-                }
-                else if (GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix)
-                {
-                    if (string.IsNullOrWhiteSpace(GlobalUserSettings.StashTabPrefix))
-                    {
-                        FetchButtonEnabled = true;
-
-                        GlobalErrorHandler.Spawn(
-                            "It looks like you haven't entered a stash tab prefix. Please navigate to the 'General > General > Stash Tab Prefix' setting and enter a valid value, and try again.",
-                            "Error: Set Tracker Overlay - Fetch Data"
-                        );
-
-                        return false;
-                    }
-
-                    selectedTabIndices = stashTabMetadataList
-                        .Where(st => st.Name.StartsWith(GlobalUserSettings.StashTabPrefix))
-                        .Select(st => st.Index)
-                        .ToList();
-
-                    GlobalUserSettings.StashTabPrefixIndices = string.Join(',', selectedTabIndices);
-                    GlobalUserSettings.Save();
-                }
-
-                if (stashTabMetadataList is not null)
-                {
-                    GlobalItemSetManagerState.UpdateStashMetadata(stashTabMetadataList);
-
-                    // Create a new dictionary for stash index and ID pairs
-                    var selectedStashIndexIdPairs = new Dictionary<int, string>();
-
-                    try
-                    {
-                        // Map indices to stash IDs
-                        foreach (var index in selectedTabIndices)
-                        {
-                            var stashTab = stashTabMetadataList.FirstOrDefault(st => st.Index == index);
-                            if (stashTab != null)
-                            {
-                                selectedStashIndexIdPairs.Add(index, stashTab.Id);
-                            }
-                        }
-                    }
-                    // there are few reports of users attempting to add items with duplicate keys
-                    // in this case it's attempting to add stash tabs with the same index
-                    // this is not allowed, and is caused by stash metadata being out of sync
-                    // therefore, rethrow the exception and let the user know to re-fetch their tabs
-                    catch (ArgumentException)
-                    {
-                        throw new ArgumentNullException();
-                    }
-
-                    foreach (var (index, id) in selectedStashIndexIdPairs)
-                    {
-                        UnifiedStashTabContents rawResults;
-                        if (!GlobalUserSettings.LegacyAuthMode)
-                        {
-                            rawResults = await _apiService.GetPersonalStashTabContentsByStashIdWithOAuthAsync(id);
-                        }
-                        else
-                        {
-                            rawResults = await _apiService.GetPersonalStashTabContentsByIndexWithSessionIdAsync(index);
-                        }
-
-                        // then we convert the raw results into a list of EnhancedItem objects
-                        var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
-
-                        // Manually setting index because we need to know which tab the item came from
-                        foreach (var enhancedItem in enhancedItems)
-                        {
-                            enhancedItem.StashTabId = rawResults.Id;
-                            enhancedItem.StashTabIndex = rawResults.Index;
-                        }
-
-                        // add the enhanced items to the filtered stash contents
-                        filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
-
-                        GlobalItemSetManagerState.UpdateStashContentsByIndex(setThreshold, selectedTabIndices, filteredStashContents);
-                    }
-
-                    // recalculate item amounts and generate item sets after fetching from api
-                    GlobalItemSetManagerState.CalculateItemAmounts();
-
-                    // generate item sets for the chosen recipe (chaos or regal)
-                    GlobalItemSetManagerState.GenerateItemSets(!GlobalUserSettings.ChaosRecipeTrackingEnabled);
-
-                    // update the UI accordingly
-                    UpdateDisplay();
-                    UpdateStashButtonAndWarningMessage();
-
-                    // enforce cooldown on fetch button to reduce chances of rate limiting
-                    TriggerSetTrackerFetchCooldown(FetchCooldownSeconds);
-                }
-                else
+                if (_userSettings.StashTabIds.Count == 0)
                 {
                     FetchButtonEnabled = true;
+
+                    GlobalErrorHandler.Spawn(
+                        "It looks like you haven't selected any stash tab ids. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
+                        "Error: Set Tracker Overlay - Fetch Data"
+                    );
+
                     return false;
                 }
 
+                selectedTabIds = [.. _userSettings.StashTabIds];
             }
-
-            #endregion
-
-            #region OPERATIONS THAT REQUIRE STASH TAB IDS
-
-            // if the user has selected stash tabs by id we have to do things differently
-            else if (GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsById)
+            else if (_userSettings.StashTabQueryMode == (int)StashTabQueryMode.TabsByNamePrefix)
             {
-                List<string> selectedTabIds = [];
-                if (GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsById)
+
+                if (string.IsNullOrWhiteSpace(_userSettings.StashTabPrefix))
                 {
-                    if (string.IsNullOrWhiteSpace(GlobalUserSettings.StashTabIdentifiers))
-                    {
-                        FetchButtonEnabled = true;
+                    FetchButtonEnabled = true;
 
-                        GlobalErrorHandler.Spawn(
-                            "It looks like you haven't selected any stash tab ids. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
-                            "Error: Set Tracker Overlay - Fetch Data"
-                        );
+                    GlobalErrorHandler.Spawn(
+                        "It looks like you haven't entered a stash tab prefix. Please navigate to the 'General > General > Stash Tab Prefix' setting and enter a valid value, and try again.",
+                        "Error: Set Tracker Overlay - Fetch Data"
+                    );
 
-                        return false;
-                    }
-
-                    selectedTabIds = GlobalUserSettings.StashTabIdentifiers.Split(',').ToList();
+                    return false;
                 }
 
-                if (stashTabMetadataList is not null)
-                {
-                    GlobalItemSetManagerState.UpdateStashMetadata(stashTabMetadataList);
+                selectedTabIds = flattenedStashTabs
+                    .Where(st => st.Name.StartsWith(_userSettings.StashTabPrefix))
+                    .Select(st => st.Id)
+                    .ToList();
+            }
 
-                    foreach (var id in selectedTabIds)
+            if (flattenedStashTabs is not null)
+            {
+                GlobalItemSetManagerState.UpdateStashMetadata(flattenedStashTabs);
+
+                foreach (var id in selectedTabIds)
+                {
+                    UnifiedStashTabContents rawResults;
+
+                    // OAuth endpoint uses tab ID for lookup
+                    if (!_userSettings.LegacyAuthMode)
                     {
-                        UnifiedStashTabContents rawResults;
-                        if (!GlobalUserSettings.LegacyAuthMode)
+                        rawResults = await _apiService.GetPersonalStashTabContentsByStashIdWithOAuthAsync(id);
+                    }
+                    // Session ID endpoint uses tab index for lookup - so we 'extract' the index from the tab collection constructed using id's
+                    else
+                    {
+                        // For SessionId auth, we need to find the index corresponding to this id
+                        var stashTab = flattenedStashTabs.FirstOrDefault(st => st.Id == id);
+
+                        if (stashTab == null)
                         {
-                            rawResults = await _apiService.GetPersonalStashTabContentsByStashIdWithOAuthAsync(id);
+                            continue; // Skip this tab if we can't find its metadata
+                        }
+
+                        if (_userSettings.GuildStashMode)
+                        {
+                            rawResults = await _apiService.GetGuildStashTabContentsByIndexWithSessionIdAsync(
+                                _userSettings.LegacyAuthSessionId,
+                                stashTab.Id,
+                                stashTab.Name,
+                                stashTab.Index,
+                                stashTab.Type
+                            );
                         }
                         else
                         {
-                            // For SessionId auth, we need to find the index corresponding to this id
-                            var stashTab = stashTabMetadataList.FirstOrDefault(st => st.Id == id);
-                            if (stashTab == null)
-                            {
-                                continue; // Skip this tab if we can't find its metadata
-                            }
-                            rawResults = await _apiService.GetPersonalStashTabContentsByIndexWithSessionIdAsync(stashTab.Index);
+                            rawResults = await _apiService.GetPersonalStashTabContentsByIndexWithSessionIdAsync(
+                                _userSettings.LegacyAuthSessionId,
+                                stashTab.Id,
+                                stashTab.Name,
+                                stashTab.Index,
+                                stashTab.Type
+                            );
                         }
-
-                        // then we convert the raw results into a list of EnhancedItem objects
-                        var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
-
-                        // Manually setting id because we need to know which tab the item came from
-                        foreach (var enhancedItem in enhancedItems)
-                        {
-                            enhancedItem.StashTabId = rawResults.Id;
-                            enhancedItem.StashTabIndex = rawResults.Index;
-                        }
-
-                        // add the enhanced items to the filtered stash contents
-                        filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
                     }
 
-                    // recalculate item amounts and generate item sets after fetching from api
-                    GlobalItemSetManagerState.CalculateItemAmounts();
+                    // then we convert the raw results into a list of EnhancedItem objects
+                    var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
 
-                    // generate item sets for the chosen recipe (chaos or regal)
-                    GlobalItemSetManagerState.GenerateItemSets(!GlobalUserSettings.ChaosRecipeTrackingEnabled);
+                    // Manually setting id because we need to know which tab the item came from
+                    foreach (var enhancedItem in enhancedItems)
+                    {
+                        enhancedItem.StashTabId = rawResults.Id;
+                        enhancedItem.StashTabIndex = rawResults.Index;
+                    }
 
-                    // update the UI accordingly
-                    UpdateDisplay();
-                    UpdateStashButtonAndWarningMessage();
+                    // add the enhanced items to the filtered stash contents
+                    filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
 
-                    // enforce cooldown on fetch button to reduce chances of rate limiting
-                    TriggerSetTrackerFetchCooldown(FetchCooldownSeconds);
+                    GlobalItemSetManagerState.UpdateStashContents(setThreshold, selectedTabIds, filteredStashContents);
                 }
-                else
-                {
-                    FetchButtonEnabled = true;
-                    return false;
-                }
+
+                // recalculate item amounts and generate item sets after fetching from api
+                GlobalItemSetManagerState.CalculateItemAmounts();
+
+                // generate item sets for the chosen recipe (chaos or regal)
+                GlobalItemSetManagerState.GenerateItemSets(!_userSettings.ChaosRecipeTrackingEnabled);
+
+                // update the UI accordingly
+                UpdateDisplay();
+                UpdateStashButtonAndWarningMessage();
+
+                // enforce cooldown on fetch button to reduce chances of rate limiting
+                TriggerSetTrackerFetchCooldown(FetchCooldownSeconds);
             }
-
-            #endregion
+            else
+            {
+                FetchButtonEnabled = true;
+                return false;
+            }
         }
         catch (RateLimitException e)
         {
@@ -421,35 +333,6 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
             );
             return false;
         }
-        catch (ArgumentNullException e)
-        {
-            FetchButtonEnabled = true;
-
-            if (string.IsNullOrWhiteSpace(GlobalUserSettings.StashTabIndices))
-            {
-                GlobalErrorHandler.Spawn(
-                    e.ToString(),
-                    "Error: Set Tracker Overlay - No Tabs Selected",
-                    preamble: "It looks like you haven't selected any stash tab indices. Please navigate to" +
-                    "the 'General > General > Select Stash Tabs' setting and select some tabs, and try again."
-                );
-
-                return false;
-            }
-            else
-            {
-                GlobalErrorHandler.Spawn(
-                    e.ToString(),
-                    "Error: Set Tracker Overlay - Selected Tabs Out Of Sync",
-                    preamble: "It looks like your currently selected stash tabs are out of sync.\n\n" +
-                    "You may have moved them or modified them in some way that made us unable " +
-                    "to determine which stash tab you meant to select.\n\nPlease navigate to " +
-                    "the 'General > Select Stash Tabs', re-fetch your tabs, and validate your selections."
-                );
-            }
-
-            return false;
-        }
 
         return true;
     }
@@ -464,12 +347,12 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
         else if (!NeedsFetching)
         {
             // case 2: user fetched data and has enough sets to turn in based on their threshold
-            if (FullSets >= GlobalUserSettings.FullSetThreshold)
+            if (FullSets >= _userSettings.FullSetThreshold)
             {
                 // if the user has vendor sets early enabled, we don't want to show the warning message
-                if (!GlobalUserSettings.VendorSetsEarly || FullSets >= GlobalUserSettings.FullSetThreshold)
+                if (!_userSettings.VendorSetsEarly || FullSets >= _userSettings.FullSetThreshold)
                 {
-                    WarningMessage = !GlobalUserSettings.SilenceSetsFullMessage
+                    WarningMessage = !_userSettings.SilenceSetsFullMessage
                         ? SetsFullText
                         : string.Empty;
                 }
@@ -485,12 +368,12 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
             }
 
             // case 3: user fetched data and has at least 1 set, but not to their full threshold
-            else if ((FullSets < GlobalUserSettings.FullSetThreshold || GlobalUserSettings.VendorSetsEarly) && FullSets >= 1)
+            else if ((FullSets < _userSettings.FullSetThreshold || _userSettings.VendorSetsEarly) && FullSets >= 1)
             {
                 WarningMessage = string.Empty;
 
                 // stash button is disabled with warning tooltip to change threshold
-                if (GlobalUserSettings.VendorSetsEarly)
+                if (_userSettings.VendorSetsEarly)
                 {
                     StashButtonTooltipEnabled = false;
                     SetsTooltipEnabled = false;
@@ -503,10 +386,10 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
             }
 
             // case 3: user has fetched and needs items for chaos recipe (needs more lower level items)
-            else if (NeedsLowerLevel && GlobalUserSettings.ChaosRecipeTrackingEnabled)
+            else if (NeedsLowerLevel && _userSettings.ChaosRecipeTrackingEnabled)
             {
-                WarningMessage = !GlobalUserSettings.SilenceNeedItemsMessage
-                    ? NeedsLowerLevelText(FullSets - GlobalUserSettings.FullSetThreshold)
+                WarningMessage = !_userSettings.SilenceNeedItemsMessage
+                    ? NeedsLowerLevelText(FullSets - _userSettings.FullSetThreshold)
                     : string.Empty;
 
                 // stash button is disabled with conditional tooltip enabled
@@ -545,7 +428,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
             .Select(dict => dict[ItemClass.TwoHandWeapons])
             .FirstOrDefault();
 
-        if (oneHandedWeaponCount / 2 + twoHandedWeaponCount >= GlobalUserSettings.FullSetThreshold)
+        if (oneHandedWeaponCount / 2 + twoHandedWeaponCount >= _userSettings.FullSetThreshold)
         {
             foreach (var dict in itemClassAmounts)
             {
@@ -558,7 +441,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
         {
             foreach (var itemClass in itemCountByClass)
             {
-                if (itemClass.Value < GlobalUserSettings.FullSetThreshold)
+                if (itemClass.Value < _userSettings.FullSetThreshold)
                 {
                     missingItemClasses.Add(itemClass.Key.ToString());
                 }

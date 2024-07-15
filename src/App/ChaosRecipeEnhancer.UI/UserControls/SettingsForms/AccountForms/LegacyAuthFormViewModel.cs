@@ -1,9 +1,10 @@
 ﻿using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.Exceptions;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Services;
 using CommunityToolkit.Mvvm.Input;
 using Serilog;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -17,7 +18,10 @@ public class LegacyAuthFormViewModel : CreViewModelBase
     private readonly ILogger _log = Log.ForContext<LegacyAuthFormViewModel>();
     private readonly IAuthStateManager _authStateManager;
     private readonly IPoeApiService _poeApiService;
+    private readonly IUserSettings _userSettings;
+
     private ICommand _loginCommand;
+
     private Visibility _connectionNotValidatedTextVisibility;
     private Visibility _loggedInTextVisibility;
     private Visibility _connectionErrorTextVisibility;
@@ -26,10 +30,11 @@ public class LegacyAuthFormViewModel : CreViewModelBase
 
     #region Constructors
 
-    public LegacyAuthFormViewModel(IAuthStateManager authState, IPoeApiService poeApiService)
+    public LegacyAuthFormViewModel(IAuthStateManager authState, IPoeApiService poeApiService, IUserSettings userSettings)
     {
         _authStateManager = authState;
         _poeApiService = poeApiService;
+        _userSettings = userSettings;
 
         _authStateManager.AuthStateChanged += AuthStateManager_AuthStateChanged;
     }
@@ -76,6 +81,19 @@ public class LegacyAuthFormViewModel : CreViewModelBase
         private set => SetProperty(ref _connectionErrorTextVisibility, value);
     }
 
+    public string LegacyAuthSessionId
+    {
+        get => _userSettings.LegacyAuthSessionId;
+        set
+        {
+            if (_userSettings.LegacyAuthSessionId != value)
+            {
+                _userSettings.LegacyAuthSessionId = value;
+                OnPropertyChanged(nameof(LegacyAuthSessionId));
+            }
+        }
+    }
+
     #endregion
 
     #region Methods
@@ -84,7 +102,7 @@ public class LegacyAuthFormViewModel : CreViewModelBase
     {
         try
         {
-            _log.Information("Starting the login process...");
+            _log.Information("Starting the session id validation process...");
             GlobalUserSettings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.AttemptingLogin;
             OnPropertyChanged(nameof(ConnectionNotValidatedTextVisibility));
 
@@ -94,18 +112,18 @@ public class LegacyAuthFormViewModel : CreViewModelBase
             if (isValid)
             {
                 GlobalUserSettings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ValidatedConnection;
-                _log.Information("Login process completed successfully.");
+                _log.Information("Validation process completed successfully.");
             }
-            else
-            {
-                GlobalUserSettings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionError;
-                _log.Warning("Login failed: Invalid credentials");
-            }
+        }
+        catch (UnauthorizedException)
+        {
+            GlobalUserSettings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
+            _log.Warning("Validation failed: Unauthorized access");
         }
         catch (Exception ex)
         {
             GlobalUserSettings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionError;
-            _log.Error(ex, "An error occurred during the login process.");
+            _log.Error(ex, "An error occurred during the validation process.");
         }
         finally
         {
@@ -117,10 +135,13 @@ public class LegacyAuthFormViewModel : CreViewModelBase
     {
         try
         {
-            // Use one of the PoeApiService methods to validate credentials
-            // For example, try to fetch leagues or stash tab metadata
-            var leagues = await _poeApiService.GetLeaguesAsync();
-            return leagues != null && leagues.Any();
+            var healthCheckResponse = await _poeApiService.HealthCheckWithSesionIdAsync(_userSettings.LegacyAuthSessionId);
+            return healthCheckResponse != null && healthCheckResponse.Total > 0;
+        }
+        catch (UnauthorizedException)
+        {
+            // Re-throw the exception to be caught in the Login method
+            throw;
         }
         catch (Exception ex)
         {

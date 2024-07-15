@@ -47,18 +47,7 @@ public static class GlobalItemSetManagerState
         StashTabMetadataListStashesResponse = metadata;
     }
 
-    public static void UpdateStashContentsByIndex(int setThreshold, List<int> selectedTabIndices, List<EnhancedItem> filteredStashContents)
-    {
-        // if no tabs are selected (this isn't a realistic case)
-        if (selectedTabIndices.Count == 0) return;
-
-        // setting some new properties
-        SetThreshold = setThreshold;
-        CurrentItemsFilteredForRecipe = filteredStashContents;
-        NeedsFetching = false;
-    }
-
-    public static void UpdateStashContentsById(int setThreshold, List<string> selectedTabIds, List<EnhancedItem> filteredStashContents)
+    public static void UpdateStashContents(int setThreshold, List<string> selectedTabIds, List<EnhancedItem> filteredStashContents)
     {
         // if no tabs are selected (this isn't a realistic case)
         if (selectedTabIds.Count == 0) return;

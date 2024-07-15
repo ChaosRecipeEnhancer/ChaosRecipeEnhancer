@@ -116,6 +116,7 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <!-- Recipes -->
@@ -127,13 +128,17 @@
                         <generalForms:GeneralForm
                             Grid.Column="1"
                             Grid.Row="0"
-                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
 
-                        <!-- General (Legacy - Session ID) -->
                         <generalForms:LegacyGeneralForm
                             Grid.Column="2"
                             Grid.Row="0"
-                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                        <generalForms:FetchOnRezoneForm
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Grid.ColumnSpan="3" />
 
                     </Grid>
                 </TabItem>

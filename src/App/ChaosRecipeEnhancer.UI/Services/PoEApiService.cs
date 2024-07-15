@@ -5,7 +5,6 @@ using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
-using ChaosRecipeEnhancer.UI.Properties;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -45,6 +44,8 @@ public interface IPoeApiService
     /// <returns>A task that represents the asynchronous operation. The task result contains the get stash response.</returns>
     public Task<UnifiedStashTabContents> GetPersonalStashTabContentsByStashIdWithOAuthAsync(string stashId);
 
+    public Task<AccountAvatarResponse> HealthCheckWithSesionIdAsync(string sessionId);
+
     /// <summary>
     /// Retrieves the metadata for all personal  stash tabs asynchronously using session ID authentication.
     /// </summary>
@@ -53,7 +54,7 @@ public interface IPoeApiService
     /// <param name="leagueName">The name of the league.</param>
     /// <param name="secret">The session ID secret for authentication.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the metadata for all guild stash tabs.</returns>
-    public Task<List<UnifiedStashTabMetadata>> GetAllPersonalStashTabMetadataWithSessionIdAsync();
+    public Task<List<UnifiedStashTabMetadata>> GetAllPersonalStashTabMetadataWithSessionIdAsync(string sessionId);
 
     /// <summary>
     /// Retrieves the metadata for all guild stash tabs asynchronously using session ID authentication.
@@ -63,7 +64,7 @@ public interface IPoeApiService
     /// <param name="leagueName">The name of the league.</param>
     /// <param name="secret">The session ID secret for authentication.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the metadata for all guild stash tabs.</returns>
-    public Task<List<UnifiedStashTabMetadata>> GetAllGuildStashTabMetadataWithSessionIdAsync();
+    public Task<List<UnifiedStashTabMetadata>> GetAllGuildStashTabMetadataWithSessionIdAsync(string sessionId);
 
     /// <summary>
     /// Retrieves the contents of a personal stash tab by its index asynchronously using session ID authentication.
@@ -74,7 +75,7 @@ public interface IPoeApiService
     /// <param name="tabIndex">The index of the stash tab.</param>
     /// <param name="secret">The session ID secret for authentication.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the contents of the specified personal stash tab.</returns>
-    public Task<UnifiedStashTabContents> GetPersonalStashTabContentsByIndexWithSessionIdAsync(int tabIndex);
+    public Task<UnifiedStashTabContents> GetPersonalStashTabContentsByIndexWithSessionIdAsync(string sessionId, string tabId, string tabName, int tabIndex, string tabType);
 
     /// <summary>
     /// Retrieves the contents of a guild stash tab by its index asynchronously using session ID authentication.
@@ -85,7 +86,7 @@ public interface IPoeApiService
     /// <param name="tabIndex">The index of the stash tab.</param>
     /// <param name="secret">The session ID secret for authentication.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the contents of the specified guild stash tab.</returns>
-    public Task<UnifiedStashTabContents> GetGuildStashTabContentsByIndexWithSessionIdAsync(int tabIndex);
+    public Task<UnifiedStashTabContents> GetGuildStashTabContentsByIndexWithSessionIdAsync(string sessionId, string tabId, string tabName, int tabIndex, string tabType);
 }
 
 /// <summary>
@@ -197,12 +198,29 @@ public class PoeApiService : IPoeApiService
         return response?.ToUnifiedContents();
     }
 
+    public async Task<AccountAvatarResponse> HealthCheckWithSesionIdAsync(string sessionId)
+    {
+        var response = await GetAuthenticatedWithSessionIdForHealthcheckAsync(
+            PoeApiConfig.HealthCheckSessionIdEndpoint(),
+            sessionId
+        );
+
+        // Check if the response is an error
+        var errorResponse = JsonSerializer.Deserialize<ErrorResponse>((string)response);
+        if (errorResponse?.Error != null && errorResponse.Error.Code == 8)
+        {
+            throw new UnauthorizedException(errorResponse.Error.Message);
+        }
+
+        return JsonSerializer.Deserialize<AccountAvatarResponse>((string)response);
+    }
+
     /// <inheritdoc />
-    public async Task<List<UnifiedStashTabMetadata>> GetAllPersonalStashTabMetadataWithSessionIdAsync()
+    public async Task<List<UnifiedStashTabMetadata>> GetAllPersonalStashTabMetadataWithSessionIdAsync(string sessionId)
     {
         var response = await GetAuthenticatedWithSessionIdAsync(
             PoeApiConfig.StashTabPropsSessionIdEndpoint(TargetStash.Personal),
-            Settings.Default.LegacyAuthSessionId
+            sessionId
         );
 
         var baseStashTabMetadataList = JsonSerializer.Deserialize<BaseStashTabMetadataList>((string)response);
@@ -210,11 +228,11 @@ public class PoeApiService : IPoeApiService
     }
 
     /// <inheritdoc />
-    public async Task<List<UnifiedStashTabMetadata>> GetAllGuildStashTabMetadataWithSessionIdAsync()
+    public async Task<List<UnifiedStashTabMetadata>> GetAllGuildStashTabMetadataWithSessionIdAsync(string sessionId)
     {
         var response = await GetAuthenticatedWithSessionIdAsync(
             PoeApiConfig.StashTabPropsSessionIdEndpoint(TargetStash.Guild),
-            Settings.Default.LegacyAuthSessionId
+            sessionId
         );
 
         var baseStashTabMetadataList = JsonSerializer.Deserialize<BaseStashTabMetadataList>((string)response);
@@ -222,29 +240,27 @@ public class PoeApiService : IPoeApiService
     }
 
     /// <inheritdoc />
-    public async Task<UnifiedStashTabContents> GetPersonalStashTabContentsByIndexWithSessionIdAsync(int tabIndex)
+    public async Task<UnifiedStashTabContents> GetPersonalStashTabContentsByIndexWithSessionIdAsync(string sessionId, string tabId, string tabName, int tabIndex, string tabType)
     {
         var responseRaw = await GetAuthenticatedWithSessionIdAsync(
             PoeApiConfig.IndividualTabContentsSessionIdEndpoint(TargetStash.Personal, tabIndex),
-            Settings.Default.LegacyAuthSessionId
+            sessionId
         );
 
         var response = JsonSerializer.Deserialize<BaseStashTabContents>((string)responseRaw);
-        var metadata = await GetStashTabMetadataByIndexAsync(tabIndex);
-        return response?.ToUnifiedContents(metadata.Id, metadata.Name, metadata.Index, metadata.Type);
+        return response?.ToUnifiedContents(tabId, tabName, tabIndex, tabType);
     }
 
     /// <inheritdoc />
-    public async Task<UnifiedStashTabContents> GetGuildStashTabContentsByIndexWithSessionIdAsync(int tabIndex)
+    public async Task<UnifiedStashTabContents> GetGuildStashTabContentsByIndexWithSessionIdAsync(string sessionId, string tabId, string tabName, int tabIndex, string tabType)
     {
         var responseRaw = await GetAuthenticatedWithSessionIdAsync(
             PoeApiConfig.IndividualTabContentsSessionIdEndpoint(TargetStash.Guild, tabIndex),
-            Settings.Default.LegacyAuthSessionId
+            sessionId
         );
 
         var response = JsonSerializer.Deserialize<BaseStashTabContents>((string)responseRaw);
-        var metadata = await GetGuildStashTabMetadataByIndexAsync(tabIndex);
-        return response?.ToUnifiedContents(metadata.Id, metadata.Name, metadata.Index, metadata.Type);
+        return response?.ToUnifiedContents(tabId, tabName, tabIndex, tabType);
     }
 
     #endregion
@@ -373,6 +389,39 @@ public class PoeApiService : IPoeApiService
         return responseString;
     }
 
+    private async Task<object> GetAuthenticatedWithSessionIdForHealthcheckAsync(Uri requestUri, string sessionId)
+    {
+        if (GlobalRateLimitState.CheckForBan()) return null;
+
+        if (GlobalRateLimitState.RateLimitState[0] >= GlobalRateLimitState.MaximumRequests - 4)
+        {
+            GlobalRateLimitState.RateLimitExceeded = true;
+            return null;
+        }
+
+        _log.Information($"Session ID: {sessionId}");
+
+        var cookieContainer = new CookieContainer();
+        cookieContainer.Add(requestUri, new Cookie("POESESSID", sessionId));
+        using var handler = new HttpClientHandler();
+        handler.CookieContainer = cookieContainer;
+
+        using var client = new HttpClient(handler);
+
+        // add user agent
+        client.DefaultRequestHeaders.Add("User-Agent", $"CRE/v{Assembly.GetExecutingAssembly().GetName().Version}");
+
+        // send request
+        var response = await client.GetAsync(requestUri);
+        var responseString = await response.Content.ReadAsStringAsync();
+
+        _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
+        _log.Information($"Response: {responseString}");
+
+        return responseString;
+    }
+
+
     /// <summary>
     /// Sends a GET request to the specified URI.
     /// </summary>
@@ -453,18 +502,6 @@ public class PoeApiService : IPoeApiService
         }
 
         return true;
-    }
-
-    private async Task<UnifiedStashTabMetadata> GetStashTabMetadataByIndexAsync(int index)
-    {
-        var allMetadata = await GetAllPersonalStashTabMetadataWithSessionIdAsync();
-        return allMetadata.FirstOrDefault(m => m.Index == index);
-    }
-
-    private async Task<UnifiedStashTabMetadata> GetGuildStashTabMetadataByIndexAsync(int index)
-    {
-        var allMetadata = await GetAllGuildStashTabMetadataWithSessionIdAsync();
-        return allMetadata.FirstOrDefault(m => m.Index == index);
     }
 
     #endregion

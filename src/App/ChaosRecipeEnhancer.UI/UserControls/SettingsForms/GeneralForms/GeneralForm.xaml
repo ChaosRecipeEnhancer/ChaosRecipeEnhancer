@@ -19,22 +19,16 @@
         <creConverters:BoolVisibilityConverter x:Key="BoolVisibilityConverter" CollapseWhenNotVisible="True" />
         <creConverters:BoolVisibilityConverter x:Key="InvertedBoolVisibilityConverter" CollapseWhenNotVisible="True" Invert="True" />
         <creConverters:EqualityToVisibilityConverter x:Key="VisibleIfEqual" ComparisonType="{x:Type system:Int32}" />
-        <creConverters:NullOrEmptyToBoolConverter x:Key="NullOrEmptyToBoolConverter" />
-        <creConverters:EnumBooleanConverter x:Key="EnumBooleanConverter" />
-        <creConverters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
         <creConverters:FetchButtonEnabledConverter x:Key="FetchButtonEnabledConverter"/>
     </UserControl.Resources>
 
-    <Grid
-        Margin="10"
-        ShowGridLines="False">
+    <Grid Margin="10">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -49,21 +43,21 @@
             Grid.ColumnSpan="2"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="General"
+            Text="Stash"
             FontSize="24" />
 
-        <!-- League Selection Start -->
+        <!-- League Selection Dropdown Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="League:" />
+            Text="Select League:" />
 
         <Grid
             Grid.Column="1"
             Grid.Row="1"
-            Margin="10 0 0 10">
+            Margin="0 0 0 10">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -80,8 +74,8 @@
                 Grid.Column="0"
                 Grid.Row="0"
                 Grid.ColumnSpan="3"
-                Width="160"
-                Margin="0 0 5 0"
+                Margin="10 0 5 0"
+                Width="170"
                 VerticalContentAlignment="Center"
                 ItemsSource="{Binding LeagueList, Mode=OneWay}"
                 SelectedItem="{Binding SelectedLeagueName, Mode=OneWay}"
@@ -97,8 +91,8 @@
                 Grid.Column="0"
                 Grid.Row="0"
                 Grid.ColumnSpan="3"
-                Width="160"
-                Margin="0 0 5 0"
+                Margin="10 0 5 0"
+                Width="170"
                 VerticalContentAlignment="Center"
                 Text="{Binding SelectedLeagueName, Mode=OneWay}"
                 IsEnabled="False"
@@ -129,10 +123,9 @@
                 Command="{Binding LeagueButtonCommand}" />
 
         </Grid>
-        <!-- League Selection End -->
+        <!-- League Selection Dropdown End -->
 
-        <!--Custom League Start-->
-
+        <!--Private League Start-->
         <TextBlock
             Grid.Column="0"
             Grid.Row="2"
@@ -147,8 +140,7 @@
             VerticalAlignment="Center"
             IsEnabled="{Binding PrivateLeagueCheckboxEnabled, Mode=OneWay}"
             IsChecked="{Binding CustomLeagueEnabled, Mode=TwoWay}" />
-
-        <!--Custom League Start-->
+        <!--Private League End-->
 
         <!-- Stash Tab Query Mode Selector Start -->
         <TextBlock
@@ -166,26 +158,24 @@
             VerticalContentAlignment="Center"
             SelectedIndex="{Binding StashTabQueryMode, Mode=TwoWay}">
 
-            <ComboBoxItem Content="Select Tab By Index" />
+            <ComboBoxItem Content="Select Tabs From List" />
             <ComboBoxItem Content="Tab Name Prefix" />
-            <ComboBoxItem Content="Select Tab By ID (Experimental)" />
 
         </ComboBox>
         <!-- Stash Tab Query Mode Selector Start -->
 
-        <!-- Select Tab By Index Start -->
+        <!-- Tab From List Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="4"
-            Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Select Stash Tabs:"
+            Text="Select Tabs:"
             Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=0}"/>
 
         <Grid
             Grid.Column="1"
             Grid.Row="4"
-            Margin="10 0 0 10"
+            Margin="10 0 0 0"
             Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=0}">
 
             <Grid.ColumnDefinitions>
@@ -203,150 +193,11 @@
                 Grid.Row="0"
                 Grid.ColumnSpan="3"
                 Margin="0 0 5 0"
-                Width="160"
+                Width="170"
                 IsSelectAllActive="True"
                 SelectAllContent="Select All / Clear All"
                 MaxDropDownHeight="300"
-                ItemSelectionChanged="OnStashTabSelectionChanged"
-                SelectedItemsOverride="{Binding Path=SelectedStashTabsByIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                ItemsSource="{Binding StashTabFullListForSelectionByIndex}"
-                IsEnabled="{Binding StashTabDropDownEnabled, Mode=OneWay}"
-                Visibility="{Binding StashTabDropDownEnabled, Converter={StaticResource BoolVisibilityConverter}}"
-                ValueMemberPath="Index"
-                VerticalContentAlignment="Center"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                ToolTip="You must first fetch stash tabs to enable the dropdown."
-                ToolTipService.ShowOnDisabled="True"
-                ToolTipService.InitialShowDelay="50"
-                ToolTipService.IsEnabled="{Binding StashTabDropDownEnabled, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}">
-
-                <xctk:CheckComboBox.Resources>
-                    <Style TargetType="{x:Type CheckBox}">
-                        <Setter Property="Background" Value="White" />
-                    </Style>
-                    <Style TargetType="{x:Type xctk:SelectAllSelectorItem}">
-                        <Setter Property="Background" Value="#202020" />
-                    </Style>
-                </xctk:CheckComboBox.Resources>
-
-                <xctk:CheckComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Foreground="#202020">
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="[Index {0}] {1}">
-                                    <Binding Path="Index"/>
-                                    <Binding Path="Name"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </DataTemplate>
-                </xctk:CheckComboBox.ItemTemplate>
-
-            </xctk:CheckComboBox>
-
-            <TextBox
-                Grid.Column="0"
-                Grid.Row="0"
-                Grid.ColumnSpan="3"
-                Margin="0 0 5 0"
-                Width="160"
-                Text="{Binding StashTabIndicesToString, Mode=TwoWay}"
-                Visibility="{Binding StashTabDropDownEnabled, Converter={StaticResource InvertedBoolVisibilityConverter}}"
-                VerticalContentAlignment="Center"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                IsEnabled="False"
-                ToolTipService.ShowOnDisabled="True"
-                ToolTipService.InitialShowDelay="50"
-                ToolTipService.IsEnabled="{Binding StashTabDropDownEnabled, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}" />
-
-            <Button
-                x:Name="FetchStashTabsButton"
-                Grid.Column="3"
-                Grid.Row="0"
-                Width="60"
-                Margin="5 0 0 0"
-                Content="Fetch"
-                Visibility="{Binding StashTabDropDownEnabled, Converter={StaticResource BoolVisibilityConverter}}"
-                Command="{Binding StashTabButtonCommand}">
-
-                <Button.IsEnabled>
-                    <MultiBinding Converter="{StaticResource FetchButtonEnabledConverter}">
-                        <Binding Path="StashTabButtonEnabled"/>
-                        <Binding Path="SelectedLeagueName"/>
-                    </MultiBinding>
-                </Button.IsEnabled>
-
-            </Button>
-
-            <Button
-                x:Name="ChangeStashTabsButton"
-                Grid.Column="3"
-                Grid.Row="0"
-                Width="60"
-                Margin="5 0 0 0"
-                Content="Change"
-                Visibility="{Binding StashTabDropDownEnabled, Converter={StaticResource InvertedBoolVisibilityConverter}}"
-                IsEnabled="{Binding StashTabButtonEnabled}"
-                Command="{Binding StashTabButtonCommand}" />
-
-        </Grid>
-        <!-- Select Tab By Index End -->
-
-        <!-- Individual Stash Tab Name Prefix Start -->
-        <TextBlock
-            Grid.Column="0"
-            Grid.Row="4"
-            Margin="0 0 0 10"
-            VerticalAlignment="Center"
-            Text="Stash Tab Prefix:"
-            ToolTip="Every stash tab which name starts with this prefix will be added."
-            Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}" />
-
-        <TextBox
-            Grid.Column="1"
-            Grid.Row="4"
-            Margin="10 0 0 10"
-            Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
-            Text="{Binding StashTabPrefix, Mode=TwoWay}" />
-        <!-- Individual Stash Tab Name Prefix End -->
-
-        <!-- Select Tab By Id Start -->
-        <TextBlock
-            Grid.Column="0"
-            Grid.Row="4"
-            Margin="0 0 0 10"
-            VerticalAlignment="Center"
-            Text="Select Stash Tabs:"
-            Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=2}"/>
-
-        <Grid
-            Grid.Column="1"
-            Grid.Row="4"
-            Margin="10 0 0 10"
-            Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=2}">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <xctk:CheckComboBox
-                Grid.Column="0"
-                Grid.Row="0"
-                Grid.ColumnSpan="3"
-                Margin="0 0 5 0"
-                Width="160"
-                IsSelectAllActive="True"
-                SelectAllContent="Select All / Clear All"
-                MaxDropDownHeight="300"
-                ItemSelectionChanged="OnStashTabSelectionChanged"
+                ItemSelectionChanged="TabsCheckComboBox_SelectionChanged"
                 SelectedItemsOverride="{Binding Path=SelectedStashTabsById, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 ItemsSource="{Binding StashTabFullListForSelectionById}"
                 IsEnabled="{Binding StashTabDropDownEnabled, Mode=OneWay}"
@@ -389,7 +240,7 @@
                 Grid.Row="0"
                 Grid.ColumnSpan="3"
                 Margin="0 0 5 0"
-                Width="160"
+                Width="170"
                 Text="{Binding StashTabIdsToString, Mode=TwoWay}"
                 Visibility="{Binding StashTabDropDownEnabled, Converter={StaticResource InvertedBoolVisibilityConverter}}"
                 VerticalContentAlignment="Center"
@@ -431,104 +282,24 @@
                 Command="{Binding StashTabButtonCommand}" />
 
         </Grid>
-        <!-- Select Tab By Id End -->
+        <!-- Tab From List End -->
 
-        <!-- Fetch on New Zone Setting Start -->
-        <!-- TODO: [Refactor] Enforce reload when this setting is changed (or at the very least, notify users it's required) -->
+        <!-- Individual Tab Name Prefix Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="5"
-            Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Fetch on Rezone:"
-            ToolTipService.InitialShowDelay="50"
-            ToolTip="Automatically fetches new stash contents when you join a new zone.&#x0a;Requires you to 'hook up' your Client.txt file.&#x0a;&#x0a;(e.g. Entering a new map -> Fetch Stash Contents)" />
+            Text="Tab Name Prefix:"
+            ToolTip="Every stash tab which name starts with this prefix will be added."
+            Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}" />
 
-        <CheckBox
+        <TextBox
             Grid.Column="1"
             Grid.Row="5"
-            Margin="10 0 0 10"
-            VerticalAlignment="Center"
-            IsChecked="{Binding AutoFetchOnRezoneEnabled, Mode=TwoWay}" />
-        <!-- Fetch on New Map Setting End -->
-
-        <!-- Client Log File Location Setting Start -->
-        <TextBlock
-            Grid.Column="0"
-            Grid.Row="6"
-            VerticalAlignment="Center"
-            Text="PoE Client.txt Path:"
-            ToolTipService.InitialShowDelay="50"
-            ToolTip="Your PoE Client.txt file tracks when you rezone, so we can watch the file to&#x0a;automatically fetch stash contents.&#x0a;&#x0a;This is the same sort of behavior used by Trade Macros to watch the chat&#x0a;and display incoming and outgoing trades."
-            Visibility="{Binding AutoFetchOnRezoneEnabled, Converter={StaticResource BoolVisibilityConverter}}" />
-
-        <StackPanel
-            Grid.Column="1"
-            Grid.Row="6"
             Margin="10 0 0 0"
-            Visibility="{Binding AutoFetchOnRezoneEnabled, Converter={StaticResource BoolVisibilityConverter}}">
-
-            <RadioButton Content="Default Standalone Install Location"
-                         IsChecked="{Binding Path=ClientLogFileLocationMode, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static creEnums:ClientLogFileLocationMode.DefaultStandaloneLocation}}"
-                         ToolTipService.InitialShowDelay="50"
-                         Margin="0 0 0 5">
-                <RadioButton.ToolTip>
-                    <ToolTip>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="Select this if you have installed PoE with all the default settings via Standalone Installer.&#x0a;&#x0a;Default Standalone Path:&#x0a;{0}">
-                                    <Binding Source="{x:Static creConfig:PoeClientConfigs.DefaultStandaloneInstallLocationPath}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </ToolTip>
-                </RadioButton.ToolTip>
-            </RadioButton>
-
-            <RadioButton Content="Default Steam Install Location"
-                         IsChecked="{Binding Path=ClientLogFileLocationMode, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static creEnums:ClientLogFileLocationMode.DefaultSteamLocation}}"
-                         ToolTipService.InitialShowDelay="50"
-                         Margin="0 0 0 5">
-                <RadioButton.ToolTip>
-                    <ToolTip>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="Select this if you have installed PoE with all the default settings via Steam.&#x0a;&#x0a;Default Steam Path:&#x0a;{0}">
-                                    <Binding Source="{x:Static creConfig:PoeClientConfigs.DefaultSteamInstallLocationPath}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </ToolTip>
-                </RadioButton.ToolTip>
-            </RadioButton>
-
-            <RadioButton
-                Content="Custom Install Location"
-                IsChecked="{Binding Path=ClientLogFileLocationMode, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static creEnums:ClientLogFileLocationMode.CustomLocation}}"
-                ToolTipService.InitialShowDelay="50"
-                Margin="0 0 0 5">
-                <RadioButton.ToolTip>
-                    <ToolTip>
-                        Select this if you have installed Path of Exile in a custom location.
-                    </ToolTip>
-                </RadioButton.ToolTip>
-            </RadioButton>
-
-            <Button
-                x:Name="LogLocationDialog"
-                Margin="0 0 0 10"
-                MaxWidth="230"
-                Command="{Binding SelectLogFileCommand}"
-                Content="{Binding PathOfExileClientLogLocation, Mode=TwoWay}"
-                HorizontalContentAlignment="Left"
-                IsEnabled="{Binding Path=ClientLogFileLocationMode, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static creEnums:ClientLogFileLocationMode.CustomLocation}}"
-                ToolTip="{Binding PathOfExileClientLogLocation, Mode=TwoWay}"
-                ToolTipService.InitialShowDelay="50"
-                ToolTipService.IsEnabled="{Binding PathOfExileClientLogLocation, Converter={StaticResource NullOrEmptyToBoolConverter}}"
-                Visibility="{Binding Path=ClientLogFileLocationMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static creEnums:ClientLogFileLocationMode.CustomLocation}}" />
-
-        </StackPanel>
-        <!-- Client Log File Location Setting End -->
+            Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
+            Text="{Binding StashTabPrefix, Mode=TwoWay}" />
+        <!-- Individual Tab Name Prefix End -->
 
     </Grid>
 </UserControl>
