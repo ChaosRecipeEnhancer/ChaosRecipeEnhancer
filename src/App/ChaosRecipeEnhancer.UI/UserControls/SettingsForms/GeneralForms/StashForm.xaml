@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms.GeneralForm"
+﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms.StashForm"
              x:ClassModifier="public"
              xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
              xmlns:creConfig="clr-namespace:ChaosRecipeEnhancer.UI.Models.Config"
@@ -12,7 +12,7 @@
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              Background="#202020"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=generalForms:GeneralFormViewModel}">
+             d:DataContext="{d:DesignInstance Type=generalForms:StashFormViewModel}">
 
     <UserControl.Resources>
         <creConverters:InvertBoolConverter x:Key="InvertBoolConverter" />
@@ -29,6 +29,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -142,17 +143,38 @@
             IsChecked="{Binding CustomLeagueEnabled, Mode=TwoWay}" />
         <!--Private League End-->
 
-        <!-- Stash Tab Query Mode Selector Start -->
+        <!-- Guild Stash Mode Checkbox Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="3"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
+            Text="Guild Stash Mode:"
+            ToolTipService.InitialShowDelay="100"
+            ToolTip="Guild Stash picking is only available when using&#x0a;Legacy Auth Mode (see 'Advanced' settings for more details)." />
+
+        <CheckBox
+            Grid.Column="1"
+            Grid.Row="3"
+            Margin="10 0 0 10"
+            VerticalAlignment="Center"
+            IsEnabled="False"
+            ToolTipService.InitialShowDelay="100"
+            ToolTipService.ShowOnDisabled="True"
+            ToolTip="Guild Stash picking is only available when using&#x0a;Legacy Auth Mode (see 'Advanced' settings for more details)." />
+        <!-- Guild Stash Mode Checkbox End -->
+
+        <!-- Stash Tab Query Mode Selector Start -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="4"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Stash Tab Query Mode:" />
 
         <ComboBox
             Grid.Column="1"
-            Grid.Row="3"
+            Grid.Row="4"
             Margin="10 0 0 10"
             MinWidth="200"
             VerticalContentAlignment="Center"
@@ -167,14 +189,14 @@
         <!-- Tab From List Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="4"
+            Grid.Row="5"
             VerticalAlignment="Center"
             Text="Select Tabs:"
             Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=0}"/>
 
         <Grid
             Grid.Column="1"
-            Grid.Row="4"
+            Grid.Row="5"
             Margin="10 0 0 0"
             Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=0}">
 
@@ -287,7 +309,7 @@
         <!-- Individual Tab Name Prefix Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="5"
+            Grid.Row="6"
             VerticalAlignment="Center"
             Text="Tab Name Prefix:"
             ToolTip="Every stash tab which name starts with this prefix will be added."
@@ -295,7 +317,7 @@
 
         <TextBox
             Grid.Column="1"
-            Grid.Row="5"
+            Grid.Row="6"
             Margin="10 0 0 0"
             Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
             Text="{Binding StashTabPrefix, Mode=TwoWay}" />

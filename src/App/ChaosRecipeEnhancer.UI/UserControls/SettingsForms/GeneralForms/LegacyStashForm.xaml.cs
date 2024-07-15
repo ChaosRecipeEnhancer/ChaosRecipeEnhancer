@@ -5,14 +5,14 @@ using Xceed.Wpf.Toolkit.Primitives;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
-public partial class LegacyGeneralForm
+public partial class LegacyStashForm
 {
-    private readonly LegacyGeneralFormViewModel _model;
+    private readonly LegacyStashFormViewModel _model;
 
-    public LegacyGeneralForm()
+    public LegacyStashForm()
     {
         InitializeComponent();
-        DataContext = _model = Ioc.Default.GetService<LegacyGeneralFormViewModel>();
+        DataContext = _model = Ioc.Default.GetService<LegacyStashFormViewModel>();
     }
 
     private void LeagueComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -16,7 +16,7 @@ using System.Windows.Threading;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
-class LegacyGeneralFormViewModel : CreViewModelBase
+class LegacyStashFormViewModel : CreViewModelBase
 {
     #region Fields
 
@@ -46,7 +46,7 @@ class LegacyGeneralFormViewModel : CreViewModelBase
 
     #region Constructors
 
-    public LegacyGeneralFormViewModel(IPoeApiService apiService, IUserSettings userSettings)
+    public LegacyStashFormViewModel(IPoeApiService apiService, IUserSettings userSettings)
     {
         _apiService = apiService;
         _userSettings = userSettings;
@@ -176,7 +176,7 @@ class LegacyGeneralFormViewModel : CreViewModelBase
 
     private void InitializeDataFromUserSettings()
     {
-        Log.Information("LegacyGeneralFormViewModel - Initializing data from user settings...");
+        Log.Information("LegacyStashFormViewModel - Initializing data from user settings...");
         Log.Information("Current LeagueName Property: {LeagueName}", SelectedLeagueName);
 
         // Set LeagueName from user settings if it's valid
@@ -287,17 +287,17 @@ class LegacyGeneralFormViewModel : CreViewModelBase
 
     public async Task LoadLeagueListAsync()
     {
-        Log.Information("LegacyGeneralFormViewModel - Loading {LeagueType} league names...", CustomLeagueEnabled ? "private" : "public");
+        Log.Information("LegacyStashFormViewModel - Loading {LeagueType} league names...", CustomLeagueEnabled ? "private" : "public");
 
         if (_leaguesLoaded)
         {
-            Log.Information("LegacyGeneralFormViewModel - Leagues already loaded. Skipping fetch.");
+            Log.Information("LegacyStashFormViewModel - Leagues already loaded. Skipping fetch.");
             return;
         }
 
         if (CustomLeagueEnabled && _userSettings.LegacyAuthMode)
         {
-            Log.Information("LegacyGeneralFormViewModel - Legacy Auth Mode with Custom Leagues is enabled, manually input league name.");
+            Log.Information("LegacyStashFormViewModel - Legacy Auth Mode with Custom Leagues is enabled, manually input league name.");
             return;
         }
 
@@ -307,11 +307,11 @@ class LegacyGeneralFormViewModel : CreViewModelBase
         try
         {
             leagueList = await _apiService.GetLeaguesAsync();
-            Log.Information("LegacyGeneralFormViewModel - Leagues fetched successfully.");
+            Log.Information("LegacyStashFormViewModel - Leagues fetched successfully.");
         }
         catch (RateLimitException e)
         {
-            Log.Error(e, "LegacyGeneralFormViewModel - Rate limit exceeded while fetching stash tabs. Waiting {SecondsToWait} seconds...", e.SecondsToWait);
+            Log.Error(e, "LegacyStashFormViewModel - Rate limit exceeded while fetching stash tabs. Waiting {SecondsToWait} seconds...", e.SecondsToWait);
             _leaguesLoaded = false;
             TriggerGeneralFormFetchCooldown();
             return;
@@ -336,16 +336,16 @@ class LegacyGeneralFormViewModel : CreViewModelBase
 
         if (string.IsNullOrWhiteSpace(SelectedLeagueName))
         {
-            Log.Information("LegacyGeneralFormViewModel - League name not defined; cannot fetch Stash Tabs. Skipping fetch.");
+            Log.Information("LegacyStashFormViewModel - League name not defined; cannot fetch Stash Tabs. Skipping fetch.");
             return;
         }
 
-        Log.Information("LegacyGeneralFormViewModel - Loading stash tabs for {LeagueName}...", _userSettings.LeagueName);
+        Log.Information("LegacyStashFormViewModel - Loading stash tabs for {LeagueName}...", _userSettings.LeagueName);
 
         // If the stash tabs are already loaded, wait for the cooldown and re-enable the button
         if (_stashTabsLoaded)
         {
-            Log.Information("LegacyGeneralFormViewModel - StashTabs already loaded. Skipping fetch.");
+            Log.Information("LegacyStashFormViewModel - StashTabs already loaded. Skipping fetch.");
             return;
         }
 
@@ -359,22 +359,22 @@ class LegacyGeneralFormViewModel : CreViewModelBase
         {
             if (_userSettings.GuildStashMode)
             {
-                Log.Information("LegacyGeneralFormViewModel - Fetching guild stash tabs for {LeagueName}...", _userSettings.LeagueName);
+                Log.Information("LegacyStashFormViewModel - Fetching guild stash tabs for {LeagueName}...", _userSettings.LeagueName);
 
                 stashTabPropsList = await _apiService.GetAllGuildStashTabMetadataWithSessionIdAsync(_userSettings.LegacyAuthSessionId);
             }
             else
             {
-                Log.Information("LegacyGeneralFormViewModel - Fetching personal stash tabs for {LeagueName}...", _userSettings.LeagueName);
+                Log.Information("LegacyStashFormViewModel - Fetching personal stash tabs for {LeagueName}...", _userSettings.LeagueName);
 
                 stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataWithSessionIdAsync(_userSettings.LegacyAuthSessionId);
             }
 
-            Log.Information("LegacyGeneralFormViewModel - StashTabs fetched successfully.");
+            Log.Information("LegacyStashFormViewModel - StashTabs fetched successfully.");
         }
         catch (RateLimitException e)
         {
-            Log.Error(e, "LegacyGeneralFormViewModel - Rate limit exceeded while fetching stash tabs. Waiting {SecondsToWait} seconds...", e.SecondsToWait);
+            Log.Error(e, "LegacyStashFormViewModel - Rate limit exceeded while fetching stash tabs. Waiting {SecondsToWait} seconds...", e.SecondsToWait);
             _stashTabsLoaded = false;
             TriggerGeneralFormFetchCooldown();
             return;
@@ -473,10 +473,10 @@ class LegacyGeneralFormViewModel : CreViewModelBase
             {
                 SetUIEnabledState(true); // Re-enable the UI elements
                 timer.Stop(); // Stop the timer to avoid it triggering again
-                Log.Information("LegacyGeneralFormViewModel - Fetch cooldown timer has ended");
+                Log.Information("LegacyStashFormViewModel - Fetch cooldown timer has ended");
             };
 
-            Log.Information("LegacyGeneralFormViewModel - Starting fetch cooldown timer for {SecondsToWait} seconds", FetchCooldownSeconds);
+            Log.Information("LegacyStashFormViewModel - Starting fetch cooldown timer for {SecondsToWait} seconds", FetchCooldownSeconds);
             SetUIEnabledState(false); // Disable the UI elements before starting the timer
             timer.Start(); // Start the cooldown timer
         });

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms.LegacyGeneralForm"
+﻿<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms.LegacyStashForm"
              xmlns:generalForms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
              xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
              xmlns:creConfig="clr-namespace:ChaosRecipeEnhancer.UI.Models.Config"
@@ -11,7 +11,7 @@
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              Background="#202020"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=generalForms:LegacyGeneralFormViewModel}">
+             d:DataContext="{d:DesignInstance Type=generalForms:LegacyStashFormViewModel}">
 
     <UserControl.Resources>
         <creConverters:InvertBoolConverter x:Key="InvertBoolConverter" />
@@ -44,7 +44,8 @@
             Grid.ColumnSpan="2"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Stash (Legacy)"
+            Text="Stash (Legacy Mode)"
+            ToolTip="Under the hood, this mode is using Session ID based APIs."
             FontSize="24" />
 
         <!-- League Selection Start -->
