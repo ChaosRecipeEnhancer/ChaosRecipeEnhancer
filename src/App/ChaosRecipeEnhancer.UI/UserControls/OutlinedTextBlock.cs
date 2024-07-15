@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace ChaosRecipeEnhancer.UI.UserControls;
 
-// Where the HELL did this come from LMAO
+// REF: https://stackoverflow.com/a/35262509
 [ContentProperty("Text")]
 public class OutlinedTextBlock : FrameworkElement
 {
