@@ -92,13 +92,13 @@
                         <accountForms:OAuthForm
                             Grid.Column="0"
                             Grid.Row="0"
-                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
 
                         <!-- Path of Exile Account (Legacy - Session ID) -->
                         <accountForms:LegacyAuthForm
                             Grid.Column="1"
                             Grid.Row="0"
-                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                     </Grid>
                 </TabItem>
@@ -123,7 +123,8 @@
                         <!-- Recipes -->
                         <generalForms:RecipesForm
                             Grid.Column="0"
-                            Grid.Row="0" />
+                            Grid.Row="0"
+                            d:DataContext="{Binding }"/>
 
                         <!-- General -->
                         <generalForms:StashForm

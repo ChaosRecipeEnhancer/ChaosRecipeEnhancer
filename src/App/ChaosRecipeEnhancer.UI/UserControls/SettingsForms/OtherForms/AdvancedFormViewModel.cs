@@ -35,11 +35,7 @@ public class AdvancedFormViewModel : CreViewModelBase
     public bool LegacyAuthModeIsChecked
     {
         get => _userSettings.LegacyAuthMode;
-        set
-        {
-            _userSettings.LegacyAuthMode = value;
-            OnPropertyChanged();
-        }
+        set => LegacyAuthModeUpdated(value);
     }
 
     public bool DebugModeIsChecked
@@ -78,5 +74,15 @@ public class AdvancedFormViewModel : CreViewModelBase
                 _log.Information("User canceled reset settings");
                 break;
         }
+    }
+
+    private void LegacyAuthModeUpdated(bool value)
+    {
+        _userSettings.LegacyAuthMode = value;
+
+        // if the user is changing this we need to clear our stash indices
+        _userSettings.StashTabIds = [];
+
+        OnPropertyChanged();
     }
 }

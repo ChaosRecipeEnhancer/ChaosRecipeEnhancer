@@ -120,7 +120,7 @@ public class StashFormViewModel : CreViewModelBase
     public bool CustomLeagueEnabled
     {
         get => _userSettings.CustomLeagueEnabled;
-        set => _ = UpdateIsPrivateLeague(value);
+        set => _ = UpdateIsPrivateLeagueAsync(value);
     }
 
     public int StashTabQueryMode
@@ -145,7 +145,6 @@ public class StashFormViewModel : CreViewModelBase
     public string StashTabIdsToString
     {
         get => string.Join(",", StashTabIds);
-        set { return; }
     }
 
     public string StashTabPrefix
@@ -284,7 +283,7 @@ public class StashFormViewModel : CreViewModelBase
         }
     }
 
-    private async Task UpdateIsPrivateLeague(bool isPrivateLeague)
+    private async Task UpdateIsPrivateLeagueAsync(bool isPrivateLeague)
     {
         if (_userSettings.CustomLeagueEnabled != isPrivateLeague)
         {

@@ -149,28 +149,21 @@
             Grid.Row="3"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Guild Stash Mode:"
-            ToolTipService.InitialShowDelay="100"
-            ToolTip="Guild Stash picking is only available when using&#x0a;Legacy Auth Mode (see 'Advanced' settings for more details)." />
+            Text="Guild Stash Mode:" />
 
         <CheckBox
             Grid.Column="1"
             Grid.Row="3"
-            Margin="10 0 0 10"
-            VerticalAlignment="Center"
-            IsEnabled="False"
-            ToolTipService.InitialShowDelay="100"
-            ToolTipService.ShowOnDisabled="True"
-            ToolTip="Guild Stash picking is only available when using&#x0a;Legacy Auth Mode (see 'Advanced' settings for more details)." />
+            Margin="10 0 0 10" />
         <!-- Guild Stash Mode Checkbox End -->
 
-        <!-- Stash Tab Query Mode Selector Start -->
+        <!-- Tab Query Mode Selector Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="4"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Stash Tab Query Mode:" />
+            Text="Tab Query Mode:" />
 
         <ComboBox
             Grid.Column="1"
@@ -263,7 +256,7 @@
                 Grid.ColumnSpan="3"
                 Margin="0 0 5 0"
                 Width="170"
-                Text="{Binding StashTabIdsToString, Mode=TwoWay}"
+                Text="{Binding StashTabIdsToString, Mode=OneWay}"
                 Visibility="{Binding StashTabDropDownEnabled, Converter={StaticResource InvertedBoolVisibilityConverter}}"
                 VerticalContentAlignment="Center"
                 HorizontalAlignment="Center"

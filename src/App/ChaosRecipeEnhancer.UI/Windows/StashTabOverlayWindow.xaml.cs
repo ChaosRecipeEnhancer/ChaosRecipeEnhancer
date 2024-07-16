@@ -5,6 +5,7 @@ using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.UserControls.StashTab;
 using ChaosRecipeEnhancer.UI.Utilities;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,12 +22,12 @@ namespace ChaosRecipeEnhancer.UI.Windows;
 public partial class StashTabOverlayWindow : Window
 {
     private readonly StashTabOverlayViewModel _model;
-    private static List<EnhancedItemSet> SetsToHighlight { get; } = new();
+    private static List<EnhancedItemSet> SetsToHighlight { get; } = [];
 
     public StashTabOverlayWindow()
     {
         InitializeComponent();
-        DataContext = _model = new StashTabOverlayViewModel();
+        DataContext = _model = Ioc.Default.GetService<StashTabOverlayViewModel>();
         MouseHookForStashTabOverlay.MouseAction += HandleMouseAction;
     }
 
