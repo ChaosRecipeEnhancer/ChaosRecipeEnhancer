@@ -52,7 +52,7 @@ public class AdvancedFormViewModel : CreViewModelBase
     {
         _log.Warning("User initiated reset settings");
 
-        switch (MessageBox.Show("This will reset all of your settings. You will lose all your user configurations if decide not to manually back them up.", "Warning: Reset Settings", MessageBoxButton.YesNo))
+        switch (MessageBox.Show("This will reset all of your settings. You will lose all your user configurations if decide not to manually back them up.\n\nThe application will shut down after this for all application state to be reset.", "Warning: Reset Settings", MessageBoxButton.YesNo))
         {
             case MessageBoxResult.Yes:
                 _log.Information("User confirmed reset settings");
@@ -68,6 +68,7 @@ public class AdvancedFormViewModel : CreViewModelBase
                 GlobalHotkeyState.RemoveAllHotkeys();
                 _log.Information("Global hotkeys removed");
 
+                Application.Current.Shutdown();
 
                 break;
             case MessageBoxResult.No:
