@@ -1,0 +1,19 @@
+meta {
+  name: List Characters
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://api.pathofexile.com/character
+  body: none
+  auth: bearer
+}
+
+headers {
+  User-Agent: Bruno
+}
+
+auth:bearer {
+  token: {{BEARER_TOKEN}}
+}

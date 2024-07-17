@@ -10,17 +10,19 @@ public static class AuthConfig
     public static readonly int DefaultTokenExpirationHours = 10;
 
     // Production Config
-    public static readonly Uri OAuthTokenEndpoint = new("https://chaos-recipe.com/auth/token");
+    // public static readonly Uri OAuthTokenEndpoint = new("https://chaos-recipe.com/auth/token");  // V1 - [Depracated]
+    public static readonly Uri OAuthTokenEndpoint = new("https://chaos-recipe.com/v2/auth/token");  // V2 - Adds support `account:guild:stashes` scope
     public static readonly string OAuthRedirectUri = "https://chaos-recipe.com/auth/success";
 
     // Sandbox Config
-    //    public static readonly Uri OAuthTokenEndpoint = new("https://sandbox.chaos-recipe.com/auth/token");
-    //    public static readonly string OAuthRedirectUri = "https://sandbox.chaos-recipe.com/auth/success";
+    // public static readonly Uri OAuthTokenEndpoint = new("https://sandbox.chaos-recipe.com/auth/token");
+    // public static readonly Uri OAuthTokenEndpoint = new("https://sandbox.chaos-recipe.com/v2/auth/token");
+    // public static readonly string OAuthRedirectUri = "https://sandbox.chaos-recipe.com/auth/success";
 
     public static string CreClientVersionAuthParam => CreAppConfig.VersionText;
 
     // You can only request account:* scopes - NO service:* scopes
-    public static readonly string Scopes = Uri.EscapeDataString("account:leagues account:stashes account:characters account:item_filter");
+    public static readonly string Scopes = Uri.EscapeDataString("account:leagues account:stashes account:characters account:item_filter account:guild:stashes");
 
     public static string RedirectUri(string state, string codeVerifier, string creClientVersion)
     =>

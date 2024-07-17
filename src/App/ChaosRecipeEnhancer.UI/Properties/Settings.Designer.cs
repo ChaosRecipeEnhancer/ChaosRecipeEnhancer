@@ -12,7 +12,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.10.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.11.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -104,18 +104,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["StashTabQueryMode"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string StashTabIndices {
-            get {
-                return ((string)(this["StashTabIndices"]));
-            }
-            set {
-                this["StashTabIndices"] = value;
             }
         }
         
@@ -744,18 +732,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string StashTabPrefixIndices {
-            get {
-                return ((string)(this["StashTabPrefixIndices"]));
-            }
-            set {
-                this["StashTabPrefixIndices"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
         public string ReloadFilterHotkey {
             get {
@@ -894,6 +870,66 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["CustomLeagueEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LegacyAuthMode {
+            get {
+                return ((bool)(this["LegacyAuthMode"]));
+            }
+            set {
+                this["LegacyAuthMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LegacyAuthAccountName {
+            get {
+                return ((string)(this["LegacyAuthAccountName"]));
+            }
+            set {
+                this["LegacyAuthAccountName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LegacyAuthSessionId {
+            get {
+                return ((string)(this["LegacyAuthSessionId"]));
+            }
+            set {
+                this["LegacyAuthSessionId"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool GuildStashMode {
+            get {
+                return ((bool)(this["GuildStashMode"]));
+            }
+            set {
+                this["GuildStashMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool HideRemoveOnlyTabs {
+            get {
+                return ((bool)(this["HideRemoveOnlyTabs"]));
+            }
+            set {
+                this["HideRemoveOnlyTabs"] = value;
             }
         }
     }

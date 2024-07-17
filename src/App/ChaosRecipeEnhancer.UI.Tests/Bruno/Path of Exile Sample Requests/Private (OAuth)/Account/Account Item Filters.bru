@@ -1,0 +1,19 @@
+meta {
+  name: Account Item Filters
+  type: http
+  seq: 9
+}
+
+get {
+  url: https://api.pathofexile.com/item-filter
+  body: none
+  auth: bearer
+}
+
+headers {
+  User-Agent: Bruno
+}
+
+auth:bearer {
+  token: {{BEARER_TOKEN}}
+}

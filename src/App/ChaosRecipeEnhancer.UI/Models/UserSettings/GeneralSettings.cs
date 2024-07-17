@@ -9,6 +9,20 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 /// </summary>
 public partial class UserSettings : IUserSettings
 {
+    public bool GuildStashMode
+    {
+
+        get => Settings.Default.GuildStashMode;
+        set
+        {
+            if (Settings.Default.GuildStashMode != value)
+            {
+                Settings.Default.GuildStashMode = value;
+                Save();
+            }
+        }
+    }
+
     public string LeagueName
     {
 
@@ -44,20 +58,6 @@ public partial class UserSettings : IUserSettings
             if (Settings.Default.StashTabPrefix != value)
             {
                 Settings.Default.StashTabPrefix = value;
-                Save();
-            }
-        }
-    }
-
-    public HashSet<string> StashTabIndices
-    {
-        get => new((Settings.Default.StashTabIndices ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries));
-        set
-        {
-            var indicesString = value != null ? string.Join(",", value) : "";
-            if (Settings.Default.StashTabIndices != indicesString)
-            {
-                Settings.Default.StashTabIndices = indicesString;
                 Save();
             }
         }
@@ -124,6 +124,19 @@ public partial class UserSettings : IUserSettings
             if (Settings.Default.PathOfExileClientLogLocation != value)
             {
                 Settings.Default.PathOfExileClientLogLocation = value;
+                Save();
+            }
+        }
+    }
+
+    public bool HideRemoveOnlyTabs
+    {
+        get => Settings.Default.HideRemoveOnlyTabs;
+        set
+        {
+            if (Settings.Default.HideRemoveOnlyTabs != value)
+            {
+                Settings.Default.HideRemoveOnlyTabs = value;
                 Save();
             }
         }

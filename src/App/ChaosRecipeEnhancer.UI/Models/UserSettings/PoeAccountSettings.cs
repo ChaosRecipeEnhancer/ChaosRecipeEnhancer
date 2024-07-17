@@ -7,7 +7,7 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 /// <summary>
 /// User Settings related to the Path of Exile Account.
 /// </summary>
-public partial class UserSettings : IUserSettings
+public partial class UserSettings : EncryptedUserSettings, IUserSettings
 {
     public string PathOfExileAccountName
     {
@@ -22,14 +22,16 @@ public partial class UserSettings : IUserSettings
         }
     }
 
+    // Encrypted Data
     public string PathOfExileApiAuthToken
     {
-        get => Settings.Default.PathOfExileApiAuthToken;
+        get => DecryptSetting(Settings.Default.PathOfExileApiAuthToken);
         set
         {
-            if (Settings.Default.PathOfExileApiAuthToken != value)
+            string encryptedValue = EncryptSetting(value);
+            if (Settings.Default.PathOfExileApiAuthToken != encryptedValue)
             {
-                Settings.Default.PathOfExileApiAuthToken = value;
+                Settings.Default.PathOfExileApiAuthToken = encryptedValue;
                 Save();
             }
         }
@@ -56,6 +58,34 @@ public partial class UserSettings : IUserSettings
             if (Settings.Default.PoEAccountConnectionStatus != (int)value)
             {
                 Settings.Default.PoEAccountConnectionStatus = (int)value;
+                Save();
+            }
+        }
+    }
+
+    public string LegacyAuthAccountName
+    {
+        get => Settings.Default.LegacyAuthAccountName;
+        set
+        {
+            if (Settings.Default.LegacyAuthAccountName != value)
+            {
+                Settings.Default.LegacyAuthAccountName = value;
+                Save();
+            }
+        }
+    }
+
+    // Encrypted Data
+    public string LegacyAuthSessionId
+    {
+        get => DecryptSetting(Settings.Default.LegacyAuthSessionId);
+        set
+        {
+            string encryptedValue = EncryptSetting(value);
+            if (Settings.Default.LegacyAuthSessionId != encryptedValue)
+            {
+                Settings.Default.LegacyAuthSessionId = encryptedValue;
                 Save();
             }
         }

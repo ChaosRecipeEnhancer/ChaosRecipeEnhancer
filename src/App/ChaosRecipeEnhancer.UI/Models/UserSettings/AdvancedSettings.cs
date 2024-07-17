@@ -19,4 +19,17 @@ public partial class UserSettings : IUserSettings
             }
         }
     }
+
+    public bool LegacyAuthMode
+    {
+        get => Settings.Default.LegacyAuthMode;
+        set
+        {
+            if (Settings.Default.LegacyAuthMode != value)
+            {
+                Settings.Default.LegacyAuthMode = value;
+                Save();
+            }
+        }
+    }
 }

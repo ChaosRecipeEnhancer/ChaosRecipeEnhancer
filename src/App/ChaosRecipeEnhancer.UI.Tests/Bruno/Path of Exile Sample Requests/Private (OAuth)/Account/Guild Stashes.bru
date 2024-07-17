@@ -1,0 +1,19 @@
+meta {
+  name: Guild Stashes
+  type: http
+  seq: 7
+}
+
+get {
+  url: https://api.pathofexile.com/guild/stash/Standard
+  body: none
+  auth: bearer
+}
+
+headers {
+  User-Agent: Bruno
+}
+
+auth:bearer {
+  token: {{BEARER_TOKEN}}
+}

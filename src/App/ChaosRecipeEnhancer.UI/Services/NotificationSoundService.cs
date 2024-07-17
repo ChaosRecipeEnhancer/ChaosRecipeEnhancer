@@ -17,7 +17,14 @@ public class NotificationSoundService : INotificationSoundService, IDisposable
 {
     private readonly ILogger _log = Log.ForContext<NotificationSoundService>();
     private readonly IUserSettings _userSettings;
-    private readonly Dictionary<NotificationSoundType, AudioResource> _soundPlayers;
+    protected readonly Dictionary<NotificationSoundType, IAudioResource> _soundPlayers;
+
+    protected Dictionary<NotificationSoundType, IAudioResource> SoundPlayers => _soundPlayers;
+
+    public virtual void SetAudioResource(NotificationSoundType soundType, IAudioResource audioResource)
+    {
+        _soundPlayers[soundType] = audioResource;
+    }
 
     public NotificationSoundService(IUserSettings userSettings)
     {
@@ -37,15 +44,15 @@ public class NotificationSoundService : INotificationSoundService, IDisposable
         }
     }
 
-    private Dictionary<NotificationSoundType, AudioResource> InitializeSoundPlayers()
+    private Dictionary<NotificationSoundType, IAudioResource> InitializeSoundPlayers()
     {
-        Dictionary<NotificationSoundType, AudioResource> players = [];
+        Dictionary<NotificationSoundType, IAudioResource> players = [];
 
         try
         {
             if (_userSettings.SoundEnabled)
             {
-                players = new Dictionary<NotificationSoundType, AudioResource>
+                players = new Dictionary<NotificationSoundType, IAudioResource>
                 {
                     { NotificationSoundType.ItemSetStateChanged, new AudioResource(@"Assets\Sounds\ItemSetStateChanged.wav") },
                     { NotificationSoundType.SetPickingComplete, new AudioResource(@"Assets\Sounds\SetPickingComplete.wav") },
@@ -107,7 +114,12 @@ public class NotificationSoundService : INotificationSoundService, IDisposable
     #endregion
 }
 
-public class AudioResource : IDisposable
+public interface IAudioResource : IDisposable
+{
+    void Play(float volume);
+}
+
+public class AudioResource : IAudioResource
 {
     private readonly string _filePath;
     public AudioFileReader FileReader { get; private set; }
@@ -121,7 +133,7 @@ public class AudioResource : IDisposable
         OutputDevice.Init(FileReader);
     }
 
-    public void Play(float volume)
+    public virtual void Play(float volume)
     {
         if (OutputDevice.PlaybackState == PlaybackState.Playing)
         {
@@ -142,7 +154,7 @@ public class AudioResource : IDisposable
         OutputDevice.Play();
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         // Ensure to stop the playback before disposing
         if (OutputDevice.PlaybackState != PlaybackState.Stopped)

@@ -1,5 +1,5 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ public static class GlobalItemSetManagerState
     public static int SetThreshold { get; set; }
     public static List<EnhancedItemSet> SetsInProgress { get; set; } = new();
     public static List<EnhancedItem> CurrentItemsFilteredForRecipe { get; set; } = new();
-    public static List<BaseStashTabMetadata> StashTabMetadataListStashesResponse { get; set; }
+    public static List<UnifiedStashTabMetadata> StashTabMetadataListStashesResponse { get; set; }
 
     // full set amounts will also need to be rendered
     public static int CompletedSetCount { get; private set; }
@@ -42,23 +42,12 @@ public static class GlobalItemSetManagerState
 
     #region Methods
 
-    public static void UpdateStashMetadata(List<BaseStashTabMetadata> metadata)
+    public static void UpdateStashMetadata(List<UnifiedStashTabMetadata> metadata)
     {
         StashTabMetadataListStashesResponse = metadata;
     }
 
-    public static void UpdateStashContentsByIndex(int setThreshold, List<int> selectedTabIndices, List<EnhancedItem> filteredStashContents)
-    {
-        // if no tabs are selected (this isn't a realistic case)
-        if (selectedTabIndices.Count == 0) return;
-
-        // setting some new properties
-        SetThreshold = setThreshold;
-        CurrentItemsFilteredForRecipe = filteredStashContents;
-        NeedsFetching = false;
-    }
-
-    public static void UpdateStashContentsById(int setThreshold, List<string> selectedTabIds, List<EnhancedItem> filteredStashContents)
+    public static void UpdateStashContents(int setThreshold, List<string> selectedTabIds, List<EnhancedItem> filteredStashContents)
     {
         // if no tabs are selected (this isn't a realistic case)
         if (selectedTabIds.Count == 0) return;
@@ -489,11 +478,11 @@ public static class GlobalItemSetManagerState
         return result;
     }
 
-    public static List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response)
+    public static List<UnifiedStashTabMetadata> FlattenStashTabs(List<UnifiedStashTabMetadata> tabs)
     {
-        var allTabs = new List<BaseStashTabMetadata>();
+        var allTabs = new List<UnifiedStashTabMetadata>();
 
-        foreach (var tab in response.StashTabs)
+        foreach (var tab in tabs)
         {
             if (tab.Type != "Folder")
             {

@@ -4,6 +4,7 @@ using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Native;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,11 @@ public partial class SettingsWindow
 
     public SettingsWindow()
     {
-        DataContext = _model = new SettingsViewModel();
-        _recipeOverlay = new SetTrackerOverlayWindow();
         InitializeComponent();
+        DataContext = _model = Ioc.Default.GetService<SettingsViewModel>();
+
+        _recipeOverlay = new SetTrackerOverlayWindow();
+
         InitializeTray();
         InitializeHotkeys();
 
@@ -47,34 +50,16 @@ public partial class SettingsWindow
         };
     }
 
-    private static bool CheckAllSettings(bool showError)
-    {
-        var missingSettings = new List<string>();
-        var errorMessage = "Please add: \n";
-
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName)) missingSettings.Add("- Account Name \n");
-        if (string.IsNullOrEmpty(Settings.Default.PathOfExileApiAuthToken)) missingSettings.Add("- PoE Auth Token \n");
-        if (string.IsNullOrEmpty(Settings.Default.LeagueName)) missingSettings.Add("- League \n");
-
-        if (missingSettings.Count == 0) return true;
-
-        foreach (var setting in missingSettings) errorMessage += setting;
-
-        if (showError) _ = MessageBox.Show(errorMessage, "Missing GlobalUserSettings", MessageBoxButton.OK, MessageBoxImage.Error);
-
-        return false;
-    }
-
     protected override void OnClosing(CancelEventArgs e)
     {
-        if (Settings.Default.CloseToTrayEnabled && !_closingFromTrayIcon)
+        if (_model.CloseToTrayEnabled && !_closingFromTrayIcon)
         {
             e.Cancel = true;
             Hide();
             ShowInTaskbar = false;
             base.OnClosing(e);
         }
-        else if (!Settings.Default.CloseToTrayEnabled || _closingFromTrayIcon)
+        else if (!_model.CloseToTrayEnabled || _closingFromTrayIcon)
         {
             _trayIcon.Visible = false;
             MouseHookForStashTabOverlay.Stop();
@@ -104,6 +89,24 @@ public partial class SettingsWindow
                 RunOverlayButton.Content = "Stop Overlay";
             }
         }
+    }
+
+    private static bool CheckAllSettings(bool showError)
+    {
+        var missingSettings = new List<string>();
+        var errorMessage = "Please add: \n";
+
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileAccountName) && string.IsNullOrEmpty(Settings.Default.LegacyAuthAccountName)) missingSettings.Add("- Account Name \n");
+        if (string.IsNullOrEmpty(Settings.Default.PathOfExileApiAuthToken) && string.IsNullOrEmpty(Settings.Default.LegacyAuthSessionId)) missingSettings.Add("- PoE Auth Token \n");
+        if (string.IsNullOrEmpty(Settings.Default.LeagueName)) missingSettings.Add("- League \n");
+
+        if (missingSettings.Count == 0) return true;
+
+        foreach (var setting in missingSettings) errorMessage += setting;
+
+        if (showError) _ = MessageBox.Show(errorMessage, "Missing GlobalUserSettings", MessageBoxButton.OK, MessageBoxImage.Error);
+
+        return false;
     }
 
     #region Icon Tray Stuff (Move This... Later)

@@ -5,6 +5,7 @@ using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.UserControls.StashTab;
 using ChaosRecipeEnhancer.UI.Utilities;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,12 +22,12 @@ namespace ChaosRecipeEnhancer.UI.Windows;
 public partial class StashTabOverlayWindow : Window
 {
     private readonly StashTabOverlayViewModel _model;
-    private static List<EnhancedItemSet> SetsToHighlight { get; } = new();
+    private static List<EnhancedItemSet> SetsToHighlight { get; } = [];
 
     public StashTabOverlayWindow()
     {
         InitializeComponent();
-        DataContext = _model = new StashTabOverlayViewModel();
+        DataContext = _model = Ioc.Default.GetService<StashTabOverlayViewModel>();
         MouseHookForStashTabOverlay.MouseAction += HandleMouseAction;
     }
 
@@ -335,7 +336,7 @@ public partial class StashTabOverlayWindow : Window
         }
     }
 
-    private void PrepareSelling()
+    private static void PrepareSelling()
     {
         SetsToHighlight.Clear();
 
@@ -393,20 +394,12 @@ public partial class StashTabOverlayWindow : Window
         Trace.WriteLine("Sets to highlight: " + SetsToHighlight.Count);
     }
 
-    private void GenerateReconstructedStashTabsFromApiResponse()
+    private static void GenerateReconstructedStashTabsFromApiResponse()
     {
         var reconstructedStashTabs = new List<StashTabControl>();
         var stashTabMetadataList = GlobalItemSetManagerState.StashTabMetadataListStashesResponse;
 
-        if ((Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsByIndex && !string.IsNullOrWhiteSpace(Settings.Default.StashTabIndices)) ||
-            (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix && !string.IsNullOrWhiteSpace(Settings.Default.StashTabPrefixIndices)))
-        {
-            StashTabControlManager.GetStashTabIndicesFromSettingsForQueryByIndex();
-        }
-        else if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsById && !string.IsNullOrWhiteSpace(Settings.Default.StashTabIdentifiers))
-        {
-            StashTabControlManager.GetStashTabIndicesFromSettingsForQueryById(stashTabMetadataList);
-        }
+        StashTabControlManager.GetStashTabIndicesFromSettings(stashTabMetadataList);
 
         if (stashTabMetadataList != null && StashTabControlManager.StashTabIndices != null)
         {
@@ -437,11 +430,14 @@ public partial class StashTabOverlayWindow : Window
         }
     }
 
-    private StashTabControl GetStashTabFromItem(EnhancedItem itemModel)
+    private static StashTabControl GetStashTabFromItem(EnhancedItem itemModel)
     {
         foreach (var s in StashTabControlManager.StashTabControls)
         {
-            if (itemModel.StashTabId == s.Id) return s;
+            if (itemModel.StashTabId == s.Id)
+            {
+                return s;
+            }
         }
 
         return null;

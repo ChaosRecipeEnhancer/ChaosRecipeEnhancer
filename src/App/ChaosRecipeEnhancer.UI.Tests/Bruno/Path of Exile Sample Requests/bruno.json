@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Path of Exile",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

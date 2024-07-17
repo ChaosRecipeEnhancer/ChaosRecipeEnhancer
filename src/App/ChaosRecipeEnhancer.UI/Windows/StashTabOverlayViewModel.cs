@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
-internal sealed class StashTabOverlayViewModel : ViewModelBase
+internal sealed class StashTabOverlayViewModel : CreViewModelBase
 {
     private readonly INotificationSoundService _notificationSoundService = Ioc.Default.GetRequiredService<INotificationSoundService>();
     private bool _isEditing;

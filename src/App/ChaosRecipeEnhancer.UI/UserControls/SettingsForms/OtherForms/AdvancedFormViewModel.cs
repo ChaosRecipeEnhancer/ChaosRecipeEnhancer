@@ -32,6 +32,12 @@ public class AdvancedFormViewModel : CreViewModelBase
         }
     }
 
+    public bool LegacyAuthModeIsChecked
+    {
+        get => _userSettings.LegacyAuthMode;
+        set => LegacyAuthModeUpdated(value);
+    }
+
     public bool DebugModeIsChecked
     {
         get => _userSettings.DebugMode;
@@ -46,7 +52,7 @@ public class AdvancedFormViewModel : CreViewModelBase
     {
         _log.Warning("User initiated reset settings");
 
-        switch (MessageBox.Show("This will reset all of your settings. You will lose all your user configurations if decide not to manually back them up.", "Warning: Reset Settings", MessageBoxButton.YesNo))
+        switch (MessageBox.Show("This will reset all of your settings. You will lose all your user configurations if decide not to manually back them up.\n\nThe application will shut down after this for all application state to be reset.", "Warning: Reset Settings", MessageBoxButton.YesNo))
         {
             case MessageBoxResult.Yes:
                 _log.Information("User confirmed reset settings");
@@ -62,11 +68,22 @@ public class AdvancedFormViewModel : CreViewModelBase
                 GlobalHotkeyState.RemoveAllHotkeys();
                 _log.Information("Global hotkeys removed");
 
+                Application.Current.Shutdown();
 
                 break;
             case MessageBoxResult.No:
                 _log.Information("User canceled reset settings");
                 break;
         }
+    }
+
+    private void LegacyAuthModeUpdated(bool value)
+    {
+        _userSettings.LegacyAuthMode = value;
+
+        // if the user is changing this we need to clear our stash indices
+        _userSettings.StashTabIds = [];
+
+        OnPropertyChanged();
     }
 }

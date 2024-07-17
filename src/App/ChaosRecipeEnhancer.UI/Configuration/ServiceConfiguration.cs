@@ -81,10 +81,18 @@ public static class ServiceConfiguration
 
     private static void ConfigureViewModels(IServiceCollection services)
     {
-        services.AddTransient<GeneralFormViewModel>();
-        services.AddTransient<SetTrackerOverlayFormViewModel>();
+        // Window VM's
+        services.AddTransient<SettingsViewModel>();
         services.AddTransient<StashTabOverlayViewModel>();
-        services.AddTransient<PathOfExileAccountOAuthFormViewModel>();
+        services.AddTransient<StashTabOverlayViewModel>();
+
+        // UserControl VM's
+        services.AddTransient<StashFormViewModel>();
+        services.AddTransient<LegacyStashFormViewModel>();
+        services.AddTransient<FetchOnRezoneFormViewModel>();
+        services.AddTransient<SetTrackerOverlayFormViewModel>();
+        services.AddTransient<OAuthFormViewModel>();
+        services.AddTransient<LegacyAuthFormViewModel>();
         services.AddTransient<RecipesFormViewModel>();
         services.AddTransient<AdvancedFormViewModel>();
         services.AddTransient<SystemFormViewModel>();
