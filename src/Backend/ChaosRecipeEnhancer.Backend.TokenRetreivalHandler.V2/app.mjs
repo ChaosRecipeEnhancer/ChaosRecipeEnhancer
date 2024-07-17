@@ -1,4 +1,4 @@
-﻿/* global fetch, btoa, atob */
+/* global fetch, btoa, atob */
 
 import {
     SecretsManagerClient,
@@ -66,7 +66,7 @@ const getAuthToken = async ({ secretKey, code, codeVerifier }) => {
     // Sandbox Redirect Url
     // urlencodedParams.append("redirect_uri", "https://sandbox.chaos-recipe.com/auth/success");
 
-    urlencodedParams.append("scope", "account:leagues account:stashes account:characters account:item_filter");
+    urlencodedParams.append("scope", "account:leagues account:stashes account:characters account:item_filter account:guild:stashes");
     urlencodedParams.append("code_verifier", codeVerifier);
 
     //    Debugging Issues
