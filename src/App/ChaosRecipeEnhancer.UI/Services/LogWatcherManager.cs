@@ -17,6 +17,7 @@ public class LogWatcherManager
     // this should match the cooldown we apply in the set tracker view model
     /// <see cref="SetTrackerOverlayViewModel.FetchCooldownSeconds"/>
     private const int AutoFetchCooldownSeconds = 15;
+
     private static string LastZone { get; set; } = "";
     private static string NewZone { get; set; } = "";
 
@@ -25,13 +26,27 @@ public class LogWatcherManager
 
     public LogWatcherManager(SetTrackerOverlayWindow setTrackerOverlay)
     {
-        Log.Information("LogWatcherManager - New Instance Created");
-        _cancellationTokenSource = new CancellationTokenSource();
+        Log.Information("LogWatcherManager - Validating Path of Exile Client.txt Log File Location");
 
-        _workerTask = Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+        // Using an if statement here feels off - is throwing just a better option?
+        if (!File.Exists(Settings.Default.PathOfExileClientLogLocation))
         {
-            Task.Factory.StartNew(() => StartWatchingLogFile(setTrackerOverlay));
-        }).Task;
+            Log.Error("LogWatcherManager - Path of Exile Client.txt Log File Not Found");
+            GlobalErrorHandler.Spawn(
+                $"Client.txt could not be found at {Settings.Default.PathOfExileClientLogLocation}. Please navigate to the 'General > Auto-Fetch' settings and verify your setup.",
+                "Error: Log Watcher Manager - Missing Client.txt"
+            );
+        }
+        else
+        {
+            Log.Information("LogWatcherManager - New Instance Created");
+            _cancellationTokenSource = new CancellationTokenSource();
+
+            _workerTask = Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+            {
+                Task.Factory.StartNew(() => StartWatchingLogFile(setTrackerOverlay));
+            }).Task;
+        }
     }
 
     private void StartWatchingLogFile(SetTrackerOverlayWindow setTrackerOverlay)
@@ -40,14 +55,15 @@ public class LogWatcherManager
 
         using var wh = new AutoResetEvent(false);
         using var fsw = new FileSystemWatcher(Path.GetDirectoryName(@"" + Settings.Default.PathOfExileClientLogLocation))
-        {
-            Filter = "Client.txt",
-            EnableRaisingEvents = true
-        };
+            {
+                Filter = "Client.txt",
+                EnableRaisingEvents = true
+            };
 
         fsw.Changed += (s, e) => wh.Set();
 
-        using var fs = new FileStream(Settings.Default.PathOfExileClientLogLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        using var fs = new FileStream(Settings.Default.PathOfExileClientLogLocation, FileMode.Open, FileAccess.Read,
+            FileShare.ReadWrite);
         fs.Position = fs.Length;
 
         using var sr = new StreamReader(fs);
@@ -207,7 +223,8 @@ public class LogWatcherManager
                 Log.Information("LogWatcherManager - Fetch cooldown timer has ended");
             };
 
-            Log.Information("LogWatcherManager - Starting fetch cooldown timer for {SecondsToWait} seconds", secondsToWait);
+            Log.Information("LogWatcherManager - Starting fetch cooldown timer for {SecondsToWait} seconds",
+                secondsToWait);
             AutoFetchAllowed = false; // Disable the fetch button before starting the timer
             timer.Start(); // Start the cooldown timer
         });
