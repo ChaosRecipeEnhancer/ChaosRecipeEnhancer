@@ -1,0 +1,19 @@
+meta {
+  name: Get Character
+  type: http
+  seq: 4
+}
+
+get {
+  url: https://api.pathofexile.com/character/ArchnemesisGladiator
+  body: none
+  auth: bearer
+}
+
+headers {
+  User-Agent: Bruno
+}
+
+auth:bearer {
+  token: {{BEARER_TOKEN}}
+}
