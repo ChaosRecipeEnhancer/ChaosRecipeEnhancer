@@ -20,7 +20,7 @@ public static class AuthConfig
     public static string CreClientVersionAuthParam => CreAppConfig.VersionText;
 
     // You can only request account:* scopes - NO service:* scopes
-    public static readonly string Scopes = Uri.EscapeDataString("account:leagues account:stashes account:characters account:item_filter");
+    public static readonly string Scopes = Uri.EscapeDataString("account:leagues account:stashes account:characters account:item_filter account:guild:stashes");
 
     public static string RedirectUri(string state, string codeVerifier, string creClientVersion)
     =>

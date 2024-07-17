@@ -59,5 +59,11 @@ public static class PoeApiConfig
     public static Uri PersonalIndividualTabContentsOAuthEndpoint(string stashTabId)
         => new($"{PoeOAuthApiBaseUrl}/stash/{Settings.Default.LeagueName}/{stashTabId}");
 
+    public static Uri GuildStashTabPropsOAuthEndpoint()
+        => new($"{PoeOAuthApiBaseUrl}/guild/stash/{Settings.Default.LeagueName}");
+
+    public static Uri GuildIndividualTabContentsOAuthEndpoint(string stashTabId)
+        => new($"{PoeOAuthApiBaseUrl}/guild/stash/{Settings.Default.LeagueName}/{stashTabId}");
+
     #endregion
 }

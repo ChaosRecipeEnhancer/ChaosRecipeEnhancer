@@ -36,6 +36,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -207,6 +208,7 @@
         <!-- Select Tab From List Start -->
         <TextBlock Grid.Column="0"
                    Grid.Row="6"
+                   Margin="0 0 0 10"
                    VerticalAlignment="Center"
                    Text="Select Tabs:"
                    Visibility="{Binding GlobalUserSettings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=0}" />
@@ -214,7 +216,7 @@
         <Grid
             Grid.Column="1"
             Grid.Row="6"
-            Margin="10 0 0 0"
+            Margin="10 0 0 10"
             Visibility="{Binding GlobalUserSettings.StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=0}">
 
             <Grid.ColumnDefinitions>
@@ -328,6 +330,7 @@
         <TextBlock
             Grid.Column="0"
             Grid.Row="7"
+            Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Tab Name Prefix:"
             ToolTip="Every stash tab which name starts with this prefix will be added."
@@ -336,10 +339,26 @@
         <TextBox
             Grid.Column="1"
             Grid.Row="7"
-            Margin="10 0 0 0"
+            Margin="10 0 0 10"
             Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
             Text="{Binding StashTabPrefix, Mode=TwoWay}" />
         <!-- Individual Stash Tab Name Prefix End -->
+
+        <!-- Hide Remove Only Tabs Checkbox Start -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="8"
+            VerticalAlignment="Center"
+            Text="Hide Remove-Only Tabs:"
+            ToolTip="Hide the (potentially overwhelming) amount of Remove-Only tabs from the 'Select Tabs' list." />
+
+        <CheckBox
+            Grid.Column="1"
+            Grid.Row="8"
+            Margin="10 0 0 0"
+            IsChecked="{Binding HideRemoveOnlyTabs, Mode=TwoWay}" />
+        <!-- Hide Remove Only Tabs Checkbox End -->
+
 
     </Grid>
 

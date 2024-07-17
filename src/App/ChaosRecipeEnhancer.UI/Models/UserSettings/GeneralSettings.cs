@@ -128,4 +128,17 @@ public partial class UserSettings : IUserSettings
             }
         }
     }
+
+    public bool HideRemoveOnlyTabs
+    {
+        get => Settings.Default.HideRemoveOnlyTabs;
+        set
+        {
+            if (Settings.Default.HideRemoveOnlyTabs != value)
+            {
+                Settings.Default.HideRemoveOnlyTabs = value;
+                Save();
+            }
+        }
+    }
 }

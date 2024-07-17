@@ -39,6 +39,7 @@ public interface IUserSettings
     int StashTabQueryMode { get; set; }
     public HashSet<string> StashTabIds { get; set; }
     string StashTabPrefix { get; set; }
+    bool HideRemoveOnlyTabs { get; set; }
     bool AutoFetchOnRezoneEnabled { get; set; }
     int FullSetThreshold { get; set; }
     bool DoNotPreserveLowItemLevelGear { get; set; }

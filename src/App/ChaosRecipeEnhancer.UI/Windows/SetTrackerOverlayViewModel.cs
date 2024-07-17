@@ -181,11 +181,13 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
             GlobalItemSetManagerState.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
-            var stashTabMetadataList = !_userSettings.LegacyAuthMode
-                ? await _apiService.GetAllPersonalStashTabMetadataWithOAuthAsync()
-                : _userSettings.GuildStashMode
+            var stashTabMetadataList = _userSettings.LegacyAuthMode
+                ? _userSettings.GuildStashMode
                     ? await _apiService.GetAllGuildStashTabMetadataWithSessionIdAsync(_userSettings.LegacyAuthSessionId)
-                    : await _apiService.GetAllPersonalStashTabMetadataWithSessionIdAsync(_userSettings.LegacyAuthSessionId);
+                    : await _apiService.GetAllPersonalStashTabMetadataWithSessionIdAsync(_userSettings.LegacyAuthSessionId)
+                : _userSettings.GuildStashMode
+                    ? await _apiService.GetAllGuildStashTabMetadataWithOAuthAsync()
+                    : await _apiService.GetAllPersonalStashTabMetadataWithOAuthAsync();
 
             // 'Flatten' the stash tab structure (unwrap children tabs from folders)
             var flattenedStashTabs = GlobalItemSetManagerState.FlattenStashTabs(stashTabMetadataList);
@@ -237,13 +239,8 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                 {
                     UnifiedStashTabContents rawResults;
 
-                    // OAuth endpoint uses tab ID for lookup
-                    if (!_userSettings.LegacyAuthMode)
-                    {
-                        rawResults = await _apiService.GetPersonalStashTabContentsByStashIdWithOAuthAsync(id);
-                    }
                     // Session ID endpoint uses tab index for lookup - so we 'extract' the index from the tab collection constructed using id's
-                    else
+                    if (_userSettings.LegacyAuthMode)
                     {
                         // For SessionId auth, we need to find the index corresponding to this id
                         var stashTab = flattenedStashTabs.FirstOrDefault(st => st.Id == id);
@@ -272,6 +269,19 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
                                 stashTab.Index,
                                 stashTab.Type
                             );
+                        }
+
+                    }
+                    // OAuth endpoint uses tab ID for lookup
+                    else
+                    {
+                        if (_userSettings.GuildStashMode)
+                        {
+                            rawResults = await _apiService.GetGuildStashTabContentsByStashIdWithOAuthAsync(id);
+                        }
+                        else
+                        {
+                            rawResults = await _apiService.GetPersonalStashTabContentsByStashIdWithOAuthAsync(id);
                         }
                     }
 

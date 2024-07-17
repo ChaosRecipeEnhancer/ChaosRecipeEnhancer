@@ -160,6 +160,18 @@ public class StashFormViewModel : CreViewModelBase
         }
     }
 
+    public bool GuildStashMode
+    {
+        get => _userSettings.GuildStashMode;
+        set => UpdateGuildStashMode(value);
+    }
+
+    public bool HideRemoveOnlyTabs
+    {
+        get => _userSettings.HideRemoveOnlyTabs;
+        set => UpdateHideRemoveOnlyTabs(value);
+    }
+
     #endregion
 
     #endregion
@@ -311,6 +323,7 @@ public class StashFormViewModel : CreViewModelBase
         }
     }
 
+
     /// <summary>
     /// Updates the stash tab query mode property.
     /// </summary>
@@ -334,6 +347,38 @@ public class StashFormViewModel : CreViewModelBase
             OnPropertyChanged(nameof(StashTabQueryMode));
 
             TriggerGeneralFormFetchCooldown();
+        }
+    }
+
+    private void UpdateGuildStashMode(bool guildStashMode)
+    {
+        if (_userSettings.GuildStashMode != guildStashMode)
+        {
+            _userSettings.GuildStashMode = guildStashMode;
+
+            // Reset the stash tab list to force a reload of the stash tab data
+            _stashTabsLoaded = false;
+            StashTabIds = [];
+            SelectedStashTabsById.Clear();
+            StashTabFullListForSelectionById.Clear();
+
+            OnPropertyChanged(nameof(GuildStashMode));
+        }
+    }
+
+    private void UpdateHideRemoveOnlyTabs(bool hideRemoveOnlyTabs)
+    {
+        if (_userSettings.HideRemoveOnlyTabs != hideRemoveOnlyTabs)
+        {
+            _userSettings.HideRemoveOnlyTabs = hideRemoveOnlyTabs;
+
+            // Reset the stash tab list to force a reload of the stash tab data
+            _stashTabsLoaded = false;
+            StashTabIds = [];
+            SelectedStashTabsById.Clear();
+            StashTabFullListForSelectionById.Clear();
+
+            OnPropertyChanged(nameof(HideRemoveOnlyTabs));
         }
     }
 
@@ -372,7 +417,14 @@ public class StashFormViewModel : CreViewModelBase
 
         try
         {
-            stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataWithOAuthAsync();
+            if (_userSettings.GuildStashMode)
+            {
+                stashTabPropsList = await _apiService.GetAllGuildStashTabMetadataWithOAuthAsync();
+            }
+            else
+            {
+                stashTabPropsList = await _apiService.GetAllPersonalStashTabMetadataWithOAuthAsync();
+            }
 
             Log.Information("StashFormViewModel - StashTabs fetched successfully.");
         }
@@ -418,12 +470,30 @@ public class StashFormViewModel : CreViewModelBase
             {
                 foreach (var nestedTab in tab.Children)
                 {
-                    StashTabFullListForSelection.Add(nestedTab);
+                    if (_userSettings.HideRemoveOnlyTabs && !nestedTab.Name.Contains("(Remove-only)"))
+                    {
+                        Log.Information($"StashFormViewModel - {nestedTab.Name} - HideRemoveOnlyTabs setting is enabled and tab is NOT a `(Remove-only)` tab. Adding to list.");
+                        StashTabFullListForSelection.Add(nestedTab);
+                    }
+                    else if (!_userSettings.HideRemoveOnlyTabs)
+                    {
+                        Log.Information($"StashFormViewModel - {nestedTab.Name} - HideRemoveOnlyTabs setting is disabled. Adding to list.");
+                        StashTabFullListForSelection.Add(nestedTab);
+                    }
                 }
             }
             else
             {
-                StashTabFullListForSelection.Add(tab);
+                if (_userSettings.HideRemoveOnlyTabs && !tab.Name.Contains("(Remove-only)"))
+                {
+                    Log.Information($"StashFormViewModel - {tab.Name} - HideRemoveOnlyTabs setting is enabled and tab is NOT a `(Remove-only)` tab. Adding to list.");
+                    StashTabFullListForSelection.Add(tab);
+                }
+                else if (!_userSettings.HideRemoveOnlyTabs)
+                {
+                    Log.Information($"StashFormViewModel - {tab.Name} - HideRemoveOnlyTabs setting is disabled. Adding to list.");
+                    StashTabFullListForSelection.Add(tab);
+                }
             }
         }
 

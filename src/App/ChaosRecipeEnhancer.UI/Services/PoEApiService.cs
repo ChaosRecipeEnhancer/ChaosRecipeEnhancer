@@ -36,6 +36,8 @@ public interface IPoeApiService
     /// <returns>A task that represents the asynchronous operation. The task result contains the list of stashes response.</returns>
     public Task<List<UnifiedStashTabMetadata>> GetAllPersonalStashTabMetadataWithOAuthAsync();
 
+    public Task<List<UnifiedStashTabMetadata>> GetAllGuildStashTabMetadataWithOAuthAsync();
+
     /// <summary>
     /// Retrieves the contents of a personal stash tab by its ID asynchronously.
     /// </summary>
@@ -43,6 +45,8 @@ public interface IPoeApiService
     /// <param name="stashId">The ID of the stash tab.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the get stash response.</returns>
     public Task<UnifiedStashTabContents> GetPersonalStashTabContentsByStashIdWithOAuthAsync(string stashId);
+
+    public Task<UnifiedStashTabContents> GetGuildStashTabContentsByStashIdWithOAuthAsync(string stashId);
 
     public Task<AccountAvatarResponse> HealthCheckWithSesionIdAsync(string sessionId);
 
@@ -187,11 +191,28 @@ public class PoeApiService : IPoeApiService
         return listStashesResponse.ToUnifiedMetadata();
     }
 
+    public async Task<List<UnifiedStashTabMetadata>> GetAllGuildStashTabMetadataWithOAuthAsync()
+    {
+        var response = await GetAuthenticatedWithOAuthAsync(PoeApiConfig.GuildStashTabPropsOAuthEndpoint());
+        var listStashesResponse = JsonSerializer.Deserialize<ListStashesResponse>((string)response);
+        return listStashesResponse.ToUnifiedMetadata();
+    }
+
     /// <inheritdoc />
     public async Task<UnifiedStashTabContents> GetPersonalStashTabContentsByStashIdWithOAuthAsync(string stashId)
     {
         var responseRaw = await GetAuthenticatedWithOAuthAsync(
             PoeApiConfig.PersonalIndividualTabContentsOAuthEndpoint(stashId)
+        );
+
+        var response = JsonSerializer.Deserialize<GetStashResponse>((string)responseRaw);
+        return response?.ToUnifiedContents();
+    }
+
+    public async Task<UnifiedStashTabContents> GetGuildStashTabContentsByStashIdWithOAuthAsync(string stashId)
+    {
+        var responseRaw = await GetAuthenticatedWithOAuthAsync(
+            PoeApiConfig.GuildIndividualTabContentsOAuthEndpoint(stashId)
         );
 
         var response = JsonSerializer.Deserialize<GetStashResponse>((string)responseRaw);
