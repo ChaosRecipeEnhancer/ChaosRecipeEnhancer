@@ -932,5 +932,29 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["HideRemoveOnlyTabs"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LootFilterSpaceSavingHideLargeWeapons {
+            get {
+                return ((bool)(this["LootFilterSpaceSavingHideLargeWeapons"]));
+            }
+            set {
+                this["LootFilterSpaceSavingHideLargeWeapons"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LootFilterSpaceSavingHideOffHand {
+            get {
+                return ((bool)(this["LootFilterSpaceSavingHideOffHand"]));
+            }
+            set {
+                this["LootFilterSpaceSavingHideOffHand"] = value;
+            }
+        }
     }
 }

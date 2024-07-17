@@ -27,6 +27,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -51,7 +54,7 @@
             Grid.Row="1"
             Margin="15 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding GlobalUserSettings.LootFilterManipulationEnabled, Mode=TwoWay}" />
+            IsChecked="{Binding LootFilterManipulationEnabled, Mode=TwoWay}" />
 
         <TextBlock
             Grid.Column="0"
@@ -68,11 +71,11 @@
             Grid.Row="2"
             Margin="15 0 0 10"
             Width="150"
-            Click="OnLootFilterFileDialogInputClicked"
-            ToolTip="{Binding GlobalUserSettings.LootFilterFileLocation, Mode=OneWay}"
-            ToolTipService.IsEnabled="{Binding GlobalUserSettings.LootFilterFileLocation, Converter={StaticResource NullOrEmptyToBoolConverter}}"
+            Click="LootFilterFileDialogInput_Clicked"
+            ToolTip="{Binding LootFilterFileLocation, Mode=OneWay}"
+            ToolTipService.IsEnabled="{Binding LootFilterFileLocation, Converter={StaticResource NullOrEmptyToBoolConverter}}"
             ToolTipService.InitialShowDelay="50"
-            Content="{Binding GlobalUserSettings.LootFilterFileLocation, Mode=OneWay}"
+            Content="{Binding LootFilterFileLocation, Mode=OneWay}"
             HorizontalContentAlignment="Left" />
 
         <TextBlock
@@ -89,17 +92,68 @@
             Grid.Row="3"
             Margin="15 0 0 10"
             VerticalAlignment="Center"
-            IsChecked="{Binding GlobalUserSettings.LootFilterIconsEnabled, Mode=TwoWay}" />
+            IsChecked="{Binding LootFilterIconsEnabled, Mode=TwoWay}" />
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="4"
+            Grid.ColumnSpan="2"
+            Margin="0 0 0 10"
+            Text="Space Saving"
+            FontSize="20"
+            ToolTipService.InitialShowDelay="50">
+
+            <TextBlock.ToolTip>
+                <ToolTip>
+                    <TextBlock FontSize="14">
+                        This only impacts loot filter manipulation. All valid items will be shown while picking from stash.
+                    </TextBlock>
+                </ToolTip>
+             </TextBlock.ToolTip>
+
+        </TextBlock>
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="5"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
+            Text="Hide Large Weapons:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="While enabled, only small (3 x 1 one-handed or 3 x 2 two-handed) weapons will be highlighted on filter." />
+
+        <CheckBox
+            Grid.Column="1"
+            Grid.Row="5"
+            Margin="15 0 0 10"
+            VerticalAlignment="Center"
+            IsChecked="{Binding LootFilterSpaceSavingHideLargeWeapons, Mode=TwoWay}" />
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="6"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
+            Text="Hide Off-Hand:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="While enabled, no off-hand items (shields and quivers) will be highlighted on filter." />
+
+        <CheckBox
+            Grid.Column="1"
+            Grid.Row="6"
+            Margin="15 0 0 10"
+            VerticalAlignment="Center"
+            IsChecked="{Binding LootFilterSpaceSavingHideOffHand, Mode=TwoWay}" />
 
         <!-- Clean Loot Filter Button -->
         <Button
             Grid.Column="0"
-            Grid.Row="4"
+            Grid.Row="7"
             Grid.ColumnSpan="2"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Content="Clean Loot Filter"
-            Click="RunCleanFilter"
+            Command="{Binding CleanLootFilterCommand}"
             ToolTipService.InitialShowDelay="50"
             ToolTip="Will remove the modifications made by our app on your loot filter. Requires PoE to be running."/>
 

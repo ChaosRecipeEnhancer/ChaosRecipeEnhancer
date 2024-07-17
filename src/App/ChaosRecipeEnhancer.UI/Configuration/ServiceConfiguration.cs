@@ -4,6 +4,7 @@ using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
+using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms;
 using ChaosRecipeEnhancer.UI.Windows;
@@ -96,5 +97,6 @@ public static class ServiceConfiguration
         services.AddTransient<RecipesFormViewModel>();
         services.AddTransient<AdvancedFormViewModel>();
         services.AddTransient<SystemFormViewModel>();
+        services.AddTransient<LootFilterManipulationFormViewModel>();
     }
 }

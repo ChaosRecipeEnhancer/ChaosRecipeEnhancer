@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using ChaosRecipeEnhancer.UI.Models;
+﻿using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Properties;
+using System.Collections.Generic;
 
 namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers.Implementation;
 
@@ -14,12 +14,18 @@ public class CTwoHandWeaponsManager : ABaseItemClassManager
         AlwaysActive = Settings.Default.LootFilterWeaponsAlwaysActive;
     }
 
-    public override string SetBaseType()
+    public override string SetBaseType(bool lootFilterSpaceSavingHideLargeWeapons)
     {
         var baseType = "Class ";
         baseType += "\"Two Hand Swords\" \"Two Hand Axes\" \"Two Hand Maces\" \"Staves\" \"Warstaves\" \"Bows\"";
-        baseType += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Width <= 2" +
-                    StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Height <= 3";
+
+        // Additional size restrictions if space saving is enabled
+        if (lootFilterSpaceSavingHideLargeWeapons)
+        {
+            baseType +=
+                StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Width <= 2" +
+                StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Height <= 3";
+        }
 
         return baseType;
     }

@@ -46,6 +46,32 @@ public partial class UserSettings : IUserSettings
         }
     }
 
+    public bool LootFilterSpaceSavingHideLargeWeapons
+    {
+        get => Settings.Default.LootFilterSpaceSavingHideLargeWeapons;
+        set
+        {
+            if (Settings.Default.LootFilterSpaceSavingHideLargeWeapons != value)
+            {
+                Settings.Default.LootFilterSpaceSavingHideLargeWeapons = value;
+                Save();
+            }
+        }
+    }
+
+    public bool LootFilterSpaceSavingHideOffHand
+    {
+        get => Settings.Default.LootFilterSpaceSavingHideOffHand;
+        set
+        {
+            if (Settings.Default.LootFilterSpaceSavingHideOffHand != value)
+            {
+                Settings.Default.LootFilterSpaceSavingHideOffHand = value;
+                Save();
+            }
+        }
+    }
+
     public bool LootFilterRingsAlwaysActive
     {
         get => Settings.Default.LootFilterRingsAlwaysActive;

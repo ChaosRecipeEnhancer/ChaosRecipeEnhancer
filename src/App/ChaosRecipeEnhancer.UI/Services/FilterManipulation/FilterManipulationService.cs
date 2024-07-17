@@ -1,6 +1,7 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory;
@@ -24,15 +25,16 @@ public interface IFilterManipulationService
 
 public class FilterManipulationService : IFilterManipulationService
 {
+    private readonly IUserSettings _userSettings;
     private ABaseItemClassManager _itemClassManager;
     private readonly List<string> _customStyle = new();
 
-    public FilterManipulationService()
+    public FilterManipulationService(IUserSettings userSettings)
     {
+        _userSettings = userSettings;
+
         LoadCustomStyle();
     }
-
-    private Settings Settings { get; } = Settings.Default;
 
     // TODO: [Refactor] mechanism for receiving missing items from some other service and populating based on that limited information
     public async Task GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses)
@@ -76,7 +78,7 @@ public class FilterManipulationService : IFilterManipulationService
         if (!Settings.Default.IncludeIdentifiedItemsEnabled) result += "Identified False" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
         // Setting item level section based on whether Chaoss Recipe Tracking is enabled (or disabled, in which the Regal Recipe is used)
-        result += Settings.ChaosRecipeTrackingEnabled switch
+        result += _userSettings.ChaosRecipeTrackingEnabled switch
         {
             // Chaos Recipe Tracking disabled, item class is NOT always active
             false when !_itemClassManager.AlwaysActive =>
@@ -95,7 +97,24 @@ public class FilterManipulationService : IFilterManipulationService
                 StringConstruction.TabCharacter
         };
 
-        var baseType = _itemClassManager.SetBaseType();
+        string baseType;
+
+        // weapons get special treatment due to space saving options
+        if (_itemClassManager.ClassName.Equals("OneHandWeapons"))
+        {
+            baseType = _itemClassManager.SetBaseType(
+                _userSettings.LootFilterSpaceSavingHideLargeWeapons,
+                _userSettings.LootFilterSpaceSavingHideOffHand
+            );
+        }
+        else if (_itemClassManager.ClassName.Equals("TwoHandWeapons"))
+        {
+            baseType = _itemClassManager.SetBaseType(_userSettings.LootFilterSpaceSavingHideLargeWeapons);
+        }
+        else
+        {
+            baseType = _itemClassManager.SetBaseType();
+        }
 
         result = result + baseType + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 

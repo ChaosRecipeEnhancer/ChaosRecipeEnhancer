@@ -90,6 +90,8 @@ public interface IUserSettings
     bool LootFilterManipulationEnabled { get; set; }
     string LootFilterFileLocation { get; set; }
     bool LootFilterIconsEnabled { get; set; }
+    bool LootFilterSpaceSavingHideLargeWeapons { get; set; }
+    bool LootFilterSpaceSavingHideOffHand { get; set; }
     bool LootFilterRingsAlwaysActive { get; set; }
     bool LootFilterAmuletsAlwaysActive { get; set; }
     bool LootFilterBeltsAlwaysActive { get; set; }

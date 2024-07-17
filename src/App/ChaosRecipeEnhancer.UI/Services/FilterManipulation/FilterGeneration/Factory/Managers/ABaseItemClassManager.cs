@@ -15,6 +15,21 @@ public abstract class ABaseItemClassManager
         return baseType;
     }
 
+    public virtual string SetBaseType(bool lootFilterSpaceSavingHideLargeWeapons)
+    {
+        var baseType = "Class " + ClassFilterName;
+        return baseType;
+    }
+
+    public virtual string SetBaseType(
+        bool lootFilterSpaceSavingHideLargeWeapons,
+        bool lootFilterSpaceSavingHideOffHand
+    )
+    {
+        var baseType = "Class " + ClassFilterName;
+        return baseType;
+    }
+
     public virtual bool CheckIfMissing(HashSet<string> missingItemClasses)
     {
         return missingItemClasses.Contains(ClassName);
