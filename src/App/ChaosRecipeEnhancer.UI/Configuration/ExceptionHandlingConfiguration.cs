@@ -34,34 +34,37 @@ public static class ExceptionHandlingConfiguration
 
     private static void ShowUnhandledException(Exception e, string unhandledExceptionType)
     {
-        var currentCulture = Thread.CurrentThread.CurrentUICulture;
-        try
+        Application.Current.Dispatcher.Invoke(() =>
         {
-            // Set the current thread's UI culture to English
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            var currentCulture = Thread.CurrentThread.CurrentUICulture;
+            try
+            {
+                // Set the current thread's UI culture to English
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
-            var limitedExceptionMessage = string.Join(
-                Environment.NewLine,
-                // split the exception message into lines and take the first 30 lines
-                e.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None).Take(5)
-            );
+                var limitedExceptionMessage = string.Join(
+                    Environment.NewLine,
+                    // split the exception message into lines and take the first 30 lines
+                    e.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None).Take(5)
+                );
 
-            var messageBoxTitle = $"Error: Unhandled Exception - {unhandledExceptionType}";
-            var messageBoxMessage =
-                $"The following exception occurred: {unhandledExceptionType}" +
-                $"{limitedExceptionMessage}";
+                var messageBoxTitle = $"Error: Unhandled Exception - {unhandledExceptionType}";
+                var messageBoxMessage =
+                    $"The following exception occurred: {unhandledExceptionType}" +
+                    $"{limitedExceptionMessage}";
 
-            var dialog = new ErrorWindow(
-                messageBoxTitle,
-                messageBoxMessage
-            );
+                var dialog = new ErrorWindow(
+                    messageBoxTitle,
+                    messageBoxMessage
+                );
 
-            dialog.ShowDialog();
-        }
-        finally
-        {
-            // Restore the original UI culture
-            Thread.CurrentThread.CurrentUICulture = currentCulture;
-        }
+                dialog.ShowDialog();
+            }
+            finally
+            {
+                // Restore the original UI culture
+                Thread.CurrentThread.CurrentUICulture = currentCulture;
+            }
+        });
     }
 }
