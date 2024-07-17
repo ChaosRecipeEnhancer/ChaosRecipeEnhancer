@@ -134,9 +134,9 @@
             Grid.Row="6"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Hide Off-Hand:"
+            Text="Hide Off-Hand Gear:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="While enabled, no off-hand items (shields and quivers) will be highlighted on filter." />
+            ToolTip="While enabled, no off-hand items (shields) will be highlighted on filter." />
 
         <CheckBox
             Grid.Column="1"
