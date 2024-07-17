@@ -920,5 +920,17 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["GuildStashMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool HideRemoveOnlyTabs {
+            get {
+                return ((bool)(this["HideRemoveOnlyTabs"]));
+            }
+            set {
+                this["HideRemoveOnlyTabs"] = value;
+            }
+        }
     }
 }
