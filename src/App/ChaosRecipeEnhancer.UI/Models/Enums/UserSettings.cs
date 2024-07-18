@@ -63,3 +63,58 @@ public enum Language
     Japanese,
     Korean
 }
+
+// Loot Filter Styles Stuff
+
+public enum FilterStyleMapIconSize
+{
+    Large,
+    Medium,
+    Small
+}
+
+public enum FilterStyleMapIconColor
+{
+    Blue,
+    Brown,
+    Cyan,
+    Green,
+    Grey,
+    Orange,
+    Pink,
+    Purple,
+    Red,
+    White,
+    Yellow
+}
+
+public enum FilterStyleMapIconShape
+{
+    Circle,
+    Cross,
+    Diamond,
+    Hexagon,
+    Kite,
+    Moon,
+    Pentagon,
+    Raindrop,
+    Square,
+    Star,
+    Triangle,
+    UpsideDownHouse
+}
+
+public enum FilterStyleBeamColor
+{
+    Blue,
+    Brown,
+    Cyan,
+    Green,
+    Grey,
+    Orange,
+    Pink,
+    Purple,
+    Red,
+    White,
+    Yellow
+}

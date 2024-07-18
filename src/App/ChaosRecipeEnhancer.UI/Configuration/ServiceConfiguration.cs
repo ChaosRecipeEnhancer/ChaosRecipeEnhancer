@@ -5,6 +5,7 @@ using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms;
+using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms.FilterStylesForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms;
 using ChaosRecipeEnhancer.UI.Windows;
@@ -86,6 +87,7 @@ public static class ServiceConfiguration
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<StashTabOverlayViewModel>();
         services.AddTransient<StashTabOverlayViewModel>();
+        services.AddTransient<SetTrackerOverlayViewModel>();
 
         // UserControl VM's
         services.AddTransient<StashFormViewModel>();
@@ -98,5 +100,8 @@ public static class ServiceConfiguration
         services.AddTransient<AdvancedFormViewModel>();
         services.AddTransient<SystemFormViewModel>();
         services.AddTransient<LootFilterManipulationFormViewModel>();
+
+        // FilterStyleForm VM's
+        services.AddTransient<RingFilterStylesFormViewModel>();
     }
 }

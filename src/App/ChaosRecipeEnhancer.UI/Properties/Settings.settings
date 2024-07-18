@@ -236,5 +236,44 @@
     <Setting Name="LootFilterSpaceSavingHideOffHand" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="LootFilterStylesRingTextColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFFB0B0</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingBorderColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFFB0B0</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingBackgroundColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFF0303</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingAlwaysActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingAlwaysDisabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingMapIconEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingMapIconColor" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingMapIconSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingMapIconShape" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingBeamEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingBeamTemporary" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingBeamColor" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingTextFontSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">45</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

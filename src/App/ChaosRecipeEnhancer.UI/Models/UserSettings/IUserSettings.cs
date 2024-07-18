@@ -90,8 +90,16 @@ public interface IUserSettings
     bool LootFilterManipulationEnabled { get; set; }
     string LootFilterFileLocation { get; set; }
     bool LootFilterIconsEnabled { get; set; }
+
+    #region Space Saving Settings
+
     bool LootFilterSpaceSavingHideLargeWeapons { get; set; }
     bool LootFilterSpaceSavingHideOffHand { get; set; }
+
+    #endregion
+
+    #region Always Active Settings
+
     bool LootFilterRingsAlwaysActive { get; set; }
     bool LootFilterAmuletsAlwaysActive { get; set; }
     bool LootFilterBeltsAlwaysActive { get; set; }
@@ -100,6 +108,43 @@ public interface IUserSettings
     bool LootFilterHelmetsAlwaysActive { get; set; }
     bool LootFilterBodyArmourAlwaysActive { get; set; }
     bool LootFilterWeaponsAlwaysActive { get; set; }
+
+    #endregion
+
+    #region Color Settings
+
+    string LootFilterRingColor { get; set; }
+    string LootFilterAmuletColor { get; set; }
+    string LootFilterBeltColor { get; set; }
+    string LootFilterBootsColor { get; set; }
+    string LootFilterGlovesColor { get; set; }
+    string LootFilterHelmetColor { get; set; }
+    string LootFilterBodyArmourColor { get; set; }
+    string LootFilterWeaponColor { get; set; }
+
+    #endregion
+
+    #region NEW Loot Filter Settings
+
+    #region NEW Loot Filter Settings - Rings
+
+    int LootFilterStylesRingTextFontSize { get; set; }
+    string LootFilterStylesRingTextColor { get; set; }
+    string LootFilterStylesRingBorderColor { get; set; }
+    string LootFilterStylesRingBackgroundColor { get; set; } // Formerly: LootFilterRingColor
+    bool LootFilterStylesRingAlwaysActive { get; set; }
+    bool LootFilterStylesRingAlwaysDisabled { get; set; }
+    bool LootFilterStylesRingMapIconEnabled { get; set; }
+    int LootFilterStylesRingMapIconColor { get; set; }
+    int LootFilterStylesRingMapIconSize { get; set; }
+    int LootFilterStylesRingMapIconShape { get; set; }
+    bool LootFilterStylesRingBeamEnabled { get; set; }
+    bool LootFilterStylesRingBeamTemporary { get; set; }
+    int LootFilterStylesRingBeamColor { get; set; }
+
+    #endregion
+
+    #endregion
 
     #endregion
 
@@ -116,19 +161,6 @@ public interface IUserSettings
 
     bool SoundEnabled { get; set; }
     double SoundLevel { get; set; }
-
-    #endregion
-
-    #region Color Settings
-
-    string LootFilterRingColor { get; set; }
-    string LootFilterAmuletColor { get; set; }
-    string LootFilterBeltColor { get; set; }
-    string LootFilterBootsColor { get; set; }
-    string LootFilterGlovesColor { get; set; }
-    string LootFilterHelmetColor { get; set; }
-    string LootFilterBodyArmourColor { get; set; }
-    string LootFilterWeaponColor { get; set; }
 
     #endregion
 

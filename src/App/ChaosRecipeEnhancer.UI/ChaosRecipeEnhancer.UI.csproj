@@ -43,6 +43,9 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	  <NoWarn>1701;1702;CA1416</NoWarn>
 	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Assets\Images\Ground.png" />
+	</ItemGroup>
 	<!-- Project Assets -->
 	<ItemGroup>
 		<!-- Fonts -->
@@ -55,6 +58,7 @@
 		<Resource Include="Assets\Images\Boots.png" />
 		<Resource Include="Assets\Images\BodyArmor.png" />
 		<Resource Include="Assets\Images\Gloves.png" />
+		<Resource Include="Assets\Images\Ground.png" />
 		<Resource Include="Assets\Images\Helmet.png" />
 		<Resource Include="Assets\Images\Ring.png" />
 		<Resource Include="Assets\Images\UpgradeArrow.png" />

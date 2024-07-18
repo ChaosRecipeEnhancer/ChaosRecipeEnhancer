@@ -185,17 +185,27 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
+
+                        <lootFilterForms:FilterStylesForm
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                            Margin="0,25,0,25"
+                            HorizontalAlignment="Center" />
 
                         <!-- Filter Manipulation -->
                         <lootFilterForms:LootFilterManipulationForm
                             Grid.Column="0"
-                            Grid.Row="0" />
+                            Grid.Row="1" />
                         <!-- Colors -->
 
                         <lootFilterForms:ColorsForm
                             Grid.Column="1"
-                            Grid.Row="0" />
+                            Grid.Row="1" />
+
+
 
                     </Grid>
                 </TabItem>

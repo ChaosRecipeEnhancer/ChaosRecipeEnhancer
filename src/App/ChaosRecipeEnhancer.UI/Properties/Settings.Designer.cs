@@ -956,5 +956,161 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["LootFilterSpaceSavingHideOffHand"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFFB0B0")]
+        public string LootFilterStylesRingTextColor {
+            get {
+                return ((string)(this["LootFilterStylesRingTextColor"]));
+            }
+            set {
+                this["LootFilterStylesRingTextColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFFB0B0")]
+        public string LootFilterStylesRingBorderColor {
+            get {
+                return ((string)(this["LootFilterStylesRingBorderColor"]));
+            }
+            set {
+                this["LootFilterStylesRingBorderColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFF0303")]
+        public string LootFilterStylesRingBackgroundColor {
+            get {
+                return ((string)(this["LootFilterStylesRingBackgroundColor"]));
+            }
+            set {
+                this["LootFilterStylesRingBackgroundColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LootFilterStylesRingAlwaysActive {
+            get {
+                return ((bool)(this["LootFilterStylesRingAlwaysActive"]));
+            }
+            set {
+                this["LootFilterStylesRingAlwaysActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LootFilterStylesRingAlwaysDisabled {
+            get {
+                return ((bool)(this["LootFilterStylesRingAlwaysDisabled"]));
+            }
+            set {
+                this["LootFilterStylesRingAlwaysDisabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LootFilterStylesRingMapIconEnabled {
+            get {
+                return ((bool)(this["LootFilterStylesRingMapIconEnabled"]));
+            }
+            set {
+                this["LootFilterStylesRingMapIconEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesRingMapIconColor {
+            get {
+                return ((int)(this["LootFilterStylesRingMapIconColor"]));
+            }
+            set {
+                this["LootFilterStylesRingMapIconColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesRingMapIconSize {
+            get {
+                return ((int)(this["LootFilterStylesRingMapIconSize"]));
+            }
+            set {
+                this["LootFilterStylesRingMapIconSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesRingMapIconShape {
+            get {
+                return ((int)(this["LootFilterStylesRingMapIconShape"]));
+            }
+            set {
+                this["LootFilterStylesRingMapIconShape"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LootFilterStylesRingBeamEnabled {
+            get {
+                return ((bool)(this["LootFilterStylesRingBeamEnabled"]));
+            }
+            set {
+                this["LootFilterStylesRingBeamEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LootFilterStylesRingBeamTemporary {
+            get {
+                return ((bool)(this["LootFilterStylesRingBeamTemporary"]));
+            }
+            set {
+                this["LootFilterStylesRingBeamTemporary"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesRingBeamColor {
+            get {
+                return ((int)(this["LootFilterStylesRingBeamColor"]));
+            }
+            set {
+                this["LootFilterStylesRingBeamColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
+        public int LootFilterStylesRingTextFontSize {
+            get {
+                return ((int)(this["LootFilterStylesRingTextFontSize"]));
+            }
+            set {
+                this["LootFilterStylesRingTextFontSize"] = value;
+            }
+        }
     }
 }
