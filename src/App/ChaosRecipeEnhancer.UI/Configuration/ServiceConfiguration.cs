@@ -105,5 +105,10 @@ public static class ServiceConfiguration
         services.AddTransient<RingFilterStylesFormViewModel>();
         services.AddTransient<AmuletFilterStylesFormViewModel>();
         services.AddTransient<BeltFilterStylesFormViewModel>();
+        services.AddTransient<BootsFilterStylesFormViewModel>();
+        services.AddTransient<GlovesFilterStylesFormViewModel>();
+        services.AddTransient<HelmetFilterStylesFormViewModel>();
+        services.AddTransient<BodyArmourFilterStylesFormViewModel>();
+        services.AddTransient<WeaponFilterStylesFormViewModel>();
     }
 }

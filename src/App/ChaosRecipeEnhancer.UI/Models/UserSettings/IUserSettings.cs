@@ -189,6 +189,111 @@ public interface IUserSettings
 
     #endregion
 
+    #region NEW Loot Filter Settings - Boots
+
+    int LootFilterStylesBootsTextFontSize { get; set; }
+    string LootFilterStylesBootsTextColor { get; set; }
+    string LootFilterStylesBootsBorderColor { get; set; }
+    string LootFilterStylesBootsBackgroundColor { get; set; } // Formerly: LootFilterBootsColor
+    bool LootFilterStylesBootsAlwaysActive { get; set; }
+    bool LootFilterStylesBootsAlwaysDisabled { get; set; }
+    bool LootFilterStylesBootsMapIconEnabled { get; set; }
+    int LootFilterStylesBootsMapIconColor { get; set; }
+    int LootFilterStylesBootsMapIconSize { get; set; }
+    int LootFilterStylesBootsMapIconShape { get; set; }
+    bool LootFilterStylesBootsBeamEnabled { get; set; }
+    bool LootFilterStylesBootsBeamTemporary { get; set; }
+    int LootFilterStylesBootsBeamColor { get; set; }
+    bool LootFilterStylesBootsTextColorEnabled { get; set; }
+    bool LootFilterStylesBootsBorderColorEnabled { get; set; }
+    bool LootFilterStylesBootsBackgroundColorEnabled { get; set; }
+
+    #endregion
+
+    #region NEW Loot Filter Settings - Gloves
+
+    int LootFilterStylesGlovesTextFontSize { get; set; }
+    string LootFilterStylesGlovesTextColor { get; set; }
+    string LootFilterStylesGlovesBorderColor { get; set; }
+    string LootFilterStylesGlovesBackgroundColor { get; set; } // Formerly: LootFilterGlovesColor
+    bool LootFilterStylesGlovesAlwaysActive { get; set; }
+    bool LootFilterStylesGlovesAlwaysDisabled { get; set; }
+    bool LootFilterStylesGlovesMapIconEnabled { get; set; }
+    int LootFilterStylesGlovesMapIconColor { get; set; }
+    int LootFilterStylesGlovesMapIconSize { get; set; }
+    int LootFilterStylesGlovesMapIconShape { get; set; }
+    bool LootFilterStylesGlovesBeamEnabled { get; set; }
+    bool LootFilterStylesGlovesBeamTemporary { get; set; }
+    int LootFilterStylesGlovesBeamColor { get; set; }
+    bool LootFilterStylesGlovesTextColorEnabled { get; set; }
+    bool LootFilterStylesGlovesBorderColorEnabled { get; set; }
+    bool LootFilterStylesGlovesBackgroundColorEnabled { get; set; }
+
+    #endregion
+
+    #region NEW Loot Filter Settings - Helmet
+
+    int LootFilterStylesHelmetTextFontSize { get; set; }
+    string LootFilterStylesHelmetTextColor { get; set; }
+    string LootFilterStylesHelmetBorderColor { get; set; }
+    string LootFilterStylesHelmetBackgroundColor { get; set; } // Formerly: LootFilterHelmetColor
+    bool LootFilterStylesHelmetAlwaysActive { get; set; }
+    bool LootFilterStylesHelmetAlwaysDisabled { get; set; }
+    bool LootFilterStylesHelmetMapIconEnabled { get; set; }
+    int LootFilterStylesHelmetMapIconColor { get; set; }
+    int LootFilterStylesHelmetMapIconSize { get; set; }
+    int LootFilterStylesHelmetMapIconShape { get; set; }
+    bool LootFilterStylesHelmetBeamEnabled { get; set; }
+    bool LootFilterStylesHelmetBeamTemporary { get; set; }
+    int LootFilterStylesHelmetBeamColor { get; set; }
+    bool LootFilterStylesHelmetTextColorEnabled { get; set; }
+    bool LootFilterStylesHelmetBorderColorEnabled { get; set; }
+    bool LootFilterStylesHelmetBackgroundColorEnabled { get; set; }
+
+    #endregion
+
+    #region NEW Loot Filter Settings - Body Armour
+
+    int LootFilterStylesBodyArmourTextFontSize { get; set; }
+    string LootFilterStylesBodyArmourTextColor { get; set; }
+    string LootFilterStylesBodyArmourBorderColor { get; set; }
+    string LootFilterStylesBodyArmourBackgroundColor { get; set; } // Formerly: LootFilterBodyArmourColor
+    bool LootFilterStylesBodyArmourAlwaysActive { get; set; }
+    bool LootFilterStylesBodyArmourAlwaysDisabled { get; set; }
+    bool LootFilterStylesBodyArmourMapIconEnabled { get; set; }
+    int LootFilterStylesBodyArmourMapIconColor { get; set; }
+    int LootFilterStylesBodyArmourMapIconSize { get; set; }
+    int LootFilterStylesBodyArmourMapIconShape { get; set; }
+    bool LootFilterStylesBodyArmourBeamEnabled { get; set; }
+    bool LootFilterStylesBodyArmourBeamTemporary { get; set; }
+    int LootFilterStylesBodyArmourBeamColor { get; set; }
+    bool LootFilterStylesBodyArmourTextColorEnabled { get; set; }
+    bool LootFilterStylesBodyArmourBorderColorEnabled { get; set; }
+    bool LootFilterStylesBodyArmourBackgroundColorEnabled { get; set; }
+
+    #endregion
+
+    #region NEW Loot Filter Settings - Weapon
+
+    int LootFilterStylesWeaponTextFontSize { get; set; }
+    string LootFilterStylesWeaponTextColor { get; set; }
+    string LootFilterStylesWeaponBorderColor { get; set; }
+    string LootFilterStylesWeaponBackgroundColor { get; set; } // Formerly: LootFilterWeaponColor
+    bool LootFilterStylesWeaponAlwaysActive { get; set; }
+    bool LootFilterStylesWeaponAlwaysDisabled { get; set; }
+    bool LootFilterStylesWeaponMapIconEnabled { get; set; }
+    int LootFilterStylesWeaponMapIconColor { get; set; }
+    int LootFilterStylesWeaponMapIconSize { get; set; }
+    int LootFilterStylesWeaponMapIconShape { get; set; }
+    bool LootFilterStylesWeaponBeamEnabled { get; set; }
+    bool LootFilterStylesWeaponBeamTemporary { get; set; }
+    int LootFilterStylesWeaponBeamColor { get; set; }
+    bool LootFilterStylesWeaponTextColorEnabled { get; set; }
+    bool LootFilterStylesWeaponBorderColorEnabled { get; set; }
+    bool LootFilterStylesWeaponBackgroundColorEnabled { get; set; }
+
+    #endregion
+
     #endregion
 
     #endregion

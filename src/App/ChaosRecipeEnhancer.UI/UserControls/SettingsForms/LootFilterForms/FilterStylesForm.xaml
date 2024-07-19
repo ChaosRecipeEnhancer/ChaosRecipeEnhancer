@@ -39,11 +39,36 @@
 
             </TabItem>
 
-            <TabItem Header="Boots" />
-            <TabItem Header="Gloves" />
-            <TabItem Header="Helmet" />
-            <TabItem Header="Body Armour" />
-            <TabItem Header="Weapons" />
+            <TabItem Header="Boots">
+
+                 <filterStylesForms:BootsFilterStylesForm />
+
+            </TabItem>
+
+            <TabItem Header="Gloves">
+
+                <filterStylesForms:GlovesFilterStylesForm />
+
+            </TabItem>
+
+            <TabItem Header="Helmet">
+
+                <filterStylesForms:HelmetFilterStylesForm />
+
+            </TabItem>
+
+            <TabItem Header="Body Armour">
+
+                <filterStylesForms:BodyArmourFilterStylesForm />
+
+            </TabItem>
+
+            <TabItem Header="Weapons">
+
+                <filterStylesForms:WeaponFilterStylesForm />
+
+            </TabItem>
+
         </TabControl>
 
         <Button Content="Reset All Item Class Styles" Width="200" Margin="0, 15, 0, 0" Background="DarkRed" HorizontalAlignment="Center" />
