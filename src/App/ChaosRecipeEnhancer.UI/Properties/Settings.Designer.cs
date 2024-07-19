@@ -791,7 +791,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool LootFilterStylesRingAlwaysActive {
             get {
                 return ((bool)(this["LootFilterStylesRingAlwaysActive"]));
@@ -899,7 +899,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
         public int LootFilterStylesRingTextFontSize {
             get {
                 return ((int)(this["LootFilterStylesRingTextFontSize"]));
@@ -983,7 +983,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool LootFilterStylesAmuletAlwaysActive {
             get {
                 return ((bool)(this["LootFilterStylesAmuletAlwaysActive"]));
@@ -1091,7 +1091,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
         public int LootFilterStylesAmuletTextFontSize {
             get {
                 return ((int)(this["LootFilterStylesAmuletTextFontSize"]));
@@ -1175,7 +1175,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool LootFilterStylesBeltAlwaysActive {
             get {
                 return ((bool)(this["LootFilterStylesBeltAlwaysActive"]));
@@ -1283,7 +1283,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
         public int LootFilterStylesBeltTextFontSize {
             get {
                 return ((int)(this["LootFilterStylesBeltTextFontSize"]));
@@ -1475,7 +1475,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
         public int LootFilterStylesBootsTextFontSize {
             get {
                 return ((int)(this["LootFilterStylesBootsTextFontSize"]));
@@ -1667,7 +1667,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
         public int LootFilterStylesGlovesTextFontSize {
             get {
                 return ((int)(this["LootFilterStylesGlovesTextFontSize"]));
@@ -1859,7 +1859,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
         public int LootFilterStylesHelmetTextFontSize {
             get {
                 return ((int)(this["LootFilterStylesHelmetTextFontSize"]));
@@ -2051,7 +2051,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
         public int LootFilterStylesBodyArmourTextFontSize {
             get {
                 return ((int)(this["LootFilterStylesBodyArmourTextFontSize"]));
@@ -2243,7 +2243,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
         public int LootFilterStylesWeaponTextFontSize {
             get {
                 return ((int)(this["LootFilterStylesWeaponTextFontSize"]));

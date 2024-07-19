@@ -296,7 +296,7 @@ public class HelmetFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesHelmetTextColor = _helmetDefaultTextColor; // White
         LootFilterStylesHelmetBorderColor = _helmetDefaultBorderColor; // White
         LootFilterStylesHelmetBackgroundColor = _helmetDefaultBackgroundColor; // Red
-        LootFilterStylesHelmetTextFontSize = 30; // Default Font Size
+        LootFilterStylesHelmetTextFontSize = 45; // Default Font Size
         LootFilterStylesHelmetAlwaysActive = false;
         LootFilterStylesHelmetAlwaysDisabled = false;
         LootFilterStylesHelmetMapIconEnabled = true;

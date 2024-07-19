@@ -195,7 +195,7 @@
       <Value Profile="(Default)">#FFFF0000</Value>
     </Setting>
     <Setting Name="LootFilterStylesRingAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="LootFilterStylesRingAlwaysDisabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -222,7 +222,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesRingTextFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
+      <Value Profile="(Default)">45</Value>
     </Setting>
     <Setting Name="LootFilterStylesRingTextColorEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -243,7 +243,7 @@
       <Value Profile="(Default)">#FFFF0000</Value>
     </Setting>
     <Setting Name="LootFilterStylesAmuletAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="LootFilterStylesAmuletAlwaysDisabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -270,7 +270,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesAmuletTextFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
+      <Value Profile="(Default)">45</Value>
     </Setting>
     <Setting Name="LootFilterStylesAmuletTextColorEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -291,7 +291,7 @@
       <Value Profile="(Default)">#FFFF0000</Value>
     </Setting>
     <Setting Name="LootFilterStylesBeltAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="LootFilterStylesBeltAlwaysDisabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -318,7 +318,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesBeltTextFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
+      <Value Profile="(Default)">45</Value>
     </Setting>
     <Setting Name="LootFilterStylesBeltTextColorEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -366,7 +366,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesBootsTextFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
+      <Value Profile="(Default)">45</Value>
     </Setting>
     <Setting Name="LootFilterStylesBootsTextColorEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -414,7 +414,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesGlovesTextFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
+      <Value Profile="(Default)">45</Value>
     </Setting>
     <Setting Name="LootFilterStylesGlovesTextColorEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -462,7 +462,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesHelmetTextFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
+      <Value Profile="(Default)">45</Value>
     </Setting>
     <Setting Name="LootFilterStylesHelmetTextColorEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -510,7 +510,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesBodyArmourTextFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
+      <Value Profile="(Default)">45</Value>
     </Setting>
     <Setting Name="LootFilterStylesBodyArmourTextColorEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -558,7 +558,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesWeaponTextFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
+      <Value Profile="(Default)">45</Value>
     </Setting>
     <Setting Name="LootFilterStylesWeaponTextColorEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

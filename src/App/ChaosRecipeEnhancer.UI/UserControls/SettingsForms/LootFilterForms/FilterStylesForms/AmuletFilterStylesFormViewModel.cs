@@ -296,8 +296,8 @@ public class AmuletFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesAmuletTextColor = _amuletDefaultTextColor; // White
         LootFilterStylesAmuletBorderColor = _amuletDefaultBorderColor; // White
         LootFilterStylesAmuletBackgroundColor = _amuletDefaultBackgroundColor; // Red
-        LootFilterStylesAmuletTextFontSize = 30; // Default Font Size
-        LootFilterStylesAmuletAlwaysActive = false;
+        LootFilterStylesAmuletTextFontSize = 45; // Default Font Size
+        LootFilterStylesAmuletAlwaysActive = true;
         LootFilterStylesAmuletAlwaysDisabled = false;
         LootFilterStylesAmuletMapIconEnabled = true;
         LootFilterStylesAmuletMapIconSize = 0; // Large size

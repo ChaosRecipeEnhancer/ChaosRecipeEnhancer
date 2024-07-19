@@ -296,7 +296,7 @@ public class BodyArmourFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesBodyArmourTextColor = _bodyArmourDefaultTextColor; // White
         LootFilterStylesBodyArmourBorderColor = _bodyArmourDefaultBorderColor; // White
         LootFilterStylesBodyArmourBackgroundColor = _bodyArmourDefaultBackgroundColor; // Red
-        LootFilterStylesBodyArmourTextFontSize = 30; // Default Font Size
+        LootFilterStylesBodyArmourTextFontSize = 45; // Default Font Size
         LootFilterStylesBodyArmourAlwaysActive = false;
         LootFilterStylesBodyArmourAlwaysDisabled = false;
         LootFilterStylesBodyArmourMapIconEnabled = true;

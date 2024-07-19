@@ -296,7 +296,7 @@ public class WeaponFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesWeaponTextColor = _weaponDefaultTextColor; // White
         LootFilterStylesWeaponBorderColor = _weaponDefaultBorderColor; // White
         LootFilterStylesWeaponBackgroundColor = _weaponDefaultBackgroundColor; // Red
-        LootFilterStylesWeaponTextFontSize = 30; // Default Font Size
+        LootFilterStylesWeaponTextFontSize = 45; // Default Font Size
         LootFilterStylesWeaponAlwaysActive = false;
         LootFilterStylesWeaponAlwaysDisabled = false;
         LootFilterStylesWeaponMapIconEnabled = true;

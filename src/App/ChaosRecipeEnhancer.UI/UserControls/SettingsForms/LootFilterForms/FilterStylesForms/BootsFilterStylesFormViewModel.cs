@@ -296,7 +296,7 @@ public class BootsFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesBootsTextColor = _bootsDefaultTextColor; // White
         LootFilterStylesBootsBorderColor = _bootsDefaultBorderColor; // White
         LootFilterStylesBootsBackgroundColor = _bootsDefaultBackgroundColor; // Red
-        LootFilterStylesBootsTextFontSize = 30; // Default Font Size
+        LootFilterStylesBootsTextFontSize = 45; // Default Font Size
         LootFilterStylesBootsAlwaysActive = false;
         LootFilterStylesBootsAlwaysDisabled = false;
         LootFilterStylesBootsMapIconEnabled = true;

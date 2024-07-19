@@ -296,7 +296,7 @@ public class GlovesFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesGlovesTextColor = _glovesDefaultTextColor; // White
         LootFilterStylesGlovesBorderColor = _glovesDefaultBorderColor; // White
         LootFilterStylesGlovesBackgroundColor = _glovesDefaultBackgroundColor; // Red
-        LootFilterStylesGlovesTextFontSize = 30; // Default Font Size
+        LootFilterStylesGlovesTextFontSize = 45; // Default Font Size
         LootFilterStylesGlovesAlwaysActive = false;
         LootFilterStylesGlovesAlwaysDisabled = false;
         LootFilterStylesGlovesMapIconEnabled = true;

@@ -296,8 +296,8 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesRingTextColor = _ringDefaultTextColor; // White
         LootFilterStylesRingBorderColor = _ringDefaultBorderColor; // White
         LootFilterStylesRingBackgroundColor = _ringDefaultBackgroundColor; // Red
-        LootFilterStylesRingTextFontSize = 30; // Default Font Size
-        LootFilterStylesRingAlwaysActive = false;
+        LootFilterStylesRingTextFontSize = 45; // Default Font Size
+        LootFilterStylesRingAlwaysActive = true;
         LootFilterStylesRingAlwaysDisabled = false;
         LootFilterStylesRingMapIconEnabled = true;
         LootFilterStylesRingMapIconSize = 0; // Large size

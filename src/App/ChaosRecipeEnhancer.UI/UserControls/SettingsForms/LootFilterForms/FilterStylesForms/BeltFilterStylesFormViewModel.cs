@@ -296,8 +296,8 @@ public class BeltFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesBeltTextColor = _beltDefaultTextColor; // White
         LootFilterStylesBeltBorderColor = _beltDefaultBorderColor; // White
         LootFilterStylesBeltBackgroundColor = _beltDefaultBackgroundColor; // Red
-        LootFilterStylesBeltTextFontSize = 30; // Default Font Size
-        LootFilterStylesBeltAlwaysActive = false;
+        LootFilterStylesBeltTextFontSize = 45; // Default Font Size
+        LootFilterStylesBeltAlwaysActive = true;
         LootFilterStylesBeltAlwaysDisabled = false;
         LootFilterStylesBeltMapIconEnabled = true;
         LootFilterStylesBeltMapIconSize = 0; // Large size
