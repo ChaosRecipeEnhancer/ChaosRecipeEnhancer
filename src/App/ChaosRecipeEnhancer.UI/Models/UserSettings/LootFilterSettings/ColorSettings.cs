@@ -7,19 +7,6 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 /// </summary>
 public partial class UserSettings : IUserSettings
 {
-    public string LootFilterAmuletColor
-    {
-        get => Settings.Default.LootFilterAmuletColor;
-        set
-        {
-            if (Settings.Default.LootFilterAmuletColor != value)
-            {
-                Settings.Default.LootFilterAmuletColor = value;
-                Save();
-            }
-        }
-    }
-
     public string LootFilterBeltColor
     {
         get => Settings.Default.LootFilterBeltColor;

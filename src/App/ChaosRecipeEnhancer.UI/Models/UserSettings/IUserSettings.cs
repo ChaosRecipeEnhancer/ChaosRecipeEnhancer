@@ -126,7 +126,7 @@ public interface IUserSettings
 
     #region NEW Loot Filter Settings
 
-    #region NEW Loot Filter Settings - Rings
+    #region NEW Loot Filter Settings - Ring
 
     int LootFilterStylesRingTextFontSize { get; set; }
     string LootFilterStylesRingTextColor { get; set; }
@@ -141,10 +141,30 @@ public interface IUserSettings
     bool LootFilterStylesRingBeamEnabled { get; set; }
     bool LootFilterStylesRingBeamTemporary { get; set; }
     int LootFilterStylesRingBeamColor { get; set; }
-
     bool LootFilterStylesRingTextColorEnabled { get; set; }
     bool LootFilterStylesRingBorderColorEnabled { get; set; }
     bool LootFilterStylesRingBackgroundColorEnabled { get; set; }
+
+    #endregion
+
+    #region NEW Loot Filter Settings - Amulet
+
+    int LootFilterStylesAmuletTextFontSize { get; set; }
+    string LootFilterStylesAmuletTextColor { get; set; }
+    string LootFilterStylesAmuletBorderColor { get; set; }
+    string LootFilterStylesAmuletBackgroundColor { get; set; } // Formerly: LootFilterAmuletColor
+    bool LootFilterStylesAmuletAlwaysActive { get; set; }
+    bool LootFilterStylesAmuletAlwaysDisabled { get; set; }
+    bool LootFilterStylesAmuletMapIconEnabled { get; set; }
+    int LootFilterStylesAmuletMapIconColor { get; set; }
+    int LootFilterStylesAmuletMapIconSize { get; set; }
+    int LootFilterStylesAmuletMapIconShape { get; set; }
+    bool LootFilterStylesAmuletBeamEnabled { get; set; }
+    bool LootFilterStylesAmuletBeamTemporary { get; set; }
+    int LootFilterStylesAmuletBeamColor { get; set; }
+    bool LootFilterStylesAmuletTextColorEnabled { get; set; }
+    bool LootFilterStylesAmuletBorderColorEnabled { get; set; }
+    bool LootFilterStylesAmuletBackgroundColorEnabled { get; set; }
 
     #endregion
 

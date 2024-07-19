@@ -27,7 +27,12 @@
 
             </TabItem>
 
-            <TabItem Header="Amulet" />
+            <TabItem Header="Amulet">
+
+                 <filterStylesForms:AmuletFilterStylesForm />
+
+            </TabItem>
+
             <TabItem Header="Belt" />
             <TabItem Header="Boots" />
             <TabItem Header="Gloves" />
@@ -36,7 +41,7 @@
             <TabItem Header="Weapons" />
         </TabControl>
 
-        <Button Content="Reset All Item Class Styles" Width="300" Margin="0, 15, 0, 0" Background="DarkRed" HorizontalAlignment="Center" />
+        <Button Content="Reset All Item Class Styles" Width="200" Margin="0, 15, 0, 0" Background="DarkRed" HorizontalAlignment="Center" />
 
     </StackPanel>
 
