@@ -8,8 +8,20 @@ public class CBeltsManager : ABaseItemClassManager
     {
         ClassName = "Belts";
         ClassFilterName = "\"Belts\"";
-        ClassColor = Settings.Default.LootFilterBeltColor;
-        AlwaysActive = Settings.Default.LootFilterBeltsAlwaysActive;
+
+        FontSize = Settings.Default.LootFilterStylesBeltTextFontSize;
+        FontColor = Settings.Default.LootFilterStylesBeltTextColor;
+        BorderColor = Settings.Default.LootFilterStylesBeltBorderColor;
+        ClassColor = Settings.Default.LootFilterStylesBeltBackgroundColor;
+        AlwaysActive = Settings.Default.LootFilterStylesBeltAlwaysActive;
+        AlwaysHidden = Settings.Default.LootFilterStylesBeltAlwaysDisabled;
+        MapIconEnabled = Settings.Default.LootFilterStylesBeltMapIconEnabled;
+        MapIconColor = Settings.Default.LootFilterStylesBeltMapIconColor;
+        MapIconSize = Settings.Default.LootFilterStylesBeltMapIconSize;
+        MapIconShape = Settings.Default.LootFilterStylesBeltMapIconShape;
+        BeamEnabled = Settings.Default.LootFilterStylesBeltBeamEnabled;
+        BeamTemporary = Settings.Default.LootFilterStylesBeltBeamTemporary;
+        BeamColor = Settings.Default.LootFilterStylesBeltBeamColor;
     }
 
     public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)

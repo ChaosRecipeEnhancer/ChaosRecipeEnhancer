@@ -8,8 +8,20 @@ public class CBootsManager : ABaseItemClassManager
     {
         ClassName = "Boots";
         ClassFilterName = "\"Boots\"";
-        ClassColor = Settings.Default.LootFilterBootsColor;
-        AlwaysActive = Settings.Default.LootFilterBootsAlwaysActive;
+
+        FontSize = Settings.Default.LootFilterStylesBootsTextFontSize;
+        FontColor = Settings.Default.LootFilterStylesBootsTextColor;
+        BorderColor = Settings.Default.LootFilterStylesBootsBorderColor;
+        ClassColor = Settings.Default.LootFilterStylesBootsBackgroundColor;
+        AlwaysActive = Settings.Default.LootFilterStylesBootsAlwaysActive;
+        AlwaysHidden = Settings.Default.LootFilterStylesBootsAlwaysDisabled;
+        MapIconEnabled = Settings.Default.LootFilterStylesBootsMapIconEnabled;
+        MapIconColor = Settings.Default.LootFilterStylesBootsMapIconColor;
+        MapIconSize = Settings.Default.LootFilterStylesBootsMapIconSize;
+        MapIconShape = Settings.Default.LootFilterStylesBootsMapIconShape;
+        BeamEnabled = Settings.Default.LootFilterStylesBootsBeamEnabled;
+        BeamTemporary = Settings.Default.LootFilterStylesBootsBeamTemporary;
+        BeamColor = Settings.Default.LootFilterStylesBootsBeamColor;
     }
 
     public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)
