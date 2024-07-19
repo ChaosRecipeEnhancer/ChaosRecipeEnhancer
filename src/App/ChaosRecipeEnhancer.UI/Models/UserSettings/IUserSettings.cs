@@ -168,6 +168,27 @@ public interface IUserSettings
 
     #endregion
 
+    #region NEW Loot Filter Settings - Belt
+
+    int LootFilterStylesBeltTextFontSize { get; set; }
+    string LootFilterStylesBeltTextColor { get; set; }
+    string LootFilterStylesBeltBorderColor { get; set; }
+    string LootFilterStylesBeltBackgroundColor { get; set; } // Formerly: LootFilterBeltColor
+    bool LootFilterStylesBeltAlwaysActive { get; set; }
+    bool LootFilterStylesBeltAlwaysDisabled { get; set; }
+    bool LootFilterStylesBeltMapIconEnabled { get; set; }
+    int LootFilterStylesBeltMapIconColor { get; set; }
+    int LootFilterStylesBeltMapIconSize { get; set; }
+    int LootFilterStylesBeltMapIconShape { get; set; }
+    bool LootFilterStylesBeltBeamEnabled { get; set; }
+    bool LootFilterStylesBeltBeamTemporary { get; set; }
+    int LootFilterStylesBeltBeamColor { get; set; }
+    bool LootFilterStylesBeltTextColorEnabled { get; set; }
+    bool LootFilterStylesBeltBorderColorEnabled { get; set; }
+    bool LootFilterStylesBeltBackgroundColorEnabled { get; set; }
+
+    #endregion
+
     #endregion
 
     #endregion

@@ -1340,5 +1340,197 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["LootFilterStylesAmuletBackgroundColorEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFFFFFF")]
+        public string LootFilterStylesBeltTextColor {
+            get {
+                return ((string)(this["LootFilterStylesBeltTextColor"]));
+            }
+            set {
+                this["LootFilterStylesBeltTextColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFFFFFF")]
+        public string LootFilterStylesBeltBorderColor {
+            get {
+                return ((string)(this["LootFilterStylesBeltBorderColor"]));
+            }
+            set {
+                this["LootFilterStylesBeltBorderColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFF0000")]
+        public string LootFilterStylesBeltBackgroundColor {
+            get {
+                return ((string)(this["LootFilterStylesBeltBackgroundColor"]));
+            }
+            set {
+                this["LootFilterStylesBeltBackgroundColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LootFilterStylesBeltAlwaysActive {
+            get {
+                return ((bool)(this["LootFilterStylesBeltAlwaysActive"]));
+            }
+            set {
+                this["LootFilterStylesBeltAlwaysActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LootFilterStylesBeltAlwaysDisabled {
+            get {
+                return ((bool)(this["LootFilterStylesBeltAlwaysDisabled"]));
+            }
+            set {
+                this["LootFilterStylesBeltAlwaysDisabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LootFilterStylesBeltMapIconEnabled {
+            get {
+                return ((bool)(this["LootFilterStylesBeltMapIconEnabled"]));
+            }
+            set {
+                this["LootFilterStylesBeltMapIconEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int LootFilterStylesBeltMapIconColor {
+            get {
+                return ((int)(this["LootFilterStylesBeltMapIconColor"]));
+            }
+            set {
+                this["LootFilterStylesBeltMapIconColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesBeltMapIconSize {
+            get {
+                return ((int)(this["LootFilterStylesBeltMapIconSize"]));
+            }
+            set {
+                this["LootFilterStylesBeltMapIconSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesBeltMapIconShape {
+            get {
+                return ((int)(this["LootFilterStylesBeltMapIconShape"]));
+            }
+            set {
+                this["LootFilterStylesBeltMapIconShape"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LootFilterStylesBeltBeamEnabled {
+            get {
+                return ((bool)(this["LootFilterStylesBeltBeamEnabled"]));
+            }
+            set {
+                this["LootFilterStylesBeltBeamEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LootFilterStylesBeltBeamTemporary {
+            get {
+                return ((bool)(this["LootFilterStylesBeltBeamTemporary"]));
+            }
+            set {
+                this["LootFilterStylesBeltBeamTemporary"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int LootFilterStylesBeltBeamColor {
+            get {
+                return ((int)(this["LootFilterStylesBeltBeamColor"]));
+            }
+            set {
+                this["LootFilterStylesBeltBeamColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int LootFilterStylesBeltTextFontSize {
+            get {
+                return ((int)(this["LootFilterStylesBeltTextFontSize"]));
+            }
+            set {
+                this["LootFilterStylesBeltTextFontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LootFilterStylesBeltTextColorEnabled {
+            get {
+                return ((bool)(this["LootFilterStylesBeltTextColorEnabled"]));
+            }
+            set {
+                this["LootFilterStylesBeltTextColorEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LootFilterStylesBeltBorderColorEnabled {
+            get {
+                return ((bool)(this["LootFilterStylesBeltBorderColorEnabled"]));
+            }
+            set {
+                this["LootFilterStylesBeltBorderColorEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LootFilterStylesBeltBackgroundColorEnabled {
+            get {
+                return ((bool)(this["LootFilterStylesBeltBackgroundColorEnabled"]));
+            }
+            set {
+                this["LootFilterStylesBeltBackgroundColorEnabled"] = value;
+            }
+        }
     }
 }

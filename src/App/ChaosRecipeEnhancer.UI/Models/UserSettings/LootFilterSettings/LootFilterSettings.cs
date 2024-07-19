@@ -72,19 +72,6 @@ public partial class UserSettings : IUserSettings
         }
     }
 
-    public bool LootFilterBeltsAlwaysActive
-    {
-        get => Settings.Default.LootFilterBeltsAlwaysActive;
-        set
-        {
-            if (Settings.Default.LootFilterBeltsAlwaysActive != value)
-            {
-                Settings.Default.LootFilterBeltsAlwaysActive = value;
-                Save();
-            }
-        }
-    }
-
     public bool LootFilterGlovesAlwaysActive
     {
         get => Settings.Default.LootFilterGlovesAlwaysActive;

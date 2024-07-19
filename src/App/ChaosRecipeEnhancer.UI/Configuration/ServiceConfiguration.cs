@@ -104,5 +104,6 @@ public static class ServiceConfiguration
         // FilterStyleForm VM's
         services.AddTransient<RingFilterStylesFormViewModel>();
         services.AddTransient<AmuletFilterStylesFormViewModel>();
+        services.AddTransient<BeltFilterStylesFormViewModel>();
     }
 }

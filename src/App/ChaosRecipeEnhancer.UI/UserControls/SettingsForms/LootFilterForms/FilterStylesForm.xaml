@@ -33,7 +33,12 @@
 
             </TabItem>
 
-            <TabItem Header="Belt" />
+            <TabItem Header="Belt">
+
+                <filterStylesForms:BeltFilterStylesForm />
+
+            </TabItem>
+
             <TabItem Header="Boots" />
             <TabItem Header="Gloves" />
             <TabItem Header="Helmet" />
