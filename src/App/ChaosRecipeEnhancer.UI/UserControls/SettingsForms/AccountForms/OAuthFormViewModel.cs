@@ -116,27 +116,11 @@ public class OAuthFormViewModel : CreViewModelBase
     public string PathOfExileAccountName
     {
         get => _userSettings.PathOfExileAccountName;
-        set
-        {
-            if (_userSettings.PathOfExileAccountName != value)
-            {
-                _userSettings.PathOfExileAccountName = value;
-                OnPropertyChanged(nameof(PathOfExileAccountName));
-            }
-        }
     }
 
     public ConnectionStatusTypes PoEAccountConnectionStatus
     {
         get => _userSettings.PoEAccountConnectionStatus;
-        set
-        {
-            if (_userSettings.PoEAccountConnectionStatus != value)
-            {
-                _userSettings.PoEAccountConnectionStatus = value;
-                OnPropertyChanged(nameof(PoEAccountConnectionStatus));
-            }
-        }
     }
 
     #endregion

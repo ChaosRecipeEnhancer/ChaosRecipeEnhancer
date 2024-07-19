@@ -161,7 +161,7 @@ public class LegacyAuthFormViewModel : CreViewModelBase
     {
         try
         {
-            var healthCheckResponse = await _poeApiService.HealthCheckWithSesionIdAsync(_userSettings.LegacyAuthSessionId);
+            var healthCheckResponse = await _poeApiService.HealthCheckWithSesionIdAsync(LegacyAuthSessionId);
             return healthCheckResponse != null && healthCheckResponse.Total > 0;
         }
         catch (UnauthorizedException)
