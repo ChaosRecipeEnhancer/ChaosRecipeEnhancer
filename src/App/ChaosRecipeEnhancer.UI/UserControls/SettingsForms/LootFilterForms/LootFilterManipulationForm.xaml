@@ -47,13 +47,13 @@
             VerticalAlignment="Center"
             Text="Loot Filter Manipulation:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="Activates manipulation of loot filter. When active your loot filter gets rewritten as soon as an item type changes." />
+            ToolTip="Activates manipulation of loot filter. When active, your loot filter gets rewritten as soon as an item type changes." />
 
         <CheckBox
             Grid.Column="1"
             Grid.Row="1"
             Margin="15 0 0 10"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
             IsChecked="{Binding LootFilterManipulationEnabled, Mode=TwoWay}" />
 
         <TextBlock
@@ -110,7 +110,7 @@
             Grid.Column="1"
             Grid.Row="5"
             Margin="15 0 0 10"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
             IsChecked="{Binding LootFilterSpaceSavingHideLargeWeapons, Mode=TwoWay}" />
 
         <TextBlock
@@ -126,7 +126,7 @@
             Grid.Column="1"
             Grid.Row="6"
             Margin="15 0 0 10"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
             IsChecked="{Binding LootFilterSpaceSavingHideOffHand, Mode=TwoWay}" />
 
         <!-- Clean Loot Filter Button -->

@@ -139,7 +139,7 @@
             Grid.Column="1"
             Grid.Row="2"
             Margin="10 0 0 10"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
             IsEnabled="{Binding PrivateLeagueCheckboxEnabled, Mode=OneWay}"
             IsChecked="{Binding CustomLeagueEnabled, Mode=TwoWay}" />
         <!--Private League End-->
@@ -157,6 +157,7 @@
             Grid.Column="1"
             Grid.Row="3"
             Margin="10 0 0 10"
+            HorizontalAlignment="Left"
             IsChecked="{Binding GuildStashMode, Mode=TwoWay}" />
         <!-- Guild Stash Mode Checkbox End -->
 
@@ -333,6 +334,7 @@
             Grid.Column="1"
             Grid.Row="7"
             Margin="10 0 0 0"
+            HorizontalAlignment="Left"
             IsChecked="{Binding HideRemoveOnlyTabs, Mode=TwoWay}" />
         <!-- Hide Remove Only Tabs Checkbox End -->
 
