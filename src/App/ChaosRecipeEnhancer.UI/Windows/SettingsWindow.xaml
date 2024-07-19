@@ -185,31 +185,32 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-
-                        <lootFilterForms:FilterStylesForm
-                            Grid.Column="0"
-                            Grid.Row="0"
-                            Grid.ColumnSpan="2"
-                            Margin="15"
-                            HorizontalAlignment="Center" />
 
                         <!-- Filter Manipulation -->
                         <lootFilterForms:LootFilterManipulationForm
                             Grid.Column="0"
                             Grid.Row="1" />
-                        <!-- Colors -->
 
+                        <!-- Colors -->
                         <lootFilterForms:ColorsForm
                             Grid.Column="1"
                             Grid.Row="1" />
 
-
-
                     </Grid>
                 </TabItem>
                 <!-- Loot Filter Settings Tab End -->
+
+                <!-- Filter Styles Settings Tab Start -->
+                <TabItem
+                    Header="Filter Styles"
+                    IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
+
+                    <lootFilterForms:FilterStylesForm
+                        Margin="15 10 15 10" />
+
+                </TabItem>
+                <!-- Filter Styles Settings Tab End -->
 
                 <!-- We need to embed the Hotkey stuff directly into the main SettingsWindow
                 since we want to have access to the SetTracker and its various Run* methods-->
