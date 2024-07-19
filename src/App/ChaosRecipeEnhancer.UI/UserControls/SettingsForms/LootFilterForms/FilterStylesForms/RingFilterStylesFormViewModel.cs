@@ -28,6 +28,8 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
     public RingFilterStylesFormViewModel(IUserSettings userSettings)
     {
         _userSettings = userSettings;
+
+        UpdateIconFilename();
     }
 
     #region Commands
@@ -316,7 +318,7 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
 
     private void ApplyTextColorSetting()
     {
-        if (!LootFilterStylesRingTextColorEnabled)
+        if (!LootFilterStylesRingTextColorEnabled && LootFilterStylesRingTextColor is not null)
         {
             _previousTextColor = LootFilterStylesRingTextColor;
             LootFilterStylesRingTextColor = _defaultTextColor;
@@ -324,7 +326,7 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
         else
         {
             // Restore to custom color if previously disabled and custom color was set
-            if (_previousTextColor != null)
+            if (_previousTextColor is not null)
             {
                 LootFilterStylesRingTextColor = _previousTextColor;
             }
@@ -337,7 +339,7 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
 
     private void ApplyBorderColorSetting()
     {
-        if (!LootFilterStylesRingBorderColorEnabled)
+        if (!LootFilterStylesRingBorderColorEnabled && LootFilterStylesRingBorderColor is not null)
         {
             _previousBorderColor = LootFilterStylesRingBorderColor;
             LootFilterStylesRingBorderColor = _defaultBorderColor;
@@ -345,7 +347,7 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
         else
         {
             // Restore to custom color if previously disabled and custom color was set
-            if (_previousBorderColor != null)
+            if (_previousBorderColor is not null)
             {
                 LootFilterStylesRingBorderColor = _previousBorderColor;
             }
@@ -358,7 +360,7 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
 
     private void ApplyBackgroundColorSetting()
     {
-        if (!LootFilterStylesRingBackgroundColorEnabled)
+        if (!LootFilterStylesRingBackgroundColorEnabled && LootFilterStylesRingBackgroundColor is not null)
         {
             _previousBackgroundColor = LootFilterStylesRingBackgroundColor;
             LootFilterStylesRingBackgroundColor = _defaultBackgroundColor;
@@ -367,7 +369,7 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
         {
             // Restore to custom color if previously disabled and custom color was set
 
-            if (_previousTextColor != null)
+            if (_previousTextColor is not null)
             {
                 LootFilterStylesRingBackgroundColor = _previousBackgroundColor;
             }
