@@ -178,21 +178,9 @@
                     Header="Loot Filter"
                     IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                    <!-- Filter Manipulation -->
+                    <lootFilterForms:LootFilterManipulationForm />
 
-                        <!-- Filter Manipulation -->
-                        <lootFilterForms:LootFilterManipulationForm
-                            Grid.Column="0"
-                            Grid.Row="1" />
-
-                    </Grid>
                 </TabItem>
                 <!-- Loot Filter Settings Tab End -->
 
@@ -201,8 +189,7 @@
                     Header="Filter Styles"
                     IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
 
-                    <lootFilterForms:FilterStylesForm
-                        Margin="15 10 15 10" />
+                    <lootFilterForms:FilterStylesForm Margin="15" />
 
                 </TabItem>
                 <!-- Filter Styles Settings Tab End -->

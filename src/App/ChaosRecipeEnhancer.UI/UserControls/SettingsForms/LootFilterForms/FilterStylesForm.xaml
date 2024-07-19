@@ -71,8 +71,6 @@
 
         </TabControl>
 
-        <Button Content="Reset All Item Class Styles" Width="200" Margin="0, 15, 0, 0" Background="DarkRed" HorizontalAlignment="Center" />
-
     </StackPanel>
 
 </UserControl>
