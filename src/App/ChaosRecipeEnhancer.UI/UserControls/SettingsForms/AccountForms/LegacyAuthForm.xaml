@@ -65,7 +65,7 @@
             Margin="10 0 0 10"
             VerticalAlignment="Center"
             Width="150"
-            Text="{Binding GlobalUserSettings.LegacyAuthAccountName, Mode=TwoWay}" />
+            Text="{Binding LegacyAuthAccountName, Mode=TwoWay}" />
 
         <!-- PoE Session ID -->
         <TextBlock

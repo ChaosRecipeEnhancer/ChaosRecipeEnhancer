@@ -1,4 +1,5 @@
 ﻿using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Services;
 using CommunityToolkit.Mvvm.Input;
 using Serilog;
@@ -14,6 +15,7 @@ public class OAuthFormViewModel : CreViewModelBase
 
     private readonly ILogger _log = Log.ForContext<OAuthFormViewModel>();
     private readonly IAuthStateManager _authStateManager;
+    private readonly IUserSettings _userSettings;
 
     private ICommand _loginCommand;
     private ICommand _logoutCommand;
@@ -29,8 +31,9 @@ public class OAuthFormViewModel : CreViewModelBase
 
     #region Constructors
 
-    public OAuthFormViewModel(IAuthStateManager authState)
+    public OAuthFormViewModel(IAuthStateManager authState, IUserSettings userSettings)
     {
+        _userSettings = userSettings;
         _authStateManager = authState;
 
         _authStateManager.AuthStateChanged += AuthStateManager_AuthStateChanged;
@@ -61,7 +64,7 @@ public class OAuthFormViewModel : CreViewModelBase
     /// </summary>
     public Visibility ConnectionNotValidatedTextVisibility
     {
-        get => GlobalUserSettings.PoEAccountConnectionStatus == (int)ConnectionStatusTypes.ConnectionNotValidated ? Visibility.Visible : Visibility.Collapsed;
+        get => PoEAccountConnectionStatus == ConnectionStatusTypes.ConnectionNotValidated ? Visibility.Visible : Visibility.Collapsed;
         private set => SetProperty(ref _connectionNotValidatedTextVisibility, value);
     }
 
@@ -70,7 +73,7 @@ public class OAuthFormViewModel : CreViewModelBase
     /// </summary>
     public Visibility LoggedInTextVisibility
     {
-        get => GlobalUserSettings.PoEAccountConnectionStatus == (int)ConnectionStatusTypes.ValidatedConnection ? Visibility.Visible : Visibility.Collapsed;
+        get => PoEAccountConnectionStatus == ConnectionStatusTypes.ValidatedConnection ? Visibility.Visible : Visibility.Collapsed;
         private set => SetProperty(ref _loggedInTextVisibility, value);
     }
 
@@ -79,7 +82,7 @@ public class OAuthFormViewModel : CreViewModelBase
     /// </summary>
     public Visibility ConnectionErrorTextVisibility
     {
-        get => GlobalUserSettings.PoEAccountConnectionStatus == (int)ConnectionStatusTypes.ConnectionError ? Visibility.Visible : Visibility.Collapsed;
+        get => PoEAccountConnectionStatus == ConnectionStatusTypes.ConnectionError ? Visibility.Visible : Visibility.Collapsed;
         private set => SetProperty(ref _connectionErrorTextVisibility, value);
     }
 
@@ -88,7 +91,7 @@ public class OAuthFormViewModel : CreViewModelBase
     /// </summary>
     public Visibility AttemptingLoginTextVisibility
     {
-        get => GlobalUserSettings.PoEAccountConnectionStatus == (int)ConnectionStatusTypes.AttemptingLogin ? Visibility.Visible : Visibility.Collapsed;
+        get => PoEAccountConnectionStatus == ConnectionStatusTypes.AttemptingLogin ? Visibility.Visible : Visibility.Collapsed;
         private set => SetProperty(ref _attemptingLoginTextVisibility, value);
     }
 
@@ -97,7 +100,7 @@ public class OAuthFormViewModel : CreViewModelBase
     /// </summary>
     public Visibility LoginButtonVisibility
     {
-        get => GlobalUserSettings.PoEAccountConnectionStatus != (int)ConnectionStatusTypes.ValidatedConnection ? Visibility.Visible : Visibility.Collapsed;
+        get => PoEAccountConnectionStatus != ConnectionStatusTypes.ValidatedConnection ? Visibility.Visible : Visibility.Collapsed;
         private set => SetProperty(ref _loginButtonVisibility, value);
     }
 
@@ -106,8 +109,34 @@ public class OAuthFormViewModel : CreViewModelBase
     /// </summary>
     public Visibility LogoutButtonVisibility
     {
-        get => GlobalUserSettings.PoEAccountConnectionStatus == (int)ConnectionStatusTypes.ValidatedConnection ? Visibility.Visible : Visibility.Collapsed;
+        get => PoEAccountConnectionStatus == ConnectionStatusTypes.ValidatedConnection ? Visibility.Visible : Visibility.Collapsed;
         private set => SetProperty(ref _logoutButtonVisibility, value);
+    }
+
+    public string PathOfExileAccountName
+    {
+        get => _userSettings.PathOfExileAccountName;
+        set
+        {
+            if (_userSettings.PathOfExileAccountName != value)
+            {
+                _userSettings.PathOfExileAccountName = value;
+                OnPropertyChanged(nameof(PathOfExileAccountName));
+            }
+        }
+    }
+
+    public ConnectionStatusTypes PoEAccountConnectionStatus
+    {
+        get => _userSettings.PoEAccountConnectionStatus;
+        set
+        {
+            if (_userSettings.PoEAccountConnectionStatus != value)
+            {
+                _userSettings.PoEAccountConnectionStatus = value;
+                OnPropertyChanged(nameof(PoEAccountConnectionStatus));
+            }
+        }
     }
 
     #endregion
@@ -145,17 +174,8 @@ public class OAuthFormViewModel : CreViewModelBase
     private void AuthStateManager_AuthStateChanged(object sender, EventArgs e)
     {
         _log.Information("Auth state changed, updating UI...");
-        NotifyAllPropertiesChanged();
-    }
+        OnPropertyChanged(string.Empty);
 
-    private void NotifyAllPropertiesChanged()
-    {
-        OnPropertyChanged(nameof(ConnectionNotValidatedTextVisibility));
-        OnPropertyChanged(nameof(LoggedInTextVisibility));
-        OnPropertyChanged(nameof(ConnectionErrorTextVisibility));
-        OnPropertyChanged(nameof(AttemptingLoginTextVisibility));
-        OnPropertyChanged(nameof(LoginButtonVisibility));
-        OnPropertyChanged(nameof(LogoutButtonVisibility));
     }
 
     #endregion

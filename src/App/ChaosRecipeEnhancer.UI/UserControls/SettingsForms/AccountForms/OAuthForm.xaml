@@ -61,7 +61,7 @@
             Margin="10 0 0 10"
             VerticalAlignment="Center"
             Width="150"
-            Text="{Binding GlobalUserSettings.PathOfExileAccountName}" />
+            Text="{Binding PathOfExileAccountName}" />
 
         <TextBlock
             Grid.Column="1"

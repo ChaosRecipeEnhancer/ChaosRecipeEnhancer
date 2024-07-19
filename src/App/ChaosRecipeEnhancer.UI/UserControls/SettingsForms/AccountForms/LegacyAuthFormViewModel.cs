@@ -59,7 +59,7 @@ public class LegacyAuthFormViewModel : CreViewModelBase
     /// </summary>
     public Visibility ConnectionNotValidatedTextVisibility
     {
-        get => GlobalUserSettings.PoEAccountConnectionStatus == (int)ConnectionStatusTypes.ConnectionNotValidated ? Visibility.Visible : Visibility.Collapsed;
+        get => PoEAccountConnectionStatus == ConnectionStatusTypes.ConnectionNotValidated ? Visibility.Visible : Visibility.Collapsed;
         private set => SetProperty(ref _connectionNotValidatedTextVisibility, value);
     }
 
@@ -68,7 +68,7 @@ public class LegacyAuthFormViewModel : CreViewModelBase
     /// </summary>
     public Visibility LoggedInTextVisibility
     {
-        get => GlobalUserSettings.PoEAccountConnectionStatus == (int)ConnectionStatusTypes.ValidatedConnection ? Visibility.Visible : Visibility.Collapsed;
+        get => PoEAccountConnectionStatus == ConnectionStatusTypes.ValidatedConnection ? Visibility.Visible : Visibility.Collapsed;
         private set => SetProperty(ref _loggedInTextVisibility, value);
     }
 
@@ -77,8 +77,34 @@ public class LegacyAuthFormViewModel : CreViewModelBase
     /// </summary>
     public Visibility ConnectionErrorTextVisibility
     {
-        get => GlobalUserSettings.PoEAccountConnectionStatus == (int)ConnectionStatusTypes.ConnectionError ? Visibility.Visible : Visibility.Collapsed;
+        get => PoEAccountConnectionStatus == ConnectionStatusTypes.ConnectionError ? Visibility.Visible : Visibility.Collapsed;
         private set => SetProperty(ref _connectionErrorTextVisibility, value);
+    }
+
+    public ConnectionStatusTypes PoEAccountConnectionStatus
+    {
+        get => _userSettings.PoEAccountConnectionStatus;
+        set
+        {
+            if (_userSettings.PoEAccountConnectionStatus != value)
+            {
+                _userSettings.PoEAccountConnectionStatus = value;
+                OnPropertyChanged(nameof(PoEAccountConnectionStatus));
+            }
+        }
+    }
+
+    public string LegacyAuthAccountName
+    {
+        get => _userSettings.LegacyAuthAccountName;
+        set
+        {
+            if (_userSettings.LegacyAuthAccountName != value)
+            {
+                _userSettings.LegacyAuthAccountName = value;
+                OnPropertyChanged(nameof(LegacyAuthAccountName));
+            }
+        }
     }
 
     public string LegacyAuthSessionId
@@ -103,7 +129,7 @@ public class LegacyAuthFormViewModel : CreViewModelBase
         try
         {
             _log.Information("Starting the session id validation process...");
-            GlobalUserSettings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.AttemptingLogin;
+            PoEAccountConnectionStatus = ConnectionStatusTypes.AttemptingLogin;
             OnPropertyChanged(nameof(ConnectionNotValidatedTextVisibility));
 
             // Perform a health check using PoeApiService
@@ -111,23 +137,23 @@ public class LegacyAuthFormViewModel : CreViewModelBase
 
             if (isValid)
             {
-                GlobalUserSettings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ValidatedConnection;
+                PoEAccountConnectionStatus = ConnectionStatusTypes.ValidatedConnection;
                 _log.Information("Validation process completed successfully.");
             }
         }
         catch (UnauthorizedException)
         {
-            GlobalUserSettings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionNotValidated;
+            PoEAccountConnectionStatus = ConnectionStatusTypes.ConnectionNotValidated;
             _log.Warning("Validation failed: Unauthorized access");
         }
         catch (Exception ex)
         {
-            GlobalUserSettings.PoEAccountConnectionStatus = (int)ConnectionStatusTypes.ConnectionError;
+            PoEAccountConnectionStatus = ConnectionStatusTypes.ConnectionError;
             _log.Error(ex, "An error occurred during the validation process.");
         }
         finally
         {
-            NotifyAllPropertiesChanged();
+            OnPropertyChanged(string.Empty);
         }
     }
 
@@ -153,14 +179,7 @@ public class LegacyAuthFormViewModel : CreViewModelBase
     private void AuthStateManager_AuthStateChanged(object sender, EventArgs e)
     {
         _log.Information("Auth state changed, updating UI...");
-        NotifyAllPropertiesChanged();
-    }
-
-    private void NotifyAllPropertiesChanged()
-    {
-        OnPropertyChanged(nameof(ConnectionNotValidatedTextVisibility));
-        OnPropertyChanged(nameof(LoggedInTextVisibility));
-        OnPropertyChanged(nameof(ConnectionErrorTextVisibility));
+        OnPropertyChanged(string.Empty);
     }
 
     #endregion
