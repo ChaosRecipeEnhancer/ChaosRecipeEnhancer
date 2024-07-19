@@ -178,28 +178,21 @@
                     Header="Loot Filter"
                     IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                    <!-- Filter Manipulation -->
+                    <lootFilterForms:LootFilterManipulationForm />
 
-                        <!-- Filter Manipulation -->
-                        <lootFilterForms:LootFilterManipulationForm
-                            Grid.Column="0"
-                            Grid.Row="0" />
-                        <!-- Colors -->
-
-                        <lootFilterForms:ColorsForm
-                            Grid.Column="1"
-                            Grid.Row="0" />
-
-                    </Grid>
                 </TabItem>
                 <!-- Loot Filter Settings Tab End -->
+
+                <!-- Filter Styles Settings Tab Start -->
+                <TabItem
+                    Header="Filter Styles"
+                    IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
+
+                    <lootFilterForms:FilterStylesForm Margin="15" />
+
+                </TabItem>
+                <!-- Filter Styles Settings Tab End -->
 
                 <!-- We need to embed the Hotkey stuff directly into the main SettingsWindow
                 since we want to have access to the SetTracker and its various Run* methods-->
@@ -364,9 +357,9 @@
                 <TextBlock
                     Grid.Column="0"
                     FontSize="10"
-                    Margin="0 0 25 0"
+                    Margin="5 0 25 0"
+                    HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
-                    TextAlignment="Center"
                     Text="This product isn't affiliated with or endorsed by Grinding Gear Games in any way." />
 
                 <!-- Update Available Icon and App Version Text -->
@@ -376,7 +369,6 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center">
 
-                    <!-- Update Available Icon -->
                     <!-- Update Available Icon -->
                     <Image
                         Width="16"
@@ -398,6 +390,7 @@
                     <TextBlock
                         FontSize="12"
                         TextAlignment="Right"
+                        Margin="0 0 5 0"
                         Text="{Binding Version, StringFormat='CRE {0} by Mario, Tropical, Zemoto, &amp; kosace'}" />
                 </StackPanel>
             </Grid>

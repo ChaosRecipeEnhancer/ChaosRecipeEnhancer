@@ -181,6 +181,7 @@
             Text="Default Tab Background Color:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="The color of the background of non-highlighted tabs." />
+
         <xctk:ColorPicker
             Grid.Column="1"
             Grid.Row="4"
@@ -223,6 +224,7 @@
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Item Picker Mode:" />
+
         <ComboBox
             Grid.Column="1"
             Grid.Row="6"

@@ -36,16 +36,6 @@ public class LootFilterManipulationFormViewModel : CreViewModelBase
         }
     }
 
-    public bool LootFilterIconsEnabled
-    {
-        get => _userSettings.LootFilterIconsEnabled;
-        set
-        {
-            _userSettings.LootFilterIconsEnabled = value;
-            OnPropertyChanged();
-        }
-    }
-
     public string LootFilterFileLocation
     {
         get => _userSettings.LootFilterFileLocation;

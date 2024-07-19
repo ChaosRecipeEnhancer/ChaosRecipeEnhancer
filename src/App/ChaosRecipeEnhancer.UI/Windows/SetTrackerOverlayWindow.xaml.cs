@@ -3,6 +3,7 @@ using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using ChaosRecipeEnhancer.UI.Utilities;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -17,7 +18,7 @@ public partial class SetTrackerOverlayWindow : Window
 
     public SetTrackerOverlayWindow()
     {
-        DataContext = _model = new SetTrackerOverlayViewModel();
+        DataContext = _model = Ioc.Default.GetService<SetTrackerOverlayViewModel>();
 
         // initialize stash tab overlay window and log watcher alongside this window
         _stashTabOverlay = new StashTabOverlayWindow();
