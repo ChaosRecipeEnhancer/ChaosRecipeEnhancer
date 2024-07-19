@@ -142,6 +142,10 @@ public interface IUserSettings
     bool LootFilterStylesRingBeamTemporary { get; set; }
     int LootFilterStylesRingBeamColor { get; set; }
 
+    bool LootFilterStylesRingTextColorEnabled { get; set; }
+    bool LootFilterStylesRingBorderColorEnabled { get; set; }
+    bool LootFilterStylesRingBackgroundColorEnabled { get; set; }
+
     #endregion
 
     #endregion

@@ -255,7 +255,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="LootFilterStylesRingMapIconColor" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesRingMapIconSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -270,10 +270,19 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="LootFilterStylesRingBeamColor" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesRingTextFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">45</Value>
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingTextColorEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingBorderColorEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LootFilterStylesRingBackgroundColorEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -12,6 +12,19 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
     private ICommand _toggleAlwaysDisabledCommand;
     private ICommand _resetRingStylesCommand;
 
+    private readonly string _defaultBackgroundColor = "#000000"; // Black
+    private readonly string _defaultBorderColor = "#FFFFFF"; // White
+    private readonly string _defaultTextColor = "#FFFF77"; // Yellow
+
+    private readonly string _ringDefaultBackgroundColor = "#FFFF0000"; // Red
+    private readonly string _ringDefaultBorderColor = "#FFFFFFFF"; // White
+    private readonly string _ringDefaultTextColor = "#FFFFFFFF"; // White
+
+    private string _previousBackgroundColor;
+    private string _previousBorderColor;
+    private string _previousTextColor;
+    private string _iconFilename;
+
     public RingFilterStylesFormViewModel(IUserSettings userSettings)
     {
         _userSettings = userSettings;
@@ -114,6 +127,7 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
             {
                 _userSettings.LootFilterStylesRingMapIconEnabled = value;
                 OnPropertyChanged();
+                UpdateIconFilename();
             }
         }
     }
@@ -127,6 +141,7 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
             {
                 _userSettings.LootFilterStylesRingMapIconSize = value;
                 OnPropertyChanged();
+                UpdateIconFilename();
             }
         }
     }
@@ -140,6 +155,7 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
             {
                 _userSettings.LootFilterStylesRingMapIconColor = value;
                 OnPropertyChanged();
+                UpdateIconFilename();
             }
         }
     }
@@ -153,6 +169,7 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
             {
                 _userSettings.LootFilterStylesRingMapIconShape = value;
                 OnPropertyChanged();
+                UpdateIconFilename();
             }
         }
     }
@@ -196,6 +213,61 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
         }
     }
 
+    public bool LootFilterStylesRingTextColorEnabled
+    {
+        get => _userSettings.LootFilterStylesRingTextColorEnabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesRingTextColorEnabled != value)
+            {
+                _userSettings.LootFilterStylesRingTextColorEnabled = value;
+                OnPropertyChanged();
+                ApplyTextColorSetting();
+            }
+        }
+    }
+
+    public bool LootFilterStylesRingBorderColorEnabled
+    {
+        get => _userSettings.LootFilterStylesRingBorderColorEnabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesRingBorderColorEnabled != value)
+            {
+                _userSettings.LootFilterStylesRingBorderColorEnabled = value;
+                OnPropertyChanged();
+                ApplyBorderColorSetting();
+            }
+        }
+    }
+
+    public bool LootFilterStylesRingBackgroundColorEnabled
+    {
+        get => _userSettings.LootFilterStylesRingBackgroundColorEnabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesRingBackgroundColorEnabled != value)
+            {
+                _userSettings.LootFilterStylesRingBackgroundColorEnabled = value;
+                OnPropertyChanged();
+                ApplyBackgroundColorSetting();
+            }
+        }
+    }
+
+    public string IconFilename
+    {
+        get => _iconFilename;
+        set
+        {
+            if (_iconFilename != value)
+            {
+                _iconFilename = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
     #endregion
 
     #region Methods
@@ -219,22 +291,137 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
     private void ResetRingStyles()
     {
         // Reset all settings to their default values
-        LootFilterStylesRingTextColor = "#FFFFB0B0"; // Light Red
-        LootFilterStylesRingBorderColor = "#FFFFB0B0"; // Light Red
-        LootFilterStylesRingBackgroundColor = "#FFFF0303"; // Red
-        LootFilterStylesRingTextFontSize = 45; // Default font size
+        LootFilterStylesRingTextColor = _ringDefaultTextColor; // White
+        LootFilterStylesRingBorderColor = _ringDefaultBorderColor; // White
+        LootFilterStylesRingBackgroundColor = _ringDefaultBackgroundColor; // Red
+        LootFilterStylesRingTextFontSize = 30; // Default Font Size
         LootFilterStylesRingAlwaysActive = false;
         LootFilterStylesRingAlwaysDisabled = false;
-        LootFilterStylesRingMapIconEnabled = false;
-        LootFilterStylesRingMapIconSize = 1; // Medium size
-        LootFilterStylesRingMapIconColor = 0; // Blue
+        LootFilterStylesRingMapIconEnabled = true;
+        LootFilterStylesRingMapIconSize = 0; // Large size
+        LootFilterStylesRingMapIconColor = 10; // Yellow
         LootFilterStylesRingMapIconShape = 0; // Circle
         LootFilterStylesRingBeamEnabled = false;
-        LootFilterStylesRingBeamColor = 0; // Blue
+        LootFilterStylesRingBeamColor = 10; // Yellow
         LootFilterStylesRingBeamTemporary = false;
+        LootFilterStylesRingTextColorEnabled = true;
+        LootFilterStylesRingBorderColorEnabled = true;
+        LootFilterStylesRingBackgroundColorEnabled = true;
+
+        UpdateIconFilename();
 
         // Notify UI of all changes
         OnPropertyChanged(string.Empty);
+    }
+
+    private void ApplyTextColorSetting()
+    {
+        if (!LootFilterStylesRingTextColorEnabled)
+        {
+            _previousTextColor = LootFilterStylesRingTextColor;
+            LootFilterStylesRingTextColor = _defaultTextColor;
+        }
+        else
+        {
+            // Restore to custom color if previously disabled and custom color was set
+            if (_previousTextColor != null)
+            {
+                LootFilterStylesRingTextColor = _previousTextColor;
+            }
+            else
+            {
+                LootFilterStylesRingTextColor = _ringDefaultTextColor;
+            }
+        }
+    }
+
+    private void ApplyBorderColorSetting()
+    {
+        if (!LootFilterStylesRingBorderColorEnabled)
+        {
+            _previousBorderColor = LootFilterStylesRingBorderColor;
+            LootFilterStylesRingBorderColor = _defaultBorderColor;
+        }
+        else
+        {
+            // Restore to custom color if previously disabled and custom color was set
+            if (_previousBorderColor != null)
+            {
+                LootFilterStylesRingBorderColor = _previousBorderColor;
+            }
+            else
+            {
+                LootFilterStylesRingBorderColor = _ringDefaultBorderColor;
+            }
+        }
+    }
+
+    private void ApplyBackgroundColorSetting()
+    {
+        if (!LootFilterStylesRingBackgroundColorEnabled)
+        {
+            _previousBackgroundColor = LootFilterStylesRingBackgroundColor;
+            LootFilterStylesRingBackgroundColor = _defaultBackgroundColor;
+        }
+        else
+        {
+            // Restore to custom color if previously disabled and custom color was set
+
+            if (_previousTextColor != null)
+            {
+                LootFilterStylesRingBackgroundColor = _previousBackgroundColor;
+            }
+            else
+            {
+                LootFilterStylesRingBackgroundColor = _ringDefaultBackgroundColor;
+            }
+        }
+    }
+
+    private void UpdateIconFilename()
+    {
+        string size = LootFilterStylesRingMapIconSize switch
+        {
+            0 => "Large",
+            1 => "Medium",
+            2 => "Small",
+            _ => "Large" // Default to Medium
+        };
+
+        string color = LootFilterStylesRingMapIconColor switch
+        {
+            0 => "Blue",
+            1 => "Brown",
+            2 => "Cyan",
+            3 => "Green",
+            4 => "Grey",
+            5 => "Orange",
+            6 => "Pink",
+            7 => "Purple",
+            8 => "Red",
+            9 => "White",
+            10 => "Yellow",
+            _ => "Yellow" // Default to Blue
+        };
+
+        string shape = LootFilterStylesRingMapIconShape switch
+        {
+            0 => "Circle",
+            1 => "Cross",
+            2 => "Diamond",
+            3 => "Hexagon",
+            4 => "Kite",
+            5 => "Moon",
+            6 => "Pentagon",
+            7 => "Raindrop",
+            8 => "Square",
+            9 => "Star",
+            10 => "Triangle",
+            11 => "UpsideDownHouse",
+            _ => "Circle" // Default to Circle
+        };
+
+        IconFilename = $"../../../../Assets/Images/LootFilter/LootFilter{size}{color}{shape}.png";
     }
 
     #endregion

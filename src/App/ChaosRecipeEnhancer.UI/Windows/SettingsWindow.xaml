@@ -192,7 +192,7 @@
                             Grid.Column="0"
                             Grid.Row="0"
                             Grid.ColumnSpan="2"
-                            Margin="0,25,0,25"
+                            Margin="15"
                             HorizontalAlignment="Center" />
 
                         <!-- Filter Manipulation -->

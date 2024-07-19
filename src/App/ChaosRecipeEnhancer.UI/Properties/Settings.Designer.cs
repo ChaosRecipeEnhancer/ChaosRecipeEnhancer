@@ -1031,7 +1031,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int LootFilterStylesRingMapIconColor {
             get {
                 return ((int)(this["LootFilterStylesRingMapIconColor"]));
@@ -1091,7 +1091,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int LootFilterStylesRingBeamColor {
             get {
                 return ((int)(this["LootFilterStylesRingBeamColor"]));
@@ -1103,13 +1103,49 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("45")]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
         public int LootFilterStylesRingTextFontSize {
             get {
                 return ((int)(this["LootFilterStylesRingTextFontSize"]));
             }
             set {
                 this["LootFilterStylesRingTextFontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LootFilterStylesRingTextColorEnabled {
+            get {
+                return ((bool)(this["LootFilterStylesRingTextColorEnabled"]));
+            }
+            set {
+                this["LootFilterStylesRingTextColorEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LootFilterStylesRingBorderColorEnabled {
+            get {
+                return ((bool)(this["LootFilterStylesRingBorderColorEnabled"]));
+            }
+            set {
+                this["LootFilterStylesRingBorderColorEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LootFilterStylesRingBackgroundColorEnabled {
+            get {
+                return ((bool)(this["LootFilterStylesRingBackgroundColorEnabled"]));
+            }
+            set {
+                this["LootFilterStylesRingBackgroundColorEnabled"] = value;
             }
         }
     }

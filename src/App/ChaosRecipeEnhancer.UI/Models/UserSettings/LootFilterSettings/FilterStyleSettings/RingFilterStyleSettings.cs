@@ -201,4 +201,43 @@ public partial class UserSettings : IUserSettings
             }
         }
     }
+
+    public bool LootFilterStylesRingTextColorEnabled
+    {
+        get => Settings.Default.LootFilterStylesRingTextColorEnabled;
+        set
+        {
+            if (Settings.Default.LootFilterStylesRingTextColorEnabled != value)
+            {
+                Settings.Default.LootFilterStylesRingTextColorEnabled = value;
+                Save();
+            }
+        }
+    }
+
+    public bool LootFilterStylesRingBorderColorEnabled
+    {
+        get => Settings.Default.LootFilterStylesRingBorderColorEnabled;
+        set
+        {
+            if (Settings.Default.LootFilterStylesRingBorderColorEnabled != value)
+            {
+                Settings.Default.LootFilterStylesRingBorderColorEnabled = value;
+                Save();
+            }
+        }
+    }
+
+    public bool LootFilterStylesRingBackgroundColorEnabled
+    {
+        get => Settings.Default.LootFilterStylesRingBackgroundColorEnabled;
+        set
+        {
+            if (Settings.Default.LootFilterStylesRingBackgroundColorEnabled != value)
+            {
+                Settings.Default.LootFilterStylesRingBackgroundColorEnabled = value;
+                Save();
+            }
+        }
+    }
 }
