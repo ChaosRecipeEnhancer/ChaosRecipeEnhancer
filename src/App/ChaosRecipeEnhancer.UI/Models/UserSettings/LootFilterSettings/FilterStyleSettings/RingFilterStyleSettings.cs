@@ -5,34 +5,6 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 // RingFilterStyleSettings
 public partial class UserSettings : IUserSettings
 {
-    // Old Settings
-    public string LootFilterRingColor
-    {
-        get => Settings.Default.LootFilterRingColor;
-        set
-        {
-            if (Settings.Default.LootFilterRingColor != value)
-            {
-                Settings.Default.LootFilterRingColor = value;
-                Save();
-            }
-        }
-    }
-
-    public bool LootFilterRingsAlwaysActive
-    {
-        get => Settings.Default.LootFilterRingsAlwaysActive;
-        set
-        {
-            if (Settings.Default.LootFilterRingsAlwaysActive != value)
-            {
-                Settings.Default.LootFilterRingsAlwaysActive = value;
-                Save();
-            }
-        }
-    }
-
-    // New Settings
     public int LootFilterStylesRingTextFontSize
     {
         get => Settings.Default.LootFilterStylesRingTextFontSize;

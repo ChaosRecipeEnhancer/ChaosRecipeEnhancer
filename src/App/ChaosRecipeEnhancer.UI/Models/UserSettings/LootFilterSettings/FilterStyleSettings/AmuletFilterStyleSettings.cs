@@ -5,34 +5,6 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 // AmuletFilterStyleSettings
 public partial class UserSettings : IUserSettings
 {
-    // Old Settings
-    public string LootFilterAmuletColor
-    {
-        get => Settings.Default.LootFilterAmuletColor;
-        set
-        {
-            if (Settings.Default.LootFilterAmuletColor != value)
-            {
-                Settings.Default.LootFilterAmuletColor = value;
-                Save();
-            }
-        }
-    }
-
-    public bool LootFilterAmuletsAlwaysActive
-    {
-        get => Settings.Default.LootFilterAmuletsAlwaysActive;
-        set
-        {
-            if (Settings.Default.LootFilterAmuletsAlwaysActive != value)
-            {
-                Settings.Default.LootFilterAmuletsAlwaysActive = value;
-                Save();
-            }
-        }
-    }
-
-    // New Settings
     public int LootFilterStylesAmuletTextFontSize
     {
         get => Settings.Default.LootFilterStylesAmuletTextFontSize;

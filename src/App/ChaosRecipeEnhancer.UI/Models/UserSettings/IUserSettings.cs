@@ -89,7 +89,6 @@ public interface IUserSettings
 
     bool LootFilterManipulationEnabled { get; set; }
     string LootFilterFileLocation { get; set; }
-    bool LootFilterIconsEnabled { get; set; }
 
     #region Space Saving Settings
 
@@ -98,35 +97,7 @@ public interface IUserSettings
 
     #endregion
 
-    #region Always Active Settings
-
-    bool LootFilterRingsAlwaysActive { get; set; }
-    bool LootFilterAmuletsAlwaysActive { get; set; }
-    bool LootFilterBeltsAlwaysActive { get; set; }
-    bool LootFilterGlovesAlwaysActive { get; set; }
-    bool LootFilterBootsAlwaysActive { get; set; }
-    bool LootFilterHelmetsAlwaysActive { get; set; }
-    bool LootFilterBodyArmourAlwaysActive { get; set; }
-    bool LootFilterWeaponsAlwaysActive { get; set; }
-
-    #endregion
-
-    #region Color Settings
-
-    string LootFilterRingColor { get; set; }
-    string LootFilterAmuletColor { get; set; }
-    string LootFilterBeltColor { get; set; }
-    string LootFilterBootsColor { get; set; }
-    string LootFilterGlovesColor { get; set; }
-    string LootFilterHelmetColor { get; set; }
-    string LootFilterBodyArmourColor { get; set; }
-    string LootFilterWeaponColor { get; set; }
-
-    #endregion
-
-    #region NEW Loot Filter Settings
-
-    #region NEW Loot Filter Settings - Ring
+    #region Loot Filter Settings - Ring
 
     int LootFilterStylesRingTextFontSize { get; set; }
     string LootFilterStylesRingTextColor { get; set; }
@@ -147,7 +118,7 @@ public interface IUserSettings
 
     #endregion
 
-    #region NEW Loot Filter Settings - Amulet
+    #region Loot Filter Settings - Amulet
 
     int LootFilterStylesAmuletTextFontSize { get; set; }
     string LootFilterStylesAmuletTextColor { get; set; }
@@ -168,7 +139,7 @@ public interface IUserSettings
 
     #endregion
 
-    #region NEW Loot Filter Settings - Belt
+    #region Loot Filter Settings - Belt
 
     int LootFilterStylesBeltTextFontSize { get; set; }
     string LootFilterStylesBeltTextColor { get; set; }
@@ -189,7 +160,7 @@ public interface IUserSettings
 
     #endregion
 
-    #region NEW Loot Filter Settings - Boots
+    #region Loot Filter Settings - Boots
 
     int LootFilterStylesBootsTextFontSize { get; set; }
     string LootFilterStylesBootsTextColor { get; set; }
@@ -210,7 +181,7 @@ public interface IUserSettings
 
     #endregion
 
-    #region NEW Loot Filter Settings - Gloves
+    #region Loot Filter Settings - Gloves
 
     int LootFilterStylesGlovesTextFontSize { get; set; }
     string LootFilterStylesGlovesTextColor { get; set; }
@@ -231,7 +202,7 @@ public interface IUserSettings
 
     #endregion
 
-    #region NEW Loot Filter Settings - Helmet
+    #region Loot Filter Settings - Helmet
 
     int LootFilterStylesHelmetTextFontSize { get; set; }
     string LootFilterStylesHelmetTextColor { get; set; }
@@ -252,7 +223,7 @@ public interface IUserSettings
 
     #endregion
 
-    #region NEW Loot Filter Settings - Body Armour
+    #region Loot Filter Settings - Body Armour
 
     int LootFilterStylesBodyArmourTextFontSize { get; set; }
     string LootFilterStylesBodyArmourTextColor { get; set; }
@@ -273,7 +244,7 @@ public interface IUserSettings
 
     #endregion
 
-    #region NEW Loot Filter Settings - Weapon
+    #region Loot Filter Settings - Weapon
 
     int LootFilterStylesWeaponTextFontSize { get; set; }
     string LootFilterStylesWeaponTextColor { get; set; }
@@ -291,8 +262,6 @@ public interface IUserSettings
     bool LootFilterStylesWeaponTextColorEnabled { get; set; }
     bool LootFilterStylesWeaponBorderColorEnabled { get; set; }
     bool LootFilterStylesWeaponBackgroundColorEnabled { get; set; }
-
-    #endregion
 
     #endregion
 

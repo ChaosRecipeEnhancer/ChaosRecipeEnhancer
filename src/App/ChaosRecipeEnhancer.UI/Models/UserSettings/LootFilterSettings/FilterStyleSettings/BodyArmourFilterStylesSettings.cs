@@ -5,35 +5,6 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 // BodyArmourFilterStyleSettings
 public partial class UserSettings : IUserSettings
 {
-    // Old Settings
-    public string LootFilterBodyArmourColor
-    {
-        get => Settings.Default.LootFilterBodyArmourColor;
-        set
-        {
-            if (Settings.Default.LootFilterBodyArmourColor != value)
-            {
-                Settings.Default.LootFilterBodyArmourColor = value;
-                Save();
-            }
-        }
-    }
-
-    public bool LootFilterBodyArmourAlwaysActive
-    {
-        get => Settings.Default.LootFilterBodyArmourAlwaysActive;
-        set
-        {
-            if (Settings.Default.LootFilterBodyArmourAlwaysActive != value)
-            {
-                Settings.Default.LootFilterBodyArmourAlwaysActive = value;
-                Save();
-            }
-        }
-    }
-
-
-    // New Settings
     public int LootFilterStylesBodyArmourTextFontSize
     {
         get => Settings.Default.LootFilterStylesBodyArmourTextFontSize;

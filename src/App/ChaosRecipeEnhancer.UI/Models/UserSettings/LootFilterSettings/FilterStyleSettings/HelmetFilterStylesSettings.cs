@@ -5,34 +5,6 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 // HelmetFilterStyleSettings
 public partial class UserSettings : IUserSettings
 {
-    // Old Settings
-    public string LootFilterHelmetColor
-    {
-        get => Settings.Default.LootFilterHelmetColor;
-        set
-        {
-            if (Settings.Default.LootFilterHelmetColor != value)
-            {
-                Settings.Default.LootFilterHelmetColor = value;
-                Save();
-            }
-        }
-    }
-
-    public bool LootFilterHelmetsAlwaysActive
-    {
-        get => Settings.Default.LootFilterHelmetsAlwaysActive;
-        set
-        {
-            if (Settings.Default.LootFilterHelmetsAlwaysActive != value)
-            {
-                Settings.Default.LootFilterHelmetsAlwaysActive = value;
-                Save();
-            }
-        }
-    }
-
-    // New Settings
     public int LootFilterStylesHelmetTextFontSize
     {
         get => Settings.Default.LootFilterStylesHelmetTextFontSize;

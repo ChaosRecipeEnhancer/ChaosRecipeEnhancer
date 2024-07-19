@@ -387,7 +387,7 @@ public class AmuletFilterStylesFormViewModel : CreViewModelBase
             0 => "Large",
             1 => "Medium",
             2 => "Small",
-            _ => "Large" // Default to Medium
+            _ => "Large" // Default to Large
         };
 
         string color = LootFilterStylesAmuletMapIconColor switch
@@ -403,7 +403,7 @@ public class AmuletFilterStylesFormViewModel : CreViewModelBase
             8 => "Red",
             9 => "White",
             10 => "Yellow",
-            _ => "Yellow" // Default to Blue
+            _ => "Yellow" // Default to Yellow
         };
 
         string shape = LootFilterStylesAmuletMapIconShape switch

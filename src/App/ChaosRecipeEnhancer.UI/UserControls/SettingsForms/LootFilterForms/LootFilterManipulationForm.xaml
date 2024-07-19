@@ -80,22 +80,6 @@
 
         <TextBlock
             Grid.Column="0"
-            Grid.Row="3"
-            Margin="0 0 0 10"
-            VerticalAlignment="Center"
-            Text="Show Icon on Map:"
-            ToolTipService.InitialShowDelay="50"
-            ToolTip="Activates icons on the minimap." />
-
-        <CheckBox
-            Grid.Column="1"
-            Grid.Row="3"
-            Margin="15 0 0 10"
-            VerticalAlignment="Center"
-            IsChecked="{Binding LootFilterIconsEnabled, Mode=TwoWay}" />
-
-        <TextBlock
-            Grid.Column="0"
             Grid.Row="4"
             Grid.ColumnSpan="2"
             Margin="0 0 0 10"

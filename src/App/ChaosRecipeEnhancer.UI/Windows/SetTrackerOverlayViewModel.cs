@@ -224,106 +224,214 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
 
     #region Always Active Settings
 
-    public bool LootFilterRingsAlwaysActive
+    public bool LootFilterStylesRingAlwaysActive
     {
-        get => _userSettings.LootFilterRingsAlwaysActive;
+        get => _userSettings.LootFilterStylesRingAlwaysActive;
         set
         {
-            if (_userSettings.LootFilterRingsAlwaysActive != value)
+            if (_userSettings.LootFilterStylesRingAlwaysActive != value)
             {
-                _userSettings.LootFilterRingsAlwaysActive = value;
-                OnPropertyChanged(nameof(LootFilterRingsAlwaysActive));
+                _userSettings.LootFilterStylesRingAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesRingAlwaysActive));
             }
         }
     }
 
-    public bool LootFilterAmuletsAlwaysActive
+    public bool LootFilterStylesAmuletAlwaysActive
     {
-        get => _userSettings.LootFilterAmuletsAlwaysActive;
+        get => _userSettings.LootFilterStylesAmuletAlwaysActive;
         set
         {
-            if (_userSettings.LootFilterAmuletsAlwaysActive != value)
+            if (_userSettings.LootFilterStylesAmuletAlwaysActive != value)
             {
-                _userSettings.LootFilterAmuletsAlwaysActive = value;
-                OnPropertyChanged(nameof(LootFilterAmuletsAlwaysActive));
+                _userSettings.LootFilterStylesAmuletAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesAmuletAlwaysActive));
             }
         }
     }
 
-    public bool LootFilterBeltsAlwaysActive
+    public bool LootFilterStylesBeltAlwaysActive
     {
-        get => _userSettings.LootFilterBeltsAlwaysActive;
+        get => _userSettings.LootFilterStylesBeltAlwaysActive;
         set
         {
-            if (_userSettings.LootFilterBeltsAlwaysActive != value)
+            if (_userSettings.LootFilterStylesBeltAlwaysActive != value)
             {
-                _userSettings.LootFilterBeltsAlwaysActive = value;
-                OnPropertyChanged(nameof(LootFilterBeltsAlwaysActive));
+                _userSettings.LootFilterStylesBeltAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesBeltAlwaysActive));
             }
         }
     }
 
-    public bool LootFilterBodyArmourAlwaysActive
+    public bool LootFilterStylesBodyArmourAlwaysActive
     {
-        get => _userSettings.LootFilterBodyArmourAlwaysActive;
+        get => _userSettings.LootFilterStylesBodyArmourAlwaysActive;
         set
         {
-            if (_userSettings.LootFilterBodyArmourAlwaysActive != value)
+            if (_userSettings.LootFilterStylesBodyArmourAlwaysActive != value)
             {
-                _userSettings.LootFilterBodyArmourAlwaysActive = value;
-                OnPropertyChanged(nameof(LootFilterBodyArmourAlwaysActive));
+                _userSettings.LootFilterStylesBodyArmourAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesBodyArmourAlwaysActive));
             }
         }
     }
 
-    public bool LootFilterGlovesAlwaysActive
+    public bool LootFilterStylesGlovesAlwaysActive
     {
-        get => _userSettings.LootFilterGlovesAlwaysActive;
+        get => _userSettings.LootFilterStylesGlovesAlwaysActive;
         set
         {
-            if (_userSettings.LootFilterGlovesAlwaysActive != value)
+            if (_userSettings.LootFilterStylesGlovesAlwaysActive != value)
             {
-                _userSettings.LootFilterGlovesAlwaysActive = value;
-                OnPropertyChanged(nameof(LootFilterGlovesAlwaysActive));
+                _userSettings.LootFilterStylesGlovesAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesGlovesAlwaysActive));
             }
         }
     }
 
-    public bool LootFilterBootsAlwaysActive
+    public bool LootFilterStylesBootsAlwaysActive
     {
-        get => _userSettings.LootFilterBootsAlwaysActive;
+        get => _userSettings.LootFilterStylesBootsAlwaysActive;
         set
         {
-            if (_userSettings.LootFilterBootsAlwaysActive != value)
+            if (_userSettings.LootFilterStylesBootsAlwaysActive != value)
             {
-                _userSettings.LootFilterBootsAlwaysActive = value;
-                OnPropertyChanged(nameof(LootFilterBootsAlwaysActive));
+                _userSettings.LootFilterStylesBootsAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesBootsAlwaysActive));
             }
         }
     }
 
-    public bool LootFilterHelmetsAlwaysActive
+    public bool LootFilterStylesHelmetAlwaysActive
     {
-        get => _userSettings.LootFilterHelmetsAlwaysActive;
+        get => _userSettings.LootFilterStylesHelmetAlwaysActive;
         set
         {
-            if (_userSettings.LootFilterHelmetsAlwaysActive != value)
+            if (_userSettings.LootFilterStylesHelmetAlwaysActive != value)
             {
-                _userSettings.LootFilterHelmetsAlwaysActive = value;
-                OnPropertyChanged(nameof(LootFilterHelmetsAlwaysActive));
+                _userSettings.LootFilterStylesHelmetAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesHelmetAlwaysActive));
             }
         }
     }
 
-    public bool LootFilterWeaponsAlwaysActive
+    public bool LootFilterStylesWeaponAlwaysActive
     {
-        get => _userSettings.LootFilterWeaponsAlwaysActive;
+        get => _userSettings.LootFilterStylesWeaponAlwaysActive;
         set
         {
-            if (_userSettings.LootFilterWeaponsAlwaysActive != value)
+            if (_userSettings.LootFilterStylesWeaponAlwaysActive != value)
             {
-                _userSettings.LootFilterWeaponsAlwaysActive = value;
-                OnPropertyChanged(nameof(LootFilterWeaponsAlwaysActive));
+                _userSettings.LootFilterStylesWeaponAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesWeaponAlwaysActive));
+            }
+        }
+    }
+
+    #endregion
+
+    #region Always Disabled Settings
+
+    public bool LootFilterStylesRingAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesRingAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesRingAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesRingAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesRingAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesAmuletAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesAmuletAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesAmuletAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesAmuletAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesAmuletAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesBeltAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesBeltAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesBeltAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesBeltAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesBeltAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesBodyArmourAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesBodyArmourAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesBodyArmourAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesBodyArmourAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesBodyArmourAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesGlovesAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesGlovesAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesGlovesAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesGlovesAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesGlovesAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesBootsAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesBootsAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesBootsAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesBootsAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesBootsAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesHelmetAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesHelmetAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesHelmetAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesHelmetAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesHelmetAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesWeaponAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesWeaponAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesWeaponAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesWeaponAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesWeaponAlwaysDisabled));
             }
         }
     }
@@ -387,35 +495,35 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     #region Item Class Active (Visibility) Properties
 
     public bool RingsActive =>
-        LootFilterRingsAlwaysActive ||
+        LootFilterStylesRingAlwaysActive && !LootFilterStylesRingAlwaysDisabled ||
         (NeedsFetching || (FullSetThreshold * 2) - GlobalItemSetManagerState.RingsAmount > 0);
 
     public bool AmuletsActive =>
-        LootFilterAmuletsAlwaysActive ||
+        LootFilterStylesAmuletAlwaysActive && !LootFilterStylesAmuletAlwaysDisabled ||
         (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.AmuletsAmount > 0);
 
     public bool BeltsActive =>
-        LootFilterBeltsAlwaysActive ||
+        LootFilterStylesBeltAlwaysActive && !LootFilterStylesBeltAlwaysDisabled ||
         (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.BeltsAmount > 0);
 
     public bool ChestsActive =>
-        LootFilterBodyArmourAlwaysActive ||
+        LootFilterStylesBodyArmourAlwaysActive && !LootFilterStylesBodyArmourAlwaysDisabled ||
         (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.ChestsAmount > 0);
 
     public bool GlovesActive =>
-        LootFilterGlovesAlwaysActive ||
+        LootFilterStylesGlovesAlwaysActive && !LootFilterStylesGlovesAlwaysDisabled ||
         (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.GlovesAmount > 0);
 
     public bool HelmetsActive =>
-        LootFilterHelmetsAlwaysActive ||
+        LootFilterStylesHelmetAlwaysActive && !LootFilterStylesHelmetAlwaysDisabled ||
         (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.HelmetsAmount > 0);
 
     public bool BootsActive =>
-        LootFilterBootsAlwaysActive ||
+        LootFilterStylesBootsAlwaysActive && !LootFilterStylesBootsAlwaysDisabled ||
         (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.BootsAmount > 0);
 
     public bool WeaponsActive =>
-        LootFilterWeaponsAlwaysActive ||
+        LootFilterStylesWeaponAlwaysActive && !LootFilterStylesWeaponAlwaysDisabled ||
         (NeedsFetching || (FullSetThreshold * 2) - (GlobalItemSetManagerState.WeaponsSmallAmount + (GlobalItemSetManagerState.WeaponsBigAmount * 2)) > 0);
 
     #endregion

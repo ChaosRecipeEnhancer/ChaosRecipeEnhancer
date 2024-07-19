@@ -4,34 +4,6 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 
 public partial class UserSettings : IUserSettings
 {
-    // Old Settings
-    public string LootFilterBootsColor
-    {
-        get => Settings.Default.LootFilterBootsColor;
-        set
-        {
-            if (Settings.Default.LootFilterBootsColor != value)
-            {
-                Settings.Default.LootFilterBootsColor = value;
-                Save();
-            }
-        }
-    }
-
-    public bool LootFilterBootsAlwaysActive
-    {
-        get => Settings.Default.LootFilterBootsAlwaysActive;
-        set
-        {
-            if (Settings.Default.LootFilterBootsAlwaysActive != value)
-            {
-                Settings.Default.LootFilterBootsAlwaysActive = value;
-                Save();
-            }
-        }
-    }
-
-    // New Settings
     public int LootFilterStylesBootsTextFontSize
     {
         get => Settings.Default.LootFilterStylesBootsTextFontSize;
@@ -240,4 +212,3 @@ public partial class UserSettings : IUserSettings
         }
     }
 }
-

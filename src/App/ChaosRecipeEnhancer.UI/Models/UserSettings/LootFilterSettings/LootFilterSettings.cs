@@ -33,19 +33,6 @@ public partial class UserSettings : IUserSettings
         }
     }
 
-    public bool LootFilterIconsEnabled
-    {
-        get => Settings.Default.LootFilterIconsEnabled;
-        set
-        {
-            if (Settings.Default.LootFilterIconsEnabled != value)
-            {
-                Settings.Default.LootFilterIconsEnabled = value;
-                Save();
-            }
-        }
-    }
-
     public bool LootFilterSpaceSavingHideLargeWeapons
     {
         get => Settings.Default.LootFilterSpaceSavingHideLargeWeapons;

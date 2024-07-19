@@ -27,7 +27,7 @@ public class FilterManipulationService : IFilterManipulationService
 {
     private readonly IUserSettings _userSettings;
     private ABaseItemClassManager _itemClassManager;
-    private readonly List<string> _customStyle = new();
+    private readonly List<string> _customStyle = [];
 
     public FilterManipulationService(IUserSettings userSettings)
     {
@@ -69,12 +69,15 @@ public class FilterManipulationService : IFilterManipulationService
 
     private string GenerateSection()
     {
-        var result = "Show";
+        var result = string.Empty;
 
+        // 'Base' Stuff
+        // Ensure no influence
+        // Ensure item is rare
         result += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "HasInfluence None";
-
         result = result + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Rarity Rare" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
+        // Identified Item Setting
         if (!Settings.Default.IncludeIdentifiedItemsEnabled) result += "Identified False" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
         // Setting item level section based on whether Chaoss Recipe Tracking is enabled (or disabled, in which the Regal Recipe is used)
@@ -97,6 +100,7 @@ public class FilterManipulationService : IFilterManipulationService
                 StringConstruction.TabCharacter
         };
 
+        // Base ItemClass Type Setting
         string baseType;
 
         // weapons get special treatment due to space saving options
@@ -118,20 +122,60 @@ public class FilterManipulationService : IFilterManipulationService
 
         result = result + baseType + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
-        var colors = GetColorRGBAValues();
-        var bgColor = colors.Aggregate("SetBackgroundColor", (current, t) => current + " " + t);
-
-        result = result + bgColor + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
-
+        // Adding Filter Template (Assets/FilterStyles/NormalItemStyle.txt)
         result = _customStyle.Aggregate(result,
             (current, cs) =>
                 current + cs + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter);
 
-        // Map Icon setting enabled
-        if (Settings.Default.LootFilterIconsEnabled)
+        // Always Show / Always Hide Settings
+        string showOrHide;
+        if (_itemClassManager.AlwaysActive)
+        {
+            showOrHide = "Show";
+        }
+        else if (_itemClassManager.AlwaysHidden)
+        {
+            showOrHide = "Hide";
+        }
+        else
+        {
+            showOrHide = "Show";
+        }
+
+        // Add showOrHide to beginning of result string
+        result = showOrHide + result;
+
+        //Font Size Setting
+        result = result + $"SetFontSize {_itemClassManager.FontSize}" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+
+        // Font Color Setting
+        var rgbaTextColors = GetColorRGBAValues(_itemClassManager.FontColor);
+        var textColor = rgbaTextColors.Aggregate("SetTextColor", (current, t) => current + " " + t);
+        result = result + textColor + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+
+        // Border Color Setting
+        var rgbaBorderColors = GetColorRGBAValues(_itemClassManager.BorderColor);
+        var bdColor = rgbaBorderColors.Aggregate("SetBorderColor", (current, t) => current + " " + t);
+        result = result + bdColor + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+
+        // Background Color Setting
+        var rgbaBackgroundColors = GetColorRGBAValues(_itemClassManager.ClassColor);
+        var bgColor = rgbaBackgroundColors.Aggregate("SetBackgroundColor", (current, t) => current + " " + t);
+        result = result + bgColor + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+
+        // Map Icon Setting
+        if (_itemClassManager.MapIconEnabled)
+        {
             // TODO: [Filter Manipulation] [Enhancement] Add ability to modify map icon for items added to loot filter
-            result = result + "MinimapIcon 2 White Star" + StringConstruction.NewLineCharacter +
+            result = result + $"MinimapIcon {GetFilterMapIconSize(_itemClassManager.MapIconSize)} {GetFilterColor(_itemClassManager.MapIconColor)} {GetFilterMapIconShape(_itemClassManager.MapIconShape)}" + StringConstruction.NewLineCharacter +
                      StringConstruction.TabCharacter;
+        }
+
+        // Beam Setting
+        if (_itemClassManager.BeamEnabled)
+        {
+            result = result + $"PlayEffect {GetFilterColor(_itemClassManager.BeamColor)} {(_itemClassManager.BeamTemporary ? "Temp" : "")}" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+        }
 
         return result;
     }
@@ -206,13 +250,13 @@ public class FilterManipulationService : IFilterManipulationService
         await filterStorage.WriteLootFilterAsync(newFilter);
     }
 
-    private IEnumerable<int> GetColorRGBAValues()
+    private IEnumerable<int> GetColorRGBAValues(string hexColorSetting)
     {
         int r;
         int g;
         int b;
         int a;
-        var color = _itemClassManager.ClassColor;
+        var color = hexColorSetting;
         var colorList = new List<int>();
 
         if (color != "")
@@ -252,5 +296,55 @@ public class FilterManipulationService : IFilterManipulationService
             if (line.Contains("#")) continue;
             _customStyle.Add(line.Trim());
         }
+    }
+
+    private static string GetFilterMapIconSize(int mapIconSizeSetting)
+    {
+        return mapIconSizeSetting switch
+        {
+            0 => "0",   // Large
+            1 => "1",   // Medium
+            2 => "2",   // Small
+            _ => "1"    // Default to Large
+        };
+    }
+
+    private static string GetFilterColor(int colorSetting)
+    {
+        return colorSetting switch
+        {
+            0 => "Blue",
+            1 => "Brown",
+            2 => "Cyan",
+            3 => "Green",
+            4 => "Grey",
+            5 => "Orange",
+            6 => "Pink",
+            7 => "Purple",
+            8 => "Red",
+            9 => "White",
+            10 => "Yellow",
+            _ => "Yellow" // Default to Yellow
+        };
+    }
+
+    private static string GetFilterMapIconShape(int mapIconShapeSetting)
+    {
+        return mapIconShapeSetting switch
+        {
+            0 => "Circle",
+            1 => "Cross",
+            2 => "Diamond",
+            3 => "Hexagon",
+            4 => "Kite",
+            5 => "Moon",
+            6 => "Pentagon",
+            7 => "Raindrop",
+            8 => "Square",
+            9 => "Star",
+            10 => "Triangle",
+            11 => "UpsideDownHouse",
+            _ => "Circle" // Default to Circle
+        };
     }
 }

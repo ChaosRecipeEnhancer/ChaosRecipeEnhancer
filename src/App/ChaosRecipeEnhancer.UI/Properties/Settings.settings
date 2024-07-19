@@ -68,57 +68,6 @@
     <Setting Name="LootFilterFileLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="LootFilterIconsEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="LootFilterRingColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFFF0303</Value>
-    </Setting>
-    <Setting Name="LootFilterAmuletColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFFF0303</Value>
-    </Setting>
-    <Setting Name="LootFilterBeltColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFFF0303</Value>
-    </Setting>
-    <Setting Name="LootFilterBootsColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FF0018FF</Value>
-    </Setting>
-    <Setting Name="LootFilterGlovesColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FF04FF00</Value>
-    </Setting>
-    <Setting Name="LootFilterHelmetColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFF8FF04</Value>
-    </Setting>
-    <Setting Name="LootFilterBodyArmourColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFDD00FF</Value>
-    </Setting>
-    <Setting Name="LootFilterWeaponColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FF00DCFF</Value>
-    </Setting>
-    <Setting Name="LootFilterRingsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="LootFilterAmuletsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="LootFilterBeltsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="LootFilterBootsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="LootFilterGlovesAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="LootFilterHelmetsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="LootFilterBodyArmourAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="LootFilterWeaponsAlwaysActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="DoNotPreserveLowItemLevelGear" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>

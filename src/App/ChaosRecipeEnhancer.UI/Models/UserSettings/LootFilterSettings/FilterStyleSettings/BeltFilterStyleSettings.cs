@@ -5,34 +5,6 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 // BeltFilterStyleSettings
 public partial class UserSettings : IUserSettings
 {
-    // Old Settings
-    public string LootFilterBeltColor
-    {
-        get => Settings.Default.LootFilterBeltColor;
-        set
-        {
-            if (Settings.Default.LootFilterBeltColor != value)
-            {
-                Settings.Default.LootFilterBeltColor = value;
-                Save();
-            }
-        }
-    }
-
-    public bool LootFilterBeltsAlwaysActive
-    {
-        get => Settings.Default.LootFilterBeltsAlwaysActive;
-        set
-        {
-            if (Settings.Default.LootFilterBeltsAlwaysActive != value)
-            {
-                Settings.Default.LootFilterBeltsAlwaysActive = value;
-                Save();
-            }
-        }
-    }
-
-    // New Settings
     public int LootFilterStylesBeltTextFontSize
     {
         get => Settings.Default.LootFilterStylesBeltTextFontSize;

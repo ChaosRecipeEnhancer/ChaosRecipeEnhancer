@@ -8,8 +8,20 @@ public class CBodyArmoursManager : ABaseItemClassManager
     {
         ClassName = "BodyArmours";
         ClassFilterName = "\"Body Armours\"";
-        ClassColor = Settings.Default.LootFilterBodyArmourColor;
-        AlwaysActive = Settings.Default.LootFilterBodyArmourAlwaysActive;
+
+        FontSize = Settings.Default.LootFilterStylesBodyArmourTextFontSize;
+        FontColor = Settings.Default.LootFilterStylesBodyArmourTextColor;
+        BorderColor = Settings.Default.LootFilterStylesBodyArmourBorderColor;
+        ClassColor = Settings.Default.LootFilterStylesBodyArmourBackgroundColor;
+        AlwaysActive = Settings.Default.LootFilterStylesBodyArmourAlwaysActive;
+        AlwaysHidden = Settings.Default.LootFilterStylesBodyArmourAlwaysDisabled;
+        MapIconEnabled = Settings.Default.LootFilterStylesBodyArmourMapIconEnabled;
+        MapIconColor = Settings.Default.LootFilterStylesBodyArmourMapIconColor;
+        MapIconSize = Settings.Default.LootFilterStylesBodyArmourMapIconSize;
+        MapIconShape = Settings.Default.LootFilterStylesBodyArmourMapIconShape;
+        BeamEnabled = Settings.Default.LootFilterStylesBodyArmourBeamEnabled;
+        BeamTemporary = Settings.Default.LootFilterStylesBodyArmourBeamTemporary;
+        BeamColor = Settings.Default.LootFilterStylesBodyArmourBeamColor;
     }
 
     public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)

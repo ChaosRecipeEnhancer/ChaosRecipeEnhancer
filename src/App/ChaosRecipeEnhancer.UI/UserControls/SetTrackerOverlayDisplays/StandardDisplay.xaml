@@ -171,7 +171,7 @@
             Height="50"
             Width="50"
             Margin="5 0"
-            Background="{Binding GlobalUserSettings.LootFilterGlovesColor}"
+            Background="{Binding GlobalUserSettings.LootFilterStylesGlovesBackgroundColor}"
             Opacity="{Binding GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}">
 
                 <Grid>
@@ -216,7 +216,7 @@
             Width="50"
             Margin="5 0"
             Opacity="{Binding BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding GlobalUserSettings.LootFilterBootsColor}">
+            Background="{Binding GlobalUserSettings.LootFilterStylesBootsBackgroundColor}">
 
                 <Grid>
 
@@ -260,7 +260,7 @@
             Width="50"
             Margin="5 0"
             Opacity="{Binding HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding GlobalUserSettings.LootFilterHelmetColor}">
+            Background="{Binding GlobalUserSettings.LootFilterStylesHelmetBackgroundColor}">
 
                 <Grid>
 
@@ -304,7 +304,7 @@
             Width="50"
             Margin="5 0"
             Opacity="{Binding ChestsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding GlobalUserSettings.LootFilterBodyArmourColor}">
+            Background="{Binding GlobalUserSettings.LootFilterStylesBodyArmourBackgroundColor}">
 
                 <Grid>
 
@@ -348,7 +348,7 @@
             Width="50"
             Margin="5 0"
             Opacity="{Binding WeaponsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding GlobalUserSettings.LootFilterWeaponColor}">
+            Background="{Binding GlobalUserSettings.LootFilterStylesWeaponBackgroundColor}">
 
                 <Grid>
 
@@ -392,7 +392,7 @@
             Width="50"
             Margin="5  0"
             Opacity="{Binding RingsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding GlobalUserSettings.LootFilterRingColor}">
+            Background="{Binding GlobalUserSettings.LootFilterStylesRingBackgroundColor}">
 
                 <Grid>
 
@@ -436,7 +436,7 @@
             Width="50"
             Margin="5 0"
             Opacity="{Binding AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding GlobalUserSettings.LootFilterAmuletColor}">
+            Background="{Binding GlobalUserSettings.LootFilterStylesAmuletBackgroundColor}">
 
                 <Grid>
 
@@ -480,7 +480,7 @@
             Width="50"
             Margin="5 0"
             Opacity="{Binding BeltsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-            Background="{Binding GlobalUserSettings.LootFilterBeltColor}">
+            Background="{Binding GlobalUserSettings.LootFilterStylesBeltBackgroundColor}">
 
                 <Grid>
 

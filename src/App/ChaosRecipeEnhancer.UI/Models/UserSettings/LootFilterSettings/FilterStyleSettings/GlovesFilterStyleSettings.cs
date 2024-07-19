@@ -5,34 +5,6 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 // GlovesFilterStyleSettings
 public partial class UserSettings : IUserSettings
 {
-    // Old Settings
-    public string LootFilterGlovesColor
-    {
-        get => Settings.Default.LootFilterGlovesColor;
-        set
-        {
-            if (Settings.Default.LootFilterGlovesColor != value)
-            {
-                Settings.Default.LootFilterGlovesColor = value;
-                Save();
-            }
-        }
-    }
-
-    public bool LootFilterGlovesAlwaysActive
-    {
-        get => Settings.Default.LootFilterGlovesAlwaysActive;
-        set
-        {
-            if (Settings.Default.LootFilterGlovesAlwaysActive != value)
-            {
-                Settings.Default.LootFilterGlovesAlwaysActive = value;
-                Save();
-            }
-        }
-    }
-
-    // New Settings
     public int LootFilterStylesGlovesTextFontSize
     {
         get => Settings.Default.LootFilterStylesGlovesTextFontSize;

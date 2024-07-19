@@ -192,11 +192,6 @@
                             Grid.Column="0"
                             Grid.Row="1" />
 
-                        <!-- Colors -->
-                        <lootFilterForms:ColorsForm
-                            Grid.Column="1"
-                            Grid.Row="1" />
-
                     </Grid>
                 </TabItem>
                 <!-- Loot Filter Settings Tab End -->

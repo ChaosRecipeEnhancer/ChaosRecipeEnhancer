@@ -10,8 +10,20 @@ public class CTwoHandWeaponsManager : ABaseItemClassManager
     {
         ClassName = "TwoHandWeapons";
         ClassFilterName = "\"Two Hand\"";
-        ClassColor = Settings.Default.LootFilterWeaponColor;
-        AlwaysActive = Settings.Default.LootFilterWeaponsAlwaysActive;
+
+        FontSize = Settings.Default.LootFilterStylesWeaponTextFontSize;
+        FontColor = Settings.Default.LootFilterStylesWeaponTextColor;
+        BorderColor = Settings.Default.LootFilterStylesWeaponBorderColor;
+        ClassColor = Settings.Default.LootFilterStylesWeaponBackgroundColor;
+        AlwaysActive = Settings.Default.LootFilterStylesWeaponAlwaysActive;
+        AlwaysHidden = Settings.Default.LootFilterStylesWeaponAlwaysDisabled;
+        MapIconEnabled = Settings.Default.LootFilterStylesWeaponMapIconEnabled;
+        MapIconColor = Settings.Default.LootFilterStylesWeaponMapIconColor;
+        MapIconSize = Settings.Default.LootFilterStylesWeaponMapIconSize;
+        MapIconShape = Settings.Default.LootFilterStylesWeaponMapIconShape;
+        BeamEnabled = Settings.Default.LootFilterStylesWeaponBeamEnabled;
+        BeamTemporary = Settings.Default.LootFilterStylesWeaponBeamTemporary;
+        BeamColor = Settings.Default.LootFilterStylesWeaponBeamColor;
     }
 
     public override string SetBaseType(bool lootFilterSpaceSavingHideLargeWeapons)

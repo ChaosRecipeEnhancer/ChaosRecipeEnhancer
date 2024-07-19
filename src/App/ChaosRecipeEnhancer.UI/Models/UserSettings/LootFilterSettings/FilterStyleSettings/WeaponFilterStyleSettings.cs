@@ -5,34 +5,6 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 // WeaponFilterStyleSettings
 public partial class UserSettings : IUserSettings
 {
-    // Old Settings
-    public string LootFilterWeaponColor
-    {
-        get => Settings.Default.LootFilterWeaponColor;
-        set
-        {
-            if (Settings.Default.LootFilterWeaponColor != value)
-            {
-                Settings.Default.LootFilterWeaponColor = value;
-                Save();
-            }
-        }
-    }
-
-    public bool LootFilterWeaponsAlwaysActive
-    {
-        get => Settings.Default.LootFilterWeaponsAlwaysActive;
-        set
-        {
-            if (Settings.Default.LootFilterWeaponsAlwaysActive != value)
-            {
-                Settings.Default.LootFilterWeaponsAlwaysActive = value;
-                Save();
-            }
-        }
-    }
-
-    // New Settings
     public int LootFilterStylesWeaponTextFontSize
     {
         get => Settings.Default.LootFilterStylesWeaponTextFontSize;
