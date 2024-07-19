@@ -375,9 +375,9 @@
                 <TextBlock
                     Grid.Column="0"
                     FontSize="10"
-                    Margin="0 0 25 0"
+                    Margin="5 0 25 0"
+                    HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
-                    TextAlignment="Center"
                     Text="This product isn't affiliated with or endorsed by Grinding Gear Games in any way." />
 
                 <!-- Update Available Icon and App Version Text -->
@@ -387,7 +387,6 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center">
 
-                    <!-- Update Available Icon -->
                     <!-- Update Available Icon -->
                     <Image
                         Width="16"
@@ -409,6 +408,7 @@
                     <TextBlock
                         FontSize="12"
                         TextAlignment="Right"
+                        Margin="0 0 5 0"
                         Text="{Binding Version, StringFormat='CRE {0} by Mario, Tropical, Zemoto, &amp; kosace'}" />
                 </StackPanel>
             </Grid>
