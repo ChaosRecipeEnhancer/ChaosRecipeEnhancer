@@ -144,8 +144,7 @@ class LegacyStashFormViewModel : CreViewModelBase
 
     public string StashTabIdsToString
     {
-        get => string.Join(",", StashTabIds);
-        set { return; }
+        get => $"{StashTabIds.Count} Tabs Selected";
     }
 
     public string StashTabPrefix
