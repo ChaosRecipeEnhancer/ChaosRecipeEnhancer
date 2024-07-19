@@ -185,7 +185,7 @@ public class FilterManipulationService : IFilterManipulationService
         if (oldFilterContent == null) return;
 
         // Define the pattern for Chaos Recipe sections
-        const string pattern = @"# Chaos Recipe START - Filter Manipulation by Chaos Recipe Enhancer[\s\S]*?# Chaos Recipe END - Filter Manipulation by Chaos Recipe Enhancer";
+        const string pattern = @"# Chaos Recipe START - Filter Manipulation by Chaos Recipe Enhancer[\s\S]*?# Chaos Recipe END - Filter Manipulation by Chaos Recipe Enhancer\s*";
         var regex = new Regex(pattern, RegexOptions.Multiline);
 
         // Remove the Chaos Recipe sections from the content
