@@ -1,5 +1,6 @@
 using ChaosRecipeEnhancer.UI.Models;
 using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
 using ChaosRecipeEnhancer.UI.Services;
@@ -818,44 +819,98 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
 
     public async Task RunReloadFilter()
     {
+        // Retrieve the current item counts for different item classes
         var itemClassAmounts = GlobalItemSetManagerState.RetrieveCurrentItemCountsForFilterManipulation();
 
-        // hash set of missing item classes (e.g. "ring", "amulet", etc.)
+        // Initialize a set to keep track of missing item classes
         var missingItemClasses = new HashSet<string>();
 
-        // first we check weapons since they're special and 2 item classes count for one
-        var oneHandedWeaponCount = itemClassAmounts
-            .Where(dict => dict.ContainsKey(Enums.ItemClass.OneHandWeapons))
-            .Select(dict => dict[Enums.ItemClass.OneHandWeapons])
-            .FirstOrDefault();
+        // Aggregate counts for all item classes from the provided data
+        var totalItemCounts = AggregateItemCounts(itemClassAmounts);
 
-        var twoHandedWeaponCount = itemClassAmounts
-            .Where(dict => dict.ContainsKey(Enums.ItemClass.TwoHandWeapons))
-            .Select(dict => dict[Enums.ItemClass.TwoHandWeapons])
-            .FirstOrDefault();
+        // Handle special cases for weapons and rings
+        HandleSpecialCases(totalItemCounts);
 
+        // Identify item classes that are missing based on the aggregated counts
+        IdentifyMissingItemClasses(totalItemCounts, missingItemClasses);
+
+        // Generate the necessary filter sections and update the filter with the missing item classes
+        await _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses);
+
+        // Reload the filter to apply the updates
+        _reloadFilterService.ReloadFilter();
+    }
+
+    private Dictionary<ItemClass, int> AggregateItemCounts(List<Dictionary<ItemClass, int>> itemClassAmounts)
+    {
+        // Create a dictionary to store the total counts of each item class
+        var totalItemCounts = new Dictionary<ItemClass, int>();
+
+        // Iterate over each dictionary in the list
+        foreach (var dict in itemClassAmounts)
+        {
+            // Iterate over each item class count pair in the dictionary
+            foreach (var kvp in dict)
+            {
+                // If the item class is already in the total counts dictionary, add the current count
+                if (totalItemCounts.ContainsKey(kvp.Key))
+                    totalItemCounts[kvp.Key] += kvp.Value;
+                // Otherwise, add the item class to the total counts dictionary with the current count
+                else
+                    totalItemCounts[kvp.Key] = kvp.Value;
+            }
+        }
+
+        // Return the aggregated counts of item classes
+        return totalItemCounts;
+    }
+
+    private void HandleSpecialCases(Dictionary<ItemClass, int> totalItemCounts)
+    {
+        // Get the total count of one-handed weapons, defaulting to 0 if not found
+        var oneHandedWeaponCount = totalItemCounts.GetValueOrDefault(ItemClass.OneHandWeapons, 0);
+
+        // Get the total count of two-handed weapons, defaulting to 0 if not found
+        var twoHandedWeaponCount = totalItemCounts.GetValueOrDefault(ItemClass.TwoHandWeapons, 0);
+
+        // Get the total count of rings, defaulting to 0 if not found
+        var ringCount = totalItemCounts.GetValueOrDefault(ItemClass.Rings, 0);
+
+        // If the combined count of one-handed and two-handed weapons reaches the full set threshold,
+        // remove these item classes from the total counts
         if (oneHandedWeaponCount / 2 + twoHandedWeaponCount >= FullSetThreshold)
         {
-            foreach (var dict in itemClassAmounts)
-            {
-                dict.Remove(Enums.ItemClass.OneHandWeapons);
-                dict.Remove(Enums.ItemClass.TwoHandWeapons);
-            }
+            totalItemCounts.Remove(ItemClass.OneHandWeapons);
+            totalItemCounts.Remove(ItemClass.TwoHandWeapons);
         }
 
-        foreach (var itemCountByClass in itemClassAmounts)
+        // If the count of rings reaches the full set threshold, remove the rings item class from the total counts
+        if (ringCount / 2 >= FullSetThreshold)
         {
-            foreach (var itemClass in itemCountByClass)
+            totalItemCounts.Remove(ItemClass.Rings);
+        }
+    }
+
+    private void IdentifyMissingItemClasses(Dictionary<ItemClass, int> totalItemCounts, HashSet<string> missingItemClasses)
+    {
+        // Iterate over each item class count pair in the total counts dictionary
+        foreach (var kvp in totalItemCounts)
+        {
+            // Special treatment for rings
+            if (kvp.Key == ItemClass.Rings)
             {
-                if (itemClass.Value < FullSetThreshold)
+                // If the count of rings does not reach the full set threshold, add it to the missing item classes
+                if (kvp.Value / 2 < FullSetThreshold)
                 {
-                    missingItemClasses.Add(itemClass.Key.ToString());
+                    missingItemClasses.Add(kvp.Key.ToString());
                 }
             }
+            // For other item classes, if the count does not reach the full set threshold, add it to the missing item classes
+            else if (kvp.Value < FullSetThreshold)
+            {
+                missingItemClasses.Add(kvp.Key.ToString());
+            }
         }
-
-        await _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses);
-        _reloadFilterService.ReloadFilter();
     }
 
     #endregion
