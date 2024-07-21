@@ -300,7 +300,7 @@ public class AmuletFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesAmuletAlwaysActive = true;
         LootFilterStylesAmuletAlwaysDisabled = false;
         LootFilterStylesAmuletMapIconEnabled = true;
-        LootFilterStylesAmuletMapIconSize = 0; // Large size
+        LootFilterStylesAmuletMapIconSize = 2; // Small size
         LootFilterStylesAmuletMapIconColor = 10; // Yellow
         LootFilterStylesAmuletMapIconShape = 0; // Circle
         LootFilterStylesAmuletBeamEnabled = false;

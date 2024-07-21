@@ -300,7 +300,7 @@ public class BodyArmourFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesBodyArmourAlwaysActive = false;
         LootFilterStylesBodyArmourAlwaysDisabled = false;
         LootFilterStylesBodyArmourMapIconEnabled = true;
-        LootFilterStylesBodyArmourMapIconSize = 0; // Large size
+        LootFilterStylesBodyArmourMapIconSize = 2; // Small size
         LootFilterStylesBodyArmourMapIconColor = 10; // Yellow
         LootFilterStylesBodyArmourMapIconShape = 0; // Circle
         LootFilterStylesBodyArmourBeamEnabled = false;

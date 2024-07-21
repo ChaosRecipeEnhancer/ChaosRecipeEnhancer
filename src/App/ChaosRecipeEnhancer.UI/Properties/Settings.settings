@@ -207,7 +207,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesRingMapIconSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="LootFilterStylesRingMapIconShape" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -255,7 +255,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesAmuletMapIconSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="LootFilterStylesAmuletMapIconShape" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -303,7 +303,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesBeltMapIconSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="LootFilterStylesBeltMapIconShape" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -351,7 +351,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesBootsMapIconSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="LootFilterStylesBootsMapIconShape" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -399,7 +399,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesGlovesMapIconSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="LootFilterStylesGlovesMapIconShape" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -447,7 +447,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesHelmetMapIconSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="LootFilterStylesHelmetMapIconShape" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -495,7 +495,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesBodyArmourMapIconSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="LootFilterStylesBodyArmourMapIconShape" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -543,7 +543,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="LootFilterStylesWeaponMapIconSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="LootFilterStylesWeaponMapIconShape" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
