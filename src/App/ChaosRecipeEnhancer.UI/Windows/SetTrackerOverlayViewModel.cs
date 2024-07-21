@@ -835,7 +835,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
         IdentifyMissingItemClasses(totalItemCounts, missingItemClasses);
 
         // Generate the necessary filter sections and update the filter with the missing item classes
-        await _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses);
+        await _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses, NeedsLowerLevel);
 
         // Reload the filter to apply the updates
         _reloadFilterService.ReloadFilter();
