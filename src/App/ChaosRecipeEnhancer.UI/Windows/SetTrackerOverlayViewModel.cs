@@ -496,36 +496,44 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     #region Item Class Active (Visibility) Properties
 
     public bool RingsActive =>
-        LootFilterStylesRingAlwaysActive && !LootFilterStylesRingAlwaysDisabled ||
-        (NeedsFetching || (FullSetThreshold * 2) - GlobalItemSetManagerState.RingsAmount > 0);
+        (LootFilterStylesRingAlwaysActive ||
+        (NeedsFetching || (FullSetThreshold * 2) - GlobalItemSetManagerState.RingsAmount > 0)) &&
+        !LootFilterStylesRingAlwaysDisabled;
 
     public bool AmuletsActive =>
-        LootFilterStylesAmuletAlwaysActive && !LootFilterStylesAmuletAlwaysDisabled ||
-        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.AmuletsAmount > 0);
+        (LootFilterStylesAmuletAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.AmuletsAmount > 0)) &&
+        !LootFilterStylesAmuletAlwaysDisabled;
 
     public bool BeltsActive =>
-        LootFilterStylesBeltAlwaysActive && !LootFilterStylesBeltAlwaysDisabled ||
-        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.BeltsAmount > 0);
+        (LootFilterStylesBeltAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.BeltsAmount > 0)) &&
+        !LootFilterStylesBeltAlwaysDisabled;
 
     public bool ChestsActive =>
-        LootFilterStylesBodyArmourAlwaysActive && !LootFilterStylesBodyArmourAlwaysDisabled ||
-        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.ChestsAmount > 0);
+        (LootFilterStylesBodyArmourAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.ChestsAmount > 0)) &&
+        !LootFilterStylesBodyArmourAlwaysDisabled;
 
     public bool GlovesActive =>
-        LootFilterStylesGlovesAlwaysActive && !LootFilterStylesGlovesAlwaysDisabled ||
-        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.GlovesAmount > 0);
+        (LootFilterStylesGlovesAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.GlovesAmount > 0)) &&
+        !LootFilterStylesGlovesAlwaysDisabled;
 
     public bool HelmetsActive =>
-        LootFilterStylesHelmetAlwaysActive && !LootFilterStylesHelmetAlwaysDisabled ||
-        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.HelmetsAmount > 0);
+        (LootFilterStylesHelmetAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.HelmetsAmount > 0)) &&
+        !LootFilterStylesHelmetAlwaysDisabled;
 
     public bool BootsActive =>
-        LootFilterStylesBootsAlwaysActive && !LootFilterStylesBootsAlwaysDisabled ||
-        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.BootsAmount > 0);
+        (LootFilterStylesBootsAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.BootsAmount > 0)) &&
+        !LootFilterStylesBootsAlwaysDisabled;
 
     public bool WeaponsActive =>
-        LootFilterStylesWeaponAlwaysActive && !LootFilterStylesWeaponAlwaysDisabled ||
-        (NeedsFetching || (FullSetThreshold * 2) - (GlobalItemSetManagerState.WeaponsSmallAmount + (GlobalItemSetManagerState.WeaponsBigAmount * 2)) > 0);
+        (LootFilterStylesWeaponAlwaysActive ||
+        (NeedsFetching || (FullSetThreshold * 2) - (GlobalItemSetManagerState.WeaponsSmallAmount + (GlobalItemSetManagerState.WeaponsBigAmount * 2)) > 0)) &&
+        !LootFilterStylesWeaponAlwaysDisabled;
 
     #endregion
 
@@ -919,7 +927,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
 
     private static string NeedsLowerLevelText(int diff) => $"Need {Math.Abs(diff)} items with iLvl 60-74!";
 
-    private void UpdateDisplay()
+    public void UpdateDisplay()
     {
         OnPropertyChanged(nameof(RingsAmount));
         OnPropertyChanged(nameof(RingsActive));
