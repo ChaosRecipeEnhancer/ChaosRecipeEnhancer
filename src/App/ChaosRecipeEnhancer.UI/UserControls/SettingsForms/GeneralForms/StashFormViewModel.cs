@@ -142,7 +142,7 @@ public class StashFormViewModel : CreViewModelBase
 
     public string StashTabIdsToString
     {
-        get => $"{StashTabIds.Count} Tabs Selected";
+        get => (StashTabIds.Count == 1) ? "1 Tab Selected" : $"{StashTabIds.Count} Tabs Selected";
     }
 
     public string StashTabPrefix
