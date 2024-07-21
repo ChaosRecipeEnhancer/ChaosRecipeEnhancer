@@ -839,7 +839,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int LootFilterStylesRingMapIconSize {
             get {
                 return ((int)(this["LootFilterStylesRingMapIconSize"]));
@@ -1031,7 +1031,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int LootFilterStylesAmuletMapIconSize {
             get {
                 return ((int)(this["LootFilterStylesAmuletMapIconSize"]));
@@ -1223,7 +1223,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int LootFilterStylesBeltMapIconSize {
             get {
                 return ((int)(this["LootFilterStylesBeltMapIconSize"]));
@@ -1415,7 +1415,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int LootFilterStylesBootsMapIconSize {
             get {
                 return ((int)(this["LootFilterStylesBootsMapIconSize"]));
@@ -1607,7 +1607,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int LootFilterStylesGlovesMapIconSize {
             get {
                 return ((int)(this["LootFilterStylesGlovesMapIconSize"]));
@@ -1799,7 +1799,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int LootFilterStylesHelmetMapIconSize {
             get {
                 return ((int)(this["LootFilterStylesHelmetMapIconSize"]));
@@ -1991,7 +1991,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int LootFilterStylesBodyArmourMapIconSize {
             get {
                 return ((int)(this["LootFilterStylesBodyArmourMapIconSize"]));
@@ -2183,7 +2183,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int LootFilterStylesWeaponMapIconSize {
             get {
                 return ((int)(this["LootFilterStylesWeaponMapIconSize"]));

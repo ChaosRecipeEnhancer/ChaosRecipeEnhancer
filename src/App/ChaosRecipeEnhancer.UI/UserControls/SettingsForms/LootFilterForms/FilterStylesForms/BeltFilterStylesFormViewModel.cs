@@ -300,7 +300,7 @@ public class BeltFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesBeltAlwaysActive = true;
         LootFilterStylesBeltAlwaysDisabled = false;
         LootFilterStylesBeltMapIconEnabled = true;
-        LootFilterStylesBeltMapIconSize = 0; // Large size
+        LootFilterStylesBeltMapIconSize = 2; // Small size
         LootFilterStylesBeltMapIconColor = 10; // Yellow
         LootFilterStylesBeltMapIconShape = 0; // Circle
         LootFilterStylesBeltBeamEnabled = false;

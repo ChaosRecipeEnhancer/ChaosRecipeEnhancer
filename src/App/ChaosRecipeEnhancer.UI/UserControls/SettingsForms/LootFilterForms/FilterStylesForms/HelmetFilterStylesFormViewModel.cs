@@ -300,7 +300,7 @@ public class HelmetFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesHelmetAlwaysActive = false;
         LootFilterStylesHelmetAlwaysDisabled = false;
         LootFilterStylesHelmetMapIconEnabled = true;
-        LootFilterStylesHelmetMapIconSize = 0; // Large size
+        LootFilterStylesHelmetMapIconSize = 2; // Small size
         LootFilterStylesHelmetMapIconColor = 10; // Yellow
         LootFilterStylesHelmetMapIconShape = 0; // Circle
         LootFilterStylesHelmetBeamEnabled = false;

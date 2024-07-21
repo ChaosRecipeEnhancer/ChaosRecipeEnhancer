@@ -19,7 +19,7 @@ namespace ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 
 public interface IFilterManipulationService
 {
-    public Task GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses);
+    public Task GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem);
     public void RemoveChaosRecipeSectionAsync();
 }
 
@@ -37,7 +37,7 @@ public class FilterManipulationService : IFilterManipulationService
     }
 
     // TODO: [Refactor] mechanism for receiving missing items from some other service and populating based on that limited information
-    public async Task GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses)
+    public async Task GenerateSectionsAndUpdateFilterAsync(HashSet<string> missingItemClasses, bool missingChaosItem)
     {
         var activeItemTypes = new ActiveItemTypes();
         var visitor = new CItemClassManagerFactory();
@@ -50,10 +50,10 @@ public class FilterManipulationService : IFilterManipulationService
             var stillMissing = _itemClassManager.CheckIfMissing(missingItemClasses);
 
             // weapons might be buggy, will try to do some tests
-            if (_itemClassManager.AlwaysActive || stillMissing)
+            if (_itemClassManager.AlwaysActive && !_itemClassManager.AlwaysHidden || stillMissing)
             {
                 // if we need chaos only gear to complete a set (60-74), add that to our filter section
-                sectionList.Add(GenerateSection());
+                sectionList.Add(GenerateSection(missingChaosItem));
 
                 // find better way to handle active items and sound notification on changes
                 activeItemTypes = _itemClassManager.SetActiveTypes(activeItemTypes, true);
@@ -64,10 +64,10 @@ public class FilterManipulationService : IFilterManipulationService
             }
         }
 
-        if (Settings.Default.LootFilterManipulationEnabled) await UpdateFilterAsync(sectionList);
+        if (_userSettings.LootFilterManipulationEnabled) await UpdateFilterAsync(sectionList);
     }
 
-    private string GenerateSection()
+    private string GenerateSection(bool missingChaosItem)
     {
         var result = string.Empty;
 
@@ -78,27 +78,25 @@ public class FilterManipulationService : IFilterManipulationService
         result = result + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Rarity Rare" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
         // Identified Item Setting
-        if (!Settings.Default.IncludeIdentifiedItemsEnabled) result += "Identified False" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+        if (!_userSettings.IncludeIdentifiedItemsEnabled) result += "Identified False" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
-        // Setting item level section based on whether Chaoss Recipe Tracking is enabled (or disabled, in which the Regal Recipe is used)
-        result += _userSettings.ChaosRecipeTrackingEnabled switch
+
+        // Adding ItemLevel section
+        // Chaos Recipe
+        if (_userSettings.ChaosRecipeTrackingEnabled)
         {
-            // Chaos Recipe Tracking disabled, item class is NOT always active
-            false when !_itemClassManager.AlwaysActive =>
-                "ItemLevel >= 60" + StringConstruction.NewLineCharacter +
-                StringConstruction.TabCharacter + "ItemLevel <= 74" + StringConstruction.NewLineCharacter +
-                StringConstruction.TabCharacter,
+            result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
-            // Chaos Recipe Tracking diasbled, Regal Recipe is used
-            false =>
-                "ItemLevel >= 75" + StringConstruction.NewLineCharacter +
-                StringConstruction.TabCharacter,
-
-            // Chaos Recipe Tracking enabled or item class is always active
-            _ =>
-                "ItemLevel >= 60" + StringConstruction.NewLineCharacter +
-                StringConstruction.TabCharacter
-        };
+            if (missingChaosItem)
+            {
+                result += "ItemLevel <= 74" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+            }
+        }
+        // Regal Recipe
+        else
+        {
+            result += "ItemLevel >= 75" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+        }
 
         // Base ItemClass Type Setting
         string baseType;

@@ -300,7 +300,7 @@ public class BootsFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesBootsAlwaysActive = false;
         LootFilterStylesBootsAlwaysDisabled = false;
         LootFilterStylesBootsMapIconEnabled = true;
-        LootFilterStylesBootsMapIconSize = 0; // Large size
+        LootFilterStylesBootsMapIconSize = 2; // Small size
         LootFilterStylesBootsMapIconColor = 10; // Yellow
         LootFilterStylesBootsMapIconShape = 0; // Circle
         LootFilterStylesBootsBeamEnabled = false;

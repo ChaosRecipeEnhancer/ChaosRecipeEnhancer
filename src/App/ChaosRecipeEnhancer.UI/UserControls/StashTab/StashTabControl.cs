@@ -4,6 +4,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -40,6 +41,7 @@ public class StashTabControl : CreViewModelBase
     public string Name { get; set; }
     public int Index { get; }
     public bool Quad { get; set; }
+
     public ObservableCollection<InteractiveStashTabCell> OverlayCellsList { get; } = [];
 
     public SolidColorBrush TabHeaderColor
@@ -79,6 +81,17 @@ public class StashTabControl : CreViewModelBase
         };
 
         TabHeaderColor = new SolidColorBrush(tabHeaderColorWithOpacity);
+    }
+
+    public void MarkItemWithPickIndicator(EnhancedItem item)
+    {
+        // Find the cells in the grid corresponding to the item's position
+        var cellsToMark = OverlayCellsList.Where(c => c.ItemModel == item).ToList();
+
+        foreach (var cell in cellsToMark)
+        {
+            cell.ButtonText = "●";
+        }
     }
 
 

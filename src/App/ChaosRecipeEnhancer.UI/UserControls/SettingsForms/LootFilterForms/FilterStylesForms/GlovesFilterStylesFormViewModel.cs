@@ -300,7 +300,7 @@ public class GlovesFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesGlovesAlwaysActive = false;
         LootFilterStylesGlovesAlwaysDisabled = false;
         LootFilterStylesGlovesMapIconEnabled = true;
-        LootFilterStylesGlovesMapIconSize = 0; // Large size
+        LootFilterStylesGlovesMapIconSize = 2; // Small size
         LootFilterStylesGlovesMapIconColor = 10; // Yellow
         LootFilterStylesGlovesMapIconShape = 0; // Circle
         LootFilterStylesGlovesBeamEnabled = false;

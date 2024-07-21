@@ -300,7 +300,7 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesRingAlwaysActive = true;
         LootFilterStylesRingAlwaysDisabled = false;
         LootFilterStylesRingMapIconEnabled = true;
-        LootFilterStylesRingMapIconSize = 0; // Large size
+        LootFilterStylesRingMapIconSize = 2; // Small size
         LootFilterStylesRingMapIconColor = 10; // Yellow
         LootFilterStylesRingMapIconShape = 0; // Circle
         LootFilterStylesRingBeamEnabled = false;

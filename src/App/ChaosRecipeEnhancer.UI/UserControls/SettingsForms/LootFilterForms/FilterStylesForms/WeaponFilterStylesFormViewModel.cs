@@ -300,7 +300,7 @@ public class WeaponFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesWeaponAlwaysActive = false;
         LootFilterStylesWeaponAlwaysDisabled = false;
         LootFilterStylesWeaponMapIconEnabled = true;
-        LootFilterStylesWeaponMapIconSize = 0; // Large size
+        LootFilterStylesWeaponMapIconSize = 2; // Small size
         LootFilterStylesWeaponMapIconColor = 10; // Yellow
         LootFilterStylesWeaponMapIconShape = 0; // Circle
         LootFilterStylesWeaponBeamEnabled = false;
