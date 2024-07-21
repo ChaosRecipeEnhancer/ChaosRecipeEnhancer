@@ -6,6 +6,7 @@ using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.UserControls.StashTab;
 using ChaosRecipeEnhancer.UI.Utilities;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -221,7 +222,7 @@ public partial class StashTabOverlayWindow : Window
                     if (stashTabCell != null && stashTabCell.ItemModel != null)
                     {
                         var highlightItem = stashTabCell.ItemModel;
-                        var currentTab = GetStashTabFromItem(highlightItem);
+                        var currentTab = GetStashTabControlReferenceFromItem(highlightItem);
 
                         if (currentTab != null)
                         {
@@ -243,24 +244,82 @@ public partial class StashTabOverlayWindow : Window
                     // activate next set
                     if (SetsToHighlight[0].Items != null)
                     {
-                        foreach (var enhancedItem in SetsToHighlight[0].Items.ToList())
+                        var currentItemSet = SetsToHighlight[0].Items.ToList();
+
+                        Log.Information("Current item set count: " + currentItemSet.Count);
+
+                        // for each item in the set
+                        foreach (var currentItem in currentItemSet)
                         {
-                            var currentTab = GetStashTabFromItem(enhancedItem);
-                            currentTab?.ActivateItemCells(enhancedItem);
-                            currentTab.SetTabHeaderColorForHighlightingFromUserSettings();
+                            // get the current UI tab to be reference for a given item
+                            var stashTabControlForCurrentItem = GetStashTabControlReferenceFromItem(currentItem);
+
+                            // activate the item (it's corrosponding cells, e.g. 3x3, 3x1) in the UI
+                            stashTabControlForCurrentItem?.ActivateItemCells(currentItem);
+
+                            // set the tab header color based on the settings
+                            stashTabControlForCurrentItem.SetTabHeaderColorForHighlightingFromUserSettings();
                         }
-                    }
 
-                    // Set has been completed
-                    if (SetsToHighlight[0].Items != null && SetsToHighlight[0].Items.Count == 0)
-                    {
-                        SetsToHighlight.RemoveAt(0);
+                        // marking items in order of their picking, grouped by size
+                        if (currentItemSet.Count > 1)
+                        {
+                            if (currentItemSet[0].DerivedItemClass == GameTerminology.OneHandWeapons)
+                            {
+                                // mark all other one handers in the current set
+                                foreach (var item in currentItemSet)
+                                {
+                                    if (item.DerivedItemClass == GameTerminology.OneHandWeapons)
+                                    {
+                                        var stashTabControlForCurrentItem = GetStashTabControlReferenceFromItem(item);
 
-                        // play sound to notify user that a set has been completed
-                        _model.PlaySetPickingCompletedNotificationSound();
+                                        stashTabControlForCurrentItem?.MarkItemWithPickIndicator(item);
+                                    }
+                                }
+                            }
+                            else if (currentItemSet[0].DerivedItemClass == GameTerminology.Helmets || currentItemSet[0].DerivedItemClass == GameTerminology.Gloves || currentItemSet[0].DerivedItemClass == GameTerminology.Boots)
+                            {
+                                foreach (var item in currentItemSet)
+                                {
+                                    if (item.DerivedItemClass == GameTerminology.Helmets || item.DerivedItemClass == GameTerminology.Gloves || item.DerivedItemClass == GameTerminology.Boots)
+                                    {
+                                        var stashTabControlForCurrentItem = GetStashTabControlReferenceFromItem(item);
 
-                        // activate next set
-                        ActivateNextCell(true, null);
+                                        stashTabControlForCurrentItem?.MarkItemWithPickIndicator(item);
+                                    }
+                                }
+                            }
+                            else if (currentItemSet[0].DerivedItemClass == GameTerminology.Amulets || currentItemSet[0].DerivedItemClass == GameTerminology.Rings)
+                            {
+                                foreach (var item in currentItemSet)
+                                {
+                                    if (item.DerivedItemClass == GameTerminology.Amulets || item.DerivedItemClass == GameTerminology.Rings)
+                                    {
+                                        var stashTabControlForCurrentItem = GetStashTabControlReferenceFromItem(item);
+
+                                        stashTabControlForCurrentItem?.MarkItemWithPickIndicator(item);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                var stashTabControlForCurrentItem = GetStashTabControlReferenceFromItem(currentItemSet[0]);
+
+                                stashTabControlForCurrentItem?.MarkItemWithPickIndicator(currentItemSet[0]);
+                            }
+                        }
+
+                        // Set has been completed
+                        if (SetsToHighlight[0].Items != null && SetsToHighlight[0].Items.Count == 0)
+                        {
+                            SetsToHighlight.RemoveAt(0);
+
+                            // play sound to notify user that a set has been completed
+                            _model.PlaySetPickingCompletedNotificationSound();
+
+                            // activate next set
+                            ActivateNextCell(true, null);
+                        }
                     }
                 }
             }
@@ -286,7 +345,7 @@ public partial class StashTabOverlayWindow : Window
             if (stashTabCell != null && stashTabCell.ItemModel != null)
             {
                 var highlightItem = stashTabCell.ItemModel;
-                var currentTab = GetStashTabFromItem(highlightItem);
+                var currentTab = GetStashTabControlReferenceFromItem(highlightItem);
 
                 if (currentTab != null)
                 {
@@ -311,7 +370,7 @@ public partial class StashTabOverlayWindow : Window
             if (currentSet.Items.Count > 0)
             {
                 var nextHighlightItem = currentSet.Items[0];
-                var nextTab = GetStashTabFromItem(nextHighlightItem);
+                var nextTab = GetStashTabControlReferenceFromItem(nextHighlightItem);
 
                 if (nextTab != null)
                 {
@@ -430,7 +489,7 @@ public partial class StashTabOverlayWindow : Window
         }
     }
 
-    private static StashTabControl GetStashTabFromItem(EnhancedItem itemModel)
+    private static StashTabControl GetStashTabControlReferenceFromItem(EnhancedItem itemModel)
     {
         foreach (var s in StashTabControlManager.StashTabControls)
         {
