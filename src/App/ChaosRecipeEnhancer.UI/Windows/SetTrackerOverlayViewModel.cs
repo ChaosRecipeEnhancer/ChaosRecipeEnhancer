@@ -20,8 +20,6 @@ namespace ChaosRecipeEnhancer.UI.Windows;
 
 public sealed class SetTrackerOverlayViewModel : CreViewModelBase
 {
-    #region Fields
-
     private readonly IFilterManipulationService _filterManipulationService;
     private readonly IReloadFilterService _reloadFilterService;
     private readonly IPoeApiService _apiService;
@@ -40,10 +38,6 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     private bool _setsTooltipEnabled = false;
     private string _warningMessage;
 
-    #endregion
-
-    #region Constructor
-
     public SetTrackerOverlayViewModel(
         IFilterManipulationService filterManipulationService,
         IReloadFilterService reloadFilterService,
@@ -61,11 +55,14 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
         _notificationSoundService = notificationSoundService;
     }
 
-    #endregion
-
     #region Properties
 
     #region User Settings Accessor Properties
+
+    public double SetTrackerOverlayWindowScale
+    {
+        get => _userSettings.SetTrackerOverlayWindowScale;
+    }
 
     public Enums.SetTrackerOverlayItemCounterDisplayMode SetTrackerOverlayItemCounterDisplayMode
     {
@@ -926,6 +923,11 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     #region Utility Methods
 
     private static string NeedsLowerLevelText(int diff) => $"Need {Math.Abs(diff)} items with iLvl 60-74!";
+
+    public void UpdateWindowScale()
+    {
+        OnPropertyChanged(nameof(SetTrackerOverlayWindowScale));
+    }
 
     public void UpdateDisplay()
     {

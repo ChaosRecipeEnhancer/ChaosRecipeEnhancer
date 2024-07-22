@@ -56,6 +56,7 @@ public interface IUserSettings
 
     #region Set Tracker Overlay Settings
 
+    double SetTrackerOverlayWindowScale { get; set; }
     double SetTrackerOverlayTopPosition { get; set; }
     double SetTrackerOverlayLeftPosition { get; set; }
     SetTrackerOverlayItemCounterDisplayMode SetTrackerOverlayItemCounterDisplayMode { get; set; }

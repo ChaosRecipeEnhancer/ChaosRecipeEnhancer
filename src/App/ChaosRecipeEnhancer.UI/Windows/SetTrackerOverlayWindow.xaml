@@ -20,6 +20,12 @@
         d:DataContext="{d:DesignInstance Type=windows:SetTrackerOverlayViewModel}">
 
     <!-- Set Tracker Display -->
-    <ContentControl x:Name="MainOverlayContentControl" />
+    <ContentControl x:Name="MainOverlayContentControl" Grid.Row="0">
+        <ContentControl.LayoutTransform>
+            <ScaleTransform x:Name="ContentScaleTransform"
+                            ScaleX="{Binding SetTrackerOverlayWindowScale, Mode=OneWay}"
+                            ScaleY="{Binding SetTrackerOverlayWindowScale, Mode=OneWay}" />
+        </ContentControl.LayoutTransform>
+    </ContentControl>
 
 </Window>
