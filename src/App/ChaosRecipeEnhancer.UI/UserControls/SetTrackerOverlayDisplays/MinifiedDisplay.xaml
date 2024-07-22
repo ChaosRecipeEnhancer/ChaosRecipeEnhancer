@@ -120,16 +120,20 @@
                 Height="30"
                 Width="30"
                 CornerRadius="50"
-                Background="{Binding GlobalUserSettings.LootFilterStylesGlovesBackgroundColor}"
-                Margin="3 0"
-                Opacity="{Binding GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}">
+                Margin="3 0">
+
+                <Border.Background>
+                    <SolidColorBrush Color="{Binding GlobalUserSettings.LootFilterStylesGlovesBackgroundColor}"
+                                     Opacity="{Binding GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
+                </Border.Background>
 
                 <Grid>
 
                     <Image
                     Source="../../Assets/Images/Gloves.png"
                     MaxWidth="20"
-                    MaxHeight="20" />
+                    MaxHeight="20"
+                    Opacity="{Binding GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
 
                     <Border
                         Width="15"
@@ -143,7 +147,7 @@
                         <TextBlock
                         FontSize="10"
                         FontFamily="Segoe UI"
-                        FontWeight="DemiBold"
+                        FontWeight="Bold"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         TextAlignment="Center"
@@ -165,16 +169,20 @@
                 Height="30"
                 Width="30"
                 CornerRadius="50"
-                Margin="3, 3, 3, 0"
-                Opacity="{Binding BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-                Background="{Binding GlobalUserSettings.LootFilterStylesBootsBackgroundColor}">
+                Margin="3 0">
+
+                <Border.Background>
+                    <SolidColorBrush Color="{Binding GlobalUserSettings.LootFilterStylesBootsBackgroundColor}"
+                                     Opacity="{Binding BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
+                </Border.Background>
 
                 <Grid>
 
                     <Image
                     MaxHeight="20"
                     MaxWidth="20"
-                    Source="../../Assets/Images/Boots.png" />
+                    Source="../../Assets/Images/Boots.png"
+                    Opacity="{Binding BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
 
                     <Border
                     Width="15"
@@ -188,7 +196,7 @@
                         <TextBlock
                         FontSize="10"
                         FontFamily="Segoe UI"
-                        FontWeight="DemiBold"
+                        FontWeight="Bold"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         TextAlignment="Center"
@@ -210,16 +218,20 @@
                 Height="30"
                 Width="30"
                 Margin="3 0"
-                CornerRadius="50"
-                Opacity="{Binding HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-                Background="{Binding GlobalUserSettings.LootFilterStylesHelmetBackgroundColor}">
+                CornerRadius="50">
+
+                <Border.Background>
+                    <SolidColorBrush Color="{Binding GlobalUserSettings.LootFilterStylesHelmetBackgroundColor}"
+                                     Opacity="{Binding HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
+                </Border.Background>
 
                 <Grid>
 
                     <Image
                         MaxHeight="20"
                         MaxWidth="20"
-                        Source="../../Assets/Images/Helmet.png" />
+                        Source="../../Assets/Images/Helmet.png"
+                        Opacity="{Binding HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
 
                     <Border
                         Width="15"
@@ -233,7 +245,7 @@
                         <TextBlock
                             FontSize="10"
                             FontFamily="Segoe UI"
-                            FontWeight="DemiBold"
+                            FontWeight="Bold"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             TextAlignment="Center"
@@ -255,16 +267,20 @@
                 Height="30"
                 Width="30"
                 Margin="3 0"
-                CornerRadius="50"
-                Opacity="{Binding ChestsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-                Background="{Binding GlobalUserSettings.LootFilterStylesBodyArmourBackgroundColor}">
+                CornerRadius="50">
+
+                <Border.Background>
+                    <SolidColorBrush Color="{Binding GlobalUserSettings.LootFilterStylesBodyArmourBackgroundColor}"
+                                     Opacity="{Binding ChestsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
+                </Border.Background>
 
                 <Grid>
 
                     <Image
                         MaxHeight="20"
                         MaxWidth="20"
-                        Source="../../Assets/Images/BodyArmor.png" />
+                        Source="../../Assets/Images/BodyArmor.png"
+                        Opacity="{Binding ChestsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
 
                     <Border
                         Width="15"
@@ -278,7 +294,7 @@
                         <TextBlock
                             FontSize="10"
                             FontFamily="Segoe UI"
-                            FontWeight="DemiBold"
+                            FontWeight="Bold"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             TextAlignment="Center"
@@ -300,16 +316,20 @@
                 Height="30"
                 Width="30"
                 Margin="3 0"
-                CornerRadius="50"
-                Opacity="{Binding WeaponsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-                Background="{Binding GlobalUserSettings.LootFilterStylesWeaponBackgroundColor}">
+                CornerRadius="50">
+
+                <Border.Background>
+                    <SolidColorBrush Color="{Binding GlobalUserSettings.LootFilterStylesWeaponBackgroundColor}"
+                                     Opacity="{Binding WeaponsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
+                </Border.Background>
 
                 <Grid>
 
                     <Image
                         MaxHeight="20"
                         MaxWidth="20"
-                        Source="../../Assets/Images/Weapon.png" />
+                        Source="../../Assets/Images/Weapon.png"
+                        Opacity="{Binding WeaponsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
 
                     <Border
                         Width="15"
@@ -323,7 +343,7 @@
                         <TextBlock
                             FontSize="10"
                             FontFamily="Segoe UI"
-                            FontWeight="DemiBold"
+                            FontWeight="Bold"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             TextAlignment="Center"
@@ -345,16 +365,20 @@
                 Height="30"
                 Width="30"
                 CornerRadius="50"
-                Margin="3 0"
-                Opacity="{Binding RingsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-                Background="{Binding GlobalUserSettings.LootFilterStylesRingBackgroundColor}">
+                Margin="3 0">
+
+                <Border.Background>
+                    <SolidColorBrush Color="{Binding GlobalUserSettings.LootFilterStylesRingBackgroundColor}"
+                                     Opacity="{Binding RingsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
+                </Border.Background>
 
                 <Grid>
 
                     <Image
                         MaxHeight="20"
                         MaxWidth="20"
-                        Source="../../Assets/Images/Ring.png" />
+                        Source="../../Assets/Images/Ring.png"
+                        Opacity="{Binding RingsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
 
                     <Border
                         Width="15"
@@ -368,7 +392,7 @@
                         <TextBlock
                             FontSize="10"
                             FontFamily="Segoe UI"
-                            FontWeight="DemiBold"
+                            FontWeight="Bold"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             TextAlignment="Center"
@@ -390,17 +414,20 @@
                 Height="30"
                 Width="30"
                 Margin="3 0"
-                CornerRadius="50"
-                Opacity="{Binding AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-                Background="{Binding GlobalUserSettings.LootFilterStylesAmuletBackgroundColor}">
+                CornerRadius="50">
 
+                <Border.Background>
+                    <SolidColorBrush Color="{Binding GlobalUserSettings.LootFilterStylesAmuletBackgroundColor}"
+                                     Opacity="{Binding AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
+                </Border.Background>
 
                 <Grid>
 
                     <Image
                         MaxHeight="20"
                         MaxWidth="20"
-                        Source="../../Assets/Images/Amulet.png" />
+                        Source="../../Assets/Images/Amulet.png"
+                        Opacity="{Binding AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
 
                     <Border
                         Width="15"
@@ -414,7 +441,7 @@
                         <TextBlock
                         FontSize="10"
                         FontFamily="Segoe UI"
-                        FontWeight="DemiBold"
+                        FontWeight="Bold"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         TextAlignment="Center"
@@ -436,16 +463,20 @@
                 Height="30"
                 Width="30"
                 Margin="3 0"
-                CornerRadius="50"
-                Opacity="{Binding BeltsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-                Background="{Binding GlobalUserSettings.LootFilterStylesBeltBackgroundColor}">
+                CornerRadius="50">
+
+                <Border.Background>
+                    <SolidColorBrush Color="{Binding GlobalUserSettings.LootFilterStylesBeltBackgroundColor}"
+                                     Opacity="{Binding BeltsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
+                </Border.Background>
 
                 <Grid>
 
                     <Image
                         MaxHeight="20"
                         MaxWidth="20"
-                        Source="../../Assets/Images/Belt.png" />
+                        Source="../../Assets/Images/Belt.png"
+                        Opacity="{Binding BeltsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"/>
 
                     <Border
                         Width="15"
@@ -459,7 +490,7 @@
                         <TextBlock
                         FontSize="10"
                         FontFamily="Segoe UI"
-                        FontWeight="DemiBold"
+                        FontWeight="Bold"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         TextAlignment="Center"
