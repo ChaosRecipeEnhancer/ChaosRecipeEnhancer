@@ -18,8 +18,6 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
 public class StashFormViewModel : CreViewModelBase
 {
-    #region Fields
-
     // cooldown in seconds
     private const int FetchCooldownSeconds = 1;
 
@@ -42,23 +40,11 @@ public class StashFormViewModel : CreViewModelBase
     private bool _leaguesLoaded = false;
     private bool _stashTabsLoaded = false;
 
-    #endregion
-
-    #region Constructors
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="StashFormViewModel"/> class.
-    /// </summary>
-    /// <param name="apiService">The service for API interactions.</param>
-    /// <param name="authStateManager">Manages authentication state.</param>
-    /// <param name="userSettings">Stores user settings.</param>
     public StashFormViewModel(IPoeApiService apiSevice, IUserSettings userSettings)
     {
         _apiService = apiSevice;
         _userSettings = userSettings;
     }
-
-    #endregion
 
     #region Properties
 

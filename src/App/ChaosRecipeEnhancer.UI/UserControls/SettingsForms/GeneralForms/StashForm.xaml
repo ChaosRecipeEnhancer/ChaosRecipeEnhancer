@@ -226,10 +226,8 @@
                 VerticalContentAlignment="Center"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                ToolTip="You must first fetch stash tabs to enable the dropdown."
-                ToolTipService.ShowOnDisabled="True"
-                ToolTipService.InitialShowDelay="50"
-                ToolTipService.IsEnabled="{Binding StashTabDropDownEnabled, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}">
+                ToolTip="{Binding StashTabIdsToString, Mode=OneWay}"
+                ToolTipService.InitialShowDelay="50">
 
                 <xctk:CheckComboBox.Resources>
                     <Style TargetType="{x:Type CheckBox}">
