@@ -781,22 +781,36 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
             // case 3: user fetched data and has at least 1 set, but not to their full threshold
             else if ((FullSets < FullSetThreshold || VendorSetsEarly) && FullSets >= 1)
             {
-                WarningMessage = string.Empty;
-
-                // stash button is disabled with warning tooltip to change threshold
-                if (VendorSetsEarly)
+                if (NeedsLowerLevel && ChaosRecipeTrackingEnabled)
                 {
-                    StashButtonTooltipEnabled = false;
-                    SetsTooltipEnabled = false;
+                    WarningMessage = !SilenceNeedItemsMessage
+                    ? NeedsLowerLevelText(FullSets - FullSetThreshold)
+                    : string.Empty;
+
+                    // stash button is disabled with conditional tooltip enabled
+                    // based on whether or not the user has at least 1 set
+                    StashButtonTooltipEnabled = FullSets >= 1;
+                    SetsTooltipEnabled = true;
                 }
                 else
                 {
-                    StashButtonTooltipEnabled = true;
-                    SetsTooltipEnabled = true;
+                    WarningMessage = string.Empty;
+
+                    // stash button is disabled with warning tooltip to change threshold
+                    if (VendorSetsEarly)
+                    {
+                        StashButtonTooltipEnabled = false;
+                        SetsTooltipEnabled = false;
+                    }
+                    else
+                    {
+                        StashButtonTooltipEnabled = true;
+                        SetsTooltipEnabled = true;
+                    }
                 }
             }
 
-            // case 3: user has fetched and needs items for chaos recipe (needs more lower level items)
+            // case 4: user has fetched and needs items for chaos recipe (needs more lower level items)
             else if (NeedsLowerLevel && ChaosRecipeTrackingEnabled)
             {
                 WarningMessage = !SilenceNeedItemsMessage
@@ -809,7 +823,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
                 SetsTooltipEnabled = true;
             }
 
-            // case 4: user has fetched and has no sets
+            // case 5: user has fetched and has no sets
             else if (FullSets == 0)
             {
                 WarningMessage = string.Empty;
