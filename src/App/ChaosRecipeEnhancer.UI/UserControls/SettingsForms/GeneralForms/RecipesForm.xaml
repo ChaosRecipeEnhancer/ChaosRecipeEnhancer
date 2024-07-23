@@ -112,6 +112,7 @@
             Margin="10 0 0 10"
             Width="40"
             HorizontalContentAlignment="Left"
+            HorizontalAlignment="Left"
             PreviewTextInput="NumberValidationTextBox"
             LostFocus="TextBox_LostFocus"
             Text="{Binding FullSetThreshold, Mode=TwoWay}" />
