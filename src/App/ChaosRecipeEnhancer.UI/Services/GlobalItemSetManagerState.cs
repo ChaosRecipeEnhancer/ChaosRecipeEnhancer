@@ -97,13 +97,11 @@ public static class GlobalItemSetManagerState
         NeedsFetching = false;
     }
 
-    public static void ResetCompletedSetCount()
+    public static void ResetCompletedSetCountAndItemAmounts()
     {
+        // reset set count
         CompletedSetCount = 0;
-    }
 
-    public static void ResetItemAmounts()
-    {
         // reset all item amounts
         RingsAmount = 0;
         AmuletsAmount = 0;
@@ -116,12 +114,12 @@ public static class GlobalItemSetManagerState
         BootsAmount = 0;
     }
 
+    #region Generate Item Sets
+
     public static void GenerateItemSets(bool regalRecipe = false)
     {
         // filter for chaos recipe eligible items
-
         List<EnhancedItem> eligibleRecipeItems;
-
         if (regalRecipe)
         {
             eligibleRecipeItems = CurrentItemsFilteredForRecipe
@@ -456,6 +454,8 @@ public static class GlobalItemSetManagerState
             CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0);
         }
     }
+
+    #endregion
 
     public static List<Dictionary<ItemClass, int>> RetrieveCurrentItemCountsForFilterManipulation()
     {

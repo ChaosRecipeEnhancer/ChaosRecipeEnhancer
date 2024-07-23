@@ -579,7 +579,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
 
             // reset item amounts before fetching new data
             // invalidate some outdated state for our item manager
-            GlobalItemSetManagerState.ResetCompletedSetCount();
+            GlobalItemSetManagerState.ResetCompletedSetCountAndItemAmounts();
             GlobalItemSetManagerState.ResetItemAmounts();
 
             // update the stash tab metadata based on your target stash
@@ -635,7 +635,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
 
             if (flattenedStashTabs is not null)
             {
-                GlobalItemSetManagerState.UpdateStashMetadata(flattenedStashTabs);
+                GlobalItemSetManagerState.StashTabMetadataListStashesResponse = flattenedStashTabs;
 
                 foreach (var id in selectedTabIds)
                 {
