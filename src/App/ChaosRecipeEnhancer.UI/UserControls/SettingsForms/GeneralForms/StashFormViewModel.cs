@@ -580,6 +580,8 @@ public class StashFormViewModel : CreViewModelBase
                 _userSettings.StashTabIds = tempSelectedItems;
             }
         }
+
+        OnPropertyChanged(nameof(StashTabIdsToString));
     }
 
     public void UpdateUserSettingsForSelectedLeague(object selectedItem)
@@ -595,6 +597,8 @@ public class StashFormViewModel : CreViewModelBase
 
         LeagueName = selectedItem.ToString();
         LeagueDropDownEnabled = false;
+
+        OnPropertyChanged(nameof(StashTabIdsToString));
     }
 
     #endregion

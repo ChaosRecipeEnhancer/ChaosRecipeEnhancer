@@ -78,7 +78,7 @@
 
                                 <Setter Property="Foreground" Value="White" />
 
-                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="FontSize" Value="40" />
 
                             </DataTrigger>
 
