@@ -748,92 +748,123 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
         return true;
     }
 
+    #region Warning Message Stuff
+
     public void UpdateStashButtonAndWarningMessage(bool playNotificationSound = true)
     {
         // case 1: user just opened the app, hasn't hit fetch yet
         if (NeedsFetching)
         {
             WarningMessage = string.Empty;
+            return;
         }
-        else if (!NeedsFetching)
+
+        var (lowLevelItemsNeeded, highLevelItemsNeeded) = GetNeededItemCounts(FullSetThreshold);
+
+        // case 2: user fetched data and has enough sets to turn in based on their threshold
+        if (FullSets >= FullSetThreshold)
         {
-            // case 2: user fetched data and has enough sets to turn in based on their threshold
-            if (FullSets >= FullSetThreshold)
+            // if the user has vendor sets early enabled, we don't want to show the warning message
+            if (!VendorSetsEarly || FullSets >= FullSetThreshold)
             {
-                // if the user has vendor sets early enabled, we don't want to show the warning message
-                if (!VendorSetsEarly || FullSets >= FullSetThreshold)
-                {
-                    WarningMessage = !SilenceSetsFullMessage
-                        ? SetsFullText
-                        : string.Empty;
-                }
-
-                // stash button is enabled with no warning tooltip
-                StashButtonTooltipEnabled = false;
-                SetsTooltipEnabled = false;
-
-                if (playNotificationSound)
-                {
-                    PlayItemSetStateChangedNotificationSound();
-                }
+                WarningMessage = !SilenceSetsFullMessage
+                    ? SetsFullText
+                    : string.Empty;
             }
 
-            // case 3: user fetched data and has at least 1 set, but not to their full threshold
-            else if ((FullSets < FullSetThreshold || VendorSetsEarly) && FullSets >= 1)
-            {
-                if (NeedsLowerLevel && ChaosRecipeTrackingEnabled)
-                {
-                    WarningMessage = !SilenceNeedItemsMessage
-                    ? NeedsLowerLevelText(FullSets - FullSetThreshold)
-                    : string.Empty;
+            // stash button is enabled with no warning tooltip
+            StashButtonTooltipEnabled = false;
+            SetsTooltipEnabled = false;
 
-                    // stash button is disabled with conditional tooltip enabled
-                    // based on whether or not the user has at least 1 set
-                    StashButtonTooltipEnabled = FullSets >= 1;
-                    SetsTooltipEnabled = true;
+            if (playNotificationSound)
+            {
+                PlayItemSetStateChangedNotificationSound();
+            }
+        }
+
+        // case 3: user fetched data and has at least 1 set, but not to their full threshold
+        // case 4: user has fetched and needs items for chaos recipe (needs more lower level items)
+        // case 5: user has fetched and has no sets
+
+        else if (FullSets > 0 || lowLevelItemsNeeded > 0 || highLevelItemsNeeded > 0)
+        {
+            if (!SilenceNeedItemsMessage)
+            {
+                WarningMessage = GenerateWarningMessage(lowLevelItemsNeeded, highLevelItemsNeeded);
+            }
+            else
+            {
+                WarningMessage = string.Empty;
+            }
+
+            StashButtonTooltipEnabled = FullSets >= 1;
+            SetsTooltipEnabled = true;
+        }
+        else if (FullSets > 0)
+        {
+
+        }
+        else
+        {
+            WarningMessage = string.Empty;
+            StashButtonTooltipEnabled = true;
+            SetsTooltipEnabled = true;
+        }
+    }
+
+    private (int lowLevelItemsNeeded, int highLevelItemsNeeded) GetNeededItemCounts(int fullSetThreshold)
+    {
+        int lowLevelItemsNeeded = 0;
+        int highLevelItemsNeeded = 0;
+
+        // The most common scenario (default settings)
+        if (_userSettings.DoNotPreserveLowItemLevelGear && ChaosRecipeTrackingEnabled)
+        {
+            return (fullSetThreshold - FullSets, 0);
+        }
+
+        for (int i = 0; i < fullSetThreshold; i++)
+        {
+            var set = GlobalItemSetManagerState.SetsInProgress[i];
+
+            if (set.EmptyItemSlots.Count > 0 || !_userSettings.DoNotPreserveLowItemLevelGear)
+            {
+                if (set.IsChaosRecipeEligible)
+                {
+                    highLevelItemsNeeded += set.EmptyItemSlots.Count;
                 }
                 else
                 {
-                    WarningMessage = string.Empty;
-
-                    // stash button is disabled with warning tooltip to change threshold
-                    if (VendorSetsEarly)
-                    {
-                        StashButtonTooltipEnabled = false;
-                        SetsTooltipEnabled = false;
-                    }
-                    else
-                    {
-                        StashButtonTooltipEnabled = true;
-                        SetsTooltipEnabled = true;
-                    }
+                    lowLevelItemsNeeded += 1;
+                    highLevelItemsNeeded += set.EmptyItemSlots.Count - 1;
                 }
             }
-
-            // case 4: user has fetched and needs items for chaos recipe (needs more lower level items)
-            else if (NeedsLowerLevel && ChaosRecipeTrackingEnabled)
-            {
-                WarningMessage = !SilenceNeedItemsMessage
-                    ? NeedsLowerLevelText(FullSets - FullSetThreshold)
-                    : string.Empty;
-
-                // stash button is disabled with conditional tooltip enabled
-                // based on whether or not the user has at least 1 set
-                StashButtonTooltipEnabled = FullSets >= 1;
-                SetsTooltipEnabled = true;
-            }
-
-            // case 5: user has fetched and has no sets
-            else if (FullSets == 0)
-            {
-                WarningMessage = string.Empty;
-
-                // stash button is disabled with warning tooltip to change threshold
-                StashButtonTooltipEnabled = true;
-                SetsTooltipEnabled = true;
-            }
         }
+
+        return (lowLevelItemsNeeded, highLevelItemsNeeded);
     }
+
+    private string GenerateWarningMessage(int lowLevelItemsNeeded, int highLevelItemsNeeded)
+    {
+        var message = string.Empty;
+
+        // if we need low item level items in any mode (greedy++, greedy, conservative)
+        if (lowLevelItemsNeeded > 0 && ChaosRecipeTrackingEnabled)
+        {
+            message = $"Need {lowLevelItemsNeeded} item{(lowLevelItemsNeeded > 1 ? "s" : "")} with iLvl 60-74";
+        }
+        // else if we need high level items in conservative mode
+        else if (!_userSettings.DoNotPreserveLowItemLevelGear && highLevelItemsNeeded > 0)
+        {
+            message = $"Need {highLevelItemsNeeded} item{(highLevelItemsNeeded > 1 ? "s" : "")} with iLvl 75+";
+        }
+
+        return message;
+    }
+
+    #endregion
+
+    #region Reload Filter Stuff
 
     public async Task RunReloadFilter()
     {
@@ -930,6 +961,8 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
             }
         }
     }
+
+    #endregion
 
     #endregion
 

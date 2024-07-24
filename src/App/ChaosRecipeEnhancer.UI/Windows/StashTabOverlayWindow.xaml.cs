@@ -409,7 +409,7 @@ public partial class StashTabOverlayWindow : Window
             {
                 set.OrderItemsForPicking();
 
-                if ((set.HasChaosRecipeQualifier && Settings.Default.ChaosRecipeTrackingEnabled) ||
+                if ((set.IsChaosRecipeEligible && Settings.Default.ChaosRecipeTrackingEnabled) ||
                     (set.IsRegalRecipeEligible && !Settings.Default.ChaosRecipeTrackingEnabled))
                 {
                     if (set.EmptyItemSlots == null || set.EmptyItemSlots.Count == 0)
@@ -438,7 +438,7 @@ public partial class StashTabOverlayWindow : Window
             {
                 set.OrderItemsForPicking();
 
-                if ((set.HasChaosRecipeQualifier && Settings.Default.ChaosRecipeTrackingEnabled) ||
+                if ((set.IsChaosRecipeEligible && Settings.Default.ChaosRecipeTrackingEnabled) ||
                     (set.IsRegalRecipeEligible && !Settings.Default.ChaosRecipeTrackingEnabled))
                 {
                     SetsToHighlight.Add(new EnhancedItemSet
