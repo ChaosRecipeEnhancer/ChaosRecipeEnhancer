@@ -38,18 +38,22 @@ There's a lot of features in the app, so we made a video to help you get started
 
 ## Screenshots
 
-### Stash Tab Overlay
+### Stash Tab Overlay & Item Picking
 
-<img src="./DocumentationAssets/Stash-Tab-Overlay.gif" width="500" alt="Stash Tab Overlay">
+<img src="./DocumentationAssets/Stash-Tab-Overlay.webp" width="500" alt="Stash Tab Overlay">
 
 ### Set Tracker Overlay & Loot Filter Manipulation
 
+#### [FilterBlade](https://www.filterblade.xyz/) Inspired Filter Style Editor
+<img src="./DocumentationAssets/Filter-Style-Editor.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
+
+#### Set Tracker Overlay & Loot Filter Manipulation in Action
 <img src="./DocumentationAssets/Main-Overlay.png" width="500" alt="Set Tracker Overlay & Loot Filter Manipulation">
 
 ### Secure 2-Click Integration with PoE Data Services via OAuth
 
 <img src="./DocumentationAssets/Login-Prompt.png" width="500" alt="Login Prompt">
-<img src="./DocumentationAssets/Login-Prompt-Success.png" width="500" alt="Login Success">
+<img src="./DocumentationAssets/Login-Success.png" width="500" alt="Login Success">
 
 ## Copyright
 
