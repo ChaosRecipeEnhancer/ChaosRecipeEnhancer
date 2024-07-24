@@ -688,7 +688,9 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
                     }
 
                     // then we convert the raw results into a list of EnhancedItem objects
-                    var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
+                    var enhancedItems = rawResults is not null
+                        ? rawResults.Items.Select(item => new EnhancedItem(item)).ToList()
+                        : [];
 
                     // Manually setting id because we need to know which tab the item came from
                     foreach (var enhancedItem in enhancedItems)
@@ -819,12 +821,16 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
         int highLevelItemsNeeded = 0;
 
         // The most common scenario (default settings)
-        if (_userSettings.DoNotPreserveLowItemLevelGear && ChaosRecipeTrackingEnabled)
-        {
-            return (fullSetThreshold - FullSets, 0);
-        }
+        //if (_userSettings.DoNotPreserveLowItemLevelGear && ChaosRecipeTrackingEnabled)
+        //{
+        //    return (fullSetThreshold - FullSets, 0);
+        //}
 
-        for (int i = 0; i < fullSetThreshold; i++)
+        var maxSetCount = fullSetThreshold >= GlobalItemSetManagerState.SetsInProgress.Count
+            ? GlobalItemSetManagerState.SetsInProgress.Count
+            : fullSetThreshold;
+
+        for (int i = 0; i < maxSetCount; i++)
         {
             var set = GlobalItemSetManagerState.SetsInProgress[i];
 
@@ -848,6 +854,12 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     private string GenerateWarningMessage(int lowLevelItemsNeeded, int highLevelItemsNeeded)
     {
         var message = string.Empty;
+
+        if ((highLevelItemsNeeded > lowLevelItemsNeeded && ChaosRecipeTrackingEnabled) &&
+            _userSettings.DoNotPreserveLowItemLevelGear)
+        {
+            return message;
+        }
 
         // if we need low item level items in any mode (greedy++, greedy, conservative)
         if (lowLevelItemsNeeded > 0 && ChaosRecipeTrackingEnabled)

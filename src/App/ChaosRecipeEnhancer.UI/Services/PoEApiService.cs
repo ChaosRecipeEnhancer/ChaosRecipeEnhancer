@@ -140,6 +140,8 @@ public class PoeApiService : IPoeApiService
         {
             var results = await GetPersonalLeaguesAsync();
 
+            if (results is null) return [];
+
             leagueNames = results.Leagues
                 .Where(league => !string.IsNullOrEmpty(league.PrivateLeagueUrl))
                 .Select(league => league.Id)
@@ -162,9 +164,9 @@ public class PoeApiService : IPoeApiService
     {
         var responseRaw = await GetAsync(PoeApiConfig.PublicLeagueEndpoint);
 
-        return responseRaw is null
-            ? null
-            : JsonSerializer.Deserialize<League[]>((string)responseRaw);
+        if (responseRaw is null) return [];
+
+        return JsonSerializer.Deserialize<League[]>((string)responseRaw);
     }
 
     /// <summary>
@@ -176,17 +178,18 @@ public class PoeApiService : IPoeApiService
     {
         var responseRaw = await GetAuthenticatedWithOAuthAsync(PoeApiConfig.PersonalLeaguesOAuthEndpoint());
 
-        var response = responseRaw is null
-            ? null
-            : JsonSerializer.Deserialize<LeagueResponse>((string)responseRaw);
+        if (responseRaw is null) return null;
 
-        return response;
+        return JsonSerializer.Deserialize<LeagueResponse>((string)responseRaw);
     }
 
     /// <inheritdoc />
     public async Task<List<UnifiedStashTabMetadata>> GetAllPersonalStashTabMetadataWithOAuthAsync()
     {
         var response = await GetAuthenticatedWithOAuthAsync(PoeApiConfig.PersonalStashTabPropsOAuthEndpoint());
+
+        if (response is null) return [];
+
         var listStashesResponse = JsonSerializer.Deserialize<ListStashesResponse>((string)response);
         return listStashesResponse.ToUnifiedMetadata();
     }
@@ -194,6 +197,9 @@ public class PoeApiService : IPoeApiService
     public async Task<List<UnifiedStashTabMetadata>> GetAllGuildStashTabMetadataWithOAuthAsync()
     {
         var response = await GetAuthenticatedWithOAuthAsync(PoeApiConfig.GuildStashTabPropsOAuthEndpoint());
+
+        if (response is null) return [];
+
         var listStashesResponse = JsonSerializer.Deserialize<ListStashesResponse>((string)response);
         return listStashesResponse.ToUnifiedMetadata();
     }
@@ -205,6 +211,8 @@ public class PoeApiService : IPoeApiService
             PoeApiConfig.PersonalIndividualTabContentsOAuthEndpoint(stashId)
         );
 
+        if (responseRaw is null) return null;
+
         var response = JsonSerializer.Deserialize<GetStashResponse>((string)responseRaw);
         return response?.ToUnifiedContents();
     }
@@ -214,6 +222,8 @@ public class PoeApiService : IPoeApiService
         var responseRaw = await GetAuthenticatedWithOAuthAsync(
             PoeApiConfig.GuildIndividualTabContentsOAuthEndpoint(stashId)
         );
+
+        if (responseRaw is null) return null;
 
         var response = JsonSerializer.Deserialize<GetStashResponse>((string)responseRaw);
         return response?.ToUnifiedContents();
@@ -244,6 +254,8 @@ public class PoeApiService : IPoeApiService
             sessionId
         );
 
+        if (response is null) return [];
+
         var baseStashTabMetadataList = JsonSerializer.Deserialize<BaseStashTabMetadataList>((string)response);
         return baseStashTabMetadataList.ToUnifiedMetadata();
     }
@@ -255,6 +267,8 @@ public class PoeApiService : IPoeApiService
             PoeApiConfig.StashTabPropsSessionIdEndpoint(TargetStash.Guild),
             sessionId
         );
+
+        if (response is null) return [];
 
         var baseStashTabMetadataList = JsonSerializer.Deserialize<BaseStashTabMetadataList>((string)response);
         return baseStashTabMetadataList.ToUnifiedMetadata();
@@ -268,6 +282,8 @@ public class PoeApiService : IPoeApiService
             sessionId
         );
 
+        if (responseRaw is null) return null;
+
         var response = JsonSerializer.Deserialize<BaseStashTabContents>((string)responseRaw);
         return response?.ToUnifiedContents(tabId, tabName, tabIndex, tabType);
     }
@@ -279,6 +295,8 @@ public class PoeApiService : IPoeApiService
             PoeApiConfig.IndividualTabContentsSessionIdEndpoint(TargetStash.Guild, tabIndex),
             sessionId
         );
+
+        if (responseRaw is null) return null;
 
         var response = JsonSerializer.Deserialize<BaseStashTabContents>((string)responseRaw);
         return response?.ToUnifiedContents(tabId, tabName, tabIndex, tabType);
