@@ -1,0 +1,19 @@
+meta {
+  name: Account Stashes
+  type: http
+  seq: 5
+}
+
+get {
+  url: https://api.pathofexile.com/stash/Standard
+  body: none
+  auth: bearer
+}
+
+headers {
+  User-Agent: Bruno
+}
+
+auth:bearer {
+  token: {{BEARER_TOKEN}}
+}

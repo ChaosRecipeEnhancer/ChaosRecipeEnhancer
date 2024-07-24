@@ -8,6 +8,12 @@ public enum ConnectionStatusTypes
     AttemptingLogin
 }
 
+public enum TargetStash
+{
+    Personal,
+    Guild
+}
+
 public enum StashTabOverlayHighlightMode
 {
     SetBySet,
@@ -16,9 +22,8 @@ public enum StashTabOverlayHighlightMode
 
 public enum StashTabQueryMode
 {
-    SelectTabsByIndex,
-    TabNamePrefix,
-    SelectTabsById
+    TabsById,
+    TabsByNamePrefix
 }
 
 public enum SetTrackerOverlayMode
@@ -57,4 +62,59 @@ public enum Language
     Spanish,
     Japanese,
     Korean
+}
+
+// Loot Filter Styles Stuff
+
+public enum FilterStyleMapIconSize
+{
+    Large,
+    Medium,
+    Small
+}
+
+public enum FilterStyleMapIconColor
+{
+    Blue,
+    Brown,
+    Cyan,
+    Green,
+    Grey,
+    Orange,
+    Pink,
+    Purple,
+    Red,
+    White,
+    Yellow
+}
+
+public enum FilterStyleMapIconShape
+{
+    Circle,
+    Cross,
+    Diamond,
+    Hexagon,
+    Kite,
+    Moon,
+    Pentagon,
+    Raindrop,
+    Square,
+    Star,
+    Triangle,
+    UpsideDownHouse
+}
+
+public enum FilterStyleBeamColor
+{
+    Blue,
+    Brown,
+    Cyan,
+    Green,
+    Grey,
+    Orange,
+    Pink,
+    Purple,
+    Red,
+    White,
+    Yellow
 }

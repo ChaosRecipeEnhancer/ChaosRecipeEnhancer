@@ -1,10 +1,11 @@
 ﻿using ChaosRecipeEnhancer.UI.Properties;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace ChaosRecipeEnhancer.UI.UserControls;
 
-// TODO: consolidate our base viewmodel - this will eventually be depracated in favor of CreViewModelBase
+[Obsolete("This class will be removed in the future. Please use CreViewModelBase instead.")]
 public abstract class ViewModelBase : INotifyPropertyChanged
 {
     public Settings GlobalUserSettings { get; } = Settings.Default;

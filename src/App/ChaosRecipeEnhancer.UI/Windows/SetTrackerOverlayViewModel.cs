@@ -1,4 +1,5 @@
 using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
@@ -6,7 +7,6 @@ using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.UserControls;
 using ChaosRecipeEnhancer.UI.Utilities;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -14,19 +14,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Enums = ChaosRecipeEnhancer.UI.Models.Enums;
 
 namespace ChaosRecipeEnhancer.UI.Windows;
 
-public sealed class SetTrackerOverlayViewModel : ViewModelBase
+public sealed class SetTrackerOverlayViewModel : CreViewModelBase
 {
-    #region Fields
-
-    private readonly IFilterManipulationService _filterManipulationService = Ioc.Default.GetRequiredService<IFilterManipulationService>();
-    private readonly IReloadFilterService _reloadFilterService = Ioc.Default.GetRequiredService<IReloadFilterService>();
-    private readonly IPoeApiService _apiService = Ioc.Default.GetRequiredService<IPoeApiService>();
-    private readonly IUserSettings _userSettings = Ioc.Default.GetRequiredService<IUserSettings>();
-    private readonly IAuthStateManager _authStateManager = Ioc.Default.GetRequiredService<IAuthStateManager>();
-    private readonly INotificationSoundService _notificationSoundService = Ioc.Default.GetRequiredService<INotificationSoundService>();
+    private readonly IFilterManipulationService _filterManipulationService;
+    private readonly IReloadFilterService _reloadFilterService;
+    private readonly IPoeApiService _apiService;
+    private readonly IUserSettings _userSettings;
+    private readonly IAuthStateManager _authStateManager;
+    private readonly INotificationSoundService _notificationSoundService;
 
     private const string SetsFullText = "Sets full!";
 
@@ -39,11 +38,407 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
     private bool _setsTooltipEnabled = false;
     private string _warningMessage;
 
-    #endregion
+    public SetTrackerOverlayViewModel(
+        IFilterManipulationService filterManipulationService,
+        IReloadFilterService reloadFilterService,
+        IPoeApiService apiService,
+        IUserSettings userSettings,
+        IAuthStateManager authStateManager,
+        INotificationSoundService notificationSoundService
+    )
+    {
+        _filterManipulationService = filterManipulationService;
+        _reloadFilterService = reloadFilterService;
+        _apiService = apiService;
+        _userSettings = userSettings;
+        _authStateManager = authStateManager;
+        _notificationSoundService = notificationSoundService;
+    }
 
     #region Properties
 
-    private bool ShowAmountNeeded => _userSettings.SetTrackerOverlayItemCounterDisplayMode == SetTrackerOverlayItemCounterDisplayMode.ItemsMissing;
+    #region User Settings Accessor Properties
+
+    public double SetTrackerOverlayWindowScale
+    {
+        get => _userSettings.SetTrackerOverlayWindowScale;
+    }
+
+    public Enums.SetTrackerOverlayItemCounterDisplayMode SetTrackerOverlayItemCounterDisplayMode
+    {
+        get => _userSettings.SetTrackerOverlayItemCounterDisplayMode;
+        set
+        {
+            if (_userSettings.SetTrackerOverlayItemCounterDisplayMode != value)
+            {
+                _userSettings.SetTrackerOverlayItemCounterDisplayMode = value;
+                OnPropertyChanged(nameof(SetTrackerOverlayItemCounterDisplayMode));
+            }
+        }
+    }
+
+    public int FullSetThreshold
+    {
+        get => _userSettings.FullSetThreshold;
+        set
+        {
+            if (_userSettings.FullSetThreshold != value)
+            {
+                _userSettings.FullSetThreshold = value;
+                OnPropertyChanged(nameof(FullSetThreshold));
+            }
+        }
+    }
+
+    public bool LegacyAuthMode
+    {
+        get => _userSettings.LegacyAuthMode;
+        set
+        {
+            if (_userSettings.LegacyAuthMode != value)
+            {
+                _userSettings.LegacyAuthMode = value;
+                OnPropertyChanged(nameof(LegacyAuthMode));
+            }
+        }
+    }
+
+    public string LegacyAuthSessionId
+    {
+        get => _userSettings.LegacyAuthSessionId;
+        set
+        {
+            if (_userSettings.LegacyAuthSessionId != value)
+            {
+                _userSettings.LegacyAuthSessionId = value;
+                OnPropertyChanged(nameof(LegacyAuthSessionId));
+            }
+        }
+    }
+
+    public bool GuildStashMode
+    {
+        get => _userSettings.GuildStashMode;
+        set
+        {
+            if (_userSettings.GuildStashMode != value)
+            {
+                _userSettings.GuildStashMode = value;
+                OnPropertyChanged(nameof(GuildStashMode));
+            }
+        }
+    }
+
+    public int StashTabQueryMode
+    {
+        get => _userSettings.StashTabQueryMode;
+        set
+        {
+            if (_userSettings.StashTabQueryMode != value)
+            {
+                _userSettings.StashTabQueryMode = value;
+                OnPropertyChanged(nameof(StashTabQueryMode));
+            }
+        }
+    }
+
+    public HashSet<string> StashTabIds
+    {
+        get => _userSettings.StashTabIds;
+        set
+        {
+            if (_userSettings.StashTabIds != value)
+            {
+                _userSettings.StashTabIds = value;
+                OnPropertyChanged(nameof(StashTabIds));
+            }
+        }
+    }
+
+    public string StashTabPrefix
+    {
+        get => _userSettings.StashTabPrefix;
+        set
+        {
+            if (_userSettings.StashTabPrefix != value)
+            {
+                _userSettings.StashTabPrefix = value;
+                OnPropertyChanged(nameof(StashTabPrefix));
+            }
+        }
+    }
+
+    public bool VendorSetsEarly
+    {
+        get => _userSettings.VendorSetsEarly;
+        set
+        {
+            if (_userSettings.VendorSetsEarly != value)
+            {
+                _userSettings.VendorSetsEarly = value;
+                OnPropertyChanged(nameof(VendorSetsEarly));
+            }
+        }
+    }
+
+    public bool SilenceSetsFullMessage
+    {
+        get => _userSettings.SilenceSetsFullMessage;
+        set
+        {
+            if (_userSettings.SilenceSetsFullMessage != value)
+            {
+                _userSettings.SilenceSetsFullMessage = value;
+                OnPropertyChanged(nameof(SilenceSetsFullMessage));
+            }
+        }
+    }
+
+    public bool SilenceNeedItemsMessage
+    {
+        get => _userSettings.SilenceNeedItemsMessage;
+        set
+        {
+            if (_userSettings.SilenceNeedItemsMessage != value)
+            {
+                _userSettings.SilenceNeedItemsMessage = value;
+                OnPropertyChanged(nameof(SilenceNeedItemsMessage));
+            }
+        }
+    }
+
+    public bool ChaosRecipeTrackingEnabled
+    {
+        get => _userSettings.ChaosRecipeTrackingEnabled;
+        set
+        {
+            if (_userSettings.ChaosRecipeTrackingEnabled != value)
+            {
+                _userSettings.ChaosRecipeTrackingEnabled = value;
+                OnPropertyChanged(nameof(ChaosRecipeTrackingEnabled));
+            }
+        }
+    }
+
+    #region Always Active Settings
+
+    public bool LootFilterStylesRingAlwaysActive
+    {
+        get => _userSettings.LootFilterStylesRingAlwaysActive;
+        set
+        {
+            if (_userSettings.LootFilterStylesRingAlwaysActive != value)
+            {
+                _userSettings.LootFilterStylesRingAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesRingAlwaysActive));
+            }
+        }
+    }
+
+    public bool LootFilterStylesAmuletAlwaysActive
+    {
+        get => _userSettings.LootFilterStylesAmuletAlwaysActive;
+        set
+        {
+            if (_userSettings.LootFilterStylesAmuletAlwaysActive != value)
+            {
+                _userSettings.LootFilterStylesAmuletAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesAmuletAlwaysActive));
+            }
+        }
+    }
+
+    public bool LootFilterStylesBeltAlwaysActive
+    {
+        get => _userSettings.LootFilterStylesBeltAlwaysActive;
+        set
+        {
+            if (_userSettings.LootFilterStylesBeltAlwaysActive != value)
+            {
+                _userSettings.LootFilterStylesBeltAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesBeltAlwaysActive));
+            }
+        }
+    }
+
+    public bool LootFilterStylesBodyArmourAlwaysActive
+    {
+        get => _userSettings.LootFilterStylesBodyArmourAlwaysActive;
+        set
+        {
+            if (_userSettings.LootFilterStylesBodyArmourAlwaysActive != value)
+            {
+                _userSettings.LootFilterStylesBodyArmourAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesBodyArmourAlwaysActive));
+            }
+        }
+    }
+
+    public bool LootFilterStylesGlovesAlwaysActive
+    {
+        get => _userSettings.LootFilterStylesGlovesAlwaysActive;
+        set
+        {
+            if (_userSettings.LootFilterStylesGlovesAlwaysActive != value)
+            {
+                _userSettings.LootFilterStylesGlovesAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesGlovesAlwaysActive));
+            }
+        }
+    }
+
+    public bool LootFilterStylesBootsAlwaysActive
+    {
+        get => _userSettings.LootFilterStylesBootsAlwaysActive;
+        set
+        {
+            if (_userSettings.LootFilterStylesBootsAlwaysActive != value)
+            {
+                _userSettings.LootFilterStylesBootsAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesBootsAlwaysActive));
+            }
+        }
+    }
+
+    public bool LootFilterStylesHelmetAlwaysActive
+    {
+        get => _userSettings.LootFilterStylesHelmetAlwaysActive;
+        set
+        {
+            if (_userSettings.LootFilterStylesHelmetAlwaysActive != value)
+            {
+                _userSettings.LootFilterStylesHelmetAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesHelmetAlwaysActive));
+            }
+        }
+    }
+
+    public bool LootFilterStylesWeaponAlwaysActive
+    {
+        get => _userSettings.LootFilterStylesWeaponAlwaysActive;
+        set
+        {
+            if (_userSettings.LootFilterStylesWeaponAlwaysActive != value)
+            {
+                _userSettings.LootFilterStylesWeaponAlwaysActive = value;
+                OnPropertyChanged(nameof(LootFilterStylesWeaponAlwaysActive));
+            }
+        }
+    }
+
+    #endregion
+
+    #region Always Disabled Settings
+
+    public bool LootFilterStylesRingAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesRingAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesRingAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesRingAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesRingAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesAmuletAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesAmuletAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesAmuletAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesAmuletAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesAmuletAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesBeltAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesBeltAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesBeltAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesBeltAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesBeltAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesBodyArmourAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesBodyArmourAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesBodyArmourAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesBodyArmourAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesBodyArmourAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesGlovesAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesGlovesAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesGlovesAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesGlovesAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesGlovesAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesBootsAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesBootsAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesBootsAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesBootsAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesBootsAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesHelmetAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesHelmetAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesHelmetAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesHelmetAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesHelmetAlwaysDisabled));
+            }
+        }
+    }
+
+    public bool LootFilterStylesWeaponAlwaysDisabled
+    {
+        get => _userSettings.LootFilterStylesWeaponAlwaysDisabled;
+        set
+        {
+            if (_userSettings.LootFilterStylesWeaponAlwaysDisabled != value)
+            {
+                _userSettings.LootFilterStylesWeaponAlwaysDisabled = value;
+                OnPropertyChanged(nameof(LootFilterStylesWeaponAlwaysDisabled));
+            }
+        }
+    }
+
+    #endregion
+
+    #endregion
+
+    private bool ShowAmountNeeded => SetTrackerOverlayItemCounterDisplayMode == Enums.SetTrackerOverlayItemCounterDisplayMode.ItemsMissing;
     public bool NeedsFetching => GlobalItemSetManagerState.NeedsFetching;
     public bool NeedsLowerLevel => GlobalItemSetManagerState.NeedsLowerLevel;
     public int FullSets => GlobalItemSetManagerState.CompletedSetCount;
@@ -54,42 +449,42 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     public int RingsAmount => ShowAmountNeeded
         // case where we are showing missing items (calculate total needed and subtract from threshold, but don't show negatives)
-        ? Math.Max((_userSettings.FullSetThreshold * 2) - GlobalItemSetManagerState.RingsAmount, 0)
+        ? Math.Max((FullSetThreshold * 2) - GlobalItemSetManagerState.RingsAmount, 0)
         // case where we are showing total item sets (e.g. pair of rings as a single 'count')
         : GlobalItemSetManagerState.RingsAmount / 2;
 
     public int AmuletsAmount =>
         ShowAmountNeeded
-            ? Math.Max(_userSettings.FullSetThreshold - GlobalItemSetManagerState.AmuletsAmount, 0)
+            ? Math.Max(FullSetThreshold - GlobalItemSetManagerState.AmuletsAmount, 0)
             : GlobalItemSetManagerState.AmuletsAmount;
 
     public int BeltsAmount =>
         ShowAmountNeeded
-            ? Math.Max(_userSettings.FullSetThreshold - GlobalItemSetManagerState.BeltsAmount, 0)
+            ? Math.Max(FullSetThreshold - GlobalItemSetManagerState.BeltsAmount, 0)
             : GlobalItemSetManagerState.BeltsAmount;
 
     public int ChestsAmount => ShowAmountNeeded
-        ? Math.Max(_userSettings.FullSetThreshold - GlobalItemSetManagerState.ChestsAmount, 0)
+        ? Math.Max(FullSetThreshold - GlobalItemSetManagerState.ChestsAmount, 0)
         : GlobalItemSetManagerState.ChestsAmount;
 
     public int GlovesAmount =>
         ShowAmountNeeded
-            ? Math.Max(_userSettings.FullSetThreshold - GlobalItemSetManagerState.GlovesAmount, 0)
+            ? Math.Max(FullSetThreshold - GlobalItemSetManagerState.GlovesAmount, 0)
             : GlobalItemSetManagerState.GlovesAmount;
 
     public int BootsAmount =>
     ShowAmountNeeded
-        ? Math.Max(_userSettings.FullSetThreshold - GlobalItemSetManagerState.BootsAmount, 0)
+        ? Math.Max(FullSetThreshold - GlobalItemSetManagerState.BootsAmount, 0)
         : GlobalItemSetManagerState.BootsAmount;
 
     public int HelmetsAmount =>
         ShowAmountNeeded
-            ? Math.Max(_userSettings.FullSetThreshold - GlobalItemSetManagerState.HelmetsAmount, 0)
+            ? Math.Max(FullSetThreshold - GlobalItemSetManagerState.HelmetsAmount, 0)
             : GlobalItemSetManagerState.HelmetsAmount;
 
     public int WeaponsAmount => ShowAmountNeeded
         // case where we are showing missing items (calculate total needed and subtract from threshold, but don't show negatives)
-        ? Math.Max((_userSettings.FullSetThreshold * 2) - (GlobalItemSetManagerState.WeaponsSmallAmount + (GlobalItemSetManagerState.WeaponsBigAmount * 2)), 0)
+        ? Math.Max((FullSetThreshold * 2) - (GlobalItemSetManagerState.WeaponsSmallAmount + (GlobalItemSetManagerState.WeaponsBigAmount * 2)), 0)
         // case where we are showing total weapon sets (e.g. pair of one handed weapons plus two handed weapons as a 'count' each)
         : (GlobalItemSetManagerState.WeaponsSmallAmount / 2) + GlobalItemSetManagerState.WeaponsBigAmount;
 
@@ -98,36 +493,44 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
     #region Item Class Active (Visibility) Properties
 
     public bool RingsActive =>
-        _userSettings.LootFilterRingsAlwaysActive ||
-        (NeedsFetching || (_userSettings.FullSetThreshold * 2) - GlobalItemSetManagerState.RingsAmount > 0);
+        (LootFilterStylesRingAlwaysActive ||
+        (NeedsFetching || (FullSetThreshold * 2) - GlobalItemSetManagerState.RingsAmount > 0)) &&
+        !LootFilterStylesRingAlwaysDisabled;
 
     public bool AmuletsActive =>
-        _userSettings.LootFilterAmuletsAlwaysActive ||
-        (NeedsFetching || _userSettings.FullSetThreshold - GlobalItemSetManagerState.AmuletsAmount > 0);
+        (LootFilterStylesAmuletAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.AmuletsAmount > 0)) &&
+        !LootFilterStylesAmuletAlwaysDisabled;
 
     public bool BeltsActive =>
-        _userSettings.LootFilterBeltsAlwaysActive ||
-        (NeedsFetching || _userSettings.FullSetThreshold - GlobalItemSetManagerState.BeltsAmount > 0);
+        (LootFilterStylesBeltAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.BeltsAmount > 0)) &&
+        !LootFilterStylesBeltAlwaysDisabled;
 
     public bool ChestsActive =>
-        _userSettings.LootFilterBodyArmourAlwaysActive ||
-        (NeedsFetching || _userSettings.FullSetThreshold - GlobalItemSetManagerState.ChestsAmount > 0);
+        (LootFilterStylesBodyArmourAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.ChestsAmount > 0)) &&
+        !LootFilterStylesBodyArmourAlwaysDisabled;
 
     public bool GlovesActive =>
-        _userSettings.LootFilterGlovesAlwaysActive ||
-        (NeedsFetching || _userSettings.FullSetThreshold - GlobalItemSetManagerState.GlovesAmount > 0);
+        (LootFilterStylesGlovesAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.GlovesAmount > 0)) &&
+        !LootFilterStylesGlovesAlwaysDisabled;
 
     public bool HelmetsActive =>
-        _userSettings.LootFilterHelmetsAlwaysActive ||
-        (NeedsFetching || _userSettings.FullSetThreshold - GlobalItemSetManagerState.HelmetsAmount > 0);
+        (LootFilterStylesHelmetAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.HelmetsAmount > 0)) &&
+        !LootFilterStylesHelmetAlwaysDisabled;
 
     public bool BootsActive =>
-        _userSettings.LootFilterBootsAlwaysActive ||
-        (NeedsFetching || _userSettings.FullSetThreshold - GlobalItemSetManagerState.BootsAmount > 0);
+        (LootFilterStylesBootsAlwaysActive ||
+        (NeedsFetching || FullSetThreshold - GlobalItemSetManagerState.BootsAmount > 0)) &&
+        !LootFilterStylesBootsAlwaysDisabled;
 
     public bool WeaponsActive =>
-        _userSettings.LootFilterWeaponsAlwaysActive ||
-        (NeedsFetching || (_userSettings.FullSetThreshold * 2) - (GlobalItemSetManagerState.WeaponsSmallAmount + (GlobalItemSetManagerState.WeaponsBigAmount * 2)) > 0);
+        (LootFilterStylesWeaponAlwaysActive ||
+        (NeedsFetching || (FullSetThreshold * 2) - (GlobalItemSetManagerState.WeaponsSmallAmount + (GlobalItemSetManagerState.WeaponsBigAmount * 2)) > 0)) &&
+        !LootFilterStylesWeaponAlwaysDisabled;
 
     #endregion
 
@@ -169,207 +572,154 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
         try
         {
             // needed to update item set manager
-            var setThreshold = GlobalUserSettings.FullSetThreshold;
+            var setThreshold = FullSetThreshold;
 
             // have to do a bit of wizardry because we store the selected tab indices as a string in the user settings
             var filteredStashContents = new List<EnhancedItem>();
 
             // reset item amounts before fetching new data
             // invalidate some outdated state for our item manager
-            GlobalItemSetManagerState.ResetCompletedSetCount();
-            GlobalItemSetManagerState.ResetItemAmounts();
+            GlobalItemSetManagerState.ResetCompletedSetCountAndItemAmounts();
 
             // update the stash tab metadata based on your target stash
-            var stashTabMetadataList = GlobalItemSetManagerState.FlattenStashTabs(await _apiService.GetAllPersonalStashTabMetadataAsync());
+            var stashTabMetadataList = LegacyAuthMode
+                ? GuildStashMode
+                    ? await _apiService.GetAllGuildStashTabMetadataWithSessionIdAsync(LegacyAuthSessionId)
+                    : await _apiService.GetAllPersonalStashTabMetadataWithSessionIdAsync(LegacyAuthSessionId)
+                : GuildStashMode
+                    ? await _apiService.GetAllGuildStashTabMetadataWithOAuthAsync()
+                    : await _apiService.GetAllPersonalStashTabMetadataWithOAuthAsync();
 
-            // the following regions will need to be cleaned up and refactored at some point becaues this method is too long
+            // 'Flatten' the stash tab structure (unwrap children tabs from folders)
+            var flattenedStashTabs = GlobalItemSetManagerState.FlattenStashTabs(stashTabMetadataList);
 
-            #region OPERATIONS THAT REQUIRE STASH TAB INDEXES
+            List<string> selectedTabIds = [];
 
-            // if the user has selected stash tabs by index or by tab name prefix (which also uses indices)
-            if (GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsByIndex ||
-                GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix)
+            if (StashTabQueryMode == (int)Enums.StashTabQueryMode.TabsById)
             {
-                List<int> selectedTabIndices = [];
-                if (GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsByIndex)
-                {
-                    if (string.IsNullOrWhiteSpace(GlobalUserSettings.StashTabIndices))
-                    {
-                        FetchButtonEnabled = true;
-
-                        GlobalErrorHandler.Spawn(
-                            "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
-                            "Error: Set Tracker Overlay - Fetch Data"
-                        );
-
-                        return false;
-                    }
-
-                    selectedTabIndices = GlobalUserSettings.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
-                }
-                else if (GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix)
-                {
-                    if (string.IsNullOrWhiteSpace(GlobalUserSettings.StashTabPrefix))
-                    {
-                        FetchButtonEnabled = true;
-
-                        GlobalErrorHandler.Spawn(
-                            "It looks like you haven't entered a stash tab prefix. Please navigate to the 'General > General > Stash Tab Prefix' setting and enter a valid value, and try again.",
-                            "Error: Set Tracker Overlay - Fetch Data"
-                        );
-
-                        return false;
-                    }
-
-                    selectedTabIndices = stashTabMetadataList
-                        .Where(st => st.Name.StartsWith(GlobalUserSettings.StashTabPrefix))
-                        .Select(st => st.Index)
-                        .ToList();
-
-                    GlobalUserSettings.StashTabPrefixIndices = string.Join(',', selectedTabIndices);
-                    GlobalUserSettings.Save();
-                }
-
-                if (stashTabMetadataList is not null)
-                {
-                    GlobalItemSetManagerState.UpdateStashMetadata(stashTabMetadataList);
-
-                    // Create a new dictionary for stash index and ID pairs
-                    var selectedStashIndexIdPairs = new Dictionary<int, string>();
-
-                    try
-                    {
-                        // Map indices to stash IDs
-                        foreach (var index in selectedTabIndices)
-                        {
-                            var stashTab = stashTabMetadataList.FirstOrDefault(st => st.Index == index);
-                            if (stashTab != null)
-                            {
-                                selectedStashIndexIdPairs.Add(index, stashTab.Id);
-                            }
-                        }
-                    }
-                    // there are few reports of users attempting to add items with duplicate keys
-                    // in this case it's attempting to add stash tabs with the same index
-                    // this is not allowed, and is caused by stash metadata being out of sync
-                    // therefore, rethrow the exception and let the user know to re-fetch their tabs
-                    catch (ArgumentException)
-                    {
-                        throw new ArgumentNullException();
-                    }
-
-                    foreach (var (index, id) in selectedStashIndexIdPairs)
-                    {
-                        // first we retrieve the 'raw' results from the API
-                        var rawResults = await _apiService.GetPersonalStashTabContentsByStashIdAsync(id);
-
-                        // then we convert the raw results into a list of EnhancedItem objects
-                        var enhancedItems = rawResults.Stash.Items.Select(item => new EnhancedItem(item)).ToList();
-
-                        // Manually setting index because we need to know which tab the item came from
-                        foreach (var enhancedItem in enhancedItems)
-                        {
-                            enhancedItem.StashTabId = id; // we will use the id later
-                            enhancedItem.StashTabIndex = index; // Now 'index' refers to the correct stash tab index
-                        }
-
-                        // add the enhanced items to the filtered stash contents
-                        filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
-
-                        GlobalItemSetManagerState.UpdateStashContentsByIndex(setThreshold, selectedTabIndices, filteredStashContents);
-                    }
-
-                    // recalculate item amounts and generate item sets after fetching from api
-                    GlobalItemSetManagerState.CalculateItemAmounts();
-
-                    // generate item sets for the chosen recipe (chaos or regal)
-                    GlobalItemSetManagerState.GenerateItemSets(!GlobalUserSettings.ChaosRecipeTrackingEnabled);
-
-                    // update the UI accordingly
-                    UpdateDisplay();
-                    UpdateStashButtonAndWarningMessage();
-
-                    // enforce cooldown on fetch button to reduce chances of rate limiting
-                    TriggerSetTrackerFetchCooldown(FetchCooldownSeconds);
-                }
-                else
+                if (StashTabIds.Count == 0)
                 {
                     FetchButtonEnabled = true;
+
+                    GlobalErrorHandler.Spawn(
+                        "It looks like you haven't selected any stash tab ids. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
+                        "Error: Set Tracker Overlay - Fetch Data"
+                    );
+
                     return false;
                 }
 
+                selectedTabIds = [.. StashTabIds];
             }
-
-            #endregion
-
-            #region OPERATIONS THAT REQUIRE STASH TAB IDS
-
-            // if the user has selected stash tabs by id we have to do things differently
-            else if (GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsById)
+            else if (StashTabQueryMode == (int)Enums.StashTabQueryMode.TabsByNamePrefix)
             {
-                List<string> selectedTabIds = [];
-                if (GlobalUserSettings.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsById)
-                {
-                    if (string.IsNullOrWhiteSpace(GlobalUserSettings.StashTabIdentifiers))
-                    {
-                        FetchButtonEnabled = true;
 
-                        GlobalErrorHandler.Spawn(
-                            "It looks like you haven't selected any stash tab ids. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
-                            "Error: Set Tracker Overlay - Fetch Data"
-                        );
-
-                        return false;
-                    }
-
-                    selectedTabIds = GlobalUserSettings.StashTabIdentifiers.Split(',').ToList();
-                }
-
-                if (stashTabMetadataList is not null)
-                {
-                    GlobalItemSetManagerState.UpdateStashMetadata(stashTabMetadataList);
-
-                    foreach (var id in selectedTabIds)
-                    {
-                        // first we retrieve the 'raw' results from the API using the stash id
-                        var rawResults = await _apiService.GetPersonalStashTabContentsByStashIdAsync(id);
-
-                        // then we convert the raw results into a list of EnhancedItem objects
-                        var enhancedItems = rawResults.Stash.Items.Select(item => new EnhancedItem(item)).ToList();
-
-                        // Manually setting id because we need to know which tab the item came from
-                        foreach (var enhancedItem in enhancedItems)
-                        {
-                            enhancedItem.StashTabId = id;
-                        }
-
-                        // add the enhanced items to the filtered stash contents
-                        filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
-
-                        GlobalItemSetManagerState.UpdateStashContentsById(setThreshold, selectedTabIds, filteredStashContents);
-                    }
-
-                    // recalculate item amounts and generate item sets after fetching from api
-                    GlobalItemSetManagerState.CalculateItemAmounts();
-
-                    // generate item sets for the chosen recipe (chaos or regal)
-                    GlobalItemSetManagerState.GenerateItemSets(!GlobalUserSettings.ChaosRecipeTrackingEnabled);
-
-                    // update the UI accordingly
-                    UpdateDisplay();
-                    UpdateStashButtonAndWarningMessage();
-
-                    // enforce cooldown on fetch button to reduce chances of rate limiting
-                    TriggerSetTrackerFetchCooldown(FetchCooldownSeconds);
-                }
-                else
+                if (string.IsNullOrWhiteSpace(StashTabPrefix))
                 {
                     FetchButtonEnabled = true;
+
+                    GlobalErrorHandler.Spawn(
+                        "It looks like you haven't entered a stash tab prefix. Please navigate to the 'General > General > Stash Tab Prefix' setting and enter a valid value, and try again.",
+                        "Error: Set Tracker Overlay - Fetch Data"
+                    );
+
                     return false;
                 }
+
+                selectedTabIds = flattenedStashTabs
+                    .Where(st => st.Name.StartsWith(StashTabPrefix))
+                    .Select(st => st.Id)
+                    .ToList();
             }
 
-            #endregion
+            if (flattenedStashTabs is not null)
+            {
+                GlobalItemSetManagerState.StashTabMetadataListStashesResponse = flattenedStashTabs;
+
+                foreach (var id in selectedTabIds)
+                {
+                    UnifiedStashTabContents rawResults;
+
+                    // Session ID endpoint uses tab index for lookup - so we 'extract' the index from the tab collection constructed using id's
+                    if (LegacyAuthMode)
+                    {
+                        // For SessionId auth, we need to find the index corresponding to this id
+                        var stashTab = flattenedStashTabs.FirstOrDefault(st => st.Id == id);
+
+                        if (stashTab == null)
+                        {
+                            continue; // Skip this tab if we can't find its metadata
+                        }
+
+                        if (GuildStashMode)
+                        {
+                            rawResults = await _apiService.GetGuildStashTabContentsByIndexWithSessionIdAsync(
+                                LegacyAuthSessionId,
+                                stashTab.Id,
+                                stashTab.Name,
+                                stashTab.Index,
+                                stashTab.Type
+                            );
+                        }
+                        else
+                        {
+                            rawResults = await _apiService.GetPersonalStashTabContentsByIndexWithSessionIdAsync(
+                                LegacyAuthSessionId,
+                                stashTab.Id,
+                                stashTab.Name,
+                                stashTab.Index,
+                                stashTab.Type
+                            );
+                        }
+
+                    }
+                    // OAuth endpoint uses tab ID for lookup
+                    else
+                    {
+                        if (GuildStashMode)
+                        {
+                            rawResults = await _apiService.GetGuildStashTabContentsByStashIdWithOAuthAsync(id);
+                        }
+                        else
+                        {
+                            rawResults = await _apiService.GetPersonalStashTabContentsByStashIdWithOAuthAsync(id);
+                        }
+                    }
+
+                    // then we convert the raw results into a list of EnhancedItem objects
+                    var enhancedItems = rawResults.Items.Select(item => new EnhancedItem(item)).ToList();
+
+                    // Manually setting id because we need to know which tab the item came from
+                    foreach (var enhancedItem in enhancedItems)
+                    {
+                        enhancedItem.StashTabId = rawResults.Id;
+                        enhancedItem.StashTabIndex = rawResults.Index;
+                    }
+
+                    // add the enhanced items to the filtered stash contents
+                    filteredStashContents.AddRange(EnhancedItemUtilities.FilterItemsForRecipe(enhancedItems));
+
+                    GlobalItemSetManagerState.UpdateStashContents(setThreshold, selectedTabIds, filteredStashContents);
+                }
+
+                // recalculate item amounts and generate item sets after fetching from api
+                GlobalItemSetManagerState.CalculateItemAmounts();
+
+                // generate item sets for the chosen recipe (chaos or regal)
+                GlobalItemSetManagerState.GenerateItemSets(!ChaosRecipeTrackingEnabled);
+
+                // update the UI accordingly
+                UpdateDisplay();
+                UpdateStashButtonAndWarningMessage();
+
+                // enforce cooldown on fetch button to reduce chances of rate limiting
+                TriggerSetTrackerFetchCooldown(FetchCooldownSeconds);
+            }
+            else
+            {
+                FetchButtonEnabled = true;
+                return false;
+            }
         }
         catch (RateLimitException e)
         {
@@ -394,38 +744,11 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
             );
             return false;
         }
-        catch (ArgumentNullException e)
-        {
-            FetchButtonEnabled = true;
-
-            if (string.IsNullOrWhiteSpace(GlobalUserSettings.StashTabIndices))
-            {
-                GlobalErrorHandler.Spawn(
-                    e.ToString(),
-                    "Error: Set Tracker Overlay - No Tabs Selected",
-                    preamble: "It looks like you haven't selected any stash tab indices. Please navigate to" +
-                    "the 'General > General > Select Stash Tabs' setting and select some tabs, and try again."
-                );
-
-                return false;
-            }
-            else
-            {
-                GlobalErrorHandler.Spawn(
-                    e.ToString(),
-                    "Error: Set Tracker Overlay - Selected Tabs Out Of Sync",
-                    preamble: "It looks like your currently selected stash tabs are out of sync.\n\n" +
-                    "You may have moved them or modified them in some way that made us unable " +
-                    "to determine which stash tab you meant to select.\n\nPlease navigate to " +
-                    "the 'General > Select Stash Tabs', re-fetch your tabs, and validate your selections."
-                );
-            }
-
-            return false;
-        }
 
         return true;
     }
+
+    #region Warning Message Stuff
 
     public void UpdateStashButtonAndWarningMessage(bool playNotificationSound = true)
     {
@@ -433,114 +756,213 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
         if (NeedsFetching)
         {
             WarningMessage = string.Empty;
+            return;
         }
-        else if (!NeedsFetching)
+
+        var (lowLevelItemsNeeded, highLevelItemsNeeded) = GetNeededItemCounts(FullSetThreshold);
+
+        // case 2: user fetched data and has enough sets to turn in based on their threshold
+        if (FullSets >= FullSetThreshold)
         {
-            // case 2: user fetched data and has enough sets to turn in based on their threshold
-            if (FullSets >= GlobalUserSettings.FullSetThreshold)
+            // if the user has vendor sets early enabled, we don't want to show the warning message
+            if (!VendorSetsEarly || FullSets >= FullSetThreshold)
             {
-                // if the user has vendor sets early enabled, we don't want to show the warning message
-                if (!GlobalUserSettings.VendorSetsEarly || FullSets >= GlobalUserSettings.FullSetThreshold)
-                {
-                    WarningMessage = !GlobalUserSettings.SilenceSetsFullMessage
-                        ? SetsFullText
-                        : string.Empty;
-                }
-
-                // stash button is enabled with no warning tooltip
-                StashButtonTooltipEnabled = false;
-                SetsTooltipEnabled = false;
-
-                if (playNotificationSound)
-                {
-                    PlayItemSetStateChangedNotificationSound();
-                }
+                WarningMessage = !SilenceSetsFullMessage
+                    ? SetsFullText
+                    : string.Empty;
             }
 
-            // case 3: user fetched data and has at least 1 set, but not to their full threshold
-            else if ((FullSets < GlobalUserSettings.FullSetThreshold || GlobalUserSettings.VendorSetsEarly) && FullSets >= 1)
+            // stash button is enabled with no warning tooltip
+            StashButtonTooltipEnabled = false;
+            SetsTooltipEnabled = false;
+
+            if (playNotificationSound)
+            {
+                PlayItemSetStateChangedNotificationSound();
+            }
+        }
+
+        // case 3: user fetched data and has at least 1 set, but not to their full threshold
+        // case 4: user has fetched and needs items for chaos recipe (needs more lower level items)
+        // case 5: user has fetched and has no sets
+
+        else if (FullSets > 0 || lowLevelItemsNeeded > 0 || highLevelItemsNeeded > 0)
+        {
+            if (!SilenceNeedItemsMessage)
+            {
+                WarningMessage = GenerateWarningMessage(lowLevelItemsNeeded, highLevelItemsNeeded);
+            }
+            else
             {
                 WarningMessage = string.Empty;
+            }
 
-                // stash button is disabled with warning tooltip to change threshold
-                if (GlobalUserSettings.VendorSetsEarly)
+            StashButtonTooltipEnabled = FullSets >= 1;
+            SetsTooltipEnabled = true;
+        }
+        else if (FullSets > 0)
+        {
+
+        }
+        else
+        {
+            WarningMessage = string.Empty;
+            StashButtonTooltipEnabled = true;
+            SetsTooltipEnabled = true;
+        }
+    }
+
+    private (int lowLevelItemsNeeded, int highLevelItemsNeeded) GetNeededItemCounts(int fullSetThreshold)
+    {
+        int lowLevelItemsNeeded = 0;
+        int highLevelItemsNeeded = 0;
+
+        // The most common scenario (default settings)
+        if (_userSettings.DoNotPreserveLowItemLevelGear && ChaosRecipeTrackingEnabled)
+        {
+            return (fullSetThreshold - FullSets, 0);
+        }
+
+        for (int i = 0; i < fullSetThreshold; i++)
+        {
+            var set = GlobalItemSetManagerState.SetsInProgress[i];
+
+            if (set.EmptyItemSlots.Count > 0 || !_userSettings.DoNotPreserveLowItemLevelGear)
+            {
+                if (set.IsChaosRecipeEligible)
                 {
-                    StashButtonTooltipEnabled = false;
-                    SetsTooltipEnabled = false;
+                    highLevelItemsNeeded += set.EmptyItemSlots.Count;
                 }
                 else
                 {
-                    StashButtonTooltipEnabled = true;
-                    SetsTooltipEnabled = true;
+                    lowLevelItemsNeeded += 1;
+                    highLevelItemsNeeded += set.EmptyItemSlots.Count - 1;
                 }
             }
-
-            // case 3: user has fetched and needs items for chaos recipe (needs more lower level items)
-            else if (NeedsLowerLevel && GlobalUserSettings.ChaosRecipeTrackingEnabled)
-            {
-                WarningMessage = !GlobalUserSettings.SilenceNeedItemsMessage
-                    ? NeedsLowerLevelText(FullSets - GlobalUserSettings.FullSetThreshold)
-                    : string.Empty;
-
-                // stash button is disabled with conditional tooltip enabled
-                // based on whether or not the user has at least 1 set
-                StashButtonTooltipEnabled = FullSets >= 1;
-                SetsTooltipEnabled = true;
-            }
-
-            // case 4: user has fetched and has no sets
-            else if (FullSets == 0)
-            {
-                WarningMessage = string.Empty;
-
-                // stash button is disabled with warning tooltip to change threshold
-                StashButtonTooltipEnabled = true;
-                SetsTooltipEnabled = true;
-            }
         }
+
+        return (lowLevelItemsNeeded, highLevelItemsNeeded);
     }
+
+    private string GenerateWarningMessage(int lowLevelItemsNeeded, int highLevelItemsNeeded)
+    {
+        var message = string.Empty;
+
+        // if we need low item level items in any mode (greedy++, greedy, conservative)
+        if (lowLevelItemsNeeded > 0 && ChaosRecipeTrackingEnabled)
+        {
+            message = $"Need {lowLevelItemsNeeded} item{(lowLevelItemsNeeded > 1 ? "s" : "")} with iLvl 60-74";
+        }
+        // else if we need high level items in conservative mode
+        else if (!_userSettings.DoNotPreserveLowItemLevelGear && highLevelItemsNeeded > 0)
+        {
+            message = $"Need {highLevelItemsNeeded} item{(highLevelItemsNeeded > 1 ? "s" : "")} with iLvl 75+";
+        }
+
+        return message;
+    }
+
+    #endregion
+
+    #region Reload Filter Stuff
 
     public async Task RunReloadFilter()
     {
+        // Retrieve the current item counts for different item classes
         var itemClassAmounts = GlobalItemSetManagerState.RetrieveCurrentItemCountsForFilterManipulation();
 
-        // hash set of missing item classes (e.g. "ring", "amulet", etc.)
+        // Initialize a set to keep track of missing item classes
         var missingItemClasses = new HashSet<string>();
 
-        // first we check weapons since they're special and 2 item classes count for one
-        var oneHandedWeaponCount = itemClassAmounts
-            .Where(dict => dict.ContainsKey(ItemClass.OneHandWeapons))
-            .Select(dict => dict[ItemClass.OneHandWeapons])
-            .FirstOrDefault();
+        // Aggregate counts for all item classes from the provided data
+        var totalItemCounts = AggregateItemCounts(itemClassAmounts);
 
-        var twoHandedWeaponCount = itemClassAmounts
-            .Where(dict => dict.ContainsKey(ItemClass.TwoHandWeapons))
-            .Select(dict => dict[ItemClass.TwoHandWeapons])
-            .FirstOrDefault();
+        // Handle special cases for weapons and rings
+        HandleSpecialCases(totalItemCounts);
 
-        if (oneHandedWeaponCount / 2 + twoHandedWeaponCount >= GlobalUserSettings.FullSetThreshold)
-        {
-            foreach (var dict in itemClassAmounts)
-            {
-                dict.Remove(ItemClass.OneHandWeapons);
-                dict.Remove(ItemClass.TwoHandWeapons);
-            }
-        }
+        // Identify item classes that are missing based on the aggregated counts
+        IdentifyMissingItemClasses(totalItemCounts, missingItemClasses);
 
-        foreach (var itemCountByClass in itemClassAmounts)
-        {
-            foreach (var itemClass in itemCountByClass)
-            {
-                if (itemClass.Value < GlobalUserSettings.FullSetThreshold)
-                {
-                    missingItemClasses.Add(itemClass.Key.ToString());
-                }
-            }
-        }
+        // Generate the necessary filter sections and update the filter with the missing item classes
+        await _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses, NeedsLowerLevel);
 
-        await _filterManipulationService.GenerateSectionsAndUpdateFilterAsync(missingItemClasses);
+        // Reload the filter to apply the updates
         _reloadFilterService.ReloadFilter();
     }
+
+    private Dictionary<ItemClass, int> AggregateItemCounts(List<Dictionary<ItemClass, int>> itemClassAmounts)
+    {
+        // Create a dictionary to store the total counts of each item class
+        var totalItemCounts = new Dictionary<ItemClass, int>();
+
+        // Iterate over each dictionary in the list
+        foreach (var dict in itemClassAmounts)
+        {
+            // Iterate over each item class count pair in the dictionary
+            foreach (var kvp in dict)
+            {
+                // If the item class is already in the total counts dictionary, add the current count
+                if (totalItemCounts.ContainsKey(kvp.Key))
+                    totalItemCounts[kvp.Key] += kvp.Value;
+                // Otherwise, add the item class to the total counts dictionary with the current count
+                else
+                    totalItemCounts[kvp.Key] = kvp.Value;
+            }
+        }
+
+        // Return the aggregated counts of item classes
+        return totalItemCounts;
+    }
+
+    private void HandleSpecialCases(Dictionary<ItemClass, int> totalItemCounts)
+    {
+        // Get the total count of one-handed weapons, defaulting to 0 if not found
+        var oneHandedWeaponCount = totalItemCounts.GetValueOrDefault(ItemClass.OneHandWeapons, 0);
+
+        // Get the total count of two-handed weapons, defaulting to 0 if not found
+        var twoHandedWeaponCount = totalItemCounts.GetValueOrDefault(ItemClass.TwoHandWeapons, 0);
+
+        // Get the total count of rings, defaulting to 0 if not found
+        var ringCount = totalItemCounts.GetValueOrDefault(ItemClass.Rings, 0);
+
+        // If the combined count of one-handed and two-handed weapons reaches the full set threshold,
+        // remove these item classes from the total counts
+        if (oneHandedWeaponCount / 2 + twoHandedWeaponCount >= FullSetThreshold)
+        {
+            totalItemCounts.Remove(ItemClass.OneHandWeapons);
+            totalItemCounts.Remove(ItemClass.TwoHandWeapons);
+        }
+
+        // If the count of rings reaches the full set threshold, remove the rings item class from the total counts
+        if (ringCount / 2 >= FullSetThreshold)
+        {
+            totalItemCounts.Remove(ItemClass.Rings);
+        }
+    }
+
+    private void IdentifyMissingItemClasses(Dictionary<ItemClass, int> totalItemCounts, HashSet<string> missingItemClasses)
+    {
+        // Iterate over each item class count pair in the total counts dictionary
+        foreach (var kvp in totalItemCounts)
+        {
+            // Special treatment for rings
+            if (kvp.Key == ItemClass.Rings)
+            {
+                // If the count of rings does not reach the full set threshold, add it to the missing item classes
+                if (kvp.Value / 2 < FullSetThreshold)
+                {
+                    missingItemClasses.Add(kvp.Key.ToString());
+                }
+            }
+            // For other item classes, if the count does not reach the full set threshold, add it to the missing item classes
+            else if (kvp.Value < FullSetThreshold)
+            {
+                missingItemClasses.Add(kvp.Key.ToString());
+            }
+        }
+    }
+
+    #endregion
 
     #endregion
 
@@ -548,7 +970,12 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     private static string NeedsLowerLevelText(int diff) => $"Need {Math.Abs(diff)} items with iLvl 60-74!";
 
-    private void UpdateDisplay()
+    public void UpdateWindowScale()
+    {
+        OnPropertyChanged(nameof(SetTrackerOverlayWindowScale));
+    }
+
+    public void UpdateDisplay()
     {
         OnPropertyChanged(nameof(RingsAmount));
         OnPropertyChanged(nameof(RingsActive));
@@ -584,7 +1011,7 @@ public sealed class SetTrackerOverlayViewModel : ViewModelBase
 
     public void PlayItemSetStateChangedNotificationSound()
     {
-        _notificationSoundService.PlayNotificationSound(NotificationSoundType.ItemSetStateChanged);
+        _notificationSoundService.PlayNotificationSound(Enums.NotificationSoundType.ItemSetStateChanged);
     }
 
     public void TriggerSetTrackerFetchCooldown(int secondsToWait)

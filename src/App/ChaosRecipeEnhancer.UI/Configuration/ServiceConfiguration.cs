@@ -4,6 +4,8 @@ using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.AccountForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
+using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms;
+using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms.FilterStylesForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OtherForms;
 using ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms;
 using ChaosRecipeEnhancer.UI.Windows;
@@ -81,12 +83,32 @@ public static class ServiceConfiguration
 
     private static void ConfigureViewModels(IServiceCollection services)
     {
-        services.AddTransient<GeneralFormViewModel>();
-        services.AddTransient<SetTrackerOverlayFormViewModel>();
+        // Window VM's
+        services.AddTransient<SettingsViewModel>();
         services.AddTransient<StashTabOverlayViewModel>();
-        services.AddTransient<PathOfExileAccountOAuthFormViewModel>();
+        services.AddTransient<StashTabOverlayViewModel>();
+        services.AddTransient<SetTrackerOverlayViewModel>();
+
+        // UserControl VM's
+        services.AddTransient<StashFormViewModel>();
+        services.AddTransient<LegacyStashFormViewModel>();
+        services.AddTransient<FetchOnRezoneFormViewModel>();
+        services.AddTransient<SetTrackerOverlayFormViewModel>();
+        services.AddTransient<OAuthFormViewModel>();
+        services.AddTransient<LegacyAuthFormViewModel>();
         services.AddTransient<RecipesFormViewModel>();
         services.AddTransient<AdvancedFormViewModel>();
         services.AddTransient<SystemFormViewModel>();
+        services.AddTransient<LootFilterManipulationFormViewModel>();
+
+        // FilterStyleForm VM's
+        services.AddTransient<RingFilterStylesFormViewModel>();
+        services.AddTransient<AmuletFilterStylesFormViewModel>();
+        services.AddTransient<BeltFilterStylesFormViewModel>();
+        services.AddTransient<BootsFilterStylesFormViewModel>();
+        services.AddTransient<GlovesFilterStylesFormViewModel>();
+        services.AddTransient<HelmetFilterStylesFormViewModel>();
+        services.AddTransient<BodyArmourFilterStylesFormViewModel>();
+        services.AddTransient<WeaponFilterStylesFormViewModel>();
     }
 }

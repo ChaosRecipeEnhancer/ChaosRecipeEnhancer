@@ -33,9 +33,15 @@ public static class EnhancedItemUtilities
                 continue;
             }
 
-            // if an item falls within the ilvl bounds for whichever recipe we're calling
-            // chaos recipe ilvl 60+
-            if (item.ItemLevel >= 60)
+            // if an item falls within the ilvl bounds for chaos recipe (requires ilvl 60+)
+            if (Settings.Default.ChaosRecipeTrackingEnabled && item.ItemLevel >= 60)
+            {
+                // simple check if item is in our tabs
+                // checks like this make me want to filter before we get here, save some cycles
+                filteredItems.Add(item);
+            }
+            //else if an item falls within the ilvl bounds for regal recipe (requires ilvl 75 +)
+            else if (!Settings.Default.ChaosRecipeTrackingEnabled && item.ItemLevel >= 75)
             {
                 // simple check if item is in our tabs
                 // checks like this make me want to filter before we get here, save some cycles

@@ -12,5 +12,6 @@ public enum ItemFrameType
     Quest,
     Prophecy,
     Foil,
-    SupporterFoil
+    SupporterFoil,
+    Necropolis
 }

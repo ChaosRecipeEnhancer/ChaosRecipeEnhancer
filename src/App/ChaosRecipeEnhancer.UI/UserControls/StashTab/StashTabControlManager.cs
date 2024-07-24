@@ -1,7 +1,6 @@
-﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
-using ChaosRecipeEnhancer.UI.Services;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,62 +16,51 @@ public static class StashTabControlManager
     public static List<StashTabControl> StashTabControls { get; set; } = [];
     public static List<int> StashTabIndices { get; private set; }
 
-    public static void GetStashTabIndicesFromSettingsForQueryByIndex()
+    public static void GetStashTabIndicesFromSettings(List<UnifiedStashTabMetadata> stashData)
     {
-        // update the stash tab metadata based on your target stash
+        if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabsByNamePrefix)
+        {
+            GetStashTabIndicesFromSettingsForQueryByNamePrefix(stashData);
+        }
+        else if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabsById && !string.IsNullOrWhiteSpace(Settings.Default.StashTabIdentifiers))
+        {
+            GetStashTabIndicesFromSettingsForQueryById(stashData);
+        }
+    }
 
+    private static void GetStashTabIndicesFromSettingsForQueryByNamePrefix(List<UnifiedStashTabMetadata> stashData)
+    {
         List<int> selectedTabIndices = [];
 
-        if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.SelectTabsByIndex)
+        var tabNamePrefix = Settings.Default.StashTabPrefix;
+
+        // iterate through the stashData and find the tabs that start with the name prefix
+        foreach (var tab in stashData)
         {
-            if (string.IsNullOrWhiteSpace(Settings.Default.StashTabIndices))
+            if (tab.Name.StartsWith(tabNamePrefix))
             {
-                GlobalErrorHandler.Spawn(
-                    "It looks like you haven't selected any stash tab indices. Please navigate to the 'General > General > Select Stash Tabs' setting and select some tabs, and try again.",
-                    "Error: Stash Tab Overlay"
-                );
-            }
-            else
-            {
-                selectedTabIndices = Settings.Default.StashTabIndices.Split(',').ToList().Select(int.Parse).ToList();
-            }
-        }
-        else if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabNamePrefix)
-        {
-            if (string.IsNullOrWhiteSpace(Settings.Default.StashTabPrefix))
-            {
-                GlobalErrorHandler.Spawn(
-                    "It looks like you haven't entered a stash tab prefix or no tabs match that naming prefix. Please navigate to the 'General > General > Stash Tab Prefix' setting and enter a valid value, and try again.",
-                    "Error: Stash Tab Overlay"
-                );
-            }
-            else
-            {
-                selectedTabIndices = Settings.Default.StashTabPrefixIndices.Split(',').ToList().Select(int.Parse).ToList();
+                selectedTabIndices.Add(tab.Index);
             }
         }
 
+        // update the StashTabIndices property with the selected tab indices
         StashTabIndices = selectedTabIndices;
 
+        // ensure that the selected tab indices are unique
         foreach (var s in selectedTabIndices)
         {
             if (!selectedTabIndices.Contains(s)) selectedTabIndices.Add(s);
         }
-
-        if (selectedTabIndices.Count == 0)
-        {
-            GlobalErrorHandler.Spawn("Stash Tab indices empty", "Error: Stash Tab Overlay");
-        }
     }
 
-    public static void GetStashTabIndicesFromSettingsForQueryById(List<BaseStashTabMetadata> stashData)
+    private static void GetStashTabIndicesFromSettingsForQueryById(List<UnifiedStashTabMetadata> stashData)
     {
-        // update the stash tab metadata based on your target stash
-
         List<int> selectedTabIndices = [];
 
+        // convert the comma-separated string of stash tab IDs to a list of integers
         var selectedStashIds = Settings.Default.StashTabIdentifiers.Split(',').ToList();
 
+        // iterate through the list of stash tab IDs and find the corresponding index in the stashData list
         foreach (var id in selectedStashIds)
         {
             var tab = stashData.FirstOrDefault(x => x.Id == id);
@@ -82,16 +70,13 @@ public static class StashTabControlManager
             }
         }
 
+        // update the StashTabIndices property with the selected tab indices
         StashTabIndices = selectedTabIndices;
 
+        // ensure that the selected tab indices are unique
         foreach (var s in selectedTabIndices)
         {
             if (!selectedTabIndices.Contains(s)) selectedTabIndices.Add(s);
-        }
-
-        if (selectedTabIndices.Count == 0)
-        {
-            GlobalErrorHandler.Spawn("Stash Tab indices empty", "Error: Stash Tab Overlay");
         }
     }
 }

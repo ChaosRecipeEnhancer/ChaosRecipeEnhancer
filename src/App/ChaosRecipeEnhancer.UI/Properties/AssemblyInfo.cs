@@ -8,7 +8,7 @@ using System.Windows;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.24.3002.0")]
-[assembly: AssemblyFileVersion("3.24.3002.0")]
+[assembly: AssemblyVersion("3.25.1000.0")]
+[assembly: AssemblyFileVersion("3.25.1000.0")]
 
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]

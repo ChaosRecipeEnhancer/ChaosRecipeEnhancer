@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using System.Windows;
 using System.Windows.Forms;
-using ChaosRecipeEnhancer.UI.Properties;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms;
 
@@ -9,25 +9,23 @@ public partial class LootFilterManipulationForm
     private readonly LootFilterManipulationFormViewModel _model;
     public LootFilterManipulationForm()
     {
-        DataContext = _model = new LootFilterManipulationFormViewModel();
+        DataContext = _model = Ioc.Default.GetService<LootFilterManipulationFormViewModel>();
         InitializeComponent();
     }
 
-    private void RunCleanFilter(object sender, RoutedEventArgs e)
+    private void LootFilterFileDialogInput_Clicked(object sender, RoutedEventArgs e)
     {
-        _model.RunCleanFilter();
-    }
+        var open = new OpenFileDialog
+        {
+            Filter = "LootFilter|*.filter"
+        };
 
-    private void OnLootFilterFileDialogInputClicked(object sender, RoutedEventArgs e)
-    {
-        var open = new OpenFileDialog();
-        open.Filter = "LootFilter|*.filter";
         var res = open.ShowDialog();
 
         if (res != DialogResult.OK) return;
 
         var filename = open.FileName;
-        Settings.Default.LootFilterFileLocation = filename;
+        _model.LootFilterFileLocation = filename;
         LootFilterFileDialog.Content = filename;
     }
 }

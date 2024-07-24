@@ -23,6 +23,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -89,20 +90,42 @@
             Grid.Row="3"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
+            Text="Overlay Scale:"
+            ToolTipService.InitialShowDelay="50"
+            ToolTip="The scale of the overlay (From 0.75 to 1.5)." />
+
+        <Slider
+            Grid.Column="1"
+            Grid.Row="3"
+            Minimum="0.5"
+            Maximum="1.5"
+            TickFrequency="0.05"
+            IsSnapToTickEnabled="True"
+            TickPlacement="BottomRight"
+            AutoToolTipPrecision="2"
+            AutoToolTipPlacement="TopLeft"
+            Value="{Binding SetTrackerOverlayWindowScale, Mode=TwoWay}"
+            Margin="10 0 0 10" />
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="4"
+            Margin="0 0 0 10"
+            VerticalAlignment="Center"
             Text="Lock Position:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="Locks the position of the main overlay in one place." />
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="3"
+            Grid.Row="4"
             Margin="10 0 0 10"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
             IsChecked="{Binding SetTrackerOverlayOverlayLockPositionEnabled, Mode=TwoWay}" />
 
         <TextBlock
             Grid.Column="0"
-            Grid.Row="4"
+            Grid.Row="5"
             VerticalAlignment="Center"
             Margin="0 0 0 10"
             ToolTipService.InitialShowDelay="50"
@@ -111,14 +134,14 @@
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="4"
+            Grid.Row="5"
             Margin="10 0 0 10"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
             IsChecked="{Binding SilenceSetsFullMessage, Mode=TwoWay}" />
 
         <TextBlock
             Grid.Column="0"
-            Grid.Row="5"
+            Grid.Row="6"
             VerticalAlignment="Center"
             Margin="0 0 0 15"
             ToolTipService.InitialShowDelay="50"
@@ -127,15 +150,15 @@
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="5"
+            Grid.Row="6"
             Margin="10 0 0 15"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
             IsChecked="{Binding SilenceNeedItemsMessage, Mode=TwoWay}" />
 
         <!-- Reset Set Tracker Overlay Position Button -->
         <Button
             Grid.Column="0"
-            Grid.Row="6"
+            Grid.Row="7"
             Grid.ColumnSpan="2"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"

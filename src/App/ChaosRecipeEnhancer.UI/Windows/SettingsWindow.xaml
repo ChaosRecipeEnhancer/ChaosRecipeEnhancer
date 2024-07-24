@@ -27,6 +27,7 @@
         <creConverters:EqualityConverter x:Key="ValidateConnectionConverter" ComparisonType="{x:Type system:Int32}" />
         <creConverters:InvertBoolConverter x:Key="InvertedBoolConverter" />
         <creConverters:BoolVisibilityConverter x:Key="BooleanToVisibilityConverter" CollapseWhenNotVisible="True" />
+        <creConverters:BoolVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" CollapseWhenNotVisible="True" Invert="True"/>
     </Window.Resources>
 
     <Border
@@ -75,6 +76,7 @@
                 Grid.Column="0"
                 Grid.Row="1"
                 SelectedIndex="{Binding GlobalUserSettings.SettingsWindowNavIndex}">
+
                 <!-- Account Settings Tab Start -->
                 <TabItem Header="Account">
                     <Grid>
@@ -87,9 +89,16 @@
                         </Grid.RowDefinitions>
 
                         <!-- Path of Exile Account (New - OAuth) -->
-                        <accountForms:PathOfExileAccountOAuthForm
+                        <accountForms:OAuthForm
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+
+                        <!-- Path of Exile Account (Legacy - Session ID) -->
+                        <accountForms:LegacyAuthForm
                             Grid.Column="1"
-                            Grid.Row="0" />
+                            Grid.Row="0"
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                     </Grid>
                 </TabItem>
@@ -99,24 +108,39 @@
                 <TabItem
                     Header="General"
                     IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
+
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <!-- Recipes -->
                         <generalForms:RecipesForm
                             Grid.Column="0"
-                            Grid.Row="0" />
+                            Grid.Row="0"
+                            d:DataContext="{Binding }"/>
 
                         <!-- General -->
-                        <generalForms:GeneralForm
+                        <generalForms:StashForm
                             Grid.Column="1"
-                            Grid.Row="0" />
+                            Grid.Row="0"
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+
+                        <generalForms:LegacyStashForm
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            Visibility="{Binding GlobalUserSettings.LegacyAuthMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                        <generalForms:FetchOnRezoneForm
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Grid.ColumnSpan="3" />
 
                     </Grid>
                 </TabItem>
@@ -153,28 +177,22 @@
                 <TabItem
                     Header="Loot Filter"
                     IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
 
-                        <!-- Filter Manipulation -->
-                        <lootFilterForms:LootFilterManipulationForm
-                            Grid.Column="0"
-                            Grid.Row="0" />
-                        <!-- Colors -->
+                    <!-- Filter Manipulation -->
+                    <lootFilterForms:LootFilterManipulationForm />
 
-                        <lootFilterForms:ColorsForm
-                            Grid.Column="1"
-                            Grid.Row="0" />
-
-                    </Grid>
                 </TabItem>
                 <!-- Loot Filter Settings Tab End -->
+
+                <!-- Filter Styles Settings Tab Start -->
+                <TabItem
+                    Header="Filter Styles"
+                    IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
+
+                    <lootFilterForms:FilterStylesForm Margin="15" />
+
+                </TabItem>
+                <!-- Filter Styles Settings Tab End -->
 
                 <!-- We need to embed the Hotkey stuff directly into the main SettingsWindow
                 since we want to have access to the SetTracker and its various Run* methods-->
@@ -339,9 +357,9 @@
                 <TextBlock
                     Grid.Column="0"
                     FontSize="10"
-                    Margin="0 0 25 0"
+                    Margin="5 0 25 0"
+                    HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
-                    TextAlignment="Center"
                     Text="This product isn't affiliated with or endorsed by Grinding Gear Games in any way." />
 
                 <!-- Update Available Icon and App Version Text -->
@@ -351,7 +369,6 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center">
 
-                    <!-- Update Available Icon -->
                     <!-- Update Available Icon -->
                     <Image
                         Width="16"
@@ -373,6 +390,7 @@
                     <TextBlock
                         FontSize="12"
                         TextAlignment="Right"
+                        Margin="0 0 5 0"
                         Text="{Binding Version, StringFormat='CRE {0} by Mario, Tropical, Zemoto, &amp; kosace'}" />
                 </StackPanel>
             </Grid>

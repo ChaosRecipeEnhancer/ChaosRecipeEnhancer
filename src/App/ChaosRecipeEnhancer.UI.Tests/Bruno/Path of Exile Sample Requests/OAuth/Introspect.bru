@@ -1,0 +1,25 @@
+meta {
+  name: Introspect
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://www.pathofexile.com/oauth/token/introspect
+  body: formUrlEncoded
+  auth: bearer
+}
+
+headers {
+  User-Agent: Bruno
+  Content-Type: application/x-www-form-urlencoded
+}
+
+auth:bearer {
+  token: {{BEARER_TOKEN}}
+}
+
+body:form-urlencoded {
+  token: {{BEARER_TOKEN}}
+  token_type_hint: access_token
+}

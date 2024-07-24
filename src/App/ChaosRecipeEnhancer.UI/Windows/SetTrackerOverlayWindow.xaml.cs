@@ -3,6 +3,7 @@ using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.UserControls.SetTrackerOverlayDisplays;
 using ChaosRecipeEnhancer.UI.Utilities;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -17,7 +18,7 @@ public partial class SetTrackerOverlayWindow : Window
 
     public SetTrackerOverlayWindow()
     {
-        DataContext = _model = new SetTrackerOverlayViewModel();
+        DataContext = _model = Ioc.Default.GetService<SetTrackerOverlayViewModel>();
 
         // initialize stash tab overlay window and log watcher alongside this window
         _stashTabOverlay = new StashTabOverlayWindow();
@@ -43,15 +44,39 @@ public partial class SetTrackerOverlayWindow : Window
 
     private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(Settings.SetTrackerOverlayDisplayMode) ||
-            e.PropertyName == nameof(Settings.SetTrackerOverlayItemCounterDisplayMode))
+        if (
+            e.PropertyName == nameof(Settings.SetTrackerOverlayDisplayMode) ||
+            e.PropertyName == nameof(Settings.SetTrackerOverlayItemCounterDisplayMode)
+        )
             UpdateOverlayType(); // HACK: force update the item counters when we change the display mode
-        else if (e.PropertyName == nameof(Settings.FullSetThreshold) ||
-                 e.PropertyName == nameof(Settings.StashTabIndices) ||
-                 e.PropertyName == nameof(Settings.StashTabPrefix) ||
-                 e.PropertyName == nameof(Settings.SilenceSetsFullMessage) ||
-                 e.PropertyName == nameof(Settings.SilenceNeedItemsMessage))
+        else if (e.PropertyName == nameof(Settings.SetTrackerOverlayWindowScale))
+            _model.UpdateWindowScale();
+        else if (
+            e.PropertyName == nameof(Settings.FullSetThreshold) ||
+            e.PropertyName == nameof(Settings.StashTabPrefix) ||
+            e.PropertyName == nameof(Settings.SilenceSetsFullMessage) ||
+            e.PropertyName == nameof(Settings.SilenceNeedItemsMessage)
+        )
             _model.UpdateStashButtonAndWarningMessage(false);
+        else if (
+            e.PropertyName == nameof(Settings.LootFilterStylesAmuletAlwaysActive) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesBeltAlwaysActive) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesBodyArmourAlwaysActive) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesBootsAlwaysActive) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesGlovesAlwaysActive) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesHelmetAlwaysActive) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesRingAlwaysActive) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesWeaponAlwaysActive) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesAmuletAlwaysDisabled) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesBeltAlwaysDisabled) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesBodyArmourAlwaysDisabled) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesBootsAlwaysDisabled) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesGlovesAlwaysDisabled) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesHelmetAlwaysDisabled) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesRingAlwaysDisabled) ||
+            e.PropertyName == nameof(Settings.LootFilterStylesWeaponAlwaysDisabled)
+        )
+            _model.UpdateDisplay();
     }
 
     private void UpdateOverlayType()

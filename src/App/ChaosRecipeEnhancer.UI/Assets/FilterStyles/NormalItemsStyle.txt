@@ -5,15 +5,14 @@
 
 # To comment you have to make sure the '#' sign is at the beginning of the line, no in-line comments allowed
 
-#Show
-# 	ItemLevel >= 60
-# 	ItemLevel <= 74
+# 	ItemLevel >= 60                     --- MODIFY THIS IN THE APPLICATION
+# 	ItemLevel <= 74                     --- MODIFY THIS IN THE APPLICATION
 # 	Rarity Rare
-# 	Identified False
-# 	BaseType --- MODIFY THIS IN THE BASES FOLDER
-# 	SetBackgroundColor 0 251 238 255 --- MODIFY THIS IN THE APPLICATION
+# 	Identified False                    --- MODIFY THIS IN THE APPLICATION
+# 	BaseType
+# 	SetBackgroundColor 0 251 238 255    --- MODIFY THIS IN THE APPLICATION
+#   SetFontSize 40                      --- MODIFY THIS IN THE APPLICATION
+#   SetTextColor 255 255 255 255        --- MODIFY THIS IN THE APPLICATION
+#   SetBorderColor 0 0 0                --- MODIFY THIS IN THE APPLICATION
     Sockets < 6
     LinkedSockets < 5
-    SetFontSize 40
-    SetTextColor 255 255 255 255
-    SetBorderColor 0 0 0

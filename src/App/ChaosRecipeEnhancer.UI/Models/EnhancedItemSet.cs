@@ -29,16 +29,16 @@ public class EnhancedItemSet
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether this set contains at least one item eligible for the Chaos recipe.
+    /// Gets a value indicating whether this set contains at least one item eligible for the Chaos recipe.
     /// Chaos Recipe Item Sets only require 1 of their items to be between 60 and 74; the rest can be any level above 60.
     /// </summary>
-    public bool HasChaosRecipeQualifier { get; set; }
+    public bool IsChaosRecipeEligible => Items.Any(Item => Item.IsChaosRecipeEligible);
 
     /// <summary>
     /// Gets a value indicating whether all items in this set are eligible for the Regal recipe.
     /// Regal Recipe Item Sets require all items to be 75 or higher.
     /// </summary>
-    public bool IsRegalRecipeEligible => Items.All(d => d.IsRegalRecipeEligible);
+    public bool IsRegalRecipeEligible => Items.All(Item => Item.IsRegalRecipeEligible);
 
     /// <summary>
     /// Gets or sets the collection of items currently in this set.

@@ -1,13 +1,11 @@
-﻿using System;
+﻿using ChaosRecipeEnhancer.UI.Models.Hotkeys;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using ChaosRecipeEnhancer.UI.Models.Hotkeys;
 
 namespace ChaosRecipeEnhancer.UI.UserControls;
-/// <summary>
-///     Interaction logic for HotkeyEditorControl.xaml
-/// </summary>
+
 public partial class HotkeyEditorControl
 {
     public HotkeyEditorControl()

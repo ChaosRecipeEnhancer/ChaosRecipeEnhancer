@@ -1,0 +1,19 @@
+meta {
+  name: Get Item Filter
+  type: http
+  seq: 10
+}
+
+get {
+  url: https://api.pathofexile.com/item-filter/yOWmelH8
+  body: none
+  auth: bearer
+}
+
+headers {
+  User-Agent: Bruno
+}
+
+auth:bearer {
+  token: {{BEARER_TOKEN}}
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Account Profile
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://api.pathofexile.com/profile
+  body: none
+  auth: bearer
+}
+
+headers {
+  User-Agent: Bruno
+}
+
+auth:bearer {
+  token: {{BEARER_TOKEN}}
+}

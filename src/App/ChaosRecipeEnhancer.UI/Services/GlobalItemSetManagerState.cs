@@ -1,5 +1,5 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.ApiResponses;
+using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Properties;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ public static class GlobalItemSetManagerState
     public static int SetThreshold { get; set; }
     public static List<EnhancedItemSet> SetsInProgress { get; set; } = new();
     public static List<EnhancedItem> CurrentItemsFilteredForRecipe { get; set; } = new();
-    public static List<BaseStashTabMetadata> StashTabMetadataListStashesResponse { get; set; }
+    public static List<UnifiedStashTabMetadata> StashTabMetadataListStashesResponse { get; set; }
 
     // full set amounts will also need to be rendered
     public static int CompletedSetCount { get; private set; }
@@ -42,23 +42,12 @@ public static class GlobalItemSetManagerState
 
     #region Methods
 
-    public static void UpdateStashMetadata(List<BaseStashTabMetadata> metadata)
+    public static void UpdateStashMetadata(List<UnifiedStashTabMetadata> metadata)
     {
         StashTabMetadataListStashesResponse = metadata;
     }
 
-    public static void UpdateStashContentsByIndex(int setThreshold, List<int> selectedTabIndices, List<EnhancedItem> filteredStashContents)
-    {
-        // if no tabs are selected (this isn't a realistic case)
-        if (selectedTabIndices.Count == 0) return;
-
-        // setting some new properties
-        SetThreshold = setThreshold;
-        CurrentItemsFilteredForRecipe = filteredStashContents;
-        NeedsFetching = false;
-    }
-
-    public static void UpdateStashContentsById(int setThreshold, List<string> selectedTabIds, List<EnhancedItem> filteredStashContents)
+    public static void UpdateStashContents(int setThreshold, List<string> selectedTabIds, List<EnhancedItem> filteredStashContents)
     {
         // if no tabs are selected (this isn't a realistic case)
         if (selectedTabIds.Count == 0) return;
@@ -108,13 +97,11 @@ public static class GlobalItemSetManagerState
         NeedsFetching = false;
     }
 
-    public static void ResetCompletedSetCount()
+    public static void ResetCompletedSetCountAndItemAmounts()
     {
+        // reset set count
         CompletedSetCount = 0;
-    }
 
-    public static void ResetItemAmounts()
-    {
         // reset all item amounts
         RingsAmount = 0;
         AmuletsAmount = 0;
@@ -127,12 +114,12 @@ public static class GlobalItemSetManagerState
         BootsAmount = 0;
     }
 
+    #region Generate Item Sets
+
     public static void GenerateItemSets(bool regalRecipe = false)
     {
         // filter for chaos recipe eligible items
-
         List<EnhancedItem> eligibleRecipeItems;
-
         if (regalRecipe)
         {
             eligibleRecipeItems = CurrentItemsFilteredForRecipe
@@ -148,11 +135,11 @@ public static class GlobalItemSetManagerState
 
         // sorting both of our item lists by item class
         // it's important to prioritize two-handed weapons at the beginning so our set composition is more efficient
-        eligibleRecipeItems = eligibleRecipeItems.OrderByDescending(item => item.DerivedItemClass == "TwoHandWeapons")
+        eligibleRecipeItems = eligibleRecipeItems.OrderByDescending(item => item.DerivedItemClass == GameTerminology.TwoHandWeapons)
             .ThenBy(item => item.DerivedItemClass)
             .ToList();
 
-        CurrentItemsFilteredForRecipe = CurrentItemsFilteredForRecipe.OrderByDescending(item => item.DerivedItemClass == "TwoHandWeapons")
+        CurrentItemsFilteredForRecipe = CurrentItemsFilteredForRecipe.OrderByDescending(item => item.DerivedItemClass == GameTerminology.TwoHandWeapons)
             .ThenBy(item => item.DerivedItemClass)
             .ToList();
 
@@ -193,17 +180,28 @@ public static class GlobalItemSetManagerState
             NeedsLowerLevel = false;
         }
 
-        if (Settings.Default.DoNotPreserveLowItemLevelGear)
+        // This will only apply for:
+        //  - Chaos Recipe with Vendor Sets Early ENABLED
+        //  - Chaos Recipe with Vendor Sets Early DISABLED
+        //  - Regal Recipe
+        if (Settings.Default.DoNotPreserveLowItemLevelGear || regalRecipe)
         {
             GenerateItemSets_Greedy(eligibleRecipeItems, trueSetThreshold, regalRecipe);
         }
+        // This will only apply for:
+        //  - Chaos Recipe with Do Not Preserve Low Item Level Gear DISABLED
         else
         {
-            GenerateItemSets_Conserve(eligibleRecipeItems, trueSetThreshold, regalRecipe);
+            // pre-filter the list of eligible recipe items
+            CurrentItemsFilteredForRecipe = CurrentItemsFilteredForRecipe
+                .Where(x => !x.IsChaosRecipeEligible)
+                .ToList();
+
+            GenerateItemSets_Conserve(eligibleRecipeItems, SetThreshold);
         }
     }
 
-    private static void GenerateItemSets_Conserve(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold, bool regalRecipe = false)
+    private static void GenerateItemSets_Conserve(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold)
     {
         SetsInProgress.Clear();
         var listOfSets = new List<EnhancedItemSet>();
@@ -225,13 +223,11 @@ public static class GlobalItemSetManagerState
                 // try to add a single eligible recipe item in the set (where we're iterate in our loop on line 166)
                 foreach (var item in eligibleRecipeItems)
                 {
-                    var addSuccessful = enhancedItemSet.TryAddItem(item, regalRecipe);
+                    var addSuccessful = enhancedItemSet.TryAddItem(item, false);
 
                     // if we successfully add to set (i.e. it wasn't an item slot that was already taken)
                     if (addSuccessful)
                     {
-                        // remove from our stash
-                        CurrentItemsFilteredForRecipe.Remove(item);
                         // remove from the list of eligible recipe items
                         eligibleRecipeItems.Remove(item);
 
@@ -270,55 +266,21 @@ public static class GlobalItemSetManagerState
                 if (closestMissingItem is not null)
                 {
                     // if we found a new closer we're good to add it to our enhanced set
-                    _ = listOfSets[i].TryAddItem(closestMissingItem, regalRecipe);
-                    // promptly remove it from our pool of 'available' items
-                    // do i actually want to do this? lol
-                    _ = CurrentItemsFilteredForRecipe.Remove(closestMissingItem);
+                    if (listOfSets[i].TryAddItem(closestMissingItem, false))
+                    {
+                        CurrentItemsFilteredForRecipe.Remove(closestMissingItem);
+                    }
                 }
                 // you didn't find a closer item, gg break out of infinite loop
                 else
                 {
                     break;
                 }
-
-                // if we're not looking for regal recipes (we're looking for chaos recipes)
-                // checking for qualifiers is a bit different for regal recipes since we only need to check for a single
-                // item to be within the 60-74 ilvl range
-                if (!regalRecipe)
-                {
-                    // my reason for separating out this logic is that it's a bit more readable and debuggable
-
-                    // if we have a recipe qualifier we can stop looking for items
-                    var canProduce = listOfSets[i].Items.FirstOrDefault(x => x.IsChaosRecipeEligible, null);
-
-                    // if a set is complete (i.e. it has a recipe qualifier and no empty item slots)
-                    // we can increment our completed set count
-                    // for a set to be completed it needs to meet both of these conditions
-                    if (canProduce is not null)
-                    {
-                        listOfSets[i].HasChaosRecipeQualifier = true;
-
-                        if (listOfSets[i].EmptyItemSlots.Count == 0)
-                        {
-                            CompletedSetCount++;
-                        }
-                    }
-                }
-                // else if we're looking for regal recipes
-                // checking for qualified sets as a whole (all items in a set 75 or higher ilvl)
-                else
-                {
-                    // regal recipe sets have an implicit property in in `IsRegalRecipeEligible`
-                    // that checks if all items in a set are 75 or higher
-
-                    CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0);
-                }
-
             }
-
-            // add new enhanced item set to our list of sets in progress
-            SetsInProgress = listOfSets;
         }
+
+        SetsInProgress = listOfSets;
+        CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsChaosRecipeEligible);
     }
 
     private static void GenerateItemSets_Greedy(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold, bool regalRecipe = false)
@@ -435,7 +397,6 @@ public static class GlobalItemSetManagerState
                 // for a set to be completed it needs to meet both of these conditions
                 if (canProduce is not null)
                 {
-                    listOfSets[i].HasChaosRecipeQualifier = true;
                     containsChaosRecipe = true;
                 }
             }
@@ -464,9 +425,18 @@ public static class GlobalItemSetManagerState
         }
         else
         {
-            CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0);
+            if (regalRecipe)
+            {
+                CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsRegalRecipeEligible);
+            }
+            else
+            {
+                CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsChaosRecipeEligible);
+            }
         }
     }
+
+    #endregion
 
     public static List<Dictionary<ItemClass, int>> RetrieveCurrentItemCountsForFilterManipulation()
     {
@@ -489,11 +459,11 @@ public static class GlobalItemSetManagerState
         return result;
     }
 
-    public static List<BaseStashTabMetadata> FlattenStashTabs(ListStashesResponse response)
+    public static List<UnifiedStashTabMetadata> FlattenStashTabs(List<UnifiedStashTabMetadata> tabs)
     {
-        var allTabs = new List<BaseStashTabMetadata>();
+        var allTabs = new List<UnifiedStashTabMetadata>();
 
-        foreach (var tab in response.StashTabs)
+        foreach (var tab in tabs)
         {
             if (tab.Type != "Folder")
             {
