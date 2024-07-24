@@ -18,7 +18,7 @@
 		<!--Bump this by 1 for minor patches; Bump by 10 for major patches-->
 		<!--Minor Patch Bump: v3.24.1000 -> v3.24.1001; App Revision 10 -> 11-->
 		<!--Minor Patch Bump: v3.24.1000 -> v3.24.2000; App Revision 10 -> 20-->
-		<ApplicationRevision>10</ApplicationRevision>
+		<ApplicationRevision>11</ApplicationRevision>
 
 		<!--Update Settings-->
 		<IsWebBootstrapper>false</IsWebBootstrapper>
