@@ -13,18 +13,7 @@ public class UnifiedStashTabMetadata
     public int Index { get; set; }
     public List<UnifiedStashTabMetadata> Children { get; set; }
 
-    public override string ToString()
-    {
-        // If the Id is not just the Index as a string, include it in the output
-        if (Id != Index.ToString())
-        {
-            return $"[Index {Index}] {Name} (Id: {Id})";
-        }
-        else
-        {
-            return $"[Index {Index}] {Name}";
-        }
-    }
+    public override string ToString() => Name;
 }
 
 public static class StashTabMetadataExtensions

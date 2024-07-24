@@ -20,6 +20,8 @@ public class AdvancedFormViewModel : CreViewModelBase
         _userSettings = userSettings;
     }
 
+    #region Properties
+
     public ICommand ResetSettingsCommand => _resetSettingsCommand ??= new RelayCommand(ResetSettings);
 
     public bool DoNotPreserveLowItemLevelGearIsChecked
@@ -47,6 +49,10 @@ public class AdvancedFormViewModel : CreViewModelBase
             OnPropertyChanged();
         }
     }
+
+    #endregion
+
+    #region Methods
 
     private void ResetSettings()
     {
@@ -86,4 +92,6 @@ public class AdvancedFormViewModel : CreViewModelBase
 
         OnPropertyChanged();
     }
+
+    #endregion
 }

@@ -8,6 +8,19 @@ namespace ChaosRecipeEnhancer.UI.Models.UserSettings;
 /// </summary>
 public partial class UserSettings : IUserSettings
 {
+    public double SetTrackerOverlayWindowScale
+    {
+        get => Settings.Default.SetTrackerOverlayWindowScale;
+        set
+        {
+            if (Settings.Default.SetTrackerOverlayWindowScale != value)
+            {
+                Settings.Default.SetTrackerOverlayWindowScale = value;
+                Save();
+            }
+        }
+    }
+
     public double SetTrackerOverlayTopPosition
     {
         get => Settings.Default.SetTrackerOverlayTopPosition;

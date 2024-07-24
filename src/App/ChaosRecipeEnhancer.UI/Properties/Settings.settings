@@ -569,5 +569,8 @@
     <Setting Name="LootFilterStylesWeaponBackgroundColorEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="SetTrackerOverlayWindowScale" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

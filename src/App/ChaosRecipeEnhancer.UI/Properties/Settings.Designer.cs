@@ -2288,5 +2288,17 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["LootFilterStylesWeaponBackgroundColorEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double SetTrackerOverlayWindowScale {
+            get {
+                return ((double)(this["SetTrackerOverlayWindowScale"]));
+            }
+            set {
+                this["SetTrackerOverlayWindowScale"] = value;
+            }
+        }
     }
 }

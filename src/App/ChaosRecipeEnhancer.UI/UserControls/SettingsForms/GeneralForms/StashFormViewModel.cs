@@ -18,8 +18,6 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
 public class StashFormViewModel : CreViewModelBase
 {
-    #region Fields
-
     // cooldown in seconds
     private const int FetchCooldownSeconds = 1;
 
@@ -42,23 +40,11 @@ public class StashFormViewModel : CreViewModelBase
     private bool _leaguesLoaded = false;
     private bool _stashTabsLoaded = false;
 
-    #endregion
-
-    #region Constructors
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="StashFormViewModel"/> class.
-    /// </summary>
-    /// <param name="apiService">The service for API interactions.</param>
-    /// <param name="authStateManager">Manages authentication state.</param>
-    /// <param name="userSettings">Stores user settings.</param>
     public StashFormViewModel(IPoeApiService apiSevice, IUserSettings userSettings)
     {
         _apiService = apiSevice;
         _userSettings = userSettings;
     }
-
-    #endregion
 
     #region Properties
 
@@ -451,29 +437,35 @@ public class StashFormViewModel : CreViewModelBase
             {
                 foreach (var nestedTab in tab.Children)
                 {
-                    if (_userSettings.HideRemoveOnlyTabs && !nestedTab.Name.Contains("(Remove-only)"))
+                    if (nestedTab.Type == "QuadStash" || nestedTab.Type == "PremiumStash" || nestedTab.Type == "NormalStash")
                     {
-                        Log.Information($"StashFormViewModel - {nestedTab.Name} - HideRemoveOnlyTabs setting is enabled and tab is NOT a `(Remove-only)` tab. Adding to list.");
-                        StashTabFullListForSelection.Add(nestedTab);
-                    }
-                    else if (!_userSettings.HideRemoveOnlyTabs)
-                    {
-                        Log.Information($"StashFormViewModel - {nestedTab.Name} - HideRemoveOnlyTabs setting is disabled. Adding to list.");
-                        StashTabFullListForSelection.Add(nestedTab);
+                        if (_userSettings.HideRemoveOnlyTabs && !nestedTab.Name.Contains("(Remove-only)"))
+                        {
+                            Log.Information($"StashFormViewModel - {nestedTab.Name} - HideRemoveOnlyTabs setting is enabled and tab is NOT a `(Remove-only)` tab. Adding to list.");
+                            StashTabFullListForSelection.Add(nestedTab);
+                        }
+                        else if (!_userSettings.HideRemoveOnlyTabs)
+                        {
+                            Log.Information($"StashFormViewModel - {nestedTab.Name} - HideRemoveOnlyTabs setting is disabled. Adding to list.");
+                            StashTabFullListForSelection.Add(nestedTab);
+                        }
                     }
                 }
             }
             else
             {
-                if (_userSettings.HideRemoveOnlyTabs && !tab.Name.Contains("(Remove-only)"))
+                if (tab.Type == "QuadStash" || tab.Type == "PremiumStash" || tab.Type == "NormalStash")
                 {
-                    Log.Information($"StashFormViewModel - {tab.Name} - HideRemoveOnlyTabs setting is enabled and tab is NOT a `(Remove-only)` tab. Adding to list.");
-                    StashTabFullListForSelection.Add(tab);
-                }
-                else if (!_userSettings.HideRemoveOnlyTabs)
-                {
-                    Log.Information($"StashFormViewModel - {tab.Name} - HideRemoveOnlyTabs setting is disabled. Adding to list.");
-                    StashTabFullListForSelection.Add(tab);
+                    if (_userSettings.HideRemoveOnlyTabs && !tab.Name.Contains("(Remove-only)"))
+                    {
+                        Log.Information($"StashFormViewModel - {tab.Name} - HideRemoveOnlyTabs setting is enabled and tab is NOT a `(Remove-only)` tab. Adding to list.");
+                        StashTabFullListForSelection.Add(tab);
+                    }
+                    else if (!_userSettings.HideRemoveOnlyTabs)
+                    {
+                        Log.Information($"StashFormViewModel - {tab.Name} - HideRemoveOnlyTabs setting is disabled. Adding to list.");
+                        StashTabFullListForSelection.Add(tab);
+                    }
                 }
             }
         }

@@ -7,21 +7,13 @@ namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.OverlayForms;
 
 public class SetTrackerOverlayFormViewModel : CreViewModelBase
 {
-    #region Fields
-
     private readonly IUserSettings _userSettings;
     private ICommand _resetSetTrackerOverlayPositionCommand;
-
-    #endregion
-
-    #region Constructors
 
     public SetTrackerOverlayFormViewModel(IUserSettings userSettings)
     {
         _userSettings = userSettings;
     }
-
-    #endregion
 
     #region Properties
 
@@ -55,6 +47,19 @@ public class SetTrackerOverlayFormViewModel : CreViewModelBase
             {
                 _userSettings.SetTrackerOverlayMode = (SetTrackerOverlayMode)value;
                 OnPropertyChanged(nameof(SetTrackerOverlayMode));
+            }
+        }
+    }
+
+    public double SetTrackerOverlayWindowScale
+    {
+        get => _userSettings.SetTrackerOverlayWindowScale;
+        set
+        {
+            if (_userSettings.SetTrackerOverlayWindowScale != value)
+            {
+                _userSettings.SetTrackerOverlayWindowScale = value;
+                OnPropertyChanged(nameof(SetTrackerOverlayWindowScale));
             }
         }
     }

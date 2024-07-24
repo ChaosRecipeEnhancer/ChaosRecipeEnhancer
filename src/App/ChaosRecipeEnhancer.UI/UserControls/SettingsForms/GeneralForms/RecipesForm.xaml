@@ -112,6 +112,7 @@
             Margin="10 0 0 10"
             Width="40"
             HorizontalContentAlignment="Left"
+            HorizontalAlignment="Left"
             PreviewTextInput="NumberValidationTextBox"
             LostFocus="TextBox_LostFocus"
             Text="{Binding FullSetThreshold, Mode=TwoWay}" />
@@ -125,7 +126,6 @@
             Text="Vendor Sets Early:"
             ToolTipService.InitialShowDelay="50"
             ToolTip="Enabled by default.&#x0a;&#x0a;This will allow you to turn in sets even if you are not at your full set threshold.&#x0a;If this is disabled, we will hold off turning in sets until you hit your full threshold." />
-
 
         <CheckBox
             Grid.Column="1"
