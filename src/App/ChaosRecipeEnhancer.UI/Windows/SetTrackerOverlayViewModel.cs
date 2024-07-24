@@ -629,6 +629,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
                 selectedTabIds = flattenedStashTabs
                     .Where(st => st.Name.StartsWith(StashTabPrefix))
                     .Select(st => st.Id)
+                    .Take(10)
                     .ToList();
             }
 
