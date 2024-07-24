@@ -77,7 +77,7 @@
                 Grid.Row="0"
                 Grid.ColumnSpan="3"
                 Margin="10 0 5 0"
-                Width="170"
+                Width="210"
                 VerticalContentAlignment="Center"
                 ItemsSource="{Binding LeagueList, Mode=OneWay}"
                 SelectedValue="{Binding LeagueName}"
@@ -94,7 +94,7 @@
                 Grid.Row="0"
                 Grid.ColumnSpan="3"
                 Margin="10 0 5 0"
-                Width="170"
+                Width="210"
                 VerticalContentAlignment="Center"
                 Text="{Binding LeagueName, Mode=OneWay}"
                 IsEnabled="False"
@@ -206,16 +206,25 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Margin="0 0 0 10"
+                HorizontalAlignment="Left"
+                Text="Maximum selection of 10 Stash Tabs."
+                Visibility="{Binding StashTabDropDownEnabled, Converter={StaticResource BoolVisibilityConverter}}" />
 
             <xctk:CheckComboBox
                 Grid.Column="0"
-                Grid.Row="0"
+                Grid.Row="1"
                 Grid.ColumnSpan="3"
                 Margin="0 0 5 0"
-                Width="170"
-                IsSelectAllActive="True"
-                SelectAllContent="Select All / Clear All"
+                Width="210"
+                IsSelectAllActive="False"
                 MaxDropDownHeight="300"
                 ItemSelectionChanged="TabsCheckComboBox_SelectionChanged"
                 SelectedItemsOverride="{Binding Path=SelectedStashTabsById, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -233,17 +242,14 @@
                     <Style TargetType="{x:Type CheckBox}">
                         <Setter Property="Background" Value="White" />
                     </Style>
-                    <Style TargetType="{x:Type xctk:SelectAllSelectorItem}">
-                        <Setter Property="Background" Value="#202020" />
-                    </Style>
                 </xctk:CheckComboBox.Resources>
 
                 <xctk:CheckComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Foreground="#202020">
                             <TextBlock.Text>
-                                <MultiBinding StringFormat="[ID {0}] {1}">
-                                    <Binding Path="Id"/>
+                                <MultiBinding StringFormat="[{0}] {1}">
+                                    <Binding Path="Index"/>
                                     <Binding Path="Name"/>
                                 </MultiBinding>
                             </TextBlock.Text>
@@ -255,24 +261,21 @@
 
             <TextBox
                 Grid.Column="0"
-                Grid.Row="0"
+                Grid.Row="1"
                 Grid.ColumnSpan="3"
                 Margin="0 0 5 0"
-                Width="170"
+                Width="210"
                 Text="{Binding StashTabIdsToString, Mode=OneWay}"
                 Visibility="{Binding StashTabDropDownEnabled, Converter={StaticResource InvertedBoolVisibilityConverter}}"
                 VerticalContentAlignment="Center"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                IsEnabled="False"
-                ToolTipService.ShowOnDisabled="True"
-                ToolTipService.InitialShowDelay="50"
-                ToolTipService.IsEnabled="{Binding StashTabDropDownEnabled, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}" />
+                IsEnabled="False" />
 
             <Button
                 x:Name="SelectTabById_FetchStashTabsButton"
                 Grid.Column="3"
-                Grid.Row="0"
+                Grid.Row="1"
                 Width="60"
                 Margin="5 0 0 0"
                 Content="Fetch"
@@ -291,7 +294,7 @@
             <Button
                 x:Name="SelectTabById_ChangeStashTabsButton"
                 Grid.Column="3"
-                Grid.Row="0"
+                Grid.Row="1"
                 Width="60"
                 Margin="5 0 0 0"
                 Content="Change"
@@ -312,12 +315,30 @@
             ToolTip="Every stash tab which name starts with this prefix will be added."
             Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}" />
 
-        <TextBox
-            Grid.Column="1"
-            Grid.Row="6"
-            Margin="10 0 0 10"
-            Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
-            Text="{Binding StashTabPrefix, Mode=TwoWay}" />
+        <Grid Grid.Column="1" Grid.Row="6">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Margin="10 0 0 10"
+                HorizontalAlignment="Left"
+                Text="Maximum of 10 Stash Tabs will be matched."
+                Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}" />
+
+            <TextBox
+                Grid.Row="1"
+                Margin="10 0 0 10"
+                Visibility="{Binding StashTabQueryMode, Converter={StaticResource VisibleIfEqual}, ConverterParameter=1}"
+                Text="{Binding StashTabPrefix, Mode=TwoWay}" />
+
+        </Grid>
+
+
         <!-- Individual Tab Name Prefix End -->
 
         <!-- Hide Remove Only Tabs Checkbox Start -->

@@ -14,6 +14,10 @@ public static class SettingsConfiguration
             Settings.Default.Upgrade();
             Settings.Default.UpgradeSettingsAfterUpdate = false;
 
+            // [3.25] one time settings 'migration
+            Settings.Default.LeagueName = "Standard";
+            Settings.Default.StashTabIdentifiers = string.Empty;
+
             // Reset sensitive auth-related settings after an upgrade
             Settings.Default.PathOfExileApiAuthToken = string.Empty;
             Settings.Default.LegacyAuthSessionId = string.Empty;
