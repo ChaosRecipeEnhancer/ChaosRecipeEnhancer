@@ -5,6 +5,7 @@ using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
+using ChaosRecipeEnhancer.UI.Utilities;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -356,42 +357,7 @@ public class PoeApiService : IPoeApiService
         //      `X-Rate-Limit-Client-State`
         //
         // keep an eye on this if you get some weird issues...
-        string rateLimit = null;
-        if (response.Headers.TryGetValues("X-Rate-Limit-Account", out IEnumerable<string> rateLimitValues))
-        {
-            rateLimit = rateLimitValues.FirstOrDefault();
-        }
-
-        string rateLimitState = null;
-        if (response.Headers.TryGetValues("X-Rate-Limit-Account-State", out IEnumerable<string> rateLimitStateValues))
-        {
-            rateLimitState = rateLimitStateValues.FirstOrDefault();
-        }
-
-        string resultTime = null;
-        if (response.Headers.TryGetValues("Date", out IEnumerable<string> resultTimeValues))
-        {
-            resultTime = resultTimeValues.FirstOrDefault();
-        }
-
-        if (!string.IsNullOrEmpty(rateLimitState))
-        {
-            // Pass rateLimit even if null, as DeserializeRateLimits ignores it
-            GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
-        }
-        else
-        {
-            _log.Debug("Rate limit state header not found for {RequestUri}", requestUri);
-        }
-
-        if (!string.IsNullOrEmpty(resultTime))
-        {
-            GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
-        }
-        else
-        {
-            _log.Debug("Date header not found for {RequestUri}", requestUri);
-        }
+        HttpHeaderUtilities.ProcessRateLimitHeaders(response, _log, requestUri);
 
         using var resultHttpContent = response.Content;
 
@@ -440,42 +406,7 @@ public class PoeApiService : IPoeApiService
 
         if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
 
-        string rateLimit = null;
-        if (response.Headers.TryGetValues("X-Rate-Limit-Account", out IEnumerable<string> rateLimitValues))
-        {
-            rateLimit = rateLimitValues.FirstOrDefault();
-        }
-
-        string rateLimitState = null;
-        if (response.Headers.TryGetValues("X-Rate-Limit-Account-State", out IEnumerable<string> rateLimitStateValues))
-        {
-            rateLimitState = rateLimitStateValues.FirstOrDefault();
-        }
-
-        string resultTime = null;
-        if (response.Headers.TryGetValues("Date", out IEnumerable<string> resultTimeValues))
-        {
-            resultTime = resultTimeValues.FirstOrDefault();
-        }
-
-        if (!string.IsNullOrEmpty(rateLimitState))
-        {
-            // Pass rateLimit even if null, as DeserializeRateLimits ignores it
-            GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
-        }
-        else
-        {
-            _log.Debug("Rate limit state header not found for {RequestUri}", requestUri);
-        }
-
-        if (!string.IsNullOrEmpty(resultTime))
-        {
-            GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
-        }
-        else
-        {
-            _log.Debug("Date header not found for {RequestUri}", requestUri);
-        }
+        HttpHeaderUtilities.ProcessRateLimitHeaders(response, _log, requestUri);
 
         return responseString;
     }
@@ -511,7 +442,6 @@ public class PoeApiService : IPoeApiService
 
         return responseString;
     }
-
 
     /// <summary>
     /// Sends a GET request to the specified URI.
