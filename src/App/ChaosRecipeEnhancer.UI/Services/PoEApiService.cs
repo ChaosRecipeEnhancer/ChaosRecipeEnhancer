@@ -5,6 +5,7 @@ using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
+using ChaosRecipeEnhancer.UI.Utilities;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -325,13 +326,7 @@ public class PoeApiService : IPoeApiService
         // create new http client that will be disposed of after request
         var client = _httpClientFactory.CreateClient(PoeApiConfig.PoeApiHttpClientName);
 
-        // add required headers
-
-        // as of some point between 3.24 and 3.25, this is now a required field so definitely include it!
-        // ty to Novynn for ur help ur a g
         client.DefaultRequestHeaders.UserAgent.ParseAdd(PoeApiConfig.UserAgent);
-
-        // the auth token is required for calls to specific endpoints
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authStateManager.AuthToken);
 
         // send request
@@ -362,13 +357,7 @@ public class PoeApiService : IPoeApiService
         //      `X-Rate-Limit-Client-State`
         //
         // keep an eye on this if you get some weird issues...
-
-        var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
-        var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
-        var resultTime = response.Headers.GetValues("Date").FirstOrDefault();
-
-        GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
-        GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
+        HttpHeaderUtilities.ProcessRateLimitHeaders(response, _log, requestUri);
 
         using var resultHttpContent = response.Content;
 
@@ -417,13 +406,7 @@ public class PoeApiService : IPoeApiService
 
         if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
 
-        // Handle rate limits
-        var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
-        var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
-        var resultTime = response.Headers.GetValues("Date").FirstOrDefault();
-
-        GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
-        GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
+        HttpHeaderUtilities.ProcessRateLimitHeaders(response, _log, requestUri);
 
         return responseString;
     }
@@ -459,7 +442,6 @@ public class PoeApiService : IPoeApiService
 
         return responseString;
     }
-
 
     /// <summary>
     /// Sends a GET request to the specified URI.
