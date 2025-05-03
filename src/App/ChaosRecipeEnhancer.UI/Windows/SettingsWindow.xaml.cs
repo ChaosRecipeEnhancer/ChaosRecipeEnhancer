@@ -158,7 +158,7 @@ public partial class SettingsWindow
         try
         {
             var currentVersion = CreAppConfig.VersionText;
-            var latestVersion = await GetLatestReleaseVersion(CreAppConfig.GitHubOrgName, CreAppConfig.GithubRepoName);
+            var latestVersion = await GetLatestReleaseVersion(CreAppConfig.GitHubOrgName, CreAppConfig.GitHubRepoName);
 
             _model.UpdateAvailable = IsUpdateAvailable(currentVersion, latestVersion);
 

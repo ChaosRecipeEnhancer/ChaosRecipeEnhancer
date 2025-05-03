@@ -325,13 +325,7 @@ public class PoeApiService : IPoeApiService
         // create new http client that will be disposed of after request
         var client = _httpClientFactory.CreateClient(PoeApiConfig.PoeApiHttpClientName);
 
-        // add required headers
-
-        // as of some point between 3.24 and 3.25, this is now a required field so definitely include it!
-        // ty to Novynn for ur help ur a g
         client.DefaultRequestHeaders.UserAgent.ParseAdd(PoeApiConfig.UserAgent);
-
-        // the auth token is required for calls to specific endpoints
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authStateManager.AuthToken);
 
         // send request
@@ -362,13 +356,42 @@ public class PoeApiService : IPoeApiService
         //      `X-Rate-Limit-Client-State`
         //
         // keep an eye on this if you get some weird issues...
+        string rateLimit = null;
+        if (response.Headers.TryGetValues("X-Rate-Limit-Account", out IEnumerable<string> rateLimitValues))
+        {
+            rateLimit = rateLimitValues.FirstOrDefault();
+        }
 
-        var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
-        var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
-        var resultTime = response.Headers.GetValues("Date").FirstOrDefault();
+        string rateLimitState = null;
+        if (response.Headers.TryGetValues("X-Rate-Limit-Account-State", out IEnumerable<string> rateLimitStateValues))
+        {
+            rateLimitState = rateLimitStateValues.FirstOrDefault();
+        }
 
-        GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
-        GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
+        string resultTime = null;
+        if (response.Headers.TryGetValues("Date", out IEnumerable<string> resultTimeValues))
+        {
+            resultTime = resultTimeValues.FirstOrDefault();
+        }
+
+        if (!string.IsNullOrEmpty(rateLimitState))
+        {
+            // Pass rateLimit even if null, as DeserializeRateLimits ignores it
+            GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
+        }
+        else
+        {
+            _log.Debug("Rate limit state header not found for {RequestUri}", requestUri);
+        }
+
+        if (!string.IsNullOrEmpty(resultTime))
+        {
+            GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
+        }
+        else
+        {
+            _log.Debug("Date header not found for {RequestUri}", requestUri);
+        }
 
         using var resultHttpContent = response.Content;
 
@@ -417,13 +440,42 @@ public class PoeApiService : IPoeApiService
 
         if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
 
-        // Handle rate limits
-        var rateLimit = response.Headers.GetValues("X-Rate-Limit-Account").FirstOrDefault();
-        var rateLimitState = response.Headers.GetValues("X-Rate-Limit-Account-State").FirstOrDefault();
-        var resultTime = response.Headers.GetValues("Date").FirstOrDefault();
+        string rateLimit = null;
+        if (response.Headers.TryGetValues("X-Rate-Limit-Account", out IEnumerable<string> rateLimitValues))
+        {
+            rateLimit = rateLimitValues.FirstOrDefault();
+        }
 
-        GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
-        GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
+        string rateLimitState = null;
+        if (response.Headers.TryGetValues("X-Rate-Limit-Account-State", out IEnumerable<string> rateLimitStateValues))
+        {
+            rateLimitState = rateLimitStateValues.FirstOrDefault();
+        }
+
+        string resultTime = null;
+        if (response.Headers.TryGetValues("Date", out IEnumerable<string> resultTimeValues))
+        {
+            resultTime = resultTimeValues.FirstOrDefault();
+        }
+
+        if (!string.IsNullOrEmpty(rateLimitState))
+        {
+            // Pass rateLimit even if null, as DeserializeRateLimits ignores it
+            GlobalRateLimitState.DeserializeRateLimits(rateLimit, rateLimitState);
+        }
+        else
+        {
+            _log.Debug("Rate limit state header not found for {RequestUri}", requestUri);
+        }
+
+        if (!string.IsNullOrEmpty(resultTime))
+        {
+            GlobalRateLimitState.DeserializeResponseSeconds(resultTime);
+        }
+        else
+        {
+            _log.Debug("Date header not found for {RequestUri}", requestUri);
+        }
 
         return responseString;
     }
