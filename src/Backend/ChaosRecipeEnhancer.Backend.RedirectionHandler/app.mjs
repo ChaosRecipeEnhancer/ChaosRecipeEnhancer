@@ -9,7 +9,7 @@
 const isClientVersionAllowed = (version) => {
     // Eventually we will enforce the version to be present in the state.
     // For now, we want to maintain backward compatibility with older versions.
-    // I'm targetting... 3.25? 3.26? to enforce this.
+    // I'm targeting... 3.25? 3.26? to enforce this.
 
     if (!version) return true;
 

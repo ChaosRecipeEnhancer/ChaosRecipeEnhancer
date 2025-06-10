@@ -198,15 +198,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Chaos Recipe Enhancer"
-        "ProductCode" = "8:{9A235301-42EB-44BF-8B5B-ECD12C8E0A14}"
-        "PackageCode" = "8:{4A670ED6-6221-475C-9B60-EBDE4717259E}"
+        "ProductCode" = "8:{16EFE5CB-941A-4F6C-8376-30F695C21CC7}"
+        "PackageCode" = "8:{E2875210-F888-4174-882A-2F3A9E7792FF}"
         "UpgradeCode" = "8:{EB58E5F9-0174-4601-B62A-4C0E86FACD02}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:3.25.1002"
+        "ProductVersion" = "8:3.26.1000"
         "Manufacturer" = "8:CRE Team"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/issues"
@@ -828,7 +828,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AB49303AC97F4B6891967A367203B1CD"
             {
-            "SourcePath" = "8:..\\ChaosRecipeEnhancer.UI\\obj\\Debug\\net8.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\ChaosRecipeEnhancer.UI\\obj\\Release\\net8.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_1A0DA2048FE346078D015238542E1BFD"

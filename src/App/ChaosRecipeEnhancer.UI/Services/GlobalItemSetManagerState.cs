@@ -116,22 +116,15 @@ public static class GlobalItemSetManagerState
 
     #region Generate Item Sets
 
-    public static void GenerateItemSets(bool regalRecipe = false)
+    public static void GenerateItemSets(RecipeType recipeType = RecipeType.Chaos)
     {
         // filter for chaos recipe eligible items
-        List<EnhancedItem> eligibleRecipeItems;
-        if (regalRecipe)
+        List<EnhancedItem> eligibleRecipeItems = recipeType switch
         {
-            eligibleRecipeItems = CurrentItemsFilteredForRecipe
-                .Where(x => x.IsRegalRecipeEligible)
-                .ToList();
-        }
-        else
-        {
-            eligibleRecipeItems = CurrentItemsFilteredForRecipe
-                .Where(x => x.IsChaosRecipeEligible)
-                .ToList();
-        }
+            RecipeType.Chance => [.. CurrentItemsFilteredForRecipe.Where(x => x.IsChanceRecipeEligible)],
+            RecipeType.Regal => [.. CurrentItemsFilteredForRecipe.Where(x => x.IsRegalRecipeEligible)],
+            _ => [.. CurrentItemsFilteredForRecipe.Where(x => x.IsChaosRecipeEligible)],
+        };
 
         // sorting both of our item lists by item class
         // it's important to prioritize two-handed weapons at the beginning so our set composition is more efficient
@@ -164,29 +157,19 @@ public static class GlobalItemSetManagerState
             trueSetThreshold = SetThreshold;
         }
 
-        // we will never need to lower the level of our items if we're looking for regal recipes
-        if (regalRecipe)
+        NeedsLowerLevel = recipeType switch
         {
-            NeedsLowerLevel = false;
-        }
-        // else if we are doing the chaos recipe and we have less chaos items than the set threshold
-        else if (eligibleRecipeItems.Count < trueSetThreshold || eligibleRecipeItems.Count == 0)
-        {
-            NeedsLowerLevel = true;
-        }
-        // else if we have enough chaos items to make the set threshold or simply don't have any sets
-        else
-        {
-            NeedsLowerLevel = false;
-        }
+            RecipeType.Chance or RecipeType.Regal => false,
+            _ => eligibleRecipeItems.Count < trueSetThreshold || eligibleRecipeItems.Count == 0,
+        };
 
         // This will only apply for:
         //  - Chaos Recipe with Vendor Sets Early ENABLED
         //  - Chaos Recipe with Vendor Sets Early DISABLED
         //  - Regal Recipe
-        if (Settings.Default.DoNotPreserveLowItemLevelGear || regalRecipe)
+        if (Settings.Default.DoNotPreserveLowItemLevelGear || recipeType == RecipeType.Regal)
         {
-            GenerateItemSets_Greedy(eligibleRecipeItems, trueSetThreshold, regalRecipe);
+            GenerateItemSets_Greedy(eligibleRecipeItems, trueSetThreshold, recipeType);
         }
         // This will only apply for:
         //  - Chaos Recipe with Do Not Preserve Low Item Level Gear DISABLED
@@ -197,11 +180,11 @@ public static class GlobalItemSetManagerState
                 .Where(x => !x.IsChaosRecipeEligible)
                 .ToList();
 
-            GenerateItemSets_Conserve(eligibleRecipeItems, SetThreshold);
+            GenerateItemSets_Conserve(eligibleRecipeItems, SetThreshold, recipeType);
         }
     }
 
-    private static void GenerateItemSets_Conserve(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold)
+    private static void GenerateItemSets_Conserve(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold, RecipeType recipeType = RecipeType.Chaos)
     {
         SetsInProgress.Clear();
         var listOfSets = new List<EnhancedItemSet>();
@@ -223,7 +206,7 @@ public static class GlobalItemSetManagerState
                 // try to add a single eligible recipe item in the set (where we're iterate in our loop on line 166)
                 foreach (var item in eligibleRecipeItems)
                 {
-                    var addSuccessful = enhancedItemSet.TryAddItem(item, false);
+                    var addSuccessful = enhancedItemSet.TryAddItem(item, recipeType);
 
                     // if we successfully add to set (i.e. it wasn't an item slot that was already taken)
                     if (addSuccessful)
@@ -266,7 +249,7 @@ public static class GlobalItemSetManagerState
                 if (closestMissingItem is not null)
                 {
                     // if we found a new closer we're good to add it to our enhanced set
-                    if (listOfSets[i].TryAddItem(closestMissingItem, false))
+                    if (listOfSets[i].TryAddItem(closestMissingItem, recipeType))
                     {
                         CurrentItemsFilteredForRecipe.Remove(closestMissingItem);
                     }
@@ -280,10 +263,16 @@ public static class GlobalItemSetManagerState
         }
 
         SetsInProgress = listOfSets;
-        CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsChaosRecipeEligible);
+
+        CompletedSetCount = recipeType switch
+        {
+            RecipeType.Chance => listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsChanceRecipeEligible),
+            RecipeType.Regal => listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsRegalRecipeEligible),
+            _ => listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsChaosRecipeEligible),
+        };
     }
 
-    private static void GenerateItemSets_Greedy(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold, bool regalRecipe = false)
+    private static void GenerateItemSets_Greedy(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold, RecipeType recipeType)
     {
         // Clear any existing progress in item set generation
         SetsInProgress.Clear();
