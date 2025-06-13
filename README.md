@@ -15,7 +15,7 @@ This app fetches your stash data from the PoE servers and shows which items you 
 ## User Guide (Video)
 
 <a href="https://youtu.be/W_C4Nhla-Xg">
-    <img src="./DocumentationAssets/Video-Thumbnail.png" width="500" alt="CRE User Guide Video Thumbnail">
+    <img src="./DocumentationAssets/Video-Thumbnail-326.png" width="500" alt="CRE User Guide Video Thumbnail">
 </a>
 
 There's a lot of features in the app, so we made a video to help you get started. If you have any questions, feel free to ask in the [Discord][discord-link].
