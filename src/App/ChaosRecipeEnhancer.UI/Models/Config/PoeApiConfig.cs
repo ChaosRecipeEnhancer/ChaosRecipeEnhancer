@@ -19,6 +19,8 @@ public static class PoeApiConfig
 
     #region Session ID Endpoints
 
+    private static string EscapedAccountName => Uri.EscapeDataString(Settings.Default.LegacyAuthAccountName);
+
     public static Uri HealthCheckSessionIdEndpoint() =>
         new("https://www.pathofexile.com/api/account-avatar?page=1&perPage=1&custom=false");
 
@@ -28,10 +30,10 @@ public static class PoeApiConfig
             : GuildStashIndividualTabSessionIdEndpoint(stashTabIndex);
 
     private static Uri PersonalStashIndividualTabSessionIdEndpoint(int stashTabIndex) =>
-        new($"https://www.pathofexile.com/character-window/get-stash-items?accountName={Settings.Default.LegacyAuthAccountName}&realm=pc&league={Settings.Default.LeagueName}&tabIndex={stashTabIndex}");
+        new($"https://www.pathofexile.com/character-window/get-stash-items?accountName={EscapedAccountName}&realm=pc&league={Settings.Default.LeagueName}&tabIndex={stashTabIndex}");
 
     private static Uri GuildStashIndividualTabSessionIdEndpoint(int stashTabIndex) =>
-        new($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={Settings.Default.LegacyAuthAccountName}&realm=pc&league={Settings.Default.LeagueName}&tabIndex={stashTabIndex}");
+        new($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={EscapedAccountName}&realm=pc&league={Settings.Default.LeagueName}&tabIndex={stashTabIndex}");
 
     public static Uri StashTabPropsSessionIdEndpoint(TargetStash targetStash) =>
         targetStash == TargetStash.Personal
@@ -39,10 +41,10 @@ public static class PoeApiConfig
             : GuildStashTabPropsSessionIdEndpoint();
 
     private static Uri PersonalStashTabPropsSessionIdEndpoint() =>
-        new($"https://www.pathofexile.com/character-window/get-stash-items?accountName={Settings.Default.LegacyAuthAccountName}&league={Settings.Default.LeagueName}&tabs=1&tabIndex=");
+        new($"https://www.pathofexile.com/character-window/get-stash-items?accountName={EscapedAccountName}&league={Settings.Default.LeagueName}&tabs=1&tabIndex=");
 
     private static Uri GuildStashTabPropsSessionIdEndpoint() =>
-        new($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={Settings.Default.LegacyAuthAccountName}&league={Settings.Default.LeagueName}&tabs=1&tabIndex=");
+        new($"https://www.pathofexile.com/character-window/get-guild-stash-items?accountName={EscapedAccountName}&league={Settings.Default.LeagueName}&tabs=1&tabIndex=");
 
     #endregion
 

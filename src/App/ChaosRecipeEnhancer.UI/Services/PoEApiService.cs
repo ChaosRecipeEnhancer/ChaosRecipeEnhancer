@@ -264,29 +264,43 @@ public class PoeApiService : IPoeApiService
     /// <inheritdoc />
     public async Task<List<UnifiedStashTabMetadata>> GetAllGuildStashTabMetadataWithSessionIdAsync(string sessionId)
     {
+        _log.Information($"[GetAllGuildStashTabMetadataWithSessionIdAsync] Called with sessionId: {{masked}} (length: {sessionId?.Length})");
         var response = await GetAuthenticatedWithSessionIdAsync(
             PoeApiConfig.StashTabPropsSessionIdEndpoint(TargetStash.Guild),
             sessionId
         );
 
-        if (response is null) return [];
+        if (response is null)
+        {
+            _log.Warning("[GetAllGuildStashTabMetadataWithSessionIdAsync] Response is null.");
+            return [];
+        }
 
         var baseStashTabMetadataList = JsonSerializer.Deserialize<BaseStashTabMetadataList>((string)response);
-        return baseStashTabMetadataList.ToUnifiedMetadata();
+        var unified = baseStashTabMetadataList.ToUnifiedMetadata();
+        _log.Information($"[GetAllGuildStashTabMetadataWithSessionIdAsync] Returning {unified?.Count} tabs.");
+        return unified;
     }
 
     /// <inheritdoc />
     public async Task<UnifiedStashTabContents> GetPersonalStashTabContentsByIndexWithSessionIdAsync(string sessionId, string tabId, string tabName, int tabIndex, string tabType)
     {
+        _log.Information($"[GetPersonalStashTabContentsByIndexWithSessionIdAsync] Called with sessionId: {{masked}}, tabId: {tabId}, tabName: {tabName}, tabIndex: {tabIndex}, tabType: {tabType}");
         var responseRaw = await GetAuthenticatedWithSessionIdAsync(
             PoeApiConfig.IndividualTabContentsSessionIdEndpoint(TargetStash.Personal, tabIndex),
             sessionId
         );
 
-        if (responseRaw is null) return null;
+        if (responseRaw is null)
+        {
+            _log.Warning("[GetPersonalStashTabContentsByIndexWithSessionIdAsync] Response is null.");
+            return null;
+        }
 
         var response = JsonSerializer.Deserialize<BaseStashTabContents>((string)responseRaw);
-        return response?.ToUnifiedContents(tabId, tabName, tabIndex, tabType);
+        var unified = response?.ToUnifiedContents(tabId, tabName, tabIndex, tabType);
+        _log.Information($"[GetPersonalStashTabContentsByIndexWithSessionIdAsync] Returning contents for tabId: {tabId}, items: {unified?.Items?.Count}");
+        return unified;
     }
 
     /// <inheritdoc />
@@ -374,37 +388,57 @@ public class PoeApiService : IPoeApiService
     /// <returns>A task that represents the asynchronous operation. The task result contains the response content.</returns>
     private async Task<object> GetAuthenticatedWithSessionIdAsync(Uri requestUri, string sessionId)
     {
-        if (GlobalRateLimitState.CheckForBan()) return null;
+        _log.Information($"[GetAuthenticatedWithSessionIdAsync] Called with URI: {requestUri}, sessionId: {{masked}} (length: {sessionId?.Length})");
+        _log.Information($"[GetAuthenticatedWithSessionIdAsync] Full request URI: {requestUri.AbsoluteUri}");
+        _log.Information($"[GetAuthenticatedWithSessionIdAsync] Request sessionId (first 4 chars): {sessionId?.Substring(0, Math.Min(4, sessionId.Length))}... (length: {sessionId?.Length})");
+        if (GlobalRateLimitState.CheckForBan()) {
+            _log.Warning("[GetAuthenticatedWithSessionIdAsync] Global ban detected.");
+            return null;
+        }
 
         if (GlobalRateLimitState.RateLimitState[0] >= GlobalRateLimitState.MaximumRequests - 4)
         {
             GlobalRateLimitState.RateLimitExceeded = true;
+            _log.Warning("[GetAuthenticatedWithSessionIdAsync] Rate limit exceeded.");
             return null;
         }
 
         var cookieContainer = new CookieContainer();
         cookieContainer.Add(requestUri, new Cookie("POESESSID", sessionId));
+        _log.Information($"[GetAuthenticatedWithSessionIdAsync] Cookies: {string.Join(", ", cookieContainer.GetCookies(requestUri).Cast<Cookie>().Select(c => c.Name + "=" + c.Value))}");
         using var handler = new HttpClientHandler();
         handler.CookieContainer = cookieContainer;
 
         using var client = new HttpClient(handler);
 
         // add user agent
-        client.DefaultRequestHeaders.Add("User-Agent", $"CRE/v{Assembly.GetExecutingAssembly().GetName().Version}");
+        var userAgent = $"CRE/v{Assembly.GetExecutingAssembly().GetName().Version}";
+        client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+        _log.Information($"[GetAuthenticatedWithSessionIdAsync] User-Agent: {userAgent}");
+
+        // log all headers
+        foreach (var header in client.DefaultRequestHeaders)
+        {
+            _log.Information($"[GetAuthenticatedWithSessionIdAsync] Header: {header.Key} = {string.Join(",", header.Value)}");
+        }
 
         // send request
         var response = await client.GetAsync(requestUri);
         var responseString = await response.Content.ReadAsStringAsync();
 
+        _log.Information($"[GetAuthenticatedWithSessionIdAsync] Fetch Result {requestUri}: {response.StatusCode}");
+        _log.Debug($"[GetAuthenticatedWithSessionIdAsync] Response: {responseString}");
+
         if (!response.IsSuccessStatusCode)
         {
+            _log.Warning($"[GetAuthenticatedWithSessionIdAsync] Non-success status code: {response.StatusCode}");
             return null;
         }
 
-        _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
-        _log.Information($"Response: {responseString}");
-
-        if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
+        if (!CheckIfResponseStatusCodeIsValid(response, responseString)) {
+            _log.Warning($"[GetAuthenticatedWithSessionIdAsync] Status code not valid: {response.StatusCode}");
+            return null;
+        }
 
         HttpHeaderUtilities.ProcessRateLimitHeaders(response, _log, requestUri);
 

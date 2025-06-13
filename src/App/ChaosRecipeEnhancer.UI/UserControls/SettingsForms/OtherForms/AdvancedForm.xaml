@@ -77,9 +77,9 @@
             Grid.Row="4"
             VerticalAlignment="Center"
             Margin="0 10 0 0"
-            Text="Legacy Authentication Mode :"
+            Text="Session ID Authentication Mode :"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="This enables PoE Session ID based authentication." />
+            ToolTip="This enables PoE Session ID based authentication.&#x0a;&#x0a;Useful if you'd like to query from a shared Guild Stash.&#x0a;(Unfortunately, an OAuth-based Guild Stash API endpoint does not exist)" />
 
         <CheckBox
             Grid.Column="1"
