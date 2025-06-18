@@ -106,7 +106,10 @@ public class LogWatcherManager
     {
         if (AutoFetchAllowed)
         {
-            setTrackerOverlay.RunFetchingAsync();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                setTrackerOverlay.RunFetchingAsync();
+            });
             TriggerAutoFetchCooldown(AutoFetchCooldownSeconds);
         }
     }
