@@ -61,7 +61,7 @@ public partial class StashTabOverlayWindow : Window
             }
             else
             {
-                // Center on primary screen (There is still a little bit of offset from center, but the whole overlay is visible)
+                // Center on primary screen
                 Left = workingArea.Left + (workingArea.Width - Width) / 2;
                 Top = workingArea.Top + (workingArea.Height - Height) / 2;
             }
@@ -123,8 +123,9 @@ public partial class StashTabOverlayWindow : Window
             // Find the index of the current screen
             var screenIndex = Array.IndexOf(screens, currentScreen);
 
-            // Set this specific config to true
+            // Set overlaySessionScreen and modified config to true
             Settings.Default.StashTabOverlayModified = true;
+            Settings.Default.StashTabOverlaySessionScreen = screenIndex;
             // Save the remaining settings
             Settings.Default.Save();
         }
