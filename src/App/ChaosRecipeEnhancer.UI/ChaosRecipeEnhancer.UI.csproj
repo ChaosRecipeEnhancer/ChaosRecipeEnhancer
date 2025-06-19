@@ -36,6 +36,7 @@
 		<ApplicationIcon>Assets\Icons\CREIcon.ico</ApplicationIcon>
 		<PackageIcon>CREIcon.ico</PackageIcon>
 		<StartupObject>ChaosRecipeEnhancer.UI.App</StartupObject>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <NoWarn>1701;1702;CA1416</NoWarn>

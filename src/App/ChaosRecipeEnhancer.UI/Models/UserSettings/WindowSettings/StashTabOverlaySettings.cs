@@ -124,6 +124,32 @@ public partial class UserSettings : IUserSettings
         }
     }
 
+    public int StashTabOverlaySessionScreen
+    {
+        get => Settings.Default.StashTabOverlaySessionScreen;
+        set
+        {
+            if (Settings.Default.StashTabOverlaySessionScreen != value)
+            {
+                Settings.Default.StashTabOverlaySessionScreen = value;
+                Save();
+            }
+        }
+    }
+
+    public bool StashTabOverlayModified
+    {
+        get => Settings.Default.StashTabOverlayModified;
+        set
+        {
+            if (Settings.Default.StashTabOverlayModified != value)
+            {
+                Settings.Default.StashTabOverlayModified = value;
+                Save();
+            }
+        }
+    }
+
     public double StashTabOverlayHeight
     {
         get => Settings.Default.StashTabOverlayHeight;

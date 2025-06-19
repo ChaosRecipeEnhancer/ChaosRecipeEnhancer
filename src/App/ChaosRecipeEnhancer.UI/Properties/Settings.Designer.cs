@@ -12,7 +12,7 @@ namespace ChaosRecipeEnhancer.UI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.11.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.14.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -368,30 +368,6 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["SetTrackerOverlayLeftPosition"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("74")]
-        public double StashTabOverlayTopPosition {
-            get {
-                return ((double)(this["StashTabOverlayTopPosition"]));
-            }
-            set {
-                this["StashTabOverlayTopPosition"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("12")]
-        public double StashTabOverlayLeftPosition {
-            get {
-                return ((double)(this["StashTabOverlayLeftPosition"]));
-            }
-            set {
-                this["StashTabOverlayLeftPosition"] = value;
             }
         }
         
@@ -2298,6 +2274,54 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["SetTrackerOverlayWindowScale"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double StashTabOverlayTopPosition {
+            get {
+                return ((double)(this["StashTabOverlayTopPosition"]));
+            }
+            set {
+                this["StashTabOverlayTopPosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double StashTabOverlayLeftPosition {
+            get {
+                return ((double)(this["StashTabOverlayLeftPosition"]));
+            }
+            set {
+                this["StashTabOverlayLeftPosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int StashTabOverlaySessionScreen {
+            get {
+                return ((int)(this["StashTabOverlaySessionScreen"]));
+            }
+            set {
+                this["StashTabOverlaySessionScreen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool StashTabOverlayModified {
+            get {
+                return ((bool)(this["StashTabOverlayModified"]));
+            }
+            set {
+                this["StashTabOverlayModified"] = value;
             }
         }
     }

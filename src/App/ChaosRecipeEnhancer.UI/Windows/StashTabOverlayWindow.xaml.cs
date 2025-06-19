@@ -30,6 +30,42 @@ public partial class StashTabOverlayWindow : Window
         InitializeComponent();
         DataContext = _model = Ioc.Default.GetService<StashTabOverlayViewModel>();
         MouseHookForStashTabOverlay.MouseAction += HandleMouseAction;
+
+        // Position window based on settings
+        PositionWindowBasedOnSavedSettings();
+    }
+    private void PositionWindowBasedOnSavedSettings()
+    {
+        var settings = Settings.Default;
+        var overlaySessionScreen = settings.StashTabOverlaySessionScreen;
+        var wasOverlaySettingsModified = settings.StashTabOverlayModified;
+        var screen = System.Windows.Forms.Screen.PrimaryScreen;
+
+        if (wasOverlaySettingsModified)
+        {
+            // Retrieve the screen based on the previously saved index
+            screen = System.Windows.Forms.Screen.AllScreens[overlaySessionScreen];
+        }
+        
+
+        if (screen != null)
+        {
+            var workingArea = screen.WorkingArea;
+
+            // Check if the user had modified the overlay settings
+            if (wasOverlaySettingsModified)
+            {
+                // Use the previously saved position
+                Left = settings.StashTabOverlayLeftPosition;
+                Top = settings.StashTabOverlayTopPosition;
+            }
+            else
+            {
+                // Center on primary screen
+                Left = workingArea.Left + (workingArea.Width - Width) / 2;
+                Top = workingArea.Top + (workingArea.Height - Height) / 2;
+            }
+        }
     }
 
     private void HandleMouseAction(object sender, MouseHookEventArgs e)
@@ -79,13 +115,23 @@ public partial class StashTabOverlayWindow : Window
         if (_model.IsEditing)
         {
             MakeWindowClickThrough(true);
+
+            // Get the current screen the window is on
+            var currentScreen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+            var screens = System.Windows.Forms.Screen.AllScreens;
+
+            // Find the index of the current screen
+            var screenIndex = Array.IndexOf(screens, currentScreen);
+
+            // Set overlaySessionScreen and modified config to true
+            Settings.Default.StashTabOverlayModified = true;
+            Settings.Default.StashTabOverlaySessionScreen = screenIndex;
+            // Save the remaining settings
+            Settings.Default.Save();
         }
         else
         {
             MakeWindowClickThrough(false);
-
-            // save the position of the window after it's been moved
-            Settings.Default.Save();
         }
 
         _model.IsEditing = !_model.IsEditing;
