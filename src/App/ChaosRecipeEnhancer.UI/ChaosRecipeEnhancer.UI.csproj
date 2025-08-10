@@ -18,7 +18,7 @@
 		<!--Bump this by 1 for minor patches; Bump by 10 for major patches-->
 		<!--Minor Patch Bump: v3.24.1000 -> v3.24.1001; App Revision 10 -> 11-->
 		<!--Minor Patch Bump: v3.24.1000 -> v3.24.2000; App Revision 10 -> 20-->
-		<ApplicationRevision>10</ApplicationRevision>
+		<ApplicationRevision>11</ApplicationRevision>
 
 		<!--Update Settings-->
 		<IsWebBootstrapper>false</IsWebBootstrapper>
@@ -910,13 +910,13 @@
 	<!-- Dependencies -->
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.6" />
-		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.6" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
+		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.8" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-		<PackageReference Include="TestableIO.System.IO.Abstractions" Version="22.0.14" />
-		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.0.14" />
+		<PackageReference Include="TestableIO.System.IO.Abstractions" Version="22.0.15" />
+		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.0.15" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Xceed.Wpf.Toolkit">
