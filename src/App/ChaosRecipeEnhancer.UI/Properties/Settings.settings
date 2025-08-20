@@ -89,12 +89,6 @@
     <Setting Name="SetTrackerOverlayLeftPosition" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="StashTabOverlayTopPosition" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">74</Value>
-    </Setting>
-    <Setting Name="StashTabOverlayLeftPosition" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">12</Value>
-    </Setting>
     <Setting Name="StashTabOverlayHeight" Type="System.Double" Scope="User">
       <Value Profile="(Default)">690</Value>
     </Setting>
@@ -571,6 +565,18 @@
     </Setting>
     <Setting Name="SetTrackerOverlayWindowScale" Type="System.Double" Scope="User">
       <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="StashTabOverlayTopPosition" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="StashTabOverlayLeftPosition" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="StashTabOverlaySessionScreen" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="StashTabOverlayModified" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

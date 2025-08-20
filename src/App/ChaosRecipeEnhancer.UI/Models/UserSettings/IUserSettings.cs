@@ -80,6 +80,8 @@ public interface IUserSettings
     double StashTabOverlayLeftPosition { get; set; }
     double StashTabOverlayHeight { get; set; }
     double StashTabOverlayWidth { get; set; }
+    bool StashTabOverlayModified { get; set; }
+    int StashTabOverlaySessionScreen { get; set; }
     string StashTabOverlayTabDefaultBackgroundColor { get; set; }
     double StashTabOverlayTabGroupBottomMargin { get; set; }
     float StashTabOverlayTabOpacity { get; set; }
