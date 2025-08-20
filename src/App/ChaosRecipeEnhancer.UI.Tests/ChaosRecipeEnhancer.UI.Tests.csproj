@@ -6,7 +6,7 @@
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="FluentAssertions" Version="8.5.0" />
+		<PackageReference Include="FluentAssertions" Version="8.6.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
 		<PackageReference Include="Moq" Version="4.20.72" />
 		<PackageReference Include="TestableIO.System.IO.Abstractions" Version="22.0.15" />
