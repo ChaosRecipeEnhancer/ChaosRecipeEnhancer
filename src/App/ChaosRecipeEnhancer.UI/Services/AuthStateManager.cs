@@ -49,6 +49,9 @@ public class AuthStateManager : IAuthStateManager
     {
         _userSettings = userSettings;
         _httpClient = httpClient;
+
+        // Set the CRE User-Agent header for all requests made by this instance
+        _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(PoeApiConfig.UserAgent);
     }
 
     #endregion
@@ -248,6 +251,12 @@ public class AuthStateManager : IAuthStateManager
 
             _log.Information($"Sending token request to: {AuthConfig.OAuthTokenEndpoint}");
             _log.Information($"Request content: {await content.ReadAsStringAsync()}");
+
+            // log all default headers
+            foreach (var header in _httpClient.DefaultRequestHeaders)
+            {
+                _log.Information($"[SendTokenRequest] Header: {header.Key} = {string.Join(",", header.Value)}");
+            }
 
             var result = await _httpClient.PostAsync(AuthConfig.OAuthTokenEndpoint, content);
 
