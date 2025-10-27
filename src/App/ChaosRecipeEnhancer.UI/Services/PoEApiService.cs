@@ -13,7 +13,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -339,9 +338,14 @@ public class PoeApiService : IPoeApiService
 
         // create new http client that will be disposed of after request
         var client = _httpClientFactory.CreateClient(PoeApiConfig.PoeApiHttpClientName);
-
         client.DefaultRequestHeaders.UserAgent.ParseAdd(PoeApiConfig.UserAgent);
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authStateManager.AuthToken);
+
+        // log all default headers
+        foreach (var header in client.DefaultRequestHeaders)
+        {
+            _log.Information($"[GetAuthenticatedWithOAuthAsync] Header: {header.Key} = {string.Join(",", header.Value)}");
+        }
 
         // send request
         var response = await client.GetAsync(requestUri);
@@ -391,7 +395,8 @@ public class PoeApiService : IPoeApiService
         _log.Information($"[GetAuthenticatedWithSessionIdAsync] Called with URI: {requestUri}, sessionId: {{masked}} (length: {sessionId?.Length})");
         _log.Information($"[GetAuthenticatedWithSessionIdAsync] Full request URI: {requestUri.AbsoluteUri}");
         _log.Information($"[GetAuthenticatedWithSessionIdAsync] Request sessionId (first 4 chars): {sessionId?.Substring(0, Math.Min(4, sessionId.Length))}... (length: {sessionId?.Length})");
-        if (GlobalRateLimitState.CheckForBan()) {
+        if (GlobalRateLimitState.CheckForBan())
+        {
             _log.Warning("[GetAuthenticatedWithSessionIdAsync] Global ban detected.");
             return null;
         }
@@ -410,13 +415,10 @@ public class PoeApiService : IPoeApiService
         handler.CookieContainer = cookieContainer;
 
         using var client = new HttpClient(handler);
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(PoeApiConfig.UserAgent);
 
-        // add user agent
-        var userAgent = $"CRE/v{Assembly.GetExecutingAssembly().GetName().Version}";
-        client.DefaultRequestHeaders.Add("User-Agent", userAgent);
-        _log.Information($"[GetAuthenticatedWithSessionIdAsync] User-Agent: {userAgent}");
 
-        // log all headers
+        // log all default headers
         foreach (var header in client.DefaultRequestHeaders)
         {
             _log.Information($"[GetAuthenticatedWithSessionIdAsync] Header: {header.Key} = {string.Join(",", header.Value)}");
@@ -435,7 +437,8 @@ public class PoeApiService : IPoeApiService
             return null;
         }
 
-        if (!CheckIfResponseStatusCodeIsValid(response, responseString)) {
+        if (!CheckIfResponseStatusCodeIsValid(response, responseString))
+        {
             _log.Warning($"[GetAuthenticatedWithSessionIdAsync] Status code not valid: {response.StatusCode}");
             return null;
         }
@@ -463,9 +466,13 @@ public class PoeApiService : IPoeApiService
         handler.CookieContainer = cookieContainer;
 
         using var client = new HttpClient(handler);
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(PoeApiConfig.UserAgent);
 
-        // add user agent
-        client.DefaultRequestHeaders.Add("User-Agent", $"CRE/v{Assembly.GetExecutingAssembly().GetName().Version}");
+        // log all default headers
+        foreach (var header in client.DefaultRequestHeaders)
+        {
+            _log.Information($"[GetAuthenticatedWithSessionIdForHealthcheckAsync] Header: {header.Key} = {string.Join(",", header.Value)}");
+        }
 
         // send request
         var response = await client.GetAsync(requestUri);
@@ -495,10 +502,13 @@ public class PoeApiService : IPoeApiService
 
         // create new http client that will be disposed of after request
         using var client = new HttpClient();
-
-        // as of some point between 3.24 and 3.25, this is now a required field so definitely include it!
-        // ty to Novynn for ur help ur a g
         client.DefaultRequestHeaders.UserAgent.ParseAdd(PoeApiConfig.UserAgent);
+
+        // log all default headers
+        foreach (var header in client.DefaultRequestHeaders)
+        {
+            _log.Information($"[GetAsync] Header: {header.Key} = {string.Join(",", header.Value)}");
+        }
 
         var response = await client.GetAsync(requestUri);
         var responseString = response.Content.ReadAsStringAsync().Result;

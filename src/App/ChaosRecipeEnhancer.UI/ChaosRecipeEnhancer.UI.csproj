@@ -13,7 +13,7 @@
 		<UseApplicationTrust>false</UseApplicationTrust>
 		<PublishWizardCompleted>true</PublishWizardCompleted>
 		<BootstrapperEnabled>true</BootstrapperEnabled>
-		<ApplicationVersion>3.26</ApplicationVersion>
+		<ApplicationVersion>3.27</ApplicationVersion>
 
 		<!--Bump this by 1 for minor patches; Bump by 10 for major patches-->
 		<!--Minor Patch Bump: v3.24.1000 -> v3.24.1001; App Revision 10 -> 11-->
@@ -36,6 +36,7 @@
 		<ApplicationIcon>Assets\Icons\CREIcon.ico</ApplicationIcon>
 		<PackageIcon>CREIcon.ico</PackageIcon>
 		<StartupObject>ChaosRecipeEnhancer.UI.App</StartupObject>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <NoWarn>1701;1702;CA1416</NoWarn>
@@ -910,13 +911,13 @@
 	<!-- Dependencies -->
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.6" />
-		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.6" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.10" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-		<PackageReference Include="TestableIO.System.IO.Abstractions" Version="22.0.14" />
-		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.0.14" />
+		<PackageReference Include="TestableIO.System.IO.Abstractions" Version="22.0.16" />
+		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.0.16" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Xceed.Wpf.Toolkit">
