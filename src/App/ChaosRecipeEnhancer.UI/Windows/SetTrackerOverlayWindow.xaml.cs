@@ -158,7 +158,10 @@ public partial class SetTrackerOverlayWindow : Window
 
         if (!successfulResult)
         {
-            Hide();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Hide();
+            });
         }
     }
 

@@ -15,7 +15,7 @@ This app fetches your stash data from the PoE servers and shows which items you 
 ## User Guide (Video)
 
 <a href="https://youtu.be/W_C4Nhla-Xg">
-    <img src="./DocumentationAssets/Video-Thumbnail-326.png" width="500" alt="CRE User Guide Video Thumbnail">
+    <img src="./DocumentationAssets/Video-Thumbnail-327.png" width="500" alt="CRE User Guide Video Thumbnail">
 </a>
 
 There's a lot of features in the app, so we made a video to help you get started. If you have any questions, feel free to ask in the [Discord][discord-link].
@@ -60,7 +60,7 @@ There's a lot of features in the app, so we made a video to help you get started
 ## Copyright
 
 ```
-Copyright (C) 2023 Chaos Recipe Enhancer Team
+Copyright (C) 2025 Chaos Recipe Enhancer Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
 [downloads-badge]: https://img.shields.io/github/downloads/ChaosRecipeEnhancer/EnhancePoEApp/total?style=for-the-badge&logo=github

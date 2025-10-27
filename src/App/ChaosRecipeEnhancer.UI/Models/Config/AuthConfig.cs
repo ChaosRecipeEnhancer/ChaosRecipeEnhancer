@@ -10,7 +10,7 @@ public static class AuthConfig
     public static readonly int DefaultTokenExpirationHours = 10;
 
     // Production Config
-    // public static readonly Uri OAuthTokenEndpoint = new("https://chaos-recipe.com/auth/token");  // V1 - [Depracated]
+    // public static readonly Uri OAuthTokenEndpoint = new("https://chaos-recipe.com/auth/token");  // V1 - [Deprecated]
     public static readonly Uri OAuthTokenEndpoint = new("https://chaos-recipe.com/v2/auth/token");  // V2 - Adds support `account:guild:stashes` scope
     public static readonly string OAuthRedirectUri = "https://chaos-recipe.com/auth/success";
 
