@@ -75,6 +75,18 @@ public class NotificationSoundService : INotificationSoundService, IDisposable
             // Disabling sound to prevent further errors
             _userSettings.SoundEnabled = false;
         }
+        catch (Exception ex) when (ex is System.IO.IOException or System.IO.DirectoryNotFoundException or System.IO.FileNotFoundException)
+        {
+            _log.Error($"Failed to load sound files. Exception: {ex.Message}");
+
+            GlobalErrorHandler.Spawn(
+                ex.ToString(),
+                "Error: Sound File Loading",
+                "Failed to load one or more sound files. This can happen if sound assets are missing or inaccessible. Disabling sound to prevent further errors."
+            );
+
+            _userSettings.SoundEnabled = false;
+        }
 
         return players;
     }
@@ -127,8 +139,13 @@ public class AudioResource : IAudioResource
 
     public AudioResource(string filePath)
     {
-        _filePath = filePath;
-        FileReader = new AudioFileReader(filePath);
+        // Resolve relative paths against the app's install directory
+        // to avoid issues when the working directory differs (e.g. system32)
+        _filePath = System.IO.Path.IsPathRooted(filePath)
+            ? filePath
+            : System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filePath);
+
+        FileReader = new AudioFileReader(_filePath);
         OutputDevice = new WaveOutEvent();
         OutputDevice.Init(FileReader);
     }
