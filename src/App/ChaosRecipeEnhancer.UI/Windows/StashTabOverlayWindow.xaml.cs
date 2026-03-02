@@ -105,6 +105,7 @@ public partial class StashTabOverlayWindow : Window
     protected override void OnSourceInitialized(EventArgs e)
     {
         MakeWindowClickThrough(true);
+        WindowsUtilities.DisableAeroSnap(this);
         base.OnSourceInitialized(e);
     }
 
