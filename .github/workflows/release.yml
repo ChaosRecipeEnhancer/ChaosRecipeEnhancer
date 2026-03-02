@@ -53,7 +53,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $tag = "${{ steps.version.outputs.TAG }}"
-          $exists = gh release view $tag 2>&1
+          $ErrorActionPreference = 'Continue'
+          gh release view $tag 2>&1 | Out-Null
+          $ErrorActionPreference = 'Stop'
           if ($LASTEXITCODE -eq 0) {
             echo "::notice::Release $tag already exists, skipping"
             echo "SKIP=true" >> $env:GITHUB_OUTPUT
@@ -94,9 +96,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # vpk download may fail if this is the very first release — that's OK
+          $ErrorActionPreference = 'Continue'
           vpk download github `
             --repoUrl https://github.com/${{ github.repository }} `
-            --token $env:GH_TOKEN 2>&1
+            --token $env:GH_TOKEN 2>&1 | Out-Null
+          $ErrorActionPreference = 'Stop'
           if ($LASTEXITCODE -ne 0) {
             echo "::notice::No previous release found (first release?). Delta will be skipped."
           }
