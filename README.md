@@ -35,7 +35,7 @@ There's a lot of features in the app, so we made a video to help you get started
 - OAuth integration for a secure and simple connection to PoE data services
 - Sound notifications for completed sets
 - Customizable hotkeys for core features (set tracking, stash overlay, etc.)
-- __[NEW FOR 3.28] Supports regal, chance, and exalted orb recipes in addition to chaos orb recipes__
+- Supports regal, chance, and exalted orb recipes in addition to chaos orb recipes
 
 ## Screenshots
 
