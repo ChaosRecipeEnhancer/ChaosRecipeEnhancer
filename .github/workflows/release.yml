@@ -1,0 +1,123 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+# Only allow one release at a time
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build & Publish Release
+    runs-on: windows-latest
+
+    # Required for creating GitHub releases and uploading assets
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for delta generation
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      # ── Extract version from CreAppConfig.cs ──────────────────────────
+      - name: Extract version
+        id: version
+        shell: pwsh
+        run: |
+          $content = Get-Content "src/App/ChaosRecipeEnhancer.UI/Models/Config/CreAppConfig.cs" -Raw
+          if ($content -match 'VersionText\s*=\s*"([^"]+)"') {
+            $version = $Matches[1]
+            echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+            echo "TAG=v$version" >> $env:GITHUB_OUTPUT
+            echo "::notice::Detected version: $version"
+          } else {
+            echo "::error::Could not extract VersionText from CreAppConfig.cs"
+            exit 1
+          }
+
+      # ── Check if this version was already released ────────────────────
+      - name: Check for existing release
+        id: check
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag = "${{ steps.version.outputs.TAG }}"
+          $exists = gh release view $tag 2>&1
+          if ($LASTEXITCODE -eq 0) {
+            echo "::notice::Release $tag already exists, skipping"
+            echo "SKIP=true" >> $env:GITHUB_OUTPUT
+          } else {
+            echo "SKIP=false" >> $env:GITHUB_OUTPUT
+          }
+
+      # ── Build ─────────────────────────────────────────────────────────
+      - name: Restore
+        if: steps.check.outputs.SKIP != 'true'
+        run: dotnet restore ChaosRecipeEnhancer.sln
+
+      - name: Test
+        if: steps.check.outputs.SKIP != 'true'
+        run: dotnet test ChaosRecipeEnhancer.sln -c Release --verbosity normal
+
+      - name: Publish
+        if: steps.check.outputs.SKIP != 'true'
+        run: >-
+          dotnet publish
+          src/App/ChaosRecipeEnhancer.UI/ChaosRecipeEnhancer.UI.csproj
+          -c Release
+          --self-contained
+          -r win-x64
+          -o ./publish
+
+      # ── Velopack Package ──────────────────────────────────────────────
+      - name: Install vpk
+        if: steps.check.outputs.SKIP != 'true'
+        run: dotnet tool install -g vpk
+
+      - name: Download previous release (for delta generation)
+        if: steps.check.outputs.SKIP != 'true'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # vpk download may fail if this is the very first release — that's OK
+          vpk download github `
+            --repoUrl https://github.com/${{ github.repository }} `
+            --token $env:GH_TOKEN 2>&1
+          if ($LASTEXITCODE -ne 0) {
+            echo "::notice::No previous release found (first release?). Delta will be skipped."
+          }
+
+      - name: Pack release
+        if: steps.check.outputs.SKIP != 'true'
+        run: >-
+          vpk pack
+          --packId ChaosRecipeEnhancer
+          --packVersion ${{ steps.version.outputs.VERSION }}
+          --packDir ./publish
+          --mainExe ChaosRecipeEnhancer.exe
+          --icon src/App/ChaosRecipeEnhancer.UI/Assets/Icons/CREIcon.ico
+
+      # ── Upload to GitHub Releases ─────────────────────────────────────
+      - name: Upload release
+        if: steps.check.outputs.SKIP != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          vpk upload github
+          --repoUrl https://github.com/${{ github.repository }}
+          --tag ${{ steps.version.outputs.TAG }}
+          --token ${{ env.GH_TOKEN }}
+          --releaseName "ChaosRecipeEnhancer ${{ steps.version.outputs.TAG }}"
+          --publish

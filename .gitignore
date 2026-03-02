@@ -339,3 +339,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# Windows reserved device name (created by some tools redirecting to NUL)
+nul
