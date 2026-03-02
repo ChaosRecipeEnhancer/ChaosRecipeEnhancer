@@ -18,6 +18,8 @@ public static class StashTabControlManager
 
     public static void GetStashTabIndicesFromSettings(List<UnifiedStashTabMetadata> stashData)
     {
+        if (stashData is null) return;
+
         if (Settings.Default.StashTabQueryMode == (int)StashTabQueryMode.TabsByNamePrefix)
         {
             GetStashTabIndicesFromSettingsForQueryByNamePrefix(stashData);
