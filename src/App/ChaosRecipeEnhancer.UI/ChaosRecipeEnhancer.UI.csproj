@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<!--Build Settings-->
 		<TargetFramework>net8.0-windows</TargetFramework>
@@ -13,7 +13,7 @@
 		<UseApplicationTrust>false</UseApplicationTrust>
 		<PublishWizardCompleted>true</PublishWizardCompleted>
 		<BootstrapperEnabled>true</BootstrapperEnabled>
-		<ApplicationVersion>3.27</ApplicationVersion>
+		<ApplicationVersion>3.28</ApplicationVersion>
 
 		<!--Bump this by 1 for minor patches; Bump by 10 for major patches-->
 		<!--Minor Patch Bump: v3.24.1000 -> v3.24.1001; App Revision 10 -> 11-->
@@ -44,6 +44,10 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	  <NoWarn>1701;1702;CA1416</NoWarn>
 	</PropertyGroup>
+	<ItemGroup>
+		<ApplicationDefinition Remove="App.xaml" />
+		<Page Include="App.xaml" />
+	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="Assets\Images\Ground.png" />
 	  <None Remove="Assets\Images\LootFilter\LootFilterLargeBlueCircle.png" />
@@ -911,13 +915,14 @@
 	<!-- Dependencies -->
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.10" />
-		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="10.0.3" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-		<PackageReference Include="TestableIO.System.IO.Abstractions" Version="22.0.16" />
-		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.0.16" />
+		<PackageReference Include="TestableIO.System.IO.Abstractions" Version="22.1.0" />
+		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.1.0" />
+		<PackageReference Include="Velopack" Version="0.0.1298" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Xceed.Wpf.Toolkit">

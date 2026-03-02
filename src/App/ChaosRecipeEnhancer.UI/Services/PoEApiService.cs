@@ -236,6 +236,8 @@ public class PoeApiService : IPoeApiService
             sessionId
         );
 
+        if (response is null) return null;
+
         // Check if the response is an error
         var errorResponse = JsonSerializer.Deserialize<ErrorResponse>((string)response);
         if (errorResponse?.Error != null && errorResponse.Error.Code == 8)
@@ -347,41 +349,49 @@ public class PoeApiService : IPoeApiService
             _log.Information($"[GetAuthenticatedWithOAuthAsync] Header: {header.Key} = {string.Join(",", header.Value)}");
         }
 
-        // send request
-        var response = await client.GetAsync(requestUri);
-        var responseString = response.Content.ReadAsStringAsync().Result;
-
-        _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
-        _log.Information($"Response: {responseString}");
-
-        // for some weird ass reason the status codes come
-        // back 200 even when it's not valid (for leagues endpoint)
-        // so here's a hacky work-around
-        // HACK: GGG Fix ur shit
-        if (response.StatusCode == HttpStatusCode.OK && !_authStateManager.ValidateAuthToken())
+        try
         {
-            _log.Information("Status code is 200 but auth token is no good; manually replacing status code");
-            response.StatusCode = HttpStatusCode.Unauthorized;
+            // send request
+            var response = await client.GetAsync(requestUri);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+
+            _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
+            _log.Information($"Response: {responseString}");
+
+            // for some weird ass reason the status codes come
+            // back 200 even when it's not valid (for leagues endpoint)
+            // so here's a hacky work-around
+            // HACK: GGG Fix ur shit
+            if (response.StatusCode == HttpStatusCode.OK && !_authStateManager.ValidateAuthToken())
+            {
+                _log.Information("Status code is 200 but auth token is no good; manually replacing status code");
+                response.StatusCode = HttpStatusCode.Unauthorized;
+            }
+
+            if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
+
+            // get new rate limit values
+            // these might end up being:
+            //
+            //      `X-Rate-Limit-Ip`
+            //      `X-Rate-Limit-Ip-State`
+            //      `X-Rate-Limit-Client`
+            //      `X-Rate-Limit-Client-State`
+            //
+            // keep an eye on this if you get some weird issues...
+            HttpHeaderUtilities.ProcessRateLimitHeaders(response, _log, requestUri);
+
+            using var resultHttpContent = response.Content;
+
+            var resultString = await resultHttpContent.ReadAsStringAsync();
+
+            return resultString;
         }
-
-        if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
-
-        // get new rate limit values
-        // these might end up being:
-        //
-        //      `X-Rate-Limit-Ip`
-        //      `X-Rate-Limit-Ip-State`
-        //      `X-Rate-Limit-Client`
-        //      `X-Rate-Limit-Client-State`
-        //
-        // keep an eye on this if you get some weird issues...
-        HttpHeaderUtilities.ProcessRateLimitHeaders(response, _log, requestUri);
-
-        using var resultHttpContent = response.Content;
-
-        var resultString = await resultHttpContent.ReadAsStringAsync();
-
-        return resultString;
+        catch (HttpRequestException ex)
+        {
+            GlobalErrorHandler.HandleNetworkError(ex);
+            return null;
+        }
     }
 
     /// <summary>
@@ -424,28 +434,36 @@ public class PoeApiService : IPoeApiService
             _log.Information($"[GetAuthenticatedWithSessionIdAsync] Header: {header.Key} = {string.Join(",", header.Value)}");
         }
 
-        // send request
-        var response = await client.GetAsync(requestUri);
-        var responseString = await response.Content.ReadAsStringAsync();
-
-        _log.Information($"[GetAuthenticatedWithSessionIdAsync] Fetch Result {requestUri}: {response.StatusCode}");
-        _log.Debug($"[GetAuthenticatedWithSessionIdAsync] Response: {responseString}");
-
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            _log.Warning($"[GetAuthenticatedWithSessionIdAsync] Non-success status code: {response.StatusCode}");
+            // send request
+            var response = await client.GetAsync(requestUri);
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            _log.Information($"[GetAuthenticatedWithSessionIdAsync] Fetch Result {requestUri}: {response.StatusCode}");
+            _log.Debug($"[GetAuthenticatedWithSessionIdAsync] Response: {responseString}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                _log.Warning($"[GetAuthenticatedWithSessionIdAsync] Non-success status code: {response.StatusCode}");
+                return null;
+            }
+
+            if (!CheckIfResponseStatusCodeIsValid(response, responseString))
+            {
+                _log.Warning($"[GetAuthenticatedWithSessionIdAsync] Status code not valid: {response.StatusCode}");
+                return null;
+            }
+
+            HttpHeaderUtilities.ProcessRateLimitHeaders(response, _log, requestUri);
+
+            return responseString;
+        }
+        catch (HttpRequestException ex)
+        {
+            GlobalErrorHandler.HandleNetworkError(ex);
             return null;
         }
-
-        if (!CheckIfResponseStatusCodeIsValid(response, responseString))
-        {
-            _log.Warning($"[GetAuthenticatedWithSessionIdAsync] Status code not valid: {response.StatusCode}");
-            return null;
-        }
-
-        HttpHeaderUtilities.ProcessRateLimitHeaders(response, _log, requestUri);
-
-        return responseString;
     }
 
     private async Task<object> GetAuthenticatedWithSessionIdForHealthcheckAsync(Uri requestUri, string sessionId)
@@ -474,14 +492,22 @@ public class PoeApiService : IPoeApiService
             _log.Information($"[GetAuthenticatedWithSessionIdForHealthcheckAsync] Header: {header.Key} = {string.Join(",", header.Value)}");
         }
 
-        // send request
-        var response = await client.GetAsync(requestUri);
-        var responseString = await response.Content.ReadAsStringAsync();
+        try
+        {
+            // send request
+            var response = await client.GetAsync(requestUri);
+            var responseString = await response.Content.ReadAsStringAsync();
 
-        _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
-        _log.Information($"Response: {responseString}");
+            _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
+            _log.Information($"Response: {responseString}");
 
-        return responseString;
+            return responseString;
+        }
+        catch (HttpRequestException ex)
+        {
+            GlobalErrorHandler.HandleNetworkError(ex);
+            return null;
+        }
     }
 
     /// <summary>
@@ -510,15 +536,23 @@ public class PoeApiService : IPoeApiService
             _log.Information($"[GetAsync] Header: {header.Key} = {string.Join(",", header.Value)}");
         }
 
-        var response = await client.GetAsync(requestUri);
-        var responseString = response.Content.ReadAsStringAsync().Result;
+        try
+        {
+            var response = await client.GetAsync(requestUri);
+            var responseString = response.Content.ReadAsStringAsync().Result;
 
-        _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
-        _log.Information($"Response: {responseString}");
+            _log.Information($"Fetch Result {requestUri}: {response.StatusCode}");
+            _log.Information($"Response: {responseString}");
 
-        if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
+            if (!CheckIfResponseStatusCodeIsValid(response, responseString)) return null;
 
-        return responseString;
+            return responseString;
+        }
+        catch (HttpRequestException ex)
+        {
+            GlobalErrorHandler.HandleNetworkError(ex);
+            return null;
+        }
     }
 
     private bool CheckIfResponseStatusCodeIsValid(HttpResponseMessage response, string responseString)

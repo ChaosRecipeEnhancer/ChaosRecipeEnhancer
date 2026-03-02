@@ -20,6 +20,32 @@ public partial class UserSettings : IUserSettings
         }
     }
 
+    public int ActiveRecipeType
+    {
+        get => Settings.Default.ActiveRecipeType;
+        set
+        {
+            if (Settings.Default.ActiveRecipeType != value)
+            {
+                Settings.Default.ActiveRecipeType = value;
+                Save();
+            }
+        }
+    }
+
+    public int TargetInfluenceType
+    {
+        get => Settings.Default.TargetInfluenceType;
+        set
+        {
+            if (Settings.Default.TargetInfluenceType != value)
+            {
+                Settings.Default.TargetInfluenceType = value;
+                Save();
+            }
+        }
+    }
+
     public bool IncludeIdentifiedItemsEnabled
     {
         get => Settings.Default.IncludeIdentifiedItemsEnabled;

@@ -22,6 +22,18 @@ public static class SettingsConfiguration
             Settings.Default.PathOfExileApiAuthToken = string.Empty;
             Settings.Default.LegacyAuthSessionId = string.Empty;
 
+            // Migrate ChaosRecipeTrackingEnabled to ActiveRecipeType
+            // ChaosRecipeTrackingEnabled = true → ChaosOrb (0)
+            // ChaosRecipeTrackingEnabled = false → RegalOrb (1)
+            if (Settings.Default.ChaosRecipeTrackingEnabled)
+            {
+                Settings.Default.ActiveRecipeType = 0; // ChaosOrb
+            }
+            else
+            {
+                Settings.Default.ActiveRecipeType = 1; // RegalOrb
+            }
+
             Settings.Default.Save();
         }
     }

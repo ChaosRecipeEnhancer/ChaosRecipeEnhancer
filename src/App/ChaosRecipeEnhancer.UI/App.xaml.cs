@@ -8,12 +8,26 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System;
 using System.Windows;
+using Velopack;
 
 namespace ChaosRecipeEnhancer.UI;
 
 public partial class App
 {
     private readonly SingleInstance _singleInstance = new(CreAppConfig.InstanceName);
+
+    [STAThread]
+    private static void Main(string[] args)
+    {
+        // Velopack MUST run before any WPF initialization.
+        // It handles install/uninstall/update hooks internally,
+        // and will exit the process if it was invoked by the Velopack updater.
+        VelopackApp.Build().Run();
+
+        var app = new App();
+        app.InitializeComponent();
+        app.Run();
+    }
 
     public App()
     {

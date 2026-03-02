@@ -2,6 +2,7 @@
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Utilities;
 using System;
+using System.Runtime.InteropServices;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,8 +58,21 @@ public class ReloadFilterService : IReloadFilterService
         WindowsUtilities.SetForegroundWindow(poeWindow);
 
         // Always clear the clipboard first
-        Clipboard.Clear();
-        Clipboard.SetText(chatCommand);
+        try
+        {
+            Clipboard.Clear();
+            Clipboard.SetText(chatCommand);
+        }
+        catch (ExternalException)
+        {
+            GlobalErrorHandler.Spawn(
+                "Could not access the clipboard. Another application may be using it.\n\n" +
+                "Please close any clipboard managers or try again in a moment.",
+                "Error: Reload Filter - Clipboard Access Failed"
+            );
+
+            return;
+        }
 
         Task.Run(() =>
         {

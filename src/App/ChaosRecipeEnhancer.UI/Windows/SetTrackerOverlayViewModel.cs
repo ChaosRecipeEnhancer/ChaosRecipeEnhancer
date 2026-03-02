@@ -3,6 +3,7 @@ using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
+using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.UserControls;
@@ -442,6 +443,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     public bool NeedsFetching => GlobalItemSetManagerState.NeedsFetching;
     public bool NeedsLowerLevel => GlobalItemSetManagerState.NeedsLowerLevel;
     public int FullSets => GlobalItemSetManagerState.CompletedSetCount;
+    public Enums.InfluenceType ActiveInfluenceType => GlobalItemSetManagerState.ActiveInfluenceType;
 
     #region Item Amount and Visibility Properties
 
@@ -709,11 +711,19 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
                 GlobalItemSetManagerState.CalculateItemAmounts();
 
                 // generate item sets for the chosen recipe (chaos or regal)
-                GlobalItemSetManagerState.GenerateItemSets(!ChaosRecipeTrackingEnabled);
+                GlobalItemSetManagerState.GenerateItemSets((RecipeType)Settings.Default.ActiveRecipeType);
+
+                // play notification sound if any individual item type reached its threshold
+                var itemStateChanged = HasAnyItemTypeReachedThreshold();
+                if (itemStateChanged)
+                {
+                    PlayItemSetStateChangedNotificationSound();
+                }
 
                 // update the UI accordingly
                 UpdateDisplay();
-                UpdateStashButtonAndWarningMessage();
+                // skip the sound in UpdateStashButtonAndWarningMessage since we already handled it above
+                UpdateStashButtonAndWarningMessage(playNotificationSound: !itemStateChanged);
 
                 // enforce cooldown on fetch button to reduce chances of rate limiting
                 TriggerSetTrackerFetchCooldown(FetchCooldownSeconds);
@@ -819,6 +829,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     {
         int lowLevelItemsNeeded = 0;
         int highLevelItemsNeeded = 0;
+        var activeRecipeType = (RecipeType)Settings.Default.ActiveRecipeType;
 
         // The most common scenario (default settings)
         //if (_userSettings.DoNotPreserveLowItemLevelGear && ChaosRecipeTrackingEnabled)
@@ -836,7 +847,15 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
 
             if (set.EmptyItemSlots.Count > 0 || !_userSettings.DoNotPreserveLowItemLevelGear)
             {
-                if (set.IsChaosRecipeEligible)
+                var setMeetsRecipeQualifier = activeRecipeType switch
+                {
+                    RecipeType.OrbOfChance => set.IsOrbOfChanceRecipeEligible,
+                    RecipeType.ChaosOrb => set.IsChaosRecipeEligible,
+                    RecipeType.ExaltedOrb => set.IsExaltedRecipeEligible,
+                    _ => set.IsRegalRecipeEligible
+                };
+
+                if (setMeetsRecipeQualifier)
                 {
                     highLevelItemsNeeded += set.EmptyItemSlots.Count;
                 }
@@ -854,17 +873,27 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     private string GenerateWarningMessage(int lowLevelItemsNeeded, int highLevelItemsNeeded)
     {
         var message = string.Empty;
+        var activeRecipeType = (RecipeType)Settings.Default.ActiveRecipeType;
+        var requiresLowLevelItems = activeRecipeType != RecipeType.RegalOrb && activeRecipeType != RecipeType.ExaltedOrb;
 
-        if ((highLevelItemsNeeded > lowLevelItemsNeeded && ChaosRecipeTrackingEnabled) &&
+        // ExaltedOrb doesn't use level-based messages
+        if (activeRecipeType == RecipeType.ExaltedOrb)
+        {
+            return "Need more influenced items";
+        }
+
+        if ((highLevelItemsNeeded > lowLevelItemsNeeded && requiresLowLevelItems) &&
             _userSettings.DoNotPreserveLowItemLevelGear)
         {
             return message;
         }
 
         // if we need low item level items in any mode (greedy++, greedy, conservative)
-        if (lowLevelItemsNeeded > 0 && ChaosRecipeTrackingEnabled)
+        if (lowLevelItemsNeeded > 0 && requiresLowLevelItems)
         {
-            message = $"Need {lowLevelItemsNeeded} item{(lowLevelItemsNeeded > 1 ? "s" : "")} with iLvl 60-74";
+            message = activeRecipeType == RecipeType.OrbOfChance
+                ? $"Need {lowLevelItemsNeeded} item{(lowLevelItemsNeeded > 1 ? "s" : "")} with iLvl 1-59"
+                : $"Need {lowLevelItemsNeeded} item{(lowLevelItemsNeeded > 1 ? "s" : "")} with iLvl 60-74";
         }
         // else if we need high level items in conservative mode
         else if (!_userSettings.DoNotPreserveLowItemLevelGear && highLevelItemsNeeded > 0)
@@ -1020,11 +1049,32 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
         OnPropertyChanged(nameof(WarningMessage));
         OnPropertyChanged(nameof(FetchButtonEnabled));
         OnPropertyChanged(nameof(ShowAmountNeeded));
+        OnPropertyChanged(nameof(ActiveInfluenceType));
     }
 
     public void PlayItemSetStateChangedNotificationSound()
     {
         _notificationSoundService.PlayNotificationSound(Enums.NotificationSoundType.ItemSetStateChanged);
+    }
+
+    /// <summary>
+    /// Checks whether any individual item type has reached or exceeded the full set threshold.
+    /// Used to trigger the item set state changed notification sound after a fetch.
+    /// </summary>
+    private bool HasAnyItemTypeReachedThreshold()
+    {
+        var threshold = FullSetThreshold;
+
+        return GlobalItemSetManagerState.AmuletsAmount >= threshold
+            || GlobalItemSetManagerState.BeltsAmount >= threshold
+            || GlobalItemSetManagerState.ChestsAmount >= threshold
+            || GlobalItemSetManagerState.GlovesAmount >= threshold
+            || GlobalItemSetManagerState.HelmetsAmount >= threshold
+            || GlobalItemSetManagerState.BootsAmount >= threshold
+            // rings need pairs (2 per set)
+            || GlobalItemSetManagerState.RingsAmount >= threshold * 2
+            // weapons: 1-handers count as half, 2-handers count as full
+            || (GlobalItemSetManagerState.WeaponsSmallAmount / 2) + GlobalItemSetManagerState.WeaponsBigAmount >= threshold;
     }
 
     public void TriggerSetTrackerFetchCooldown(int secondsToWait)

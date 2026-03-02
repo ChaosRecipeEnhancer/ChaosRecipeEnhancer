@@ -37,6 +37,8 @@ public static class GlobalItemSetManagerState
     public static int CompletedSetCount { get; private set; }
     public static bool NeedsFetching { get; private set; } = true;
     public static bool NeedsLowerLevel { get; set; }
+    public static bool NeedsInfluencedItems { get; private set; }
+    public static InfluenceType ActiveInfluenceType { get; private set; }
 
     #endregion
 
@@ -101,6 +103,8 @@ public static class GlobalItemSetManagerState
     {
         // reset set count
         CompletedSetCount = 0;
+        ActiveInfluenceType = InfluenceType.None;
+        NeedsInfluencedItems = false;
 
         // reset all item amounts
         RingsAmount = 0;
@@ -116,21 +120,34 @@ public static class GlobalItemSetManagerState
 
     #region Generate Item Sets
 
-    public static void GenerateItemSets(bool regalRecipe = false)
+    public static void GenerateItemSets(RecipeType recipeType = RecipeType.ChaosOrb)
     {
-        // filter for chaos recipe eligible items
+        NeedsInfluencedItems = false;
+        ActiveInfluenceType = InfluenceType.None;
+
         List<EnhancedItem> eligibleRecipeItems;
-        if (regalRecipe)
+        switch (recipeType)
         {
-            eligibleRecipeItems = CurrentItemsFilteredForRecipe
-                .Where(x => x.IsRegalRecipeEligible)
-                .ToList();
-        }
-        else
-        {
-            eligibleRecipeItems = CurrentItemsFilteredForRecipe
-                .Where(x => x.IsChaosRecipeEligible)
-                .ToList();
+            case RecipeType.RegalOrb:
+                eligibleRecipeItems = CurrentItemsFilteredForRecipe
+                    .Where(x => x.IsRegalRecipeEligible)
+                    .ToList();
+                break;
+            case RecipeType.OrbOfChance:
+                eligibleRecipeItems = CurrentItemsFilteredForRecipe
+                    .Where(x => x.IsOrbOfChanceRecipeEligible)
+                    .ToList();
+                break;
+            case RecipeType.ExaltedOrb:
+                eligibleRecipeItems = CurrentItemsFilteredForRecipe
+                    .Where(x => x.IsExaltedRecipeEligible)
+                    .ToList();
+                break;
+            default:
+                eligibleRecipeItems = CurrentItemsFilteredForRecipe
+                    .Where(x => x.IsChaosRecipeEligible)
+                    .ToList();
+                break;
         }
 
         // sorting both of our item lists by item class
@@ -164,17 +181,18 @@ public static class GlobalItemSetManagerState
             trueSetThreshold = SetThreshold;
         }
 
-        // we will never need to lower the level of our items if we're looking for regal recipes
-        if (regalRecipe)
+        if (recipeType == RecipeType.RegalOrb)
         {
             NeedsLowerLevel = false;
         }
-        // else if we are doing the chaos recipe and we have less chaos items than the set threshold
+        else if (recipeType == RecipeType.ExaltedOrb)
+        {
+            NeedsLowerLevel = false;
+        }
         else if (eligibleRecipeItems.Count < trueSetThreshold || eligibleRecipeItems.Count == 0)
         {
             NeedsLowerLevel = true;
         }
-        // else if we have enough chaos items to make the set threshold or simply don't have any sets
         else
         {
             NeedsLowerLevel = false;
@@ -184,9 +202,15 @@ public static class GlobalItemSetManagerState
         //  - Chaos Recipe with Vendor Sets Early ENABLED
         //  - Chaos Recipe with Vendor Sets Early DISABLED
         //  - Regal Recipe
-        if (Settings.Default.DoNotPreserveLowItemLevelGear || regalRecipe)
+        //  - Orb of Chance Recipe
+        //  - Exalted Recipe
+        if (recipeType == RecipeType.ExaltedOrb)
         {
-            GenerateItemSets_Greedy(eligibleRecipeItems, trueSetThreshold, regalRecipe);
+            GenerateItemSets_ExaltedOrb(eligibleRecipeItems, trueSetThreshold);
+        }
+        else if (Settings.Default.DoNotPreserveLowItemLevelGear || recipeType != RecipeType.ChaosOrb)
+        {
+            GenerateItemSets_Greedy(eligibleRecipeItems, trueSetThreshold, recipeType);
         }
         // This will only apply for:
         //  - Chaos Recipe with Do Not Preserve Low Item Level Gear DISABLED
@@ -199,6 +223,78 @@ public static class GlobalItemSetManagerState
 
             GenerateItemSets_Conserve(eligibleRecipeItems, SetThreshold);
         }
+    }
+
+    private static void GenerateItemSets_ExaltedOrb(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold)
+    {
+        NeedsLowerLevel = false;
+
+        var targetInfluenceType = Settings.Default.Properties["TargetInfluenceType"] is null
+            ? 0
+            : (int)Settings.Default["TargetInfluenceType"];
+        var influenceSelection = (TargetInfluenceSelection)targetInfluenceType;
+        InfluenceType selectedInfluenceType;
+
+        if (influenceSelection == TargetInfluenceSelection.Auto)
+        {
+            var itemsByInfluence = new Dictionary<InfluenceType, List<EnhancedItem>>
+            {
+                { InfluenceType.Shaper, new List<EnhancedItem>() },
+                { InfluenceType.Elder, new List<EnhancedItem>() },
+                { InfluenceType.Crusader, new List<EnhancedItem>() },
+                { InfluenceType.Redeemer, new List<EnhancedItem>() },
+                { InfluenceType.Hunter, new List<EnhancedItem>() },
+                { InfluenceType.Warlord, new List<EnhancedItem>() }
+            };
+
+            foreach (var item in eligibleRecipeItems)
+            {
+                foreach (var influenceType in item.GetInfluenceTypes())
+                {
+                    if (influenceType == InfluenceType.None) continue;
+                    itemsByInfluence[influenceType].Add(item);
+                }
+            }
+
+            selectedInfluenceType = InfluenceType.None;
+            var maxCompletableSets = -1;
+
+            for (var value = (int)InfluenceType.Shaper; value <= (int)InfluenceType.Warlord; value++)
+            {
+                var influenceType = (InfluenceType)value;
+                var itemsForInfluence = itemsByInfluence[influenceType];
+                var simulatedCompletableSets = SimulateGreedyExaltedSetCount(itemsForInfluence, trueSetThreshold, influenceType);
+
+                if (simulatedCompletableSets > maxCompletableSets)
+                {
+                    maxCompletableSets = simulatedCompletableSets;
+                    selectedInfluenceType = influenceType;
+                }
+            }
+        }
+        else
+        {
+            selectedInfluenceType = (InfluenceType)(int)influenceSelection;
+        }
+
+        ActiveInfluenceType = selectedInfluenceType;
+
+        var eligibleItemsForSelectedInfluence = selectedInfluenceType == InfluenceType.None
+            ? new List<EnhancedItem>()
+            : eligibleRecipeItems.Where(item => item.HasInfluenceType(selectedInfluenceType)).ToList();
+
+        var trueSetThresholdForInfluence = Settings.Default.VendorSetsEarly
+            ? (eligibleItemsForSelectedInfluence.Count > SetThreshold ? SetThreshold : eligibleItemsForSelectedInfluence.Count)
+            : trueSetThreshold;
+
+        CurrentItemsFilteredForRecipe = selectedInfluenceType == InfluenceType.None
+            ? new List<EnhancedItem>()
+            : CurrentItemsFilteredForRecipe.Where(item => item.HasInfluenceType(selectedInfluenceType)).ToList();
+
+        GenerateItemSets_Greedy(eligibleItemsForSelectedInfluence, trueSetThresholdForInfluence, RecipeType.ExaltedOrb);
+
+        CompletedSetCount = SetsInProgress.Count(set => set.EmptyItemSlots.Count == 0 && set.IsExaltedRecipeEligible);
+        NeedsInfluencedItems = CompletedSetCount == 0;
     }
 
     private static void GenerateItemSets_Conserve(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold)
@@ -223,7 +319,7 @@ public static class GlobalItemSetManagerState
                 // try to add a single eligible recipe item in the set (where we're iterate in our loop on line 166)
                 foreach (var item in eligibleRecipeItems)
                 {
-                    var addSuccessful = enhancedItemSet.TryAddItem(item, false);
+                    var addSuccessful = enhancedItemSet.TryAddItem(item, RecipeType.ChaosOrb);
 
                     // if we successfully add to set (i.e. it wasn't an item slot that was already taken)
                     if (addSuccessful)
@@ -266,9 +362,15 @@ public static class GlobalItemSetManagerState
                 if (closestMissingItem is not null)
                 {
                     // if we found a new closer we're good to add it to our enhanced set
-                    if (listOfSets[i].TryAddItem(closestMissingItem, false))
+                    if (listOfSets[i].TryAddItem(closestMissingItem, RecipeType.ChaosOrb))
                     {
                         CurrentItemsFilteredForRecipe.Remove(closestMissingItem);
+                    }
+                    else
+                    {
+                        // Item was found by class but rejected by TryAddItem.
+                        // No progress can be made — break to avoid infinite loop.
+                        break;
                     }
                 }
                 // you didn't find a closer item, gg break out of infinite loop
@@ -283,12 +385,12 @@ public static class GlobalItemSetManagerState
         CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsChaosRecipeEligible);
     }
 
-    private static void GenerateItemSets_Greedy(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold, bool regalRecipe = false)
+    private static void GenerateItemSets_Greedy(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold, RecipeType recipeType = RecipeType.ChaosOrb)
     {
         // Clear any existing progress in item set generation
         SetsInProgress.Clear();
         var listOfSets = new List<EnhancedItemSet>();
-        bool containsChaosRecipe = false;
+        bool containsRequiredRecipeItems = false;
 
         // Iteratively create item sets based on the number of available recipe items
         for (var i = 0; i < trueSetThreshold; i++)
@@ -296,12 +398,17 @@ public static class GlobalItemSetManagerState
             // Initialize a new item set
             var enhancedItemSet = new EnhancedItemSet();
 
+            if (recipeType == RecipeType.ExaltedOrb)
+            {
+                enhancedItemSet.RequiredInfluenceType = ActiveInfluenceType;
+            }
+
             // Add a recipe item to the set if any are available
             if (eligibleRecipeItems.Count > 0)
             {
                 var recipeItem = eligibleRecipeItems.First();
 
-                if (enhancedItemSet.TryAddItem(recipeItem, regalRecipe))
+                if (enhancedItemSet.TryAddItem(recipeItem, recipeType))
                 {
                     // Remove the added recipe item from the available pools
                     eligibleRecipeItems.Remove(recipeItem);
@@ -315,7 +422,7 @@ public static class GlobalItemSetManagerState
 
                         if (oneHandedWeapon is not null)
                         {
-                            enhancedItemSet.TryAddItem(oneHandedWeapon, regalRecipe);
+                            enhancedItemSet.TryAddItem(oneHandedWeapon, recipeType);
                             eligibleRecipeItems.Remove(oneHandedWeapon);
                             CurrentItemsFilteredForRecipe.Remove(oneHandedWeapon);
                         }
@@ -343,7 +450,7 @@ public static class GlobalItemSetManagerState
                 // If a closest missing item is found, add it to the set
                 if (closestMissingItem != null)
                 {
-                    if (enhancedItemSet.TryAddItem(closestMissingItem, regalRecipe))
+                    if (enhancedItemSet.TryAddItem(closestMissingItem, recipeType))
                     {
                         // Remove the item from the pool of available items
                         eligibleRecipeItems.Remove(closestMissingItem);
@@ -357,10 +464,16 @@ public static class GlobalItemSetManagerState
 
                             if (oneHandedWeapon is not null)
                             {
-                                enhancedItemSet.TryAddItem(oneHandedWeapon, regalRecipe);
+                                enhancedItemSet.TryAddItem(oneHandedWeapon, recipeType);
                                 CurrentItemsFilteredForRecipe.Remove(oneHandedWeapon);
                             }
                         }
+                    }
+                    else
+                    {
+                        // Item was found by class but rejected (e.g. wrong ilvl for recipe).
+                        // No progress can be made — break to avoid infinite loop.
+                        break;
                     }
                 }
                 else
@@ -380,35 +493,19 @@ public static class GlobalItemSetManagerState
             listOfSets.Add(enhancedItemSet);
         }
 
-        // if we're not looking for regal recipes (we're looking for chaos recipes)
-        // checking for qualifiers is a bit different for regal recipes since we only need to check for a single
-        // item to be within the 60-74 ilvl range
-        if (!regalRecipe)
+        if (recipeType == RecipeType.ChaosOrb || recipeType == RecipeType.OrbOfChance)
         {
             for (var i = 0; i < trueSetThreshold; i++)
             {
-                // my reason for separating out this logic is that it's a bit more readable and debuggable
+                var canProduce = recipeType == RecipeType.OrbOfChance
+                    ? listOfSets[i].Items.FirstOrDefault(x => x.IsOrbOfChanceRecipeEligible, null)
+                    : listOfSets[i].Items.FirstOrDefault(x => x.IsChaosRecipeEligible, null);
 
-                // if we have a recipe qualifier we can stop looking for items
-                var canProduce = listOfSets[i].Items.FirstOrDefault(x => x.IsChaosRecipeEligible, null);
-
-                // if a set is complete (i.e. it has a recipe qualifier and no empty item slots)
-                // we can increment our completed set count
-                // for a set to be completed it needs to meet both of these conditions
                 if (canProduce is not null)
                 {
-                    containsChaosRecipe = true;
+                    containsRequiredRecipeItems = true;
                 }
             }
-        }
-        // else if we're looking for regal recipes
-        // checking for qualified sets as a whole (all items in a set 75 or higher ilvl)
-        else
-        {
-            // regal recipe sets have an implicit property in in `IsRegalRecipeEligible`
-            // that checks if all items in a set are 75 or higher
-
-            // with that, we don't need to do any additional work here
         }
 
         // Update the sets in progress with the newly created list of sets
@@ -416,24 +513,111 @@ public static class GlobalItemSetManagerState
 
         // Update the count of completed sets based on the number of sets with no empty item slots
 
-        // if we aren't doing regal recipes and we don't have any chaos sets completed
-        if (!regalRecipe && !containsChaosRecipe)
+        if (recipeType != RecipeType.RegalOrb && !containsRequiredRecipeItems)
         {
-            // we need more lower level items to complete sets
             NeedsLowerLevel = true;
             CompletedSetCount = 0;
         }
         else
         {
-            if (regalRecipe)
+            CompletedSetCount = recipeType switch
             {
-                CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsRegalRecipeEligible);
-            }
-            else
-            {
-                CompletedSetCount = listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsChaosRecipeEligible);
-            }
+                RecipeType.RegalOrb => listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsRegalRecipeEligible),
+                RecipeType.OrbOfChance => listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsOrbOfChanceRecipeEligible),
+                _ => listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsChaosRecipeEligible)
+            };
         }
+    }
+
+    private static int SimulateGreedyExaltedSetCount(List<EnhancedItem> eligibleRecipeItems, int trueSetThreshold, InfluenceType requiredInfluenceType)
+    {
+        var localEligibleRecipeItems = new List<EnhancedItem>(eligibleRecipeItems);
+        var localCurrentItemsFilteredForRecipe = new List<EnhancedItem>(eligibleRecipeItems);
+        var listOfSets = new List<EnhancedItemSet>();
+
+        for (var i = 0; i < trueSetThreshold; i++)
+        {
+            var enhancedItemSet = new EnhancedItemSet
+            {
+                RequiredInfluenceType = requiredInfluenceType
+            };
+
+            if (localEligibleRecipeItems.Count > 0)
+            {
+                var recipeItem = localEligibleRecipeItems.First();
+
+                if (enhancedItemSet.TryAddItem(recipeItem, RecipeType.ExaltedOrb))
+                {
+                    localEligibleRecipeItems.Remove(recipeItem);
+                    localCurrentItemsFilteredForRecipe.Remove(recipeItem);
+
+                    if (recipeItem.DerivedItemClass == GameTerminology.OneHandWeapons)
+                    {
+                        var oneHandedWeapon = localCurrentItemsFilteredForRecipe
+                            .FirstOrDefault(x => x.DerivedItemClass == GameTerminology.OneHandWeapons);
+
+                        if (oneHandedWeapon is not null)
+                        {
+                            enhancedItemSet.TryAddItem(oneHandedWeapon, RecipeType.ExaltedOrb);
+                            localEligibleRecipeItems.Remove(oneHandedWeapon);
+                            localCurrentItemsFilteredForRecipe.Remove(oneHandedWeapon);
+                        }
+                    }
+                }
+            }
+
+            while (true)
+            {
+                EnhancedItem closestMissingItem = null;
+                var minDistance = double.PositiveInfinity;
+
+                foreach (var item in localCurrentItemsFilteredForRecipe
+                             .Where(item => enhancedItemSet.IsItemClassNeeded(item) &&
+                                            enhancedItemSet.GetItemDistance(item) < minDistance))
+                {
+                    minDistance = enhancedItemSet.GetItemDistance(item);
+                    closestMissingItem = item;
+                }
+
+                if (closestMissingItem != null)
+                {
+                    if (enhancedItemSet.TryAddItem(closestMissingItem, RecipeType.ExaltedOrb))
+                    {
+                        localEligibleRecipeItems.Remove(closestMissingItem);
+                        localCurrentItemsFilteredForRecipe.Remove(closestMissingItem);
+
+                        if (closestMissingItem.DerivedItemClass == GameTerminology.OneHandWeapons)
+                        {
+                            var oneHandedWeapon = localCurrentItemsFilteredForRecipe
+                                .FirstOrDefault(x => x.DerivedItemClass == GameTerminology.OneHandWeapons);
+
+                            if (oneHandedWeapon is not null)
+                            {
+                                enhancedItemSet.TryAddItem(oneHandedWeapon, RecipeType.ExaltedOrb);
+                                localCurrentItemsFilteredForRecipe.Remove(oneHandedWeapon);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+
+                if (enhancedItemSet.EmptyItemSlots.Count == 0)
+                {
+                    break;
+                }
+            }
+
+            listOfSets.Add(enhancedItemSet);
+        }
+
+        return listOfSets.Count(set => set.EmptyItemSlots.Count == 0 && set.IsExaltedRecipeEligible);
     }
 
     #endregion

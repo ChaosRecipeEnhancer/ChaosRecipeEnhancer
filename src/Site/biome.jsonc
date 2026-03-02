@@ -1,0 +1,13 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.5/schema.json",
+  "extends": ["ultracite/core", "ultracite/next"],
+  "files": {
+    "ignoreUnknown": true
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.jsonc"],
+      "json": { "parser": { "allowComments": true } }
+    }
+  ]
+}

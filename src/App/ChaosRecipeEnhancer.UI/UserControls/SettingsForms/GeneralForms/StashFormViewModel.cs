@@ -510,7 +510,7 @@ public class StashFormViewModel : CreViewModelBase
 
             Log.Information("(Should be the same) Settings Collection Length: {SettingsLength} - Selected Collection Length: {SelectedLength}", settingsLength, selectedLength);
 
-            for (int i = 0; i < settingsLength; i++)
+            for (int i = 0; i < Math.Min(settingsLength, selectedLength); i++)
             {
                 Log.Information("(Should be the same) Settings Value: {SettingsId} - Selected Value: {SelectedId}", _userSettings.StashTabIds.ElementAt(i), SelectedStashTabsById.ElementAt(i).Id);
             }

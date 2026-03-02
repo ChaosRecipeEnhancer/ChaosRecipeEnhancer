@@ -369,22 +369,29 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center">
 
-                    <!-- Update Available Icon -->
-                    <Image
-                        Width="16"
-                        Height="16"
-                        Source="../Assets/Images/UpgradeArrow.png"
+                    <!-- Update Available: Click to download and install -->
+                    <Button
                         Visibility="{Binding UpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DownloadAndApplyUpdateCommand}"
+                        IsEnabled="{Binding IsDownloadingUpdate, Converter={StaticResource InvertedBoolConverter}}"
                         Margin="0,0,5,0"
+                        Padding="4,2"
+                        FontSize="11"
+                        Cursor="Hand"
                         ToolTipService.InitialShowDelay="50"
-                        ToolTip="Update available! Click to see our latest release.">
-
-                        <Image.InputBindings>
-                            <MouseBinding
-                                MouseAction="LeftClick"
-                                Command="{Binding OpenLatestReleasePageCommand}" />
-                        </Image.InputBindings>
-                    </Image>
+                        ToolTip="Click to download and install the latest update.">
+                        <StackPanel Orientation="Horizontal">
+                            <Image
+                                Width="14"
+                                Height="14"
+                                Source="../Assets/Images/UpgradeArrow.png"
+                                Margin="0,0,4,0" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="11"
+                                Text="{Binding UpdateStatusText}" />
+                        </StackPanel>
+                    </Button>
 
                     <!-- App Version Text -->
                     <TextBlock

@@ -1,18 +1,12 @@
-using ChaosRecipeEnhancer.UI.Models;
-using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Native;
 using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -36,8 +30,8 @@ public partial class SettingsWindow
         InitializeTray();
         InitializeHotkeys();
 
-        // Check for app updates on startup (async method)
-        Task.Run(CheckForAppUpdate);
+        // Check for app updates on startup via Velopack
+        _ = _model.CheckForUpdateAsync();
 
         // will force the window to resize to the size of its content.
         // we do this in lieu of the `SizeToContent` property due to an issue
@@ -144,72 +138,13 @@ public partial class SettingsWindow
         Close();
     }
 
-    private void OnCheckForUpdatesItemMenuClicked(object sender, EventArgs e)
+    private async void OnCheckForUpdatesItemMenuClicked(object sender, EventArgs e)
     {
-        Process.Start(new ProcessStartInfo(SiteUrls.CreGithubReleasesUrl) { UseShellExecute = true });
+        await _model.CheckForUpdateAsync();
     }
 
     #endregion
 
-    #region Check For Updates Stuff (Move This... Later)
-
-    private async Task CheckForAppUpdate()
-    {
-        try
-        {
-            var currentVersion = CreAppConfig.VersionText;
-            var latestVersion = await GetLatestReleaseVersion(CreAppConfig.GitHubOrgName, CreAppConfig.GitHubRepoName);
-
-            _model.UpdateAvailable = IsUpdateAvailable(currentVersion, latestVersion);
-
-            if (_model.UpdateAvailable)
-            {
-                Log.Information($"SettingsWindow - A new version {latestVersion} is available!");
-            }
-        }
-        catch (Exception ex)
-        {
-            Log.Information($"SettingsWindow - Error checking for updates: " + ex.Message);
-        }
-    }
-
-    private static async Task<string> GetLatestReleaseVersion(string user, string repo)
-    {
-        using var client = new HttpClient();
-
-        // GitHub API requires a user-agent
-        client.DefaultRequestHeaders.Add("User-Agent", "request");
-
-        var url = $"https://api.github.com/repos/{user}/{repo}/releases/latest";
-        var response = await client.GetStringAsync(url);
-
-        using var jsonDoc = JsonDocument.Parse(response);
-
-        var root = jsonDoc.RootElement;
-        var tagName = root.GetProperty("tag_name").GetString();
-        return tagName; // 'tag_name' usually contains the version
-    }
-
-    private static bool IsUpdateAvailable(string currentVersion, string latestVersion)
-    {
-        var currentParts = currentVersion.Split('.');
-        var latestParts = latestVersion.Split('.');
-
-        // Compare each part of the version numbers
-        for (var i = 0; i < Math.Max(currentParts.Length, latestParts.Length); i++)
-        {
-            var currentPart = i < currentParts.Length ? int.Parse(currentParts[i]) : 0;
-            var latestPart = i < latestParts.Length ? int.Parse(latestParts[i]) : 0;
-
-            if (currentPart < latestPart) return true; // An update is available
-            if (currentPart > latestPart) return false; // Current version is newer (unlikely, but possible)
-        }
-
-        // Versions are equal, so no update is needed
-        return false;
-    }
-
-    #endregion
 
     #region Hotkey Stuff (Move This... Later)
 

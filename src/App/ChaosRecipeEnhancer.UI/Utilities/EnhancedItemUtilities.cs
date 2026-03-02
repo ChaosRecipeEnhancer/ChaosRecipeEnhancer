@@ -17,35 +17,42 @@ public static class EnhancedItemUtilities
         // iterate through each item in the provided list
         foreach (var item in unfilteredStashContents)
         {
-            // if it's not rare ignore item (could keep identified items if passed as true)
-            // maybe i could optimize here by preemptively removing all non-rare items
-            // in the calling request? idk if it would truly 'optimize' or if it would
-            // just offload the work to another service lol
-            if ((item.Identified && !Settings.Default.IncludeIdentifiedItemsEnabled) || item.FrameType != ItemFrameType.Rare)
-            {
-                continue;
-            }
-
-            // if the derived class is not what we're looking for
+            // The derived class is not what we're looking for
             // (think rare maps, rare jewels, etc... NOT 'gear')
             if (item.DerivedItemClass == null)
             {
                 continue;
             }
 
-            // if an item falls within the ilvl bounds for chaos recipe (requires ilvl 60+)
-            if (Settings.Default.ChaosRecipeTrackingEnabled && item.ItemLevel >= 60)
+            // Skip non-rare items always
+            if (item.FrameType != ItemFrameType.Rare)
             {
-                // simple check if item is in our tabs
-                // checks like this make me want to filter before we get here, save some cycles
-                filteredItems.Add(item);
+                continue;
             }
-            //else if an item falls within the ilvl bounds for regal recipe (requires ilvl 75 +)
-            else if (!Settings.Default.ChaosRecipeTrackingEnabled && item.ItemLevel >= 75)
+
+            // If the item is identified and the user has chosen to exclude identified items, skip it.
+            if (item.Identified && !Settings.Default.IncludeIdentifiedItemsEnabled)
             {
-                // simple check if item is in our tabs
-                // checks like this make me want to filter before we get here, save some cycles
-                filteredItems.Add(item);
+                continue;
+            }
+
+            var activeRecipeType = (RecipeType)Settings.Default.ActiveRecipeType;
+
+            switch (activeRecipeType)
+            {
+                case RecipeType.ChaosOrb:
+                    if (item.ItemLevel >= 60) filteredItems.Add(item);
+                    break;
+                case RecipeType.RegalOrb:
+                    if (item.ItemLevel >= 75) filteredItems.Add(item);
+                    break;
+                case RecipeType.OrbOfChance:
+                    if (item.ItemLevel >= 1 && item.ItemLevel <= 59) filteredItems.Add(item);
+                    break;
+                case RecipeType.ExaltedOrb:
+                    // Exalted Orb Recipe requires influenced rares with iLvl 60+.
+                    if (item.ItemLevel >= 60 && item.IsInfluenced) filteredItems.Add(item);
+                    break;
             }
         }
 

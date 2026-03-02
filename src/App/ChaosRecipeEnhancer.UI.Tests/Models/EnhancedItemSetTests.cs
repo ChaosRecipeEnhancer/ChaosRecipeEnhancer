@@ -1,4 +1,5 @@
 ﻿using ChaosRecipeEnhancer.UI.Models;
+using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Tests.Helpers;
 
 namespace ChaosRecipeEnhancer.UI.Tests.Models;
@@ -60,7 +61,8 @@ public class EnhancedItemSetTests
         }
 
         // Act
-        var result = itemSet.TryAddItem(item, !targetingChaos); // Use !targetingChaos to switch between recipes
+        var recipeType = targetingChaos ? RecipeType.ChaosOrb : RecipeType.RegalOrb;
+        var result = itemSet.TryAddItem(item, recipeType);
 
         // Assert
         result.Should().Be(expectedOutcome);
@@ -85,7 +87,7 @@ public class EnhancedItemSetTests
         itemSet.EmptyItemSlots.Remove(GameTerminology.Amulets);
 
         // Act
-        var result = itemSet.TryAddItem(item, false);
+        var result = itemSet.TryAddItem(item, RecipeType.ChaosOrb);
 
         // Assert
         result.Should().BeFalse();
@@ -99,7 +101,7 @@ public class EnhancedItemSetTests
         var item = EnhancedItemHelpers.GetTwoHandedItemModel();
 
         // Act
-        var result = itemSet.TryAddItem(item, false);
+        var result = itemSet.TryAddItem(item, RecipeType.ChaosOrb);
 
         // Assert
         result.Should().BeTrue();
@@ -118,7 +120,7 @@ public class EnhancedItemSetTests
         var item = EnhancedItemHelpers.GetOneHandedItemModel();
 
         // Act
-        var result = itemSet.TryAddItem(item, false);
+        var result = itemSet.TryAddItem(item, RecipeType.ChaosOrb);
 
         // Assert
         result.Should().BeTrue();
@@ -137,7 +139,7 @@ public class EnhancedItemSetTests
         var item = EnhancedItemHelpers.GetAmuletItemModel();
 
         // Act
-        var result = itemSet.TryAddItem(item, false);
+        var result = itemSet.TryAddItem(item, RecipeType.ChaosOrb);
 
         // Assert
         result.Should().BeTrue();
@@ -184,7 +186,7 @@ public class EnhancedItemSetTests
         var itemSet = new EnhancedItemSet();
         var item = EnhancedItemHelpers.GetItemWithXYAndTabIndex(ItemIconConstants.AmuletUrl, 1, 1);
         var item2 = EnhancedItemHelpers.GetItemWithXYAndTabIndex(ItemIconConstants.AmuletUrl, 4, 5);
-        itemSet.TryAddItem(item, false);
+        itemSet.TryAddItem(item, RecipeType.ChaosOrb);
 
         // Act
         var result = itemSet.GetItemDistance(item2);
@@ -200,7 +202,7 @@ public class EnhancedItemSetTests
         var itemSet = new EnhancedItemSet();
         var item = EnhancedItemHelpers.GetItemWithXYAndTabIndex(ItemIconConstants.AmuletUrl, 1, 1, 1);
         var item2 = EnhancedItemHelpers.GetItemWithXYAndTabIndex(ItemIconConstants.AmuletUrl, 4, 5, 3);
-        itemSet.TryAddItem(item, false);
+        itemSet.TryAddItem(item, RecipeType.ChaosOrb);
 
         // Act
         var result = itemSet.GetItemDistance(item2);
@@ -264,14 +266,13 @@ public class EnhancedItemSetTests
     public void OrderItemsForPicking_GivenItemsExist_ReturnsInCorrectOrder()
     {
         // Arrange
-        var notRegalRecipe = false;
         var itemSet = new EnhancedItemSet();
         var amulet = EnhancedItemHelpers.GetItemWithXYAndTabIndex(ItemIconConstants.AmuletUrl, 1, 1, 1);
         var bodyArmour = EnhancedItemHelpers.GetItemWithXYAndTabIndex(ItemIconConstants.BodyArmourUrl, 4, 5, 3);
         var gloves = EnhancedItemHelpers.GetItemWithXYAndTabIndex(ItemIconConstants.GlovesUrl, 2, 2, 2);
-        itemSet.TryAddItem(amulet, notRegalRecipe);
-        itemSet.TryAddItem(bodyArmour, notRegalRecipe);
-        itemSet.TryAddItem(gloves, notRegalRecipe);
+        itemSet.TryAddItem(amulet, RecipeType.ChaosOrb);
+        itemSet.TryAddItem(bodyArmour, RecipeType.ChaosOrb);
+        itemSet.TryAddItem(gloves, RecipeType.ChaosOrb);
 
         // Act
         itemSet.OrderItemsForPicking();

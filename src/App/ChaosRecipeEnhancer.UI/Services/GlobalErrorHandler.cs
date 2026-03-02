@@ -3,6 +3,7 @@ using Serilog;
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 
 namespace ChaosRecipeEnhancer.UI.Services;
 
@@ -13,6 +14,14 @@ public static class GlobalErrorHandler
 
     public static void Spawn(string content, string title, string preamble = null)
     {
+        // ErrorWindow is a WPF Window and requires an STA thread.
+        // In headless environments (CI, unit tests), just log the error instead.
+        if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
+        {
+            _log.Error("[{Title}] {Preamble} - {Content}", title, preamble, content);
+            return;
+        }
+
         var errorDialog = new ErrorWindow(title, content, preamble);
         errorDialog.ShowDialog();
     }
@@ -74,6 +83,24 @@ public static class GlobalErrorHandler
     }
 
     #endregion
+
+    #endregion
+
+    #region Network Error Handling
+
+    public static void HandleNetworkError(HttpRequestException ex)
+    {
+        _log.Error($"Network error occurred: {ex.Message}");
+        if (!_errorAlreadyShown)
+        {
+            Spawn(
+                ex.Message,
+                "Error: Network Connection",
+                "A network error occurred while trying to reach the Path of Exile API. Please check your internet connection and try again. If this issue persists, the PoE servers may be temporarily unavailable."
+            );
+        }
+        _errorAlreadyShown = true;
+    }
 
     #endregion
 
