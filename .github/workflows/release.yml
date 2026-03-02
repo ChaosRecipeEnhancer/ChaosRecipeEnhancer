@@ -64,11 +64,13 @@ jobs:
       # ── Build ─────────────────────────────────────────────────────────
       - name: Restore
         if: steps.check.outputs.SKIP != 'true'
-        run: dotnet restore ChaosRecipeEnhancer.sln
+        run: |
+          dotnet restore src/App/ChaosRecipeEnhancer.UI/ChaosRecipeEnhancer.UI.csproj
+          dotnet restore src/App/ChaosRecipeEnhancer.UI.Tests/ChaosRecipeEnhancer.UI.Tests.csproj
 
       - name: Test
         if: steps.check.outputs.SKIP != 'true'
-        run: dotnet test ChaosRecipeEnhancer.sln -c Release --verbosity normal
+        run: dotnet test src/App/ChaosRecipeEnhancer.UI.Tests/ChaosRecipeEnhancer.UI.Tests.csproj -c Release --verbosity normal
 
       - name: Publish
         if: steps.check.outputs.SKIP != 'true'

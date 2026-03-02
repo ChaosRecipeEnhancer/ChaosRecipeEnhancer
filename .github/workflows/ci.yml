@@ -21,10 +21,14 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore
-        run: dotnet restore ChaosRecipeEnhancer.sln
+        run: |
+          dotnet restore src/App/ChaosRecipeEnhancer.UI/ChaosRecipeEnhancer.UI.csproj
+          dotnet restore src/App/ChaosRecipeEnhancer.UI.Tests/ChaosRecipeEnhancer.UI.Tests.csproj
 
       - name: Build
-        run: dotnet build ChaosRecipeEnhancer.sln -c Release --no-restore
+        run: |
+          dotnet build src/App/ChaosRecipeEnhancer.UI/ChaosRecipeEnhancer.UI.csproj -c Release --no-restore
+          dotnet build src/App/ChaosRecipeEnhancer.UI.Tests/ChaosRecipeEnhancer.UI.Tests.csproj -c Release --no-restore
 
       - name: Test
-        run: dotnet test ChaosRecipeEnhancer.sln -c Release --no-build --verbosity normal
+        run: dotnet test src/App/ChaosRecipeEnhancer.UI.Tests/ChaosRecipeEnhancer.UI.Tests.csproj -c Release --no-build --verbosity normal
