@@ -43,8 +43,14 @@ public partial class StashTabOverlayWindow : Window
 
         if (wasOverlaySettingsModified)
         {
-            // Retrieve the screen based on the previously saved index
-            screen = System.Windows.Forms.Screen.AllScreens[overlaySessionScreen];
+            var allScreens = System.Windows.Forms.Screen.AllScreens;
+
+            // Validate the saved screen index is still within bounds
+            // (e.g. user may have disconnected a monitor since saving)
+            if (overlaySessionScreen >= 0 && overlaySessionScreen < allScreens.Length)
+            {
+                screen = allScreens[overlaySessionScreen];
+            }
         }
         
 
