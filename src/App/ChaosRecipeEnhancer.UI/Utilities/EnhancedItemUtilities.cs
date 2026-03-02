@@ -17,18 +17,21 @@ public static class EnhancedItemUtilities
         // iterate through each item in the provided list
         foreach (var item in unfilteredStashContents)
         {
-            // if it's not rare ignore item (could keep identified items if passed as true)
-            // maybe i could optimize here by preemptively removing all non-rare items
-            // in the calling request? idk if it would truly 'optimize' or if it would
-            // just offload the work to another service lol
-            if ((item.Identified && !Settings.Default.IncludeIdentifiedItemsEnabled) || item.FrameType != ItemFrameType.Rare)
+            // The derived class is not what we're looking for
+            // (think rare maps, rare jewels, etc... NOT 'gear')
+            if (item.DerivedItemClass == null)
             {
                 continue;
             }
 
-            // if the derived class is not what we're looking for
-            // (think rare maps, rare jewels, etc... NOT 'gear')
-            if (item.DerivedItemClass == null)
+            // Skip non-rare items always
+            if (item.FrameType != ItemFrameType.Rare)
+            {
+                continue;
+            }
+
+            // If the item is identified and the user has chosen to exclude identified items, skip it.
+            if (item.Identified && !Settings.Default.IncludeIdentifiedItemsEnabled)
             {
                 continue;
             }
