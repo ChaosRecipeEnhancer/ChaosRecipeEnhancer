@@ -266,7 +266,7 @@ public class FilterManipulationService : IFilterManipulationService
         var color = hexColorSetting;
         var colorList = new List<int>();
 
-        if (color != "")
+        if (!string.IsNullOrEmpty(color) && color.Length >= 9)
         {
             a = Convert.ToByte(color.Substring(1, 2), 16);
             r = Convert.ToByte(color.Substring(3, 2), 16);
