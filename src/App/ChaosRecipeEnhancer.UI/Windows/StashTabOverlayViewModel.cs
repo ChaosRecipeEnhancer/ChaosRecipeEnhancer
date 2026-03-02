@@ -16,11 +16,6 @@ internal sealed class StashTabOverlayViewModel : CreViewModelBase
         set => SetProperty(ref _isEditing, value);
     }
 
-    public void PlayItemSetStateChangedNotificationSound()
-    {
-        _notificationSoundService.PlayNotificationSound(NotificationSoundType.ItemSetStateChanged);
-    }
-
     public void PlaySetPickingCompletedNotificationSound()
     {
         _notificationSoundService.PlayNotificationSound(NotificationSoundType.SetPickingComplete);

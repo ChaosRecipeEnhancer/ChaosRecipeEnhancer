@@ -713,9 +713,17 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
                 // generate item sets for the chosen recipe (chaos or regal)
                 GlobalItemSetManagerState.GenerateItemSets((RecipeType)Settings.Default.ActiveRecipeType);
 
+                // play notification sound if any individual item type reached its threshold
+                var itemStateChanged = HasAnyItemTypeReachedThreshold();
+                if (itemStateChanged)
+                {
+                    PlayItemSetStateChangedNotificationSound();
+                }
+
                 // update the UI accordingly
                 UpdateDisplay();
-                UpdateStashButtonAndWarningMessage();
+                // skip the sound in UpdateStashButtonAndWarningMessage since we already handled it above
+                UpdateStashButtonAndWarningMessage(playNotificationSound: !itemStateChanged);
 
                 // enforce cooldown on fetch button to reduce chances of rate limiting
                 TriggerSetTrackerFetchCooldown(FetchCooldownSeconds);
@@ -1047,6 +1055,26 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     public void PlayItemSetStateChangedNotificationSound()
     {
         _notificationSoundService.PlayNotificationSound(Enums.NotificationSoundType.ItemSetStateChanged);
+    }
+
+    /// <summary>
+    /// Checks whether any individual item type has reached or exceeded the full set threshold.
+    /// Used to trigger the item set state changed notification sound after a fetch.
+    /// </summary>
+    private bool HasAnyItemTypeReachedThreshold()
+    {
+        var threshold = FullSetThreshold;
+
+        return GlobalItemSetManagerState.AmuletsAmount >= threshold
+            || GlobalItemSetManagerState.BeltsAmount >= threshold
+            || GlobalItemSetManagerState.ChestsAmount >= threshold
+            || GlobalItemSetManagerState.GlovesAmount >= threshold
+            || GlobalItemSetManagerState.HelmetsAmount >= threshold
+            || GlobalItemSetManagerState.BootsAmount >= threshold
+            // rings need pairs (2 per set)
+            || GlobalItemSetManagerState.RingsAmount >= threshold * 2
+            // weapons: 1-handers count as half, 2-handers count as full
+            || (GlobalItemSetManagerState.WeaponsSmallAmount / 2) + GlobalItemSetManagerState.WeaponsBigAmount >= threshold;
     }
 
     public void TriggerSetTrackerFetchCooldown(int secondsToWait)
