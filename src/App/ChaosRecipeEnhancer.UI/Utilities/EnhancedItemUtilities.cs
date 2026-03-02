@@ -46,6 +46,10 @@ public static class EnhancedItemUtilities
                 case RecipeType.OrbOfChance:
                     if (item.ItemLevel >= 1 && item.ItemLevel <= 59) filteredItems.Add(item);
                     break;
+                case RecipeType.ExaltedOrb:
+                    // Exalted Orb Recipe requires influenced rares with iLvl 60+.
+                    if (item.ItemLevel >= 60 && item.IsInfluenced) filteredItems.Add(item);
+                    break;
             }
         }
 

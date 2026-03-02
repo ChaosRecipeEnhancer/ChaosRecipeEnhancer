@@ -72,9 +72,13 @@ public class FilterManipulationService : IFilterManipulationService
         var result = string.Empty;
 
         // 'Base' Stuff
-        // Ensure no influence
+        // Ensure influence based on recipe type
         // Ensure item is rare
-        result += StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "HasInfluence None";
+        var activeRecipeType = (RecipeType)Settings.Default.ActiveRecipeType;
+        var influenceLine = activeRecipeType == RecipeType.ExaltedOrb
+            ? StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "HasInfluence Shaper Elder Crusader Redeemer Hunter Warlord"
+            : StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "HasInfluence None";
+        result += influenceLine;
         result = result + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter + "Rarity Rare" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
 
         // Identified Item Setting
@@ -82,7 +86,6 @@ public class FilterManipulationService : IFilterManipulationService
 
 
         // Adding ItemLevel section
-        var activeRecipeType = (RecipeType)Settings.Default.ActiveRecipeType;
         switch (activeRecipeType)
         {
             case RecipeType.ChaosOrb:
@@ -98,6 +101,9 @@ public class FilterManipulationService : IFilterManipulationService
             case RecipeType.OrbOfChance:
                 result += "ItemLevel >= 1" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
                 result += "ItemLevel <= 59" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                break;
+            case RecipeType.ExaltedOrb:
+                result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
                 break;
         }
 

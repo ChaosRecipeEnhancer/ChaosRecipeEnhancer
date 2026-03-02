@@ -7,6 +7,7 @@ using ChaosRecipeEnhancer.UI.Utilities;
 
 namespace ChaosRecipeEnhancer.UI.Tests.Utilities;
 
+[Collection("EnhancedItemUtilities")]
 public class EnhancedItemUtilitiesTests
 {
     public EnhancedItemUtilitiesTests()

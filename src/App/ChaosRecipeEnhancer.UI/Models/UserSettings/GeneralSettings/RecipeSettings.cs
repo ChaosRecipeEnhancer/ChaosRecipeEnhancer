@@ -33,6 +33,19 @@ public partial class UserSettings : IUserSettings
         }
     }
 
+    public int TargetInfluenceType
+    {
+        get => Settings.Default.TargetInfluenceType;
+        set
+        {
+            if (Settings.Default.TargetInfluenceType != value)
+            {
+                Settings.Default.TargetInfluenceType = value;
+                Save();
+            }
+        }
+    }
+
     public bool IncludeIdentifiedItemsEnabled
     {
         get => Settings.Default.IncludeIdentifiedItemsEnabled;

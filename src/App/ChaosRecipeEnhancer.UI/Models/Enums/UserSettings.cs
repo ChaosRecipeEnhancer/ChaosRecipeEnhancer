@@ -123,5 +123,6 @@ public enum RecipeType
 {
     ChaosOrb,
     RegalOrb,
-    OrbOfChance
+    OrbOfChance,
+    ExaltedOrb
 }

@@ -6,7 +6,7 @@ using System.Linq;
 namespace ChaosRecipeEnhancer.UI.Models;
 
 /// <summary>
-/// Represents a set of items for a vendor recipe (Chaos, Regal, or Orb of Chance) in Path of Exile.
+/// Represents a set of items for a vendor recipe (Chaos, Regal, Orb of Chance, or Exalted Orb) in Path of Exile.
 /// Ensures a complete set can be formed with one item per slot, with exceptions for rings and one-handed weapons.
 /// </summary>
 public class EnhancedItemSet
@@ -48,6 +48,18 @@ public class EnhancedItemSet
     public bool IsOrbOfChanceRecipeEligible => Items.Any(item => item.IsOrbOfChanceRecipeEligible);
 
     /// <summary>
+    /// Gets a value indicating whether all items in this set have the required influence type for the Exalted Orb recipe.
+    /// Exalted Orb Recipe requires all items to be influenced with the same influence type and iLvl 60+.
+    /// </summary>
+    public bool IsExaltedRecipeEligible => RequiredInfluenceType != InfluenceType.None &&
+        Items.All(item => item.HasInfluenceType(RequiredInfluenceType) && item.ItemLevel >= 60);
+
+    /// <summary>
+    /// Gets or sets the required influence type for this set when building Exalted Orb recipe sets.
+    /// </summary>
+    public InfluenceType RequiredInfluenceType { get; set; } = InfluenceType.None;
+
+    /// <summary>
     /// Gets or sets the collection of items currently in this set.
     /// </summary>
     public List<EnhancedItem> Items { get; set; } = [];
@@ -79,6 +91,11 @@ public class EnhancedItemSet
             case RecipeType.OrbOfChance:
                 // Orb of Chance Recipe requires at least one item between 1 and 59, but all items can be any level.
                 if (!(item.ItemLevel.Value >= 1 && item.ItemLevel.Value <= 59)) return false;
+                break;
+            case RecipeType.ExaltedOrb:
+                // Exalted Orb Recipe requires influenced items with iLvl 60+, all sharing the same influence type.
+                if (!(item.ItemLevel.Value >= 60)) return false;
+                if (RequiredInfluenceType != InfluenceType.None && !item.HasInfluenceType(RequiredInfluenceType)) return false;
                 break;
         }
 

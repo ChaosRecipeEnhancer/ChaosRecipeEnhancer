@@ -443,6 +443,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     public bool NeedsFetching => GlobalItemSetManagerState.NeedsFetching;
     public bool NeedsLowerLevel => GlobalItemSetManagerState.NeedsLowerLevel;
     public int FullSets => GlobalItemSetManagerState.CompletedSetCount;
+    public Enums.InfluenceType ActiveInfluenceType => GlobalItemSetManagerState.ActiveInfluenceType;
 
     #region Item Amount and Visibility Properties
 
@@ -842,6 +843,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
                 {
                     RecipeType.OrbOfChance => set.IsOrbOfChanceRecipeEligible,
                     RecipeType.ChaosOrb => set.IsChaosRecipeEligible,
+                    RecipeType.ExaltedOrb => set.IsExaltedRecipeEligible,
                     _ => set.IsRegalRecipeEligible
                 };
 
@@ -864,7 +866,13 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     {
         var message = string.Empty;
         var activeRecipeType = (RecipeType)Settings.Default.ActiveRecipeType;
-        var requiresLowLevelItems = activeRecipeType != RecipeType.RegalOrb;
+        var requiresLowLevelItems = activeRecipeType != RecipeType.RegalOrb && activeRecipeType != RecipeType.ExaltedOrb;
+
+        // ExaltedOrb doesn't use level-based messages
+        if (activeRecipeType == RecipeType.ExaltedOrb)
+        {
+            return "Need more influenced items";
+        }
 
         if ((highLevelItemsNeeded > lowLevelItemsNeeded && requiresLowLevelItems) &&
             _userSettings.DoNotPreserveLowItemLevelGear)
@@ -1033,6 +1041,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
         OnPropertyChanged(nameof(WarningMessage));
         OnPropertyChanged(nameof(FetchButtonEnabled));
         OnPropertyChanged(nameof(ShowAmountNeeded));
+        OnPropertyChanged(nameof(ActiveInfluenceType));
     }
 
     public void PlayItemSetStateChangedNotificationSound()
