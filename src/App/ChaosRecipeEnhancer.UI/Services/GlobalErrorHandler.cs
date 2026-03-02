@@ -77,6 +77,24 @@ public static class GlobalErrorHandler
 
     #endregion
 
+    #region Network Error Handling
+
+    public static void HandleNetworkError(HttpRequestException ex)
+    {
+        _log.Error($"Network error occurred: {ex.Message}");
+        if (!_errorAlreadyShown)
+        {
+            Spawn(
+                ex.Message,
+                "Error: Network Connection",
+                "A network error occurred while trying to reach the Path of Exile API. Please check your internet connection and try again. If this issue persists, the PoE servers may be temporarily unavailable."
+            );
+        }
+        _errorAlreadyShown = true;
+    }
+
+    #endregion
+
     #region Utility Methods
 
     private static int GetRetryAfterSeconds(HttpResponseMessage response)
