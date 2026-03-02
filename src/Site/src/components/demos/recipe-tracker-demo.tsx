@@ -174,7 +174,7 @@ export function RecipeTrackerDemo() {
 
   return (
     <div
-      className="flex w-full flex-col items-center justify-center py-8"
+      className="flex w-full flex-col items-center justify-center py-4 md:py-8"
       ref={containerRef}
     >
       {/* Set Complete badge — reserved space above tracker, no layout shift */}

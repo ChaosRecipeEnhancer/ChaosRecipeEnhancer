@@ -71,11 +71,11 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center overflow-hidden">
       {/* Section 1: Hero */}
-      <section className="relative flex w-full max-w-6xl flex-col items-center px-6 pt-32 pb-24 text-center">
+      <section className="relative flex w-full max-w-6xl flex-col items-center px-6 pt-20 pb-16 text-center md:pt-32 md:pb-24">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cre-bg-float/20 via-cre-bg-deepest to-cre-bg-deepest" />
 
         <FadeIn delay={0.1}>
-          <div className="relative mb-8 h-32 w-32">
+          <div className="relative mb-6 h-24 w-24 md:mb-8 md:h-32 md:w-32">
             <Image
               alt="Chaos Recipe Enhancer Logo"
               className="object-contain drop-shadow-2xl"
@@ -87,7 +87,7 @@ export default async function Home() {
         </FadeIn>
 
         <FadeIn delay={0.2}>
-          <h1 className="mb-6 font-bold text-4xl text-cre-text tracking-tight md:text-5xl lg:text-6xl">
+          <h1 className="mb-4 font-bold text-3xl text-cre-text tracking-tight md:mb-6 md:text-5xl lg:text-6xl">
             Chaos Recipe Enhancer
           </h1>
         </FadeIn>
@@ -96,7 +96,7 @@ export default async function Home() {
           <p className="mb-4 font-medium text-cre-text-secondary text-xl md:text-2xl">
             Streamline your <RecipeTextCycle /> recipe gains.
           </p>
-          <p className="mx-auto mb-10 max-w-2xl text-balance text-cre-text-secondary text-lg">
+          <p className="mx-auto mb-8 max-w-2xl text-balance text-cre-text-secondary text-lg md:mb-10">
             Track chaos, regal, exalted & chance recipes. Smart stash overlays.
             Automatic loot filter manipulation.
           </p>
@@ -153,7 +153,7 @@ export default async function Home() {
 
       {/* Section 2: The Problem */}
       <section className="w-full border-cre-border-subtle border-t border-b">
-        <div className="mx-auto max-w-6xl px-6 pt-24 pb-8 text-center">
+        <div className="mx-auto max-w-6xl px-6 pt-16 pb-6 text-center md:pt-24 md:pb-8">
           <FadeIn>
             <h2 className="mb-4 font-bold text-3xl text-cre-text md:text-4xl">
               The problem with Chaos Recipe
@@ -167,16 +167,16 @@ export default async function Home() {
       </section>
 
       {/* Section 3: See it in action */}
-      <section className="w-full max-w-6xl px-6 py-24">
+      <section className="w-full max-w-6xl px-6 py-16 md:py-24">
         <FadeIn>
-          <h2 className="mb-16 text-center font-bold text-3xl text-cre-text md:text-4xl">
+          <h2 className="mb-10 text-center font-bold text-3xl text-cre-text md:mb-16 md:text-4xl">
             See it in action
           </h2>
         </FadeIn>
 
-        <div className="space-y-32">
+        <div className="space-y-16 md:space-y-32">
           {/* Demo 1: Item Drops */}
-          <div className="flex flex-col items-center gap-12 md:flex-row md:gap-16">
+          <div className="flex flex-col-reverse items-center gap-6 md:flex-row md:gap-16">
             <div className="w-full md:w-1/2">
               <ItemDropDemo />
             </div>
@@ -193,7 +193,7 @@ export default async function Home() {
           </div>
 
           {/* Demo 2: Stash Highlight */}
-          <div className="flex flex-col-reverse items-center gap-12 md:flex-row md:gap-16">
+          <div className="flex flex-col items-center gap-6 md:flex-row md:gap-16">
             <div className="w-full max-w-sm md:w-1/2">
               <h3 className="mb-4 font-bold text-2xl text-cre-text">
                 Smart Item Picking
@@ -209,7 +209,7 @@ export default async function Home() {
           </div>
 
           {/* Demo 3: Recipe Tracker */}
-          <div className="flex flex-col items-center gap-12 md:flex-row md:gap-16">
+          <div className="flex flex-col-reverse items-center gap-6 md:flex-row md:gap-16">
             <div className="w-full md:w-1/2">
               <RecipeTrackerDemo />
             </div>
@@ -226,7 +226,7 @@ export default async function Home() {
           </div>
 
           {/* Demo 4: Filter Style */}
-          <div className="flex flex-col-reverse items-center gap-12 md:flex-row md:gap-16">
+          <div className="flex flex-col items-center gap-6 md:flex-row md:gap-16">
             <div className="w-full max-w-sm md:w-1/2">
               <h3 className="mb-4 font-bold text-2xl text-cre-text">
                 Extensive Loot Filter Customization
@@ -252,7 +252,7 @@ export default async function Home() {
           </div>
 
           {/* Demo 5: League Start Value */}
-          <div className="flex flex-col items-center gap-12 md:flex-row md:gap-16">
+          <div className="flex flex-col-reverse items-center gap-6 md:flex-row md:gap-16">
             <div className="w-full md:w-1/2">
               <LeagueStartDemo />
             </div>
@@ -274,7 +274,7 @@ export default async function Home() {
 
           {/* YouTube Video */}
           <FadeIn>
-            <div className="flex flex-col items-center border-cre-border-subtle border-t pt-16">
+            <div className="flex flex-col items-center border-cre-border-subtle border-t pt-10 md:pt-16">
               <Link
                 className="group relative block w-full max-w-4xl overflow-hidden rounded-xl border border-cre-border bg-cre-bg-deep shadow-2xl"
                 href="https://youtu.be/W_C4Nhla-Xg"
@@ -310,183 +310,10 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Section 4: Features Grid */}
-      <section className="w-full max-w-6xl border-cre-border-subtle border-t px-6 py-24">
-        <FadeIn>
-          <h2 className="mb-16 text-center font-bold text-3xl text-cre-text md:text-4xl">
-            Everything you need to farm efficiently
-          </h2>
-        </FadeIn>
-
-        <StaggerChildren className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <StaggerItem className="group rounded-xl border border-cre-border bg-cre-bg-container p-8 transition-colors hover:border-cre-border-hover">
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-cre-bg-float text-cre-gold transition-transform group-hover:scale-110">
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-            </div>
-            <h3 className="mb-3 font-semibold text-cre-text text-xl">
-              Recipe Tracking
-            </h3>
-            <p className="text-cre-text-secondary leading-relaxed">
-              Track chaos, regal, exalted & chance orb recipes. See exactly
-              which items you need at a glance.
-            </p>
-          </StaggerItem>
-
-          <StaggerItem className="group rounded-xl border border-cre-border bg-cre-bg-container p-8 transition-colors hover:border-cre-border-hover">
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-cre-bg-float text-cre-accent transition-transform group-hover:scale-110">
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-            </div>
-            <h3 className="mb-3 font-semibold text-cre-text text-xl">
-              Smart Stash Overlay
-            </h3>
-            <p className="text-cre-text-secondary leading-relaxed">
-              Highlights items in optimal pick order. Fit 2 full sets per
-              inventory when vendoring.
-            </p>
-          </StaggerItem>
-
-          <StaggerItem className="group rounded-xl border border-cre-border bg-cre-bg-container p-8 transition-colors hover:border-cre-border-hover">
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-cre-bg-float text-cre-gold transition-transform group-hover:scale-110">
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-            </div>
-            <h3 className="mb-3 font-semibold text-cre-text text-xl">
-              Loot Filter Manipulation
-            </h3>
-            <p className="text-cre-text-secondary leading-relaxed">
-              Automatically modifies your offline loot filter as recipe needs
-              change. FilterBlade-inspired style editor.
-            </p>
-          </StaggerItem>
-
-          <StaggerItem className="group rounded-xl border border-cre-border bg-cre-bg-container p-8 transition-colors hover:border-cre-border-hover">
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-cre-bg-float text-cre-accent transition-transform group-hover:scale-110">
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-            </div>
-            <h3 className="mb-3 font-semibold text-cre-text text-xl">
-              Secure OAuth
-            </h3>
-            <p className="text-cre-text-secondary leading-relaxed">
-              2-click secure authentication via Path of Exile. No credentials
-              stored locally.
-            </p>
-          </StaggerItem>
-
-          <StaggerItem className="group rounded-xl border border-cre-border bg-cre-bg-container p-8 transition-colors hover:border-cre-border-hover">
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-cre-bg-float text-cre-gold transition-transform group-hover:scale-110">
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-            </div>
-            <h3 className="mb-3 font-semibold text-cre-text text-xl">
-              Auto-Fetch
-            </h3>
-            <p className="text-cre-text-secondary leading-relaxed">
-              Automatically fetches remaining items when you join a new
-              instance. Built-in rate limiting.
-            </p>
-          </StaggerItem>
-
-          <StaggerItem className="group rounded-xl border border-cre-border bg-cre-bg-container p-8 transition-colors hover:border-cre-border-hover">
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-cre-bg-float text-cre-accent transition-transform group-hover:scale-110">
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-            </div>
-            <h3 className="mb-3 font-semibold text-cre-text text-xl">
-              Customizable Hotkeys
-            </h3>
-            <p className="text-cre-text-secondary leading-relaxed">
-              Bind any key to toggle overlays, start/stop tracking, and control
-              fetching.
-            </p>
-          </StaggerItem>
-        </StaggerChildren>
-      </section>
-
       {/* Section 4: Open Source & Community */}
-      <section className="w-full max-w-6xl border-cre-border-subtle border-t px-6 py-24">
+      <section className="w-full max-w-6xl border-cre-border-subtle border-t px-6 py-16 md:py-24">
         <FadeIn>
-          <div className="mb-16 text-center">
+          <div className="mb-10 text-center md:mb-16">
             <h2 className="mb-6 font-bold text-3xl text-cre-text md:text-4xl">
               Free & Open Source
             </h2>
@@ -500,7 +327,7 @@ export default async function Home() {
         <StaggerChildren className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StaggerItem>
             <Link
-              className="group flex flex-col items-center rounded-xl border border-cre-border bg-cre-bg-container p-8 transition-colors hover:border-cre-border-hover"
+              className="group flex flex-col items-center rounded-xl border border-cre-border bg-cre-bg-container p-6 transition-colors hover:border-cre-border-hover md:p-8"
               href="https://discord.gg/hy5xSgw3au"
               rel="noopener noreferrer"
               target="_blank"
@@ -523,7 +350,7 @@ export default async function Home() {
 
           <StaggerItem>
             <Link
-              className="group flex flex-col items-center rounded-xl border border-cre-border bg-cre-bg-container p-8 transition-colors hover:border-cre-border-hover"
+              className="group flex flex-col items-center rounded-xl border border-cre-border bg-cre-bg-container p-6 transition-colors hover:border-cre-border-hover md:p-8"
               href="https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer"
               rel="noopener noreferrer"
               target="_blank"
@@ -546,7 +373,7 @@ export default async function Home() {
 
           <StaggerItem>
             <Link
-              className="group flex flex-col items-center rounded-xl border border-cre-border bg-cre-bg-container p-8 transition-colors hover:border-cre-border-hover"
+              className="group flex flex-col items-center rounded-xl border border-cre-border bg-cre-bg-container p-6 transition-colors hover:border-cre-border-hover md:p-8"
               href="https://youtu.be/W_C4Nhla-Xg"
               rel="noopener noreferrer"
               target="_blank"
@@ -569,7 +396,7 @@ export default async function Home() {
 
           <StaggerItem>
             <Link
-              className="group flex flex-col items-center rounded-xl border border-cre-border bg-cre-bg-container p-8 transition-colors hover:border-cre-border-hover"
+              className="group flex flex-col items-center rounded-xl border border-cre-border bg-cre-bg-container p-6 transition-colors hover:border-cre-border-hover md:p-8"
               href="https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS"
               rel="noopener noreferrer"
               target="_blank"
@@ -593,16 +420,16 @@ export default async function Home() {
       </section>
 
       {/* Section 5: Quick Start */}
-      <section className="w-full max-w-4xl border-cre-border-subtle border-t px-6 py-24">
+      <section className="w-full max-w-4xl border-cre-border-subtle border-t px-6 py-16 md:py-24">
         <FadeIn>
-          <h2 className="mb-16 text-center font-bold text-3xl text-cre-text md:text-4xl">
+          <h2 className="mb-10 text-center font-bold text-3xl text-cre-text md:mb-16 md:text-4xl">
             Get Started in 2 Steps
           </h2>
         </FadeIn>
 
         <div className="space-y-8">
           <FadeIn delay={0.1}>
-            <div className="flex items-start gap-6 rounded-xl border border-cre-border bg-cre-bg-container p-8">
+            <div className="flex items-start gap-4 rounded-xl border border-cre-border bg-cre-bg-container p-6 md:gap-6 md:p-8">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cre-bg-float font-bold text-cre-gold text-xl">
                 1
               </div>
@@ -641,7 +468,7 @@ export default async function Home() {
           </FadeIn>
 
           <FadeIn delay={0.2}>
-            <div className="flex items-start gap-6 rounded-xl border border-cre-border bg-cre-bg-container p-8">
+            <div className="flex items-start gap-4 rounded-xl border border-cre-border bg-cre-bg-container p-6 md:gap-6 md:p-8">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cre-bg-float font-bold text-cre-accent text-xl">
                 2
               </div>
@@ -681,7 +508,7 @@ export default async function Home() {
         </div>
 
         <FadeIn delay={0.3}>
-          <p className="mt-12 text-center text-cre-text-muted text-sm">
+          <p className="mt-8 text-center text-cre-text-muted text-sm md:mt-12">
             System requirements: Windows 10/11 · .NET 8 · Windowed or Borderless
             Fullscreen
           </p>
