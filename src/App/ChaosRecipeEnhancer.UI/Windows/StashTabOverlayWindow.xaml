@@ -93,7 +93,7 @@
                                             BorderBrush="Gainsboro">
 
                                             <Border.Background>
-                                                <SolidColorBrush Color="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabItem}}, Path=Header.DataContext.TabHeaderColor.Color}" />
+                                                <SolidColorBrush Color="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabItem}}, Path=Header.DataContext.TabHeaderColor.Color, FallbackValue=Transparent}" />
                                             </Border.Background>
 
                                                 <ContentPresenter
