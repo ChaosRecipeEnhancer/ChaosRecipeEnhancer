@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ChaosRecipeEnhancer.UI.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ChaosRecipeEnhancer.UI.Models;
 
 /// <summary>
-/// Represents a set of items for the Chaos or Regal vendor recipe in Path of Exile.
+/// Represents a set of items for a vendor recipe (Chaos, Regal, Orb of Chance, or Exalted Orb) in Path of Exile.
 /// Ensures a complete set can be formed with one item per slot, with exceptions for rings and one-handed weapons.
 /// </summary>
 public class EnhancedItemSet
@@ -41,6 +42,24 @@ public class EnhancedItemSet
     public bool IsRegalRecipeEligible => Items.All(Item => Item.IsRegalRecipeEligible);
 
     /// <summary>
+    /// Gets a value indicating whether this set contains at least one item eligible for the Orb of Chance recipe.
+    /// Orb of Chance Recipe Item Sets only require 1 of their items to be between 1 and 59; the rest can be any level.
+    /// </summary>
+    public bool IsOrbOfChanceRecipeEligible => Items.Any(item => item.IsOrbOfChanceRecipeEligible);
+
+    /// <summary>
+    /// Gets a value indicating whether all items in this set have the required influence type for the Exalted Orb recipe.
+    /// Exalted Orb Recipe requires all items to be influenced with the same influence type and iLvl 60+.
+    /// </summary>
+    public bool IsExaltedRecipeEligible => RequiredInfluenceType != InfluenceType.None &&
+        Items.All(item => item.HasInfluenceType(RequiredInfluenceType) && item.ItemLevel >= 60);
+
+    /// <summary>
+    /// Gets or sets the required influence type for this set when building Exalted Orb recipe sets.
+    /// </summary>
+    public InfluenceType RequiredInfluenceType { get; set; } = InfluenceType.None;
+
+    /// <summary>
     /// Gets or sets the collection of items currently in this set.
     /// </summary>
     public List<EnhancedItem> Items { get; set; } = [];
@@ -54,21 +73,30 @@ public class EnhancedItemSet
     /// Attempts to add an item to the set if it is needed for the recipe being targeted.
     /// </summary>
     /// <param name="item">The item to add.</param>
-    /// <param name="regalRecipe">Whether the Regal recipe is being targeted.</param>
+    /// <param name="recipeType">The recipe type being targeted.</param>
     /// <returns><c>true</c> if the item was added; otherwise, <c>false</c>.</returns>
-    public bool TryAddItem(EnhancedItem item, bool regalRecipe)
+    public bool TryAddItem(EnhancedItem item, RecipeType recipeType)
     {
-        // If we're targeting a Regal Recipe, we need to ensure all items are 75 or higher.
-        if (regalRecipe)
+        // Validate item level based on recipe type
+        switch (recipeType)
         {
-            // If the item is not eligible for the Regal Recipe, we can't add it.
-            if (!item.IsRegalRecipeEligible) return false;
-        }
-        // If we're targeting a Chaos Recipe, we need to ensure at least one item is between 60 and 74.
-        else
-        {
-            // If the item is not eligible for the Chaos Recipe, we can't add it.
-            if (!(item.ItemLevel.Value >= 60)) return false;
+            case RecipeType.RegalOrb:
+                // Regal Recipe requires all items to be 75 or higher.
+                if (!item.IsRegalRecipeEligible) return false;
+                break;
+            case RecipeType.ChaosOrb:
+                // Chaos Recipe requires at least one item between 60 and 74, but all items must be 60+.
+                if (!(item.ItemLevel.Value >= 60)) return false;
+                break;
+            case RecipeType.OrbOfChance:
+                // Orb of Chance Recipe requires at least one item between 1 and 59, but all items can be any level.
+                if (!(item.ItemLevel.Value >= 1 && item.ItemLevel.Value <= 59)) return false;
+                break;
+            case RecipeType.ExaltedOrb:
+                // Exalted Orb Recipe requires influenced items with iLvl 60+, all sharing the same influence type.
+                if (!(item.ItemLevel.Value >= 60)) return false;
+                if (RequiredInfluenceType != InfluenceType.None && !item.HasInfluenceType(RequiredInfluenceType)) return false;
+                break;
         }
 
         if (!EmptyItemSlots.Contains(item.DerivedItemClass))

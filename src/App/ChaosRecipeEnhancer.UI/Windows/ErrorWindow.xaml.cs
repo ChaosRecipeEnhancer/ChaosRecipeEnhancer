@@ -2,6 +2,7 @@
 using ChaosRecipeEnhancer.UI.Models.Config;
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Documents;
 
@@ -66,7 +67,22 @@ public partial class ErrorWindow
             (_preamble is not null ? $"Error Context:\n```\n{_preamble}\n```\n" : string.Empty) +
             $"Error Details:\n```\n{_messageToCopy}\n```";
 
-        Clipboard.SetText(template);
+        try
+        {
+            Clipboard.SetText(template);
+        }
+        catch (ExternalException)
+        {
+            MessageBox.Show(
+                "Could not access the clipboard. Another application may be using it.\n\n" +
+                "Please close any clipboard managers and try again.",
+                "Clipboard Access Failed",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning
+            );
+
+            return;
+        }
 
         MessageBox.Show("Error details copied to clipboard.", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
     }

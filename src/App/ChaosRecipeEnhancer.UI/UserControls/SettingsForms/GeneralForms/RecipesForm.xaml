@@ -2,17 +2,17 @@
     x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms.RecipesForm"
     x:ClassModifier="public"
     xmlns:forms="clr-namespace:ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms"
+    xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
     mc:Ignorable="d"
     Background="#202020"
     d:DataContext="{d:DesignInstance Type={x:Type forms:RecipesFormViewModel}}">
 
     <UserControl.Resources>
-        <creConverters:InvertBoolConverter x:Key="InvertedBoolConverter" />
+        <creConverters:BoolVisibilityConverter x:Key="BoolVisibilityConverter" CollapseWhenNotVisible="True" />
     </UserControl.Resources>
 
     <Grid
@@ -42,42 +42,58 @@
             FontSize="24" />
         <!-- Form Header End -->
 
-        <!-- Chaos Recipe Selector Start -->
+        <!-- Recipe Type Selector Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Chaos Orb Recipe:"
+            Text="Recipe Type:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="Activates Chaos Recipe. Mutually exclusive to Regal Recipe.&#x0a;&#x0a;Results in 2 Chaos Orbs per full set of gear that is unidentified.&#x0a;&#x0a;Sets require one piece of gear to be of item level 60 - 74.&#x0a;All other items only need to be higher than item level 60, but&#x0a;can go beyond item level 74." />
+            ToolTip="Select which vendor recipe to track.&#x0a;&#x0a;Chaos Orb: Full set of rare items, at least one iLvl 60-74.&#x0a;Regal Orb: Full set of rare items, all iLvl 75+.&#x0a;Orb of Chance: Full set of rare items, all iLvl 1-59.&#x0a;Exalted Orb: Full set of rare influenced items, all sharing the same influence type, iLvl 60+." />
 
-        <CheckBox
+        <ComboBox
             Grid.Column="1"
             Grid.Row="1"
             Margin="10 0 0 10"
+            Width="140"
             HorizontalAlignment="Left"
-            IsChecked="{Binding ChaosRecipeTrackingEnabled, Mode=TwoWay}" />
-        <!-- Chaos Recipe Selector End -->
+            SelectedIndex="{Binding ActiveRecipeType, Mode=TwoWay}">
+            <ComboBoxItem Content="Chaos Orb" />
+            <ComboBoxItem Content="Regal Orb" />
+            <ComboBoxItem Content="Orb of Chance" />
+            <ComboBoxItem Content="Exalted Orb" />
+        </ComboBox>
+        <!-- Recipe Type Selector End -->
 
-        <!-- Regal Recipe Selector Start -->
+        <!-- Target Influence Selector Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="2"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Regal Orb Recipe:"
+            Text="Target Influence:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="Activates Regal Recipe. Mutually exclusive to Chaos Recipe.&#x0a;&#x0a;Results in 2 Regal Orbs per full set of item level 75 - 100 gear&#x0a;that is unidentified." />
+            ToolTip="Select which influence type to target for the Exalted Orb recipe.&#x0a;&#x0a;Auto: Automatically picks the influence type that produces the most complete sets.&#x0a;Or select a specific influence type to target."
+            Visibility="{Binding IsExaltedRecipeSelected, Converter={StaticResource BoolVisibilityConverter}}" />
 
-        <CheckBox
+        <ComboBox
             Grid.Column="1"
             Grid.Row="2"
             Margin="10 0 0 10"
+            Width="140"
             HorizontalAlignment="Left"
-            IsChecked="{Binding ChaosRecipeTrackingEnabled, Mode=TwoWay, Converter={StaticResource InvertedBoolConverter}}" />
-        <!-- Regal Recipe Selector End -->
-
+            SelectedIndex="{Binding TargetInfluenceType, Mode=TwoWay}"
+            Visibility="{Binding IsExaltedRecipeSelected, Converter={StaticResource BoolVisibilityConverter}}">
+            <ComboBoxItem Content="Auto" />
+            <ComboBoxItem Content="Shaper" />
+            <ComboBoxItem Content="Elder" />
+            <ComboBoxItem Content="Crusader" />
+            <ComboBoxItem Content="Redeemer" />
+            <ComboBoxItem Content="Hunter" />
+            <ComboBoxItem Content="Warlord" />
+        </ComboBox>
+        <!-- Target Influence Selector End -->
         <!-- Include Identified Selector Start -->
         <TextBlock
             Grid.Column="0"

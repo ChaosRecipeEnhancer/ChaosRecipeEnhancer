@@ -30,6 +30,8 @@ public interface IUserSettings
     # region Recipe Settings
 
     bool ChaosRecipeTrackingEnabled { get; set; }
+    int ActiveRecipeType { get; set; }
+    int TargetInfluenceType { get; set; }
     bool IncludeIdentifiedItemsEnabled { get; set; }
     bool VendorSetsEarly { get; set; }
     int PathOfExileClientLogLocationMode { get; set; }

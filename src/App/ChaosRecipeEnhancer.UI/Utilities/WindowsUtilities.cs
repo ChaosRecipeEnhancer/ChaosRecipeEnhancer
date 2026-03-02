@@ -11,6 +11,8 @@ internal static class WindowsUtilities
     public const int WS_EX_TRANSPARENT = 0x00000020;
     public const int WS_EX_TOOLWINDOW = 0x00000080;
     public const int GWL_EXSTYLE = -20;
+    private const int GWL_STYLE = -16;
+    private const int WS_MAXIMIZEBOX = 0x00010000;
 
     [DllImport("USER32.dll")]
     private static extern int GetWindowLong(nint hWnd, int index);
@@ -56,6 +58,14 @@ internal static class WindowsUtilities
         var hwnd = new WindowInteropHelper(window).Handle;
         int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
         _ = SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_TOOLWINDOW);
+    }
+
+    // Removes WS_MAXIMIZEBOX so the DWM will not engage Aero Snap on drag
+    public static void DisableAeroSnap(Window window)
+    {
+        var hwnd = new WindowInteropHelper(window).Handle;
+        int style = GetWindowLong(hwnd, GWL_STYLE);
+        _ = SetWindowLong(hwnd, GWL_STYLE, style & ~WS_MAXIMIZEBOX);
     }
 
     /// <summary>Returns a dictionary that contains the handle and title of all the open windows.</summary>

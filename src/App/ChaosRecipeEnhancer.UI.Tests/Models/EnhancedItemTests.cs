@@ -89,6 +89,26 @@ public class EnhancedItemTests
     }
 
     [Theory]
+    [InlineData(0, false)]
+    [InlineData(1, true)]
+    [InlineData(59, true)]
+    [InlineData(60, false)]
+    public void IsOrbOfChanceRecipeEligible_GivenItemLevel_ReturnsExpected(int itemLevel, bool expected)
+    {
+        // Arrange
+        var item = new EnhancedItem
+        {
+            ItemLevel = itemLevel
+        };
+
+        // Act
+        var result = item.IsOrbOfChanceRecipeEligible;
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    [Theory]
     [InlineData("https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Cb290c0RleEludDQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/bad1ba72df/BootsDexInt4.png", "Boots")]
     [InlineData("https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzSW50MyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/abe163b992/GlovesInt3.png", "Gloves")]
     [InlineData("https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVG9wYXpSdWJ5IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/8878077651/TopazRuby.png", "Rings")]

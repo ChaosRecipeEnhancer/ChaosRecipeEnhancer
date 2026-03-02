@@ -1,6 +1,7 @@
 ﻿using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace ChaosRecipeEnhancer.UI.Models;
@@ -76,6 +77,70 @@ public class EnhancedItem : BaseItem
     /// See <a href="https://www.poewiki.net/wiki/Regal_Orb#Vendor_recipe"></a>
     /// </summary>
     public bool IsRegalRecipeEligible => ItemLevel is >= 75;
+
+    /// <summary>
+    /// Gets a value indicating whether the item is eligible for the Orb of Chance vendor recipe.
+    /// Orb of Chance Vendor Recipe requires an item level of 1 to 59.
+    /// See <a href="https://www.poewiki.net/wiki/Orb_of_Chance#Vendor_recipes"></a>
+    /// </summary>
+    public bool IsOrbOfChanceRecipeEligible => ItemLevel is >= 1 and <= 59;
+
+    /// <summary>
+    /// Gets a value indicating whether the item is eligible for the Exalted Orb vendor recipe.
+    /// Exalted Orb Vendor Recipe requires a full set of rare influenced items with iLvl 60+.
+    /// All items must share the same influence type.
+    /// </summary>
+    public bool IsExaltedRecipeEligible => ItemLevel is >= 60 && IsInfluenced;
+
+    /// <summary>
+    /// Gets a value indicating whether the item has any influence (Shaper, Elder, Crusader, Redeemer, Hunter, or Warlord).
+    /// </summary>
+    public bool IsInfluenced =>
+        BaseItemInfluences is not null &&
+        (BaseItemInfluences.Shaper || BaseItemInfluences.Elder || BaseItemInfluences.Crusader ||
+         BaseItemInfluences.Redeemer || BaseItemInfluences.Hunter || BaseItemInfluences.Warlord);
+
+    /// <summary>
+    /// Returns a list of all influence types present on this item.
+    /// Dual-influence items will return multiple types.
+    /// </summary>
+    /// <returns>A list of <see cref="InfluenceType"/> values present on this item.</returns>
+    public List<InfluenceType> GetInfluenceTypes()
+    {
+        var influences = new List<InfluenceType>();
+
+        if (BaseItemInfluences is null) return influences;
+
+        if (BaseItemInfluences.Shaper) influences.Add(InfluenceType.Shaper);
+        if (BaseItemInfluences.Elder) influences.Add(InfluenceType.Elder);
+        if (BaseItemInfluences.Crusader) influences.Add(InfluenceType.Crusader);
+        if (BaseItemInfluences.Redeemer) influences.Add(InfluenceType.Redeemer);
+        if (BaseItemInfluences.Hunter) influences.Add(InfluenceType.Hunter);
+        if (BaseItemInfluences.Warlord) influences.Add(InfluenceType.Warlord);
+
+        return influences;
+    }
+
+    /// <summary>
+    /// Checks whether this item has the specified influence type.
+    /// </summary>
+    /// <param name="type">The influence type to check for.</param>
+    /// <returns><c>true</c> if the item has the specified influence; otherwise, <c>false</c>.</returns>
+    public bool HasInfluenceType(InfluenceType type)
+    {
+        if (BaseItemInfluences is null) return false;
+
+        return type switch
+        {
+            InfluenceType.Shaper => BaseItemInfluences.Shaper,
+            InfluenceType.Elder => BaseItemInfluences.Elder,
+            InfluenceType.Crusader => BaseItemInfluences.Crusader,
+            InfluenceType.Redeemer => BaseItemInfluences.Redeemer,
+            InfluenceType.Hunter => BaseItemInfluences.Hunter,
+            InfluenceType.Warlord => BaseItemInfluences.Warlord,
+            _ => false
+        };
+    }
 
     /// <summary>
     /// Gets or sets the derived classification of the item based on its icon URL.

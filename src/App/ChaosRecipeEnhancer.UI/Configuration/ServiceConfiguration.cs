@@ -37,6 +37,7 @@ public static class ServiceConfiguration
         services.AddSingleton<IReloadFilterService, ReloadFilterService>();
         services.AddSingleton<IFilterManipulationService, FilterManipulationService>();
         services.AddSingleton<INotificationSoundService, NotificationSoundService>();
+        services.AddSingleton<IUpdateManagerService, UpdateManagerService>();
     }
 
     private static void ConfigureHttpClients(IServiceCollection services)

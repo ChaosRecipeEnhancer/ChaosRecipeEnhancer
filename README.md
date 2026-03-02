@@ -4,7 +4,7 @@
 
 ``` This app isn't affiliated with or officially endorsed by Grinding Gear Games. ```
 
-This app fetches your stash data from the PoE servers and shows which items you need to pick up to complete the [chaos orb recipe](https://www.poewiki.net/wiki/Chaos_Orb#Vendor_recipes). When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs. Optionally, it can also manipulate your offline loot filter, so you can fully streamline your farm.
+This app fetches your stash data from the PoE servers and shows which items you need to pick up to complete the [chaos orb recipe][chaos-orb-recipe-wiki-entry-link] ([as well as regal, chance, and exalted orb recipes][other-recipes-wiki-entry-link]). When you're ready to vendor a set, we'll highlight the item pick order, which is great when you're pulling from messy tabs. Optionally, it can also manipulate your offline loot filter, so you can fully streamline your farm.
 
 [![downloads][downloads-badge]][releases-link]
 [![release][releases-badge]][releases-link]
@@ -15,7 +15,7 @@ This app fetches your stash data from the PoE servers and shows which items you 
 ## User Guide (Video)
 
 <a href="https://youtu.be/W_C4Nhla-Xg">
-    <img src="./DocumentationAssets/Video-Thumbnail-327.png" width="500" alt="CRE User Guide Video Thumbnail">
+    <img src="./DocumentationAssets/Video-Thumbnail-328.png" width="500" alt="CRE User Guide Video Thumbnail">
 </a>
 
 There's a lot of features in the app, so we made a video to help you get started. If you have any questions, feel free to ask in the [Discord][discord-link].
@@ -35,6 +35,7 @@ There's a lot of features in the app, so we made a video to help you get started
 - OAuth integration for a secure and simple connection to PoE data services
 - Sound notifications for completed sets
 - Customizable hotkeys for core features (set tracking, stash overlay, etc.)
+- Supports regal, chance, and exalted orb recipes in addition to chaos orb recipes
 
 ## Screenshots
 
@@ -76,13 +77,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
-[downloads-badge]: https://img.shields.io/github/downloads/ChaosRecipeEnhancer/EnhancePoEApp/total?style=for-the-badge&logo=github
+[chaos-orb-recipe-wiki-entry-link]: https://www.poewiki.net/wiki/Chaos_Orb#Vendor_recipes
+[other-recipes-wiki-entry-link]: https://www.poewiki.net/wiki/Vendor_recipe_system#Multiple_Rare_Items
+[downloads-badge]: https://img.shields.io/github/downloads/ChaosRecipeEnhancer/ChaosRecipeEnhancer/total?style=for-the-badge&logo=github
 [discord-badge]: https://img.shields.io/discord/786617230879883307?color=5865f2&label=Discord&style=for-the-badge&logo=discord&link
 [discord-link]: https://discord.gg/ryss9jnRkZ
-[releases-badge]: https://img.shields.io/github/v/release/ChaosRecipeEnhancer/EnhancePoEApp?style=for-the-badge&logo=github
-[releases-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases
-[issues-badge]: https://img.shields.io/github/issues-raw/ChaosRecipeEnhancer/EnhancePoEApp?style=for-the-badge
-[issues-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues
+[releases-badge]: https://img.shields.io/github/v/release/ChaosRecipeEnhancer/ChaosRecipeEnhancer?style=for-the-badge&logo=github
+[releases-link]: https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/releases
+[issues-badge]: https://img.shields.io/github/issues-raw/ChaosRecipeEnhancer/ChaosRecipeEnhancer?style=for-the-badge
+[issues-link]: https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/issues
 [support-badge]: https://img.shields.io/badge/Paypal-Support-<COLOR>?style=for-the-badge&logo=paypal&color=ffae29
 [support-link]: https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS
-[dotnet-installer-link]: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.7-windows-x64-installer
+[dotnet-installer-link]: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.24-windows-x64-installer

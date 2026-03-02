@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop]
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: |
+          dotnet restore src/App/ChaosRecipeEnhancer.UI/ChaosRecipeEnhancer.UI.csproj
+          dotnet restore src/App/ChaosRecipeEnhancer.UI.Tests/ChaosRecipeEnhancer.UI.Tests.csproj
+
+      - name: Build
+        run: |
+          dotnet build src/App/ChaosRecipeEnhancer.UI/ChaosRecipeEnhancer.UI.csproj -c Release --no-restore
+          dotnet build src/App/ChaosRecipeEnhancer.UI.Tests/ChaosRecipeEnhancer.UI.Tests.csproj -c Release --no-restore
+
+      - name: Test
+        run: dotnet test src/App/ChaosRecipeEnhancer.UI.Tests/ChaosRecipeEnhancer.UI.Tests.csproj -c Release --no-build --verbosity normal

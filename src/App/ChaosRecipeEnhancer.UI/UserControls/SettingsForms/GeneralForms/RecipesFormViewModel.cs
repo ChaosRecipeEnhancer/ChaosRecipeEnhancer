@@ -1,4 +1,5 @@
-﻿using ChaosRecipeEnhancer.UI.Models.UserSettings;
+﻿using ChaosRecipeEnhancer.UI.Models.Enums;
+using ChaosRecipeEnhancer.UI.Models.UserSettings;
 
 namespace ChaosRecipeEnhancer.UI.UserControls.SettingsForms.GeneralForms;
 
@@ -23,6 +24,35 @@ public class RecipesFormViewModel : CreViewModelBase
             }
         }
     }
+
+    public int ActiveRecipeType
+    {
+        get => _userSettings.ActiveRecipeType;
+        set
+        {
+            if (_userSettings.ActiveRecipeType != value)
+            {
+                _userSettings.ActiveRecipeType = value;
+                OnPropertyChanged(nameof(ActiveRecipeType));
+                OnPropertyChanged(nameof(IsExaltedRecipeSelected));
+            }
+        }
+    }
+
+    public int TargetInfluenceType
+    {
+        get => _userSettings.TargetInfluenceType;
+        set
+        {
+            if (_userSettings.TargetInfluenceType != value)
+            {
+                _userSettings.TargetInfluenceType = value;
+                OnPropertyChanged(nameof(TargetInfluenceType));
+            }
+        }
+    }
+
+    public bool IsExaltedRecipeSelected => ActiveRecipeType == (int)RecipeType.ExaltedOrb;
 
     public bool IncludeIdentifiedItemsEnabled
     {

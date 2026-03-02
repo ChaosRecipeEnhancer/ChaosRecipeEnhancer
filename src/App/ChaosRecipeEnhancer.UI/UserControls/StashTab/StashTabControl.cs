@@ -24,16 +24,7 @@ public class StashTabControl : CreViewModelBase
             ? (Color)ColorConverter.ConvertFromString(Settings.Default.StashTabOverlayTabDefaultBackgroundColor)
             : Colors.Transparent;
 
-        var opacity = Settings.Default.StashTabOverlayTabOpacity;
-        var tabHeaderColorWithOpacity = new Color
-        {
-            A = (byte)(opacity * 255),
-            R = tabHeaderColor.R,
-            G = tabHeaderColor.G,
-            B = tabHeaderColor.B
-        };
-
-        TabHeaderColor = new SolidColorBrush(tabHeaderColorWithOpacity);
+        TabHeaderColor = new SolidColorBrush(tabHeaderColor);
     }
 
     public string Id { get; set; }
@@ -69,18 +60,7 @@ public class StashTabControl : CreViewModelBase
             }
         }
 
-        // Ensure opacity is within a valid range [0, 1]
-        var opacity = Math.Max(0, Math.Min(1, Settings.Default.StashTabOverlayTabOpacity));
-
-        var tabHeaderColorWithOpacity = new Color
-        {
-            A = (byte)(opacity * 255), // Apply opacity
-            R = tabHeaderColor.R,
-            G = tabHeaderColor.G,
-            B = tabHeaderColor.B
-        };
-
-        TabHeaderColor = new SolidColorBrush(tabHeaderColorWithOpacity);
+        TabHeaderColor = new SolidColorBrush(tabHeaderColor);
     }
 
     public void MarkItemWithPickIndicator(EnhancedItem item)
