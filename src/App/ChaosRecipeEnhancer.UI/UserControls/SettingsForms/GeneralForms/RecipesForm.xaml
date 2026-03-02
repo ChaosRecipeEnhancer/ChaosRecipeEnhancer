@@ -6,14 +6,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:creConverters="clr-namespace:ChaosRecipeEnhancer.UI.Converters"
     mc:Ignorable="d"
     Background="#202020"
     d:DataContext="{d:DesignInstance Type={x:Type forms:RecipesFormViewModel}}">
-
-    <UserControl.Resources>
-        <creConverters:InvertBoolConverter x:Key="InvertedBoolConverter" />
-    </UserControl.Resources>
 
     <Grid
         Margin="10"
@@ -24,7 +19,6 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -42,46 +36,33 @@
             FontSize="24" />
         <!-- Form Header End -->
 
-        <!-- Chaos Recipe Selector Start -->
+        <!-- Recipe Type Selector Start -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="1"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
-            Text="Chaos Orb Recipe:"
+            Text="Recipe Type:"
             ToolTipService.InitialShowDelay="50"
-            ToolTip="Activates Chaos Recipe. Mutually exclusive to Regal Recipe.&#x0a;&#x0a;Results in 2 Chaos Orbs per full set of gear that is unidentified.&#x0a;&#x0a;Sets require one piece of gear to be of item level 60 - 74.&#x0a;All other items only need to be higher than item level 60, but&#x0a;can go beyond item level 74." />
+            ToolTip="Select which vendor recipe to track.&#x0a;&#x0a;Chaos Orb: Full set of rare items, at least one iLvl 60-74.&#x0a;Regal Orb: Full set of rare items, all iLvl 75+.&#x0a;Orb of Chance: Full set of rare items, all iLvl 1-59." />
 
-        <CheckBox
+        <ComboBox
             Grid.Column="1"
             Grid.Row="1"
             Margin="10 0 0 10"
+            Width="140"
             HorizontalAlignment="Left"
-            IsChecked="{Binding ChaosRecipeTrackingEnabled, Mode=TwoWay}" />
-        <!-- Chaos Recipe Selector End -->
-
-        <!-- Regal Recipe Selector Start -->
-        <TextBlock
-            Grid.Column="0"
-            Grid.Row="2"
-            Margin="0 0 0 10"
-            VerticalAlignment="Center"
-            Text="Regal Orb Recipe:"
-            ToolTipService.InitialShowDelay="50"
-            ToolTip="Activates Regal Recipe. Mutually exclusive to Chaos Recipe.&#x0a;&#x0a;Results in 2 Regal Orbs per full set of item level 75 - 100 gear&#x0a;that is unidentified." />
-
-        <CheckBox
-            Grid.Column="1"
-            Grid.Row="2"
-            Margin="10 0 0 10"
-            HorizontalAlignment="Left"
-            IsChecked="{Binding ChaosRecipeTrackingEnabled, Mode=TwoWay, Converter={StaticResource InvertedBoolConverter}}" />
-        <!-- Regal Recipe Selector End -->
+            SelectedIndex="{Binding ActiveRecipeType, Mode=TwoWay}">
+            <ComboBoxItem Content="Chaos Orb" />
+            <ComboBoxItem Content="Regal Orb" />
+            <ComboBoxItem Content="Orb of Chance" />
+        </ComboBox>
+        <!-- Recipe Type Selector End -->
 
         <!-- Include Identified Selector Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="3"
+            Grid.Row="2"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Include Identified Items:"
@@ -90,7 +71,7 @@
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="3"
+            Grid.Row="2"
             Margin="10 0 0 10"
             HorizontalAlignment="Left"
             IsChecked="{Binding IncludeIdentifiedItemsEnabled, Mode=TwoWay}" />
@@ -99,7 +80,7 @@
         <!-- Full Set Threshold Setting Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="4"
+            Grid.Row="3"
             Margin="0 0 0 10"
             VerticalAlignment="Center"
             Text="Full Set Threshold:"
@@ -108,7 +89,7 @@
 
         <TextBox
             Grid.Column="1"
-            Grid.Row="4"
+            Grid.Row="3"
             Margin="10 0 0 10"
             Width="40"
             HorizontalContentAlignment="Left"
@@ -121,7 +102,7 @@
         <!-- Vendor Sets Early Setting Start -->
         <TextBlock
             Grid.Column="0"
-            Grid.Row="5"
+            Grid.Row="4"
             VerticalAlignment="Center"
             Text="Vendor Sets Early:"
             ToolTipService.InitialShowDelay="50"
@@ -129,7 +110,7 @@
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="5"
+            Grid.Row="4"
             Margin="10 0 0 0"
             HorizontalAlignment="Left"
             IsChecked="{Binding VendorSetsEarly, Mode=TwoWay}" />

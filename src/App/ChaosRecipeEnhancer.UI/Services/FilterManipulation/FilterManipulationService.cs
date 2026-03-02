@@ -82,20 +82,23 @@ public class FilterManipulationService : IFilterManipulationService
 
 
         // Adding ItemLevel section
-        // Chaos Recipe
-        if (_userSettings.ChaosRecipeTrackingEnabled)
+        var activeRecipeType = (RecipeType)Settings.Default.ActiveRecipeType;
+        switch (activeRecipeType)
         {
-            result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
-
-            if (missingChaosItem)
-            {
-                result += "ItemLevel <= 74" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
-            }
-        }
-        // Regal Recipe
-        else
-        {
-            result += "ItemLevel >= 75" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+            case RecipeType.ChaosOrb:
+                result += "ItemLevel >= 60" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                if (missingChaosItem)
+                {
+                    result += "ItemLevel <= 74" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                }
+                break;
+            case RecipeType.RegalOrb:
+                result += "ItemLevel >= 75" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                break;
+            case RecipeType.OrbOfChance:
+                result += "ItemLevel >= 1" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                result += "ItemLevel <= 59" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                break;
         }
 
         // Base ItemClass Type Setting

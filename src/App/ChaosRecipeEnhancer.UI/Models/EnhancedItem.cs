@@ -78,6 +78,13 @@ public class EnhancedItem : BaseItem
     public bool IsRegalRecipeEligible => ItemLevel is >= 75;
 
     /// <summary>
+    /// Gets a value indicating whether the item is eligible for the Orb of Chance vendor recipe.
+    /// Orb of Chance Vendor Recipe requires an item level of 1 to 59.
+    /// See <a href="https://www.poewiki.net/wiki/Orb_of_Chance#Vendor_recipes"></a>
+    /// </summary>
+    public bool IsOrbOfChanceRecipeEligible => ItemLevel is >= 1 and <= 59;
+
+    /// <summary>
     /// Gets or sets the derived classification of the item based on its icon URL.
     /// </summary>
     public string DerivedItemClass { get; set; }

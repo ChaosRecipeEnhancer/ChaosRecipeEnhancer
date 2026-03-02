@@ -13,6 +13,7 @@ public class EnhancedItemUtilitiesTests
     {
         // Reset settings to known state
         Settings.Default.ChaosRecipeTrackingEnabled = true;
+        Settings.Default.ActiveRecipeType = (int)RecipeType.ChaosOrb;
         Settings.Default.IncludeIdentifiedItemsEnabled = false;
     }
 
@@ -22,7 +23,7 @@ public class EnhancedItemUtilitiesTests
     public void FilterItemsForRecipe_ChaosRecipeEnabled_ReturnsRareUnidentifiedItemsAbove60()
     {
         // Arrange
-        Settings.Default.ChaosRecipeTrackingEnabled = true;
+        Settings.Default.ActiveRecipeType = (int)RecipeType.ChaosOrb;
         Settings.Default.IncludeIdentifiedItemsEnabled = false;
 
         var items = new List<EnhancedItem>
@@ -42,7 +43,7 @@ public class EnhancedItemUtilitiesTests
     public void FilterItemsForRecipe_ChaosRecipeEnabled_ExcludesItemsBelow60()
     {
         // Arrange
-        Settings.Default.ChaosRecipeTrackingEnabled = true;
+        Settings.Default.ActiveRecipeType = (int)RecipeType.ChaosOrb;
 
         var items = new List<EnhancedItem>
         {
@@ -60,7 +61,7 @@ public class EnhancedItemUtilitiesTests
     public void FilterItemsForRecipe_ChaosRecipeEnabled_IncludesLevel60()
     {
         // Arrange
-        Settings.Default.ChaosRecipeTrackingEnabled = true;
+        Settings.Default.ActiveRecipeType = (int)RecipeType.ChaosOrb;
 
         var items = new List<EnhancedItem>
         {
@@ -82,7 +83,7 @@ public class EnhancedItemUtilitiesTests
     public void FilterItemsForRecipe_RegalRecipeEnabled_ReturnsOnlyItemsAbove75()
     {
         // Arrange
-        Settings.Default.ChaosRecipeTrackingEnabled = false;
+        Settings.Default.ActiveRecipeType = (int)RecipeType.RegalOrb;
 
         var items = new List<EnhancedItem>
         {
@@ -102,7 +103,7 @@ public class EnhancedItemUtilitiesTests
     public void FilterItemsForRecipe_RegalRecipeEnabled_ExcludesItemsBelow75()
     {
         // Arrange
-        Settings.Default.ChaosRecipeTrackingEnabled = false;
+        Settings.Default.ActiveRecipeType = (int)RecipeType.RegalOrb;
 
         var items = new List<EnhancedItem>
         {
@@ -124,7 +125,7 @@ public class EnhancedItemUtilitiesTests
     public void FilterItemsForRecipe_IdentifiedItem_ExcludedWhenSettingDisabled()
     {
         // Arrange
-        Settings.Default.ChaosRecipeTrackingEnabled = true;
+        Settings.Default.ActiveRecipeType = (int)RecipeType.ChaosOrb;
         Settings.Default.IncludeIdentifiedItemsEnabled = false;
 
         var items = new List<EnhancedItem>
@@ -143,7 +144,7 @@ public class EnhancedItemUtilitiesTests
     public void FilterItemsForRecipe_IdentifiedItem_IncludedWhenSettingEnabled()
     {
         // Arrange
-        Settings.Default.ChaosRecipeTrackingEnabled = true;
+        Settings.Default.ActiveRecipeType = (int)RecipeType.ChaosOrb;
         Settings.Default.IncludeIdentifiedItemsEnabled = true;
 
         var items = new List<EnhancedItem>
@@ -166,7 +167,7 @@ public class EnhancedItemUtilitiesTests
     public void FilterItemsForRecipe_NonRareItem_AlwaysExcluded()
     {
         // Arrange
-        Settings.Default.ChaosRecipeTrackingEnabled = true;
+        Settings.Default.ActiveRecipeType = (int)RecipeType.ChaosOrb;
 
         var items = new List<EnhancedItem>
         {
@@ -185,7 +186,7 @@ public class EnhancedItemUtilitiesTests
     public void FilterItemsForRecipe_NullDerivedClass_Excluded()
     {
         // Arrange
-        Settings.Default.ChaosRecipeTrackingEnabled = true;
+        Settings.Default.ActiveRecipeType = (int)RecipeType.ChaosOrb;
 
         var item = new EnhancedItem
         {

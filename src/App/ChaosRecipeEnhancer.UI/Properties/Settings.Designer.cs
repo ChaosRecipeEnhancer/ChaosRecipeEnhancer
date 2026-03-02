@@ -2324,5 +2324,17 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["StashTabOverlayModified"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ActiveRecipeType {
+            get {
+                return ((int)(this["ActiveRecipeType"]));
+            }
+            set {
+                this["ActiveRecipeType"] = value;
+            }
+        }
     }
 }

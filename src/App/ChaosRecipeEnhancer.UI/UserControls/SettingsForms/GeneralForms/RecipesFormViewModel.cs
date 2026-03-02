@@ -24,6 +24,19 @@ public class RecipesFormViewModel : CreViewModelBase
         }
     }
 
+    public int ActiveRecipeType
+    {
+        get => _userSettings.ActiveRecipeType;
+        set
+        {
+            if (_userSettings.ActiveRecipeType != value)
+            {
+                _userSettings.ActiveRecipeType = value;
+                OnPropertyChanged(nameof(ActiveRecipeType));
+            }
+        }
+    }
+
     public bool IncludeIdentifiedItemsEnabled
     {
         get => _userSettings.IncludeIdentifiedItemsEnabled;

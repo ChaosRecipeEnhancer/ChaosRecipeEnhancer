@@ -289,7 +289,7 @@ public class GlobalItemSetManagerStateTests : IDisposable
         GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = CreateFullChaosSet(65);
 
         // Act
-        GlobalItemSetManagerState.GenerateItemSets(regalRecipe: false);
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
 
         // Assert
         GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
@@ -307,7 +307,7 @@ public class GlobalItemSetManagerStateTests : IDisposable
         GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = CreateFullChaosSet(80);
 
         // Act
-        GlobalItemSetManagerState.GenerateItemSets(regalRecipe: true);
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.RegalOrb);
 
         // Assert
         GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
@@ -325,7 +325,7 @@ public class GlobalItemSetManagerStateTests : IDisposable
         GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = CreateFullChaosSet(80);
 
         // Act
-        GlobalItemSetManagerState.GenerateItemSets(regalRecipe: false);
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
 
         // Assert - no chaos eligible items (60-74), so NeedsLowerLevel should be true
         GlobalItemSetManagerState.NeedsLowerLevel.Should().BeTrue();
@@ -344,7 +344,7 @@ public class GlobalItemSetManagerStateTests : IDisposable
         GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = CreateFullChaosSet(60);
 
         // Act
-        GlobalItemSetManagerState.GenerateItemSets(regalRecipe: true);
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.RegalOrb);
 
         // Assert
         GlobalItemSetManagerState.NeedsLowerLevel.Should().BeFalse();
@@ -373,7 +373,7 @@ public class GlobalItemSetManagerStateTests : IDisposable
         GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
 
         // Act
-        GlobalItemSetManagerState.GenerateItemSets(regalRecipe: false);
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
 
         // Assert
         GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
@@ -406,7 +406,7 @@ public class GlobalItemSetManagerStateTests : IDisposable
         GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
 
         // Act
-        GlobalItemSetManagerState.GenerateItemSets(regalRecipe: false);
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
 
         // Assert
         GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
@@ -432,7 +432,7 @@ public class GlobalItemSetManagerStateTests : IDisposable
         GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
 
         // Act
-        GlobalItemSetManagerState.GenerateItemSets(regalRecipe: false);
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
 
         // Assert - should only create 2 sets (capped to eligible count), not 5
         GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(2);

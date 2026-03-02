@@ -118,3 +118,10 @@ public enum FilterStyleBeamColor
     White,
     Yellow
 }
+
+public enum RecipeType
+{
+    ChaosOrb,
+    RegalOrb,
+    OrbOfChance
+}

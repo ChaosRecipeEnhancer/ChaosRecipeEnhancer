@@ -3,6 +3,7 @@ using ChaosRecipeEnhancer.UI.Models.ApiResponses.Shared;
 using ChaosRecipeEnhancer.UI.Models.Enums;
 using ChaosRecipeEnhancer.UI.Models.Exceptions;
 using ChaosRecipeEnhancer.UI.Models.UserSettings;
+using ChaosRecipeEnhancer.UI.Properties;
 using ChaosRecipeEnhancer.UI.Services;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation;
 using ChaosRecipeEnhancer.UI.UserControls;
@@ -709,7 +710,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
                 GlobalItemSetManagerState.CalculateItemAmounts();
 
                 // generate item sets for the chosen recipe (chaos or regal)
-                GlobalItemSetManagerState.GenerateItemSets(!ChaosRecipeTrackingEnabled);
+                GlobalItemSetManagerState.GenerateItemSets((RecipeType)Settings.Default.ActiveRecipeType);
 
                 // update the UI accordingly
                 UpdateDisplay();
@@ -819,6 +820,7 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     {
         int lowLevelItemsNeeded = 0;
         int highLevelItemsNeeded = 0;
+        var activeRecipeType = (RecipeType)Settings.Default.ActiveRecipeType;
 
         // The most common scenario (default settings)
         //if (_userSettings.DoNotPreserveLowItemLevelGear && ChaosRecipeTrackingEnabled)
@@ -836,7 +838,14 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
 
             if (set.EmptyItemSlots.Count > 0 || !_userSettings.DoNotPreserveLowItemLevelGear)
             {
-                if (set.IsChaosRecipeEligible)
+                var setMeetsRecipeQualifier = activeRecipeType switch
+                {
+                    RecipeType.OrbOfChance => set.IsOrbOfChanceRecipeEligible,
+                    RecipeType.ChaosOrb => set.IsChaosRecipeEligible,
+                    _ => set.IsRegalRecipeEligible
+                };
+
+                if (setMeetsRecipeQualifier)
                 {
                     highLevelItemsNeeded += set.EmptyItemSlots.Count;
                 }
@@ -854,17 +863,21 @@ public sealed class SetTrackerOverlayViewModel : CreViewModelBase
     private string GenerateWarningMessage(int lowLevelItemsNeeded, int highLevelItemsNeeded)
     {
         var message = string.Empty;
+        var activeRecipeType = (RecipeType)Settings.Default.ActiveRecipeType;
+        var requiresLowLevelItems = activeRecipeType != RecipeType.RegalOrb;
 
-        if ((highLevelItemsNeeded > lowLevelItemsNeeded && ChaosRecipeTrackingEnabled) &&
+        if ((highLevelItemsNeeded > lowLevelItemsNeeded && requiresLowLevelItems) &&
             _userSettings.DoNotPreserveLowItemLevelGear)
         {
             return message;
         }
 
         // if we need low item level items in any mode (greedy++, greedy, conservative)
-        if (lowLevelItemsNeeded > 0 && ChaosRecipeTrackingEnabled)
+        if (lowLevelItemsNeeded > 0 && requiresLowLevelItems)
         {
-            message = $"Need {lowLevelItemsNeeded} item{(lowLevelItemsNeeded > 1 ? "s" : "")} with iLvl 60-74";
+            message = activeRecipeType == RecipeType.OrbOfChance
+                ? $"Need {lowLevelItemsNeeded} item{(lowLevelItemsNeeded > 1 ? "s" : "")} with iLvl 1-59"
+                : $"Need {lowLevelItemsNeeded} item{(lowLevelItemsNeeded > 1 ? "s" : "")} with iLvl 60-74";
         }
         // else if we need high level items in conservative mode
         else if (!_userSettings.DoNotPreserveLowItemLevelGear && highLevelItemsNeeded > 0)
