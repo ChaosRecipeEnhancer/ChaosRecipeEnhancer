@@ -270,6 +270,12 @@ public static class GlobalItemSetManagerState
                     {
                         CurrentItemsFilteredForRecipe.Remove(closestMissingItem);
                     }
+                    else
+                    {
+                        // Item was found by class but rejected by TryAddItem.
+                        // No progress can be made — break to avoid infinite loop.
+                        break;
+                    }
                 }
                 // you didn't find a closer item, gg break out of infinite loop
                 else
@@ -361,6 +367,12 @@ public static class GlobalItemSetManagerState
                                 CurrentItemsFilteredForRecipe.Remove(oneHandedWeapon);
                             }
                         }
+                    }
+                    else
+                    {
+                        // Item was found by class but rejected (e.g. wrong ilvl for recipe).
+                        // No progress can be made — break to avoid infinite loop.
+                        break;
                     }
                 }
                 else
