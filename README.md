@@ -79,13 +79,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 [chaos-orb-recipe-wiki-entry-link]: https://www.poewiki.net/wiki/Chaos_Orb#Vendor_recipes
 [other-recipes-wiki-entry-link]: https://www.poewiki.net/wiki/Vendor_recipe_system#Multiple_Rare_Items
-[downloads-badge]: https://img.shields.io/github/downloads/ChaosRecipeEnhancer/EnhancePoEApp/total?style=for-the-badge&logo=github
+[downloads-badge]: https://img.shields.io/github/downloads/ChaosRecipeEnhancer/ChaosRecipeEnhancer/total?style=for-the-badge&logo=github
 [discord-badge]: https://img.shields.io/discord/786617230879883307?color=5865f2&label=Discord&style=for-the-badge&logo=discord&link
 [discord-link]: https://discord.gg/ryss9jnRkZ
-[releases-badge]: https://img.shields.io/github/v/release/ChaosRecipeEnhancer/EnhancePoEApp?style=for-the-badge&logo=github
-[releases-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/releases
-[issues-badge]: https://img.shields.io/github/issues-raw/ChaosRecipeEnhancer/EnhancePoEApp?style=for-the-badge
-[issues-link]: https://github.com/ChaosRecipeEnhancer/EnhancePoEApp/issues
+[releases-badge]: https://img.shields.io/github/v/release/ChaosRecipeEnhancer/ChaosRecipeEnhancer?style=for-the-badge&logo=github
+[releases-link]: https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/releases
+[issues-badge]: https://img.shields.io/github/issues-raw/ChaosRecipeEnhancer/ChaosRecipeEnhancer?style=for-the-badge
+[issues-link]: https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/issues
 [support-badge]: https://img.shields.io/badge/Paypal-Support-<COLOR>?style=for-the-badge&logo=paypal&color=ffae29
 [support-link]: https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS
 [dotnet-installer-link]: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.24-windows-x64-installer

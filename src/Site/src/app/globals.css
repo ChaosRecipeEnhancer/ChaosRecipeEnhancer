@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  /* CRE DeepDark Background Scale */
+  --color-cre-bg-deepest: #141414;
+  --color-cre-bg-deep: #181818;
+  --color-cre-bg: #1d1d1d;
+  --color-cre-bg-container: #202020;
+  --color-cre-bg-control: #252525;
+  --color-cre-bg-elevated: #2d2d2d;
+  --color-cre-bg-float: #383838;
+
+  /* CRE Border Scale */
+  --color-cre-border-deep: #101010;
+  --color-cre-border: #222222;
+  --color-cre-border-subtle: #313131;
+  --color-cre-border-hover: #424242;
+
+  /* CRE Accent (Blue) */
+  --color-cre-accent: #3494e1;
+  --color-cre-accent-hover: #5587af;
+  --color-cre-accent-deep: #3228c8;
+
+  /* CRE Text */
+  --color-cre-text: #f0f0f0;
+  --color-cre-text-secondary: #dcdcdc;
+  --color-cre-text-muted: #bebebe;
+
+  /* CRE Branding */
+  --color-cre-gold: #d4a843;
+  --color-cre-gold-dark: #8b6914;
+}
+
+@layer base {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--color-cre-text);
+    background-color: var(--color-cre-bg-deepest);
+  }
+
+  ::selection {
+    color: white;
+    background-color: var(--color-cre-accent);
+  }
+}
