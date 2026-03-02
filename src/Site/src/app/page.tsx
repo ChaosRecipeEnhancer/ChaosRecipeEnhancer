@@ -180,7 +180,7 @@ export default async function Home() {
             <div className="w-full md:w-1/2">
               <ItemDropDemo />
             </div>
-            <div className="w-full max-w-sm md:w-1/2">
+            <div className="w-full text-center md:w-1/2 md:text-left">
               <h3 className="mb-4 font-bold text-2xl text-cre-text">
                 Never Miss a Drop
               </h3>
@@ -194,7 +194,7 @@ export default async function Home() {
 
           {/* Demo 2: Stash Highlight */}
           <div className="flex flex-col items-center gap-6 md:flex-row md:gap-16">
-            <div className="w-full max-w-sm md:w-1/2">
+            <div className="w-full text-center md:w-1/2 md:text-left">
               <h3 className="mb-4 font-bold text-2xl text-cre-text">
                 Smart Item Picking
               </h3>
@@ -213,7 +213,7 @@ export default async function Home() {
             <div className="w-full md:w-1/2">
               <RecipeTrackerDemo />
             </div>
-            <div className="w-full max-w-sm md:w-1/2">
+            <div className="w-full text-center md:w-1/2 md:text-left">
               <h3 className="mb-4 font-bold text-2xl text-cre-text">
                 Track Every Slot
               </h3>
@@ -227,7 +227,7 @@ export default async function Home() {
 
           {/* Demo 4: Filter Style */}
           <div className="flex flex-col items-center gap-6 md:flex-row md:gap-16">
-            <div className="w-full max-w-sm md:w-1/2">
+            <div className="w-full text-center md:w-1/2 md:text-left">
               <h3 className="mb-4 font-bold text-2xl text-cre-text">
                 Extensive Loot Filter Customization
               </h3>
@@ -256,7 +256,7 @@ export default async function Home() {
             <div className="w-full md:w-1/2">
               <LeagueStartDemo />
             </div>
-            <div className="w-full max-w-sm md:w-1/2">
+            <div className="w-full text-center md:w-1/2 md:text-left">
               <h3 className="mb-4 font-bold text-2xl text-cre-text">
                 Farm While You Map
               </h3>
