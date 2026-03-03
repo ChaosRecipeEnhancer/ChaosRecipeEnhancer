@@ -34,7 +34,7 @@ jobs:
         id: version
         shell: bash
         run: |
-          version=$(grep -oP 'VersionText\s*=\s*"\K[^"]+' "src/App/ChaosRecipeEnhancer.UI/Models/Config/CreAppConfig.cs")
+          version=$(sed -n 's/.*VersionText\s*=\s*"\([^"]*\)".*/\1/p' "src/App/ChaosRecipeEnhancer.UI/Models/Config/CreAppConfig.cs")
           if [ -z "$version" ]; then
             echo "::error::Could not extract VersionText from CreAppConfig.cs"
             exit 1
