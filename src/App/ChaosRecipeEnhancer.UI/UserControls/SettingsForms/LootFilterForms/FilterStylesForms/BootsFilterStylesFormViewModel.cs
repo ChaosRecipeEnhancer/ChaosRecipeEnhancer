@@ -215,6 +215,63 @@ public class BootsFilterStylesFormViewModel : CreViewModelBase
         }
     }
 
+    public int LootFilterStylesBootsSoundMode
+    {
+        get => _userSettings.LootFilterStylesBootsSoundMode;
+        set
+        {
+            if (_userSettings.LootFilterStylesBootsSoundMode != value)
+            {
+                _userSettings.LootFilterStylesBootsSoundMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNormalSoundMode));
+                OnPropertyChanged(nameof(IsCustomSoundMode));
+            }
+        }
+    }
+
+    public int LootFilterStylesBootsSoundId
+    {
+        get => _userSettings.LootFilterStylesBootsSoundId;
+        set
+        {
+            if (_userSettings.LootFilterStylesBootsSoundId != value)
+            {
+                _userSettings.LootFilterStylesBootsSoundId = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public int LootFilterStylesBootsSoundVolume
+    {
+        get => _userSettings.LootFilterStylesBootsSoundVolume;
+        set
+        {
+            if (_userSettings.LootFilterStylesBootsSoundVolume != value)
+            {
+                _userSettings.LootFilterStylesBootsSoundVolume = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public string LootFilterStylesBootsCustomSoundPath
+    {
+        get => _userSettings.LootFilterStylesBootsCustomSoundPath;
+        set
+        {
+            if (_userSettings.LootFilterStylesBootsCustomSoundPath != value)
+            {
+                _userSettings.LootFilterStylesBootsCustomSoundPath = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public bool IsNormalSoundMode => LootFilterStylesBootsSoundMode == 1;
+    public bool IsCustomSoundMode => LootFilterStylesBootsSoundMode == 2;
+
     public bool LootFilterStylesBootsTextColorEnabled
     {
         get => _userSettings.LootFilterStylesBootsTextColorEnabled;
@@ -306,6 +363,10 @@ public class BootsFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesBootsBeamEnabled = false;
         LootFilterStylesBootsBeamColor = 10; // Yellow
         LootFilterStylesBootsBeamTemporary = false;
+        LootFilterStylesBootsSoundMode = 0;
+        LootFilterStylesBootsSoundId = 1;
+        LootFilterStylesBootsSoundVolume = 200;
+        LootFilterStylesBootsCustomSoundPath = "";
         LootFilterStylesBootsTextColorEnabled = true;
         LootFilterStylesBootsBorderColorEnabled = true;
         LootFilterStylesBootsBackgroundColorEnabled = true;

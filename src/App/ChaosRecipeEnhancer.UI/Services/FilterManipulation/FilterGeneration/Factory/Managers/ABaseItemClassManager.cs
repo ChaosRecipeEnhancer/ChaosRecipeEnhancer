@@ -26,6 +26,11 @@ public abstract class ABaseItemClassManager
     public bool AlwaysActive { get; set; }
     public bool AlwaysHidden { get; set; }
 
+    public int SoundMode { get; set; }
+    public int SoundId { get; set; }
+    public int SoundVolume { get; set; }
+    public string CustomSoundPath { get; set; }
+
     public virtual string SetBaseType()
     {
         var baseType = "Class " + ClassFilterName;

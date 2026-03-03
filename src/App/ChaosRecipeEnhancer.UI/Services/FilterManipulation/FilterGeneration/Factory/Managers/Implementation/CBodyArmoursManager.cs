@@ -22,6 +22,10 @@ public class CBodyArmoursManager : ABaseItemClassManager
         BeamEnabled = Settings.Default.LootFilterStylesBodyArmourBeamEnabled;
         BeamTemporary = Settings.Default.LootFilterStylesBodyArmourBeamTemporary;
         BeamColor = Settings.Default.LootFilterStylesBodyArmourBeamColor;
+        SoundMode = Settings.Default.LootFilterStylesBodyArmourSoundMode;
+        SoundId = Settings.Default.LootFilterStylesBodyArmourSoundId;
+        SoundVolume = Settings.Default.LootFilterStylesBodyArmourSoundVolume;
+        CustomSoundPath = Settings.Default.LootFilterStylesBodyArmourCustomSoundPath;
     }
 
     public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)

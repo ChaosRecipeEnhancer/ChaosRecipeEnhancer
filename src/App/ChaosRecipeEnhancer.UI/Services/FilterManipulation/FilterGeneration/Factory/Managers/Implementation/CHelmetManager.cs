@@ -22,6 +22,10 @@ public class CHelmetManager : ABaseItemClassManager
         BeamEnabled = Settings.Default.LootFilterStylesHelmetBeamEnabled;
         BeamTemporary = Settings.Default.LootFilterStylesHelmetBeamTemporary;
         BeamColor = Settings.Default.LootFilterStylesHelmetBeamColor;
+        SoundMode = Settings.Default.LootFilterStylesHelmetSoundMode;
+        SoundId = Settings.Default.LootFilterStylesHelmetSoundId;
+        SoundVolume = Settings.Default.LootFilterStylesHelmetSoundVolume;
+        CustomSoundPath = Settings.Default.LootFilterStylesHelmetCustomSoundPath;
     }
 
     public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)

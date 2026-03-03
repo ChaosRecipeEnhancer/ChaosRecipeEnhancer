@@ -22,6 +22,10 @@ public class CAmuletsManager : ABaseItemClassManager
         BeamEnabled = Settings.Default.LootFilterStylesAmuletBeamEnabled;
         BeamTemporary = Settings.Default.LootFilterStylesAmuletBeamTemporary;
         BeamColor = Settings.Default.LootFilterStylesAmuletBeamColor;
+        SoundMode = Settings.Default.LootFilterStylesAmuletSoundMode;
+        SoundId = Settings.Default.LootFilterStylesAmuletSoundId;
+        SoundVolume = Settings.Default.LootFilterStylesAmuletSoundVolume;
+        CustomSoundPath = Settings.Default.LootFilterStylesAmuletCustomSoundPath;
     }
 
     public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)

@@ -215,6 +215,63 @@ public class HelmetFilterStylesFormViewModel : CreViewModelBase
         }
     }
 
+    public int LootFilterStylesHelmetSoundMode
+    {
+        get => _userSettings.LootFilterStylesHelmetSoundMode;
+        set
+        {
+            if (_userSettings.LootFilterStylesHelmetSoundMode != value)
+            {
+                _userSettings.LootFilterStylesHelmetSoundMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNormalSoundMode));
+                OnPropertyChanged(nameof(IsCustomSoundMode));
+            }
+        }
+    }
+
+    public int LootFilterStylesHelmetSoundId
+    {
+        get => _userSettings.LootFilterStylesHelmetSoundId;
+        set
+        {
+            if (_userSettings.LootFilterStylesHelmetSoundId != value)
+            {
+                _userSettings.LootFilterStylesHelmetSoundId = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public int LootFilterStylesHelmetSoundVolume
+    {
+        get => _userSettings.LootFilterStylesHelmetSoundVolume;
+        set
+        {
+            if (_userSettings.LootFilterStylesHelmetSoundVolume != value)
+            {
+                _userSettings.LootFilterStylesHelmetSoundVolume = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public string LootFilterStylesHelmetCustomSoundPath
+    {
+        get => _userSettings.LootFilterStylesHelmetCustomSoundPath;
+        set
+        {
+            if (_userSettings.LootFilterStylesHelmetCustomSoundPath != value)
+            {
+                _userSettings.LootFilterStylesHelmetCustomSoundPath = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public bool IsNormalSoundMode => LootFilterStylesHelmetSoundMode == 1;
+    public bool IsCustomSoundMode => LootFilterStylesHelmetSoundMode == 2;
+
     public bool LootFilterStylesHelmetTextColorEnabled
     {
         get => _userSettings.LootFilterStylesHelmetTextColorEnabled;
@@ -306,6 +363,10 @@ public class HelmetFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesHelmetBeamEnabled = false;
         LootFilterStylesHelmetBeamColor = 10; // Yellow
         LootFilterStylesHelmetBeamTemporary = false;
+        LootFilterStylesHelmetSoundMode = 0;
+        LootFilterStylesHelmetSoundId = 1;
+        LootFilterStylesHelmetSoundVolume = 200;
+        LootFilterStylesHelmetCustomSoundPath = "";
         LootFilterStylesHelmetTextColorEnabled = true;
         LootFilterStylesHelmetBorderColorEnabled = true;
         LootFilterStylesHelmetBackgroundColorEnabled = true;

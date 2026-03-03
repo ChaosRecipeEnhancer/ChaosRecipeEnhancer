@@ -24,6 +24,10 @@ public class COneHandWeaponsManager : ABaseItemClassManager
         BeamEnabled = Settings.Default.LootFilterStylesWeaponBeamEnabled;
         BeamTemporary = Settings.Default.LootFilterStylesWeaponBeamTemporary;
         BeamColor = Settings.Default.LootFilterStylesWeaponBeamColor;
+        SoundMode = Settings.Default.LootFilterStylesWeaponSoundMode;
+        SoundId = Settings.Default.LootFilterStylesWeaponSoundId;
+        SoundVolume = Settings.Default.LootFilterStylesWeaponSoundVolume;
+        CustomSoundPath = Settings.Default.LootFilterStylesWeaponCustomSoundPath;
     }
 
     public override string SetBaseType(

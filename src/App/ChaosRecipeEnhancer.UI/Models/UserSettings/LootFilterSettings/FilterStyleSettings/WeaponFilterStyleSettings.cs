@@ -212,4 +212,56 @@ public partial class UserSettings : IUserSettings
             }
         }
     }
+
+    public int LootFilterStylesWeaponSoundMode
+    {
+        get => Settings.Default.LootFilterStylesWeaponSoundMode;
+        set
+        {
+            if (Settings.Default.LootFilterStylesWeaponSoundMode != value)
+            {
+                Settings.Default.LootFilterStylesWeaponSoundMode = value;
+                Save();
+            }
+        }
+    }
+
+    public int LootFilterStylesWeaponSoundId
+    {
+        get => Settings.Default.LootFilterStylesWeaponSoundId;
+        set
+        {
+            if (Settings.Default.LootFilterStylesWeaponSoundId != value)
+            {
+                Settings.Default.LootFilterStylesWeaponSoundId = value;
+                Save();
+            }
+        }
+    }
+
+    public int LootFilterStylesWeaponSoundVolume
+    {
+        get => Settings.Default.LootFilterStylesWeaponSoundVolume;
+        set
+        {
+            if (Settings.Default.LootFilterStylesWeaponSoundVolume != value)
+            {
+                Settings.Default.LootFilterStylesWeaponSoundVolume = value;
+                Save();
+            }
+        }
+    }
+
+    public string LootFilterStylesWeaponCustomSoundPath
+    {
+        get => Settings.Default.LootFilterStylesWeaponCustomSoundPath;
+        set
+        {
+            if (Settings.Default.LootFilterStylesWeaponCustomSoundPath != value)
+            {
+                Settings.Default.LootFilterStylesWeaponCustomSoundPath = value;
+                Save();
+            }
+        }
+    }
 }

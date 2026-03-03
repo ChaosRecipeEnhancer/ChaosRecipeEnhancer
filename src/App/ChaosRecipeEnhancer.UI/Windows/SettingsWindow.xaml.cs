@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Forms;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
@@ -63,28 +64,36 @@ public partial class SettingsWindow
         }
     }
 
-    private void OnSaveButtonClicked(object sender, RoutedEventArgs e)
-    {
-        Settings.Default.Save();
-    }
 
     private void OnRunOverlayButtonClicked(object sender, RoutedEventArgs e)
     {
         if (_recipeOverlay.IsOpen)
         {
             _recipeOverlay.Hide();
-            RunOverlayButton.Content = "Run Overlay";
+            SetOverlayButtonState(false);
         }
         else
         {
             if (CheckAllSettings(true))
             {
                 _recipeOverlay.Show();
-                RunOverlayButton.Content = "Stop Overlay";
+                SetOverlayButtonState(true);
             }
         }
     }
 
+    private void SetOverlayButtonState(bool isRunning)
+    {
+        RunOverlayButton.Tag = isRunning ? "running" : "stopped";
+        OverlayIcon.Text = isRunning ? "\u25A0" : "\u25B6";
+        OverlayTitle.Text = isRunning ? "Stop Overlay" : "Start Overlay";
+        OverlaySubtitle.Text = isRunning
+            ? "The recipe tracker is currently running"
+            : "Launch the recipe tracker overlay";
+        OverlaySubtitle.Foreground = new SolidColorBrush(isRunning
+            ? Color.FromRgb(0xEF, 0x9A, 0x9A)  // #EF9A9A soft red
+            : Color.FromRgb(0xA5, 0xD6, 0xA7)); // #A5D6A7 soft green
+    }
     private static bool CheckAllSettings(bool showError)
     {
         var missingSettings = new List<string>();

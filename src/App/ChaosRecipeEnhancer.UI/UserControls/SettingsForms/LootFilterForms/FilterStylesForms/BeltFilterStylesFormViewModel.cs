@@ -215,6 +215,63 @@ public class BeltFilterStylesFormViewModel : CreViewModelBase
         }
     }
 
+    public int LootFilterStylesBeltSoundMode
+    {
+        get => _userSettings.LootFilterStylesBeltSoundMode;
+        set
+        {
+            if (_userSettings.LootFilterStylesBeltSoundMode != value)
+            {
+                _userSettings.LootFilterStylesBeltSoundMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNormalSoundMode));
+                OnPropertyChanged(nameof(IsCustomSoundMode));
+            }
+        }
+    }
+
+    public int LootFilterStylesBeltSoundId
+    {
+        get => _userSettings.LootFilterStylesBeltSoundId;
+        set
+        {
+            if (_userSettings.LootFilterStylesBeltSoundId != value)
+            {
+                _userSettings.LootFilterStylesBeltSoundId = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public int LootFilterStylesBeltSoundVolume
+    {
+        get => _userSettings.LootFilterStylesBeltSoundVolume;
+        set
+        {
+            if (_userSettings.LootFilterStylesBeltSoundVolume != value)
+            {
+                _userSettings.LootFilterStylesBeltSoundVolume = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public string LootFilterStylesBeltCustomSoundPath
+    {
+        get => _userSettings.LootFilterStylesBeltCustomSoundPath;
+        set
+        {
+            if (_userSettings.LootFilterStylesBeltCustomSoundPath != value)
+            {
+                _userSettings.LootFilterStylesBeltCustomSoundPath = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public bool IsNormalSoundMode => LootFilterStylesBeltSoundMode == 1;
+    public bool IsCustomSoundMode => LootFilterStylesBeltSoundMode == 2;
+
     public bool LootFilterStylesBeltTextColorEnabled
     {
         get => _userSettings.LootFilterStylesBeltTextColorEnabled;
@@ -306,6 +363,10 @@ public class BeltFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesBeltBeamEnabled = false;
         LootFilterStylesBeltBeamColor = 10; // Yellow
         LootFilterStylesBeltBeamTemporary = false;
+        LootFilterStylesBeltSoundMode = 0;
+        LootFilterStylesBeltSoundId = 1;
+        LootFilterStylesBeltSoundVolume = 200;
+        LootFilterStylesBeltCustomSoundPath = "";
         LootFilterStylesBeltTextColorEnabled = true;
         LootFilterStylesBeltBorderColorEnabled = true;
         LootFilterStylesBeltBackgroundColorEnabled = true;

@@ -903,6 +903,10 @@
 		<None Update="Assets\Sounds\SetPickingComplete.wav">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<!-- Filter Sound Packs (built-in PoE alert sounds + community streamer sounds) -->
+		<None Update="Assets\Sounds\FilterSounds\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Update="Properties\Settings.settings">
 			<Generator>PublicSettingsSingleFileGenerator</Generator>
 			<LastGenOutput>Settings.Designer.cs</LastGenOutput>

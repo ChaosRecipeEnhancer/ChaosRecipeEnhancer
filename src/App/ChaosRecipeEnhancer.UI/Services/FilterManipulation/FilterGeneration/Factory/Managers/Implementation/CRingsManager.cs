@@ -22,6 +22,10 @@ public class CRingsManager : ABaseItemClassManager
         BeamEnabled = Settings.Default.LootFilterStylesRingBeamEnabled;
         BeamTemporary = Settings.Default.LootFilterStylesRingBeamTemporary;
         BeamColor = Settings.Default.LootFilterStylesRingBeamColor;
+        SoundMode = Settings.Default.LootFilterStylesRingSoundMode;
+        SoundId = Settings.Default.LootFilterStylesRingSoundId;
+        SoundVolume = Settings.Default.LootFilterStylesRingSoundVolume;
+        CustomSoundPath = Settings.Default.LootFilterStylesRingCustomSoundPath;
     }
 
     public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)

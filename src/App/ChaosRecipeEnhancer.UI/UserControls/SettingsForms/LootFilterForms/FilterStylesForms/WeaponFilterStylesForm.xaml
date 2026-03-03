@@ -28,6 +28,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid.Background>
@@ -282,6 +283,13 @@
             <TextBlock Text="Temporary" VerticalAlignment="Center" Margin="0,5,10,5" />
 
         </StackPanel>
+
+        <!-- Row 4 (Sound Settings) -->
+        <local:FilterSoundPicker Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3"
+                                 SoundMode="{Binding LootFilterStylesWeaponSoundMode, Mode=TwoWay}"
+                                 SoundId="{Binding LootFilterStylesWeaponSoundId, Mode=TwoWay}"
+                                 SoundVolume="{Binding LootFilterStylesWeaponSoundVolume, Mode=TwoWay}"
+                                 CustomSoundPath="{Binding LootFilterStylesWeaponCustomSoundPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
     </Grid>
 
