@@ -26,7 +26,18 @@ public partial class App
         var exePath = Environment.ProcessPath ?? string.Empty;
         VelopackApp.Build()
             .OnAfterInstallFastCallback((v) => ProtocolRegistration.Register(exePath))
-            .OnAfterUpdateFastCallback((v) => ProtocolRegistration.Register(exePath))
+            .OnAfterUpdateFastCallback((v) =>
+            {
+                ProtocolRegistration.Register(exePath);
+
+                // After a Velopack update, reset the upgrade flag so that the next
+                // normal launch triggers Settings.Default.Upgrade(). This is how we
+                // carry forward user settings between Velopack versions — .NET's
+                // Upgrade() copies the previous version's user.config into the new
+                // version's settings folder, but only if this flag is true.
+                UI.Properties.Settings.Default.UpgradeSettingsAfterUpdate = true;
+                UI.Properties.Settings.Default.Save();
+            })
             .OnBeforeUninstallFastCallback((v) => ProtocolRegistration.Unregister())
             .Run();
 

@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Windows;
+using System.Runtime.CompilerServices;
 
 // Version information for an assembly consists of the following four values:
 //
@@ -12,3 +13,5 @@ using System.Windows;
 [assembly: AssemblyFileVersion("3.28.1001.0")]
 
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
+
+[assembly: InternalsVisibleTo("ChaosRecipeEnhancer.UI.Tests")]

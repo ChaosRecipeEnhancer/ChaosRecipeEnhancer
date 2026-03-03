@@ -2732,5 +2732,17 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["TargetInfluenceType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LegacySettingsMigrated {
+            get {
+                return ((bool)(this["LegacySettingsMigrated"]));
+            }
+            set {
+                this["LegacySettingsMigrated"] = value;
+            }
+        }
     }
 }
