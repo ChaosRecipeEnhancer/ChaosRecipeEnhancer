@@ -285,82 +285,142 @@ export default async function Home() {
 
             <StaggerChildren className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-5">
               <StaggerItem>
-                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
-                  <span className="text-2xl" aria-hidden="true">🔊</span>
-                  <span className="font-semibold text-cre-text text-sm">Custom Filter Sounds</span>
-                  <span className="text-cre-text-muted text-xs leading-snug">Community sound packs from streamers & NPCs</span>
+                <div className="flex h-full flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span aria-hidden="true" className="text-2xl">
+                    🔊
+                  </span>
+                  <span className="font-semibold text-cre-text text-sm">
+                    Custom Filter Sounds
+                  </span>
+                  <span className="text-cre-text-muted text-xs leading-snug">
+                    Community sound packs from streamers & NPCs
+                  </span>
                 </div>
               </StaggerItem>
 
               <StaggerItem>
-                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
-                  <span className="text-2xl" aria-hidden="true">⌨️</span>
-                  <span className="font-semibold text-cre-text text-sm">Global Hotkeys</span>
-                  <span className="text-cre-text-muted text-xs leading-snug">Bind any key to fetch, toggle overlays, or reload</span>
+                <div className="flex h-full flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span aria-hidden="true" className="text-2xl">
+                    ⌨️
+                  </span>
+                  <span className="font-semibold text-cre-text text-sm">
+                    Global Hotkeys
+                  </span>
+                  <span className="text-cre-text-muted text-xs leading-snug">
+                    Bind any key to fetch, toggle overlays, or reload
+                  </span>
                 </div>
               </StaggerItem>
 
               <StaggerItem>
-                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
-                  <span className="text-2xl" aria-hidden="true">🔄</span>
-                  <span className="font-semibold text-cre-text text-sm">Auto-Fetch on Rezone</span>
-                  <span className="text-cre-text-muted text-xs leading-snug">Refreshes stash data every time you enter a new zone</span>
+                <div className="flex h-full flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span aria-hidden="true" className="text-2xl">
+                    🔄
+                  </span>
+                  <span className="font-semibold text-cre-text text-sm">
+                    Auto-Fetch on Rezone
+                  </span>
+                  <span className="text-cre-text-muted text-xs leading-snug">
+                    Refreshes stash data every time you enter a new zone
+                  </span>
                 </div>
               </StaggerItem>
 
               <StaggerItem>
-                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
-                  <span className="text-2xl" aria-hidden="true">🔔</span>
-                  <span className="font-semibold text-cre-text text-sm">Sound Notifications</span>
-                  <span className="text-cre-text-muted text-xs leading-snug">Audio alerts when sets complete or items change</span>
+                <div className="flex h-full flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span aria-hidden="true" className="text-2xl">
+                    🔔
+                  </span>
+                  <span className="font-semibold text-cre-text text-sm">
+                    Sound Notifications
+                  </span>
+                  <span className="text-cre-text-muted text-xs leading-snug">
+                    Audio alerts when sets complete or items change
+                  </span>
                 </div>
               </StaggerItem>
 
               <StaggerItem>
-                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
-                  <span className="text-2xl" aria-hidden="true">💎</span>
-                  <span className="font-semibold text-cre-text text-sm">4 Recipe Types</span>
-                  <span className="text-cre-text-muted text-xs leading-snug">Chaos, Regal, Chance & Exalted with influence targeting</span>
+                <div className="flex h-full flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span aria-hidden="true" className="text-2xl">
+                    💎
+                  </span>
+                  <span className="font-semibold text-cre-text text-sm">
+                    4 Recipe Types
+                  </span>
+                  <span className="text-cre-text-muted text-xs leading-snug">
+                    Chaos, Regal, Chance & Exalted with influence targeting
+                  </span>
                 </div>
               </StaggerItem>
 
               <StaggerItem>
-                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
-                  <span className="text-2xl" aria-hidden="true">🎨</span>
-                  <span className="font-semibold text-cre-text text-sm">8 Overlay Layouts</span>
-                  <span className="text-cre-text-muted text-xs leading-snug">Standard, vertical, minified & buttons-only modes</span>
+                <div className="flex h-full flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span aria-hidden="true" className="text-2xl">
+                    🎨
+                  </span>
+                  <span className="font-semibold text-cre-text text-sm">
+                    8 Overlay Layouts
+                  </span>
+                  <span className="text-cre-text-muted text-xs leading-snug">
+                    Standard, vertical, minified & buttons-only modes
+                  </span>
                 </div>
               </StaggerItem>
 
               <StaggerItem>
-                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
-                  <span className="text-2xl" aria-hidden="true">🌍</span>
-                  <span className="font-semibold text-cre-text text-sm">Multi-Language</span>
-                  <span className="text-cre-text-muted text-xs leading-snug">Supports 8 languages for zone detection</span>
+                <div className="flex h-full flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span aria-hidden="true" className="text-2xl">
+                    🌍
+                  </span>
+                  <span className="font-semibold text-cre-text text-sm">
+                    Multi-Language
+                  </span>
+                  <span className="text-cre-text-muted text-xs leading-snug">
+                    Supports 8 languages for zone detection
+                  </span>
                 </div>
               </StaggerItem>
 
               <StaggerItem>
-                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
-                  <span className="text-2xl" aria-hidden="true">👥</span>
-                  <span className="font-semibold text-cre-text text-sm">Guild Stash Support</span>
-                  <span className="text-cre-text-muted text-xs leading-snug">Query from your guild's shared stash tabs</span>
+                <div className="flex h-full flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span aria-hidden="true" className="text-2xl">
+                    👥
+                  </span>
+                  <span className="font-semibold text-cre-text text-sm">
+                    Guild Stash Support
+                  </span>
+                  <span className="text-cre-text-muted text-xs leading-snug">
+                    Query from your guild's shared stash tabs
+                  </span>
                 </div>
               </StaggerItem>
 
               <StaggerItem>
-                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
-                  <span className="text-2xl" aria-hidden="true">🚀</span>
-                  <span className="font-semibold text-cre-text text-sm">Auto-Updates</span>
-                  <span className="text-cre-text-muted text-xs leading-snug">New versions install seamlessly in the background</span>
+                <div className="flex h-full flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span aria-hidden="true" className="text-2xl">
+                    🚀
+                  </span>
+                  <span className="font-semibold text-cre-text text-sm">
+                    Auto-Updates
+                  </span>
+                  <span className="text-cre-text-muted text-xs leading-snug">
+                    New versions install seamlessly in the background
+                  </span>
                 </div>
               </StaggerItem>
 
               <StaggerItem>
-                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
-                  <span className="text-2xl" aria-hidden="true">🔐</span>
-                  <span className="font-semibold text-cre-text text-sm">Secure OAuth Login</span>
-                  <span className="text-cre-text-muted text-xs leading-snug">2-click connection to PoE — no POESESSID needed</span>
+                <div className="flex h-full flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span aria-hidden="true" className="text-2xl">
+                    🔐
+                  </span>
+                  <span className="font-semibold text-cre-text text-sm">
+                    Secure OAuth Login
+                  </span>
+                  <span className="text-cre-text-muted text-xs leading-snug">
+                    2-click connection to PoE — no POESESSID needed
+                  </span>
                 </div>
               </StaggerItem>
             </StaggerChildren>
@@ -368,7 +428,8 @@ export default async function Home() {
             <FadeIn delay={0.3}>
               <p className="mt-8 text-center text-sm italic md:mt-10">
                 <span className="bg-gradient-to-r from-cre-accent to-cre-gold bg-clip-text text-transparent">
-                  ...and I'm always willing to add more features based on community feedback
+                  ...and I'm always willing to add more features based on
+                  community feedback
                 </span>
               </p>
             </FadeIn>
@@ -529,8 +590,8 @@ export default async function Home() {
               Get Started in 1 Step
             </h2>
             <p className="mx-auto mb-8 max-w-xl text-cre-text-secondary text-lg md:mb-10">
-              Download the installer, run it, and you're ready to go.
-              Everything you need is bundled — no extra downloads required.
+              Download the installer, run it, and you're ready to go. Everything
+              you need is bundled — no extra downloads required.
             </p>
             <Link
               className="flex items-center justify-center gap-3 rounded-lg bg-cre-accent px-10 py-5 font-semibold text-lg text-white shadow-cre-accent/20 shadow-lg transition-colors hover:bg-cre-accent-hover"

@@ -107,6 +107,7 @@ export default function RootLayout({
     <html className="dark" lang="en">
       <body className={`${inter.variable} font-sans`}>
         <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data requires dangerouslySetInnerHTML
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
           type="application/ld+json"
         />

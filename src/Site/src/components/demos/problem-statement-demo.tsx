@@ -33,7 +33,6 @@ const DROPS = [
   { n: "CHAIN BELT", x: 76, y: 42 },
   { n: "SIEGE AXE", x: 24, y: 64 },
   { n: "PRISMATIC RING", x: 48, y: 68 },
-  // More drops — heavier on the right side
   { n: "TOPAZ RING", x: 85, y: 15 },
   { n: "GRANITE FLASK", x: 80, y: 24 },
   { n: "SACRIFICIAL GARB", x: 70, y: 48 },
@@ -50,6 +49,7 @@ const DROPS = [
   { n: "DEICIDE AXE", x: 78, y: 76 },
   { n: "SATIN GLOVES", x: 8, y: 82 },
   { n: "AGATE AMULET", x: 66, y: 84 },
+  { n: "MIRROR OF KALANDRA", x: 50, y: 50 },
 ];
 
 // ---------------------------------------------------------------------------
@@ -94,7 +94,7 @@ const STASH: StashBlock[] = [
   { c: 3, r: 7, w: 2, h: 1 },
 ];
 
-const CURSOR_PATH = [2, 13, 6, 18, 9, 15];
+const CURSOR_PATH = [2, 18, 9];
 
 const GRID_KEYS = Array.from({ length: SCOLS * SROWS }, (_, i) => `c${i}`);
 
@@ -102,12 +102,12 @@ const GRID_KEYS = Array.from({ length: SCOLS * SROWS }, (_, i) => `c${i}`);
 // Timing
 // ---------------------------------------------------------------------------
 
-const DROP_MS = 100;
-const DROP_HOLD = 1200;
-const CURSOR_MS = 700;
-const CURSOR_WAIT = 500;
-const END_HOLD = 1200;
-const JIGGLE_MS = 80;
+const DROP_MS = 50;
+const DROP_HOLD = 1000;
+const CURSOR_MS = 350;
+const CURSOR_WAIT = 1000;
+const END_HOLD = 2500;
+const JIGGLE_MS = 40;
 const JIGGLE_OFFSETS = [
   { x: 8, y: -6 },
   { x: -10, y: 4 },

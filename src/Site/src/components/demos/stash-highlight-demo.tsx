@@ -10,9 +10,9 @@ const COLS = 8;
 const ROWS = 6;
 const RED = "#EF4444";
 
-const PICK_MS = 800;
-const EMPTY_MS = 1500;
-const FILL_MS = 1200;
+const PICK_MS = 400;
+const EMPTY_MS = 750;
+const FILL_MS = 600;
 
 interface StashItem {
   col: number;
@@ -137,7 +137,7 @@ export function StashHighlightDemo() {
             <div className="h-3 w-3 rounded-full bg-[#27C93F]" />
           </div>
           <div className="ml-4 flex h-full items-center border-cre-gold/60 border-t-2 bg-red-600/80 px-4 font-medium text-sm text-white">
-            Chaos Items
+            Chaos
           </div>
           <div className="flex h-full items-center px-4 text-cre-text-muted text-sm">
             Currency
