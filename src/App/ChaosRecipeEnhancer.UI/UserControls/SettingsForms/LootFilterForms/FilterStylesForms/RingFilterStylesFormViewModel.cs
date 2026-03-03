@@ -215,6 +215,63 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
         }
     }
 
+    public int LootFilterStylesRingSoundMode
+    {
+        get => _userSettings.LootFilterStylesRingSoundMode;
+        set
+        {
+            if (_userSettings.LootFilterStylesRingSoundMode != value)
+            {
+                _userSettings.LootFilterStylesRingSoundMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNormalSoundMode));
+                OnPropertyChanged(nameof(IsCustomSoundMode));
+            }
+        }
+    }
+
+    public int LootFilterStylesRingSoundId
+    {
+        get => _userSettings.LootFilterStylesRingSoundId;
+        set
+        {
+            if (_userSettings.LootFilterStylesRingSoundId != value)
+            {
+                _userSettings.LootFilterStylesRingSoundId = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public int LootFilterStylesRingSoundVolume
+    {
+        get => _userSettings.LootFilterStylesRingSoundVolume;
+        set
+        {
+            if (_userSettings.LootFilterStylesRingSoundVolume != value)
+            {
+                _userSettings.LootFilterStylesRingSoundVolume = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public string LootFilterStylesRingCustomSoundPath
+    {
+        get => _userSettings.LootFilterStylesRingCustomSoundPath;
+        set
+        {
+            if (_userSettings.LootFilterStylesRingCustomSoundPath != value)
+            {
+                _userSettings.LootFilterStylesRingCustomSoundPath = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public bool IsNormalSoundMode => LootFilterStylesRingSoundMode == 1;
+    public bool IsCustomSoundMode => LootFilterStylesRingSoundMode == 2;
+
     public bool LootFilterStylesRingTextColorEnabled
     {
         get => _userSettings.LootFilterStylesRingTextColorEnabled;
@@ -306,6 +363,10 @@ public class RingFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesRingBeamEnabled = false;
         LootFilterStylesRingBeamColor = 10; // Yellow
         LootFilterStylesRingBeamTemporary = false;
+        LootFilterStylesRingSoundMode = 0;
+        LootFilterStylesRingSoundId = 1;
+        LootFilterStylesRingSoundVolume = 200;
+        LootFilterStylesRingCustomSoundPath = "";
         LootFilterStylesRingTextColorEnabled = true;
         LootFilterStylesRingBorderColorEnabled = true;
         LootFilterStylesRingBackgroundColorEnabled = true;

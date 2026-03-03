@@ -22,6 +22,10 @@ public class CGlovesManager : ABaseItemClassManager
         BeamEnabled = Settings.Default.LootFilterStylesGlovesBeamEnabled;
         BeamTemporary = Settings.Default.LootFilterStylesGlovesBeamTemporary;
         BeamColor = Settings.Default.LootFilterStylesGlovesBeamColor;
+        SoundMode = Settings.Default.LootFilterStylesGlovesSoundMode;
+        SoundId = Settings.Default.LootFilterStylesGlovesSoundId;
+        SoundVolume = Settings.Default.LootFilterStylesGlovesSoundVolume;
+        CustomSoundPath = Settings.Default.LootFilterStylesGlovesCustomSoundPath;
     }
 
     public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)

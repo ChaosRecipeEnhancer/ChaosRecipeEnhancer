@@ -212,4 +212,56 @@ public partial class UserSettings : IUserSettings
             }
         }
     }
+
+    public int LootFilterStylesHelmetSoundMode
+    {
+        get => Settings.Default.LootFilterStylesHelmetSoundMode;
+        set
+        {
+            if (Settings.Default.LootFilterStylesHelmetSoundMode != value)
+            {
+                Settings.Default.LootFilterStylesHelmetSoundMode = value;
+                Save();
+            }
+        }
+    }
+
+    public int LootFilterStylesHelmetSoundId
+    {
+        get => Settings.Default.LootFilterStylesHelmetSoundId;
+        set
+        {
+            if (Settings.Default.LootFilterStylesHelmetSoundId != value)
+            {
+                Settings.Default.LootFilterStylesHelmetSoundId = value;
+                Save();
+            }
+        }
+    }
+
+    public int LootFilterStylesHelmetSoundVolume
+    {
+        get => Settings.Default.LootFilterStylesHelmetSoundVolume;
+        set
+        {
+            if (Settings.Default.LootFilterStylesHelmetSoundVolume != value)
+            {
+                Settings.Default.LootFilterStylesHelmetSoundVolume = value;
+                Save();
+            }
+        }
+    }
+
+    public string LootFilterStylesHelmetCustomSoundPath
+    {
+        get => Settings.Default.LootFilterStylesHelmetCustomSoundPath;
+        set
+        {
+            if (Settings.Default.LootFilterStylesHelmetCustomSoundPath != value)
+            {
+                Settings.Default.LootFilterStylesHelmetCustomSoundPath = value;
+                Save();
+            }
+        }
+    }
 }

@@ -215,6 +215,63 @@ public class BodyArmourFilterStylesFormViewModel : CreViewModelBase
         }
     }
 
+    public int LootFilterStylesBodyArmourSoundMode
+    {
+        get => _userSettings.LootFilterStylesBodyArmourSoundMode;
+        set
+        {
+            if (_userSettings.LootFilterStylesBodyArmourSoundMode != value)
+            {
+                _userSettings.LootFilterStylesBodyArmourSoundMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNormalSoundMode));
+                OnPropertyChanged(nameof(IsCustomSoundMode));
+            }
+        }
+    }
+
+    public int LootFilterStylesBodyArmourSoundId
+    {
+        get => _userSettings.LootFilterStylesBodyArmourSoundId;
+        set
+        {
+            if (_userSettings.LootFilterStylesBodyArmourSoundId != value)
+            {
+                _userSettings.LootFilterStylesBodyArmourSoundId = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public int LootFilterStylesBodyArmourSoundVolume
+    {
+        get => _userSettings.LootFilterStylesBodyArmourSoundVolume;
+        set
+        {
+            if (_userSettings.LootFilterStylesBodyArmourSoundVolume != value)
+            {
+                _userSettings.LootFilterStylesBodyArmourSoundVolume = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public string LootFilterStylesBodyArmourCustomSoundPath
+    {
+        get => _userSettings.LootFilterStylesBodyArmourCustomSoundPath;
+        set
+        {
+            if (_userSettings.LootFilterStylesBodyArmourCustomSoundPath != value)
+            {
+                _userSettings.LootFilterStylesBodyArmourCustomSoundPath = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public bool IsNormalSoundMode => LootFilterStylesBodyArmourSoundMode == 1;
+    public bool IsCustomSoundMode => LootFilterStylesBodyArmourSoundMode == 2;
+
     public bool LootFilterStylesBodyArmourTextColorEnabled
     {
         get => _userSettings.LootFilterStylesBodyArmourTextColorEnabled;
@@ -306,6 +363,10 @@ public class BodyArmourFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesBodyArmourBeamEnabled = false;
         LootFilterStylesBodyArmourBeamColor = 10; // Yellow
         LootFilterStylesBodyArmourBeamTemporary = false;
+        LootFilterStylesBodyArmourSoundMode = 0;
+        LootFilterStylesBodyArmourSoundId = 1;
+        LootFilterStylesBodyArmourSoundVolume = 200;
+        LootFilterStylesBodyArmourCustomSoundPath = "";
         LootFilterStylesBodyArmourTextColorEnabled = true;
         LootFilterStylesBodyArmourBorderColorEnabled = true;
         LootFilterStylesBodyArmourBackgroundColorEnabled = true;

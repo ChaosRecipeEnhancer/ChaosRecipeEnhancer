@@ -7,6 +7,7 @@ using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterGeneration.Factory.Managers;
 using ChaosRecipeEnhancer.UI.Services.FilterManipulation.FilterStorage;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -64,7 +65,11 @@ public class FilterManipulationService : IFilterManipulationService
             }
         }
 
-        if (_userSettings.LootFilterManipulationEnabled) await UpdateFilterAsync(sectionList);
+        if (_userSettings.LootFilterManipulationEnabled)
+        {
+            await UpdateFilterAsync(sectionList);
+            CopySoundFilesToFilterFolder();
+        }
     }
 
     private string GenerateSection(bool missingChaosItem)
@@ -184,6 +189,23 @@ public class FilterManipulationService : IFilterManipulationService
             result = result + $"PlayEffect {GetFilterColor(_itemClassManager.BeamColor)} {(_itemClassManager.BeamTemporary ? "Temp" : "")}" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
         }
 
+        // Sound Setting
+        switch (_itemClassManager.SoundMode)
+        {
+            case 1: // Normal (built-in PoE sound)
+                result = result + $"PlayAlertSound {_itemClassManager.SoundId} {_itemClassManager.SoundVolume}" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                result = result + "DisableDropSound" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                break;
+            case 2: // Custom sound file
+            case 3: // Community sound pack (also uses CustomAlertSound)
+                if (!string.IsNullOrEmpty(_itemClassManager.CustomSoundPath))
+                {
+                    result = result + $"CustomAlertSound \"{_itemClassManager.CustomSoundPath}\"" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                    result = result + "DisableDropSound" + StringConstruction.NewLineCharacter + StringConstruction.TabCharacter;
+                }
+                break;
+        }
+
         return result;
     }
 
@@ -255,6 +277,72 @@ public class FilterManipulationService : IFilterManipulationService
 
         var newFilter = GenerateLootFilter(oldFilter, sectionList);
         await filterStorage.WriteLootFilterAsync(newFilter);
+    }
+
+    /// <summary>
+    /// After writing the filter, copy any referenced community sound files
+    /// to the filter's directory so PoE can resolve the relative paths.
+    /// </summary>
+    private static void CopySoundFilesToFilterFolder()
+    {
+        try
+        {
+            var filterPath = Settings.Default.LootFilterFileLocation;
+            if (string.IsNullOrEmpty(filterPath)) return;
+
+            var filterFolder = Path.GetDirectoryName(filterPath);
+            if (string.IsNullOrEmpty(filterFolder)) return;
+
+            var bundledSoundsRoot = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                @"Assets\Sounds\FilterSounds\Community");
+
+            if (!Directory.Exists(bundledSoundsRoot)) return;
+
+            // Collect all unique CustomSoundPath values from active settings
+            var soundPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var prop in typeof(Settings).GetProperties())
+            {
+                if (!prop.Name.EndsWith("CustomSoundPath")) continue;
+                if (prop.GetValue(Settings.Default) is not string val) continue;
+                if (string.IsNullOrWhiteSpace(val)) continue;
+
+                // Check that the corresponding SoundMode is Custom (2) or Community (3)
+                var modePropName = prop.Name.Replace("CustomSoundPath", "SoundMode");
+                var modeProp = typeof(Settings).GetProperty(modePropName);
+                if (modeProp?.GetValue(Settings.Default) is int mode && (mode == 2 || mode == 3))
+                {
+                    soundPaths.Add(val);
+                }
+            }
+
+            foreach (var relativeSoundPath in soundPaths)
+            {
+                var sourceFile = Path.Combine(bundledSoundsRoot, relativeSoundPath);
+                if (!File.Exists(sourceFile)) continue;
+
+                var targetFile = Path.Combine(filterFolder, relativeSoundPath);
+                var targetDir = Path.GetDirectoryName(targetFile);
+
+                if (!string.IsNullOrEmpty(targetDir))
+                {
+                    Directory.CreateDirectory(targetDir);
+                }
+
+                // Only copy if the target doesn't exist or is older
+                if (!File.Exists(targetFile) ||
+                    File.GetLastWriteTimeUtc(sourceFile) > File.GetLastWriteTimeUtc(targetFile))
+                {
+                    File.Copy(sourceFile, targetFile, true);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.ForContext<FilterManipulationService>()
+                .Warning(ex, "Failed to copy sound files to filter folder");
+        }
     }
 
     private IEnumerable<int> GetColorRGBAValues(string hexColorSetting)

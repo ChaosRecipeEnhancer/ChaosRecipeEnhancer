@@ -22,8 +22,7 @@ There's a lot of features in the app, so we made a video to help you get started
 
 ## Installation
 
-0. Install the latest .NET 8 Windows Desktop Runtime [(Clicking here will download the installer)][dotnet-installer-link]
-1. Download and install the [latest ChaosRecipeEnhancerSetup.msi][releases-link]
+1. Download and install the [latest ChaosRecipeEnhancer release][releases-link]
 
 ## Feature Highlights
 
@@ -88,4 +87,3 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 [issues-link]: https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/issues
 [support-badge]: https://img.shields.io/badge/Paypal-Support-<COLOR>?style=for-the-badge&logo=paypal&color=ffae29
 [support-link]: https://www.paypal.com/donate/?hosted_button_id=4NDCV5J5NTEWS
-[dotnet-installer-link]: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.24-windows-x64-installer

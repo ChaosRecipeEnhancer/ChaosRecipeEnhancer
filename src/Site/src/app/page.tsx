@@ -272,6 +272,108 @@ export default async function Home() {
             </div>
           </div>
 
+          {/* Feature Grid */}
+          <div className="border-cre-border-subtle border-t pt-10 md:pt-16">
+            <FadeIn>
+              <h3 className="mb-2 text-center font-bold text-2xl text-cre-text md:text-3xl">
+                Packed with Features
+              </h3>
+              <p className="mx-auto mb-8 max-w-xl text-center text-cre-text-secondary text-lg md:mb-12">
+                Everything you need to optimize your recipe farming.
+              </p>
+            </FadeIn>
+
+            <StaggerChildren className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-5">
+              <StaggerItem>
+                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span className="text-2xl" aria-hidden="true">🔊</span>
+                  <span className="font-semibold text-cre-text text-sm">Custom Filter Sounds</span>
+                  <span className="text-cre-text-muted text-xs leading-snug">Community sound packs from streamers & NPCs</span>
+                </div>
+              </StaggerItem>
+
+              <StaggerItem>
+                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span className="text-2xl" aria-hidden="true">⌨️</span>
+                  <span className="font-semibold text-cre-text text-sm">Global Hotkeys</span>
+                  <span className="text-cre-text-muted text-xs leading-snug">Bind any key to fetch, toggle overlays, or reload</span>
+                </div>
+              </StaggerItem>
+
+              <StaggerItem>
+                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span className="text-2xl" aria-hidden="true">🔄</span>
+                  <span className="font-semibold text-cre-text text-sm">Auto-Fetch on Rezone</span>
+                  <span className="text-cre-text-muted text-xs leading-snug">Refreshes stash data every time you enter a new zone</span>
+                </div>
+              </StaggerItem>
+
+              <StaggerItem>
+                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span className="text-2xl" aria-hidden="true">🔔</span>
+                  <span className="font-semibold text-cre-text text-sm">Sound Notifications</span>
+                  <span className="text-cre-text-muted text-xs leading-snug">Audio alerts when sets complete or items change</span>
+                </div>
+              </StaggerItem>
+
+              <StaggerItem>
+                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span className="text-2xl" aria-hidden="true">💎</span>
+                  <span className="font-semibold text-cre-text text-sm">4 Recipe Types</span>
+                  <span className="text-cre-text-muted text-xs leading-snug">Chaos, Regal, Chance & Exalted with influence targeting</span>
+                </div>
+              </StaggerItem>
+
+              <StaggerItem>
+                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span className="text-2xl" aria-hidden="true">🎨</span>
+                  <span className="font-semibold text-cre-text text-sm">8 Overlay Layouts</span>
+                  <span className="text-cre-text-muted text-xs leading-snug">Standard, vertical, minified & buttons-only modes</span>
+                </div>
+              </StaggerItem>
+
+              <StaggerItem>
+                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span className="text-2xl" aria-hidden="true">🌍</span>
+                  <span className="font-semibold text-cre-text text-sm">Multi-Language</span>
+                  <span className="text-cre-text-muted text-xs leading-snug">Supports 8 languages for zone detection</span>
+                </div>
+              </StaggerItem>
+
+              <StaggerItem>
+                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span className="text-2xl" aria-hidden="true">👥</span>
+                  <span className="font-semibold text-cre-text text-sm">Guild Stash Support</span>
+                  <span className="text-cre-text-muted text-xs leading-snug">Query from your guild's shared stash tabs</span>
+                </div>
+              </StaggerItem>
+
+              <StaggerItem>
+                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span className="text-2xl" aria-hidden="true">🚀</span>
+                  <span className="font-semibold text-cre-text text-sm">Auto-Updates</span>
+                  <span className="text-cre-text-muted text-xs leading-snug">New versions install seamlessly in the background</span>
+                </div>
+              </StaggerItem>
+
+              <StaggerItem>
+                <div className="flex flex-col items-center gap-2 rounded-lg border border-cre-border bg-cre-bg-container p-4 text-center transition-colors hover:border-cre-border-hover md:p-5">
+                  <span className="text-2xl" aria-hidden="true">🔐</span>
+                  <span className="font-semibold text-cre-text text-sm">Secure OAuth Login</span>
+                  <span className="text-cre-text-muted text-xs leading-snug">2-click connection to PoE — no POESESSID needed</span>
+                </div>
+              </StaggerItem>
+            </StaggerChildren>
+
+            <FadeIn delay={0.3}>
+              <p className="mt-8 text-center text-sm italic md:mt-10">
+                <span className="bg-gradient-to-r from-cre-accent to-cre-gold bg-clip-text text-transparent">
+                  ...and I'm always willing to add more features based on community feedback
+                </span>
+              </p>
+            </FadeIn>
+          </div>
+
           {/* YouTube Video */}
           <FadeIn>
             <div className="flex flex-col items-center border-cre-border-subtle border-t pt-10 md:pt-16">
@@ -419,99 +521,44 @@ export default async function Home() {
         </StaggerChildren>
       </section>
 
-      {/* Section 5: Quick Start */}
+      {/* Section 5: Get Started */}
       <section className="w-full max-w-4xl border-cre-border-subtle border-t px-6 py-16 md:py-24">
         <FadeIn>
-          <h2 className="mb-10 text-center font-bold text-3xl text-cre-text md:mb-16 md:text-4xl">
-            Get Started in 2 Steps
-          </h2>
-        </FadeIn>
-
-        <div className="space-y-8">
-          <FadeIn delay={0.1}>
-            <div className="flex items-start gap-4 rounded-xl border border-cre-border bg-cre-bg-container p-6 md:gap-6 md:p-8">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cre-bg-float font-bold text-cre-gold text-xl">
-                1
-              </div>
-              <div>
-                <h3 className="mb-2 font-semibold text-cre-text text-xl">
-                  Install .NET 8 Desktop Runtime
-                </h3>
-                <p className="mb-4 text-cre-text-secondary">
-                  Chaos Recipe Enhancer requires the .NET 8 Desktop Runtime to
-                  function properly.
-                </p>
-                <Link
-                  className="inline-flex items-center gap-2 font-medium text-cre-accent transition-colors hover:text-cre-accent-hover"
-                  href="https://dotnet.microsoft.com/en-us/download/dotnet/8.0"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Download .NET 8 Desktop Runtime
-                  <svg
-                    aria-hidden="true"
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                    />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={0.2}>
-            <div className="flex items-start gap-4 rounded-xl border border-cre-border bg-cre-bg-container p-6 md:gap-6 md:p-8">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cre-bg-float font-bold text-cre-accent text-xl">
-                2
-              </div>
-              <div>
-                <h3 className="mb-2 font-semibold text-cre-text text-xl">
-                  Download ChaosRecipeEnhancer
-                </h3>
-                <p className="mb-4 text-cre-text-secondary">
-                  Get the latest release from GitHub. Extract the files and run
-                  the executable.
-                </p>
-                <Link
-                  className="inline-flex items-center gap-2 font-medium text-cre-accent transition-colors hover:text-cre-accent-hover"
-                  href="https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/releases"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Download Latest Release
-                  <svg
-                    aria-hidden="true"
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                    />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-
-        <FadeIn delay={0.3}>
-          <p className="mt-8 text-center text-cre-text-muted text-sm md:mt-12">
-            System requirements: Windows 10/11 · .NET 8 · Windowed or Borderless
-            Fullscreen
-          </p>
+          <div className="flex flex-col items-center text-center">
+            <h2 className="mb-4 font-bold text-3xl text-cre-text md:text-4xl">
+              Get Started in 1 Step
+            </h2>
+            <p className="mx-auto mb-8 max-w-xl text-cre-text-secondary text-lg md:mb-10">
+              Download the installer, run it, and you're ready to go.
+              Everything you need is bundled — no extra downloads required.
+            </p>
+            <Link
+              className="flex items-center justify-center gap-3 rounded-lg bg-cre-accent px-10 py-5 font-semibold text-lg text-white shadow-cre-accent/20 shadow-lg transition-colors hover:bg-cre-accent-hover"
+              href="https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer/releases"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <svg
+                aria-hidden="true"
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                />
+              </svg>
+              Download Chaos Recipe Enhancer
+            </Link>
+            <p className="mt-6 text-cre-text-muted text-sm">
+              Windows 10/11 · Path of Exile in Windowed or Borderless
+            </p>
+          </div>
         </FadeIn>
       </section>
 

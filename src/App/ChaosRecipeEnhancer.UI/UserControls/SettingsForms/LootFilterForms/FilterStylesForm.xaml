@@ -19,6 +19,72 @@
             Text="Filter Style Editor"
             FontSize="24" />
 
+        <!-- Reload Filter Call-out -->
+        <Border
+            Background="#2A2216"
+            BorderBrush="#B8860B"
+            BorderThickness="1.5"
+            CornerRadius="5"
+            Padding="12,10"
+            Margin="0,0,0,12">
+            <DockPanel>
+                <Button
+                    DockPanel.Dock="Right"
+                    Padding="14,8"
+                    FontWeight="SemiBold"
+                    Click="OnReloadFilterClicked"
+                    ToolTip="Regenerates your loot filter with the current style settings and reloads it in Path of Exile. PoE must be running."
+                    ToolTipService.InitialShowDelay="50">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#B8860B" />
+                            <Setter Property="Foreground" Value="#1A1A1A" />
+                            <Setter Property="BorderBrush" Value="#D4A017" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="4"
+                                            Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#D4A017" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#9B7010" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="⟳ " FontSize="16" VerticalAlignment="Center" Margin="0,0,4,0" />
+                        <TextBlock Text="Apply &amp; Reload Filter" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                    <TextBlock
+                        Foreground="#D4A017"
+                        FontSize="13"
+                        FontWeight="SemiBold"
+                        Text="⚠  Filter styles are applied on next reload" />
+                    <TextBlock
+                        Foreground="#A0906A"
+                        FontSize="11.5"
+                        Margin="0,3,0,0"
+                        Text="Changes take effect after reloading the filter in-game. Click the button or press your reload hotkey in PoE." />
+                </StackPanel>
+            </DockPanel>
+        </Border>
         <TabControl>
 
             <TabItem Header="Ring">

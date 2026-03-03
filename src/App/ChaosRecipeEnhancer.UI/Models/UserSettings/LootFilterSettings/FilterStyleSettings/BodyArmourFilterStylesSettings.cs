@@ -212,4 +212,56 @@ public partial class UserSettings : IUserSettings
             }
         }
     }
+
+    public int LootFilterStylesBodyArmourSoundMode
+    {
+        get => Settings.Default.LootFilterStylesBodyArmourSoundMode;
+        set
+        {
+            if (Settings.Default.LootFilterStylesBodyArmourSoundMode != value)
+            {
+                Settings.Default.LootFilterStylesBodyArmourSoundMode = value;
+                Save();
+            }
+        }
+    }
+
+    public int LootFilterStylesBodyArmourSoundId
+    {
+        get => Settings.Default.LootFilterStylesBodyArmourSoundId;
+        set
+        {
+            if (Settings.Default.LootFilterStylesBodyArmourSoundId != value)
+            {
+                Settings.Default.LootFilterStylesBodyArmourSoundId = value;
+                Save();
+            }
+        }
+    }
+
+    public int LootFilterStylesBodyArmourSoundVolume
+    {
+        get => Settings.Default.LootFilterStylesBodyArmourSoundVolume;
+        set
+        {
+            if (Settings.Default.LootFilterStylesBodyArmourSoundVolume != value)
+            {
+                Settings.Default.LootFilterStylesBodyArmourSoundVolume = value;
+                Save();
+            }
+        }
+    }
+
+    public string LootFilterStylesBodyArmourCustomSoundPath
+    {
+        get => Settings.Default.LootFilterStylesBodyArmourCustomSoundPath;
+        set
+        {
+            if (Settings.Default.LootFilterStylesBodyArmourCustomSoundPath != value)
+            {
+                Settings.Default.LootFilterStylesBodyArmourCustomSoundPath = value;
+                Save();
+            }
+        }
+    }
 }

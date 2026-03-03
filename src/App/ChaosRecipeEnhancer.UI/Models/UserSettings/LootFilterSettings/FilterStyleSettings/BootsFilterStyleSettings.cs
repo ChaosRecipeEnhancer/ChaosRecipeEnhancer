@@ -211,4 +211,56 @@ public partial class UserSettings : IUserSettings
             }
         }
     }
+
+    public int LootFilterStylesBootsSoundMode
+    {
+        get => Settings.Default.LootFilterStylesBootsSoundMode;
+        set
+        {
+            if (Settings.Default.LootFilterStylesBootsSoundMode != value)
+            {
+                Settings.Default.LootFilterStylesBootsSoundMode = value;
+                Save();
+            }
+        }
+    }
+
+    public int LootFilterStylesBootsSoundId
+    {
+        get => Settings.Default.LootFilterStylesBootsSoundId;
+        set
+        {
+            if (Settings.Default.LootFilterStylesBootsSoundId != value)
+            {
+                Settings.Default.LootFilterStylesBootsSoundId = value;
+                Save();
+            }
+        }
+    }
+
+    public int LootFilterStylesBootsSoundVolume
+    {
+        get => Settings.Default.LootFilterStylesBootsSoundVolume;
+        set
+        {
+            if (Settings.Default.LootFilterStylesBootsSoundVolume != value)
+            {
+                Settings.Default.LootFilterStylesBootsSoundVolume = value;
+                Save();
+            }
+        }
+    }
+
+    public string LootFilterStylesBootsCustomSoundPath
+    {
+        get => Settings.Default.LootFilterStylesBootsCustomSoundPath;
+        set
+        {
+            if (Settings.Default.LootFilterStylesBootsCustomSoundPath != value)
+            {
+                Settings.Default.LootFilterStylesBootsCustomSoundPath = value;
+                Save();
+            }
+        }
+    }
 }
