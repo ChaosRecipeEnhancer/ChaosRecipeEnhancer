@@ -215,6 +215,63 @@ public class AmuletFilterStylesFormViewModel : CreViewModelBase
         }
     }
 
+    public int LootFilterStylesAmuletSoundMode
+    {
+        get => _userSettings.LootFilterStylesAmuletSoundMode;
+        set
+        {
+            if (_userSettings.LootFilterStylesAmuletSoundMode != value)
+            {
+                _userSettings.LootFilterStylesAmuletSoundMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNormalSoundMode));
+                OnPropertyChanged(nameof(IsCustomSoundMode));
+            }
+        }
+    }
+
+    public int LootFilterStylesAmuletSoundId
+    {
+        get => _userSettings.LootFilterStylesAmuletSoundId;
+        set
+        {
+            if (_userSettings.LootFilterStylesAmuletSoundId != value)
+            {
+                _userSettings.LootFilterStylesAmuletSoundId = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public int LootFilterStylesAmuletSoundVolume
+    {
+        get => _userSettings.LootFilterStylesAmuletSoundVolume;
+        set
+        {
+            if (_userSettings.LootFilterStylesAmuletSoundVolume != value)
+            {
+                _userSettings.LootFilterStylesAmuletSoundVolume = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public string LootFilterStylesAmuletCustomSoundPath
+    {
+        get => _userSettings.LootFilterStylesAmuletCustomSoundPath;
+        set
+        {
+            if (_userSettings.LootFilterStylesAmuletCustomSoundPath != value)
+            {
+                _userSettings.LootFilterStylesAmuletCustomSoundPath = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public bool IsNormalSoundMode => LootFilterStylesAmuletSoundMode == 1;
+    public bool IsCustomSoundMode => LootFilterStylesAmuletSoundMode == 2;
+
     public bool LootFilterStylesAmuletTextColorEnabled
     {
         get => _userSettings.LootFilterStylesAmuletTextColorEnabled;
@@ -306,6 +363,10 @@ public class AmuletFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesAmuletBeamEnabled = false;
         LootFilterStylesAmuletBeamColor = 10; // Yellow
         LootFilterStylesAmuletBeamTemporary = false;
+        LootFilterStylesAmuletSoundMode = 0;
+        LootFilterStylesAmuletSoundId = 1;
+        LootFilterStylesAmuletSoundVolume = 200;
+        LootFilterStylesAmuletCustomSoundPath = "";
         LootFilterStylesAmuletTextColorEnabled = true;
         LootFilterStylesAmuletBorderColorEnabled = true;
         LootFilterStylesAmuletBackgroundColorEnabled = true;

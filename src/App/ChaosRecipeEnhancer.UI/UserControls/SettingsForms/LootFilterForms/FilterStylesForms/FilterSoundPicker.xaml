@@ -1,0 +1,106 @@
+<UserControl x:Class="ChaosRecipeEnhancer.UI.UserControls.SettingsForms.LootFilterForms.FilterStylesForms.FilterSoundPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             x:Name="UserControl"
+             mc:Ignorable="d"
+             d:DesignHeight="40"
+             d:DesignWidth="900">
+
+    <StackPanel Orientation="Horizontal"
+                Margin="0,5,0,10"
+                Background="#202020"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+
+        <TextBlock Text="Sound: " Margin="5,5,10,5" VerticalAlignment="Center" />
+
+        <ComboBox Width="110" Height="25" Margin="0,5,5,5"
+                  SelectedIndex="{Binding SoundMode, ElementName=UserControl, Mode=TwoWay}">
+            <ComboBoxItem Content="No Sound" />
+            <ComboBoxItem Content="Normal" />
+            <ComboBoxItem Content="Custom" />
+            <ComboBoxItem Content="Community" />
+        </ComboBox>
+
+        <!-- Normal mode: Sound ID dropdown + Volume slider + Test -->
+        <StackPanel Orientation="Horizontal">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsNormalSoundMode, ElementName=UserControl}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <TextBlock Text="Sound:" Margin="5,5,3,5" VerticalAlignment="Center" />
+            <ComboBox Width="180" Height="25" Margin="0,5,5,5"
+                      ItemsSource="{Binding BuiltInSounds, ElementName=UserControl}"
+                      SelectedIndex="{Binding SoundIdIndex, ElementName=UserControl, Mode=TwoWay}" />
+
+            <TextBlock Text="Vol:" Margin="5,5,3,5" VerticalAlignment="Center" />
+            <Slider Width="80" Height="25" Minimum="0" Maximum="300"
+                    IsSnapToTickEnabled="True" TickFrequency="1"
+                    AutoToolTipPlacement="BottomRight"
+                    Value="{Binding SoundVolume, ElementName=UserControl, Mode=TwoWay}" />
+
+            <Button Content="▶ Test" Width="55" Height="25" Margin="0,5,5,5"
+                    Click="OnTestNormalSoundClick"
+                    ToolTip="Preview this built-in alert sound" />
+        </StackPanel>
+
+        <!-- Custom mode: Path textbox + Test -->
+        <StackPanel Orientation="Horizontal">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCustomSoundMode, ElementName=UserControl}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <TextBlock Text="Path:" Margin="5,5,3,5" VerticalAlignment="Center" />
+            <TextBox Width="200" Height="25" Margin="0,5,5,5"
+                     Text="{Binding CustomSoundPath, ElementName=UserControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Content="▶ Test" Width="55" Height="25" Margin="0,5,5,5"
+                    Click="OnTestCustomSoundClick"
+                    ToolTip="Preview this custom sound file" />
+        </StackPanel>
+
+        <!-- Community mode: Pack dropdown + Sound dropdown + Test -->
+        <StackPanel Orientation="Horizontal">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCommunitySoundMode, ElementName=UserControl}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <TextBlock Text="Pack:" Margin="5,5,3,5" VerticalAlignment="Center" />
+            <ComboBox x:Name="CommunityPackCombo" Width="160" Height="25" Margin="0,5,5,5"
+                      ItemsSource="{Binding CommunityPacks, ElementName=UserControl}"
+                      DisplayMemberPath="DisplayName"
+                      SelectionChanged="OnCommunityPackChanged" />
+
+            <TextBlock Text="Sound:" Margin="5,5,3,5" VerticalAlignment="Center" />
+            <ComboBox x:Name="CommunitySoundCombo" Width="150" Height="25" Margin="0,5,5,5"
+                      ItemsSource="{Binding CurrentPackSounds, ElementName=UserControl}"
+                      DisplayMemberPath="DisplayName"
+                      SelectionChanged="OnCommunitySoundChanged" />
+
+            <Button Content="▶ Test" Width="55" Height="25" Margin="0,5,5,5"
+                    Click="OnTestCommunitySoundClick"
+                    ToolTip="Preview this community sound" />
+        </StackPanel>
+
+    </StackPanel>
+</UserControl>

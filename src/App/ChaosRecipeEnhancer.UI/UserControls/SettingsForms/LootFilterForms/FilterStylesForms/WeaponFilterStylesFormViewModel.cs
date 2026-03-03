@@ -215,6 +215,63 @@ public class WeaponFilterStylesFormViewModel : CreViewModelBase
         }
     }
 
+    public int LootFilterStylesWeaponSoundMode
+    {
+        get => _userSettings.LootFilterStylesWeaponSoundMode;
+        set
+        {
+            if (_userSettings.LootFilterStylesWeaponSoundMode != value)
+            {
+                _userSettings.LootFilterStylesWeaponSoundMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNormalSoundMode));
+                OnPropertyChanged(nameof(IsCustomSoundMode));
+            }
+        }
+    }
+
+    public int LootFilterStylesWeaponSoundId
+    {
+        get => _userSettings.LootFilterStylesWeaponSoundId;
+        set
+        {
+            if (_userSettings.LootFilterStylesWeaponSoundId != value)
+            {
+                _userSettings.LootFilterStylesWeaponSoundId = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public int LootFilterStylesWeaponSoundVolume
+    {
+        get => _userSettings.LootFilterStylesWeaponSoundVolume;
+        set
+        {
+            if (_userSettings.LootFilterStylesWeaponSoundVolume != value)
+            {
+                _userSettings.LootFilterStylesWeaponSoundVolume = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public string LootFilterStylesWeaponCustomSoundPath
+    {
+        get => _userSettings.LootFilterStylesWeaponCustomSoundPath;
+        set
+        {
+            if (_userSettings.LootFilterStylesWeaponCustomSoundPath != value)
+            {
+                _userSettings.LootFilterStylesWeaponCustomSoundPath = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public bool IsNormalSoundMode => LootFilterStylesWeaponSoundMode == 1;
+    public bool IsCustomSoundMode => LootFilterStylesWeaponSoundMode == 2;
+
     public bool LootFilterStylesWeaponTextColorEnabled
     {
         get => _userSettings.LootFilterStylesWeaponTextColorEnabled;
@@ -306,6 +363,10 @@ public class WeaponFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesWeaponBeamEnabled = false;
         LootFilterStylesWeaponBeamColor = 10; // Yellow
         LootFilterStylesWeaponBeamTemporary = false;
+        LootFilterStylesWeaponSoundMode = 0;
+        LootFilterStylesWeaponSoundId = 1;
+        LootFilterStylesWeaponSoundVolume = 200;
+        LootFilterStylesWeaponCustomSoundPath = "";
         LootFilterStylesWeaponTextColorEnabled = true;
         LootFilterStylesWeaponBorderColorEnabled = true;
         LootFilterStylesWeaponBackgroundColorEnabled = true;

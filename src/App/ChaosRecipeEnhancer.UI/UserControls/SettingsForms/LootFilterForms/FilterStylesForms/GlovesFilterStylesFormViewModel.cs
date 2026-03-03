@@ -215,6 +215,63 @@ public class GlovesFilterStylesFormViewModel : CreViewModelBase
         }
     }
 
+    public int LootFilterStylesGlovesSoundMode
+    {
+        get => _userSettings.LootFilterStylesGlovesSoundMode;
+        set
+        {
+            if (_userSettings.LootFilterStylesGlovesSoundMode != value)
+            {
+                _userSettings.LootFilterStylesGlovesSoundMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNormalSoundMode));
+                OnPropertyChanged(nameof(IsCustomSoundMode));
+            }
+        }
+    }
+
+    public int LootFilterStylesGlovesSoundId
+    {
+        get => _userSettings.LootFilterStylesGlovesSoundId;
+        set
+        {
+            if (_userSettings.LootFilterStylesGlovesSoundId != value)
+            {
+                _userSettings.LootFilterStylesGlovesSoundId = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public int LootFilterStylesGlovesSoundVolume
+    {
+        get => _userSettings.LootFilterStylesGlovesSoundVolume;
+        set
+        {
+            if (_userSettings.LootFilterStylesGlovesSoundVolume != value)
+            {
+                _userSettings.LootFilterStylesGlovesSoundVolume = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public string LootFilterStylesGlovesCustomSoundPath
+    {
+        get => _userSettings.LootFilterStylesGlovesCustomSoundPath;
+        set
+        {
+            if (_userSettings.LootFilterStylesGlovesCustomSoundPath != value)
+            {
+                _userSettings.LootFilterStylesGlovesCustomSoundPath = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public bool IsNormalSoundMode => LootFilterStylesGlovesSoundMode == 1;
+    public bool IsCustomSoundMode => LootFilterStylesGlovesSoundMode == 2;
+
     public bool LootFilterStylesGlovesTextColorEnabled
     {
         get => _userSettings.LootFilterStylesGlovesTextColorEnabled;
@@ -306,6 +363,10 @@ public class GlovesFilterStylesFormViewModel : CreViewModelBase
         LootFilterStylesGlovesBeamEnabled = false;
         LootFilterStylesGlovesBeamColor = 10; // Yellow
         LootFilterStylesGlovesBeamTemporary = false;
+        LootFilterStylesGlovesSoundMode = 0;
+        LootFilterStylesGlovesSoundId = 1;
+        LootFilterStylesGlovesSoundVolume = 200;
+        LootFilterStylesGlovesCustomSoundPath = "";
         LootFilterStylesGlovesTextColorEnabled = true;
         LootFilterStylesGlovesBorderColorEnabled = true;
         LootFilterStylesGlovesBackgroundColorEnabled = true;

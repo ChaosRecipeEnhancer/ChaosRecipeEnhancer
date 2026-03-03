@@ -22,6 +22,10 @@ public class CBeltsManager : ABaseItemClassManager
         BeamEnabled = Settings.Default.LootFilterStylesBeltBeamEnabled;
         BeamTemporary = Settings.Default.LootFilterStylesBeltBeamTemporary;
         BeamColor = Settings.Default.LootFilterStylesBeltBeamColor;
+        SoundMode = Settings.Default.LootFilterStylesBeltSoundMode;
+        SoundId = Settings.Default.LootFilterStylesBeltSoundId;
+        SoundVolume = Settings.Default.LootFilterStylesBeltSoundVolume;
+        CustomSoundPath = Settings.Default.LootFilterStylesBeltCustomSoundPath;
     }
 
     public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)

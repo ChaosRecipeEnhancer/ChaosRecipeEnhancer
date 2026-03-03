@@ -22,6 +22,10 @@ public class CBootsManager : ABaseItemClassManager
         BeamEnabled = Settings.Default.LootFilterStylesBootsBeamEnabled;
         BeamTemporary = Settings.Default.LootFilterStylesBootsBeamTemporary;
         BeamColor = Settings.Default.LootFilterStylesBootsBeamColor;
+        SoundMode = Settings.Default.LootFilterStylesBootsSoundMode;
+        SoundId = Settings.Default.LootFilterStylesBootsSoundId;
+        SoundVolume = Settings.Default.LootFilterStylesBootsSoundVolume;
+        CustomSoundPath = Settings.Default.LootFilterStylesBootsCustomSoundPath;
     }
 
     public override ActiveItemTypes SetActiveTypes(ActiveItemTypes activeItems, bool newValue)

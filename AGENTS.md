@@ -4,7 +4,7 @@
 
 ChaosRecipeEnhancer (CRE) is a WPF desktop tool for Path of Exile players. It overlays in-game to track chaos/regal/exalted/chance recipe progress, manipulates loot filters, and talks to the PoE API via OAuth.
 
-- **Framework**: .NET 8, WPF (`net8.0-windows`)
+- **Framework**: .NET 10, WPF (`net10.0-windows`)
 - **Language**: C#
 - **Repo**: `https://github.com/ChaosRecipeEnhancer/ChaosRecipeEnhancer`
 - **Solution**: `ChaosRecipeEnhancer.sln`
@@ -25,7 +25,6 @@ src/
       Properties/                      # AssemblyInfo.cs, Settings.settings, Resources
       Native/                          # P/Invoke, keyboard hooks
       Assets/                          # Icons, images, themes, fonts
-    ChaosRecipeEnhancer.UI.Setup/      # Legacy .vdproj installer (being replaced by Velopack)
     ChaosRecipeEnhancer.UI.Tests/      # Unit tests (xUnit)
   Backend/                             # Backend test app (not part of main build)
 scripts/

@@ -46,31 +46,93 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- App Header Start -->
-            <UniformGrid
-                Grid.Column="0"
-                Grid.Row="0"
-                Columns="2"
-                Rows="1"
-                Margin="0 0 0 5">
-
-                <!-- Save Settings Button -->
-                <Button
-                    Margin="0 0 2.5 0"
-                    Content="Save Settings"
-                    Click="OnSaveButtonClicked" />
-
-                <!-- Run Overlay Button -->
-                <Button
-                    x:Name="RunOverlayButton"
-                    Margin="2.5 0 0 0"
-                    Content="Run Overlay"
-                    Click="OnRunOverlayButtonClicked"
-                    IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}"/>
-
-            </UniformGrid>
-            <!-- App Header End -->
-
+            <!-- App Header - Overlay Toggle + Auto-save hint -->
+            <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,0,5">
+            <Button
+                x:Name="RunOverlayButton"
+                Tag="stopped"
+                Height="48"
+                Click="OnRunOverlayButtonClicked"
+                Cursor="Hand"
+                IsEnabled="{Binding GlobalUserSettings.PoEAccountConnectionStatus, Converter={StaticResource ValidateConnectionConverter}, ConverterParameter=1}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Foreground" Value="#FFFFFF" />
+                        <Setter Property="BorderThickness" Value="1.5" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border
+                                        x:Name="ButtonBorder"
+                                        Background="#1B5E20"
+                                        BorderBrush="#2E7D32"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="6"
+                                        Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <!-- Green (stopped) hover/press -->
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsMouseOver" Value="True" />
+                                                <Condition Property="Tag" Value="stopped" />
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="ButtonBorder" Property="Background" Value="#2E7D32" />
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsPressed" Value="True" />
+                                                <Condition Property="Tag" Value="stopped" />
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="ButtonBorder" Property="Background" Value="#145218" />
+                                        </MultiTrigger>
+                                        <!-- Red (running) base/hover/press -->
+                                        <Trigger Property="Tag" Value="running">
+                                            <Setter TargetName="ButtonBorder" Property="Background" Value="#7F1D1D" />
+                                            <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#C62828" />
+                                        </Trigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsMouseOver" Value="True" />
+                                                <Condition Property="Tag" Value="running" />
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="ButtonBorder" Property="Background" Value="#B71C1C" />
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsPressed" Value="True" />
+                                                <Condition Property="Tag" Value="running" />
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="ButtonBorder" Property="Background" Value="#6B1515" />
+                                        </MultiTrigger>
+                                        <!-- Disabled -->
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter TargetName="ButtonBorder" Property="Background" Value="#333333" />
+                                            <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#444444" />
+                                            <Setter Property="Foreground" Value="#666666" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="OverlayIcon" Text="▶" FontSize="18" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock x:Name="OverlayTitle" Text="Start Overlay" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock x:Name="OverlaySubtitle" Text="Launch the recipe tracker overlay" FontSize="10" Foreground="#A5D6A7" />
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    Margin="0,4,0,0"
+                    FontSize="10.5"
+                    Foreground="#777777"
+                    Text="✔ All settings save automatically" />
+            </StackPanel>
             <!-- Tab Container Start -->
             <TabControl
                 Grid.Column="0"

@@ -71,11 +71,11 @@ const MILESTONES = [
 // ---------------------------------------------------------------------------
 
 const W = 600;
-const H = 300;
-const PAD_L = 48;
+const H = 320;
+const PAD_L = 52;
 const PAD_R = 20;
 const PAD_T = 30;
-const PAD_B = 60;
+const PAD_B = 70;
 const CHART_W = W - PAD_L - PAD_R;
 const CHART_H = H - PAD_T - PAD_B;
 const MAX_DAY = 14;
@@ -228,10 +228,10 @@ export function LeagueStartDemo() {
                 />
               )}
               <text
-                className="fill-cre-text-muted text-[10px]"
+                className="fill-cre-text-muted text-[14px]"
                 textAnchor="middle"
                 x={(x1 + x2) / 2}
-                y={PAD_T + CHART_H + 20}
+                y={PAD_T + CHART_H + 24}
               >
                 {phase.label}
               </text>
@@ -274,7 +274,7 @@ export function LeagueStartDemo() {
             stroke="#555555"
             strokeDasharray="6 4"
             strokeLinecap="round"
-            strokeWidth={1.5}
+            strokeWidth={2}
           />
 
           {/* With CRE — gold, in front */}
@@ -284,7 +284,7 @@ export function LeagueStartDemo() {
             fill="none"
             stroke="#D4A843"
             strokeLinecap="round"
-            strokeWidth={2.5}
+            strokeWidth={3}
           />
         </g>
 
@@ -317,10 +317,10 @@ export function LeagueStartDemo() {
 
         {/* Y-axis label */}
         <text
-          className="fill-cre-text-muted text-[10px]"
+          className="fill-cre-text-muted text-[14px]"
           textAnchor="middle"
-          transform={`rotate(-90, 14, ${PAD_T + CHART_H / 2})`}
-          x={14}
+          transform={`rotate(-90, 16, ${PAD_T + CHART_H / 2})`}
+          x={16}
           y={PAD_T + CHART_H / 2}
         >
           Currency (Divines)
@@ -337,21 +337,21 @@ export function LeagueStartDemo() {
               key={ms.label}
               transition={{ duration: 0.4, delay }}
             >
-              <circle cx={sx} cy={sy} fill={ms.color} r={4} />
+              <circle cx={sx} cy={sy} fill={ms.color} r={5} />
               <circle
                 cx={sx}
                 cy={sy}
                 fill="none"
-                r={7}
+                r={9}
                 stroke={ms.color}
                 strokeOpacity={0.4}
                 strokeWidth={1.5}
               />
               <text
-                className="fill-cre-text font-medium text-[11px]"
+                className="fill-cre-text font-medium text-[16px]"
                 textAnchor="end"
-                x={sx - 12}
-                y={sy - 10}
+                x={sx - 13}
+                y={sy - 12}
               >
                 {ms.label}
               </text>
@@ -366,10 +366,10 @@ export function LeagueStartDemo() {
           transition={{ duration: 0.6, delay: 2.6 }}
         >
           <text
-            className="fill-cre-accent font-medium text-[10px]"
+            className="fill-cre-accent font-medium text-[14px]"
             textAnchor="middle"
             x={PAD_L + (11.5 / MAX_DAY) * CHART_W}
-            y={PAD_T + CHART_H + 42}
+            y={PAD_T + CHART_H + 48}
           >
             Focus on endgame
           </text>

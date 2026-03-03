@@ -146,7 +146,7 @@ function serveAuthSuccessfulPageWithCreClientVersion(code, state, creClientVersi
 }
 
 function serveAuthSuccessfulPage(code, state) {
-    const redirectUri = `chaosrecipe://auth?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}}`;
+    const redirectUri = `chaosrecipe://auth?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
     const htmlContent = `
     <!DOCTYPE html>
     <html>

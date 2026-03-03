@@ -233,7 +233,7 @@ export function ProblemStatementDemo() {
       {/* Full-width animation viewport */}
       <motion.div
         animate={inView ? { opacity: 1 } : { opacity: 0 }}
-        className="relative h-[70vh] max-h-[600px] min-h-[380px] w-full overflow-hidden"
+        className="relative h-[50vh] max-h-[600px] min-h-[280px] w-full overflow-hidden md:h-[70vh] md:min-h-[380px]"
         initial={{ opacity: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
@@ -393,14 +393,14 @@ export function ProblemStatementDemo() {
         </motion.div>
 
         {/* Top gradient fade into page bg */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-32 bg-gradient-to-b from-cre-bg-deepest to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-20 bg-gradient-to-b from-cre-bg-deepest to-transparent md:h-32" />
 
         {/* Bottom gradient fade into page bg */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-cre-bg-deepest to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-24 bg-gradient-to-t from-cre-bg-deepest to-transparent md:h-40" />
       </motion.div>
 
       {/* Problem text — below the animation, not overlaid */}
-      <div className="mx-auto max-w-lg px-6 pt-10 pb-24 text-center">
+      <div className="mx-auto max-w-lg px-6 pt-6 pb-12 text-center md:pt-10 md:pb-24">
         <p className="text-balance text-cre-text-secondary text-lg leading-relaxed">
           Every zone drops items that all look the same. Recipe pieces hide in
           the noise — and finding them in a packed stash tab is a guessing game.

@@ -2264,7 +2264,391 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["LootFilterStylesWeaponBackgroundColorEnabled"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesRingSoundMode {
+            get {
+                return ((int)(this["LootFilterStylesRingSoundMode"]));
+            }
+            set {
+                this["LootFilterStylesRingSoundMode"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int LootFilterStylesRingSoundId {
+            get {
+                return ((int)(this["LootFilterStylesRingSoundId"]));
+            }
+            set {
+                this["LootFilterStylesRingSoundId"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int LootFilterStylesRingSoundVolume {
+            get {
+                return ((int)(this["LootFilterStylesRingSoundVolume"]));
+            }
+            set {
+                this["LootFilterStylesRingSoundVolume"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LootFilterStylesRingCustomSoundPath {
+            get {
+                return ((string)(this["LootFilterStylesRingCustomSoundPath"]));
+            }
+            set {
+                this["LootFilterStylesRingCustomSoundPath"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesAmuletSoundMode {
+            get {
+                return ((int)(this["LootFilterStylesAmuletSoundMode"]));
+            }
+            set {
+                this["LootFilterStylesAmuletSoundMode"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int LootFilterStylesAmuletSoundId {
+            get {
+                return ((int)(this["LootFilterStylesAmuletSoundId"]));
+            }
+            set {
+                this["LootFilterStylesAmuletSoundId"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int LootFilterStylesAmuletSoundVolume {
+            get {
+                return ((int)(this["LootFilterStylesAmuletSoundVolume"]));
+            }
+            set {
+                this["LootFilterStylesAmuletSoundVolume"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LootFilterStylesAmuletCustomSoundPath {
+            get {
+                return ((string)(this["LootFilterStylesAmuletCustomSoundPath"]));
+            }
+            set {
+                this["LootFilterStylesAmuletCustomSoundPath"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesBeltSoundMode {
+            get {
+                return ((int)(this["LootFilterStylesBeltSoundMode"]));
+            }
+            set {
+                this["LootFilterStylesBeltSoundMode"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int LootFilterStylesBeltSoundId {
+            get {
+                return ((int)(this["LootFilterStylesBeltSoundId"]));
+            }
+            set {
+                this["LootFilterStylesBeltSoundId"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int LootFilterStylesBeltSoundVolume {
+            get {
+                return ((int)(this["LootFilterStylesBeltSoundVolume"]));
+            }
+            set {
+                this["LootFilterStylesBeltSoundVolume"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LootFilterStylesBeltCustomSoundPath {
+            get {
+                return ((string)(this["LootFilterStylesBeltCustomSoundPath"]));
+            }
+            set {
+                this["LootFilterStylesBeltCustomSoundPath"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesBootsSoundMode {
+            get {
+                return ((int)(this["LootFilterStylesBootsSoundMode"]));
+            }
+            set {
+                this["LootFilterStylesBootsSoundMode"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int LootFilterStylesBootsSoundId {
+            get {
+                return ((int)(this["LootFilterStylesBootsSoundId"]));
+            }
+            set {
+                this["LootFilterStylesBootsSoundId"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int LootFilterStylesBootsSoundVolume {
+            get {
+                return ((int)(this["LootFilterStylesBootsSoundVolume"]));
+            }
+            set {
+                this["LootFilterStylesBootsSoundVolume"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LootFilterStylesBootsCustomSoundPath {
+            get {
+                return ((string)(this["LootFilterStylesBootsCustomSoundPath"]));
+            }
+            set {
+                this["LootFilterStylesBootsCustomSoundPath"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesGlovesSoundMode {
+            get {
+                return ((int)(this["LootFilterStylesGlovesSoundMode"]));
+            }
+            set {
+                this["LootFilterStylesGlovesSoundMode"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int LootFilterStylesGlovesSoundId {
+            get {
+                return ((int)(this["LootFilterStylesGlovesSoundId"]));
+            }
+            set {
+                this["LootFilterStylesGlovesSoundId"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int LootFilterStylesGlovesSoundVolume {
+            get {
+                return ((int)(this["LootFilterStylesGlovesSoundVolume"]));
+            }
+            set {
+                this["LootFilterStylesGlovesSoundVolume"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LootFilterStylesGlovesCustomSoundPath {
+            get {
+                return ((string)(this["LootFilterStylesGlovesCustomSoundPath"]));
+            }
+            set {
+                this["LootFilterStylesGlovesCustomSoundPath"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesHelmetSoundMode {
+            get {
+                return ((int)(this["LootFilterStylesHelmetSoundMode"]));
+            }
+            set {
+                this["LootFilterStylesHelmetSoundMode"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int LootFilterStylesHelmetSoundId {
+            get {
+                return ((int)(this["LootFilterStylesHelmetSoundId"]));
+            }
+            set {
+                this["LootFilterStylesHelmetSoundId"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int LootFilterStylesHelmetSoundVolume {
+            get {
+                return ((int)(this["LootFilterStylesHelmetSoundVolume"]));
+            }
+            set {
+                this["LootFilterStylesHelmetSoundVolume"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LootFilterStylesHelmetCustomSoundPath {
+            get {
+                return ((string)(this["LootFilterStylesHelmetCustomSoundPath"]));
+            }
+            set {
+                this["LootFilterStylesHelmetCustomSoundPath"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesBodyArmourSoundMode {
+            get {
+                return ((int)(this["LootFilterStylesBodyArmourSoundMode"]));
+            }
+            set {
+                this["LootFilterStylesBodyArmourSoundMode"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int LootFilterStylesBodyArmourSoundId {
+            get {
+                return ((int)(this["LootFilterStylesBodyArmourSoundId"]));
+            }
+            set {
+                this["LootFilterStylesBodyArmourSoundId"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int LootFilterStylesBodyArmourSoundVolume {
+            get {
+                return ((int)(this["LootFilterStylesBodyArmourSoundVolume"]));
+            }
+            set {
+                this["LootFilterStylesBodyArmourSoundVolume"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LootFilterStylesBodyArmourCustomSoundPath {
+            get {
+                return ((string)(this["LootFilterStylesBodyArmourCustomSoundPath"]));
+            }
+            set {
+                this["LootFilterStylesBodyArmourCustomSoundPath"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LootFilterStylesWeaponSoundMode {
+            get {
+                return ((int)(this["LootFilterStylesWeaponSoundMode"]));
+            }
+            set {
+                this["LootFilterStylesWeaponSoundMode"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int LootFilterStylesWeaponSoundId {
+            get {
+                return ((int)(this["LootFilterStylesWeaponSoundId"]));
+            }
+            set {
+                this["LootFilterStylesWeaponSoundId"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int LootFilterStylesWeaponSoundVolume {
+            get {
+                return ((int)(this["LootFilterStylesWeaponSoundVolume"]));
+            }
+            set {
+                this["LootFilterStylesWeaponSoundVolume"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LootFilterStylesWeaponCustomSoundPath {
+            get {
+                return ((string)(this["LootFilterStylesWeaponCustomSoundPath"]));
+            }
+            set {
+                this["LootFilterStylesWeaponCustomSoundPath"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]

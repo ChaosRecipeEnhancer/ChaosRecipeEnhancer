@@ -232,21 +232,20 @@ export function ItemDropDemo() {
 
   return (
     <div
-      className="flex w-full flex-col items-center justify-center py-8"
+      className="flex w-full flex-col items-center justify-center py-4 md:py-8"
       ref={ref}
     >
       <motion.div
         animate={started ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        className="overflow-hidden rounded-xl border border-cre-border shadow-2xl"
+        className="w-full max-w-[460px] overflow-hidden rounded-xl border border-cre-border shadow-2xl"
         initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
+        style={{ aspectRatio: '460 / 280' }}
       >
-        {/* Dark game viewport */}
+        {/* Dark game viewport — fixed 460×280, CSS-scaled to fit container */}
         <div
-          className="relative"
+          className="relative h-full w-full origin-top-left"
           style={{
-            width: 460,
-            height: 280,
             background:
               "radial-gradient(ellipse at 50% 60%, #1a1a2e 0%, #0d0d14 60%, #07070a 100%)",
           }}
@@ -274,7 +273,7 @@ export function ItemDropDemo() {
                   initial={{ y: -25, opacity: 0 }}
                   // biome-ignore lint/suspicious/noArrayIndexKey: Interleaved drop sequence
                   key={`${drop.name}-${i}-${cycle}`}
-                  style={{ left: drop.x, top: drop.y }}
+                  style={{ left: `${(drop.x / 460) * 100}%`, top: `${(drop.y / 280) * 100}%` }}
                   transition={{
                     duration: 0.3,
                     ease: [0.2, 0.8, 0.3, 1],

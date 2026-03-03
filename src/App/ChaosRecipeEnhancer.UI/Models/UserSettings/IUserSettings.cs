@@ -120,6 +120,10 @@ public interface IUserSettings
     bool LootFilterStylesRingTextColorEnabled { get; set; }
     bool LootFilterStylesRingBorderColorEnabled { get; set; }
     bool LootFilterStylesRingBackgroundColorEnabled { get; set; }
+    int LootFilterStylesRingSoundMode { get; set; }
+    int LootFilterStylesRingSoundId { get; set; }
+    int LootFilterStylesRingSoundVolume { get; set; }
+    string LootFilterStylesRingCustomSoundPath { get; set; }
 
     #endregion
 
@@ -141,6 +145,10 @@ public interface IUserSettings
     bool LootFilterStylesAmuletTextColorEnabled { get; set; }
     bool LootFilterStylesAmuletBorderColorEnabled { get; set; }
     bool LootFilterStylesAmuletBackgroundColorEnabled { get; set; }
+    int LootFilterStylesAmuletSoundMode { get; set; }
+    int LootFilterStylesAmuletSoundId { get; set; }
+    int LootFilterStylesAmuletSoundVolume { get; set; }
+    string LootFilterStylesAmuletCustomSoundPath { get; set; }
 
     #endregion
 
@@ -162,6 +170,10 @@ public interface IUserSettings
     bool LootFilterStylesBeltTextColorEnabled { get; set; }
     bool LootFilterStylesBeltBorderColorEnabled { get; set; }
     bool LootFilterStylesBeltBackgroundColorEnabled { get; set; }
+    int LootFilterStylesBeltSoundMode { get; set; }
+    int LootFilterStylesBeltSoundId { get; set; }
+    int LootFilterStylesBeltSoundVolume { get; set; }
+    string LootFilterStylesBeltCustomSoundPath { get; set; }
 
     #endregion
 
@@ -183,6 +195,10 @@ public interface IUserSettings
     bool LootFilterStylesBootsTextColorEnabled { get; set; }
     bool LootFilterStylesBootsBorderColorEnabled { get; set; }
     bool LootFilterStylesBootsBackgroundColorEnabled { get; set; }
+    int LootFilterStylesBootsSoundMode { get; set; }
+    int LootFilterStylesBootsSoundId { get; set; }
+    int LootFilterStylesBootsSoundVolume { get; set; }
+    string LootFilterStylesBootsCustomSoundPath { get; set; }
 
     #endregion
 
@@ -204,6 +220,10 @@ public interface IUserSettings
     bool LootFilterStylesGlovesTextColorEnabled { get; set; }
     bool LootFilterStylesGlovesBorderColorEnabled { get; set; }
     bool LootFilterStylesGlovesBackgroundColorEnabled { get; set; }
+    int LootFilterStylesGlovesSoundMode { get; set; }
+    int LootFilterStylesGlovesSoundId { get; set; }
+    int LootFilterStylesGlovesSoundVolume { get; set; }
+    string LootFilterStylesGlovesCustomSoundPath { get; set; }
 
     #endregion
 
@@ -225,6 +245,10 @@ public interface IUserSettings
     bool LootFilterStylesHelmetTextColorEnabled { get; set; }
     bool LootFilterStylesHelmetBorderColorEnabled { get; set; }
     bool LootFilterStylesHelmetBackgroundColorEnabled { get; set; }
+    int LootFilterStylesHelmetSoundMode { get; set; }
+    int LootFilterStylesHelmetSoundId { get; set; }
+    int LootFilterStylesHelmetSoundVolume { get; set; }
+    string LootFilterStylesHelmetCustomSoundPath { get; set; }
 
     #endregion
 
@@ -246,6 +270,10 @@ public interface IUserSettings
     bool LootFilterStylesBodyArmourTextColorEnabled { get; set; }
     bool LootFilterStylesBodyArmourBorderColorEnabled { get; set; }
     bool LootFilterStylesBodyArmourBackgroundColorEnabled { get; set; }
+    int LootFilterStylesBodyArmourSoundMode { get; set; }
+    int LootFilterStylesBodyArmourSoundId { get; set; }
+    int LootFilterStylesBodyArmourSoundVolume { get; set; }
+    string LootFilterStylesBodyArmourCustomSoundPath { get; set; }
 
     #endregion
 
@@ -267,6 +295,10 @@ public interface IUserSettings
     bool LootFilterStylesWeaponTextColorEnabled { get; set; }
     bool LootFilterStylesWeaponBorderColorEnabled { get; set; }
     bool LootFilterStylesWeaponBackgroundColorEnabled { get; set; }
+    int LootFilterStylesWeaponSoundMode { get; set; }
+    int LootFilterStylesWeaponSoundId { get; set; }
+    int LootFilterStylesWeaponSoundVolume { get; set; }
+    string LootFilterStylesWeaponCustomSoundPath { get; set; }
 
     #endregion
 

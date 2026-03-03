@@ -120,7 +120,7 @@ export function StashHighlightDemo() {
 
   return (
     <div
-      className="flex w-full flex-col items-center justify-center py-8"
+      className="flex w-full flex-col items-center justify-center py-4 md:py-8"
       ref={ref}
     >
       <motion.div
