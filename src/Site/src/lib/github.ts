@@ -20,8 +20,8 @@ export async function getGitHubStats(): Promise<{
 }> {
   try {
     const [repoRes, releasesRes] = await Promise.all([
-      fetch(GITHUB_API, { next: { revalidate: 3600 } }),
-      fetch(GITHUB_RELEASES_API, { next: { revalidate: 3600 } }),
+      fetch(GITHUB_API, { next: { revalidate: 86_400 } }),
+      fetch(GITHUB_RELEASES_API, { next: { revalidate: 86_400 } }),
     ]);
 
     const stars = repoRes.ok

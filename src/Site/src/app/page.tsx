@@ -19,6 +19,7 @@ import {
   PAYPAL_DONATE_URL,
   YOUTUBE_GUIDE_URL,
 } from "@/lib/constants";
+import { getDiscordMemberCount } from "@/lib/discord";
 import { formatCount, getGitHubStats } from "@/lib/github";
 
 const FilterStyleDemo = dynamic(() =>
@@ -153,8 +154,10 @@ const COMMUNITY_LINKS: CommunityLink[] = [
 // ---------------------------------------------------------------------------
 
 export default async function Home() {
-  const { downloads, stars } = await getGitHubStats();
-
+  const [{ downloads, stars }, discordMembers] = await Promise.all([
+    getGitHubStats(),
+    getDiscordMemberCount(),
+  ]);
   return (
     <main className="flex min-h-screen flex-col items-center overflow-hidden">
       {/* Section 1: Hero */}
@@ -205,6 +208,16 @@ export default async function Home() {
             <GitHubIcon className="h-5 w-5" />
             View on GitHub
             {stars !== null && ` \u00B7 \u2605 ${formatCount(stars)}`}
+          </Link>
+          <Link
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#5865F2]/40 bg-transparent px-8 py-4 font-semibold text-[#5865F2] transition-all hover:border-[#5865F2] hover:bg-[#5865F2]/10 sm:w-auto"
+            href={DISCORD_URL}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <DiscordIcon className="h-5 w-5" />
+            Join Discord
+            {discordMembers !== null && ` · ${formatCount(discordMembers)}`}
           </Link>
         </div>
       </section>
@@ -498,7 +511,7 @@ export default async function Home() {
               className="text-cre-text-secondary transition-colors hover:text-cre-text"
               href={PAYPAL_DONATE_URL}
             >
-              Support
+              Donate
             </Link>
           </div>
 
