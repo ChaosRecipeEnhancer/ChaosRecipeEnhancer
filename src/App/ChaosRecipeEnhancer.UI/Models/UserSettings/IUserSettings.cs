@@ -45,6 +45,7 @@ public interface IUserSettings
     bool AutoFetchOnRezoneEnabled { get; set; }
     int FullSetThreshold { get; set; }
     bool DoNotPreserveLowItemLevelGear { get; set; }
+    bool PrioritizeRecentlyStashedItems { get; set; }
 
     # endregion
 

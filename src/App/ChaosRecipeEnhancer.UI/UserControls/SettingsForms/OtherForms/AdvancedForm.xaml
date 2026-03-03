@@ -24,6 +24,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -55,9 +58,19 @@
             when modifying these settings.
         </TextBlock>
 
+        <!-- Item Selection Sub-Header -->
         <TextBlock
             Grid.Column="0"
             Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Margin="0 15 0 5"
+            Text="Item Selection"
+            FontSize="16"
+            FontWeight="SemiBold" />
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="4"
             VerticalAlignment="Center"
             Margin="0 10 0 0"
             Text="Do Not Preserve Low Item Level Gear:"
@@ -67,14 +80,43 @@
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="3"
+            Grid.Row="4"
             Margin="15 10 0 0"
             HorizontalAlignment="Left"
             IsChecked="{Binding DoNotPreserveLowItemLevelGearIsChecked, Mode=TwoWay}" />
 
         <TextBlock
             Grid.Column="0"
-            Grid.Row="4"
+            Grid.Row="5"
+            VerticalAlignment="Center"
+            Margin="0 10 0 0"
+            ToolTipService.InitialShowDelay="50"
+            ToolTipService.ShowDuration="24000"
+            ToolTip="Experimental feature. Disabled by default.&#x0a;&#x0a;When enabled, recipe sets are built using the most recently added items&#x0a;in your stash first (bottom-right). This reduces gaps and dead space&#x0a;in your stash tab over time.&#x0a;&#x0a;When disabled, items are selected in default stash order (top-left first),&#x0a;which can create fragmentation after multiple recipe turn-ins.">
+            <Run Text="Prioritize Recently Stashed Items: " />
+            <Run Text="🧪" FontSize="12" Foreground="#FFCC00" />
+        </TextBlock>
+
+        <CheckBox
+            Grid.Column="1"
+            Grid.Row="5"
+            Margin="15 10 0 0"
+            HorizontalAlignment="Left"
+            IsChecked="{Binding PrioritizeRecentlyStashedItemsIsChecked, Mode=TwoWay}" />
+
+        <!-- Other Sub-Header -->
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="6"
+            Grid.ColumnSpan="2"
+            Margin="0 15 0 5"
+            Text="Other"
+            FontSize="16"
+            FontWeight="SemiBold" />
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="7"
             VerticalAlignment="Center"
             Margin="0 10 0 0"
             Text="Session ID Authentication Mode :"
@@ -83,14 +125,14 @@
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="4"
+            Grid.Row="7"
             Margin="15 10 0 0"
             HorizontalAlignment="Left"
             IsChecked="{Binding LegacyAuthModeIsChecked, Mode=TwoWay}"  />
 
         <TextBlock
             Grid.Column="0"
-            Grid.Row="5"
+            Grid.Row="8"
             VerticalAlignment="Center"
             Margin="0 10 0 0"
             Text="Save Debug Logs to File:"
@@ -100,7 +142,7 @@
 
         <CheckBox
             Grid.Column="1"
-            Grid.Row="5"
+            Grid.Row="8"
             Margin="15 10 0 0"
             HorizontalAlignment="Left"
             IsChecked="{Binding DebugModeIsChecked, Mode=TwoWay}" />

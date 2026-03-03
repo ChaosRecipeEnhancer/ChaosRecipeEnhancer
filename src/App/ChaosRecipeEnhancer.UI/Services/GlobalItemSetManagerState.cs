@@ -152,6 +152,17 @@ public static class GlobalItemSetManagerState
 
         // sorting both of our item lists by item class
         // it's important to prioritize two-handed weapons at the beginning so our set composition is more efficient
+        //
+        // When PrioritizeRecentlyStashedItems is enabled, we reverse the lists before the stable sort.
+        // Since LINQ's OrderBy is a stable sort, reversing first means items within each class group
+        // will be in reverse API order (bottom-right first instead of top-left first).
+        // This causes recipe sets to consume items from the bottom of the stash, reducing fragmentation.
+        if (Settings.Default.PrioritizeRecentlyStashedItems)
+        {
+            eligibleRecipeItems.Reverse();
+            CurrentItemsFilteredForRecipe.Reverse();
+        }
+
         eligibleRecipeItems = eligibleRecipeItems.OrderByDescending(item => item.DerivedItemClass == GameTerminology.TwoHandWeapons)
             .ThenBy(item => item.DerivedItemClass)
             .ToList();
