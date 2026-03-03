@@ -29,6 +29,7 @@ public static class SettingsConfiguration
     // - Auth tokens: security-sensitive, should not be carried over.
     // - UpgradeSettingsAfterUpdate: internal flag, not a user preference.
     // - LegacySettingsMigrated: internal flag for this migration feature itself.
+    // - V325MigrationCompleted: internal flag for one-time [3.25] data migrations.
     internal static readonly HashSet<string> SkipSettings = new(StringComparer.Ordinal)
     {
         "PathOfExileApiAuthToken",
@@ -36,6 +37,7 @@ public static class SettingsConfiguration
         "LegacyAuthSessionId",
         "UpgradeSettingsAfterUpdate",
         "LegacySettingsMigrated",
+        "V325MigrationCompleted",
     };
 
     public static void UpgradeSettings()
@@ -50,13 +52,23 @@ public static class SettingsConfiguration
             Settings.Default.Upgrade();
             Settings.Default.UpgradeSettingsAfterUpdate = false;
 
-            // [3.25] one time settings migration
-            Settings.Default.LeagueName = "Standard";
-            Settings.Default.StashTabIdentifiers = string.Empty;
-
             // Reset sensitive auth-related settings after an upgrade
             Settings.Default.PathOfExileApiAuthToken = string.Empty;
             Settings.Default.LegacyAuthSessionId = string.Empty;
+
+            Settings.Default.Save();
+        }
+
+        // --- One-time [3.25] data migrations ---
+        // These must only run ONCE, not on every version upgrade. Previously they
+        // lived inside the UpgradeSettingsAfterUpdate block, which re-runs every
+        // time a new version is deployed (because the flag defaults to true for any
+        // new user.config folder). This caused LeagueName, StashTabIdentifiers, and
+        // ActiveRecipeType to be overwritten on every upgrade.
+        if (!Settings.Default.V325MigrationCompleted)
+        {
+            Settings.Default.LeagueName = "Standard";
+            Settings.Default.StashTabIdentifiers = string.Empty;
 
             // Migrate ChaosRecipeTrackingEnabled to ActiveRecipeType
             // ChaosRecipeTrackingEnabled = true → ChaosOrb (0)
@@ -70,6 +82,7 @@ public static class SettingsConfiguration
                 Settings.Default.ActiveRecipeType = 1; // RegalOrb
             }
 
+            Settings.Default.V325MigrationCompleted = true;
             Settings.Default.Save();
         }
 

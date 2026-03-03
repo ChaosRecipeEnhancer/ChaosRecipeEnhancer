@@ -2756,5 +2756,17 @@ namespace ChaosRecipeEnhancer.UI.Properties {
                 this["LegacySettingsMigrated"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool V325MigrationCompleted {
+            get {
+                return ((bool)(this["V325MigrationCompleted"]));
+            }
+            set {
+                this["V325MigrationCompleted"] = value;
+            }
+        }
     }
 }
