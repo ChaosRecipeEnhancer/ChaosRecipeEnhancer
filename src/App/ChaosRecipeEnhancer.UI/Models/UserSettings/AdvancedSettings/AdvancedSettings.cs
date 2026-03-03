@@ -20,6 +20,19 @@ public partial class UserSettings : IUserSettings
         }
     }
 
+    public bool PrioritizeRecentlyStashedItems
+    {
+        get => Settings.Default.PrioritizeRecentlyStashedItems;
+        set
+        {
+            if (Settings.Default.PrioritizeRecentlyStashedItems != value)
+            {
+                Settings.Default.PrioritizeRecentlyStashedItems = value;
+                Save();
+            }
+        }
+    }
+
     public bool LegacyAuthMode
     {
         get => Settings.Default.LegacyAuthMode;

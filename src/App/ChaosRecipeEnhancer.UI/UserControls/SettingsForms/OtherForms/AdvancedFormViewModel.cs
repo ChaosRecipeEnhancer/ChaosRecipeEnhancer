@@ -34,6 +34,16 @@ public class AdvancedFormViewModel : CreViewModelBase
         }
     }
 
+    public bool PrioritizeRecentlyStashedItemsIsChecked
+    {
+        get => _userSettings.PrioritizeRecentlyStashedItems;
+        set
+        {
+            _userSettings.PrioritizeRecentlyStashedItems = value;
+            OnPropertyChanged();
+        }
+    }
+
     public bool LegacyAuthModeIsChecked
     {
         get => _userSettings.LegacyAuthMode;

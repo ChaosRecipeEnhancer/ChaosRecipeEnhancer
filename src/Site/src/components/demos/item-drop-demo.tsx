@@ -3,10 +3,8 @@
 import { motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-const FADE_MS = 500;
-const HOLD_MS = 2000;
-const RESET_MS = 1000;
-const DROP_INTERVAL = 280;
+const FADE_MS = 175;
+const DROP_INTERVAL = 98;
 
 interface LootDrop {
   beam: boolean;
@@ -166,7 +164,6 @@ export function ItemDropDemo() {
   const [started, setStarted] = useState(false);
   const [visibleCount, setVisibleCount] = useState(0);
   const [fading, setFading] = useState(false);
-  const [cycle, setCycle] = useState(0);
 
   useEffect(() => {
     if (inView) {
@@ -198,26 +195,6 @@ export function ItemDropDemo() {
 
         if (i < DROPS.length) {
           setTimeout(dropNext, DROP_INTERVAL);
-        } else {
-          // All dropped — hold, then fade, then reset
-          setTimeout(() => {
-            if (off) {
-              return;
-            }
-            setFading(true);
-            setTimeout(() => {
-              if (off) {
-                return;
-              }
-              setCycle((c) => c + 1);
-              setTimeout(() => {
-                if (off) {
-                  return;
-                }
-                loop();
-              }, RESET_MS);
-            }, FADE_MS);
-          }, HOLD_MS);
         }
       }
 
@@ -239,8 +216,8 @@ export function ItemDropDemo() {
         animate={started ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         className="w-full max-w-[460px] overflow-hidden rounded-xl border border-cre-border shadow-2xl"
         initial={{ opacity: 0, y: 20 }}
+        style={{ aspectRatio: "460 / 280" }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        style={{ aspectRatio: '460 / 280' }}
       >
         {/* Dark game viewport — fixed 460×280, CSS-scaled to fit container */}
         <div
@@ -272,8 +249,11 @@ export function ItemDropDemo() {
                   className={`absolute ${drop.cre ? "z-10" : "z-0"}`}
                   initial={{ y: -25, opacity: 0 }}
                   // biome-ignore lint/suspicious/noArrayIndexKey: Interleaved drop sequence
-                  key={`${drop.name}-${i}-${cycle}`}
-                  style={{ left: `${(drop.x / 460) * 100}%`, top: `${(drop.y / 280) * 100}%` }}
+                  key={`${drop.name}-${i}`}
+                  style={{
+                    left: `${(drop.x / 460) * 100}%`,
+                    top: `${(drop.y / 280) * 100}%`,
+                  }}
                   transition={{
                     duration: 0.3,
                     ease: [0.2, 0.8, 0.3, 1],

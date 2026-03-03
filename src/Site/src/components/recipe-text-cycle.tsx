@@ -38,14 +38,11 @@ function Underline({ color, style }: { color: string; style: UnderlineStyle }) {
 
   if (style === "wavy") {
     return (
-      <motion.svg
-        animate={{ scaleX: 1 }}
+      <svg
         aria-hidden="true"
-        className="absolute -bottom-1 left-0 w-full origin-left"
+        className="absolute -bottom-0.75 left-0 w-full"
         height="6"
-        initial={{ scaleX: 0 }}
         preserveAspectRatio="none"
-        transition={{ delay: 0.15, duration: 0.4, ease: "easeOut" }}
         viewBox="0 0 120 6"
       >
         <path
@@ -55,52 +52,43 @@ function Underline({ color, style }: { color: string; style: UnderlineStyle }) {
           strokeWidth="2"
           style={{ filter: `drop-shadow(${glow})` }}
         />
-      </motion.svg>
+      </svg>
     );
   }
 
   if (style === "dashed") {
     return (
-      <motion.span
-        animate={{ scaleX: 1 }}
-        className="absolute -bottom-0.5 left-0 h-[2px] w-full origin-left"
-        initial={{ scaleX: 0 }}
+      <span
+        className="absolute bottom-0 left-0 h-[2px] w-full"
         style={{
           backgroundImage: `repeating-linear-gradient(to right, ${color} 0, ${color} 6px, transparent 6px, transparent 12px)`,
           filter: `drop-shadow(${glow})`,
         }}
-        transition={{ delay: 0.15, duration: 0.4, ease: "easeOut" }}
       />
     );
   }
 
   if (style === "dotted") {
     return (
-      <motion.span
-        animate={{ scaleX: 1 }}
-        className="absolute -bottom-0.5 left-0 h-[2px] w-full origin-left"
-        initial={{ scaleX: 0 }}
+      <span
+        className="absolute bottom-0 left-0 h-[2px] w-full"
         style={{
           backgroundImage: `radial-gradient(circle, ${color} 1px, transparent 1px)`,
           backgroundSize: "6px 2px",
           filter: `drop-shadow(${glow})`,
         }}
-        transition={{ delay: 0.15, duration: 0.4, ease: "easeOut" }}
       />
     );
   }
 
   // solid (default)
   return (
-    <motion.span
-      animate={{ scaleX: 1 }}
-      className="absolute -bottom-0.5 left-0 h-[2px] w-full origin-left rounded-full"
-      initial={{ scaleX: 0 }}
+    <span
+      className="absolute bottom-0 left-0 h-[2px] w-full rounded-full"
       style={{
         backgroundColor: color,
         boxShadow: glow,
       }}
-      transition={{ delay: 0.15, duration: 0.4, ease: "easeOut" }}
     />
   );
 }

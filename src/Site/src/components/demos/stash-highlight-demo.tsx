@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { CursorIcon } from "@/components/icons";
 
 const CELL = 40;
 const GAP = 2;
@@ -10,9 +11,9 @@ const COLS = 8;
 const ROWS = 6;
 const RED = "#EF4444";
 
-const PICK_MS = 800;
-const EMPTY_MS = 1500;
-const FILL_MS = 1200;
+const PICK_MS = 400;
+const EMPTY_MS = 750;
+const FILL_MS = 600;
 
 interface StashItem {
   col: number;
@@ -137,7 +138,7 @@ export function StashHighlightDemo() {
             <div className="h-3 w-3 rounded-full bg-[#27C93F]" />
           </div>
           <div className="ml-4 flex h-full items-center border-cre-gold/60 border-t-2 bg-red-600/80 px-4 font-medium text-sm text-white">
-            Chaos Items
+            Chaos
           </div>
           <div className="flex h-full items-center px-4 text-cre-text-muted text-sm">
             Currency
@@ -235,17 +236,7 @@ export function StashHighlightDemo() {
                 times: [0, 0.3, 0.7, 1],
               }}
             >
-              <svg
-                aria-hidden="true"
-                className="h-5 w-5 drop-shadow-md"
-                fill="white"
-                stroke="#333"
-                strokeLinejoin="round"
-                strokeWidth="1"
-                viewBox="0 0 20 24"
-              >
-                <path d="M2 1L2 18L6.5 13.5L10.5 21.5L13 20.5L9 12.5L15 12.5Z" />
-              </svg>
+              <CursorIcon className="h-5 w-5 drop-shadow-md" />
             </motion.div>
 
             {/* Click ripple */}

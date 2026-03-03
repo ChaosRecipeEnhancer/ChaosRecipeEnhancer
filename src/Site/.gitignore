@@ -1,4 +1,24 @@
-.next/
+# dependencies
 node_modules/
+
+# next.js
+.next/
 out/
+
+# env files
+.env
+.env.*
+*.local
+
+# vercel
+.vercel
+
+# turbopack
+.turbo
+
+# generated
 bun.lock
+next-env.d.ts
+
+# misc
+*.tsbuildinfo

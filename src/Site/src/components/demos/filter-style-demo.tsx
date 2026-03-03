@@ -2,7 +2,8 @@
 
 import { motion, useInView } from "motion/react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ChevronDownIcon } from "@/components/icons";
 
 // Each step in the animation sequence — simulates someone configuring their filter.
 // Some steps change the item, some tweak colors/icons within the same item.
@@ -17,6 +18,8 @@ const ANIM_STEPS = [
     iconSize: "--",
     iconColor: "--",
     iconShape: "--",
+    soundType: "Normal",
+    soundName: "1 - Alert",
   },
   // User picks red BG
   {
@@ -29,6 +32,8 @@ const ANIM_STEPS = [
     iconSize: "--",
     iconColor: "--",
     iconShape: "--",
+    soundType: "Normal",
+    soundName: "1 - Alert",
   },
   // User sets white border + text
   {
@@ -41,6 +46,8 @@ const ANIM_STEPS = [
     iconSize: "--",
     iconColor: "--",
     iconShape: "--",
+    soundType: "Normal",
+    soundName: "1 - Alert",
   },
   // User picks map icon
   {
@@ -53,6 +60,8 @@ const ANIM_STEPS = [
     iconSize: "Small",
     iconColor: "Yellow",
     iconShape: "Circle",
+    soundType: "Normal",
+    soundName: "1 - Alert",
   },
   // Switch to Amulet
   {
@@ -65,6 +74,8 @@ const ANIM_STEPS = [
     iconSize: "--",
     iconColor: "--",
     iconShape: "--",
+    soundType: "Maven",
+    soundName: "Magnificent!",
   },
   // Pick gold BG
   {
@@ -77,6 +88,8 @@ const ANIM_STEPS = [
     iconSize: "--",
     iconColor: "--",
     iconShape: "--",
+    soundType: "Maven",
+    soundName: "Magnificent!",
   },
   // Pick star icon
   {
@@ -89,6 +102,8 @@ const ANIM_STEPS = [
     iconSize: "Small",
     iconColor: "Yellow",
     iconShape: "Star",
+    soundType: "Maven",
+    soundName: "Magnificent!",
   },
   // Switch to Belt — quick one
   {
@@ -101,6 +116,8 @@ const ANIM_STEPS = [
     iconSize: "Large",
     iconColor: "Green",
     iconShape: "Diamond",
+    soundType: "Zizaran",
+    soundName: "Very Valuable!",
   },
   // Switch to Boots
   {
@@ -113,6 +130,8 @@ const ANIM_STEPS = [
     iconSize: "Large",
     iconColor: "Blue",
     iconShape: "Diamond",
+    soundType: "Normal",
+    soundName: "1 - Alert",
   },
   // User changes icon shape to Hexagon
   {
@@ -125,6 +144,8 @@ const ANIM_STEPS = [
     iconSize: "Large",
     iconColor: "Green",
     iconShape: "Hexagon",
+    soundType: "Normal",
+    soundName: "1 - Alert",
   },
   // Switch to Gloves — final
   {
@@ -137,6 +158,8 @@ const ANIM_STEPS = [
     iconSize: "Small",
     iconColor: "Yellow",
     iconShape: "Diamond",
+    soundType: "Maven",
+    soundName: "Magnificent!",
   },
 ];
 
@@ -172,6 +195,119 @@ function getSlotColor(stepIndex: number, slot: string) {
   return null;
 }
 
+// ---------------------------------------------------------------------------
+// Sound playback — real filter sounds from the app (easter egg!)
+// ---------------------------------------------------------------------------
+
+const SOUND_FILES: Record<string, { src: string; volume: number }> = {
+  "1 - Alert": { src: "/sounds/alert.wav", volume: 0.35 },
+  "Magnificent!": { src: "/sounds/maven-magnificent.mp3", volume: 0.35 },
+  "Very Valuable!": { src: "/sounds/ziz-veryvaluable.mp3", volume: 0.15 },
+};
+
+function playFilterSound(name: string) {
+  const entry = SOUND_FILES[name];
+  if (!entry) {
+    return;
+  }
+  const audio = new Audio(entry.src);
+  audio.volume = entry.volume;
+  audio.play();
+}
+
+// ---------------------------------------------------------------------------
+// Sound Controls — extracted to keep FilterStyleDemo below complexity limit
+// ---------------------------------------------------------------------------
+
+function SoundControls({
+  soundEnabled,
+  soundType,
+  soundName,
+}: {
+  soundEnabled: boolean;
+  soundType: string;
+  soundName: string;
+}) {
+  const [testPulse, setTestPulse] = useState(0);
+
+  const handleTest = useCallback(() => {
+    if (soundEnabled) {
+      playFilterSound(soundName);
+      setTestPulse((n) => n + 1);
+    }
+  }, [soundEnabled, soundName]);
+
+  return (
+    <div className="mt-1.5 flex flex-wrap items-center justify-center gap-2 rounded bg-[#1a1a1a]/90 px-3 py-2">
+      <span className="font-bold text-[#999] text-[9px]">Sound:</span>
+      <div className="flex h-3.5 w-3.5 items-center justify-center border border-[#555] bg-[#222]">
+        <motion.span
+          animate={{
+            opacity: soundEnabled ? 1 : 0.3,
+            color: soundEnabled ? "#ffffff" : "#555555",
+          }}
+          className="text-[8px]"
+          initial={{ opacity: 0.3, color: "#555555" }}
+          transition={{ duration: 0.15 }}
+        >
+          &#10003;
+        </motion.span>
+      </div>
+
+      <div className="flex items-center gap-1 border border-[#444] bg-[#222] px-1.5 py-0.5">
+        <span className="text-[#888] text-[8px]">Type:</span>
+        <motion.span
+          animate={{ opacity: soundType !== "--" ? 1 : 0.4 }}
+          className="min-w-[28px] font-medium text-[8px] text-white"
+          initial={{ opacity: 0.4 }}
+          key={`sound-type-${soundType}`}
+          transition={{ duration: 0.15 }}
+        >
+          {soundType}
+        </motion.span>
+        <ChevronDownIcon className="h-2 w-2 text-[#666]" />
+      </div>
+
+      <div className="flex items-center gap-1 border border-[#444] bg-[#222] px-1.5 py-0.5">
+        <motion.span
+          animate={{ opacity: soundName !== "--" ? 1 : 0.4 }}
+          className="min-w-[40px] font-medium text-[8px] text-white"
+          initial={{ opacity: 0.4 }}
+          key={`sound-name-${soundName}`}
+          transition={{ duration: 0.15 }}
+        >
+          {soundName}
+        </motion.span>
+        <ChevronDownIcon className="h-2 w-2 text-[#666]" />
+      </div>
+
+      <motion.button
+        animate={{
+          borderColor: soundEnabled ? "#555" : "#333",
+          opacity: soundEnabled ? 1 : 0.4,
+        }}
+        className={`flex items-center gap-1 border bg-[#222] px-1.5 py-0.5 ${soundEnabled ? "cursor-pointer hover:bg-[#2a2a2a]" : "cursor-default"}`}
+        disabled={!soundEnabled}
+        initial={{ opacity: 0.4, borderColor: "#333" }}
+        onClick={handleTest}
+        transition={{ duration: 0.15 }}
+        type="button"
+      >
+        <motion.span
+          animate={{ scale: 1 }}
+          className="text-[#888] text-[8px]"
+          initial={{ scale: testPulse > 0 ? 1.6 : 1 }}
+          key={`test-pulse-${testPulse}`}
+          transition={{ type: "spring", stiffness: 400, damping: 15 }}
+        >
+          {"\u25b6"}
+        </motion.span>
+        <span className="text-[#888] text-[8px]">Test</span>
+      </motion.button>
+    </div>
+  );
+}
+
 export function FilterStyleDemo() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
@@ -193,7 +329,7 @@ export function FilterStyleDemo() {
     }
 
     const totalSteps = ANIM_STEPS.length;
-    const stepDuration = 1100;
+    const stepDuration = 2800;
     const pauseSteps = 2; // extra ticks to pause at end before looping
     const totalTicks = totalSteps + pauseSteps;
     let tick = 0;
@@ -212,6 +348,9 @@ export function FilterStyleDemo() {
 
   const current = step >= 0 ? ANIM_STEPS[step] : null;
   const configured = step >= 0 ? getConfiguredSlots(step) : new Set<string>();
+  const soundType = current?.soundType ?? "--";
+  const soundName = current?.soundName ?? "--";
+  const soundEnabled = soundType !== "--";
 
   return (
     <div
@@ -332,6 +471,7 @@ export function FilterStyleDemo() {
                       alt={`${current.slot} icon`}
                       className="object-contain"
                       fill
+                      sizes="40px"
                       src={current.icon}
                     />
                   ) : null}
@@ -398,18 +538,7 @@ export function FilterStyleDemo() {
                   >
                     {value}
                   </motion.span>
-                  <svg
-                    aria-hidden="true"
-                    className="h-2 w-2 text-[#666]"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      clipRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      fillRule="evenodd"
-                    />
-                  </svg>
+                  <ChevronDownIcon className="h-2 w-2 text-[#666]" />
                 </div>
               );
             })}
@@ -424,21 +553,17 @@ export function FilterStyleDemo() {
             <div className="flex items-center gap-1 border border-[#444] bg-[#222] px-1.5 py-0.5">
               <span className="text-[#888] text-[8px]">Color:</span>
               <span className="font-medium text-[8px] text-white">Yellow</span>
-              <svg
-                aria-hidden="true"
-                className="h-2 w-2 text-[#666]"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  clipRule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  fillRule="evenodd"
-                />
-              </svg>
+              <ChevronDownIcon className="h-2 w-2 text-[#666]" />
             </div>
             <span className="text-[#555] text-[8px]">Temporary</span>
           </div>
+
+          {/* Sound Controls Row */}
+          <SoundControls
+            soundEnabled={soundEnabled}
+            soundName={soundName}
+            soundType={soundType}
+          />
         </div>
       </motion.div>
     </div>

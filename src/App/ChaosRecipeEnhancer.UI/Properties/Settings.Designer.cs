@@ -301,6 +301,18 @@ namespace ChaosRecipeEnhancer.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PrioritizeRecentlyStashedItems {
+            get {
+                return ((bool)(this["PrioritizeRecentlyStashedItems"]));
+            }
+            set {
+                this["PrioritizeRecentlyStashedItems"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int Language {
             get {
@@ -2730,6 +2742,30 @@ namespace ChaosRecipeEnhancer.UI.Properties {
             }
             set {
                 this["TargetInfluenceType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LegacySettingsMigrated {
+            get {
+                return ((bool)(this["LegacySettingsMigrated"]));
+            }
+            set {
+                this["LegacySettingsMigrated"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool V325MigrationCompleted {
+            get {
+                return ((bool)(this["V325MigrationCompleted"]));
+            }
+            set {
+                this["V325MigrationCompleted"] = value;
             }
         }
     }
