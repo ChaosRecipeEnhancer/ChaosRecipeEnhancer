@@ -26,6 +26,7 @@ public class GlobalItemSetManagerStateTests : IDisposable
         GlobalItemSetManagerState.SetsInProgress = new List<EnhancedItemSet>();
         GlobalItemSetManagerState.SetThreshold = 0;
         GlobalItemSetManagerState.NeedsLowerLevel = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = false;
     }
 
     #region UpdateStashMetadata
@@ -436,6 +437,616 @@ public class GlobalItemSetManagerStateTests : IDisposable
 
         // Assert - should only create 2 sets (capped to eligible count), not 5
         GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(2);
+    }
+
+    #endregion
+
+    #region GenerateItemSets - PrioritizeRecentlyStashedItems
+
+    // ── Greedy Path (DoNotPreserveLowItemLevelGear = true) ──────────────────
+
+    [Fact]
+    public void PrioritizeRecent_Greedy_Enabled_SelectsReversedSeedItem()
+    {
+        // Arrange
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+
+        // Amulets sort first alphabetically, so the seed item is the first amulet.
+        // With reverse, the bottom-right amulet (last in API order) becomes first.
+        var topLeftAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 0, y: 0);
+        var bottomRightAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 10, y: 10);
+
+        var items = new List<EnhancedItem>
+        {
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 65),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 65),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 65),
+            topLeftAmulet,
+            bottomRightAmulet,
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        var set = GlobalItemSetManagerState.SetsInProgress[0];
+        var selectedAmulet = set.Items.First(i => i.DerivedItemClass == GameTerminology.Amulets);
+        selectedAmulet.Should().BeSameAs(bottomRightAmulet);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Greedy_Disabled_SelectsDefaultSeedItem()
+    {
+        // Arrange
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = false;
+        GlobalItemSetManagerState.SetThreshold = 1;
+
+        var topLeftAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 0, y: 0);
+        var bottomRightAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 10, y: 10);
+
+        var items = new List<EnhancedItem>
+        {
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 65),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 65),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 65),
+            topLeftAmulet,
+            bottomRightAmulet,
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        var set = GlobalItemSetManagerState.SetsInProgress[0];
+        var selectedAmulet = set.Items.First(i => i.DerivedItemClass == GameTerminology.Amulets);
+        selectedAmulet.Should().BeSameAs(topLeftAmulet);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Greedy_Enabled_TwoHandWeaponSeedIsReversed()
+    {
+        // Arrange — 2H weapons sort FIRST in the list (OrderByDescending), so the seed
+        // item for the set should be the bottom-right 2H weapon when reversed.
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+
+        var topLeft2H = CreateItemWithClassAndLevel(GameTerminology.TwoHandWeapons, 65, x: 0, y: 0);
+        var bottomRight2H = CreateItemWithClassAndLevel(GameTerminology.TwoHandWeapons, 65, x: 10, y: 10);
+
+        var items = new List<EnhancedItem>
+        {
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 65),
+            topLeft2H,
+            bottomRight2H,
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Amulets, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert — bottom-right 2H should be selected as seed (fills both weapon slots)
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        var set = GlobalItemSetManagerState.SetsInProgress[0];
+        var selected2H = set.Items.First(i => i.DerivedItemClass == GameTerminology.TwoHandWeapons);
+        selected2H.Should().BeSameAs(bottomRight2H);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Greedy_Disabled_TwoHandWeaponSeedIsDefault()
+    {
+        // Arrange
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = false;
+        GlobalItemSetManagerState.SetThreshold = 1;
+
+        var topLeft2H = CreateItemWithClassAndLevel(GameTerminology.TwoHandWeapons, 65, x: 0, y: 0);
+        var bottomRight2H = CreateItemWithClassAndLevel(GameTerminology.TwoHandWeapons, 65, x: 10, y: 10);
+
+        var items = new List<EnhancedItem>
+        {
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 65),
+            topLeft2H,
+            bottomRight2H,
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Amulets, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert — top-left 2H should be selected as seed (default order)
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        var set = GlobalItemSetManagerState.SetsInProgress[0];
+        var selected2H = set.Items.First(i => i.DerivedItemClass == GameTerminology.TwoHandWeapons);
+        selected2H.Should().BeSameAs(topLeft2H);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Greedy_Enabled_MultipleSets_EachSeedIsReversed()
+    {
+        // Arrange — with threshold=2 and 2 amulets, each set gets seeded.
+        // The reversed list should seed set 1 with bottomRight, set 2 with topLeft.
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 2;
+
+        var topLeftAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 0, y: 0);
+        var bottomRightAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 10, y: 10);
+
+        // Two full sets worth of items (minus the amulets we're tracking)
+        var items = new List<EnhancedItem>
+        {
+            // Set 1 items
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 65),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 65),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+            // Set 2 items
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 65),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 65),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+            // Two amulets — one per set
+            topLeftAmulet,
+            bottomRightAmulet,
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert — both sets should complete, first seed should be bottom-right amulet
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(2);
+        GlobalItemSetManagerState.CompletedSetCount.Should().Be(2);
+        var firstSetAmulet = GlobalItemSetManagerState.SetsInProgress[0].Items
+            .First(i => i.DerivedItemClass == GameTerminology.Amulets);
+        firstSetAmulet.Should().BeSameAs(bottomRightAmulet);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Greedy_Enabled_VendorSetsEarly_StillReversesSeeds()
+    {
+        // Arrange — VendorSetsEarly caps threshold to eligible item count when less than
+        // the threshold. Provide only 3 eligible items so VendorSetsEarly caps to 3.
+        // Reverse should still apply to seed selection.
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = true;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 5;
+
+        var topLeftAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 0, y: 0);
+        var bottomRightAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 10, y: 10);
+
+        // Only 3 chaos-eligible items → VendorSetsEarly caps trueSetThreshold to 3
+        var items = new List<EnhancedItem>
+        {
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+            topLeftAmulet,
+            bottomRightAmulet,
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert — capped to 3 sets, first seed should still be bottom-right amulet
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(3);
+        var firstSetAmulet = GlobalItemSetManagerState.SetsInProgress[0].Items
+            .First(i => i.DerivedItemClass == GameTerminology.Amulets);
+        firstSetAmulet.Should().BeSameAs(bottomRightAmulet);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Greedy_Enabled_RegalRecipe_StillReversesSeeds()
+    {
+        // Arrange — Regal recipe goes through Greedy path; reverse should apply
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+
+        var topLeftAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 80, x: 0, y: 0);
+        var bottomRightAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 80, x: 10, y: 10);
+
+        var items = new List<EnhancedItem>
+        {
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 80),
+            topLeftAmulet,
+            bottomRightAmulet,
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.RegalOrb);
+
+        // Assert
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        var set = GlobalItemSetManagerState.SetsInProgress[0];
+        var selectedAmulet = set.Items.First(i => i.DerivedItemClass == GameTerminology.Amulets);
+        selectedAmulet.Should().BeSameAs(bottomRightAmulet);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Greedy_Enabled_SingleItemPerClass_StillCompletesSet()
+    {
+        // Arrange — reverse is a no-op with one item per class, but set should still complete
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = CreateFullChaosSet(65);
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert — no extras to choose between, but must still work
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        GlobalItemSetManagerState.CompletedSetCount.Should().Be(1);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Greedy_Enabled_EmptyStash_NoCrash()
+    {
+        // Arrange — nothing to reverse
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = new List<EnhancedItem>();
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert — should handle gracefully
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        GlobalItemSetManagerState.CompletedSetCount.Should().Be(0);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Greedy_Enabled_InsufficientItems_PartialSetNoHang()
+    {
+        // Arrange — not enough items for a full set, reverse should still not cause issues
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+
+        var items = new List<EnhancedItem>
+        {
+            CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 10, y: 10),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 65),
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert — partial set, not completed
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        GlobalItemSetManagerState.CompletedSetCount.Should().Be(0);
+        GlobalItemSetManagerState.SetsInProgress[0].Items.Should().NotBeEmpty();
+    }
+
+    // ── Conserve Path (DoNotPreserveLowItemLevelGear = false) ──────────────
+
+    [Fact]
+    public void PrioritizeRecent_Conserve_Enabled_SelectsReversedSeedItem()
+    {
+        // Arrange — Conserve path uses foreach iteration over eligibleRecipeItems
+        // for seed selection. Reverse should cause bottom-right item to be first.
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = false;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+
+        // In Conserve mode, chaos-eligible items (ilvl 60-74) are the seed items
+        var topLeftAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 0, y: 0);
+        var bottomRightAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 10, y: 10);
+
+        // Mix of chaos-eligible and non-chaos-eligible items to exercise the Conserve filter
+        var items = new List<EnhancedItem>
+        {
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 80),
+            topLeftAmulet,
+            bottomRightAmulet,
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert — bottom-right amulet should be the seed in Conserve mode too
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        var set = GlobalItemSetManagerState.SetsInProgress[0];
+        var selectedAmulet = set.Items.First(i => i.DerivedItemClass == GameTerminology.Amulets);
+        selectedAmulet.Should().BeSameAs(bottomRightAmulet);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Conserve_Disabled_SelectsDefaultSeedItem()
+    {
+        // Arrange
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = false;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = false;
+        GlobalItemSetManagerState.SetThreshold = 1;
+
+        var topLeftAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 0, y: 0);
+        var bottomRightAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 10, y: 10);
+
+        var items = new List<EnhancedItem>
+        {
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 80),
+            topLeftAmulet,
+            bottomRightAmulet,
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert — top-left amulet should be seed (default order)
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        var set = GlobalItemSetManagerState.SetsInProgress[0];
+        var selectedAmulet = set.Items.First(i => i.DerivedItemClass == GameTerminology.Amulets);
+        selectedAmulet.Should().BeSameAs(topLeftAmulet);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Conserve_Enabled_CompletesSetCorrectly()
+    {
+        // Arrange — full set available with mixed ilvls, Conserve should still complete
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = false;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+
+        var items = new List<EnhancedItem>
+        {
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Amulets, 65),  // chaos-eligible seed
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        GlobalItemSetManagerState.CompletedSetCount.Should().Be(1);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Conserve_Enabled_MultipleSets_BothSeedReversed()
+    {
+        // Arrange — 2 sets in Conserve mode, each seeded with a chaos-eligible item
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = false;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 2;
+
+        var topLeftAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 0, y: 0);
+        var bottomRightAmulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 10, y: 10);
+
+        var items = new List<EnhancedItem>
+        {
+            // Fill for 2 sets (non-chaos-eligible, ilvl 80)
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 80),
+            // Seeds (chaos-eligible, ilvl 65)
+            topLeftAmulet,
+            bottomRightAmulet,
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert — both sets should complete; first seed should be bottom-right amulet
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(2);
+        GlobalItemSetManagerState.CompletedSetCount.Should().Be(2);
+        var firstSetAmulet = GlobalItemSetManagerState.SetsInProgress[0].Items
+            .First(i => i.DerivedItemClass == GameTerminology.Amulets);
+        firstSetAmulet.Should().BeSameAs(bottomRightAmulet);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Conserve_Enabled_EmptyStash_NoCrash()
+    {
+        // Arrange
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = false;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = new List<EnhancedItem>();
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        GlobalItemSetManagerState.CompletedSetCount.Should().Be(0);
+    }
+
+    // ── Cross-cutting concerns ────────────────────────────────────────────
+
+    [Fact]
+    public void PrioritizeRecent_Enabled_DoesNotAffectCompletedSetCount()
+    {
+        // Arrange — a full set should still count as completed regardless of ordering
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = CreateFullChaosSet(65);
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert
+        GlobalItemSetManagerState.CompletedSetCount.Should().Be(1);
+        GlobalItemSetManagerState.SetsInProgress[0].EmptyItemSlots.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Enabled_DoesNotAffectNeedsLowerLevel()
+    {
+        // Arrange — all ilvl 80 items (not chaos-eligible), NeedsLowerLevel should still be true
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = CreateFullChaosSet(80);
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert
+        GlobalItemSetManagerState.NeedsLowerLevel.Should().BeTrue();
+    }
+
+    [Fact]
+    public void PrioritizeRecent_Enabled_MultipleTabIndices_SeedFromLastTab()
+    {
+        // Arrange — items spread across 2 stash tabs.
+        // With reverse, the item from the later position in the list (tab 1) becomes the seed.
+        Properties.Settings.Default.DoNotPreserveLowItemLevelGear = true;
+        Properties.Settings.Default.VendorSetsEarly = false;
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems = true;
+        GlobalItemSetManagerState.SetThreshold = 1;
+
+        var tab0Amulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 0, y: 0, tabIndex: 0);
+        var tab1Amulet = CreateItemWithClassAndLevel(GameTerminology.Amulets, 65, x: 0, y: 0, tabIndex: 1);
+
+        var items = new List<EnhancedItem>
+        {
+            CreateItemWithClassAndLevel(GameTerminology.BodyArmors, 65),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 65),
+            CreateItemWithClassAndLevel(GameTerminology.OneHandWeapons, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Helmets, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Gloves, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Boots, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Belts, 65),
+            tab0Amulet,
+            tab1Amulet,
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+            CreateItemWithClassAndLevel(GameTerminology.Rings, 65),
+        };
+        GlobalItemSetManagerState.CurrentItemsFilteredForRecipe = items;
+
+        // Act
+        GlobalItemSetManagerState.GenerateItemSets(RecipeType.ChaosOrb);
+
+        // Assert — tab1 amulet should be selected (later in original list → first after reverse)
+        GlobalItemSetManagerState.SetsInProgress.Should().HaveCount(1);
+        var set = GlobalItemSetManagerState.SetsInProgress[0];
+        var selectedAmulet = set.Items.First(i => i.DerivedItemClass == GameTerminology.Amulets);
+        selectedAmulet.Should().BeSameAs(tab1Amulet);
+    }
+
+    [Fact]
+    public void PrioritizeRecent_SettingDefaultIsFalse()
+    {
+        // Assert — the setting should default to false so existing users aren't affected
+        Properties.Settings.Default.Reset();
+        Properties.Settings.Default.PrioritizeRecentlyStashedItems.Should().BeFalse();
     }
 
     #endregion
