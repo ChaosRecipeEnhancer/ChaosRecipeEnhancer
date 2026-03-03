@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { CursorIcon } from "@/components/icons";
 
 // ---------------------------------------------------------------------------
 // Scene 1 — Loot rain: every item looks identical, recipe pieces buried
@@ -33,7 +34,6 @@ const DROPS = [
   { n: "CHAIN BELT", x: 76, y: 42 },
   { n: "SIEGE AXE", x: 24, y: 64 },
   { n: "PRISMATIC RING", x: 48, y: 68 },
-  // More drops — heavier on the right side
   { n: "TOPAZ RING", x: 85, y: 15 },
   { n: "GRANITE FLASK", x: 80, y: 24 },
   { n: "SACRIFICIAL GARB", x: 70, y: 48 },
@@ -50,6 +50,7 @@ const DROPS = [
   { n: "DEICIDE AXE", x: 78, y: 76 },
   { n: "SATIN GLOVES", x: 8, y: 82 },
   { n: "AGATE AMULET", x: 66, y: 84 },
+  { n: "MIRROR OF KALANDRA", x: 50, y: 50 },
 ];
 
 // ---------------------------------------------------------------------------
@@ -94,7 +95,7 @@ const STASH: StashBlock[] = [
   { c: 3, r: 7, w: 2, h: 1 },
 ];
 
-const CURSOR_PATH = [2, 13, 6, 18, 9, 15];
+const CURSOR_PATH = [2, 18, 9];
 
 const GRID_KEYS = Array.from({ length: SCOLS * SROWS }, (_, i) => `c${i}`);
 
@@ -102,12 +103,12 @@ const GRID_KEYS = Array.from({ length: SCOLS * SROWS }, (_, i) => `c${i}`);
 // Timing
 // ---------------------------------------------------------------------------
 
-const DROP_MS = 100;
-const DROP_HOLD = 1200;
-const CURSOR_MS = 700;
-const CURSOR_WAIT = 500;
-const END_HOLD = 1200;
-const JIGGLE_MS = 80;
+const DROP_MS = 50;
+const DROP_HOLD = 1000;
+const CURSOR_MS = 350;
+const CURSOR_WAIT = 1000;
+const END_HOLD = 2500;
+const JIGGLE_MS = 40;
 const JIGGLE_OFFSETS = [
   { x: 8, y: -6 },
   { x: -10, y: 4 },
@@ -376,17 +377,7 @@ export function ProblemStatementDemo() {
                       }
                 }
               >
-                <svg
-                  aria-hidden="true"
-                  className="h-5 w-5 drop-shadow-md"
-                  fill="white"
-                  stroke="#333"
-                  strokeLinejoin="round"
-                  strokeWidth="1"
-                  viewBox="0 0 20 24"
-                >
-                  <path d="M2 1L2 18L6.5 13.5L10.5 21.5L13 20.5L9 12.5L15 12.5Z" />
-                </svg>
+                <CursorIcon className="h-5 w-5 drop-shadow-md" />
               </motion.div>
             </div>
           </div>

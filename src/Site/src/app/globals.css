@@ -17,9 +17,13 @@
   --color-cre-border-hover: #424242;
 
   /* CRE Accent (Blue) */
-  --color-cre-accent: #3494e1;
-  --color-cre-accent-hover: #5587af;
+  --color-cre-accent: #2878bd;
+  --color-cre-accent-hover: #236ca8;
   --color-cre-accent-deep: #3228c8;
+
+  /* CRE Inline Links (readable on dark bg) */
+  --color-cre-link: #e8923a;
+  --color-cre-link-hover: #f0a050;
 
   /* CRE Text */
   --color-cre-text: #f0f0f0;

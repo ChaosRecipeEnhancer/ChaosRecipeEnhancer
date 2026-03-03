@@ -63,7 +63,7 @@ const PHASES = [
 const MILESTONES = [
   { day: 3, label: "First Divine", y: 0.22, color: "#D4A843" },
   { day: 6, label: "5+ Divines", y: 0.58, color: "#D4A843" },
-  { day: 9, label: "Switch to endgame", y: 0.8, color: "#3494E1" },
+  { day: 9, label: "Switch to endgame", y: 0.8, color: "#EF4444" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -190,8 +190,8 @@ export function LeagueStartDemo() {
           </clipPath>
           {/* "Done" zone gradient */}
           <linearGradient id="doneZone" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#3494E1" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="#3494E1" stopOpacity="0.02" />
+            <stop offset="0%" stopColor="#EF4444" stopOpacity="0.08" />
+            <stop offset="100%" stopColor="#EF4444" stopOpacity="0.02" />
           </linearGradient>
         </defs>
 
@@ -366,7 +366,7 @@ export function LeagueStartDemo() {
           transition={{ duration: 0.6, delay: 2.6 }}
         >
           <text
-            className="fill-cre-accent font-medium text-[14px]"
+            className="fill-[#EF4444] font-medium text-[14px]"
             textAnchor="middle"
             x={PAD_L + (11.5 / MAX_DAY) * CHART_W}
             y={PAD_T + CHART_H + 48}

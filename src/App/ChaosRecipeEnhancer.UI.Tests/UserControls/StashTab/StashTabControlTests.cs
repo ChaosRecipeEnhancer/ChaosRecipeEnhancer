@@ -5,6 +5,7 @@ using Xunit.Sdk;
 
 namespace ChaosRecipeEnhancer.UI.Tests.UserControls.StashTab;
 
+[Collection("Settings")]
 public class StashTabControlTests
 {
     #region Constructor — TabHeaderColor preserves alpha from StashTabOverlayTabDefaultBackgroundColor
