@@ -15,7 +15,7 @@ const RECIPES = [
   },
   {
     name: "Chance",
-    color: "#22C55E",
+    color: "#4A6FD4",
     href: "https://www.poewiki.net/wiki/Vendor_recipe_system#Multiple_Rare_Items",
     underline: "dashed" as UnderlineStyle,
   },
