@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -121,6 +123,8 @@ export default function RootLayout({
           type="application/ld+json"
         />
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
