@@ -392,7 +392,7 @@ export default async function Home() {
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-black/40 transition-colors group-hover:bg-black/20">
                   <div className="flex h-20 w-20 transform items-center justify-center rounded-full bg-red-600 shadow-lg transition-transform group-hover:scale-110">
-                    <PlayIcon className="ml-2 h-10 w-10 text-white" />
+                    <PlayIcon className="ml-1 h-10 w-10 text-white" />
                   </div>
                 </div>
               </div>
