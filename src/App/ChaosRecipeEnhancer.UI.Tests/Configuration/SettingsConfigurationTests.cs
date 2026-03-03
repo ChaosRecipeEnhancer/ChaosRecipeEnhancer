@@ -300,6 +300,99 @@ public class SettingsConfigurationTests
         result.Should().BeEmpty();
     }
 
+    [Fact]
+    public void ParseUserConfigXml_GivenWindowsPathWithBackslashes_PreservesIt()
+    {
+        // Arrange — custom sound path with backslashes typical on Windows
+        var doc = XDocument.Parse(@"
+            <configuration>
+              <userSettings>
+                <ChaosRecipeEnhancer.UI.Properties.Settings>
+                  <setting name=""LootFilterStylesAmuletCustomSoundPath"" serializeAs=""String"">
+                    <value>C:\Users\Mario\Music\loot-alert.mp3</value>
+                  </setting>
+                </ChaosRecipeEnhancer.UI.Properties.Settings>
+              </userSettings>
+            </configuration>");
+
+        // Act
+        var result = SettingsConfiguration.ParseUserConfigXml(doc);
+
+        // Assert — backslashes must survive the XML round-trip
+        result.Should().ContainKey("LootFilterStylesAmuletCustomSoundPath");
+        result["LootFilterStylesAmuletCustomSoundPath"].Should().Be(@"C:\Users\Mario\Music\loot-alert.mp3");
+    }
+
+    [Fact]
+    public void ParseUserConfigXml_GivenPathWithSpaces_PreservesIt()
+    {
+        // Arrange — path containing spaces (common on Windows)
+        var doc = XDocument.Parse(@"
+            <configuration>
+              <userSettings>
+                <ChaosRecipeEnhancer.UI.Properties.Settings>
+                  <setting name=""LootFilterStylesBootsCustomSoundPath"" serializeAs=""String"">
+                    <value>C:\Users\Some User\My Documents\PoE Sounds\drop alert.mp3</value>
+                  </setting>
+                </ChaosRecipeEnhancer.UI.Properties.Settings>
+              </userSettings>
+            </configuration>");
+
+        // Act
+        var result = SettingsConfiguration.ParseUserConfigXml(doc);
+
+        // Assert
+        result["LootFilterStylesBootsCustomSoundPath"]
+            .Should().Be(@"C:\Users\Some User\My Documents\PoE Sounds\drop alert.mp3");
+    }
+
+    [Fact]
+    public void ParseUserConfigXml_GivenPathWithXmlSpecialChars_PreservesIt()
+    {
+        // Arrange — path with ampersand which is special in XML
+        // XDocument.Parse requires valid XML, so & must be &amp; in the source.
+        // The parser should decode it back to & in the value.
+        var doc = XDocument.Parse(@"
+            <configuration>
+              <userSettings>
+                <ChaosRecipeEnhancer.UI.Properties.Settings>
+                  <setting name=""LootFilterStylesRingCustomSoundPath"" serializeAs=""String"">
+                    <value>C:\Music\Tom &amp; Jerry\alert.mp3</value>
+                  </setting>
+                </ChaosRecipeEnhancer.UI.Properties.Settings>
+              </userSettings>
+            </configuration>");
+
+        // Act
+        var result = SettingsConfiguration.ParseUserConfigXml(doc);
+
+        // Assert — the XML entity should be decoded back to &
+        result["LootFilterStylesRingCustomSoundPath"]
+            .Should().Be(@"C:\Music\Tom & Jerry\alert.mp3");
+    }
+
+    [Fact]
+    public void ParseUserConfigXml_GivenUnicodePath_PreservesIt()
+    {
+        // Arrange — path with Unicode characters (non-ASCII usernames, folder names)
+        var doc = XDocument.Parse(@"
+            <configuration>
+              <userSettings>
+                <ChaosRecipeEnhancer.UI.Properties.Settings>
+                  <setting name=""LootFilterStylesHelmetCustomSoundPath"" serializeAs=""String"">
+                    <value>C:\Users\André\Música\alerta.mp3</value>
+                  </setting>
+                </ChaosRecipeEnhancer.UI.Properties.Settings>
+              </userSettings>
+            </configuration>");
+
+        // Act
+        var result = SettingsConfiguration.ParseUserConfigXml(doc);
+
+        // Assert — Unicode characters must be preserved
+        result["LootFilterStylesHelmetCustomSoundPath"]
+            .Should().Be(@"C:\Users\André\Música\alerta.mp3");
+    }
     #endregion
 
     #region ApplyLegacyValues
@@ -914,6 +1007,239 @@ public class SettingsConfigurationTests
         // Assert — only the setting that exists in both schemas gets imported
         count.Should().Be(1);
         applied.Should().ContainKey("LeagueName");
+    }
+
+    [Fact]
+    public void ParseThenApply_GivenCustomSoundSettings_ImportsAllSoundFields()
+    {
+        // Arrange — realistic filter sound settings for a single item class (Amulet)
+        // covering all four sound-related fields: mode, id, volume, and custom path
+        var doc = XDocument.Parse(@"
+            <configuration>
+              <userSettings>
+                <ChaosRecipeEnhancer.UI.Properties.Settings>
+                  <setting name=""LootFilterStylesAmuletSoundMode"" serializeAs=""String"">
+                    <value>2</value>
+                  </setting>
+                  <setting name=""LootFilterStylesAmuletSoundId"" serializeAs=""String"">
+                    <value>7</value>
+                  </setting>
+                  <setting name=""LootFilterStylesAmuletSoundVolume"" serializeAs=""String"">
+                    <value>250</value>
+                  </setting>
+                  <setting name=""LootFilterStylesAmuletCustomSoundPath"" serializeAs=""String"">
+                    <value>C:\Users\Mario\Music\my-loot-sound.mp3</value>
+                  </setting>
+                </ChaosRecipeEnhancer.UI.Properties.Settings>
+              </userSettings>
+            </configuration>");
+
+        var properties = BuildProperties(
+            ("LootFilterStylesAmuletSoundMode", typeof(int)),
+            ("LootFilterStylesAmuletSoundId", typeof(int)),
+            ("LootFilterStylesAmuletSoundVolume", typeof(int)),
+            ("LootFilterStylesAmuletCustomSoundPath", typeof(string)));
+        var applied = new Dictionary<string, object>();
+
+        // Act
+        var legacyValues = SettingsConfiguration.ParseUserConfigXml(doc);
+        var count = SettingsConfiguration.ApplyLegacyValues(
+            legacyValues, properties, SettingsConfiguration.SkipSettings,
+            (name, value) => applied[name] = value);
+
+        // Assert — all four sound settings should migrate with correct types
+        count.Should().Be(4);
+        applied["LootFilterStylesAmuletSoundMode"].Should().Be(2);
+        applied["LootFilterStylesAmuletSoundId"].Should().Be(7);
+        applied["LootFilterStylesAmuletSoundVolume"].Should().Be(250);
+        applied["LootFilterStylesAmuletCustomSoundPath"]
+            .Should().Be(@"C:\Users\Mario\Music\my-loot-sound.mp3");
+    }
+
+    [Fact]
+    public void ParseThenApply_GivenFullFilterStylesForOneItemClass_ImportsAll()
+    {
+        // Arrange — complete filter styles for Boots (all visual + sound settings)
+        // This simulates a user who has fully customized one item class
+        var doc = XDocument.Parse(@"
+            <configuration>
+              <userSettings>
+                <ChaosRecipeEnhancer.UI.Properties.Settings>
+                  <setting name=""LootFilterStylesBootsTextFontSize"" serializeAs=""String"">
+                    <value>45</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsTextColor"" serializeAs=""String"">
+                    <value>#FF00FF00</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsBorderColor"" serializeAs=""String"">
+                    <value>#FFFF0000</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsBackgroundColor"" serializeAs=""String"">
+                    <value>#80000000</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsAlwaysActive"" serializeAs=""String"">
+                    <value>True</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsAlwaysDisabled"" serializeAs=""String"">
+                    <value>False</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsSoundMode"" serializeAs=""String"">
+                    <value>2</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsSoundId"" serializeAs=""String"">
+                    <value>4</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsSoundVolume"" serializeAs=""String"">
+                    <value>200</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsCustomSoundPath"" serializeAs=""String"">
+                    <value>C:\Users\Some User\PoE Sounds\boots drop.mp3</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsMapIconEnabled"" serializeAs=""String"">
+                    <value>True</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsMapIconColor"" serializeAs=""String"">
+                    <value>1</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsMapIconSize"" serializeAs=""String"">
+                    <value>0</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsMapIconShape"" serializeAs=""String"">
+                    <value>2</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsBeamEnabled"" serializeAs=""String"">
+                    <value>True</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsBeamTemporary"" serializeAs=""String"">
+                    <value>False</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsBeamColor"" serializeAs=""String"">
+                    <value>3</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsTextColorEnabled"" serializeAs=""String"">
+                    <value>True</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsBorderColorEnabled"" serializeAs=""String"">
+                    <value>True</value>
+                  </setting>
+                  <setting name=""LootFilterStylesBootsBackgroundColorEnabled"" serializeAs=""String"">
+                    <value>True</value>
+                  </setting>
+                </ChaosRecipeEnhancer.UI.Properties.Settings>
+              </userSettings>
+            </configuration>");
+
+        var properties = BuildProperties(
+            ("LootFilterStylesBootsTextFontSize", typeof(int)),
+            ("LootFilterStylesBootsTextColor", typeof(string)),
+            ("LootFilterStylesBootsBorderColor", typeof(string)),
+            ("LootFilterStylesBootsBackgroundColor", typeof(string)),
+            ("LootFilterStylesBootsAlwaysActive", typeof(bool)),
+            ("LootFilterStylesBootsAlwaysDisabled", typeof(bool)),
+            ("LootFilterStylesBootsSoundMode", typeof(int)),
+            ("LootFilterStylesBootsSoundId", typeof(int)),
+            ("LootFilterStylesBootsSoundVolume", typeof(int)),
+            ("LootFilterStylesBootsCustomSoundPath", typeof(string)),
+            ("LootFilterStylesBootsMapIconEnabled", typeof(bool)),
+            ("LootFilterStylesBootsMapIconColor", typeof(int)),
+            ("LootFilterStylesBootsMapIconSize", typeof(int)),
+            ("LootFilterStylesBootsMapIconShape", typeof(int)),
+            ("LootFilterStylesBootsBeamEnabled", typeof(bool)),
+            ("LootFilterStylesBootsBeamTemporary", typeof(bool)),
+            ("LootFilterStylesBootsBeamColor", typeof(int)),
+            ("LootFilterStylesBootsTextColorEnabled", typeof(bool)),
+            ("LootFilterStylesBootsBorderColorEnabled", typeof(bool)),
+            ("LootFilterStylesBootsBackgroundColorEnabled", typeof(bool)));
+        var applied = new Dictionary<string, object>();
+
+        // Act
+        var legacyValues = SettingsConfiguration.ParseUserConfigXml(doc);
+        var count = SettingsConfiguration.ApplyLegacyValues(
+            legacyValues, properties, SettingsConfiguration.SkipSettings,
+            (name, value) => applied[name] = value);
+
+        // Assert — every filter style setting for Boots should migrate
+        count.Should().Be(20);
+
+        // Visual settings
+        applied["LootFilterStylesBootsTextFontSize"].Should().Be(45);
+        applied["LootFilterStylesBootsTextColor"].Should().Be("#FF00FF00");
+        applied["LootFilterStylesBootsBorderColor"].Should().Be("#FFFF0000");
+        applied["LootFilterStylesBootsBackgroundColor"].Should().Be("#80000000");
+        applied["LootFilterStylesBootsAlwaysActive"].Should().Be(true);
+        applied["LootFilterStylesBootsAlwaysDisabled"].Should().Be(false);
+
+        // Sound settings (the key area for custom sound migration)
+        applied["LootFilterStylesBootsSoundMode"].Should().Be(2);
+        applied["LootFilterStylesBootsSoundId"].Should().Be(4);
+        applied["LootFilterStylesBootsSoundVolume"].Should().Be(200);
+        applied["LootFilterStylesBootsCustomSoundPath"]
+            .Should().Be(@"C:\Users\Some User\PoE Sounds\boots drop.mp3");
+
+        // Map icon settings
+        applied["LootFilterStylesBootsMapIconEnabled"].Should().Be(true);
+        applied["LootFilterStylesBootsMapIconColor"].Should().Be(1);
+        applied["LootFilterStylesBootsMapIconSize"].Should().Be(0);
+        applied["LootFilterStylesBootsMapIconShape"].Should().Be(2);
+
+        // Beam settings
+        applied["LootFilterStylesBootsBeamEnabled"].Should().Be(true);
+        applied["LootFilterStylesBootsBeamTemporary"].Should().Be(false);
+        applied["LootFilterStylesBootsBeamColor"].Should().Be(3);
+
+        // Color toggle settings
+        applied["LootFilterStylesBootsTextColorEnabled"].Should().Be(true);
+        applied["LootFilterStylesBootsBorderColorEnabled"].Should().Be(true);
+        applied["LootFilterStylesBootsBackgroundColorEnabled"].Should().Be(true);
+    }
+
+    [Fact]
+    public void ParseThenApply_GivenCustomSoundPathWithSpacesAndSpecialChars_MigratesCorrectly()
+    {
+        // Arrange — path edge cases that are common on real Windows systems:
+        // spaces in path, ampersand in folder name, non-ASCII characters
+        var doc = XDocument.Parse(@"
+            <configuration>
+              <userSettings>
+                <ChaosRecipeEnhancer.UI.Properties.Settings>
+                  <setting name=""LootFilterStylesRingCustomSoundPath"" serializeAs=""String"">
+                    <value>D:\My Games\Path of Exile\Sounds &amp; Alerts\über-ring.mp3</value>
+                  </setting>
+                  <setting name=""LootFilterStylesWeaponCustomSoundPath"" serializeAs=""String"">
+                    <value></value>
+                  </setting>
+                  <setting name=""LootFilterStylesBeltCustomSoundPath"" serializeAs=""String"">
+                    <value>C:\Users\André\Música\alerta.mp3</value>
+                  </setting>
+                </ChaosRecipeEnhancer.UI.Properties.Settings>
+              </userSettings>
+            </configuration>");
+
+        var properties = BuildProperties(
+            ("LootFilterStylesRingCustomSoundPath", typeof(string)),
+            ("LootFilterStylesWeaponCustomSoundPath", typeof(string)),
+            ("LootFilterStylesBeltCustomSoundPath", typeof(string)));
+        var applied = new Dictionary<string, object>();
+
+        // Act
+        var legacyValues = SettingsConfiguration.ParseUserConfigXml(doc);
+        var count = SettingsConfiguration.ApplyLegacyValues(
+            legacyValues, properties, SettingsConfiguration.SkipSettings,
+            (name, value) => applied[name] = value);
+
+        // Assert
+        count.Should().Be(3);
+
+        // Ampersand decoded from XML entity, spaces and backslashes preserved
+        applied["LootFilterStylesRingCustomSoundPath"]
+            .Should().Be(@"D:\My Games\Path of Exile\Sounds & Alerts\über-ring.mp3");
+
+        // Empty string is a valid value (user hasn't set a custom sound)
+        applied["LootFilterStylesWeaponCustomSoundPath"].Should().Be("");
+
+        // Unicode characters preserved
+        applied["LootFilterStylesBeltCustomSoundPath"]
+            .Should().Be(@"C:\Users\André\Música\alerta.mp3");
     }
 
     #endregion
