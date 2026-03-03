@@ -6,7 +6,7 @@ using ChaosRecipeEnhancer.UI.Tests.Helpers;
 
 namespace ChaosRecipeEnhancer.UI.Tests.Services;
 
-[Collection("GlobalItemSetManagerState")]
+[Collection("Settings")]
 public class GlobalItemSetManagerStateTests : IDisposable
 {
     public GlobalItemSetManagerStateTests()
