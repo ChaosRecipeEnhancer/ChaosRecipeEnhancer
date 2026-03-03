@@ -1,62 +1,15 @@
 import { ImageResponse } from "next/og";
+import { APP_NAME } from "@/lib/constants";
+import { formatCount, getGitHubStats } from "@/lib/github";
 
-export const alt = "Chaos Recipe Enhancer — Streamline your Chaos Recipe gains";
+export const alt = `${APP_NAME} \u2014 Streamline your Chaos Recipe gains`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const revalidate = 3600;
 
-const GITHUB_API =
-  "https://api.github.com/repos/ChaosRecipeEnhancer/ChaosRecipeEnhancer";
-const GITHUB_RELEASES_API = `${GITHUB_API}/releases?per_page=100`;
-
-const TRAILING_ZERO_RE = /\.0$/;
-
-function formatCount(count: number): string {
-  if (count >= 1_000_000) {
-    return `${(count / 1_000_000).toFixed(1).replace(TRAILING_ZERO_RE, "")}M`;
-  }
-  if (count >= 1000) {
-    return `${(count / 1000).toFixed(1).replace(TRAILING_ZERO_RE, "")}K`;
-  }
-  return count.toLocaleString();
-}
-
-async function getStats(): Promise<{
-  downloads: number | null;
-  stars: number | null;
-}> {
-  try {
-    const [repoRes, releasesRes] = await Promise.all([
-      fetch(GITHUB_API, { next: { revalidate: 3600 } }),
-      fetch(GITHUB_RELEASES_API, { next: { revalidate: 3600 } }),
-    ]);
-
-    const stars = repoRes.ok
-      ? ((await repoRes.json()) as { stargazers_count: number })
-          .stargazers_count
-      : null;
-
-    let downloads: number | null = null;
-    if (releasesRes.ok) {
-      const releases: { assets: { download_count: number }[] }[] =
-        await releasesRes.json();
-      downloads = releases.reduce(
-        (total, release) =>
-          total +
-          release.assets.reduce((sum, asset) => sum + asset.download_count, 0),
-        0
-      );
-    }
-
-    return { downloads, stars };
-  } catch {
-    return { downloads: null, stars: null };
-  }
-}
-
 export default async function Image() {
   const [{ downloads, stars }, fontData, logoBuffer] = await Promise.all([
-    getStats(),
+    getGitHubStats(),
     fetch(
       "https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuGKYMZg.ttf"
     ).then((res) => res.arrayBuffer()),

@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { CursorIcon } from "@/components/icons";
 
 // ---------------------------------------------------------------------------
 // Scene 1 — Loot rain: every item looks identical, recipe pieces buried
@@ -376,17 +377,7 @@ export function ProblemStatementDemo() {
                       }
                 }
               >
-                <svg
-                  aria-hidden="true"
-                  className="h-5 w-5 drop-shadow-md"
-                  fill="white"
-                  stroke="#333"
-                  strokeLinejoin="round"
-                  strokeWidth="1"
-                  viewBox="0 0 20 24"
-                >
-                  <path d="M2 1L2 18L6.5 13.5L10.5 21.5L13 20.5L9 12.5L15 12.5Z" />
-                </svg>
+                <CursorIcon className="h-5 w-5 drop-shadow-md" />
               </motion.div>
             </div>
           </div>
