@@ -9,8 +9,8 @@ using System.Runtime.CompilerServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.28.1001.0")]
-[assembly: AssemblyFileVersion("3.28.1001.0")]
+[assembly: AssemblyVersion("3.28.1002.0")]
+[assembly: AssemblyFileVersion("3.28.1002.0")]
 
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
