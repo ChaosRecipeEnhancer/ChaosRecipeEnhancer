@@ -332,6 +332,7 @@ export function FilterStyleDemo() {
                       alt={`${current.slot} icon`}
                       className="object-contain"
                       fill
+                      sizes="40px"
                       src={current.icon}
                     />
                   ) : null}

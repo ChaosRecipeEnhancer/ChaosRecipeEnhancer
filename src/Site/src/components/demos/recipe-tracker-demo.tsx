@@ -234,6 +234,7 @@ export function RecipeTrackerDemo() {
                     alt={item.name}
                     className="object-contain brightness-0 invert"
                     fill
+                    sizes="20px"
                     src={item.icon}
                   />
                 </div>

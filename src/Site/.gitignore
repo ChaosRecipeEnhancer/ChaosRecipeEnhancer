@@ -2,3 +2,4 @@
 node_modules/
 out/
 bun.lock
+next-env.d.ts

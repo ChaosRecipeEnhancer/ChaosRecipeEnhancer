@@ -170,7 +170,7 @@ export default async function Image() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "48px",
+            gap: "64px",
           }}
         >
           {hasStats ? (
@@ -220,6 +220,8 @@ export default async function Image() {
                     height: "36px",
                     background: "#313131",
                     display: "flex",
+                    marginLeft: "24px",
+                    marginRight: "24px",
                   }}
                 />
               )}
@@ -278,7 +280,7 @@ export default async function Image() {
                     fontFamily: "Inter",
                   }}
                 >
-                  ✦
+                  ★
                 </div>
                 <div
                   style={{
@@ -312,7 +314,7 @@ export default async function Image() {
                     fontFamily: "Inter",
                   }}
                 >
-                  ✦
+                  ★
                 </div>
                 <div
                   style={{
