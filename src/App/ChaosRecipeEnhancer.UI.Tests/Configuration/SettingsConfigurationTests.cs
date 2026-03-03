@@ -502,9 +502,9 @@ public class SettingsConfigurationTests
     }
 
     [Fact]
-    public void ApplyLegacyValues_GivenSkippedAuthToken_DoesNotImport()
+    public void ApplyLegacyValues_GivenAuthToken_ImportsIt()
     {
-        // Arrange — PathOfExileApiAuthToken is in the skip list
+        // Arrange — auth tokens are no longer skipped during migration
         var legacyValues = new Dictionary<string, string>
         {
             { "PathOfExileApiAuthToken", "secret-token-value" },
@@ -520,10 +520,10 @@ public class SettingsConfigurationTests
             legacyValues, properties, SettingsConfiguration.SkipSettings,
             (name, value) => applied[name] = value);
 
-        // Assert — only LeagueName should be imported, not the auth token
-        count.Should().Be(1);
+        // Assert — both should be imported
+        count.Should().Be(2);
         applied.Should().ContainKey("LeagueName");
-        applied.Should().NotContainKey("PathOfExileApiAuthToken");
+        applied.Should().ContainKey("PathOfExileApiAuthToken");
     }
 
     [Fact]
@@ -532,18 +532,14 @@ public class SettingsConfigurationTests
         // Arrange — every value in the legacy config is on the skip list
         var legacyValues = new Dictionary<string, string>
         {
-            { "PathOfExileApiAuthToken", "token" },
-            { "PathOfExileApiAuthTokenExpiration", "2025-01-01" },
-            { "LegacyAuthSessionId", "session-id" },
             { "UpgradeSettingsAfterUpdate", "True" },
             { "LegacySettingsMigrated", "False" },
+            { "V325MigrationCompleted", "True" },
         };
         var properties = BuildProperties(
-            ("PathOfExileApiAuthToken", typeof(string)),
-            ("PathOfExileApiAuthTokenExpiration", typeof(DateTime)),
-            ("LegacyAuthSessionId", typeof(string)),
             ("UpgradeSettingsAfterUpdate", typeof(bool)),
-            ("LegacySettingsMigrated", typeof(bool)));
+            ("LegacySettingsMigrated", typeof(bool)),
+            ("V325MigrationCompleted", typeof(bool)));
         var applied = new Dictionary<string, object>();
 
         // Act
@@ -881,16 +877,14 @@ public class SettingsConfigurationTests
     #region SkipSettings Verification
 
     [Fact]
-    public void SkipSettings_ContainsAllSensitiveSettings()
+    public void SkipSettings_ContainsAllInternalFlags()
     {
         // Assert — verify the skip list contains exactly the expected entries.
-        // If a new sensitive setting is added to the app, this test reminds
-        // the developer to add it to the skip list too.
-        SettingsConfiguration.SkipSettings.Should().Contain("PathOfExileApiAuthToken");
-        SettingsConfiguration.SkipSettings.Should().Contain("PathOfExileApiAuthTokenExpiration");
-        SettingsConfiguration.SkipSettings.Should().Contain("LegacyAuthSessionId");
+        // Auth tokens are no longer skipped — they persist across upgrades.
         SettingsConfiguration.SkipSettings.Should().Contain("UpgradeSettingsAfterUpdate");
         SettingsConfiguration.SkipSettings.Should().Contain("LegacySettingsMigrated");
+        SettingsConfiguration.SkipSettings.Should().Contain("V325MigrationCompleted");
+        SettingsConfiguration.SkipSettings.Should().HaveCount(3);
     }
 
     [Fact]
@@ -898,8 +892,8 @@ public class SettingsConfigurationTests
     {
         // Assert — the skip list uses Ordinal comparison, so it should NOT match
         // differently-cased variants. This prevents accidental case-insensitive matches.
-        SettingsConfiguration.SkipSettings.Should().NotContain("pathofexileapiauthtoken");
-        SettingsConfiguration.SkipSettings.Should().NotContain("PATHOFEXILEAPIAUTHTOKEN");
+        SettingsConfiguration.SkipSettings.Should().NotContain("upgradesettingsafterupdate");
+        SettingsConfiguration.SkipSettings.Should().NotContain("UPGRADESETTINGSAFTERUPDATE");
     }
 
     #endregion
@@ -941,10 +935,10 @@ public class SettingsConfigurationTests
                     <value>False</value>
                   </setting>
                   <setting name=""PathOfExileApiAuthToken"" serializeAs=""String"">
-                    <value>should-be-skipped</value>
+                    <value>should-be-imported</value>
                   </setting>
                   <setting name=""LegacyAuthSessionId"" serializeAs=""String"">
-                    <value>also-skipped</value>
+                    <value>also-imported</value>
                   </setting>
                 </ChaosRecipeEnhancer.UI.Properties.Settings>
               </userSettings>
@@ -965,12 +959,12 @@ public class SettingsConfigurationTests
             (name, value) => applied[name] = value);
 
         // Assert
-        count.Should().Be(3); // 5 in XML, 2 skipped
+        count.Should().Be(5); // all 5 imported, auth tokens no longer skipped
         applied["LeagueName"].Should().Be("Settlers");
         applied["FullSetThreshold"].Should().Be(3);
         applied["SoundEnabled"].Should().Be(false);
-        applied.Should().NotContainKey("PathOfExileApiAuthToken");
-        applied.Should().NotContainKey("LegacyAuthSessionId");
+        applied["PathOfExileApiAuthToken"].Should().Be("should-be-imported");
+        applied["LegacyAuthSessionId"].Should().Be("also-imported");
     }
 
     [Fact]

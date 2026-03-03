@@ -26,15 +26,11 @@ public static class SettingsConfiguration
     internal const string LegacyVersion = "3.27.1000.0";
 
     // Settings we intentionally skip during migration:
-    // - Auth tokens: security-sensitive, should not be carried over.
     // - UpgradeSettingsAfterUpdate: internal flag, not a user preference.
     // - LegacySettingsMigrated: internal flag for this migration feature itself.
     // - V325MigrationCompleted: internal flag for one-time [3.25] data migrations.
     internal static readonly HashSet<string> SkipSettings = new(StringComparer.Ordinal)
     {
-        "PathOfExileApiAuthToken",
-        "PathOfExileApiAuthTokenExpiration",
-        "LegacyAuthSessionId",
         "UpgradeSettingsAfterUpdate",
         "LegacySettingsMigrated",
         "V325MigrationCompleted",
@@ -51,10 +47,6 @@ public static class SettingsConfiguration
         {
             Settings.Default.Upgrade();
             Settings.Default.UpgradeSettingsAfterUpdate = false;
-
-            // Reset sensitive auth-related settings after an upgrade
-            Settings.Default.PathOfExileApiAuthToken = string.Empty;
-            Settings.Default.LegacyAuthSessionId = string.Empty;
 
             Settings.Default.Save();
         }
