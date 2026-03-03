@@ -2,6 +2,7 @@
 using ChaosRecipeEnhancer.UI.Configuration;
 using ChaosRecipeEnhancer.UI.Models.Config;
 using ChaosRecipeEnhancer.UI.Services;
+using ChaosRecipeEnhancer.UI.Utilities;
 using ChaosRecipeEnhancer.UI.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +23,12 @@ public partial class App
         // Velopack MUST run before any WPF initialization.
         // It handles install/uninstall/update hooks internally,
         // and will exit the process if it was invoked by the Velopack updater.
-        VelopackApp.Build().Run();
+        var exePath = Environment.ProcessPath ?? string.Empty;
+        VelopackApp.Build()
+            .OnAfterInstallFastCallback((v) => ProtocolRegistration.Register(exePath))
+            .OnAfterUpdateFastCallback((v) => ProtocolRegistration.Register(exePath))
+            .OnBeforeUninstallFastCallback((v) => ProtocolRegistration.Unregister())
+            .Run();
 
         var app = new App();
         app.InitializeComponent();
@@ -61,6 +67,11 @@ public partial class App
         IServiceProvider serviceProvider = services.BuildServiceProvider();
 
         Ioc.Default.ConfigureServices(serviceProvider);
+
+        // Ensure chaosrecipe:// protocol is registered on every launch.
+        // This covers existing users who upgraded from the MSI installer
+        // or any case where the Velopack install hook didn't run.
+        ProtocolRegistration.Register(Environment.ProcessPath ?? string.Empty);
 
         var authStateManager = Ioc.Default.GetService<IAuthStateManager>();
         authStateManager?.ValidateAuthToken();
