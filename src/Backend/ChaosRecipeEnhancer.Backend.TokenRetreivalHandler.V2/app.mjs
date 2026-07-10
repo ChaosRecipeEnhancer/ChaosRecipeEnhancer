@@ -1,49 +1,37 @@
 /* global fetch, btoa, atob */
 
-import {
-  SecretsManagerClient,
-  GetSecretValueCommand,
-} from "@aws-sdk/client-secrets-manager";
+import { SSMClient, GetParametersCommand } from "@aws-sdk/client-ssm";
 
-/**
- * This Lambda function retrieves an authentication token from the Path of Exile API.
- * It first retrieves the client secret from AWS Secrets Manager, then uses it along with the
- * provided code and code_verifier to obtain the token.
- */
+const getOAuthCredentials = async () => {
+  const client = new SSMClient({ region: "us-east-1" });
 
-/* This uses the AWS Secrets Manager to get the secret key for the GGGAUTH API. */
-/* Docs: https://docs.aws.amazon.com/secretsmanager/latest/userguide/retrieving-secrets_lambda.html */
-const getClientSecret = async () => {
-  const client = new SecretsManagerClient({
-    region: "us-east-1",
-  });
+  const response = await client.send(
+    new GetParametersCommand({
+      Names: ["/CRE/GGGAuth/clientId", "/CRE/GGGAuth/clientSecret"],
+      WithDecryption: true,
+    })
+  );
 
-  let response;
-
-  try {
-    const secretName = "CRE/Secrets/GGGAuth";
-    response = await client.send(
-      new GetSecretValueCommand({
-        SecretId: secretName,
-        VersionStage: "AWSCURRENT", // VersionStage defaults to AWSCURRENT if unspecified
-      })
+  if (response.InvalidParameters && response.InvalidParameters.length > 0) {
+    throw new Error(
+      `Missing SSM parameters: ${response.InvalidParameters.join(", ")}`
     );
-  } catch (error) {
-    // For a list of exceptions thrown, see
-    // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-    throw error;
   }
 
-  const secretsJson = response.SecretString;
-  const parsedJson = JSON.parse(secretsJson); // Parse the entire JSON string
-  const clientSecret = parsedJson.clientSecret; // Extract the clientSecret
+  const byName = Object.fromEntries(
+    response.Parameters.map((p) => [p.Name, p.Value])
+  );
 
-  return clientSecret;
+  return {
+    clientId: byName["/CRE/GGGAuth/clientId"],
+    clientSecret: byName["/CRE/GGGAuth/clientSecret"],
+  };
 };
 
 /**
  * Retrieves the authentication token from the Path of Exile API.
  * @param {Object} params - Parameters required for the token request.
+ * @param {string} params.clientId - The OAuth client id.
  * @param {string} params.secretKey - The client secret key.
  * @param {string} params.code - The authorization code.
  * @param {string} params.codeVerifier - The code verifier string.
@@ -51,6 +39,7 @@ const getClientSecret = async () => {
  * @returns {Promise<Object>} The token response JSON.
  */
 const getAuthToken = async ({
+  clientId,
   secretKey,
   code,
   codeVerifier,
@@ -65,7 +54,7 @@ const getAuthToken = async ({
   }
 
   const urlencodedParams = new URLSearchParams();
-  urlencodedParams.append("client_id", "chaosrecipeenhancer");
+  urlencodedParams.append("client_id", clientId);
   urlencodedParams.append("client_secret", secretKey);
   urlencodedParams.append("grant_type", "authorization_code");
   urlencodedParams.append("code", code);
@@ -124,7 +113,7 @@ export const handler = async (event, context) => {
       `handler --- Incoming Headers: ${JSON.stringify(event.headers)}`
     );
 
-    const secretKey = await getClientSecret();
+    const { clientId, clientSecret } = await getOAuthCredentials();
     const params = new URLSearchParams(atob(event.body));
     const code = params.get("code");
     const codeVerifier = params.get("code_verifier");
@@ -148,7 +137,8 @@ export const handler = async (event, context) => {
         "OAuth,chaosrecipeenhancer/TokenRetrievalV2Backend,(contact: dev@chaos-recipe.com)"; // Default
 
     const token = await getAuthToken({
-      secretKey,
+      clientId,
+      secretKey: clientSecret,
       code,
       codeVerifier,
       userAgent,
